@@ -1,6 +1,9 @@
-import { Controller, Get } from 'routing-controllers';
+import {
+	Controller,
+	Get,
+} from '@decorators/express';
 
-@Controller('users')
+@Controller('/example')
 export class UsersController {
 	@Get('/')
 	index() {

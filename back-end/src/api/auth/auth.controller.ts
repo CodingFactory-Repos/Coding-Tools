@@ -1,19 +1,26 @@
 import { Response } from 'express';
-import { Controller, Req, Body, Post, UseBefore, Res, Get } from 'routing-controllers';
+import {
+	Response as Res,
+	Request as Req,
+	Controller,
+	Get,
+	Post,
+	Body,
+} from '@decorators/express';
 
 import AuthService from '@/api/auth/auth.service';
 import { LoginDto } from '@/api/auth/dto/auth.dto';
 import { RequestWithUser } from '@/api/auth/interfaces/auth.interface';
 
 import { User } from '@/api/base/users/interfaces/users.interface';
-import { validationMiddleware } from '@/api/common/middlewares/validation.middleware';
+import { ValidateBody } from '../common/decorators/validation.decorator';
 
 @Controller('/auth')
 export class AuthController {
-	public authService = new AuthService();
+	constructor(public authService = new AuthService()) {}
 
 	@Post('/signup')
-	@UseBefore(validationMiddleware(LoginDto, 'body'))
+	@ValidateBody(LoginDto)
 	async signUp(@Res() res: Response, @Body() userData: LoginDto) {
 		const user: User = await this.authService.signup(userData);
 
@@ -21,7 +28,7 @@ export class AuthController {
 	}
 
 	@Post('/login')
-	@UseBefore(validationMiddleware(LoginDto, 'body'))
+	@ValidateBody(LoginDto)
 	async logIn(@Res() res: Response, @Body() userData: LoginDto) {
 		const { payload, user } = await this.authService.login(userData);
 
@@ -40,6 +47,7 @@ export class AuthController {
 
 	@Get('/test')
 	async getTestRoute(@Res() res: Response) {
+		await this.authService.test();
 		return res.status(201).json({ status: 'ok' });
 	}
 }

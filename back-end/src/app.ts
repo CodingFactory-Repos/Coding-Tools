@@ -1,39 +1,47 @@
 import 'reflect-metadata';
-// import { defaultMetadataStorage } from 'class-transformer';
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+import EventEmitter from 'events';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import { useExpressServer, getMetadataArgsStorage } from 'routing-controllers';
-import { routingControllersToSpec } from 'routing-controllers-openapi';
-import swaggerUi from 'swagger-ui-express';
+
+import { attachControllers, Type } from '@decorators/express';
+
 import errorMiddleware from '@/api/common/middlewares/error.middleware';
+import { mongodb, config } from '@/config/config';
 
-import { config } from '@/config/config';
-
-class App {
+class App extends EventEmitter {
 	public app: express.Application;
 	public env: string;
 	public host: string;
 	public port: string | number;
 
-	constructor(Controllers: Function[]) {
-		this.app = express();
+	constructor(controllers: Array<Type>) {
+		super();
+
 		this.env = config.app.env || 'development';
 		this.host = config.app.host || 'http://localhost';
 		this.port = config.app.port || 6000;
+		mongodb.init();
+		
+		mongodb.on("initDone", () => {
+			console.log("Mongodb connected !");
+			this.bootstrap(controllers);
+		});
+	}
 
+	public bootstrap(controllers: Array<Type>) {
+		this.app = express();
 		this.initializeMiddlewares();
-		this.initializeRoutes(Controllers);
-		this.initializeSwagger(Controllers);
 		this.initializeErrorHandling();
+		this.initializeControllers(controllers);
+		this.emit('expressMounted');
 	}
 
 	public listen() {
 		this.app.listen(this.port, () => {
-			console.log(`🚀 App listening on the port ${this.host}:${this.port}`);
+			console.log(`🚀 App listening on ${this.host}:${this.port}`);
 		});
 	}
 
@@ -50,50 +58,12 @@ class App {
 		this.app.use(cookieParser());
 	}
 
-	private initializeRoutes(controllers: Function[]) {
-		useExpressServer(this.app, {
-			cors: {
-				origin: config.app.host,
-				credentials: true,
-			},
-			controllers: controllers,
-			defaultErrorHandler: false,
-		});
-	}
-
-	private initializeSwagger(controllers: Function[]) {
-		const schemas = validationMetadatasToSchemas({
-			//   classTransformerMetadataStorage: defaultMetadataStorage,
-			refPointerPrefix: '#/components/schemas/',
-		});
-
-		const routingControllersOptions = {
-			controllers: controllers,
-		};
-
-		const storage = getMetadataArgsStorage();
-		const spec = routingControllersToSpec(storage, routingControllersOptions, {
-			components: {
-				schemas,
-				securitySchemes: {
-					basicAuth: {
-						scheme: 'basic',
-						type: 'http',
-					},
-				},
-			},
-			info: {
-				description: 'Generated with `routing-controllers-openapi`',
-				title: 'A sample API',
-				version: '1.0.0',
-			},
-		});
-
-		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
-	}
-
 	private initializeErrorHandling() {
 		this.app.use(errorMiddleware);
+	}
+
+	private initializeControllers(controllers: Array<Type>) {
+		attachControllers(this.app, controllers);
 	}
 }
 

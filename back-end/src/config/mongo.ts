@@ -14,31 +14,31 @@ class MongoDb extends EventEmitter {
 	 * MongoDb Client
 	 * @internal
 	*/
-	private _client: MongoClient;
+	_client: MongoClient;
 
 	/**
 	 * MongoDb Instance
 	 * @internal
 	*/
-	private static _instance: MongoDb;
+	static _instance: MongoDb;
 
 	/**
 	 * Is MongoDb successfully connected
 	 * @internal
 	*/
-	private _isInit = false;
+	_isInit = false;
 
 	/**
 	 * Name of the MongoDb database
 	 * @internal
 	*/
-	private _dbName: string;
+	_dbName: string;
 
 	/**
 	 * MongoDb database
 	 * @internal
 	*/
-	private _db: Db;
+	_db: Db;
 
 	/**
 	 * Sets MongoDb client and name
@@ -91,7 +91,10 @@ class MongoDb extends EventEmitter {
 	}
 
 	get isInit() { return this._isInit };
+	get client() { return this._client };
+	get dbName() { return this._dbName };
+	get db()     { return this._db };
 }
 
-// Export static mongo class
+// Export static mongo class, no re-use.
 export const getDb = MongoDb.getDb;

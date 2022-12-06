@@ -19,6 +19,10 @@ class AuthService {
 	public async logout(userData: User): Promise<void> {
 		// Logout business logic goes here
 	}
+
+	public async test() {
+		console.log("duh")
+	}
 }
 
 export default AuthService;
