@@ -6,7 +6,7 @@ on:
       - develop-G*
 
 jobs:
-  update:
+  get_group_number:
     name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
     steps:
@@ -21,4 +21,3 @@ jobs:
 
       - name: "🔀 - Merge develop to develop G$GROUP_NUMBER"
         uses: mtanzi/action-automerge@v1
-       
