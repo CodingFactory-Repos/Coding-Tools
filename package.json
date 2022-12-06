@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "🔬 - School-project about tools to manage better in the school",
   "scripts": {
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx,.vue --max-warnings=0 --output-file eslint-results.sarif ."
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
   },
   "repository": {
     "type": "git",

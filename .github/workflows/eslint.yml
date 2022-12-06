@@ -37,12 +37,12 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npx eslint --ext .js,.jsx,.ts,.tsx,.vue --max-warnings=0 --output-file eslint-results.sarif .
+          eslint "{src,apps,libs,test}/**/*.ts" --fix
           npx github/codeql-action/upload-sarif@v1 eslint.sarif
         continue-on-error: true
 
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: eslint-results.sarif
-          wait-for-processing: true
+#      - name: Upload analysis results to GitHub
+#        uses: github/codeql-action/upload-sarif@v2
+#        with:
+#          sarif_file: eslint-results.sarif
+#          wait-for-processing: true
