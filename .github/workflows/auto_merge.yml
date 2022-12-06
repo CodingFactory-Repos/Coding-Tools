@@ -20,6 +20,7 @@ jobs:
     steps:
       - name: "🚚 - Checkout develop"
         uses: actions/checkout@v2
+
       - name: "🔀 - Merge develop to develop G1"
         uses: mtanzi/action-automerge@v1
         id: mergeG1
@@ -28,6 +29,7 @@ jobs:
           source: 'develop'
           target: 'develop-G1'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G2"
         uses: mtanzi/action-automerge@v1
         id: mergeG2
@@ -36,6 +38,7 @@ jobs:
           source: 'develop'
           target: 'develop-G2'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G5"
         uses: mtanzi/action-automerge@v1
         id: mergeG5
@@ -44,6 +47,7 @@ jobs:
           source: 'develop'
           target: 'develop-G5'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G6"
         uses: mtanzi/action-automerge@v1
         id: mergeG6
@@ -52,6 +56,7 @@ jobs:
           source: 'develop'
           target: 'develop-G6'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G7"
         uses: mtanzi/action-automerge@v1
         id: mergeG7
@@ -60,6 +65,7 @@ jobs:
           source: 'develop'
           target: 'develop-G7'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G8"
         uses: mtanzi/action-automerge@v1
         id: mergeG8
@@ -68,6 +74,7 @@ jobs:
           source: 'develop'
           target: 'develop-G8'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
       - name: "🔀 - Merge develop to develop G10"
         uses: mtanzi/action-automerge@v1
         id: mergeG10
