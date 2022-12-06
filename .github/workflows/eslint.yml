@@ -37,7 +37,7 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npx eslint "{src,test}/**/*.{ts, vue}" --fix
+          npx eslint --ext .js,.jsx,.ts,.tsx,.vue --fix
           npx github/codeql-action/upload-sarif@v1 eslint.sarif
         continue-on-error: true
 
