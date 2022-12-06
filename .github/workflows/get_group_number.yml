@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Extract group number from branch name
-      run: |
-        GROUP_NUMBER=$(echo $GITHUB_REF | sed -E 's/^refs\/heads\/develop-G(\d+)$/')
-        echo "Group number: $GROUP_NUMBER"
+      - uses: actions/checkout@v2
+      - name: Extract group number from branch name
+        run: |
+          GROUP_NUMBER=$(echo $GITHUB_REF | sed -E 's/refs\/heads\/develop-G([0-9]+)/\1/')
+          echo "Group number: $GROUP_NUMBER"
