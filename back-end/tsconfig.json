@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["es2017", "esnext.asynciterable"],
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "types"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
