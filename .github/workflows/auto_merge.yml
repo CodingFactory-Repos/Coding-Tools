@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2
       - name: "🔀 - Merge develop to develop G1"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG1
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -30,7 +30,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G2"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG2
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -38,7 +38,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G5"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG5
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -46,7 +46,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G6"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG6
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -54,7 +54,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G7"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG7
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -62,7 +62,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G8"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG8
         with:
           github_token: ${{ github.token }}
           source: 'develop'
@@ -70,7 +70,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
       - name: "🔀 - Merge develop to develop G10"
         uses: mtanzi/action-automerge@v1
-        id: merge
+        id: mergeG10
         with:
           github_token: ${{ github.token }}
           source: 'develop'
