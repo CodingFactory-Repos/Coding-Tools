@@ -18,12 +18,61 @@ jobs:
     name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: "🚚 - Checkout develop"
         uses: actions/checkout@v2
-      - name: merge
+      - name: "🔀 - Merge develop to develop G1"
         uses: mtanzi/action-automerge@v1
         id: merge
         with:
           github_token: ${{ github.token }}
           source: 'develop'
-          target: 'develop-*'
+          target: 'develop-G1'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G2"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G2'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G5"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G5'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G6"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G6'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G7"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G7'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G8"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G8'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+      - name: "🔀 - Merge develop to develop G10"
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G10'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
