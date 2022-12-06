@@ -1,35 +1,85 @@
-name: Merge branch on commit
+# If I push on Develop, it will merge to all child branches (except main)
+# Ex:
+# - Develop -> Feature/1
+# - Develop -> Feature/2
+# - Develop -> Feature/3
+# Feature/1 create a PR to Develop
+# Now Develop is updated, so i want to automatically merge it to Feature/2 and Feature/3
+
+name: Auto Merge
 
 on:
   push:
     branches:
-      - '*'
-      - '!/main'
+      - develop
 
 jobs:
-  build:
+  update:
+    name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: "🚚 - Checkout develop"
         uses: actions/checkout@v2
 
-      - name: Merge branches
-        run: |
-          # Récupère la liste des branches enfants
-          branches=$(git branch --list '*' --no-color --no-column --contains)
+      - name: "🔀 - Merge develop to develop G1"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG1
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G1'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
 
-          # Pour chaque branche enfant
-          for branch in $branches; do
-            # Vérifie les modifications apportées à la branche enfant
-            git checkout $branch
-            git merge --no-ff --no-edit master
+      - name: "🔀 - Merge develop to develop G2"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG2
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G2'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
 
-            # Si la branche enfant contient des modifications non présentes dans la branche principale
-            if ! git diff --quiet master; then
-              # Met à jour la branche principale avec les modifications de la branche enfant
-              git checkout master
-              git merge --no-ff --no-edit $branch
-              git push origin master
-            fi
-          done
+      - name: "🔀 - Merge develop to develop G5"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG5
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G5'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop to develop G6"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG6
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G6'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop to develop G7"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG7
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G7'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop to develop G8"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG8
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G8'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop to develop G10"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG10
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G10'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
