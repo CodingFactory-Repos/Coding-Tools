@@ -6,11 +6,19 @@ on:
       - develop-G*
 
 jobs:
-  build:
+  update:
+    name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Extract group number from branch name
+        uses: actions/checkout@v2
         run: |
           GROUP_NUMBER=$(echo $GITHUB_REF | sed -E 's/refs\/heads\/develop-G([0-9]+)/\1/')
-          echo "Group number: $GROUP_NUMBER"
+          echo "GROUP_NUMBER=$GROUP_NUMBER" >> $GITHUB_ENV
+
+      - name: "🚚 - Checkout develop branch"
+        uses: actions/checkout@v2
+
+      - name: "🔀 - Merge develop to develop G$GROUP_NUMBER"
+        uses: mtanzi/action-automerge@v1
+       
