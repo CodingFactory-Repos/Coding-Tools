@@ -1,0 +1,29 @@
+# If I push on Develop, it will merge to all child branches (except main)
+# Ex:
+# - Develop -> Feature/1
+# - Develop -> Feature/2
+# - Develop -> Feature/3
+# Feature/1 create a PR to Develop
+# Now Develop is updated, so i want to automatically merge it to Feature/2 and Feature/3
+
+name: Auto Merge
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  update:
+    name: "Auto Merge to all child branches"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop'
+          target: 'develop-G1'
