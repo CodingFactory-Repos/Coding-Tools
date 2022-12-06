@@ -12,5 +12,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Extract group number from branch name
       run: |
-        GROUP_NUMBER=$(echo $GITHUB_REF | sed -E 's/^develop-G(\d+)$/\1/')
+        GROUP_NUMBER=$(echo $GITHUB_REF | sed -E 's/^refs\/heads\/develop-G(\d+)$/')
         echo "Group number: $GROUP_NUMBER"
