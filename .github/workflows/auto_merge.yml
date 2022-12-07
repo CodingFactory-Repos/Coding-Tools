@@ -22,6 +22,16 @@ jobs:
           target: 'develop-G1'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
 
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG1.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G1"
+          body: "A merge conflict occurred when trying to merge develop into develop-G1. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
+
       - name: "🔀 - Merge develop to develop G2"
         uses: mtanzi/action-automerge@v1
         id: mergeG2
@@ -30,6 +40,16 @@ jobs:
           source: 'develop'
           target: 'develop-G2'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG2.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G2"
+          body: "A merge conflict occurred when trying to merge develop into develop-G2. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
 
       - name: "🔀 - Merge develop to develop G5"
         uses: mtanzi/action-automerge@v1
@@ -40,6 +60,16 @@ jobs:
           target: 'develop-G5'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
 
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG5.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G5"
+          body: "A merge conflict occurred when trying to merge develop into develop-G5. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
+
       - name: "🔀 - Merge develop to develop G6"
         uses: mtanzi/action-automerge@v1
         id: mergeG6
@@ -48,6 +78,16 @@ jobs:
           source: 'develop'
           target: 'develop-G6'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG6.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G6"
+          body: "A merge conflict occurred when trying to merge develop into develop-G6. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
 
       - name: "🔀 - Merge develop to develop G7"
         uses: mtanzi/action-automerge@v1
@@ -58,6 +98,16 @@ jobs:
           target: 'develop-G7'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
 
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG7.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G7"
+          body: "A merge conflict occurred when trying to merge develop into develop-G7. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
+
       - name: "🔀 - Merge develop to develop G8"
         uses: mtanzi/action-automerge@v1
         id: mergeG8
@@ -67,6 +117,16 @@ jobs:
           target: 'develop-G8'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
 
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG8.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G8"
+          body: "A merge conflict occurred when trying to merge develop into develop-G8. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
+
       - name: "🔀 - Merge develop to develop G10"
         uses: mtanzi/action-automerge@v1
         id: mergeG10
@@ -75,3 +135,13 @@ jobs:
           source: 'develop'
           target: 'develop-G10'
           webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🌀 - Create Pull Request if merge conflict occurs"
+        if: steps.mergeG10.outputs.result == 'conflict'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+          title: "Resolve merge conflict in develop-G10"
+          body: "A merge conflict occurred when trying to merge develop into develop-G10. Please resolve the conflict and merge the changes manually."
+          labels: "conflict,auto-merge"
