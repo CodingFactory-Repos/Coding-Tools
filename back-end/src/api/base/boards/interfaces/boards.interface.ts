@@ -10,5 +10,6 @@ export interface Board {
 }
 
 interface Task {
+	example: string;
 	// À définir;
 }

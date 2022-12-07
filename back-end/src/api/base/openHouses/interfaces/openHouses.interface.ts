@@ -15,5 +15,6 @@ export interface OpenHouse {
 }
 
 interface Project {
+	example: string;
 	// to be changed;
 }

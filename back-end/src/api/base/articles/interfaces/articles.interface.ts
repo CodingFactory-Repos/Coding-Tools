@@ -18,6 +18,7 @@ export interface Article {
 }
 
 export interface Commentary {
+	example: string;
 	// user: User;
 	// commentary: string;
 }

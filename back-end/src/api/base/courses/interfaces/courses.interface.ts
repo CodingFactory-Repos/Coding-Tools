@@ -19,5 +19,6 @@ export interface Course {
 }
 
 export interface Call {
+	example: string;
 	// to be changed;
 }

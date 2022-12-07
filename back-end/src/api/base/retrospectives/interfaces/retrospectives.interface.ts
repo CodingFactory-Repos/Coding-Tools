@@ -12,5 +12,6 @@ export interface Retrospective {
 }
 
 interface Postit {
+	example: string;
 	// À définir;
 }
