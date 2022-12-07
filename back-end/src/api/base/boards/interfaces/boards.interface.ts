@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { Group } from '../../goups/interfaces/groups.interface';
 
 export interface Board {
 	_id?: ObjectId;
@@ -10,8 +11,4 @@ export interface Board {
 
 interface Task {
 	// À définir;
-}
-
-export interface Group {
-	// to be changed;
 }
