@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { EquipmnentLoan } from '../../equipmentsLoan/interfaces/equipmentsLoan.interface';
 
 export interface Material {
 	_id?: ObjectId;
@@ -11,10 +12,6 @@ export interface Material {
 	siteLocation: string;
 	storageCupboard?: string;
 	description: string;
-	borrowingHistory: Array<EquipmnentsLoan>;
+	borrowingHistory: Array<EquipmnentLoan>;
 	status: boolean;
-}
-
-interface EquipmnentsLoan {
-	// to be changed;
 }
