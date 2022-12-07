@@ -13,7 +13,10 @@ export class RetrospectiveRepository {
 		return this.retrospectives.insertOne(query);
 	}
 
-	async updateOneRetrospective(query: Filter<Retrospective>, update: Partial<Retrospective> | UpdateFilter<Retrospective>) {
+	async updateOneRetrospective(
+		query: Filter<Retrospective>,
+		update: Partial<Retrospective> | UpdateFilter<Retrospective>,
+	) {
 		return this.retrospectives.updateOne(query, update);
 	}
 
@@ -27,7 +30,7 @@ export class RetrospectiveRepository {
 
 	async retrospectiveExist(query: Filter<Retrospective>) {
 		const options = { projection: { _id: 1 } };
-		return this.retrospectives.findOne(query, options)
+		return this.retrospectives.findOne(query, options);
 	}
 	// Mongo repo for the retrospectives collection
 }

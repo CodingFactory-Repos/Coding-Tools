@@ -25,7 +25,7 @@ export class CoursesRepository {
 		return this.courses.findOneAndUpdate(query, update, options);
 	}
 
-	async CourseExist(query: Filter<Course>) {
+	async courseExist(query: Filter<Course>) {
 		const options = { projection: { _id: 1 } };
 		return this.courses.findOne(query, options);
 	}
