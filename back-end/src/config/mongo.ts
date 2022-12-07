@@ -69,7 +69,7 @@ class MongoDb extends EventEmitter {
 	 * @param options - `optional` MongoDb collectin options
 	 */
 	collection<Type>(name: string, options?: CollectionOptions) {
-		return this._db.collection(name, options);
+		return this._db.collection<Type>(name, options);
 	}
 
 	/**
