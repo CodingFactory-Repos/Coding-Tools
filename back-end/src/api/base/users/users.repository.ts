@@ -1,12 +1,18 @@
 import { mongodb } from '@/config/config';
 import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
-import { PedagoProfile, ProductOwnerProfile, Student, User, UserProfile } from './interfaces/users.interface';
+import {
+	PedagoProfile,
+	ProductOwnerProfile,
+	Student,
+	User,
+	UserProfile,
+} from './interfaces/users.interface';
 
 export class UsersRepository {
-static users = mongodb.collection<User>('users');
+	static usersCollection = mongodb.collection<User>('users');
 
 	get users() {
-		return UsersRepository.users;
+		return UsersRepository.usersCollection;
 	}
 
 	async createUser(query: User) {
@@ -26,7 +32,7 @@ static users = mongodb.collection<User>('users');
 	}
 	async userExist(query: Filter<User>) {
 		const options = { projection: { _id: 1 } };
-		return this.users.findOne(query, options)
+		return this.users.findOne(query, options);
 	}
 	// Mongo repo for the users collection
 }

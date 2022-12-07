@@ -3,10 +3,10 @@ import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb
 import { Course } from './interfaces/courses.interface';
 
 export class CoursesRepository {
-	static coursesRepository = mongodb.collection<Course>('courses');
+	static coursesCollection = mongodb.collection<Course>('courses');
 
 	get courses() {
-		return CoursesRepository.coursesRepository;
+		return CoursesRepository.coursesCollection;
 	}
 
 	async createCourse(query: Course) {
@@ -27,7 +27,7 @@ export class CoursesRepository {
 
 	async CourseExist(query: Filter<Course>) {
 		const options = { projection: { _id: 1 } };
-		return this.courses.findOne(query, options)
+		return this.courses.findOne(query, options);
 	}
 	// Mongo repo for the courses collection
 }

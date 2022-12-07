@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 import { User } from '../../users/interfaces/users.interface';
 
 export interface AcademicYear {
