@@ -127,9 +127,6 @@ jobs:
           body: "A merge conflict occurred when trying to merge develop into develop-G8. Please resolve the conflict and merge the changes manually."
           labels: "conflict,auto-merge"
 
-      - name: "📝 - Show the result"
-        run: echo "The result is ${{ steps.mergeG8.outputs.result }}"
-
       - name: "🔀 - Merge develop to develop G10"
         uses: mtanzi/action-automerge@v1
         id: mergeG10
@@ -148,3 +145,10 @@ jobs:
           title: "Resolve merge conflict in develop-G10"
           body: "A merge conflict occurred when trying to merge develop into develop-G10. Please resolve the conflict and merge the changes manually."
           labels: "conflict,auto-merge"
+
+  conflict_show:
+    name: "🚨 - Show conflict"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "📝 - Show the result"
+        run: echo "The result is ${{ steps.mergeG8.outputs.result }}"
