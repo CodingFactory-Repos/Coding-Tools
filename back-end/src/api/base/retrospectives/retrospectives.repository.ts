@@ -1,5 +1,5 @@
 import { mongodb } from '@/config/config';
-import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { Retrospective } from './interfaces/retrospectives.interface';
 
 export class RetrospectivesRepository {
