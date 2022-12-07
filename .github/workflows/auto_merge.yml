@@ -21,7 +21,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G1"
           body: "A merge conflict occurred when trying to merge develop into develop-G1. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G2"
@@ -32,7 +31,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G2"
           body: "A merge conflict occurred when trying to merge develop into develop-G2. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G5"
@@ -43,7 +41,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G5"
           body: "A merge conflict occurred when trying to merge develop into develop-G5. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G6"
@@ -54,7 +51,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G6"
           body: "A merge conflict occurred when trying to merge develop into develop-G6. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G7"
@@ -65,7 +61,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G7"
           body: "A merge conflict occurred when trying to merge develop into develop-G7. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G8"
@@ -76,7 +71,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G8"
           body: "A merge conflict occurred when trying to merge develop into develop-G8. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
       - name: "💫 - Create a Pull Request develop to develop-G10"
@@ -87,7 +81,6 @@ jobs:
           branch: develop
           title: "Merge develop to develop-G10"
           body: "A merge conflict occurred when trying to merge develop into develop-G10. Please resolve the conflict and merge the changes manually."
-          labels: "auto-merge"
           delete-branch: false
 
   merge_branchs:
