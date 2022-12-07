@@ -4,9 +4,9 @@ import { AcademicYear } from '../users/interfaces/users.interface';
 ;
 
 export class AcademicYearsRepository {
-static academicYears = mongodb.collection<AcademicYear>('academicYears');
+	static academicYears = mongodb.collection<AcademicYear>('academicYears');
 
-get academicYears() {
+	get academicYears() {
 		return AcademicYearsRepository.academicYears;
 	}
 
