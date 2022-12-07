@@ -127,12 +127,8 @@ jobs:
           body: "A merge conflict occurred when trying to merge develop into develop-G8. Please resolve the conflict and merge the changes manually."
           labels: "conflict,auto-merge"
 
-      - name: "Afficher le résultat de la fusion"
-        uses: actions/echo@v2
-        with:
-          # Affiche le contenu de la variable steps.mergeG1.outputs.result
-          # dans la console du workflow
-          output: ${{ steps.mergeG8.outputs.result }}
+      - name: "📝 - Show the result"
+        run: echo "The result is ${{ steps.mergeG8.outputs.result }}"
 
       - name: "🔀 - Merge develop to develop G10"
         uses: mtanzi/action-automerge@v1
