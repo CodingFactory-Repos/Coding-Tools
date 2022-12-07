@@ -9,7 +9,6 @@ jobs:
   create_pull_request:
     name: "Create a pull requests"
     runs-on: ubuntu-latest
-    needs: create_pull_request
     steps:
       - name: "🚚 - Checkout develop"
         uses: actions/checkout@v2
