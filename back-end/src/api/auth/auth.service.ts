@@ -1,10 +1,9 @@
 import { LoginDto } from '@/api/auth/dto/auth.dto';
 
 import { User } from '@/api/base/users/interfaces/users.interface';
-import { UsersRepository } from '@/api/base/users/users.repository';
 
 class AuthService {
-	public usersRepository = new UsersRepository();
+	// public usersRepository = new UsersRepository();
 
 	public async signup(userData: LoginDto): Promise<User> {
 		// Signup business logic goes here
