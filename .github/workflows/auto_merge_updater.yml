@@ -2,9 +2,7 @@ name: Child to parents Auto Merge
 
 on:
   schedule:
-#    - cron: "0 9,16 * * 1-5"
-# For testing
-     - cron: "0 * * * * 1-5"
+    - cron: "0 * * 1-5"
 
 jobs:
   update:
