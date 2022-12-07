@@ -9,7 +9,6 @@ jobs:
   merge_branchs:
     name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
-    needs: create_pull_request
     steps:
       - name: "🚚 - Checkout develop"
         uses: actions/checkout@v2
