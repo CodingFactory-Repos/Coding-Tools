@@ -20,10 +20,10 @@ const expressBootsrap = () => {
 		 * A module is a distinct assembly of components that can be easily added, removed or replaced in a larger system.
 		 *
 		 *! Note: Obvisouly, when you create your own controller. Do not forget to add it here, otherwise it will never work.
-		*/
+		 */
 		const app = new App([AuthController, UsersController, ExampleController]);
 		app.listen();
 	});
-}
+};
 
 expressBootsrap();

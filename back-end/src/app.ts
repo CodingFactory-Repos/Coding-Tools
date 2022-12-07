@@ -34,11 +34,11 @@ class App {
 
 			console.log(`[EXPRESS] - Server mounted ✅`);
 			console.log(`
-				${"@".repeat(listenMsg.length + 8)}
-				@@${" ".repeat(listenMsg.length + 4)}@@
+				${'@'.repeat(listenMsg.length + 8)}
+				@@${' '.repeat(listenMsg.length + 4)}@@
 				@@  ${listenMsg}  @@
-				@@${" ".repeat(listenMsg.length + 4)}@@
-				${"@".repeat(listenMsg.length + 8)}
+				@@${' '.repeat(listenMsg.length + 4)}@@
+				${'@'.repeat(listenMsg.length + 8)}
 			`);
 		});
 	}
