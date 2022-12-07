@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  update:
+  merge_branchs:
     name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
     steps:
@@ -149,6 +149,8 @@ jobs:
   conflict_show:
     name: "🚨 - Show conflict"
     runs-on: ubuntu-latest
+    # Wait for the merge_branchs job to complete successfully
+    needs: merge_branchs
     steps:
       - name: "📝 - Show the result"
         run: echo "The result is ${{ steps.mergeG8.outputs.result }}"
