@@ -18,6 +18,7 @@ module.exports = defineConfig({
 		jsx: true,
 		},
 	},
+	ignorePatterns: [".eslintrc.cjs", ".eslintignore", ".eslintcache", ".gitignore", ".prettierrc", ".prettierignore", "commitlint.config.cjs", "tailwind.config.cjs", "vite.config.js"],
 	extends: [
 		'plugin:vue/vue3-recommended',
 		'plugin:@typescript-eslint/recommended',
