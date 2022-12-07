@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Course } from '../../courses/interfaces/courses.interface';
+import { Project } from '../../projects/interfaces/projects.interface';
 import { User } from '../../users/interfaces/users.interface';
 
 export interface Group {
@@ -10,8 +11,4 @@ export interface Group {
 	participants: Array<User>;
 	course: Course;
 	project: Project;
-}
-
-interface Project {
-	// to be changed;
 }

@@ -1,5 +1,5 @@
 import { mongodb } from '@/config/config';
-import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { AcademicYear } from '../users/interfaces/users.interface';
 export class AcademicYearsRepository {
 	static academicYears = mongodb.collection<AcademicYear>('academicYears');

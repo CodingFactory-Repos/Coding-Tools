@@ -1,12 +1,6 @@
 import { mongodb } from '@/config/config';
-import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
-import {
-	PedagoProfile,
-	ProductOwnerProfile,
-	Student,
-	User,
-	UserProfile,
-} from './interfaces/users.interface';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { User } from './interfaces/users.interface';
 
 export class UsersRepository {
 	static usersCollection = mongodb.collection<User>('users');

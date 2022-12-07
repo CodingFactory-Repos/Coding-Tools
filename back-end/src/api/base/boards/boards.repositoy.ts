@@ -1,5 +1,5 @@
 import { mongodb } from '@/config/config';
-import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { Board } from './interfaces/boards.interface';
 
 export class BoardsRepository {

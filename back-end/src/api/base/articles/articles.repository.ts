@@ -1,5 +1,5 @@
 import { mongodb } from '@/config/config';
-import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { Article } from './interfaces/articles.interface';
 
 export class ArticlesRepository {
@@ -25,7 +25,7 @@ export class ArticlesRepository {
 		return this.articles.findOneAndUpdate(query, update, options);
 	}
 
-	async ArticleExist(query: Filter<Article>) {
+	async articleExist(query: Filter<Article>) {
 		const options = { projection: { _id: 1 } };
 		return this.articles.findOne(query, options);
 	}

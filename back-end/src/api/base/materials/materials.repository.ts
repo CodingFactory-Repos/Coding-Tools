@@ -28,7 +28,7 @@ export class MaterialsRepository {
 		return this.materials.findOneAndUpdate(query, update, options);
 	}
 
-	async MaterialExist(query: Filter<Material>) {
+	async materialExist(query: Filter<Material>) {
 		const options = { projection: { _id: 1 } };
 		return this.materials.findOne(query, options);
 	}
