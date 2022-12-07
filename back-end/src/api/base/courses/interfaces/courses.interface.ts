@@ -10,9 +10,9 @@ export interface Course {
 	productOwner?: User;
 	academicYear?: AcademicYear;
 	retrospective?: Retrospective;
-	startedAt?: Date;
-	files: Array<string>;
-	commentaries: Array<string>;
+	startedAt: Date;
+	files?: Array<string>;
+	commentaries?: Array<string>;
 	endedAt: Date;
 	call: Call;
 	siteLocation: string;
