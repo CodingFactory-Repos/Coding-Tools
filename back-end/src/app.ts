@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import EventEmitter from 'events';
+import { EOL } from 'os';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import express from 'express';
@@ -7,38 +7,39 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 
 import { attachControllers, Type } from '@decorators/express';
-import { mongodb, config } from '@/config/config';
+import { config } from '@/config/config';
 
-class App extends EventEmitter {
+class App {
 	public app: express.Application;
 	public env: string;
 	public host: string;
 	public port: string | number;
 
 	constructor(controllers: Array<Type>) {
-		super();
-
 		this.env = config.app.env || 'development';
 		this.host = config.app.host || 'http://localhost';
 		this.port = config.app.port || 6000;
-		mongodb.init();
-
-		mongodb.on('initDone', () => {
-			console.log('Mongodb connected !');
-			this.bootstrap(controllers);
-		});
+		this.bootstrap(controllers);
 	}
 
 	public bootstrap(controllers: Array<Type>) {
 		this.app = express();
 		this.initializeMiddlewares();
 		this.initializeControllers(controllers);
-		this.emit('expressMounted');
 	}
 
 	public listen() {
 		this.app.listen(this.port, () => {
-			console.log(`🚀 App listening on ${this.host}:${this.port}`);
+			const listenMsg = `🚀 App listening on ${this.host}:${this.port}`;
+
+			console.log(`[EXPRESS] - Server mounted ✅`);
+			console.log(`
+				${"@".repeat(listenMsg.length + 8)}
+				@@${" ".repeat(listenMsg.length + 4)}@@
+				@@  ${listenMsg}  @@
+				@@${" ".repeat(listenMsg.length + 4)}@@
+				${"@".repeat(listenMsg.length + 8)}
+			`);
 		});
 	}
 
