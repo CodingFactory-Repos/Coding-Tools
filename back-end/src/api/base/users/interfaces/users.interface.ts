@@ -24,6 +24,7 @@ export interface PedagoProfile {
 }
 
 export interface Notifications {
+	example: string;
 	// À définir
 }
 
