@@ -4,7 +4,6 @@ import {
 	MongoClientOptions,
 	CollectionOptions,
 	MongoClient,
-	Collection,
 	Db,
 } from 'mongodb';
 

@@ -7,8 +7,6 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 
 import { attachControllers, Type } from '@decorators/express';
-
-import errorMiddleware from '@/api/common/middlewares/error.middleware';
 import { mongodb, config } from '@/config/config';
 
 class App extends EventEmitter {
@@ -34,7 +32,6 @@ class App extends EventEmitter {
 	public bootstrap(controllers: Array<Type>) {
 		this.app = express();
 		this.initializeMiddlewares();
-		this.initializeErrorHandling();
 		this.initializeControllers(controllers);
 		this.emit('expressMounted');
 	}
@@ -49,6 +46,9 @@ class App extends EventEmitter {
 		return this.app;
 	}
 
+	/**
+	 * Set of security middlewares run before you have acces to any controller
+	 */
 	private initializeMiddlewares() {
 		this.app.use(hpp());
 		this.app.use(helmet());
@@ -56,10 +56,6 @@ class App extends EventEmitter {
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
 		this.app.use(cookieParser());
-	}
-
-	private initializeErrorHandling() {
-		this.app.use(errorMiddleware);
 	}
 
 	private initializeControllers(controllers: Array<Type>) {
