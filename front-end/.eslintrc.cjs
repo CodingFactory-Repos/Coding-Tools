@@ -10,7 +10,7 @@ module.exports = defineConfig({
 	parserOptions: {
 		parser: '@typescript-eslint/parser',
 		project: 'tsconfig.json',
-		tsconfigRootDir : __dirname, 
+		tsconfigRootDir : __dirname,
 		ecmaVersion: 2020,
 		sourceType: 'module',
 		jsxPragma: 'React',
@@ -38,7 +38,7 @@ module.exports = defineConfig({
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		'space-before-function-paren': 'off',
 		'no-use-before-define': 'off',
-		
+
 		'vue/attributes-order': 'off',
 		'vue/one-component-per-file': 'off',
 		'vue/script-setup-uses-vars': 'error',
