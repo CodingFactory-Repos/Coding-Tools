@@ -1,0 +1,77 @@
+name: Develop Groups to Auto-Develop Branch
+
+on:
+  push:
+    branches:
+      - develop-G*
+
+jobs:
+  update:
+    name: "Auto Merge all Groups Develop branchs to auto-develop branch"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🚚 - Checkout develop"
+        uses: actions/checkout@v2
+
+      - name: "🔀 - Merge develop-G1 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG1
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G1'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G2 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG2
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G2'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G5 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG5
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G5'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G6 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG6
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G6'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G7 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG7
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G7'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G8 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG8
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G8'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+
+      - name: "🔀 - Merge develop-G10 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG10
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G10'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
