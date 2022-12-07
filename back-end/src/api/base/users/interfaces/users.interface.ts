@@ -1,13 +1,12 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 export interface User {
 	_id?: ObjectId;
-	profile: UserProfile
+	profile: UserProfile;
 	status: number;
 	pedago?: PedagoProfile;
 	productOwner?: ProductOwnerProfile;
 	student?: Student;
 }
-
 
 export interface UserProfile {
 	firstName: string;
@@ -21,7 +20,7 @@ export interface UserProfile {
 }
 
 export interface PedagoProfile {
-	notifications: Array<Notifications>
+	notifications: Array<Notifications>;
 }
 
 export interface Notifications {

@@ -1,6 +1,5 @@
 import { AcademicYearsRepository } from './academicYears.repository';
 
-
 class AcademicYearsService {
 	public repo = new AcademicYearsRepository();
 

@@ -1,8 +1,6 @@
 import { mongodb } from '@/config/config';
 import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { AcademicYear } from '../users/interfaces/users.interface';
-;
-
 export class AcademicYearsRepository {
 	static academicYears = mongodb.collection<AcademicYear>('academicYears');
 
@@ -14,7 +12,10 @@ export class AcademicYearsRepository {
 		return this.academicYears.insertOne(query);
 	}
 
-	async updateOneAcademicYear(query: Filter<AcademicYear>, update: Partial<AcademicYear> | UpdateFilter<AcademicYear>) {
+	async updateOneAcademicYear(
+		query: Filter<AcademicYear>,
+		update: Partial<AcademicYear> | UpdateFilter<AcademicYear>,
+	) {
 		return this.academicYears.updateOne(query, update);
 	}
 
@@ -28,7 +29,7 @@ export class AcademicYearsRepository {
 
 	async academicYearExist(query: Filter<AcademicYear>) {
 		const options = { projection: { _id: 1 } };
-		return this.academicYears.findOne(query, options)
+		return this.academicYears.findOne(query, options);
 	}
 	// Mongo repo for the academicYears collection
 }

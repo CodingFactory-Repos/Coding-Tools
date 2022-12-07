@@ -1,6 +1,9 @@
 import { AcademicYear, User } from '../../users/interfaces/users.interface';
+import { ObjectId } from 'mongodb';
+import { Retrospective } from '../../retrospectives/interfaces/retrospectives.interface';
 
 export interface Course {
+	_id?: ObjectId;
 	title: string;
 	language: string;
 	createdAt: Date;
@@ -13,11 +16,6 @@ export interface Course {
 	endedAt: Date;
 	call: Call;
 	siteLocation: string;
-
-}
-
-export interface Retrospective {
-	// To be changed;
 }
 
 export interface Call {
