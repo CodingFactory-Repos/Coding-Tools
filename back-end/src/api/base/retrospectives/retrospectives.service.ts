@@ -1,7 +1,7 @@
-import { RetrospectiveRepository } from './retrospectives.repository';
+import { RetrospectivesRepository } from './retrospectives.repository';
 
 class RetrospectivesService {
-	public repo = new RetrospectiveRepository();
+	public repo = new RetrospectivesRepository();
 
 	// Business logic methods goes there...
 }

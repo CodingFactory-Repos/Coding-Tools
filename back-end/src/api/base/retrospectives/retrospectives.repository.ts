@@ -2,11 +2,11 @@ import { mongodb } from '@/config/config';
 import { ObjectId, Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { Retrospective } from './interfaces/retrospectives.interface';
 
-export class RetrospectiveRepository {
+export class RetrospectivesRepository {
 	static retrospectiveCollection = mongodb.collection<Retrospective>('retrospectives');
 
 	get retrospectives() {
-		return RetrospectiveRepository.retrospectiveCollection;
+		return RetrospectivesRepository.retrospectiveCollection;
 	}
 
 	async createRetrospective(query: Retrospective) {
