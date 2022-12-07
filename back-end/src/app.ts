@@ -22,9 +22,9 @@ class App extends EventEmitter {
 		this.host = config.app.host || 'http://localhost';
 		this.port = config.app.port || 6000;
 		mongodb.init();
-		
-		mongodb.on("initDone", () => {
-			console.log("Mongodb connected !");
+
+		mongodb.on('initDone', () => {
+			console.log('Mongodb connected !');
 			this.bootstrap(controllers);
 		});
 	}

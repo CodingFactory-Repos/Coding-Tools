@@ -1,7 +1,4 @@
-import {
-	Controller,
-	Get,
-} from '@decorators/express';
+import { Controller, Get } from '@decorators/express';
 
 @Controller('/')
 export class ExampleController {

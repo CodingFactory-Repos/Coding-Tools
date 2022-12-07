@@ -1,12 +1,11 @@
-import { mongodb } from "@/config/config";
+import { mongodb } from '@/config/config';
 
 export class UsersRepository {
-	public users = mongodb.collection("users");
+	public users = mongodb.collection('users');
 
 	async userExist() {
-		return this.users.find()
+		return this.users.find();
 	}
 
-	
 	// Mongo repo for the users collection
 }

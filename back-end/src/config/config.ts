@@ -1,4 +1,4 @@
-import { getDb } from "./mongo";
+import { getDb } from './mongo';
 
 // Global express.js configuration
 export const config = {
@@ -11,7 +11,7 @@ export const config = {
 	mongo: {
 		uri: process.env.MONGO_URI,
 		name: process.env.MONGO_DBNAME,
-	}
+	},
 };
 
 // Global mongodb instance

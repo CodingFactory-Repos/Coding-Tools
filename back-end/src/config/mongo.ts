@@ -1,42 +1,36 @@
 import { EventEmitter } from 'events';
 
-import {
-	MongoClientOptions,
-	CollectionOptions,
-	MongoClient,
-	Db,
-} from 'mongodb';
-
+import { MongoClientOptions, CollectionOptions, MongoClient, Db } from 'mongodb';
 
 class MongoDb extends EventEmitter {
 	/**
 	 * MongoDb Client
 	 * @internal
-	*/
+	 */
 	_client: MongoClient;
 
 	/**
 	 * MongoDb Instance
 	 * @internal
-	*/
+	 */
 	static _instance: MongoDb;
 
 	/**
 	 * Is MongoDb successfully connected
 	 * @internal
-	*/
+	 */
 	_isInit = false;
 
 	/**
 	 * Name of the MongoDb database
 	 * @internal
-	*/
+	 */
 	_dbName: string;
 
 	/**
 	 * MongoDb database
 	 * @internal
-	*/
+	 */
 	_db: Db;
 
 	/**
@@ -62,7 +56,7 @@ class MongoDb extends EventEmitter {
 	 * @static
 	 */
 	static getDb(mongoUri: string, dbName: string, clientOptions?: MongoClientOptions) {
-		if(MongoDb._instance) return MongoDb._instance;
+		if (MongoDb._instance) return MongoDb._instance;
 
 		MongoDb._instance = new MongoDb(mongoUri, dbName, clientOptions);
 		return MongoDb._instance;
@@ -75,7 +69,7 @@ class MongoDb extends EventEmitter {
 	 * @param options - `optional` MongoDb collectin options
 	 */
 	collection(name: string, options?: CollectionOptions) {
-		return this._db.collection(name, options)
+		return this._db.collection(name, options);
 	}
 
 	/**
@@ -89,10 +83,18 @@ class MongoDb extends EventEmitter {
 		this.emit('initDone');
 	}
 
-	get isInit() { return this._isInit };
-	get client() { return this._client };
-	get dbName() { return this._dbName };
-	get db()     { return this._db };
+	get isInit() {
+		return this._isInit;
+	}
+	get client() {
+		return this._client;
+	}
+	get dbName() {
+		return this._dbName;
+	}
+	get db() {
+		return this._db;
+	}
 }
 
 // Export static mongo class, no re-use.

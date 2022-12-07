@@ -21,7 +21,7 @@ class AuthService {
 	}
 
 	public async test() {
-		console.log("duh")
+		console.log('duh');
 	}
 }
 

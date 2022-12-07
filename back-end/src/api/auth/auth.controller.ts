@@ -1,12 +1,5 @@
 import { Response } from 'express';
-import {
-	Response as Res,
-	Request as Req,
-	Controller,
-	Get,
-	Post,
-	Body,
-} from '@decorators/express';
+import { Response as Res, Request as Req, Controller, Get, Post, Body } from '@decorators/express';
 
 import AuthService from '@/api/auth/auth.service';
 import { LoginDto } from '@/api/auth/dto/auth.dto';
