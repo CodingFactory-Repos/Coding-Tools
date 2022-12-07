@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  update:
+  merge_branchs:
     name: "Auto Merge to all child branches"
     runs-on: ubuntu-latest
     steps:
