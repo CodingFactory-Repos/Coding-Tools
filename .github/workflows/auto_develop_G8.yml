@@ -1,0 +1,23 @@
+name: Develop Groups 8 to Auto-Develop Branch
+
+on:
+  push:
+    branches:
+      - develop-G8
+
+jobs:
+  update:
+    name: "Auto Merge Groups Develop 8 to auto-develop branch"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🚚 - Checkout develop"
+        uses: actions/checkout@v2
+
+      - name: "🔀 - Merge develop-G8 to auto-develop"
+        uses: mtanzi/action-automerge@v1
+        id: mergeG1
+        with:
+          github_token: ${{ github.token }}
+          source: 'develop-G8'
+          target: 'auto-develop'
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
