@@ -9,6 +9,7 @@ body {
 	height: 100%;
 	margin: unset;
 	padding: unset;
+	max-width: unset !important;
 }
 
 .view {
