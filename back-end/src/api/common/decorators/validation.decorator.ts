@@ -17,6 +17,7 @@ function validationFactory<T>(
 		descriptor.value = async function () {
 			const model = Reflect.getOwnMetadata(metadataKey, target, propertyName);
 
+			// eslint-disable-next-line prefer-rest-params
 			const [req, res] = arguments;
 			const plain = req[source];
 
@@ -26,7 +27,8 @@ function validationFactory<T>(
 				return;
 			}
 
-			return method.apply(this, arguments);
+			// eslint-disable-next-line prefer-rest-params
+			return method.apply(this, ...arguments);
 		};
 	};
 }
