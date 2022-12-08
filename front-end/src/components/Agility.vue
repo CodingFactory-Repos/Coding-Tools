@@ -115,7 +115,7 @@ function drawSpecificGeometry(Geometry: number,) {
 	var onScreenCanvas = document.getElementById("pixi");
 	var geometryForm = normalizeGeometryForm(Geometry, isRadius)
 	const app = new Application({
-		 view: onScreenCanvas as HTMLCanvasElement,
+		view: onScreenCanvas as HTMLCanvasElement,
 		resolution: window.devicePixelRatio || 1, // Explain to me what that shit ? (It's troll, logic to convert Pixel 1/1)
 		backgroundAlpha:0, //Set transparent background
 		autoDensity: true, // Gné ?
@@ -163,12 +163,10 @@ function onDragEnd(this: any) {
 
 function onDragMove(this: any) {
 	if (this.dragging) {
-		this.data. = test as PIXI.ObservablePoint;
+		this.data = test as PIXI.ObservablePoint;
 
 		this.position.x = this.data.x;
 		this.position.y = this.data.y;
-
-		
 	}
 }
 
