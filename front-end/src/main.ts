@@ -5,9 +5,13 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+
 import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
+import  './utils/konva/func.ts';
+
+
 
 
 // If you want to login before the application start, add a call here and store the data in the auth.store
@@ -19,10 +23,11 @@ function bootVueApp() {
 	app.use(router);
 	app.use(store);
 	app.use(VueKonva);
-	app.mount('#app');
 
-	
+	app.mount('#app');
 	
 }
+
+
 
 bootVueApp();
