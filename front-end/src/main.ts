@@ -7,7 +7,6 @@ import store from './store';
 import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
-import  './utils/konva/func.ts';
 
 
 
