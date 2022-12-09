@@ -1,7 +1,7 @@
 <template>
 	<div class="grid w-full h-full content-center justify-items-center">
-		<SignIn v-if="isSignIn"/>
-		<SignUp v-else/>
+		<SignIn v-if="isSignIn" />
+		<SignUp v-else />
 	</div>
 </template>
 
@@ -12,5 +12,5 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const isSignIn = computed(() => route.path === "/signin");
+const isSignIn = computed(() => route.path === '/signin');
 </script>

@@ -19,15 +19,16 @@ export const useAuthStore = defineStore('template', {
 		},
 		async trySignin(payload: AuthStoreSignin) {
 			try {
-				const res = await apiTrySignin(payload).then(res => res.data)
-				if(res.status === "ok") this.isAuth = true;
+				const res = await apiTrySignin(payload).then((res) => res.data);
+				if (res.status === 'ok') this.isAuth = true;
 			} catch {
 				// Swagger
 			}
 		},
 		async tryLogout() {
 			try {
-				const res = await apiTryLogout();
+				const res = await apiTryLogout().then((res) => res.data);
+				if (res.status === 'ok') this.isAuth = false;
 			} catch {
 				// Swagger
 			}

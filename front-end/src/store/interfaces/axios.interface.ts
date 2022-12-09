@@ -1,3 +1,3 @@
-interface IStatus {
+export interface IStatus {
 	status: string;
 }

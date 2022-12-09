@@ -1,4 +1,4 @@
-import "@/config/env.validator";
+import '@/config/env.validator';
 
 import { createApp } from 'vue';
 import App from './App.vue';

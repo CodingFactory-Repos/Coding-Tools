@@ -11,4 +11,3 @@ for (const checked of envsToCheck) {
 if (missing.length > 0) {
 	throw new Error(`${EOL}${missing.join(EOL)}${EOL}Trace:`);
 }
- 
