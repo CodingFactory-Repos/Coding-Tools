@@ -1,4 +1,4 @@
-/* :root {
+:root {
 	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 	font-size: 16px;
 	line-height: 24px;
@@ -6,7 +6,7 @@
 
 	color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	background-color: rgba(255, 255, 255, 1);
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -48,7 +48,7 @@ h1 {
 	line-height: 1.1;
 }
 
-button {
+/* button {
 	border-radius: 8px;
 	border: 1px solid transparent;
 	padding: 0.6em 1.2em;
@@ -65,7 +65,7 @@ button:hover {
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 .card {
 	padding: 2em;
@@ -89,4 +89,4 @@ button:focus-visible {
 	button {
 		background-color: #f9f9f9;
 	}
-} */
+}
