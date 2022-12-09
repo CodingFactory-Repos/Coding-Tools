@@ -1,5 +1,5 @@
 <template>
-    <Agility></Agility>
+	<Agility></Agility>
 </template>
 
 <script lang="ts" setup>
