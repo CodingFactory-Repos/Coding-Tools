@@ -68,18 +68,40 @@ class GetSet {
 // End Class
 // -------
 
-function normalizeGeometryForm(geometry: GeometryForm, isRadius?: boolean) {
+//TODO Deleteing System
+//TODO Add Children to Container parent
+//TODO Select multiple children container to move him
+//TODO Create button to pop template
+//TODO Create multiple struct with template
+
+onMounted(() => {
+	initialize();
+});
+
+function normalizeGeometryForm(geometry: GeometryForm, isRadius: boolean, cursorPos: PIXI.IPoint) {
 	var config = {} as TemplateGeometry;
-	config.x = config.y = 0;
+	// console.log(cursorPos.x);
+	// config.x = cursorPos.x;
+	//TODO Change for double step -> First
+
 	if (isRadius) {
 		config.radius = 50;
 	}
 	if (config.radius == null) {
 		config.width = config.height = 100;
 	}
-	// Need Optimize Him
-
 	return config;
+}
+
+function isButtonNeeded(graphics: PIXI.Graphics, isNeeded: boolean) {
+	if (isNeeded) {
+		//TODO Selected if graphics have button for add or delete child
+	}
+}
+function isTextCreated(graphics: PIXI.Graphics, isNeeded: boolean) {
+	if (isNeeded) {
+		//TODO Selected if graphics have button for add or delete child
+	}
 }
 
 function selectedSpecificGeometry(
@@ -100,31 +122,30 @@ function selectedSpecificGeometry(
 }
 
 const pixi = ref();
-
+var cursorPos: any;
 var mainCanvas: PIXI.Application<PIXI.ICanvas>;
-
-onMounted(() => {
-	initialize();
-});
 
 function initialize() {
 	const app = new PIXI.Application({
 		view: pixi.value,
 		resolution: window.devicePixelRatio || 1, // Explain to me what that shit ? (It's troll, logic to convert Pixel 1/1)
-		//Set transparent background
 		autoDensity: true, // Gné ?
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
 	mainCanvas = app;
+	mainCanvas.stage.addEventListener('pointermove', (e: any) => {
+		cursorPos = e.global;
+		console.log(cursorPos);
+	});
 }
 
 function drawSpecificGeometry(Geometry: number) {
 	var isRadius;
 	if (Geometry == 0) {
 		isRadius = true;
-	}
-	var geometryForm = normalizeGeometryForm(Geometry, isRadius);
+	} else isRadius = false;
+	var geometryForm = normalizeGeometryForm(Geometry, isRadius, cursorPos);
 
 	let dragTarget: any = null;
 	mainCanvas.stage.interactive = true;
@@ -149,10 +170,6 @@ function drawSpecificGeometry(Geometry: number) {
 	}
 
 	function onDragStart(this: any) {
-		// store a reference to the data
-		// the reason for this is because of multitouch
-		// we want to track the movement of this particular touch
-		// this.data = event.data;
 		this.alpha = 0.5;
 		dragTarget = this;
 		mainCanvas.stage.on('pointermove', onDragMove);
@@ -165,14 +182,17 @@ function drawSpecificGeometry(Geometry: number) {
 			dragTarget = null;
 		}
 	}
+	//TODO patch Ellipse before go in prod
+	//<button id="pixiButton" v-on:click="drawSpecificGeometry(GeometryForm.Ellipse)">Ellipse</button>
 }
 </script>
 
 <template>
-	<button v-on:click="drawSpecificGeometry(GeometryForm.Circle)">Circle</button>
-	<button v-on:click="drawSpecificGeometry(GeometryForm.Rect)">Rectangle</button>
-	<button v-on:click="drawSpecificGeometry(GeometryForm.Ellipse)">Ellipse</button>
 	<div class="connections">
+		<button id="pixiButton" v-on:click="drawSpecificGeometry(GeometryForm.Rect)">Rectangle</button>
+		<button id="pixiButtonCircle" v-on:click="drawSpecificGeometry(GeometryForm.Circle)">
+			Circle
+		</button>
 		<canvas id="pixiCanvas" ref="pixi"></canvas>
 	</div>
 </template>
@@ -180,5 +200,17 @@ function drawSpecificGeometry(Geometry: number) {
 <style scoped>
 .read-the-docs {
 	color: #888;
+}
+#pixiButton {
+	position: absolute;
+	left: 0px;
+}
+#pixiButtonCircle {
+	position: absolute;
+	left: 0px;
+	top: 80px;
+}
+.connections {
+	position: relative;
 }
 </style>
