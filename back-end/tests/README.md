@@ -1,1 +1,0 @@
-Unless you know what you're doing, the test folder with jest will not be used at the moment.
