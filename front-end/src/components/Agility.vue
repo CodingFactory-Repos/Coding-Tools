@@ -98,6 +98,11 @@ function isButtonNeeded(graphics: PIXI.Graphics, isNeeded: boolean) {
 		//TODO Selected if graphics have button for add or delete child
 	}
 }
+function isTextCreated(graphics: PIXI.Graphics, isNeeded: boolean) {
+	if (isNeeded) {
+		//TODO Selected if graphics have button for add or delete child
+	}
+}
 
 function selectedSpecificGeometry(
 	element: a_GraphicElement,
@@ -177,9 +182,6 @@ function drawSpecificGeometry(Geometry: number) {
 			dragTarget = null;
 		}
 	}
-	function onSelectedRemove(this: any) {
-		this.parent;
-	}
 	//TODO patch Ellipse before go in prod
 	//<button id="pixiButton" v-on:click="drawSpecificGeometry(GeometryForm.Ellipse)">Ellipse</button>
 }
@@ -187,7 +189,6 @@ function drawSpecificGeometry(Geometry: number) {
 
 <template>
 	<div class="connections">
-		<button id="pixiButton" v-on:click="drawSpecificGeometry(GeometryForm.Rect)">Rectangle</button>
 		<button id="pixiButton" v-on:click="drawSpecificGeometry(GeometryForm.Rect)">Rectangle</button>
 		<button id="pixiButtonCircle" v-on:click="drawSpecificGeometry(GeometryForm.Circle)">
 			Circle
