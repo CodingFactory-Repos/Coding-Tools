@@ -13,7 +13,7 @@ export default {
 
 </script>
 <template>
+        <Chat/>
         <QrCode url="https://www.impots.gouv.fr/accueil" />
         <StudentList />
-        <Chat/>
 </template>

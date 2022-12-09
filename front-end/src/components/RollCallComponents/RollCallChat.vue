@@ -1,9 +1,8 @@
 <template>
-    <div ref="talkjs" style="width: 90%; margin: 30px; height: 500px">
+    <div ref="talkjs" style="height:500px">
         <i>Loading chat...</i>
     </div>
 </template>
-
 <script>
 import Talk from 'talkjs';
 
