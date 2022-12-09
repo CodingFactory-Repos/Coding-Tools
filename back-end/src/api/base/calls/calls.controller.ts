@@ -9,7 +9,7 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok' });
 	}
 
-	@Get('/test')
+	@Get('/qrgenerator')
 	test(@Res() res: Response) {
 		const service = new CallsService();
 		return res.status(201).json({ status: 'ok', qr: service.generateQrCode() });
