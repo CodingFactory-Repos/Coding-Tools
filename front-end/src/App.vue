@@ -1,7 +1,7 @@
 <template>
-	<Navbar open="" />
+	<Navbar />
 
-	<div class="top-0 right-0 w-auto h-screen text-center">
+	<div class="top-0 right-0 w-auto h-screen text-center ml-[80px]">
 		<router-view></router-view>
 	</div>
 </template>
