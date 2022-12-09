@@ -1,0 +1,3 @@
+interface IStatus {
+	status: string;
+}
