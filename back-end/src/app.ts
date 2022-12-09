@@ -51,6 +51,16 @@ class App {
 	 * Set of security middlewares run before you have acces to any controller
 	 */
 	private initializeMiddlewares() {
+		//accept CORS
+		this.app.use((req, res, next) => {
+			res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+			res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+			res.header(
+				'Access-Control-Allow-Headers',
+				'Content-Type, Authorization, Content-Length, X-Requested-With',
+			);
+			next();
+		});
 		this.app.use(hpp());
 		this.app.use(helmet());
 		this.app.use(compression());

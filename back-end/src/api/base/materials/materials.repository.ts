@@ -3,10 +3,14 @@ import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
 import { Material } from './interfaces/materials.interface';
 
 export class MaterialsRepository {
-	static materialsCollection = mongodb.collection<Material>('materials');
+	public materialsCollection = mongodb.collection<Material>('materials');
 
 	get materials() {
-		return MaterialsRepository.materialsCollection;
+		return this.materialsCollection;
+	}
+
+	async getAllMaterials() {
+		return this.materials.find().toArray();
 	}
 
 	async createMaterial(query: Material) {

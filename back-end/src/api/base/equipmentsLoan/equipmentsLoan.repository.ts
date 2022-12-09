@@ -9,6 +9,9 @@ export class EquipmentsLoanRepository {
 		return EquipmentsLoanRepository.equipmentsLoanCollection;
 	}
 
+	async getAllEquipmentLoan() {
+		return this.equipmentsLoan.find().toArray();
+	}
 	async equipmentLoanMaterial(query: EquipmnentLoan) {
 		return this.equipmentsLoan.insertOne(query);
 	}

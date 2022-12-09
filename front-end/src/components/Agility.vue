@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import * as PIXI from 'pixi.js'
-
+import * as PIXI from 'pixi.js';
 
 // -------
 // Aliases
@@ -42,10 +41,7 @@ interface TemplateGeometryElipse {
 	radius?: number;
 }
 
-
-
-
-type TemplateGeometry = TemplateGeometryRectangle & TemplateGeometryElipse
+type TemplateGeometry = TemplateGeometryRectangle & TemplateGeometryElipse;
 
 // -------
 // End Enum & Struct(Interface)
@@ -56,31 +52,27 @@ type TemplateGeometry = TemplateGeometryRectangle & TemplateGeometryElipse
 // -------
 
 class GetSet {
-
 	// isrect: TemplateGeometry = 0;
 	// get isRect(): TemplateGeometry {
 	// 	if (this.isrect == 0) {
 	// 		this.isrect
 	// 	}
-
 	// 	return this.isrect;
 	// }
 	// set isRect(value: TemplateGeometry) {
 	// 	this.isrect as  = value;
 	// }
-
 }
 
 // -------
 // End Class
 // -------
 
-
 function normalizeGeometryForm(geometry: GeometryForm, isRadius?: boolean) {
-	var config = {} as TemplateGeometry
+	var config = {} as TemplateGeometry;
 	config.x = config.y = 0;
 	if (isRadius) {
-		config.radius = 50
+		config.radius = 50;
 	}
 	if (config.radius == null) {
 		config.width = config.height = 100;
@@ -88,34 +80,32 @@ function normalizeGeometryForm(geometry: GeometryForm, isRadius?: boolean) {
 	// Need Optimize Him
 
 	return config;
-};
+}
 
-
-
-function selectedSpecificGeometry(element: a_GraphicElement, config: TemplateGeometry, graphics: PIXI.Graphics) {
-	graphics.beginFill(0xFF3300); //Color
+function selectedSpecificGeometry(
+	element: a_GraphicElement,
+	config: TemplateGeometry,
+	graphics: PIXI.Graphics,
+) {
+	graphics.beginFill(0xff3300); //Color
 	if (config.radius == null) {
-		element.drawRect(config.x, config.y, config.width!, config.height!)
-		console.log("Rect");
+		element.drawRect(config.x, config.y, config.width!, config.height!);
+		console.log('Rect');
 	} else {
-		element.drawCircle(config.x, config.y, config.radius)
-		console.log("Circle");
-
+		element.drawCircle(config.x, config.y, config.radius);
+		console.log('Circle');
 	}
 	graphics.interactive = true;
 	graphics.endFill();
 }
 
-const pixi = ref()
+const pixi = ref();
 
 var mainCanvas: PIXI.Application<PIXI.ICanvas>;
 
-
 onMounted(() => {
 	initialize();
-})
-
-
+});
 
 function initialize() {
 	const app = new PIXI.Application({
@@ -125,21 +115,16 @@ function initialize() {
 		autoDensity: true, // Gné ?
 		width: window.innerWidth,
 		height: window.innerHeight,
-
-	})
+	});
 	mainCanvas = app;
-
 }
 
-
-
 function drawSpecificGeometry(Geometry: number) {
-	var isRadius
+	var isRadius;
 	if (Geometry == 0) {
 		isRadius = true;
 	}
-	var geometryForm = normalizeGeometryForm(Geometry, isRadius)
-
+	var geometryForm = normalizeGeometryForm(Geometry, isRadius);
 
 	let dragTarget: any = null;
 	mainCanvas.stage.interactive = true;
@@ -147,19 +132,15 @@ function drawSpecificGeometry(Geometry: number) {
 	mainCanvas.stage.on('pointerup', onDragEnd);
 	mainCanvas.stage.on('pointerupoutside', onDragEnd);
 
-
 	var stage = new PIXI.Container();
 	stage.interactive = true;
 	const graphics = new PIXI.Graphics();
 
+	selectedSpecificGeometry(graphics, geometryForm, graphics);
 
-	selectedSpecificGeometry(graphics, geometryForm, graphics)
-
-	stage.addChild(graphics);  // Set in Containr
+	stage.addChild(graphics); // Set in Containr
 	mainCanvas.stage.addChild(stage); // Set in Parent
-	graphics
-		.on('pointerdown', onDragStart, graphics);
-
+	graphics.on('pointerdown', onDragStart, graphics);
 
 	function onDragMove(event: any) {
 		if (dragTarget) {
@@ -185,13 +166,12 @@ function drawSpecificGeometry(Geometry: number) {
 		}
 	}
 }
-
 </script>
 
 <template>
-	<button v-on:click=drawSpecificGeometry(GeometryForm.Circle)>Circle</button>
-	<button v-on:click=drawSpecificGeometry(GeometryForm.Rect)>Rectangle</button>
-	<button v-on:click=drawSpecificGeometry(GeometryForm.Ellipse)>Ellipse</button>
+	<button v-on:click="drawSpecificGeometry(GeometryForm.Circle)">Circle</button>
+	<button v-on:click="drawSpecificGeometry(GeometryForm.Rect)">Rectangle</button>
+	<button v-on:click="drawSpecificGeometry(GeometryForm.Ellipse)">Ellipse</button>
 	<div class="connections">
 		<canvas id="pixiCanvas" ref="pixi"></canvas>
 	</div>
