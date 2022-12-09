@@ -23,7 +23,7 @@ export const hashPassword = async (password: string, salt: Buffer) => {
 };
 
 export const verifyPassword = async (oldPass: string, newPass: string) => {
-	if(isEmpty(oldPass) || isEmpty(newPass)) return false;
+	if (isEmpty(oldPass) || isEmpty(newPass)) return false;
 	return argon2.verify(oldPass, newPass);
 };
 
