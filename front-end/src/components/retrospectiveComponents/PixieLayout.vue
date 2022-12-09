@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
 // import * as TEXTINPUT from "pixi-text-input"; // DTS NOT EXIST
 
 export default defineComponent({
@@ -12,7 +12,6 @@ export default defineComponent({
 		const pixi = ref();
 
 		function drawPixi() {
-
 			const app = new PIXI.Application({
 				width: window.innerWidth,
 				height: window.innerHeight,
@@ -20,18 +19,18 @@ export default defineComponent({
 				// height: 360,
 				antialias: true,
 				view: pixi.value,
-				backgroundColor: 0XAAAA,
+				backgroundColor: 0xaaaa,
 				// backgroundAlpha: 0
-			})
+			});
 
 			const rectangle = new PIXI.Graphics();
 			rectangle.interactive = true;
-			rectangle.cursor = "pointer";
+			rectangle.cursor = 'pointer';
 			rectangle.on('pointerdown', onClick);
-			rectangle.on('pointerdown', onDragStart, rectangle)
+			rectangle.on('pointerdown', onDragStart, rectangle);
 
-			rectangle.lineStyle({ width: 4, color: 0xFF3300, alpha: 1 });
-			rectangle.beginFill(0x66CCFF);
+			rectangle.lineStyle({ width: 4, color: 0xff3300, alpha: 1 });
+			rectangle.beginFill(0x66ccff);
 			rectangle.drawRect(0, 0, 64, 64);
 			rectangle.endFill();
 			rectangle.x = 170;
@@ -76,8 +75,7 @@ export default defineComponent({
 			// input.on('pointerdown', onDragStart, input)
 			// app.stage.addChild(input);
 
-
-			const message = new PIXI.Text("Hello Pixi!");
+			const message = new PIXI.Text('Hello Pixi!');
 			app.stage.addChild(message);
 			message.position.set(54, 96);
 
@@ -109,17 +107,16 @@ export default defineComponent({
 					dragTarget = null;
 				}
 			}
-
-		};
+		}
 
 		onMounted(() => {
-			drawPixi()
-		})
+			drawPixi();
+		});
 
 		return {
 			pixi,
-			drawPixi
-		}
-	}
-})
+			drawPixi,
+		};
+	},
+});
 </script>
