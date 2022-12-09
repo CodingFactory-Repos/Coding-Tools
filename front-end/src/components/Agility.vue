@@ -130,12 +130,14 @@ function initialize() {
 		view: pixi.value,
 		resolution: window.devicePixelRatio || 1, // Explain to me what that shit ? (It's troll, logic to convert Pixel 1/1)
 		autoDensity: true, // Gné ?
+		backgroundAlpha: 0,
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
 	mainCanvas = app;
 	mainCanvas.stage.addEventListener('pointermove', (e: any) => {
 		cursorPos = e.global;
+		console.log(cursorPos);
 	});
 }
 
