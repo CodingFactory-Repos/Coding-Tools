@@ -45,7 +45,7 @@ export default defineComponent({
 			retrospectiveStore.titleNewRetro = titleRetro.value;
 			retrospectiveStore.optionTemplate = option
 
-			router.push('/newRetro');
+			router.push('/retrospective/new');
 		}
 
 
