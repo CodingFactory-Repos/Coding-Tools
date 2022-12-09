@@ -10,6 +10,8 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/signin', component: () => import('../views/AuthView.vue') },
 			{ path: '/signup', component: () => import('../views/AuthView.vue') },
 			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
+			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
+			{ name: 'newRetro', path: '/newRetro', component: () => import('../views/NewRetrospective.vue') }
 		],
 	},
 ];
