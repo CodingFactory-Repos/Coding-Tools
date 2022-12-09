@@ -126,12 +126,12 @@ export default defineComponent({
 			let isValid = true;
 
 			if (isEmpty(signup.firstName)) {
-				error.email = 'firstName is invalid';
+				error.firstName = 'firstName is invalid';
 				isValid = false;
 			}
 
 			if (isEmpty(signup.lastName)) {
-				error.password = 'lastName is invalid';
+				error.lastName = 'lastName is invalid';
 				isValid = false;
 			}
 
