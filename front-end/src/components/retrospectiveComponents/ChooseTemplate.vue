@@ -14,14 +14,14 @@
 		<div class="container-templates">
 			<button @click="newRetro(1)" class="container-templates-card">
 				<div class="container-templates-card-img"><img
-						src="@/assets/imgs/retrospectiveImgs/undraw_loving_it_re_jfh4.svg" /></div>
+						src="@/assets/imgs/retrospectiveImgs/undraw_loving_it_re_jfh4.svg" alt="Illustation"/></div>
 				<div class="container-templates-card-title">
 					Mad | Sad | Glad
 				</div>
 			</button>
 			<button @click="newRetro(2)" class="container-templates-card">
 				<div class="container-templates-card-img"><img
-						src="@/assets/imgs/retrospectiveImgs/undraw_showing_support_re_5f2v.svg" /></div>
+						src="@/assets/imgs/retrospectiveImgs/undraw_showing_support_re_5f2v.svg" alt="Illustation"/></div>
 				<div class="container-templates-card-title">
 					Liked | Learned | Lacked
 				</div>
