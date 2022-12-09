@@ -2,6 +2,7 @@ html,
 body {
 	width: 100%;
 	height: 100%;
+	background: black;
 }
 
 #app {
@@ -20,16 +21,15 @@ body {
 	justify-content: space-between;
 }
 
-content {
+.content {
 	flex: 1;
+	display: flex;
 }
 
 header {
 	width: 100%;
-	background: red;
 }
 
 footer {
 	width: 100%;
-	background: red;
 }

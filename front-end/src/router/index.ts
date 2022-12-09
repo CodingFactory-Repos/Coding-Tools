@@ -7,8 +7,9 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			{ path: '', component: () => import('../views/HomeView.vue') },
 			{ path: '/about', component: () => import('../views/AboutView.vue') },
+			{ path: '/signin', component: () => import('../views/AuthView.vue') },
+			{ path: '/signup', component: () => import('../views/AuthView.vue') },
 			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
-
 		],
 	},
 ];
