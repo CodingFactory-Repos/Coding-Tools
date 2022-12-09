@@ -6,7 +6,7 @@
 
 	color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	background-color: #e7e7e7;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -21,7 +21,7 @@
 	margin: 0;
 
 	font-family: Inter, sans-serif;
-	color: #666;
+	color: rgb(0, 0, 0);
 	line-height: 1.7em;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -55,7 +55,7 @@ button {
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	background-color: #e8e8e8;
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
@@ -75,7 +75,6 @@ button:focus-visible {
 	max-width: 1280px;
 	margin: 0 auto;
 	padding: 2rem;
-	text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
