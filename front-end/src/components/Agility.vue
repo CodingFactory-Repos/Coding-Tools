@@ -136,7 +136,6 @@ function initialize() {
 	mainCanvas = app;
 	mainCanvas.stage.addEventListener('pointermove', (e: any) => {
 		cursorPos = e.global;
-		console.log(cursorPos);
 	});
 }
 
@@ -162,6 +161,7 @@ function drawSpecificGeometry(Geometry: number) {
 	stage.addChild(graphics); // Set in Containr
 	mainCanvas.stage.addChild(stage); // Set in Parent
 	graphics.on('pointerdown', onDragStart, graphics);
+	graphics.on('mousedown', onDown, graphics);
 
 	function onDragMove(event: any) {
 		if (dragTarget) {
@@ -169,6 +169,17 @@ function drawSpecificGeometry(Geometry: number) {
 		}
 	}
 
+	function onDown(this: any) {
+		var buttonText = new PIXI.Text('End Turn', {
+			fontFamily: 'Arial',
+			fontSize: 24,
+			fill: 'white',
+			align: 'right',
+		});
+		buttonText.anchor.set(0.5, 0.5);
+		buttonText.position.set(75, 50);
+		this.addChild(buttonText);
+	}
 	function onDragStart(this: any) {
 		this.alpha = 0.5;
 		dragTarget = this;
