@@ -12,6 +12,20 @@ export class MaterialsService {
 		private materialsRepository: MaterialsRepository,
 	) {}
 
+	async getAllMaterials() {
+		return await this.materialsRepository.getAllMaterials();
+	}
+
+	async createNewMaterial(query) {
+		return await this.materialsRepository.createMaterial(query);
+	}
+	async updateMaterial(query, update) {
+		return await this.materialsRepository.updateOneMaterial(query, update);
+	}
+
+	async deleteMaterial(query) {
+		return await this.materialsRepository.deleteOneMaterial(query);
+	}
 	// Business logic methods goes there...
 	// Define your own methods
 }
