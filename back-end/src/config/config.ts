@@ -1,4 +1,4 @@
-import { EnvConfiguration } from "src/config/interface/config.interface";
+import { EnvConfiguration } from 'src/config/interface/config.interface';
 
 // Ensure type checking
 export const config: EnvConfiguration = {
