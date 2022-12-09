@@ -7,5 +7,5 @@
 </template>
 
 <script lang="ts" setup>
-import CreateRetro  from "@/components/retrospectiveComponents/CreateRetro.vue";
+import CreateRetro from '@/components/retrospectiveComponents/CreateRetro.vue';
 </script>

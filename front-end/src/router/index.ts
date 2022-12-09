@@ -13,7 +13,11 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ name: 'newRetro', path: '/newRetro', component: () => import('../views/NewRetrospective.vue') }
+			{
+				name: 'newRetro',
+				path: '/newRetro',
+				component: () => import('../views/NewRetrospective.vue'),
+			},
 		],
 	},
 ];

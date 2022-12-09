@@ -4,9 +4,8 @@ import { defineStore } from 'pinia';
 // defineStore<string, IInstaStore> : -> Very strict
 export const useRetrospectiveStore = defineStore('retrospective', {
 	state: () => ({
-		titleNewRetro: "",
+		titleNewRetro: '',
 		optionTemplate: 0,
 	}),
-	actions: {
-	},
+	actions: {},
 });
