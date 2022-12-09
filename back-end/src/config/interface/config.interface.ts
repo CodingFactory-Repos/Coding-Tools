@@ -4,6 +4,7 @@ export interface EnvConfiguration {
 	jwt: Configuration.JWT;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Configuration {
 	export interface Application {
 		host: string;

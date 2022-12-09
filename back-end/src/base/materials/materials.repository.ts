@@ -11,6 +11,9 @@ export class MaterialsRepository {
 		return this.db.collection<Material>('materials');
 	}
 
+	async getAllMaterials() {
+		return this.materials.find().toArray();
+	}
 	async createMaterial(query: Material) {
 		return this.materials.insertOne(query);
 	}
@@ -37,5 +40,8 @@ export class MaterialsRepository {
 	async materialExist(query: Filter<Material>) {
 		const options = { projection: { _id: 1 } };
 		return this.materials.findOne(query, options);
+	}
+	async deleteOneMaterial(query: Filter<Material>) {
+		return this.materials.deleteOne(query);
 	}
 }

@@ -1,11 +1,8 @@
 <template>
 	<Transition name="fade">
 		<div v-if="active" class="overlay">
-			<div class="overlay-boudary" @click="closeOverlay"/>
-			<div :class="[
-				'overlay-content',
-				fullSize ? 'full' : 'fit'
-			]">
+			<div class="overlay-boudary" @click="closeOverlay" />
+			<div :class="['overlay-content', fullSize ? 'full' : 'fit']">
 				<div
 					class="overlay-content-close"
 					@click.stop="closeOverlay"
@@ -14,7 +11,7 @@
 					}"
 				/>
 				<div class="overlay-content-box">
-					<slot/>
+					<slot />
 				</div>
 			</div>
 		</div>
@@ -22,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,  ref, watch  } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
 	props: {
-		active: { type: Boolean, required: true},
-		crossColor: { type: String, required: false, default: '#062A79'},
+		active: { type: Boolean, required: true },
+		crossColor: { type: String, required: false, default: '#062A79' },
 		fullSize: { type: Boolean, required: false, default: true },
 	},
 	emits: ['update:active'],
@@ -37,17 +34,20 @@ export default defineComponent({
 		const closeOverlay = () => {
 			document.body.style.removeProperty('overflow');
 			emit('update:active', false);
-		}
+		};
 
-		watch(() => props.active, val => {
-			active.value = val;
-		});
+		watch(
+			() => props.active,
+			(val) => {
+				active.value = val;
+			},
+		);
 
 		return {
 			closeOverlay,
-		}
-	}
-})
+		};
+	},
+});
 </script>
 
 <style lang="scss" scoped>
@@ -82,8 +82,12 @@ export default defineComponent({
 		position: relative;
 		margin: 0 30px;
 
-		&.full { width: 100%; }
-		&.fit { width: fit-content; }
+		&.full {
+			width: 100%;
+		}
+		&.fit {
+			width: fit-content;
+		}
 
 		@media (min-width: 769px) {
 			max-width: 850px;
@@ -136,7 +140,8 @@ export default defineComponent({
 				background: var(--col);
 			}
 
-			&::before, &::after {
+			&::before,
+			&::after {
 				content: '';
 				position: absolute;
 				right: 14px;
@@ -147,17 +152,23 @@ export default defineComponent({
 				border-radius: 10px;
 			}
 
-			&::before { transform: rotate(45deg); }
-			&::after { transform: rotate(-45deg); }
+			&::before {
+				transform: rotate(45deg);
+			}
+			&::after {
+				transform: rotate(-45deg);
+			}
 		}
 	}
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.3s ease-out;
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s ease-out;
 }
 
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
 }
 </style>
