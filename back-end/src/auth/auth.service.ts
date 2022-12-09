@@ -50,7 +50,7 @@ export class AuthService {
 
 		const passwordMatch = verifyPassword(user.hashedPassword, password);
 		if (!passwordMatch) throw new ServiceError('BAD_REQUEST', 'Error 400');
-		
+
 		const strategy = await this.getTokenStrategy(user._id, user.status);
 		delete user.hashedPassword;
 		delete user.status;
