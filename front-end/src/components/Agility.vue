@@ -130,6 +130,7 @@ function initialize() {
 		view: pixi.value,
 		resolution: window.devicePixelRatio || 1, // Explain to me what that shit ? (It's troll, logic to convert Pixel 1/1)
 		autoDensity: true, // Gné ?
+		backgroundAlpha: 0,
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
@@ -162,6 +163,7 @@ function drawSpecificGeometry(Geometry: number) {
 	stage.addChild(graphics); // Set in Containr
 	mainCanvas.stage.addChild(stage); // Set in Parent
 	graphics.on('pointerdown', onDragStart, graphics);
+	graphics.on('mousedown', onDown, graphics);
 
 	function onDragMove(event: any) {
 		if (dragTarget) {
@@ -169,6 +171,17 @@ function drawSpecificGeometry(Geometry: number) {
 		}
 	}
 
+	function onDown(this: any) {
+		var buttonText = new PIXI.Text('End Turn', {
+			fontFamily: 'Arial',
+			fontSize: 24,
+			fill: 'white',
+			align: 'right',
+		});
+		buttonText.anchor.set(0.5, 0.5);
+		buttonText.position.set(75, 50);
+		this.addChild(buttonText);
+	}
 	function onDragStart(this: any) {
 		this.alpha = 0.5;
 		dragTarget = this;
