@@ -1,3 +1,11 @@
 <template>
-	<router-view></router-view>
+	<Navbar open="" />
+
+	<div class="top-0 right-0 w-auto h-screen text-center">
+		<router-view></router-view>
+	</div>
 </template>
+
+<script lang="ts" setup>
+import Navbar from '@/components/Navbar.vue';
+</script>
