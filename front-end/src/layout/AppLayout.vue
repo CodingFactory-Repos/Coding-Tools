@@ -1,12 +1,12 @@
 <template>
 	<div class="view">
-		<HeaderLayout></HeaderLayout>
+		<!-- <He aderLayout></HeaderLayout> -->
 
-		<div class="content">
+		<div class="content !block">
 			<router-view></router-view>
 		</div>
 
-		<FooterLayout></FooterLayout>
+		<!-- <FooterLayout></FooterLayout> -->
 	</div>
 </template>
 
