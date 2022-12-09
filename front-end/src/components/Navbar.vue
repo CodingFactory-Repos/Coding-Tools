@@ -16,13 +16,7 @@
 						d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
 					/></svg
 			></span>
-			<span v-else class="block transform origin-center"
-				><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-					<!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-					<path
-						d="M342.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L274.7 256 105.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
-					/></svg
-			></span>
+			<!--  -->
 		</button>
 
 		<!-- Sidebar Content -->
@@ -240,13 +234,25 @@
 					</ul>
 				</div>
 				<div v-else>
+					<button
+						@click.prevent="toggle()"
+						class="w-6 h-auto p-1 py-8 my-auto rounded text-white text-center transition-color duration-300"
+					>
+						<span
+							><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor">
+								<!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+								<path
+									d="M342.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L274.7 256 105.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+								/></svg
+						></span>
+					</button>
 					<ul class="space-y-2">
 						<li>
 							<a
 								href="#"
 								class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white"
 							>
-								<img src="../images/CodingToolsFavicon.png" class="min-w-100" alt="" />
+								<img src="../images/CodingToolsFavicon.png" class="min-w-100 w-[64px]" alt="" />
 							</a>
 						</li>
 						<li class="text-center">
