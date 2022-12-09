@@ -7,9 +7,10 @@ import App from '@/app';
 import { AuthController } from '@/api/auth/auth.controller';
 import { UsersController } from '@/api/base/users/users.controller';
 import { ExampleController } from '@/api/base/example/example.controller';
+import { CallsController } from '@/api/base/calls/calls.controller';
 import { mongodb } from '@/config/config';
 
-const expressBootsrap = () => {
+const expressBootstrap = () => {
 	mongodb.init();
 
 	mongodb.on('initDone', () => {
@@ -21,9 +22,9 @@ const expressBootsrap = () => {
 		 *
 		 *! Note: Obvisouly, when you create your own controller. Do not forget to add it here, otherwise it will never work.
 		 */
-		const app = new App([AuthController, UsersController, ExampleController]);
+		const app = new App([AuthController, UsersController, ExampleController, CallsController]);
 		app.listen();
 	});
 };
 
-expressBootsrap();
+expressBootstrap();
