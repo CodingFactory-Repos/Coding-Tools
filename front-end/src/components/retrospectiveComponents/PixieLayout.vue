@@ -5,7 +5,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import * as PIXI from 'pixi.js'
-import * as TEXTINPUT from "pixi-text-input"; // DTS NOT EXIST
+// import * as TEXTINPUT from "pixi-text-input"; // DTS NOT EXIST
 
 export default defineComponent({
 	setup() {
@@ -42,39 +42,39 @@ export default defineComponent({
 				// rectangle.scale.y *= 1.25;
 			}
 
-			var input;
-			input = new TEXTINPUT({
-				input: {
-					fontSize: "16px",
-					padding: "12px",
-					width: "200px",
-					color: "#26272E"
-				},
-				box: {
-					default: {
-						fill: 0xe8e9f3,
-						rounded: 12,
-						stroke: { color: 0xcbcee0, width: 3 }
-					},
-					focused: {
-						fill: 0xe1e3ee,
-						rounded: 12,
-						stroke: { color: 0xabafc6, width: 3 }
-					},
-					disabled: { fill: 0xdbdbdb, rounded: 12 }
-				}
-			});
-			input.interactive = true;
+			// var input;
+			// input = new TEXTINPUT({
+			// 	input: {
+			// 		fontSize: "16px",
+			// 		padding: "12px",
+			// 		width: "200px",
+			// 		color: "#26272E"
+			// 	},
+			// 	box: {
+			// 		default: {
+			// 			fill: 0xe8e9f3,
+			// 			rounded: 12,
+			// 			stroke: { color: 0xcbcee0, width: 3 }
+			// 		},
+			// 		focused: {
+			// 			fill: 0xe1e3ee,
+			// 			rounded: 12,
+			// 			stroke: { color: 0xabafc6, width: 3 }
+			// 		},
+			// 		disabled: { fill: 0xdbdbdb, rounded: 12 }
+			// 	}
+			// });
+			// input.interactive = true;
 
-			input.placeholder = "Enter your Text...";
-			input.x = 400;
-			input.y = 100;
-			input.pivot.x = input.width / 2;
-			input.pivot.y = input.height / 2;
-			input.cursor = "pointer";
-			input.on('pointerdown', onClick);
-			input.on('pointerdown', onDragStart, input)
-			app.stage.addChild(input);
+			// input.placeholder = "Enter your Text...";
+			// input.x = 400;
+			// input.y = 100;
+			// input.pivot.x = input.width / 2;
+			// input.pivot.y = input.height / 2;
+			// input.cursor = "pointer";
+			// input.on('pointerdown', onClick);
+			// input.on('pointerdown', onDragStart, input)
+			// app.stage.addChild(input);
 
 
 			const message = new PIXI.Text("Hello Pixi!");
