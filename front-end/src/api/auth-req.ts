@@ -3,7 +3,7 @@ import { AuthStoreSignin, AuthStoreSignup } from '@/store/interfaces/auth.interf
 import { IStatus } from '@/store/interfaces/axios.interface';
 
 export const apiTrySignup = async (payload: AuthStoreSignup) => {
-	return http.post<IStatus>('/auth/singup', payload);
+	return http.post<IStatus>('/auth/signup', payload);
 };
 
 export const apiTrySignin = async (payload: AuthStoreSignin) => {
