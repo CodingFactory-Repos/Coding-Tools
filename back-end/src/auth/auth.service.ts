@@ -8,7 +8,7 @@ import { AuthSignup } from 'src/auth/interfaces/auth.interface';
 import { Roles, User } from 'src/base/users/interfaces/users.interface';
 import { AuthEventEmitter } from 'src/auth/events/auth.events';
 import { credentialsPassword } from 'src/auth/utils/auth.security';
-import { verifyPassword } from 'src/common/helpers/string.helpes';
+import { verifyPassword } from '@/common/helpers/string.helper';
 import { ServiceError } from 'src/common/decorators/catch.decorator';
 
 @Injectable()
@@ -40,6 +40,8 @@ export class AuthService {
 
 		if (user.status === Roles.productOwner) {
 			this.authEventEmitter.signupProductOwner(newUser);
+		} else {
+			this.authEventEmitter.signupUser(newUser);
 		}
 	}
 
