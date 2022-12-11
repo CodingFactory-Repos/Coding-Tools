@@ -7,3 +7,11 @@ export class MailjetSignupPO {
 		this.user = user;
 	}
 }
+
+export class MailjetSignupUser {
+	user: User;
+
+	constructor(user: User) {
+		this.user = user;
+	}
+}
