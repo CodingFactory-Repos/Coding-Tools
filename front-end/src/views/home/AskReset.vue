@@ -1,15 +1,13 @@
 <template>
-	<div class="grid w-full h-full content-center justify-items-center flex-col" style="--s:1rem">
-		<div class="flex-col" style="--s:1rem">
+	<div class="grid w-full h-full content-center justify-items-center flex-col" style="--s: 1rem">
+		<div class="flex-col" style="--s: 1rem">
 			<h2 class="text-4xl font-bold">Forgot your password ?</h2>
 			<p>An email will be sent to your mailbox with a link to reset it.</p>
 		</div>
 		<div class="p-2 space-y-4 md:space-y-6 sm:p-8 w-4/12">
 			<form class="w-full space-y-4 md:space-y-6" @submit.prevent="sendResetPasswordEmail">
 				<div class="w-full">
-					<label
-						for="email"
-						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+					<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 						>Your email</label
 					>
 					<input
@@ -22,7 +20,12 @@
 						:required="true"
 					/>
 				</div>
-				<button type="submit" class="text-white hover:text-white gradiant font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 focus:outline-none">Submit</button>
+				<button
+					type="submit"
+					class="text-white hover:text-white gradiant font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 focus:outline-none"
+				>
+					Submit
+				</button>
 			</form>
 		</div>
 	</div>
@@ -37,8 +40,8 @@ const authStore = useAuthStore();
 const email = ref('');
 
 const sendResetPasswordEmail = () => {
-	if(isEmpty(email.value)) return;
+	if (isEmpty(email.value)) return;
 
 	authStore.trySendResetPasswordEmail(email.value);
-}
+};
 </script>

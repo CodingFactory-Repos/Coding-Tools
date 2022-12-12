@@ -1,7 +1,15 @@
 import { defineStore } from 'pinia';
 
 import { AuthStore, AuthStoreSignin, AuthStoreSignup } from '@/store/interfaces/auth.interfaces';
-import { apiTrySignup, apiTrySignin, apiTryLogout, apiTrySendNewActivationEmail, apiTrySendResetPasswordEmail, apiTryResetPassword, apiTryCheckResetToken } from '@/api/auth-req';
+import {
+	apiTrySignup,
+	apiTrySignin,
+	apiTryLogout,
+	apiTrySendNewActivationEmail,
+	apiTrySendResetPasswordEmail,
+	apiTryResetPassword,
+	apiTryCheckResetToken,
+} from '@/api/auth-req';
 
 export const useAuthStore = defineStore('template', {
 	state: (): AuthStore => {
@@ -12,11 +20,11 @@ export const useAuthStore = defineStore('template', {
 	actions: {
 		async trySignup(payload: AuthStoreSignup) {
 			try {
-				const res = await apiTrySignup(payload).then(res => res.data);
-				if(res.status === 'ok') return true;
+				const res = await apiTrySignup(payload).then((res) => res.data);
+				if (res.status === 'ok') return true;
 				return false;
-			} catch(e) {
-				console.log(e)
+			} catch (e) {
+				console.log(e);
 				// Swagger
 
 				return false;
@@ -46,8 +54,8 @@ export const useAuthStore = defineStore('template', {
 		},
 		async tryResetPassword(password: string, token: string) {
 			try {
-				const res = await apiTryResetPassword(password, token).then(res => res.data);
-				if(res.status === 'ok') return true;
+				const res = await apiTryResetPassword(password, token).then((res) => res.data);
+				if (res.status === 'ok') return true;
 				return false;
 			} catch {
 				// Swagger
@@ -57,9 +65,9 @@ export const useAuthStore = defineStore('template', {
 		},
 		async tryCheckResetToken(token: string) {
 			try {
-				const res = await apiTryCheckResetToken(token).then(res => res.data);
-				if(res.status === 'ok') return true;
-				return false
+				const res = await apiTryCheckResetToken(token).then((res) => res.data);
+				if (res.status === 'ok') return true;
+				return false;
 			} catch {
 				// Swagger
 

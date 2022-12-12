@@ -6,7 +6,7 @@ import router from './router';
 import store from './store';
 import 'flowbite';
 
-import './styles/scss/config.scss'
+import './styles/scss/config.scss';
 import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';

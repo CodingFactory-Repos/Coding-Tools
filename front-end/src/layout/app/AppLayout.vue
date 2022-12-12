@@ -1,5 +1,5 @@
 <template>
-	<DrawerLayout/>
+	<DrawerLayout />
 
 	<div class="view w-auto text-center pl-[40px]">
 		<div class="content !block">
