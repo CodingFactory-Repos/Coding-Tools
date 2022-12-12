@@ -2,7 +2,7 @@
 	<div class="view">
 		<HeaderLayout></HeaderLayout>
 
-		<div class="content !block">
+		<div class="content pt-12 pb-12">
 			<router-view></router-view>
 		</div>
 
