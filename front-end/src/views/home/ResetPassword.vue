@@ -50,6 +50,6 @@ const sendResetPasswordEmail = async () => {
 	if (isEmpty(password.value)) return;
 
 	const redirect = await authStore.tryResetPassword(password.value, token);
-	if (redirect) router.push('/home/login');
+	if (redirect) router.push('/home/signin');
 };
 </script>
