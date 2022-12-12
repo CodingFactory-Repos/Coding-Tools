@@ -16,7 +16,7 @@ export const useTemplateStore = defineStore('template', {
 		},
 	},
 	actions: {
-		increment() {
+		increment(this: TemplateStore) {
 			this.count++;
 		},
 	},

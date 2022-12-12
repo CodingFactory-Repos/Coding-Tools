@@ -1,8 +1,8 @@
 <template>
 	<div class="grid w-full h-full content-center justify-items-center flex-col" style="--s:1rem">
 		<div class="flex-col" style="--s:1rem">
-			<h2 class="text-4xl font-bold">Reset your password</h2>
-			<p>Please enter your new password, it will take effect right away and you'll be redirected.</p>
+			<h2 class="text-4xl font-bold">Forgot your password ?</h2>
+			<p>An email will be sent to your mailbox with a link to reset it.</p>
 		</div>
 		<div class="p-2 space-y-4 md:space-y-6 sm:p-8 w-4/12">
 			<form class="w-full space-y-4 md:space-y-6" @submit.prevent="sendResetPasswordEmail">
@@ -10,12 +10,12 @@
 					<label
 						for="email"
 						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-						>Your Password</label
+						>Your email</label
 					>
 					<input
-						v-model="password"
-						type="password"
-						name="password"
+						v-model="email"
+						type="email"
+						name="email"
 						id="email"
 						class="bg-gray-50 outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 						placeholder="name@company.com"
@@ -32,19 +32,13 @@
 import { useAuthStore } from '@/store/modules/auth.store';
 import { isEmpty } from '@/utils/helpers/string.helper';
 import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
-const route = useRoute();
-const router = useRouter();
+const email = ref('');
 
-const password = ref('');
-const token = route.params.token as string;
+const sendResetPasswordEmail = () => {
+	if(isEmpty(email.value)) return;
 
-const sendResetPasswordEmail = async () => {
-	if(isEmpty(password.value)) return;
-
-	const redirect = await authStore.tryResetPassword(password.value, token);
-	if(redirect) router.push('/home/login');
+	authStore.trySendResetPasswordEmail(email.value);
 }
 </script>
