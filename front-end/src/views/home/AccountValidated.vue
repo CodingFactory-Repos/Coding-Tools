@@ -4,6 +4,3 @@
 		<h5 class="text-lg font-bold">You can close this page.</h5>
 	</div>
 </template>
-
-<script lang="ts" setup>
-</script>

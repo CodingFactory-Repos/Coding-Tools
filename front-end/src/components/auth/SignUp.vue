@@ -142,7 +142,7 @@ export default defineComponent({
 			error.email = defaultReactive.email;
 			error.password = defaultReactive.password;
 			const redirect = await authStore.trySignup({ ...signup, status: 0 });
-			if(redirect) {
+			if (redirect) {
 				// Hack, we store the email in the params of the route (not the url);
 				route.params.email = signup.email;
 				router.push({ name: 'ask-validate' });

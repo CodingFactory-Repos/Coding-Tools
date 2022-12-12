@@ -1,26 +1,34 @@
 import { useAuthStore } from '@/store/modules/auth.store';
-import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
+import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
 // This file listen to route before enter and route before leave.
 // It manage the access of a route depending on the user permissions.
 
-export const canEnterAskValidation = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+export const canEnterAskValidation = (
+	to: RouteLocationNormalized,
+	from: RouteLocationNormalized,
+	next: NavigationGuardNext,
+) => {
 	const { email } = from.params || {};
-	if(email === undefined) next('/error');
+	if (email === undefined) next('/error');
 
 	to.params.email = email;
 	next();
-}
+};
 
-export const canEnterResetPassword = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+export const canEnterResetPassword = async (
+	to: RouteLocationNormalized,
+	from: RouteLocationNormalized,
+	next: NavigationGuardNext,
+) => {
 	const { token } = to.query || {};
-	if(token === undefined) next('/error');
-	
+	if (token === undefined) next('/error');
+
 	const authStore = useAuthStore();
 	const isValid = await authStore.tryCheckResetToken(token as string);
-	if(!isValid) next('/error');
+	if (!isValid) next('/error');
 
 	to.query = {};
 	to.params.token = token as string;
 	next('/home/reset');
-}
+};
