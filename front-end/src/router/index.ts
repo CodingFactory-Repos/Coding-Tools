@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { canEnterAskValidation, canEnterResetPassword } from '@/router/guard';
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -23,12 +24,20 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../layout/home/HomeLayout.vue'),
 		children: [
 			{ path: '', component: () => import('../views/home/HomeView.vue') },
-			{ path: '/signin', component: () => import('../views/home/AuthView.vue') },
-			{ path: '/signup', component: () => import('../views/home/AuthView.vue') },
-			{ path: '/reset', component: () => import('../views/home/ResetPassword.vue') },
-			{ path: '/activate', component: () => import('../views/home/AccountActivation.vue') },
+			{ path: 'signin', component: () => import('../views/home/AuthView.vue') },
+			{ path: 'signup', component: () => import('../views/home/AuthView.vue') },
+			{ path: 'ask-reset', component: () => import('../views/home/AskReset.vue') },
+			{ name: 'ask-validate', path: 'ask-validate', component: () => import('../views/home/AskValidation.vue'), beforeEnter: canEnterAskValidation },
+			{ path: 'activated', component: () => import('../views/home/AccountValidated.vue') },
+			{ path: 'reset', component: () => import ('../views/home/ResetPassword.vue'), beforeEnter: canEnterResetPassword },
 		]
-	}
+	},
+
+	// Always leave it as last one.
+	{
+		path: '/:catchAll(.*)*',
+		component: () => import('../views/404/ErrorNotFound.vue'),
+	},
 ];
 
 const router = createRouter({
