@@ -1,32 +1,31 @@
 import { Inject, Injectable, Logger as NestLogger } from '@nestjs/common';
 import { Client } from 'node-mailjet';
 
-import { config } from 'src/config/config';
+import { EmailConstructorOptions } from 'src/external-modules/mailjet/mailjet.interface';
 
 @Injectable()
 export class MailjetService {
 	constructor(@Inject('MAILJET_CLIENT') private mailjet: Client) {}
 
-	async sendUniversalEmail(templateId: number, context: string, to: string, subject: string, vars: Record<string, any> = {}) {
+	async sendUniversalEmail(options: EmailConstructorOptions) {
 		try {
+			if (options.templateId === undefined) throw new Error('Missing templateId');
+			if (options.recipients === undefined) throw new Error('Missing recipients');
+
 			await this.mailjet.post('send', { version: 'v3.1' })
 				.request({
 					Messages: [
 						{
-							From: { Email: config.mailjet.noreply, Name: context },
-							To: [
-								{ Email: to },
-							],
-							TemplateID: templateId,
+							// From: options.senders, // TODO
+							To: options.recipients,
+							// Subject: subject, // TODO
+							TemplateID: options.templateId,
+							Variables: { ...options.args },
 							TemplateLanguage: true,
-							Subject: subject,
-							Variables: {
-								to, ...vars,
-							}
 						},
 					],
-				})
-		} catch(error) {
+				});
+		} catch (error) {
 			NestLogger.error(error);
 		}
 	}
