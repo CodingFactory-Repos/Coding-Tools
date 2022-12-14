@@ -45,3 +45,38 @@ export class DTOAuthSignin {
 	@Matches(PASSWORD_FORMAT, { message: 'Password too weak' })
 	public password: string;
 }
+
+export class DTOResetToken {
+	@IsNotEmpty()
+	@IsString()
+	@Length(32, 32)
+	public resetToken: string;
+}
+
+export class DTOResetPassword {
+	@IsNotEmpty()
+	@IsString()
+	@Length(8, 40)
+	@Matches(PASSWORD_FORMAT, { message: 'Password too weak' })
+	public password: string;
+
+	@IsNotEmpty()
+	@IsString()
+	@Length(32, 32)
+	public resetToken: string;
+}
+
+export class DTOActivationToken {
+	@IsNotEmpty()
+	@IsString()
+	@Length(32, 32)
+	public activationToken: string;
+}
+
+export class DTOAuthEmail {
+	@IsNotEmpty()
+	@IsString()
+	@Length(8, 127)
+	@Matches(EMAIL_FORMAT, { message: 'Invalid email' })
+	public email: string;
+}
