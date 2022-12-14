@@ -13,7 +13,10 @@ export interface User {
 	hashedPassword?: string;
 	disciplinesTaught?: string;
 	academicYear?: AcademicYear;
-	createdAt: Date | string;
+	createdAt?: Date | string;
+	isVerified?: boolean;
+	activationToken?: string;
+	resetToken?: string;
 }
 
 export interface UserProfile {
