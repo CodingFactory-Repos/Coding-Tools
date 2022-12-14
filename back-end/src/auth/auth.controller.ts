@@ -1,8 +1,15 @@
-import { Body, Controller, Post, Query, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { AuthService } from 'src/auth/auth.service';
-import { DTOActivationToken, DTOAuthEmail, DTOAuthSignin, DTOAuthSignup, DTOResetPassword, DTOResetToken } from 'src/auth/dto/auth.dto';
+import {
+	DTOActivationToken,
+	DTOAuthEmail,
+	DTOAuthSignin,
+	DTOAuthSignup,
+	DTOResetPassword,
+	DTOResetToken,
+} from 'src/auth/dto/auth.dto';
 import { createAuthCookie, expireAuthCookie } from 'src/auth/utils/auth.cookie';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
@@ -36,7 +43,7 @@ export class AuthController {
 	@Post('activate')
 	async activateAccount(@Res() res: Response, @Body() body: DTOActivationToken) {
 		await this.authService.activateAccount(body);
-		return res.redirect(config.app.redirect + "/signin");
+		return res.redirect(config.app.redirect + '/signin');
 	}
 
 	@Post('ask-activation-token')

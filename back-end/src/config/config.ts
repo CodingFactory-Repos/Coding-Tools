@@ -25,5 +25,5 @@ export const config: EnvConfiguration = {
 		user: process.env.MAILJET_USER,
 		pass: process.env.MAILJET_PASS,
 		noreply: process.env.MAILJET_NOREPLY,
-	}
+	},
 };

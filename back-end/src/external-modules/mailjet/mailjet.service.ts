@@ -12,19 +12,18 @@ export class MailjetService {
 			if (options.templateId === undefined) throw new Error('Missing templateId');
 			if (options.recipients === undefined) throw new Error('Missing recipients');
 
-			await this.mailjet.post('send', { version: 'v3.1' })
-				.request({
-					Messages: [
-						{
-							// From: options.senders, // TODO
-							To: options.recipients,
-							// Subject: subject, // TODO
-							TemplateID: options.templateId,
-							Variables: { ...options.args },
-							TemplateLanguage: true,
-						},
-					],
-				});
+			await this.mailjet.post('send', { version: 'v3.1' }).request({
+				Messages: [
+					{
+						// From: options.senders, // TODO
+						To: options.recipients,
+						// Subject: subject, // TODO
+						TemplateID: options.templateId,
+						Variables: { ...options.args },
+						TemplateLanguage: true,
+					},
+				],
+			});
 		} catch (error) {
 			NestLogger.error(error);
 		}

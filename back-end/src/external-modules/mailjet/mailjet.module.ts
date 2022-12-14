@@ -9,15 +9,12 @@ import MJ, { Client } from 'node-mailjet';
 		{
 			provide: 'MAILJET_CLIENT',
 			useFactory: async (): Promise<Client> => {
-				const mailjet = MJ.apiConnect(
-					config.mailjet.user,
-					config.mailjet.pass,
-				)
+				const mailjet = MJ.apiConnect(config.mailjet.user, config.mailjet.pass);
 
 				return mailjet;
 			},
 		},
-		MailjetService
+		MailjetService,
 	],
 	exports: [MailjetService],
 })
