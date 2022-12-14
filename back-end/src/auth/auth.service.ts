@@ -4,7 +4,14 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { DTOAuthEmail, DTOAuthSignin, DTOAuthSignup, DTOResetPassword, DTOResetToken, DTOActivationToken } from 'src/auth/dto/auth.dto';
+import {
+	DTOAuthEmail,
+	DTOAuthSignin,
+	DTOAuthSignup,
+	DTOResetPassword,
+	DTOResetToken,
+	DTOActivationToken,
+} from 'src/auth/dto/auth.dto';
 import { AuthSignup } from 'src/auth/interfaces/auth.interface';
 import { Roles, User } from 'src/base/users/interfaces/users.interface';
 import { AuthEventEmitter } from 'src/auth/events/auth.events';
@@ -32,8 +39,15 @@ export class AuthService {
 		const profile = { email, firstName, lastName };
 		const createdAt = new Date();
 		const isVerified = false;
-		
-		const newUser: User = { profile, isVerified, createdAt, status, hashedPassword, activationToken };
+
+		const newUser: User = {
+			profile,
+			isVerified,
+			createdAt,
+			status,
+			hashedPassword,
+			activationToken,
+		};
 		this.usersRepository.createUser(newUser);
 
 		if (user.status === Roles.productOwner) {
@@ -48,7 +62,7 @@ export class AuthService {
 		const user = await this.usersRepository.findOne({ 'profile.email': email });
 		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
-		if(!user.isVerified) throw new ServiceError('BAD_REQUEST', 'Error 400');
+		if (!user.isVerified) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
 		const passwordMatch = await verifyPassword(user.hashedPassword, password);
 		if (!passwordMatch) throw new ServiceError('BAD_REQUEST', 'Error 400');
@@ -75,11 +89,11 @@ export class AuthService {
 	async activateAccount(payload: DTOActivationToken) {
 		const { activationToken } = payload;
 		const query = { activationToken: activationToken };
-		const update = { $unset: { activationToken: "" }, $set: { isVerified: true } };
+		const update = { $unset: { activationToken: '' }, $set: { isVerified: true } };
 		//@ts-ignore // TODO
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
-		
-		if(data.value === null) throw new ServiceError("BAR_REQUEST", "Error 400");
+
+		if (data.value === null) throw new ServiceError('BAR_REQUEST', 'Error 400');
 		const user = data.value;
 
 		this.authEventEmitter.accountValidated(user);
@@ -89,7 +103,7 @@ export class AuthService {
 		const { email } = payload;
 		const query = { email: email, isVerified: false };
 		const user = await this.usersRepository.findOne(query);
-		if(user === null) throw new ServiceError("BAD_REQUEST", "Error 400");
+		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 		const { firstName } = user.profile;
 
 		const activationToken = generateRandomToken();
@@ -101,7 +115,7 @@ export class AuthService {
 		const { email } = payload;
 		const query = { email: email };
 		const user = await this.usersRepository.findOne(query);
-		if(user === null) throw new ServiceError("BAD_REQUEST", "Error 400");
+		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 		const { firstName } = user.profile;
 
 		const resetToken = generateRandomToken();
@@ -120,6 +134,6 @@ export class AuthService {
 	async verifyResetToken(payload: DTOResetToken) {
 		const { resetToken } = payload;
 		const userExists = await this.usersRepository.userExist({ resetToken });
-		if(userExists === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
+		if (userExists === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 	}
 }

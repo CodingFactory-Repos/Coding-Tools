@@ -27,7 +27,7 @@ export class UsersRepository {
 		return this.users.findOneAndUpdate(query, update, options);
 	}
 
-	async findOne(query: Filter<User>, options: FindOptions<Document>= undefined) {
+	async findOne(query: Filter<User>, options: FindOptions<Document> = undefined) {
 		return this.users.findOne(query, options);
 	}
 
