@@ -1,8 +1,11 @@
 export enum Events {
 	poSignup = 'mailjet.signup.po',
-	userSignup = 'mailjet.signup.user',
+	accountValidated = 'mailjet.account.validated',
+	askActivationToken = 'mailjet.token.askActivation',
+	askResetToken = 'mailjet.token.askReset'
 }
 
 export enum MaijetTemplate {
-	signup = 4422523,
+	activationToken = 4422523,
+	resetToken = 4422523,
 }
