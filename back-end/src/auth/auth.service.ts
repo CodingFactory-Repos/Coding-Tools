@@ -30,7 +30,7 @@ export class AuthService {
 
 	async signup(payload: DTOAuthSignup) {
 		const user = payload as AuthSignup;
-		const userExist = await this.usersRepository.userExist({ email: user.email });
+		const userExist = await this.usersRepository.userExist({ 'profile.email': user.email });
 		if (userExist) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
 		const { email, password, status, firstName, lastName } = user;
@@ -103,25 +103,25 @@ export class AuthService {
 
 	async askActivationToken(payload: DTOAuthEmail) {
 		const { email } = payload;
-		const query = { email: email, isVerified: false };
+		const query = { 'profile.email': email, isVerified: false };
 		const user = await this.usersRepository.findOne(query);
 		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 		const { firstName } = user.profile;
 
 		const activationToken = generateRandomToken();
-		this.usersRepository.updateOneUser({ email }, { activationToken });
+		this.usersRepository.updateOneUser({ 'profile.email': email }, { activationToken });
 		this.authEventEmitter.askActivationToken(email, firstName, activationToken);
 	}
 
 	async askResetToken(payload: DTOAuthEmail) {
 		const { email } = payload;
-		const query = { email: email };
+		const query = { 'profile.email': email };
 		const user = await this.usersRepository.findOne(query);
 		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 		const { firstName } = user.profile;
 
 		const resetToken = generateRandomToken();
-		this.usersRepository.updateOneUser({ email }, { resetToken });
+		this.usersRepository.updateOneUser({ 'profile.email': email }, { resetToken });
 		this.authEventEmitter.askResetToken(email, firstName, resetToken);
 	}
 
