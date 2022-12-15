@@ -89,7 +89,10 @@ export class AuthService {
 	async activateAccount(payload: DTOActivationToken) {
 		const { activationToken } = payload;
 		const query = { activationToken: activationToken };
-		const update: UpdateFilter<User> = { $unset: { activationToken: 1 }, $set: { isVerified: true } };
+		const update: UpdateFilter<User> = {
+			$unset: { activationToken: 1 },
+			$set: { isVerified: true },
+		};
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
 		if (data.value === null) throw new ServiceError('BAR_REQUEST', 'Error 400');
