@@ -1,5 +1,5 @@
 import { generateRandomToken } from 'src/common/helpers/string.helper';
-import { ObjectId } from 'mongodb';
+import { ObjectId, UpdateFilter } from 'mongodb';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
@@ -89,8 +89,7 @@ export class AuthService {
 	async activateAccount(payload: DTOActivationToken) {
 		const { activationToken } = payload;
 		const query = { activationToken: activationToken };
-		const update = { $unset: { activationToken: '' }, $set: { isVerified: true } };
-		//@ts-ignore // TODO
+		const update: UpdateFilter<User> = { $unset: { activationToken: 1 }, $set: { isVerified: true } };
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
 		if (data.value === null) throw new ServiceError('BAR_REQUEST', 'Error 400');

@@ -15,9 +15,7 @@ export class MailjetService {
 			await this.mailjet.post('send', { version: 'v3.1' }).request({
 				Messages: [
 					{
-						// From: options.senders, // TODO
 						To: options.recipients,
-						// Subject: subject, // TODO
 						TemplateID: options.templateId,
 						Variables: { ...options.args },
 						TemplateLanguage: true,
