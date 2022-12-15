@@ -51,7 +51,7 @@ export class AuthService {
 		this.usersRepository.createUser(newUser);
 
 		if (user.status === Roles.productOwner) {
-			this.authEventEmitter.signupProductOwner(newUser);
+			this.authEventEmitter.signupProductOwner(email, firstName);
 		} else {
 			this.authEventEmitter.askActivationToken(email, firstName, activationToken);
 		}
@@ -94,9 +94,9 @@ export class AuthService {
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
 		if (data.value === null) throw new ServiceError('BAR_REQUEST', 'Error 400');
-		const user = data.value;
+		const { email, firstName } = data.value.profile;
 
-		this.authEventEmitter.accountValidated(user);
+		this.authEventEmitter.accountValidated(email, firstName);
 	}
 
 	async askActivationToken(payload: DTOAuthEmail) {
