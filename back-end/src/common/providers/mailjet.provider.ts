@@ -2,12 +2,7 @@ import { MailjetService } from '@/external-modules/mailjet/mailjet.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import {
-	MailjetSignupPO,
-	MailjetAccountValidated,
-	MailjetAskResetToken,
-	MailjetAskActivationToken,
-} from 'src/auth/events/auth.events.req';
+import { MailjetEmail, MailjetAskToken } from 'src/auth/events/auth.events.req';
 import { Events, MaijetTemplate } from 'src/common/providers/interfaces/events.interface';
 import { config } from 'src/config/config';
 
@@ -18,24 +13,33 @@ export class MailjetListeners {
 		private readonly mailjetService: MailjetService,
 	) {}
 
-	@OnEvent(Events.poSignup)
-	async handleSingupPo(payload: MailjetSignupPO) {
-		const { user } = payload;
+	@OnEvent(Events.alertPedago)
+	async handleSingupPo(payload: MailjetEmail) {
+		const { email, firstName } = payload;
 
-		// TODO
-		// No idea how to handle it yet.
+		//! We will need to retrieve the email and firstname of each pedago
+		//! Then pass them as recipients
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MaijetTemplate.alertPedago,
+			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
+			args: { email: email, firstName: firstName },
+		});
 	}
 
 	@OnEvent(Events.accountValidated)
-	async handleAccountValidated(payload: MailjetAccountValidated) {
-		const { user } = payload;
+	async handleAccountValidated(payload: MailjetEmail) {
+		const { email, firstName } = payload;
 
-		// TODO
-		// Send a confirmation email + can also send a welcome email but that would require a second event.
+		this.mailjetService.sendUniversalEmail({
+			templateId: MaijetTemplate.accountValidated,
+			recipients: [{ Email: email, Name: firstName }],
+			args: { firstName: firstName },
+		});
 	}
 
 	@OnEvent(Events.askActivationToken)
-	async handleaskActivationToken(payload: MailjetAskActivationToken) {
+	async handleaskActivationToken(payload: MailjetAskToken) {
 		const { email, firstName, token } = payload;
 		const url = `${config.app.redirect}/home/activated?token=${token}`;
 
@@ -47,7 +51,7 @@ export class MailjetListeners {
 	}
 
 	@OnEvent(Events.askResetToken)
-	async handleaskResetToken(payload: MailjetAskResetToken) {
+	async handleaskResetToken(payload: MailjetAskToken) {
 		const { email, firstName, token } = payload;
 		const url = `${config.app.redirect}/home/reset?token=${token}`;
 
