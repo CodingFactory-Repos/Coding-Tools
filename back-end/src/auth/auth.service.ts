@@ -1,4 +1,3 @@
-import { generateRandomToken } from 'src/common/helpers/string.helper';
 import { ObjectId, UpdateFilter } from 'mongodb';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
@@ -16,7 +15,7 @@ import { AuthSignup } from 'src/auth/interfaces/auth.interface';
 import { Roles, User } from 'src/base/users/interfaces/users.interface';
 import { AuthEventEmitter } from 'src/auth/events/auth.events';
 import { credentialsPassword } from 'src/auth/utils/auth.security';
-import { verifyPassword } from 'src/common/helpers/string.helper';
+import { verifyPassword, generateRandomToken } from 'src/common/helpers/string.helper';
 import { ServiceError } from 'src/common/decorators/catch.decorator';
 
 @Injectable()
