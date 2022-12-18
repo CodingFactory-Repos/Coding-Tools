@@ -9,6 +9,7 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/about', component: () => import('../views/AboutView.vue') },
 			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
+			{ path: '/timer', component: () => import('../views/TimerView.vue') },
 			{ name: 'newRetro', path: '/newRetro', component: () => import('../views/NewRetrospective.vue') }
 		],
 	},
