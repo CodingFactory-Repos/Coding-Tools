@@ -20,7 +20,7 @@ export const apiTrySendNewActivationEmail = async (email: string) => {
 
 export const apiTryAccountActivate = async (activationToken: string) => {
 	return http.post<IStatus>('/auth/activate', { activationToken });
-}
+};
 
 export const apiTrySendResetPasswordEmail = async (email: string) => {
 	http.post<IStatus>('/auth/ask-reset-token', { email });
