@@ -95,7 +95,7 @@ export class AuthService {
 		};
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
-		if (data.value === null) throw new ServiceError('BAR_REQUEST', 'Error 400');
+		if (data.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 		const { email, firstName } = data.value.profile;
 
 		this.authEventEmitter.accountValidated(email, firstName);
@@ -109,7 +109,8 @@ export class AuthService {
 		const { firstName } = user.profile;
 
 		const activationToken = generateRandomToken();
-		this.usersRepository.updateOneUser({ 'profile.email': email }, { activationToken });
+		const update = { $set: { activationToken: activationToken } };
+		this.usersRepository.updateOneUser({ 'profile.email': email }, update);
 		this.authEventEmitter.askActivationToken(email, firstName, activationToken);
 	}
 
@@ -121,7 +122,8 @@ export class AuthService {
 		const { firstName } = user.profile;
 
 		const resetToken = generateRandomToken();
-		this.usersRepository.updateOneUser({ 'profile.email': email }, { resetToken });
+		const update = { $set: { resetToken: resetToken } };
+		this.usersRepository.updateOneUser({ 'profile.email': email }, update);
 		this.authEventEmitter.askResetToken(email, firstName, resetToken);
 	}
 
@@ -130,7 +132,8 @@ export class AuthService {
 		await this.verifyResetToken({ resetToken });
 
 		const hashedPassword = await credentialsPassword(password);
-		await this.usersRepository.updateOneUser({ resetToken }, { hashedPassword });
+		const update = { $set: { hashedPassword: hashedPassword } };
+		await this.usersRepository.updateOneUser({ resetToken }, update);
 	}
 
 	async verifyResetToken(payload: DTOResetToken) {
