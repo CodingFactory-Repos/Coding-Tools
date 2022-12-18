@@ -75,10 +75,12 @@ import { isEmpty } from '@/utils/helpers/string.helper';
 import { defineComponent, reactive } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
+		const router = useRouter()
 
 		const defaultReactive = {
 			password: '',
@@ -88,7 +90,7 @@ export default defineComponent({
 		const error = reactive(defaultReactive);
 		const signin = reactive(defaultReactive);
 
-		const trySubmit = () => {
+		const trySubmit = async () => {
 			let isValid = true;
 
 			if (isEmpty(signin.email)) {
@@ -105,7 +107,10 @@ export default defineComponent({
 
 			error.email = defaultReactive.email;
 			error.password = defaultReactive.password;
-			authStore.trySignin(signin);
+			const redirect = await authStore.trySignin(signin);
+			if (redirect) {
+				router.push('/');
+			}
 		};
 
 		return {

@@ -16,13 +16,29 @@ export const canEnterAskValidation = (
 	next();
 };
 
-export const canEnterResetPassword = async (
+export const canEnterAccountValidated = async (
 	to: RouteLocationNormalized,
-	from: RouteLocationNormalized,
+	_from: RouteLocationNormalized,
 	next: NavigationGuardNext,
 ) => {
 	const { token } = to.query || {};
 	if (token === undefined) next('/error');
+
+	const authStore = useAuthStore();
+	const isValid = await authStore.tryAccountActivate(token as string);
+	if (!isValid) next('/error');
+
+	to.query = {};
+	next();
+}
+
+export const canEnterResetPassword = async (
+	to: RouteLocationNormalized,
+	_from: RouteLocationNormalized,
+	next: NavigationGuardNext,
+) => {
+	const { token } = to.query || {};
+	if (!token) next('/error');
 
 	const authStore = useAuthStore();
 	const isValid = await authStore.tryCheckResetToken(token as string);
@@ -30,5 +46,5 @@ export const canEnterResetPassword = async (
 
 	to.query = {};
 	to.params.token = token as string;
-	next('/home/reset');
+	next();
 };
