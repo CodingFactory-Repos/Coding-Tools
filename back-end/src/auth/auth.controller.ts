@@ -13,7 +13,6 @@ import {
 import { createAuthCookie, expireAuthCookie } from 'src/auth/utils/auth.cookie';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
-import { config } from 'src/config/config';
 
 @Controller('auth')
 @UseFilters(ServiceErrorCatcher)
