@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('template', {
 				Swal.fire({
 					icon: 'error',
 					title: 'An error occured when trying to register your account',
-				})
+				});
 				return false;
 			}
 		},
@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('template', {
 				Swal.fire({
 					icon: 'error',
 					title: 'An error occured when trying to log you in',
-				})
+				});
 				return false;
 			}
 		},
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('template', {
 				Swal.fire({
 					icon: 'error',
 					title: 'We were not able to send you a new activation email',
-				})
+				});
 			}
 		},
 		async tryAccountActivate(token: string) {
@@ -76,7 +76,7 @@ export const useAuthStore = defineStore('template', {
 				Swal.fire({
 					icon: 'error',
 					title: 'We were not able to send you a new reset email',
-				})
+				});
 			}
 		},
 		async tryResetPassword(password: string, token: string) {
@@ -88,7 +88,7 @@ export const useAuthStore = defineStore('template', {
 				Swal.fire({
 					icon: 'error',
 					title: 'An error occured when trying to change your password',
-				})
+				});
 				return false;
 			}
 		},
