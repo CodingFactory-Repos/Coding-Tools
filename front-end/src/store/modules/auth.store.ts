@@ -12,6 +12,8 @@ import {
 	apiTryCheckResetToken,
 } from '@/api/auth-req';
 
+import Swal from 'sweetalert2';
+
 export const useAuthStore = defineStore('template', {
 	state: (): AuthStore => {
 		return {
@@ -25,9 +27,10 @@ export const useAuthStore = defineStore('template', {
 				if (res.status === 'ok') return true;
 				return false;
 			} catch (e) {
-				console.log(e);
-				// Swagger
-
+				Swal.fire({
+					icon: 'error',
+					title: 'An error occured when trying to register your account',
+				})
 				return false;
 			}
 		},
@@ -40,15 +43,21 @@ export const useAuthStore = defineStore('template', {
 				}
 				return false;
 			} catch {
+				Swal.fire({
+					icon: 'error',
+					title: 'An error occured when trying to log you in',
+				})
 				return false;
-				// Swagger
 			}
 		},
 		async trySendNewActivationEmail(email: string) {
 			try {
 				await apiTrySendNewActivationEmail(email);
 			} catch {
-				// Swagger
+				Swal.fire({
+					icon: 'error',
+					title: 'We were not able to send you a new activation email',
+				})
 			}
 		},
 		async tryAccountActivate(token: string) {
@@ -58,14 +67,16 @@ export const useAuthStore = defineStore('template', {
 				return false;
 			} catch {
 				return false;
-				// Swagger
 			}
 		},
 		async trySendResetPasswordEmail(email: string) {
 			try {
 				await apiTrySendResetPasswordEmail(email);
 			} catch {
-				// Swagger
+				Swal.fire({
+					icon: 'error',
+					title: 'We were not able to send you a new reset email',
+				})
 			}
 		},
 		async tryResetPassword(password: string, token: string) {
@@ -74,8 +85,10 @@ export const useAuthStore = defineStore('template', {
 				if (res.status === 'ok') return true;
 				return false;
 			} catch {
-				// Swagger
-
+				Swal.fire({
+					icon: 'error',
+					title: 'An error occured when trying to change your password',
+				})
 				return false;
 			}
 		},
@@ -85,8 +98,6 @@ export const useAuthStore = defineStore('template', {
 				if (res.status === 'ok') return true;
 				return false;
 			} catch {
-				// Swagger
-
 				return false;
 			}
 		},
@@ -95,7 +106,7 @@ export const useAuthStore = defineStore('template', {
 				const res = await apiTryLogout().then((res) => res.data);
 				if (res.status === 'ok') this.isAuth = false;
 			} catch {
-				// Swagger
+				return;
 			}
 		},
 	},
