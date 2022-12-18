@@ -1,7 +1,7 @@
-import { MailjetService } from '@/external-modules/mailjet/mailjet.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
+import { MailjetService } from 'src/external-modules/mailjet/mailjet.service';
 import { MailjetEmail, MailjetAskToken } from 'src/auth/events/auth.events.req';
 import { Events, MaijetTemplate } from 'src/common/providers/interfaces/events.interface';
 import { config } from 'src/config/config';

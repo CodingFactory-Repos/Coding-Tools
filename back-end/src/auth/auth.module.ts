@@ -9,8 +9,8 @@ import { UsersModule } from 'src/base/users/users.module';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { AuthEventEmitter } from 'src/auth/events/auth.events';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { MailjetListeners } from '@/common/providers/mailjet.provider';
-import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
+import { MailjetListeners } from 'src/common/providers/mailjet.provider';
+import { MailjetModule } from 'src/external-modules/mailjet/mailjet.module';
 
 @Module({
 	imports: [
