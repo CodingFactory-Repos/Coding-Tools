@@ -43,7 +43,7 @@ export class AuthController {
 	@Post('activate')
 	async activateAccount(@Res() res: Response, @Body() body: DTOActivationToken) {
 		await this.authService.activateAccount(body);
-		return res.redirect(config.app.redirect + '/signin');
+		return res.status(201).json({ status: 'ok' });
 	}
 
 	@Post('ask-activation-token')
