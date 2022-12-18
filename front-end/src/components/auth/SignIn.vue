@@ -80,7 +80,7 @@ import { useRouter } from 'vue-router';
 export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
-		const router = useRouter()
+		const router = useRouter();
 
 		const defaultReactive = {
 			password: '',

@@ -30,7 +30,7 @@ export const canEnterAccountValidated = async (
 
 	to.query = {};
 	next();
-}
+};
 
 export const canEnterResetPassword = async (
 	to: RouteLocationNormalized,
