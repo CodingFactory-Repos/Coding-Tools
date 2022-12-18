@@ -6,6 +6,7 @@ import {
 	apiTrySignin,
 	apiTryLogout,
 	apiTrySendNewActivationEmail,
+	apiTryAccountActivate,
 	apiTrySendResetPasswordEmail,
 	apiTryResetPassword,
 	apiTryCheckResetToken,
@@ -33,8 +34,13 @@ export const useAuthStore = defineStore('template', {
 		async trySignin(payload: AuthStoreSignin) {
 			try {
 				const res = await apiTrySignin(payload).then((res) => res.data);
-				if (res.status === 'ok') this.isAuth = true;
+				if (res.status === 'ok') {
+					this.isAuth = true;
+					return true;
+				}
+				return false;
 			} catch {
+				return false;
 				// Swagger
 			}
 		},
@@ -42,6 +48,16 @@ export const useAuthStore = defineStore('template', {
 			try {
 				await apiTrySendNewActivationEmail(email);
 			} catch {
+				// Swagger
+			}
+		},
+		async tryAccountActivate(token: string) {
+			try {
+				const res = await apiTryAccountActivate(token).then((res) => res.data);
+				if (res.status === 'ok') return true;
+				return false;
+			} catch {
+				return false;
 				// Swagger
 			}
 		},

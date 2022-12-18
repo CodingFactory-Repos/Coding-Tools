@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { canEnterAskValidation, canEnterResetPassword } from '@/router/guard';
+import { canEnterAskValidation, canEnterResetPassword, canEnterAccountValidated } from '@/router/guard';
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -34,7 +34,11 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import('../views/home/AskValidation.vue'),
 				beforeEnter: canEnterAskValidation,
 			},
-			{ path: 'activated', component: () => import('../views/home/AccountValidated.vue') },
+			{ 
+				path: 'activated', 
+				component: () => import('../views/home/AccountValidated.vue'),
+				beforeEnter: canEnterAccountValidated,
+			},
 			{
 				path: 'reset',
 				component: () => import('../views/home/ResetPassword.vue'),
