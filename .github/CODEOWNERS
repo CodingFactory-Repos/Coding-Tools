@@ -10,7 +10,6 @@
 /.github/workflows/auto_merge.yml @Loule95450
 /back-end/ @Maghwyn
 /back-end/.eslintrc.js @AyakorK @Loule95450
-/back-end/package-lock.json @Loule95450
 /back-end/src/auth/auth.service.ts @AyakorK @Loule95450
 /back-end/src/base/academicYears/academicYears.repository.ts @Loule95450
 /back-end/src/base/academicYears/interfaces/ @Loule95450
