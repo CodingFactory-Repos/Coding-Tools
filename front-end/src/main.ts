@@ -6,6 +6,8 @@ import router from './router';
 import store from './store';
 import 'flowbite';
 
+import 'sweetalert2/dist/sweetalert2.min.css';
+import './styles/scss/config.scss';
 import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';

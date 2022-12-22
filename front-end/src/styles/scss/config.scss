@@ -1,0 +1,25 @@
+.gradiant {
+	background: rgb(65, 41, 92) !important;
+	background: linear-gradient(90deg, #41295c 0%, #c6499b 100%) !important;
+
+	&:hover {
+		background: linear-gradient(90deg, #5a397f 0%, #f85cc1 100%) !important;
+	}
+}
+
+@mixin flex($dir, $gap) {
+	display: flex;
+	align-items: center;
+	flex-direction: $dir;
+	height: fit-content;
+	gap: $gap;
+}
+
+.flex-col {
+	--s: 1.5rem;
+	@include flex('column', var(--s));
+}
+
+.flex-row {
+	@include flex('row', 1rem);
+}
