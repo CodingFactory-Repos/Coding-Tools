@@ -1,0 +1,35 @@
+{
+	"compilerOptions": {
+		"lib": [
+			"es2019",
+			"es2017",
+			"esnext.asynciterable",
+			"es5",
+			"es6",
+			"dom",
+		],
+		"module": "commonjs",
+		"declaration": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "es2017",
+		"sourceMap": true,
+		"outDir": "./dist",
+		"baseUrl": "./",
+		"incremental": true,
+		"skipLibCheck": true,
+		"strictNullChecks": false,
+		"noImplicitAny": false,
+		"strictBindCallApply": false,
+		"forceConsistentCasingInFileNames": false,
+		"noFallthroughCasesInSwitch": false,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"typeRoots": ["./node_modules/@types", "./types"],
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	}
+}
