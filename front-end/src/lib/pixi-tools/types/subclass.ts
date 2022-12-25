@@ -35,3 +35,22 @@ export interface ContainerEvents extends DisplayObjectEvents {
 	download: [string];
 }
 
+/**
+ * GraphicsEvents is an interface that extends the event emitter interface of PIXI.DisplayObject to allow for
+ * custom events to be emitted and subscribed to.
+ *
+ * @extends PIXI.DisplayObjectEvents
+ * @emits 'updated' - Emitted when the graphics object is updated with new size options.
+ * @emits 'cleared' - Emitted when the graphics object is cleared.
+ */
+export interface GraphicsEvents extends DisplayObjectEvents {
+	/**
+	 * Emitted when the graphics object should be updated with new size options.
+	 */
+	updated: [];
+	
+	/**
+	 * Emitted when the graphics object should be cleared.
+	 */
+	cleared: [];
+}
