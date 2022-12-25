@@ -42,16 +42,19 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * The current resize handle or border being dragged during a resize operation.
+	 * @private
 	 */
 	private _currentTarget?: ResizeGraphic;
 
 	/**
 	 * The id of the current resize handle or border being dragged.
+	 * @private
 	 */
 	private _targetId: ResizeEdgeValLiteral | ResizeCornerValLiteral;
 
 	/**
 	 * A flag indicating whether the shift key is being held during a resize operation.
+	 * @private
 	 */
 	private _isHoldShift = false;
 
@@ -80,7 +83,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * Update the element cursor to the handle or border cursor.
 	 * 
 	 * Attach multiple events on the stage to assure a smooth resize and add the move event to the handle or border.
-	 * @param event - The `pointerdown` event
+	 * @param event - The `pointerdown` event.
+	 * @private
 	 */
 	private _startResize = (event: FederatedPointerEvent) => {
 		event.stopPropagation();
@@ -115,7 +119,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * When the pointer is release, the isResizing property of the PixiObject is set to false.
 	 * Stops the resize behavior, removing all event listeners and resetting internal state.
 	 * Update the element cursor to `pointer`.
-	 * @param event - The `pointerup` event if any
+	 * @param event - The `pointerup` event if any.
+	 * @private
 	 */
 	private _endResize = (event?: FederatedPointerEvent) => {
 		if (event) event.stopPropagation();
@@ -143,7 +148,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * 
 	 * Determine which handle or border is select to define how the graphics will be resized.
 	 *
-	 * @param event - The `pointermove` event
+	 * @param event - The `pointermove` event.
+	 * @private
 	 */
 	private _updateResize = (event: FederatedPointerEvent) => {
 		event.stopPropagation();
@@ -178,6 +184,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Resizes the target element's bounding box while maintaining the aspect ratio.
 	 * @param dx - The difference between the current cursor position and the initial position on the x-axis.
+	 * @private
 	 */
 	private _resizeCornerRatio = (dx: number) => {
 		const ratioA = this._figure.height / this._figure.width;
@@ -213,6 +220,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * Resizes the target element's bounding box without maintaining the aspect ratio.
 	 * @param dx - The difference between the current cursor position and the initial position on the x-axis.
 	 * @param dy - The difference between the current cursor position and the initial position on the y-axis.
+	 * @private
 	 */
 	private _resizeCorner = (dx: number, dy: number) => {
 		switch(this._currentTarget) {
@@ -245,6 +253,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * Resizes the target element's bounding box on the x-axis or y-axis.
 	 * @param dx - The difference between the current cursor position and the initial position on the x-axis.
 	 * @param dy - The difference between the current cursor position and the initial position on the y-axis.
+	 * @private
 	 */
 	private _resizeEdge = (dx: number, dy: number) => {
 		switch (this._currentTarget) {
@@ -269,6 +278,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Updates the position and dimensions of the transform box graphic to match those of the element being resized.
+	 * @private
 	 */
 	private _updateTransformBoxPosition = () => {
 		const { scale, width, height, positionX, positionY } = this._element.getOptions();
@@ -361,6 +371,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * Enables the resize behavior for the associated PixiObject.
 	 * Add the necessary event listeners to the transform box graphic when resizing,
 	 * and to the element when being affected by others plugins.
+	 * @public
 	 */
 	public enableResize = () => {
 		this._transformBox.top
@@ -410,6 +421,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Disables the resize behavior for the associated PixiObject.
 	 * Remove all the event listeners to the transform box graphic and the element.
+	 * @public
 	 */
 	public disableResize = () => {
 		this._transformBox.top
@@ -467,6 +479,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Shows or hides the transform box graphic depending on the value of the `visible` parameter.
 	 * @param visible - Whether the transform box should be shown or hidden.
+	 * @public
 	 */
 	public displayGraphic = (value: boolean) => {
 		this._transformBox.graphic.visible = value;

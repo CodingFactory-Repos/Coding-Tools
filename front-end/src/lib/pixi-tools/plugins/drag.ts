@@ -33,7 +33,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	 * Handles the pointer down.
 	 * When the pointer is pressed, register the position of the cursor local to the parent element.
 	 * Add the event listener pointer move to the stage and the element to keep the dragging constant.
-	 * @param {FederatedPointerEvent} event - The `pointerdown` event.
+	 * @param event - The `pointerdown` event.
 	 * @private
 	 */
 	private _startDrag = (event: FederatedPointerEvent) => {
@@ -48,7 +48,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	 * Handles the pointer up.
 	 * When the pointer is released, the isDragging property of the PixiObject is set to false and the event is removed.
 	 * Update the element cursor to `pointer`.
-	 * @param {FederatedPointerEvent} event - The `pointerup` event.
+	 * @param event - The `pointerup` event.
 	 * @private
 	 */
 	private _stopDrag = (event: FederatedPointerEvent) => {
@@ -65,7 +65,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	 * Handles the pointer move.
 	 * When the pointer move, the isDragging property of the PixiObject is set to false and the PixiObject position is recalculated.
 	 * Update the element cursor to `grabbing`.
-	 * @param {FederatedPointerEvent} event - The `pointermove` event.
+	 * @param event - The `pointermove` event.
 	 * @private
 	 */
 	private _moveDrag = (event: FederatedPointerEvent) => {
