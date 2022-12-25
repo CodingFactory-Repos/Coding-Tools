@@ -1,5 +1,5 @@
 import { Container, DisplayObject } from "pixi.js";
-import { ArgumentMap } from "../types";
+import { ArgumentMap, ContainerEvents } from "../types";
 
 /**
  * GraphicContainer is a subclass of PIXI.Container that extends the event emitter interface to allow
