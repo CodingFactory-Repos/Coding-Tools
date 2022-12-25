@@ -1,6 +1,8 @@
 import { Application } from "pixi.js";
 import { Viewport } from "pixi-viewport";
+
 import { ElementOptions, PixiObject } from './types';
+import { StaticGrid } from "./models/static/grid";
 
 /**
  * Scene is a subclass of PIXI.Application that manages a grid and a viewport.
@@ -12,6 +14,11 @@ export class Scene extends Application {
 	 * @private
 	 */
 	private readonly _viewport: Viewport;
+
+	/**
+	 * The static grid for the scene.
+	 */
+	public readonly _grid: StaticGrid;
 
 	/**
 	 * An array of containers in the scene.
@@ -47,6 +54,11 @@ export class Scene extends Application {
 			.wheel()
 			.decelerate();
 
+		this._grid = new StaticGrid();
+		this.stage.addChild(this._grid);
+		this.stage.addChild(this._viewport);
+		this.ticker.start();
+
 		canvas.addEventListener('mouseout', () => {
 			for (const container of this.containers) {
 				const isAction = container.isDragging || container.isResizing;
@@ -56,9 +68,6 @@ export class Scene extends Application {
 				}
 			}
 		})
-
-		this.stage.addChild(this._viewport);
-		this.ticker.start();
 
 		window.addEventListener('resize', () => {
 			const newWidth = window.innerWidth;
@@ -70,6 +79,35 @@ export class Scene extends Application {
 			this._viewport.worldWidth = newWidth;
 			this._viewport.worldHeight = newHeight;
 		});
+
+		this._viewport.on('zoomed', this._onViewportZoom)
+	}
+
+	/**
+	 * Handles the 'zoomed' event on the viewport. This updates the grid and containers based on the new zoom level.
+	 * @private
+	 */
+	private _onViewportZoom = () => {
+		if(this._viewport.scale.x > 255) {
+			this._viewport.scale.x = 255;
+			this._viewport.scale.y = 255;
+		}
+
+		if(this._viewport.scale.x < 0.25) {
+			this._viewport.scale.x = 0.25;
+			this._viewport.scale.y = 0.25;
+		}
+
+		if(this._viewport.scale.x > 5) {
+			//@ts-ignore
+			this._grid.emit('updated', this.getOptions());
+		} else this._grid.emit('cleared');
+
+		for (const container of this.containers) {
+			if (container.isSelected) {
+				container.updateOnScale();
+			}
+		}
 	}
 
 	/**
