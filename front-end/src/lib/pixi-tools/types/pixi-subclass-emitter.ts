@@ -54,3 +54,4 @@ export interface GraphicsEvents extends DisplayObjectEvents {
 	 */
 	cleared: [];
 }
+
