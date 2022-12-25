@@ -1,4 +1,5 @@
 import { DisplayObjectEvents } from "pixi.js";
+import { ElementOptions } from "./pixi-element-options";
 
 /**
  * ArgumentMap is a type that maps the arguments of a function type to a tuple.
@@ -47,7 +48,7 @@ export interface GraphicsEvents extends DisplayObjectEvents {
 	/**
 	 * Emitted when the graphics object should be updated with new size options.
 	 */
-	updated: [];
+	updated: [ElementOptions.ScaledDimensions];
 	
 	/**
 	 * Emitted when the graphics object should be cleared.
