@@ -17,8 +17,8 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	private readonly _element: T;
 
 	/**
-	 * Creates a new instance of SelectPlugin.
-	 * @param ref A reference to the PixiObject that the plugin will be applied to..
+	 * Creates an instance of SelectPlugin.
+	 * @param ref A reference to the PixiObject that the plugin will be applied to.
 	 */
 	constructor(ref: T) {
 		super();

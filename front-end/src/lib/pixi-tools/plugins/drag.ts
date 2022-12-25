@@ -13,13 +13,13 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	private readonly _element: T;
 
 	/**
-	 * The last position of the element when it was registered for the drag.
+	 * The last position of the cursor during a dragging operation.
 	 * @private
 	 */
 	private _lastPosition: IPointData;
 
 	/**
-	 * Creates a new instance of DragPlugin.
+	 * Creates an instance of DragPlugin.
 	 * @param ref A reference to the PixiObject that the plugin will be applied to.
 	 */
 	constructor(ref: T) {
@@ -31,7 +31,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Handles the pointer down.
-	 * When the pointer is pressed, register the position of the cursor local to the parent element when the pointer is down.
+	 * When the pointer is pressed, register the position of the cursor local to the parent element.
 	 * Add the event listener pointer move to the stage and the element to keep the dragging constant.
 	 * @param {FederatedPointerEvent} event - The `pointerdown` event.
 	 * @private

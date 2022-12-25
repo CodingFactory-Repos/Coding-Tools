@@ -22,7 +22,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	private readonly _element: T;
 
 	/**
-	 * Creates a new instance of DownloadPlugin.
+	 * Creates an instance of DownloadPlugin.
 	 * @param ref A reference to the PixiObject that the plugin will be applied to.
 	 */
 	constructor(ref: T) {
