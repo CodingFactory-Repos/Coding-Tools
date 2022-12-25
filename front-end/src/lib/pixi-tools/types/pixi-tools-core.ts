@@ -76,3 +76,11 @@ interface _PixiObjectDefinition {
  * @typedef {_PixiObjectDefinition & GraphicContainer} PixiObject
  */
 export type PixiObject = _PixiObjectDefinition & GraphicContainer;
+
+
+export interface InitialResizeState {
+	width: number,
+	height: number,
+	x: number,
+	y: number,
+}
