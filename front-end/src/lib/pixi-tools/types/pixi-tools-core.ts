@@ -1,6 +1,7 @@
 import { Viewport } from "pixi-viewport";
 
 import { GraphicContainer } from "../class/graphicContainer";
+import { StaticGraphics } from "../class/staticGraphics";
 import { ElementOptions } from "./pixi-element-options";
 import { Stage } from "./pixi-type-aliases";
 
@@ -17,6 +18,11 @@ interface _PixiObjectDefinition {
 	 * The viewport the object belongs to.
 	 */
 	readonly viewport: Viewport;
+
+	/**
+	 * The static graphic of the object.
+	 */	
+	readonly figure: StaticGraphics;
 
 	/**
 	 * A flag indicating whether the object is currently being dragged.
