@@ -3,8 +3,11 @@ import { PixiEvents, PixiObject } from '../types';
 
 /**
  * A plugin that manages the selection and hover state of a given PixiObject.
- * When the object is clicked, it becomes selected and can only be unselected by clicking outside of the object.
- * The object can also be hovered, indicated by a change in its appearance.
+ * When the PixiObject is clicked, it becomes selected and can only be unselected by clicking outside of the PixiObject.
+ * The PixiObject can also be hovered, indicated by a change in its appearance.
+ * 
+ * @extends PixiEvents
+ * @template T - The type of PixiObject that the plugin is applied to.
  */
 export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	/**
@@ -14,7 +17,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Creates a new instance of SelectPlugin.
-	 * @param ref The PixiObject to manage.
+	 * @param ref A reference to the PixiObject that the plugin will be applied to..
 	 */
 	constructor(ref: T) {
 		super();
