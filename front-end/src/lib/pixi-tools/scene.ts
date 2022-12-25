@@ -17,11 +17,13 @@ export class Scene extends Application {
 
 	/**
 	 * The static grid for the scene.
+	 * @private
 	 */
 	public readonly _grid: StaticGrid;
 
 	/**
 	 * An array of containers in the scene.
+	 * @private
 	 */
 	public readonly containers: Array<PixiObject> = [];
 
@@ -111,8 +113,9 @@ export class Scene extends Application {
 	}
 
 	/**
-	 * Returns the current options for the scene, including the width and height of the view and the current zoom level.
+	 * Returns the current options for the scene, including the width and height of the view and the current scale level.
 	 * @returns The current options for the scene.
+	 * @public
 	 */
 	public getOptions(): Partial<ElementOptions.ScaledDimensions> {
 		return {
