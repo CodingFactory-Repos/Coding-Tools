@@ -1,8 +1,10 @@
-import { Graphics } from "pixi.js";
+import { DisplayObjectEvents, Graphics, utils } from "pixi.js";
 import { ResizeCornerKeyLiteral, ResizeEdgeKeyLiteral } from "./pixi-type-aliases";
 
 /**
- * ResizeGraphic subclass represents a graphic used for resizing an element.
+ * Extension of the `Graphics` class from the `pixi.js` library that represents
+ * a resizable graphic element.
+ * @extends {Graphics}
  */
 export class ResizeGraphic extends Graphics {
 	/**
@@ -10,3 +12,11 @@ export class ResizeGraphic extends Graphics {
 	 */
 	public id: ResizeEdgeKeyLiteral | ResizeCornerKeyLiteral;
 }
+
+/**
+ * Extension of the `EventEmitter` class from the `pixi.js` library that allows
+ * for custom event handling on a `DisplayObject`.
+ *
+ * @extends {EventEmitter<DisplayObjectEvents>}
+ */
+export class PixiEvents extends utils.EventEmitter<DisplayObjectEvents> {};
