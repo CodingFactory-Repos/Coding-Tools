@@ -12,6 +12,7 @@ import { PixiEvents, PixiObject } from '../types';
 export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * The PixiObject that this plugin manages.
+	 * @private
 	 */
 	private readonly _element: T;
 
@@ -29,6 +30,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	 * Handles the selection of the PixiObject.
 	 * If the PixiObject is already selected, this method does nothing.
 	 * Otherwise, the PixiObject becomes selected and an event listener is added to unselect it when the stage is clicked.
+	 * @private
 	 */
 	private _select = () => {
 		if (this._element.isSelected) return;
@@ -39,7 +41,8 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Handles the unselection of the PixiObject.
 	 * If the stage is clicked, the PixiObject becomes unselected and the event listener is removed.
-	 * @param event The pointerdown event.
+	 * @param event The `pointerdown` event.
+	 * @private
 	 */
 	private _unselect = (event: FederatedPointerEvent) => {
 		if (event.target !== this._element) {
@@ -52,6 +55,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	 * Handles the hover of the PixiObject.
 	 * When the PixiObject is hovered, the isHovered property of the PixiObject is set to true.
 	 * If the object is already selected or already hovered, the hover event is ignored.
+	 * @private
 	 */
 	private _hover = () => {
 		if (this._element.isHovered || this._element.isSelected) return;
@@ -62,6 +66,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Handles the unhover of the PixiObject.
 	 * When the PixiObject is no longer hovered, the isHovered property of the PixiObject is set to false and the event listener is removed.
+	 * @private
 	 */
 	private _unhover = () => {
 		this._element.isHovered = false;
@@ -70,6 +75,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Enables the select and and hover behavior for the associated PixiObject.
+	 * @public
 	 */
 	public enableSelect = () => {
 		this._element.on('pointerdown', this._select);
@@ -78,6 +84,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Disables the select, hover and deselect behavior for the associated PixiObject.
+	 * @public
 	 */
 	public disableSelect = () => {
 		this._element.off('pointerdown', this._select);

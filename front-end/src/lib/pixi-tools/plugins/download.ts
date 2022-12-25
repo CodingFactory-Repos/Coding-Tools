@@ -17,6 +17,7 @@ import { DownloadType, PixiEvents, PixiObject } from '../types';
 export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * The PixiObject that this plugin manages.
+	 * @private
 	 */
 	private readonly _element: T;
 
@@ -33,8 +34,8 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Saves the graphics of the PixiObject as a file.
 	 * @param mimeType - The MIME type of the file to be saved.
-	 * 
 	 * @warning //! Does not manage multiple child as of 25-12-2022 !\\\ - TODO
+	 * @private
 	 */
 	private _save = (mimeType: string) => {
 		const { width, height } = this._element.figure;
@@ -63,6 +64,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 * @param data - The data of the image to be included in the PDF.
 	 * @param width - The width of the image.
 	 * @param height - The height of the image.
+	 * @private
 	 */
 	private _createPDF(data: string, width: number, hight: number) {
 		const image = new Image();
@@ -91,6 +93,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 * Downloads the file to the user's device.
 	 * @param data - The data of the file to be downloaded.
 	 * @param ext - The file extension of the file to be downloaded.
+	 * @private
 	 */
 	private _download(data: string, ext: string) {
 		const downloadLink = document.createElement('a');
@@ -104,6 +107,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Enables the download functionality for the PixiObject.
+	 * @public
 	 */
 	public enableDownload = () => {
 		this._element.on('download', (mimeType: string) => this._save(mimeType));
@@ -111,6 +115,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 
 	/**
 	 * Disables the download functionality for the PixiObject.
+	 * @public
 	 */
 	public disabledDownload = () => {
 		this._element.off('download', this._save);
