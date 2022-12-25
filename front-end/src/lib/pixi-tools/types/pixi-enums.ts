@@ -1,6 +1,5 @@
 /**
  * Enum for the different edges of an element that can be resized.
- * @enum {string}
  */
 export enum ResizeEdge {
 	/** The top edge of the element. */
@@ -15,7 +14,6 @@ export enum ResizeEdge {
 
 /**
  * Enum for the different corners of an element that can be resized.
- * @enum {string}
  */
 export enum ResizeCorner {
 	/** The top-right corner of the element. */
@@ -26,4 +24,18 @@ export enum ResizeCorner {
 	BOTTOMLEFT = 'botLeft',
 	/** The bottom-right corner of the element. */
 	BOTTOMRIGHT = 'botRight',
+}
+
+/**
+ * Enum representing the different types of file formats that can be downloaded.
+ */
+export enum DownloadType {
+	/** MIME type for a Portable Network Graphics image */
+	PNG = 'image/png',
+	/** MIME type for a Joint Photographic Experts Group image */
+	JPG = 'image/jpeg',
+	/** MIME type for a Web Picture format image */
+	WEBP = 'image/webp',
+	/** MIME type for a Portable Document Format document */
+	PDF = 'application/pdf',
 }
