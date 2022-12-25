@@ -4,7 +4,7 @@
  */
 export namespace ElementOptions {
 	/**
-	 * An interface for scaled dimensions.
+	 * Define the scaled dimensions options to transform an element.
 	 * @memberof ElementOptions
 	 */
 	export interface ScaledDimensions {
@@ -25,19 +25,29 @@ export namespace ElementOptions {
 	
 		/**
 		 * The X position of the element, in pixels.
-		 * @type {number}
 		 */
 		positionX: number;
 	
 		/**
 		 * The Y position of the element, in pixels.
-		 * @type {number}
 		 */
 		positionY: number;
 	}
 
 	/**
-	 * An interface for shape properties.
+	 * Define the transform box properties of a resize graphic.
+	 * @extends ScaledDimensions
+	 * @memberof ElementOptions
+	 */
+	export interface TransformBoxProperties extends ScaledDimensions {
+		/**
+		 * The size of the resize/transform handles, in pixels.
+		 */
+		rectSize: number;
+	}
+
+	/**
+	 * Define the shape properties of a simple graphic shape.
 	 * @memberof ElementOptions
 	 */
 	export interface ShapeProperties {
@@ -58,13 +68,11 @@ export namespace ElementOptions {
 	
 		/**
 		 * The X position of the element, in pixels.
-		 * @type {number}
 		 */
 		positionX: number;
 	
 		/**
 		 * The Y position of the element, in pixels.
-		 * @type {number}
 		 */
 		positionY: number;
 	}
