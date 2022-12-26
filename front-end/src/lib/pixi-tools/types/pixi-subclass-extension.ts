@@ -19,4 +19,4 @@ export class ResizeGraphic extends Graphics {
  *
  * @extends {EventEmitter<DisplayObjectEvents>}
  */
-export class PixiEvents extends utils.EventEmitter<DisplayObjectEvents> {};
+export class PixiEvents extends utils.EventEmitter<DisplayObjectEvents> {}
