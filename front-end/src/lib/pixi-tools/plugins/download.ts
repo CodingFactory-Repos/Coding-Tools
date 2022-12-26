@@ -51,7 +51,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 		const canvas = renderer.view;
 		const imageData = canvas.toDataURL(mimeType);
 
-		if(mimeType === DownloadType.PDF) {
+		if(mimeType === DownloadType.MIME_PDF) {
 			this._createPDF(imageData, width, height);
 		} else {
 			const extension = imageData.split(',')[0].split(';')[0].split('/')[1];

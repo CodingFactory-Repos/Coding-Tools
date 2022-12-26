@@ -31,11 +31,11 @@ export enum ResizeCorner {
  */
 export enum DownloadType {
 	/** MIME type for a Portable Network Graphics image */
-	PNG = 'image/png',
+	MIME_PNG = 'image/png',
 	/** MIME type for a Joint Photographic Experts Group image */
-	JPG = 'image/jpeg',
+	MIME_JPG = 'image/jpeg',
 	/** MIME type for a Web Picture format image */
-	WEBP = 'image/webp',
+	MIME_WEBP = 'image/webp',
 	/** MIME type for a Portable Document Format document */
-	PDF = 'application/pdf',
+	MIME_PDF = 'application/pdf',
 }
