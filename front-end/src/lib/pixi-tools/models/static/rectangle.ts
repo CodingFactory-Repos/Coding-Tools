@@ -37,8 +37,8 @@ export class StaticRectangle extends StaticGraphics {
 		this.endFill();
 
 		this._border = new Graphics();
-		this.on("updated", (options: ElementOptions.ScaledDimensions) => this._updateBorder(options));
-		this.on("cleared", this._clearBorder)
+		this.dispatch.on("updated", (dimension) => this._updateBorder(dimension));
+		this.dispatch.on("cleared", this._clearBorder);
 	}
 
 	/**

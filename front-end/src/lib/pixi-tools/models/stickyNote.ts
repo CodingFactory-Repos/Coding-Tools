@@ -116,7 +116,7 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 		this._updateSelect();
 
 		if (this.isSelected) {
-			this.emit('scaleUpdated');
+			this.dispatch.emit('scaleUpdated');
 		}
 	}
 
@@ -128,10 +128,9 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 	 */
 	private _updateSelect() {
 		if (this._isSelected || this.isHovered) {
-			// @ts-ignore
-			this._figure.emit('updated', this.getOptions());
+			this._figure.dispatch.emit('updated', this.getOptions());
 		} else {
-			this._figure.emit('cleared');
+			this._figure.dispatch.emit('cleared');
 		}
 	}
 

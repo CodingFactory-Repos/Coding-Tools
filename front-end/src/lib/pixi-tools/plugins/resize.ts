@@ -429,8 +429,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			.on('pointerup', this._endResize)
 			.on('pointerupoutsidecapture', this._endResize);
 
-		this._element.on('selectUpdated', (value: boolean) => this.displayGraphic(value));
-		this._element.on('scaleUpdated', this._updateTransformBoxPosition);
+		this._element.dispatch.on('selectUpdated', (value: boolean) => this.displayGraphic(value));
+		this._element.dispatch.on('scaleUpdated', this._updateTransformBoxPosition);
 	}
 
 	/**
@@ -487,8 +487,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			.off('pointerupoutsidecapture', this._endResize)
 			.off('pointermove', this._updateResize);
 
-		this._element.off('selectUpdated', (value: boolean) => this.displayGraphic(value));
-		this._element.off('scaleUpdated', this._updateTransformBoxPosition);
+		this._element.dispatch.off('selectUpdated', (value: boolean) => this.displayGraphic(value));
+		this._element.dispatch.off('scaleUpdated', this._updateTransformBoxPosition);
 	}
 
 	/**

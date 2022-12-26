@@ -110,7 +110,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 * @public
 	 */
 	public enableDownload = () => {
-		this._element.on('download', (mimeType: string) => this._save(mimeType));
+		this._element.dispatch.on('download', (mimeType: string) => this._save(mimeType));
 	}
 
 	/**
@@ -118,6 +118,6 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 * @public
 	 */
 	public disabledDownload = () => {
-		this._element.off('download', this._save);
+		this._element.dispatch.off('download', this._save);
 	}
 }
