@@ -56,7 +56,7 @@ export interface StaticGraphicsEvents {
 	/**
 	 * Emitted when the graphics object should be updated with new size options.
 	 */
-	updated: [dimension: ElementOptions.ScaledDimensions];
+	updated: [dimension: ElementOptions.ScaledDimensions | Partial<ElementOptions.ScaledDimensions>];
 	
 	/**
 	 * Emitted when the graphics object should be cleared.

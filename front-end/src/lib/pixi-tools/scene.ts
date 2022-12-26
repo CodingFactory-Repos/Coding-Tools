@@ -101,9 +101,8 @@ export class Scene extends Application {
 		}
 
 		if(this._viewport.scale.x > 5) {
-			//@ts-ignore
-			this._grid.emit('updated', this.getOptions());
-		} else this._grid.emit('cleared');
+			this._grid.dispatch.emit('updated', this.getOptions());
+		} else this._grid.dispatch.emit('cleared');
 
 		for (const container of this.containers) {
 			if (container.isSelected) {
