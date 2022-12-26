@@ -34,7 +34,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	/**
 	 * Saves the graphics of the PixiObject as a file.
 	 * @param mimeType - The MIME type of the file to be saved.
-	 * @warning //! Does not manage multiple child as of 25-12-2022 !\\\ - TODO
+	 * @warning //! Does not manage multiple child as of 25-12-2022 !\\\
 	 * @private
 	 */
 	private _save = (mimeType: string) => {

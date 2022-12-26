@@ -8,7 +8,7 @@ import { Stage } from "./pixi-type-aliases";
 /**
  * _PixiObjectDefinition is an interface made to manipulate a Pixi.js object model.
  */
-interface _PixiObjectDefinition {
+interface PixiObjectDefinition {
 	/**
 	 * The stage the object belongs to.
 	 */
@@ -73,9 +73,8 @@ interface _PixiObjectDefinition {
 
 /**
  * PixiObject representing a Pixi.js object model extends by custom events
- * @typedef {_PixiObjectDefinition & GraphicContainer} PixiObject
  */
-export type PixiObject = _PixiObjectDefinition & GraphicContainer;
+export type PixiObject = PixiObjectDefinition & GraphicContainer;
 
 
 export interface InitialResizeState {
