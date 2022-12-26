@@ -15,7 +15,7 @@ export type EventParameters<E> = {
  * @template E - A type that represents a set of event function types.
  */
 export type ArgumentMapNever<E> = {
-	[K in keyof E]: E[K] extends (...args: infer U) => any ? U : never;
+	[K in keyof E]: E[K] extends (...args: infer U) => unknown ? U : never;
 };
 
 /**
@@ -25,7 +25,7 @@ export type ArgumentMapNever<E> = {
  * @template E - A type that represents a set of event function types.
  */
 export type ArgumentMapTyped<E> = {
-	[K in keyof E]: E[K] extends (...args: infer U) => any ? U : E[K]
+	[K in keyof E]: E[K] extends (...args: infer U) => unknown ? U : E[K]
 };
 
 
