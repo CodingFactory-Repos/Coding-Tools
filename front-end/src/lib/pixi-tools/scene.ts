@@ -19,11 +19,11 @@ export class Scene extends Application {
 	 * The static grid for the scene.
 	 * @private
 	 */
-	public readonly _grid: StaticGrid;
+	private readonly _grid: StaticGrid;
 
 	/**
 	 * An array of containers in the scene.
-	 * @private
+	 * @public
 	 */
 	public readonly containers: Array<PixiObject> = [];
 
