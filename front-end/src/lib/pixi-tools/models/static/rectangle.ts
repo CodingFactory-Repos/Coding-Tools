@@ -37,8 +37,8 @@ export class StaticRectangle extends StaticGraphics {
 		this.endFill();
 
 		this._border = new Graphics();
-		this.dispatch.on("updated", (dimension) => this._updateBorder(dimension));
-		this.dispatch.on("cleared", this._clearBorder);
+		this.dispatch.on("updated", (dimension: ElementOptions.ScaledDimensions) => this._updateBorder(dimension));
+		this.dispatch.on("cleared", () => this._clearBorder());
 	}
 
 	/**
@@ -46,7 +46,7 @@ export class StaticRectangle extends StaticGraphics {
 	 * @param {ElementOptions.ScaledDimensions} options - The new dimensions for the rectangle.
 	 * @private
 	 */
-	private _updateBorder(options: ElementOptions.ScaledDimensions) {
+	private _updateBorder = (options: ElementOptions.ScaledDimensions) => {
 		const { scale, width, height, positionX, positionY } = options;
 		const lineWidth = Math.max(2 / scale, .5);
 
@@ -64,7 +64,7 @@ export class StaticRectangle extends StaticGraphics {
 	 * Clears the border of the rectangle.
 	 * @private
 	 */
-	private _clearBorder() {
+	private _clearBorder = () => {
 		this._border.clear();
 	}
 

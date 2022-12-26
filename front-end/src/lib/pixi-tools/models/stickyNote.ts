@@ -171,8 +171,7 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 		this._isSelected = value;
 		this.updateOnScale();
 
-		// @ts-ignore
-		this.emit('selectUpdated', this._isSelected);
+		this.dispatch.emit('selectUpdated', this._isSelected);
 	}
 
 	public get isHovered(): boolean {

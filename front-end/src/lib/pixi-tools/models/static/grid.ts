@@ -13,8 +13,8 @@ export class StaticGrid extends StaticGraphics {
 	constructor() {
 		super();
 
-		this.on("updated", (options: ElementOptions.ScaledDimensions) => this._updateGrid(options));
-		this.on("cleared", () => this._clearGrid())
+		this.dispatch.on("updated", (options: ElementOptions.ScaledDimensions) => this._updateGrid(options));
+		this.dispatch.on("cleared", () => this._clearGrid());
 	}
 
 	/**
