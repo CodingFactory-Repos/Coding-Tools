@@ -145,6 +145,8 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			this._isHoldShift = false;
 		}, 10);
 	
+		this._isEdgeResize = false;
+		this._isCornerResize = false;
 		this._element.cursor = 'pointer';
 		this._element.viewport.cursor = undefined;
 		this._element.off('pointerup', this._endResize);
