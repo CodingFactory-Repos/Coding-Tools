@@ -59,6 +59,18 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	private _isHoldShift = false;
 
 	/**
+	 * A flag indicating whether the resize concern the corner.
+	 * @private
+	 */
+	private _isCornerResize = false;
+
+	/**
+	 * A flag indicating whether the resize concern the corner.
+	 * @private
+	 */
+	private _isEdgeResize = false;
+
+	/**
 	 * Creates an instance of ResizePlugin.
 	 *
 	 * @param ref A reference to the PixiObject that the plugin will be applied to.
@@ -106,11 +118,13 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		if (targetKeyId in ResizeEdge) {
 			this._targetId = ResizeEdge[targetKeyId];
 			this._transformBox[this._targetId].on('pointermove', this._updateResize);
+			this._isEdgeResize = true;
 		}
 
 		if (targetKeyId in ResizeCorner) {
 			this._targetId = ResizeCorner[targetKeyId];
 			this._transformBox[this._targetId].on('pointermove', this._updateResize);
+			this._isCornerResize = true;
 		}
 	}
 
@@ -126,7 +140,10 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		if (event) event.stopPropagation();
 
 		this._lastPosition = undefined;
-		setTimeout(() => { this._element.isResizing = false }, 10);
+		setTimeout(() => { 
+			this._element.isResizing = false;
+			this._isHoldShift = false;
+		}, 10);
 	
 		this._element.cursor = 'pointer';
 		this._element.viewport.cursor = undefined;
@@ -159,24 +176,18 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			const transformedCursorPosition = this._element.viewport.toWorld(newCursorPosition);
 			const dx = transformedCursorPosition.x - this._lastPosition.x;
 			const dy = transformedCursorPosition.y - this._lastPosition.y;
-			const targetKeyId = this._currentTarget.id;
+			const shiftKey = event.originalEvent.shiftKey
 
-			if (targetKeyId in ResizeCorner) {
-				// @ts-ignore
-				if (event.originalEvent.shiftKey) {
-					if (!this._isHoldShift) this._isHoldShift = true;
-					return this._resizeCornerRatio(dx);
-				} else {
-					if (this._isHoldShift) {
-						this._isHoldShift = false;
-						return this._endResize();
-					}
-					return this._resizeCorner(dx, dy);
-				}
-			}
-	
-			if (targetKeyId in ResizeEdge) {
+			if (this._isEdgeResize) {
 				return this._resizeEdge(dx, dy);
+			}
+
+			if (this._isCornerResize && shiftKey) {
+				return this._resizeCornerRatio(dx);
+			}
+
+			if (this._isCornerResize) {
+				return this._resizeCorner(dx, dy);
 			}
 		}
 	}
@@ -187,6 +198,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * @private
 	 */
 	private _resizeCornerRatio = (dx: number) => {
+		if (!this._isHoldShift) this._isHoldShift = true;
 		const ratioA = this._figure.height / this._figure.width;
 		const ratioB = this._figure.width / this._figure.height;
 
@@ -220,9 +232,12 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * Resizes the target element's bounding box without maintaining the aspect ratio.
 	 * @param dx - The difference between the current cursor position and the initial position on the x-axis.
 	 * @param dy - The difference between the current cursor position and the initial position on the y-axis.
+	 * @return Stop the resizing if the isHoldShift property is true, meaning the shift key was released.
 	 * @private
 	 */
 	private _resizeCorner = (dx: number, dy: number) => {
+		if (this._isHoldShift) return this._endResize();
+
 		switch(this._currentTarget) {
 			case this._transformBox.topLeft:
 				this._figure.width  = this._initialState.width - dx;
