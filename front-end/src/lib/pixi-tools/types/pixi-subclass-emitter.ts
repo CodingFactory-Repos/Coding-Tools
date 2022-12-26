@@ -1,29 +1,42 @@
-import { DisplayObjectEvents } from "pixi.js";
 import { ElementOptions } from "./pixi-element-options";
+
+/**
+ * EventParameters is a type that maps the arguments of a function type to a tuple.
+ *
+ * @template E - A type that represents a set of event function types.
+ */
+export type EventParameters<E> = {
+	[K in keyof E]: E[K]
+}
 
 /**
  * ArgumentMap is a type that maps the arguments of a function type to a tuple.
  *
- * @template T - A type that represents a set of function types.
+ * @template E - A type that represents a set of event function types.
  */
-export type ArgumentMap<T> = {
-	[K in keyof T]: T[K] extends (...args: infer U) => any ? U : never;
+export type ArgumentMapNever<E> = {
+	[K in keyof E]: E[K] extends (...args: infer U) => any ? U : never;
 };
 
 /**
- * ContainerEvents is an interface that extends the event emitter interface of PIXI.DisplayObject to allow for
- * custom events to be emitted and subscribed to.
+ * ArgumentMapTyped is a type that maps the arguments of a function type to a tuple.
+ * It infer the function type as the value from the key, as long as they key value is defined.
  *
- * @extends PIXI.DisplayObjectEvents
- * @emits 'selectUpdated' - Emitted when the container's selection status is updated.
- * @emits 'scaleUpdated' - Emitted when the container's scale is updated.
- * @emits 'download' - Emitted when the container is downloaded.
+ * @template E - A type that represents a set of event function types.
  */
-export interface ContainerEvents extends DisplayObjectEvents {
+export type ArgumentMapTyped<E> = {
+	[K in keyof E]: E[K] extends (...args: infer U) => any ? U : E[K]
+};
+
+
+/**
+ * Define the custom events of a GraphicContainer.
+ */
+export interface GraphicContainerEvents {
 	/**
 	 * Emitted when the container's selection status is updated.
 	 */
-	selectUpdated: [boolean];
+	selectUpdated: [value: boolean];
 	
 	/**
 	 * Emitted when the container's scale is updated.
@@ -33,26 +46,20 @@ export interface ContainerEvents extends DisplayObjectEvents {
 	/**
 	 * Emitted when the container is downloaded.
 	 */
-	download: [string];
+	download: [mimeType: string];
 }
 
 /**
- * GraphicsEvents is an interface that extends the event emitter interface of PIXI.DisplayObject to allow for
- * custom events to be emitted and subscribed to.
- *
- * @extends PIXI.DisplayObjectEvents
- * @emits 'updated' - Emitted when the graphics object is updated with new size options.
- * @emits 'cleared' - Emitted when the graphics object is cleared.
+ * Define the custom events of a StaticGraphics.
  */
-export interface GraphicsEvents extends DisplayObjectEvents {
+export interface StaticGraphicsEvents {
 	/**
 	 * Emitted when the graphics object should be updated with new size options.
 	 */
-	updated: [ElementOptions.ScaledDimensions];
+	updated: [dimension: ElementOptions.ScaledDimensions];
 	
 	/**
 	 * Emitted when the graphics object should be cleared.
 	 */
 	cleared: [];
 }
-
