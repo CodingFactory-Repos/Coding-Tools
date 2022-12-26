@@ -1,9 +1,8 @@
-import { Container, DisplayObject } from "pixi.js";
+import { Container, DisplayObject, utils } from "pixi.js";
 import { GraphicContainerEvents } from "../types";
-import { CustomEmitter } from "./customEmitter";
 
 /**
- * GraphicContainer is a subclass of PIXI.Container that extends a custom event emitter with strongly-typed events.
+ * GraphicContainer is a subclass of PIXI.Container that use a custom PIXI.utils.EventEmitter with strongly-typed events.
  * 
  * @extends PIXI.Container
  * @emits 'dispatch.selectUpdated' - Emitted when the selection status of the container is updated.
@@ -15,7 +14,7 @@ export class GraphicContainer extends Container<DisplayObject> {
 	 * Dispatch is a custom emitter for this container.
 	 * @public
 	 */
-	public dispatch: CustomEmitter<GraphicContainerEvents>;
+	public dispatch: utils.EventEmitter<GraphicContainerEvents>;
 
 	/**
 	* Creates a new GraphicContainer and intialize the custom emitter;
@@ -23,6 +22,6 @@ export class GraphicContainer extends Container<DisplayObject> {
 	constructor() {
 		super();
 
-		this.dispatch = new CustomEmitter();
+		this.dispatch = new utils.EventEmitter<GraphicContainerEvents>();
 	}
 }
