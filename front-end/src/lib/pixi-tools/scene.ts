@@ -30,22 +30,23 @@ export class Scene extends Application {
 	/**
 	 * Constructs a new Scene.
 	 * @param canvas - The canvas element to use for rendering.
+	 * @param darkMode - If the website use darkmode, the canvas is in darkmode
 	 */
-	constructor(canvas: HTMLCanvasElement) {
+	constructor(canvas: HTMLCanvasElement, darkMode: boolean = false) {
 		super({
 			view: canvas,
-			width: window.innerWidth - 40,
+			width: window.innerWidth,
 			height: window.innerHeight,
 			antialias: true,
 			autoDensity: true,
-			backgroundColor: 0xe5e5e5,
+			backgroundColor: darkMode ? 0x212121 : 0xe5e5e5,
 			resolution: devicePixelRatio
 		});
 
 		this._viewport = new Viewport({
 			worldWidth: 1000,
 			worldHeight: 1000,
-			screenWidth: window.innerWidth - 40,
+			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
 			divWheel: this.view as HTMLCanvasElement,
 		})
@@ -56,7 +57,7 @@ export class Scene extends Application {
 			.wheel()
 			.decelerate();
 
-		this._grid = new StaticGrid();
+		this._grid = new StaticGrid(darkMode);
 		this.stage.addChild(this._grid);
 		this.stage.addChild(this._viewport);
 		this.ticker.start();
