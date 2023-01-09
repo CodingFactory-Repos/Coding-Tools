@@ -33,7 +33,10 @@ export class StaticRectangle extends StaticGraphics {
 
 		this.x = x;
 		this.y = y;
-		this.color = props.color ? props.color : props.color === 0 ? 0 : 0xffff99;
+
+		if(props.color) this.color = props.color === 0 ? 0 : props.color;
+		else this.color = 0xffff99;
+
 		if(this.color === 0) this.alpha = 0;
 
 		this.beginFill(this.color);
