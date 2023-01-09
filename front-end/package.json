@@ -12,9 +12,10 @@
   },
   "dependencies": {
     "axios": "^1.2.1",
-    "esbuild-darwin-64": "^0.15.18",
     "flowbite": "^1.5.5",
+    "jspdf": "^2.5.1",
     "pinia": "^2.0.28",
+    "pixi-viewport": "github:cuire/pixi-viewport#3477201",
     "pixi.js": "^7.0.5",
     "sass": "^1.57.1",
     "vue": "^3.2.41",
