@@ -9,15 +9,34 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/about', component: () => import('../views/AboutView.vue') },
 			{ path: '/signin', component: () => import('../views/AuthView.vue') },
 			{ path: '/signup', component: () => import('../views/AuthView.vue') },
-			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
+			{ path: '/agility-test', component: () => import('../views/AgilityView.vue') },
 			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ path: '/test', component: () => import('../components/Test.vue') },
 			{
 				name: 'newRetro',
 				path: '/newRetro',
 				component: () => import('../views/NewRetrospective.vue'),
+			},
+		],
+	},
+	{
+		path: '/agility',
+		children: [
+			{
+				path: 'dashboard',
+				component: () => import('../layout/agility/AgilityLayout.vue'),
+				children: [
+					{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
+					{
+						path: 'documentation',
+						component: () => import('../components/agility/AgilityDocumentation.vue'),
+					},
+				],
+			},
+			{
+				path: 'project/:slug',
+				component: () => import('../views/agility/AgilityProject.vue'),
 			},
 		],
 	},
