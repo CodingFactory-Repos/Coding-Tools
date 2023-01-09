@@ -60,6 +60,13 @@ export const useProjectStore = defineStore('project', {
 			vp.screenHeight = newHeight;
 			vp.worldHeight = newHeight;
 
+			// Disable pluggins
+			focusedElement.dragPlugin.disableDragging();
+			focusedElement.selectPlugin.disableSelect();
+			vp.plugins.get('drag').pause();
+			vp.plugins.get('wheel').pause();
+			vp.plugins.get('pinch').pause();
+
 			// Retrieve focused element bounds
 			const bounds = focusedElement.getBounds();
 			const localBounds = focusedElement.getLocalBounds();
@@ -69,13 +76,6 @@ export const useProjectStore = defineStore('project', {
 			this.viewportBounds.scaleY = vp.scale.y;
 			this.viewportBounds.posX = vp.x;
 			this.viewportBounds.posY = vp.y;
-
-			// Disable pluggins
-			focusedElement.dragPlugin.disableDragging();
-			focusedElement.selectPlugin.disableSelect();
-			vp.plugins.get('drag').pause();
-			vp.plugins.get('wheel').pause();
-			vp.plugins.get('pinch').pause();
 
 			// Hide all other elements
 			for (const child of vp.children) {
