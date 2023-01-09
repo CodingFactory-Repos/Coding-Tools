@@ -31,7 +31,7 @@
 
 
 <script lang="ts" setup>
-import { computed, ref, toRaw } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useProjectStore } from '@/store/modules/project.store';
 import SVGLoader from '@/components/common/SVGLoader';
