@@ -24,7 +24,7 @@ export class Scene extends Application {
 	/**
 	 * Constructs a new Scene.
 	 * @param canvas - The canvas element to use for rendering.
-	 * @param darkMode - If the website use darkmode, the canvas is in darkmode
+	 * @param darkMode - If the website use darkmode, the canvas is in darkmode.
 	 */
 	constructor(canvas: HTMLCanvasElement, darkMode = false) {
 		super({
