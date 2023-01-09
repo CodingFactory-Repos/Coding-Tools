@@ -2,6 +2,10 @@ import { Viewport } from "pixi-viewport";
 
 import { GraphicContainer } from "../class/graphicContainer";
 import { StaticGraphics } from "../class/staticGraphics";
+import { DownloadPlugin } from "../plugins/download";
+import { DragPlugin } from "../plugins/drag";
+import { ResizePlugin } from "../plugins/resize";
+import { SelectPlugin } from "../plugins/select";
 import { ElementOptions } from "./pixi-element-options";
 import { Stage } from "./pixi-type-aliases";
 
@@ -61,6 +65,13 @@ interface PixiObjectDefinition {
 	updateOnScale(): void;
 
 	/**
+	 * Destory the object and its children.
+	 * It also remove any events coming from the plugins.
+	 * @function
+	 */
+	destroyObject(): void;
+
+	/**
 	 * The X position of the object.
 	 */
 	x: number;
@@ -71,11 +82,17 @@ interface PixiObjectDefinition {
 	y: number;
 }
 
+export interface PixiObjectPluggin {
+	dragPlugin: DragPlugin<PixiObject>;
+	selectPlugin: SelectPlugin<PixiObject>;
+	resizePlugin: ResizePlugin<PixiObject>;
+	downloadPlugin: DownloadPlugin<PixiObject>;
+}
+
 /**
  * PixiObject representing a Pixi.js object model extends by custom events
  */
 export type PixiObject = PixiObjectDefinition & GraphicContainer;
-
 
 export interface InitialResizeState {
 	width: number,

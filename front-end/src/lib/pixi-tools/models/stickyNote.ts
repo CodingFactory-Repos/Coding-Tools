@@ -5,7 +5,7 @@ import { SelectPlugin } from './../plugins/select';
 import { StaticRectangle } from '../../pixi-tools/models/static/rectangle';
 import { ResizePlugin } from '../plugins/resize';
 import { DragPlugin } from '../plugins/drag';
-import { ElementOptions, PixiObject, Stage } from '../types';
+import { ElementOptions, PixiObject, PixiObjectPluggin, Stage } from '../types';
 import { GraphicContainer } from '../class/graphicContainer';
 
 
@@ -14,7 +14,7 @@ import { GraphicContainer } from '../class/graphicContainer';
  * It is a container with a `StaticRectangle` as its child, and it has various plugins attached to it for
  * different functionalities such as dragging, resizing, selecting and downloading.
  */
-export class StickyNote extends GraphicContainer implements PixiObject {
+export class StickyNote extends GraphicContainer implements PixiObject, PixiObjectPluggin {
 	/**
 	 * The stage to which this PixiObject belongs.
 	 * @private
@@ -55,7 +55,43 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 	 * A flag variable to determine whether the PixiObject is being hovered or not.
 	 * @private
 	 */
-	private _isHovered  = false;
+	private _isHovered = false;
+
+	/**
+	 * This plugin adds dragging functionality to a PixiObject.
+	 * 
+	 * It extends the PixiObject with the `enableDragging` and `disableDragging` methods,
+	 * which allow the object to be dragged with the mouse or touch events.
+	 * @private
+	 */
+	private _dragPlugin: DragPlugin<this>;
+
+	/**
+	 * This plugin adds selecting functionality to a PixiObject.
+	 * 
+	 * It extends the PixiObject with the `enableSelect` and `disableSelect methods,
+	 * which allow the object to be selected with the mouse or touch events.
+	 * @private
+	 */
+	private _selectPlugin: SelectPlugin<this>;
+
+	/**
+	 * This plugin adds resizing functionality to a PixiObject.
+	 * 
+	 * It extends the PixiObject with the `enableResize` and `disableResize` methods,
+	 * which allow the object to be resized in multiple ways with the mouse or touch events.
+	 * @private
+	 */
+	private _resizePlugin: ResizePlugin<this>;
+
+	/**
+	 * This plugin adds download functionality to a PixiObject.
+	 * 
+	 * It extends the PixiObject with the `enableDownload` and `disableDownload` methods,
+	 * which allow the object to be downloaded.
+	 * @private
+	 */
+	private _downloadPlugin: DownloadPlugin<this>;
 
 	/**
 	 * Constructor for the StickyNote class.
@@ -80,17 +116,35 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 		this.addChild(this._figure.border);
 		this._stage.addChild(this);
 		
-		const drag = new DragPlugin(this);
-		drag.enableDragging();
+		this._dragPlugin = new DragPlugin(this);
+		this._dragPlugin.enableDragging();
 
-		const select = new SelectPlugin(this);
-		select.enableSelect();
+		this._selectPlugin = new SelectPlugin(this);
+		this._selectPlugin.enableSelect();
 
-		const resize = new ResizePlugin(this, this._figure);
-		resize.enableResize();
+		this._resizePlugin = new ResizePlugin(this, this._figure);
+		this._resizePlugin.enableResize();
 
-		const download = new DownloadPlugin(this);
-		download.enableDownload();
+		this._downloadPlugin = new DownloadPlugin(this);
+		this._downloadPlugin.enableDownload();
+	}
+
+	/**
+	 * Destroys the PixiObject and all its child elements.
+	 * 
+	 * - Disable all the attached plugins
+	 * - Destroy all child elements
+	 * - Destroy the PixiObject itself
+	 * @public
+	 */
+	public destroyObject() {
+		this._dragPlugin.disableDragging();
+		this._selectPlugin.disableSelect();
+		this._resizePlugin.disableResize();
+		this._downloadPlugin.disabledDownload();
+
+		this.children.forEach((el) => el.destroy());
+		this.destroy();
 	}
 
 	/**
@@ -182,4 +236,20 @@ export class StickyNote extends GraphicContainer implements PixiObject {
 		this._isHovered = value;
 		this.updateOnScale();
 	}
+
+	public get dragPlugin(): DragPlugin<this> {
+		return this._dragPlugin;
+	};
+
+	public get selectPlugin(): SelectPlugin<this> {
+		return this._selectPlugin;
+	};
+
+	public get resizePlugin(): ResizePlugin<this> {
+		return this._resizePlugin;
+	};
+
+	public get downloadPlugin(): DownloadPlugin<this> {
+		return this._downloadPlugin;
+	};
 }
