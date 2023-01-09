@@ -1,10 +1,8 @@
 <template>
-	<li>
-		<RouterLink :to="to" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 min-w-max">
-			<SVGLoader v-bind="logo"/>
-			<span class="ml-3 dark:text-gray-400" :class="{ 'lg:hidden': fold }" sidebar-toggle-item="">{{ name }}</span>
-		</RouterLink>
-	</li>
+	<RouterLink :to="to" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700 min-w-max">
+		<SVGLoader v-bind="logo"/>
+		<span class="ml-3 dark:text-gray-400" :class="{ 'lg:hidden': fold }" sidebar-toggle-item="">{{ name }}</span>
+	</RouterLink>
 </template>
 
 <script lang="ts" setup>
