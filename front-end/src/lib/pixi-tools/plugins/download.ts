@@ -4,13 +4,13 @@ import { DownloadType, PixiEvents, PixiObject } from '../types';
 
 /**
  * A plugin that adds download functionality to a PixiObject.
- * 
+ *
  * The plugin support 4 types of download as of 25-12-2022 :
  * - png
  * - jpg
  * - webp
  * - pdf
- * 
+ *
  * @extends PixiEvents
  * @template T - The type of PixiObject that the plugin is applied to.
  */
@@ -51,13 +51,13 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 		const canvas = renderer.view;
 		const imageData = canvas.toDataURL(mimeType);
 
-		if(mimeType === DownloadType.MIME_PDF) {
+		if (mimeType === DownloadType.MIME_PDF) {
 			this._createPDF(imageData, width, height);
 		} else {
 			const extension = imageData.split(',')[0].split(';')[0].split('/')[1];
 			this._download(imageData, extension);
 		}
-	}
+	};
 
 	/**
 	 * Creates a PDF file from the graphics of the PixiObject.
@@ -78,7 +78,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 			height: hight,
 			x: 0,
 			y: 0,
-		})
+		});
 		pdf.save('graphic.pdf');
 
 		const dataURI = pdf.output('datauristring');
@@ -111,7 +111,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 */
 	public enableDownload = () => {
 		this._element.dispatch.on('download', (mimeType: string) => this._save(mimeType));
-	}
+	};
 
 	/**
 	 * Disables the download functionality for the PixiObject.
@@ -119,5 +119,5 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 */
 	public disabledDownload = () => {
 		this._element.dispatch.off('download', this._save);
-	}
+	};
 }

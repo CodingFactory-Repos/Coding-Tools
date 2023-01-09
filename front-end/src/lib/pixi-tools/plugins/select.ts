@@ -5,7 +5,7 @@ import { PixiEvents, PixiObject } from '../types';
  * A plugin that manages the selection and hover state of a given PixiObject.
  * When the PixiObject is clicked, it becomes selected and can only be unselected by clicking outside of the PixiObject.
  * The PixiObject can also be hovered, indicated by a change in its appearance.
- * 
+ *
  * @extends PixiEvents
  * @template T - The type of PixiObject that the plugin is applied to.
  */
@@ -36,7 +36,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 		if (this._element.isSelected) return;
 		this._element.isSelected = true;
 		this._element.stage.on('pointerdown', this._unselect);
-	}
+	};
 
 	/**
 	 * Handles the unselection of the PixiObject.
@@ -49,7 +49,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 			this._element.isSelected = false;
 			this._element.stage.off('pointerdown', this._unselect);
 		}
-	}
+	};
 
 	/**
 	 * Handles the hover of the PixiObject.
@@ -61,7 +61,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 		if (this._element.isHovered || this._element.isSelected) return;
 		this._element.isHovered = true;
 		this._element.on('pointerout', this._unhover);
-	}
+	};
 
 	/**
 	 * Handles the unhover of the PixiObject.
@@ -71,7 +71,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	private _unhover = () => {
 		this._element.isHovered = false;
 		this._element.off('pointerout', this._unhover);
-	}
+	};
 
 	/**
 	 * Enables the select and and hover behavior for the associated PixiObject.
@@ -80,7 +80,7 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 	public enableSelect = () => {
 		this._element.on('pointerdown', this._select);
 		this._element.on('pointerover', this._hover);
-	}
+	};
 
 	/**
 	 * Disables the select, hover and deselect behavior for the associated PixiObject.
@@ -90,5 +90,5 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 		this._element.off('pointerdown', this._select);
 		this._element.off('pointerout', this._unhover);
 		this._element.stage.off('pointerdown', this._unselect);
-	}
+	};
 }

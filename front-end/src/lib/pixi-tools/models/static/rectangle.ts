@@ -34,18 +34,20 @@ export class StaticRectangle extends StaticGraphics {
 		this.x = x;
 		this.y = y;
 
-		if(props.color) this.color = props.color === 0 ? 0 : props.color;
+		if (props.color) this.color = props.color === 0 ? 0 : props.color;
 		else this.color = 0xffff99;
 
-		if(this.color === 0) this.alpha = 0;
+		if (this.color === 0) this.alpha = 0;
 
 		this.beginFill(this.color);
 		this.drawRoundedRect(0, 0, w, h, 0);
 		this.endFill();
 
 		this._border = new Graphics();
-		this.dispatch.on("updated", (dimension: ElementOptions.ScaledDimensions) => this._updateBorder(dimension));
-		this.dispatch.on("cleared", () => this._clearBorder());
+		this.dispatch.on('updated', (dimension: ElementOptions.ScaledDimensions) =>
+			this._updateBorder(dimension),
+		);
+		this.dispatch.on('cleared', () => this._clearBorder());
 	}
 
 	/**
@@ -55,7 +57,7 @@ export class StaticRectangle extends StaticGraphics {
 	 */
 	private _updateBorder = (options: ElementOptions.ScaledDimensions) => {
 		const { scale, width, height, positionX, positionY } = options;
-		const lineWidth = Math.max(2 / scale, .5);
+		const lineWidth = Math.max(2 / scale, 0.5);
 
 		this._border.clear();
 		this._border.lineStyle(lineWidth, 0x0c8ce9, 2);
@@ -65,7 +67,7 @@ export class StaticRectangle extends StaticGraphics {
 		this._border.lineTo(positionX, positionY + height);
 		this._border.lineTo(positionX, positionY - lineWidth / 2);
 		this._border.endFill();
-	}
+	};
 
 	/**
 	 * Clears the border of the rectangle.
@@ -73,7 +75,7 @@ export class StaticRectangle extends StaticGraphics {
 	 */
 	private _clearBorder = () => {
 		this._border.clear();
-	}
+	};
 
 	/**
 	 * Gets the border of the rectangle.

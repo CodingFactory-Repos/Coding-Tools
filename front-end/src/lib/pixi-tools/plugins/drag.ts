@@ -40,9 +40,9 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 		event.stopPropagation();
 
 		this._lastPosition = this._element.parent.toLocal(event.global);
-		this._element.stage.on("pointermove", this._moveDrag);
-		this._element.on("pointermove", this._moveDrag);
-	}
+		this._element.stage.on('pointermove', this._moveDrag);
+		this._element.on('pointermove', this._moveDrag);
+	};
 
 	/**
 	 * Handles the pointer up.
@@ -56,10 +56,10 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 
 		this._lastPosition = undefined;
 		this._element.isDragging = false;
-		this._element.cursor = "pointer";
-		this._element.stage.off("pointermove", this._moveDrag);
-		this._element.off("pointermove", this._moveDrag);
-	}
+		this._element.cursor = 'pointer';
+		this._element.stage.off('pointermove', this._moveDrag);
+		this._element.off('pointermove', this._moveDrag);
+	};
 
 	/**
 	 * Handles the pointer move.
@@ -70,18 +70,18 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	 */
 	private _moveDrag = (event: FederatedPointerEvent) => {
 		if (!this._element.isDragging) {
-			this._element.cursor = "grabbing";
+			this._element.cursor = 'grabbing';
 			this._element.isDragging = true;
 		}
 
 		if (this._lastPosition) {
 			const newPosition = this._element.parent.toLocal(event.global);
 
-			this._element.x += (newPosition.x - this._lastPosition.x);
-			this._element.y += (newPosition.y - this._lastPosition.y);
+			this._element.x += newPosition.x - this._lastPosition.x;
+			this._element.y += newPosition.y - this._lastPosition.y;
 			this._lastPosition = newPosition;
 		}
-	}
+	};
 
 	/**
 	 * Enables the dragging behavior for the associated PixiObject.
@@ -90,7 +90,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	public enableDragging = () => {
 		this._element.on('pointerdown', this._startDrag);
 		this._element.on('pointerup', this._stopDrag);
-	}
+	};
 
 	/**
 	 * Disables the dragging behavior for the associated PixiObject.
@@ -99,7 +99,7 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 	public disableDragging = () => {
 		this._element.off('pointerdown', this._startDrag);
 		this._element.off('pointerup', this._stopDrag);
-		this._element.off("pointermove", this._moveDrag);
-		this._element.stage.off("pointermove", this._moveDrag);
-	}
+		this._element.off('pointermove', this._moveDrag);
+		this._element.stage.off('pointermove', this._moveDrag);
+	};
 }

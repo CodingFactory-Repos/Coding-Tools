@@ -1,5 +1,5 @@
-import { Container, DisplayObject, Graphics } from "pixi.js";
-import { ResizeCorner, ResizeEdge } from "./pixi-enums";
+import { Container, DisplayObject, Graphics } from 'pixi.js';
+import { ResizeCorner, ResizeEdge } from './pixi-enums';
 
 /**
  * Type representing a stage in a PIXI.js application.

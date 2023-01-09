@@ -1,5 +1,5 @@
-import { DisplayObjectEvents, Graphics, utils } from "pixi.js";
-import { ResizeCornerKeyLiteral, ResizeEdgeKeyLiteral } from "./pixi-type-aliases";
+import { DisplayObjectEvents, Graphics, utils } from 'pixi.js';
+import { ResizeCornerKeyLiteral, ResizeEdgeKeyLiteral } from './pixi-type-aliases';
 
 /**
  * Extension of the `Graphics` class from the `pixi.js` library that represents

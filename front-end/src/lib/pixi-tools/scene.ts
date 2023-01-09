@@ -1,8 +1,8 @@
-import { Application } from "pixi.js";
-import { Viewport } from "pixi-viewport";
+import { Application } from 'pixi.js';
+import { Viewport } from 'pixi-viewport';
 
 import { ElementOptions, PixiObject } from './types';
-import { StaticGrid } from "./models/static/grid";
+import { StaticGrid } from './models/static/grid';
 
 /**
  * Scene is a subclass of PIXI.Application that manages a grid and a viewport.
@@ -26,7 +26,7 @@ export class Scene extends Application {
 	 * @param canvas - The canvas element to use for rendering.
 	 * @param darkMode - If the website use darkmode, the canvas is in darkmode
 	 */
-	constructor(canvas: HTMLCanvasElement, darkMode: boolean = false) {
+	constructor(canvas: HTMLCanvasElement, darkMode = false) {
 		super({
 			view: canvas,
 			width: window.innerWidth,
@@ -34,7 +34,7 @@ export class Scene extends Application {
 			antialias: true,
 			autoDensity: true,
 			backgroundColor: darkMode ? 0x212121 : 0xe5e5e5,
-			resolution: devicePixelRatio
+			resolution: devicePixelRatio,
 		});
 
 		this._viewport = new Viewport({
@@ -43,13 +43,9 @@ export class Scene extends Application {
 			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
 			divWheel: this.view as HTMLCanvasElement,
-		})
-		
-		this.viewport
-			.drag()
-			.pinch({ percent: 2 })
-			.wheel()
-			.decelerate();
+		});
+
+		this.viewport.drag().pinch({ percent: 2 }).wheel().decelerate();
 
 		this._grid = new StaticGrid(darkMode);
 		this.stage.addChild(this._grid);
@@ -64,7 +60,7 @@ export class Scene extends Application {
 					container.isResizing = false;
 				}
 			}
-		})
+		});
 
 		window.addEventListener('resize', () => {
 			const newWidth = window.innerWidth;
@@ -77,7 +73,7 @@ export class Scene extends Application {
 			this._viewport.worldHeight = newHeight;
 		});
 
-		this._viewport.on('zoomed', this._onViewportZoom)
+		this._viewport.on('zoomed', this._onViewportZoom);
 	}
 
 	/**
@@ -85,17 +81,17 @@ export class Scene extends Application {
 	 * @private
 	 */
 	private _onViewportZoom = () => {
-		if(this._viewport.scale.x > 255) {
+		if (this._viewport.scale.x > 255) {
 			this._viewport.scale.x = 255;
 			this._viewport.scale.y = 255;
 		}
 
-		if(this._viewport.scale.x < 0.25) {
+		if (this._viewport.scale.x < 0.25) {
 			this._viewport.scale.x = 0.25;
 			this._viewport.scale.y = 0.25;
 		}
 
-		if(this._viewport.scale.x > 5) {
+		if (this._viewport.scale.x > 5) {
 			this._grid.dispatch.emit('updated', this.getOptions());
 		} else this._grid.dispatch.emit('cleared');
 
@@ -104,7 +100,7 @@ export class Scene extends Application {
 				container.updateOnScale();
 			}
 		}
-	}
+	};
 
 	/**
 	 * Returns the current options for the scene, including the width and height of the view and the current scale level.
@@ -116,7 +112,7 @@ export class Scene extends Application {
 			width: this.view.width,
 			height: this.view.height,
 			scale: this._viewport.scale.x,
-		}
+		};
 	}
 
 	/**

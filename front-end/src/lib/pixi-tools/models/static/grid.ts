@@ -1,6 +1,5 @@
-import { StaticGraphics } from "../../class/staticGraphics";
-import { ElementOptions } from "../../types";
-
+import { StaticGraphics } from '../../class/staticGraphics';
+import { ElementOptions } from '../../types';
 
 /**
  * Class representing a static grid manager.
@@ -19,8 +18,10 @@ export class StaticGrid extends StaticGraphics {
 		super();
 
 		this.color = darkMode ? 0x424242 : 0xdcdcdc;
-		this.dispatch.on("updated", (options: ElementOptions.ScaledDimensions) => this._updateGrid(options));
-		this.dispatch.on("cleared", () => this._clearGrid());
+		this.dispatch.on('updated', (options: ElementOptions.ScaledDimensions) =>
+			this._updateGrid(options),
+		);
+		this.dispatch.on('cleared', () => this._clearGrid());
 	}
 
 	/**
@@ -35,7 +36,7 @@ export class StaticGrid extends StaticGraphics {
 
 		this.clear();
 		this.lineStyle(1, this.color, 1);
-		
+
 		for (let x = 0; x <= width; x += gridSize) {
 			this.moveTo(x, 0);
 			this.lineTo(x, height);

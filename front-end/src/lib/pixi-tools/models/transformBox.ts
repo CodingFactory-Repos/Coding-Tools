@@ -1,7 +1,6 @@
 import { Graphics, Rectangle } from 'pixi.js';
 import { ElementOptions, ResizeGraphic } from '../types';
 
-
 export class TransformBox {
 	public readonly top: ResizeGraphic;
 	public readonly bottom: ResizeGraphic;
@@ -22,7 +21,7 @@ export class TransformBox {
 
 		this.graphic = new Graphics();
 		this.rectSize = rectSize || 10;
-		this.hitAreaMargin = 10; 
+		this.hitAreaMargin = 10;
 
 		const lineWidth = 2 / scale;
 		const newRectSize = this.rectSize / scale;
@@ -32,25 +31,45 @@ export class TransformBox {
 		this.top.beginFill(0x0c8ce9);
 		this.top.drawRect(positionX, positionY, width, 1);
 		this.top.endFill();
-		this.top.hitArea = new Rectangle(positionX - hitAreaMargin, positionY - hitAreaMargin, width + hitAreaMargin * 2, hitAreaMargin * 2);
-	
+		this.top.hitArea = new Rectangle(
+			positionX - hitAreaMargin,
+			positionY - hitAreaMargin,
+			width + hitAreaMargin * 2,
+			hitAreaMargin * 2,
+		);
+
 		this.bottom = new ResizeGraphic();
 		this.bottom.beginFill(0x0c8ce9);
 		this.bottom.drawRect(positionX, positionY + height - 1, width, lineWidth);
 		this.bottom.endFill();
-		this.bottom.hitArea = new Rectangle(positionX - hitAreaMargin, positionY + height - hitAreaMargin, width + hitAreaMargin * 2, hitAreaMargin * 2);
-	
+		this.bottom.hitArea = new Rectangle(
+			positionX - hitAreaMargin,
+			positionY + height - hitAreaMargin,
+			width + hitAreaMargin * 2,
+			hitAreaMargin * 2,
+		);
+
 		this.left = new ResizeGraphic();
 		this.left.beginFill(0x0c8ce9);
 		this.left.drawRect(positionX, positionY, 1, height);
 		this.left.endFill();
-		this.left.hitArea = new Rectangle(positionX - hitAreaMargin, positionY - hitAreaMargin, hitAreaMargin * 2, height + hitAreaMargin * 2);
-	
+		this.left.hitArea = new Rectangle(
+			positionX - hitAreaMargin,
+			positionY - hitAreaMargin,
+			hitAreaMargin * 2,
+			height + hitAreaMargin * 2,
+		);
+
 		this.right = new ResizeGraphic();
 		this.right.beginFill(0x0c8ce9);
 		this.right.drawRect(positionX + width - 1, positionY, 1, height);
 		this.right.endFill();
-		this.right.hitArea = new Rectangle(positionX + width - hitAreaMargin, positionY - hitAreaMargin, hitAreaMargin * 2, height + hitAreaMargin * 2);
+		this.right.hitArea = new Rectangle(
+			positionX + width - hitAreaMargin,
+			positionY - hitAreaMargin,
+			hitAreaMargin * 2,
+			height + hitAreaMargin * 2,
+		);
 
 		this.topLeft = new ResizeGraphic();
 		this.topLeft.beginFill(0xffffff);

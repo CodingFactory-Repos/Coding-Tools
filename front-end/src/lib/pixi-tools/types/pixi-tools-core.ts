@@ -1,13 +1,13 @@
-import { Viewport } from "pixi-viewport";
+import { Viewport } from 'pixi-viewport';
 
-import { GraphicContainer } from "../class/graphicContainer";
-import { StaticGraphics } from "../class/staticGraphics";
-import { DownloadPlugin } from "../plugins/download";
-import { DragPlugin } from "../plugins/drag";
-import { ResizePlugin } from "../plugins/resize";
-import { SelectPlugin } from "../plugins/select";
-import { ElementOptions } from "./pixi-element-options";
-import { Stage } from "./pixi-type-aliases";
+import { GraphicContainer } from '../class/graphicContainer';
+import { StaticGraphics } from '../class/staticGraphics';
+import { DownloadPlugin } from '../plugins/download';
+import { DragPlugin } from '../plugins/drag';
+import { ResizePlugin } from '../plugins/resize';
+import { SelectPlugin } from '../plugins/select';
+import { ElementOptions } from './pixi-element-options';
+import { Stage } from './pixi-type-aliases';
 
 /**
  * _PixiObjectDefinition is an interface made to manipulate a Pixi.js object model.
@@ -25,7 +25,7 @@ interface PixiObjectDefinition {
 
 	/**
 	 * The static graphic of the object.
-	 */	
+	 */
 	readonly figure: StaticGraphics;
 
 	/**
@@ -98,8 +98,8 @@ export interface PixiObjectPluggin {
 export type PixiObject = PixiObjectDefinition & GraphicContainer;
 
 export interface InitialResizeState {
-	width: number,
-	height: number,
-	x: number,
-	y: number,
+	width: number;
+	height: number;
+	x: number;
+	y: number;
 }

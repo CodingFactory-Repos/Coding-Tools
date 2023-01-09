@@ -8,7 +8,6 @@ import { DragPlugin } from '../plugins/drag';
 import { ElementOptions, PixiObject, PixiObjectPluggin, Stage } from '../types';
 import { GraphicContainer } from '../class/graphicContainer';
 
-
 /**
  * StickyNote is a class that extends from `GraphicContainer` and implements the `PixiObject` interface.
  * It is a container with a `StaticRectangle` as its child, and it has various plugins attached to it for
@@ -59,7 +58,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	/**
 	 * This plugin adds dragging functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableDragging` and `disableDragging` methods,
 	 * which allow the object to be dragged with the mouse or touch events.
 	 * @private
@@ -68,7 +67,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	/**
 	 * This plugin adds selecting functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableSelect` and `disableSelect methods,
 	 * which allow the object to be selected with the mouse or touch events.
 	 * @private
@@ -77,7 +76,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	/**
 	 * This plugin adds resizing functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableResize` and `disableResize` methods,
 	 * which allow the object to be resized in multiple ways with the mouse or touch events.
 	 * @private
@@ -86,7 +85,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	/**
 	 * This plugin adds download functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableDownload` and `disableDownload` methods,
 	 * which allow the object to be downloaded.
 	 * @private
@@ -115,7 +114,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 		this.addChild(this._figure);
 		this.addChild(this._figure.border);
 		this._stage.addChild(this);
-		
+
 		this._dragPlugin = new DragPlugin(this);
 		this._dragPlugin.enableDragging();
 
@@ -131,7 +130,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	/**
 	 * Destroys the PixiObject and all its child elements.
-	 * 
+	 *
 	 * - Disable all the attached plugins
 	 * - Destroy all child elements
 	 * - Destroy the PixiObject itself
@@ -159,7 +158,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 			width: this._figure.width,
 			height: this._figure.height,
 			scale: this.viewport.scale.x,
-		}
+		};
 	}
 
 	/**
@@ -239,17 +238,17 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	public get dragPlugin(): DragPlugin<this> {
 		return this._dragPlugin;
-	};
+	}
 
 	public get selectPlugin(): SelectPlugin<this> {
 		return this._selectPlugin;
-	};
+	}
 
 	public get resizePlugin(): ResizePlugin<this> {
 		return this._resizePlugin;
-	};
+	}
 
 	public get downloadPlugin(): DownloadPlugin<this> {
 		return this._downloadPlugin;
-	};
+	}
 }

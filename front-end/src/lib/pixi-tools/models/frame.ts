@@ -8,7 +8,6 @@ import { DragPlugin } from '../plugins/drag';
 import { ElementOptions, PixiObject, Stage } from '../types';
 import { GraphicContainer } from '../class/graphicContainer';
 
-
 /**
  * TextBox is a class that extends from `GraphicContainer` and implements the `PixiObject` interface.
  * It is a container with a `StaticRectangle` as its child, and it has various plugins attached to it for
@@ -55,11 +54,11 @@ export class TextBox extends GraphicContainer implements PixiObject {
 	 * A flag variable to determine whether the PixiObject is being hovered or not.
 	 * @private
 	 */
-	private _isHovered  = false;
+	private _isHovered = false;
 
 	/**
 	 * This plugin adds dragging functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableDragging` and `disableDragging` methods,
 	 * which allow the object to be dragged with the mouse or touch events.
 	 */
@@ -67,7 +66,7 @@ export class TextBox extends GraphicContainer implements PixiObject {
 
 	/**
 	 * This plugin adds selecting functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableSelect` and `disableSelect methods,
 	 * which allow the object to be selected with the mouse or touch events.
 	 */
@@ -75,7 +74,7 @@ export class TextBox extends GraphicContainer implements PixiObject {
 
 	/**
 	 * This plugin adds resizing functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableResize` and `disableResize` methods,
 	 * which allow the object to be resized in multiple ways with the mouse or touch events.
 	 */
@@ -83,7 +82,7 @@ export class TextBox extends GraphicContainer implements PixiObject {
 
 	/**
 	 * This plugin adds download functionality to a PixiObject.
-	 * 
+	 *
 	 * It extends the PixiObject with the `enableDownload` and `disableDownload` methods,
 	 * which allow the object to be downloaded.
 	 */
@@ -111,7 +110,7 @@ export class TextBox extends GraphicContainer implements PixiObject {
 		this.addChild(this._figure);
 		this.addChild(this._figure.border);
 		this._stage.addChild(this);
-		
+
 		this._dragPlugin = new DragPlugin(this);
 		this._dragPlugin.enableDragging();
 
@@ -137,12 +136,12 @@ export class TextBox extends GraphicContainer implements PixiObject {
 			width: this._figure.width,
 			height: this._figure.height,
 			scale: this.viewport.scale.x,
-		}
+		};
 	}
 
 	/**
 	 * Destroys the PixiObject and all its child elements.
-	 * 
+	 *
 	 * - Disable all the attached plugins
 	 * - Destroy all child elements
 	 * - Destroy the PixiObject itself

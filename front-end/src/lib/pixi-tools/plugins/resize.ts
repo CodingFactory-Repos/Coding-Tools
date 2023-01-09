@@ -1,10 +1,21 @@
 import { FederatedPointerEvent, Graphics, Point, Rectangle } from 'pixi.js';
-import { PixiObject, PixiEvents, ResizeGraphic, TransformKeys, ResizeEdge, ResizeCorner, ResizeEdgeValLiteral, ResizeCornerValLiteral, ElementOptions, InitialResizeState } from '../types';
+import {
+	PixiObject,
+	PixiEvents,
+	ResizeGraphic,
+	TransformKeys,
+	ResizeEdge,
+	ResizeCorner,
+	ResizeEdgeValLiteral,
+	ResizeCornerValLiteral,
+	ElementOptions,
+	InitialResizeState,
+} from '../types';
 import { TransformBox } from '../models/transformBox';
 
 /**
  * A plugin that provides resizing functionality for a given PixiObject.
- * 
+ *
  * Support corner resizing, corner ratio resizing and edge resizing.
  *
  * @extends PixiEvents
@@ -82,7 +93,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._figure = figure;
 		this._element = ref;
 		this._lastPosition = undefined;
-		
+
 		const props = this._element.getOptions() as ElementOptions.TransformBoxProperties;
 		this._transformBox = new TransformBox(props);
 		this._element.addChild(this._transformBox.graphic);
@@ -93,14 +104,14 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 * When the pointer is pressed, register the initial state of the graphics, the handle or border selected,
 	 * the id of the handle or border and the position of the cursor local to the parent element.
 	 * Update the element cursor to the handle or border cursor.
-	 * 
+	 *
 	 * Attach multiple events on the stage to assure a smooth resize and add the move event to the handle or border.
 	 * @param event - The `pointerdown` event.
 	 * @private
 	 */
 	private _startResize = (event: FederatedPointerEvent) => {
 		event.stopPropagation();
-		
+
 		const { width, height, x, y } = this._figure;
 		this._initialState = { width, height, x, y };
 		this._currentTarget = event.target as ResizeGraphic;
@@ -110,7 +121,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._element.viewport.cursor = this._currentTarget.cursor;
 		this._element.on('pointerup', this._endResize);
 		this._element.stage.on('pointerup', this._endResize);
-		this._element.stage.on('mouseleave', this._endResize)
+		this._element.stage.on('mouseleave', this._endResize);
 		this._element.stage.on('pointermove', this._updateResize);
 
 		const targetKeyId = this._currentTarget.id;
@@ -126,7 +137,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			this._transformBox[this._targetId].on('pointermove', this._updateResize);
 			this._isCornerResize = true;
 		}
-	}
+	};
 
 	/**
 	 * Handles the pointer up if any.
@@ -140,31 +151,31 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		if (event) event.stopPropagation();
 
 		this._lastPosition = undefined;
-		setTimeout(() => { 
+		setTimeout(() => {
 			this._element.isResizing = false;
 			this._isHoldShift = false;
 		}, 10);
-	
+
 		this._isEdgeResize = false;
 		this._isCornerResize = false;
 		this._element.cursor = 'pointer';
 		this._element.viewport.cursor = undefined;
 		this._element.off('pointerup', this._endResize);
 		this._element.stage.off('pointerup', this._endResize);
-		this._element.stage.off('mouseleave', this._endResize)
+		this._element.stage.off('mouseleave', this._endResize);
 		this._element.stage.off('pointermove', this._updateResize);
 
 		if (this._targetId) {
 			this._transformBox[this._targetId].off('pointermove', this._updateResize);
 		}
-	}
+	};
 
 	/**
 	 * Handles the pointer move.
 	 * When the pointer move, the isDragging property of the PixiObject is set to true.
-	 * 
+	 *
 	 * Calculate the dimensions and position of the associated element based on the current cursor position.
-	 * 
+	 *
 	 * Determine which handle or border is select to define how the graphics will be resized.
 	 *
 	 * @param event - The `pointermove` event.
@@ -178,7 +189,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 			const transformedCursorPosition = this._element.viewport.toWorld(newCursorPosition);
 			const dx = transformedCursorPosition.x - this._lastPosition.x;
 			const dy = transformedCursorPosition.y - this._lastPosition.y;
-			const shiftKey = event.originalEvent.shiftKey
+			const shiftKey = event.originalEvent.shiftKey;
 
 			if (this._isEdgeResize) {
 				return this._resizeEdge(dx, dy);
@@ -192,7 +203,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 				return this._resizeCorner(dx, dy);
 			}
 		}
-	}
+	};
 
 	/**
 	 * Resizes the target element's bounding box while maintaining the aspect ratio.
@@ -204,31 +215,31 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		const ratioA = this._figure.height / this._figure.width;
 		const ratioB = this._figure.width / this._figure.height;
 
-		switch(this._currentTarget) {
+		switch (this._currentTarget) {
 			case this._transformBox.topLeft:
-				this._figure.width  = this._initialState.width - dx;
+				this._figure.width = this._initialState.width - dx;
 				this._figure.height = this._figure.width * ratioA;
-				this._figure.x      = this._initialState.x + this._initialState.width - this._figure.width;
-				this._figure.y      = this._initialState.y + this._initialState.height - this._figure.height;
+				this._figure.x = this._initialState.x + this._initialState.width - this._figure.width;
+				this._figure.y = this._initialState.y + this._initialState.height - this._figure.height;
 				break;
 			case this._transformBox.topRight:
-				this._figure.width  = this._initialState.width + dx;
+				this._figure.width = this._initialState.width + dx;
 				this._figure.height = this._figure.width * ratioA;
-				this._figure.y      = this._initialState.y + this._initialState.height - this._figure.height;
+				this._figure.y = this._initialState.y + this._initialState.height - this._figure.height;
 				break;
 			case this._transformBox.botLeft:
-				this._figure.width  = this._initialState.width - dx;
+				this._figure.width = this._initialState.width - dx;
 				this._figure.height = this._figure.width / ratioB;
-				this._figure.x      = this._initialState.x + this._initialState.width - this._figure.width;
+				this._figure.x = this._initialState.x + this._initialState.width - this._figure.width;
 				break;
 			case this._transformBox.botRight:
-				this._figure.width  = this._initialState.width + dx;
+				this._figure.width = this._initialState.width + dx;
 				this._figure.height = this._figure.width / ratioB;
 				break;
 		}
 		this._element.isResizing = true;
 		this._updateTransformBoxPosition();
-	}
+	};
 
 	/**
 	 * Resizes the target element's bounding box without maintaining the aspect ratio.
@@ -240,31 +251,31 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	private _resizeCorner = (dx: number, dy: number) => {
 		if (this._isHoldShift) return this._endResize();
 
-		switch(this._currentTarget) {
+		switch (this._currentTarget) {
 			case this._transformBox.topLeft:
-				this._figure.width  = this._initialState.width - dx;
+				this._figure.width = this._initialState.width - dx;
 				this._figure.height = this._initialState.height - dy;
-				this._figure.x      = this._initialState.x + dx;
-				this._figure.y      = this._initialState.y + dy;
+				this._figure.x = this._initialState.x + dx;
+				this._figure.y = this._initialState.y + dy;
 				break;
 			case this._transformBox.topRight:
-				this._figure.width  = this._initialState.width + dx;
+				this._figure.width = this._initialState.width + dx;
 				this._figure.height = this._initialState.height - dy;
-				this._figure.y      = this._initialState.y + dy;
+				this._figure.y = this._initialState.y + dy;
 				break;
 			case this._transformBox.botLeft:
-				this._figure.width  = this._initialState.width - dx;
+				this._figure.width = this._initialState.width - dx;
 				this._figure.height = this._initialState.height + dy;
-				this._figure.x      = this._initialState.x + dx;
+				this._figure.x = this._initialState.x + dx;
 				break;
 			case this._transformBox.botRight:
-				this._figure.width  = this._initialState.width + dx;
+				this._figure.width = this._initialState.width + dx;
 				this._figure.height = this._initialState.height + dy;
 				break;
 		}
 		this._element.isResizing = true;
 		this._updateTransformBoxPosition();
-	}
+	};
 
 	/**
 	 * Resizes the target element's bounding box on the x-axis or y-axis.
@@ -291,7 +302,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		}
 		this._element.isResizing = true;
 		this._updateTransformBoxPosition();
-	}
+	};
 
 	/**
 	 * Updates the position and dimensions of the transform box graphic to match those of the element being resized.
@@ -332,26 +343,26 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._transformBox.top.hitArea = new Rectangle(
 			positionX - hitAreaMargin,
 			positionY - hitAreaMargin,
-			width + (hitAreaMargin * 2),
-			1 + (hitAreaMargin * 2)
+			width + hitAreaMargin * 2,
+			1 + hitAreaMargin * 2,
 		);
 		this._transformBox.bottom.hitArea = new Rectangle(
 			positionX - hitAreaMargin,
 			positionY + height - 1 - hitAreaMargin,
-			width + (hitAreaMargin * 2),
-			1 + (hitAreaMargin * 2)
+			width + hitAreaMargin * 2,
+			1 + hitAreaMargin * 2,
 		);
 		this._transformBox.left.hitArea = new Rectangle(
 			positionX - hitAreaMargin,
 			positionY - hitAreaMargin,
-			1 + (hitAreaMargin * 2),
-			height + (hitAreaMargin * 2)
+			1 + hitAreaMargin * 2,
+			height + hitAreaMargin * 2,
 		);
 		this._transformBox.right.hitArea = new Rectangle(
 			positionX + width - 1 - hitAreaMargin,
 			positionY - hitAreaMargin,
-			1 + (hitAreaMargin * 2),
-			height + (hitAreaMargin * 2)
+			1 + hitAreaMargin * 2,
+			height + hitAreaMargin * 2,
 		);
 
 		this._transformBox.topLeft.beginFill(0xffffff);
@@ -374,15 +385,15 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._transformBox.botRight.drawRect(0, 0, rectSize, rectSize);
 		this._transformBox.botRight.endFill();
 
-		this._transformBox.topLeft.x  = positionX - rectSize / 2;
-		this._transformBox.topLeft.y  = positionY - rectSize / 2;
+		this._transformBox.topLeft.x = positionX - rectSize / 2;
+		this._transformBox.topLeft.y = positionY - rectSize / 2;
 		this._transformBox.topRight.x = positionX + width - rectSize / 2;
 		this._transformBox.topRight.y = positionY - rectSize / 2;
-		this._transformBox.botLeft.x  = positionX - rectSize / 2;
-		this._transformBox.botLeft.y  = positionY + height - rectSize / 2;
+		this._transformBox.botLeft.x = positionX - rectSize / 2;
+		this._transformBox.botLeft.y = positionY + height - rectSize / 2;
 		this._transformBox.botRight.x = positionX + width - rectSize / 2;
 		this._transformBox.botRight.y = positionY + height - rectSize / 2;
-	}
+	};
 
 	/**
 	 * Enables the resize behavior for the associated PixiObject.
@@ -433,7 +444,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 
 		this._element.dispatch.on('selectUpdated', (value: boolean) => this.displayGraphic(value));
 		this._element.dispatch.on('scaleUpdated', this._updateTransformBoxPosition);
-	}
+	};
 
 	/**
 	 * Disables the resize behavior for the associated PixiObject.
@@ -493,9 +504,9 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._element.dispatch.off('scaleUpdated', this._updateTransformBoxPosition);
 		this._element.off('pointerup', this._endResize);
 		this._element.stage.off('pointerup', this._endResize);
-		this._element.stage.off('mouseleave', this._endResize)
+		this._element.stage.off('mouseleave', this._endResize);
 		this._element.stage.off('pointermove', this._updateResize);
-	}
+	};
 
 	/**
 	 * Shows or hides the transform box graphic depending on the value of the `visible` parameter.
@@ -504,5 +515,5 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 	 */
 	public displayGraphic = (value: boolean) => {
 		this._transformBox.graphic.visible = value;
-	}
+	};
 }
