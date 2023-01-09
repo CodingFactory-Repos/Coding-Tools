@@ -1,7 +1,7 @@
 export interface AgilityStore {
 	metaProjects: Array<AgilityProjectMetaDetails>;
 	metaTemplates: Array<AgilityTemplateMetaDetails>;
-	currentProject: any;
+	currentProject: unknown;
 }
 
 export interface AgilityProjectMeta {

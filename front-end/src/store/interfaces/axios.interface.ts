@@ -1,3 +1,3 @@
-export type IStatus<I = {}> = I & {
+export type IStatus<I = Object> = I & {
 	status: string;
 };
