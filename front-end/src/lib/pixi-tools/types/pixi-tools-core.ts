@@ -82,6 +82,9 @@ interface PixiObjectDefinition {
 	y: number;
 }
 
+/**
+ * An interface representing a set of plugins for manipulating PixiObjects.
+ */
 export interface PixiObjectPluggin {
 	dragPlugin: DragPlugin<PixiObject>;
 	selectPlugin: SelectPlugin<PixiObject>;
