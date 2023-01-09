@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[disabled] {
+	@apply bg-zinc-400 hover:bg-zinc-400 dark:bg-zinc-400 dark:hover:bg-zinc-400 dark:text-white dark:hover:text-white;
+	background-image: none;
+}
