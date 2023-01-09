@@ -8,6 +8,7 @@
 /.github/workflows/auto_develop_G7.yml @Loule95450
 /.github/workflows/auto_develop_G8.yml @Loule95450
 /.github/workflows/auto_merge.yml @Loule95450
+/.gitignore @Maghwyn
 /back-end/ @Maghwyn
 /back-end/.eslintrc.js @AyakorK @Loule95450
 /back-end/src/auth/auth.service.ts @AyakorK @Loule95450
