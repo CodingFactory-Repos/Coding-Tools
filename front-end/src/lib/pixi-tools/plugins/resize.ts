@@ -491,6 +491,10 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 
 		this._element.dispatch.off('selectUpdated', (value: boolean) => this.displayGraphic(value));
 		this._element.dispatch.off('scaleUpdated', this._updateTransformBoxPosition);
+		this._element.off('pointerup', this._endResize);
+		this._element.stage.off('pointerup', this._endResize);
+		this._element.stage.off('mouseleave', this._endResize)
+		this._element.stage.off('pointermove', this._updateResize);
 	}
 
 	/**
