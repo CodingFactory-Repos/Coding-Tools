@@ -17,7 +17,7 @@ export class StaticRectangle extends StaticGraphics {
 	/**
 	 * The color of the rectangle.
 	 */
-	public color: number = 0xffff99;
+	public color: number;
 
 	/**
 	 * Creates a new StaticRectangle instance with a graphic rectangle shape and awaitng for emitter events.
@@ -28,9 +28,13 @@ export class StaticRectangle extends StaticGraphics {
 
 		const w = props.width || 100;
 		const h = props.height || 100;
+		const x = props.positionX || 0;
+		const y = props.positionY || 0;
 
-		if (props.color)
-			this.color = props.color;
+		this.x = x;
+		this.y = y;
+		this.color = props.color ? props.color : props.color === 0 ? 0 : 0xffff99;
+		if(this.color === 0) this.alpha = 0;
 
 		this.beginFill(this.color);
 		this.drawRoundedRect(0, 0, w, h, 0);
