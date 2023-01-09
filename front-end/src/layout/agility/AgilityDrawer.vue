@@ -5,11 +5,17 @@
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
 					<div class="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
 						<ul class="pb-2 space-y-2">
-							<DrawerRouterOption to="/home" name="Home" :logo="{ name:'logo', size:'24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
+							<li>
+								<DrawerRouterOption to="/home" name="Home" :logo="{ name:'logo', size:'24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
+							</li>
 						</ul>
 						<ul class="pt-2 space-y-2">
-							<DrawerRouterOption to="/agility/dashboard" name="Projects" :logo="{ name: 'project', size: '24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
-							<DrawerRouterOption to="/agility/dashboard/documentation" name="Pixi-Tools Documentation" :logo="{ name: 'api', size: '24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
+							<li>
+								<DrawerRouterOption to="/agility/dashboard" name="Projects" :logo="{ name: 'project', size: '24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
+							</li>
+							<li>
+								<DrawerRouterOption to="/agility/dashboard/documentation" name="Pixi-Tools Documentation" :logo="{ name: 'api', size: '24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>
+							</li>
 						</ul>
 					</div>
 				</div>
