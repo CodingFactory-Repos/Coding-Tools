@@ -78,29 +78,6 @@ export class Scene extends Application {
 		});
 
 		this._viewport.on('zoomed', this._onViewportZoom)
-		// this._viewport.on('mousedown', () => {
-		// 	const vpos = this._viewport.getBounds();
-		// 	const vpos2 = this._viewport.getGlobalPosition();
-		// 	const vpos3 = this._viewport.getLocalBounds();
-			
-		// 	console.log("VIEWPORT BOUNDS::", vpos.x, vpos.y);
-		// 	console.log("VIEWPORT GLOBAL::", vpos2.x, vpos2.y);
-		// 	console.log("VIEWPORT LOCAL::", vpos3.x, vpos3.y);
-		// 	console.log("VIEWPORT", this._viewport.x, this._viewport.y);
-			
-		// 	if(this._viewport.children.length > 0) {
-		// 		const child = this._viewport.children[0];
-		// 		const pos = child.getBounds();
-		// 		const pos2 = child.getGlobalPosition();
-		// 		const pos3 = child.getLocalBounds();
-		// 		console.log(child);
-
-		// 		console.log("CHILD BOUNDS::", pos.x, pos.y);
-		// 		console.log("CHILD GLOBAL::", pos2.x, pos2.y);
-		// 		console.log("CHILD LOCAL::", pos3.x, pos3.y);
-		// 		console.log(child.x, child.y);
-		// 	}
-		// })
 	}
 
 	/**
