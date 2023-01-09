@@ -506,6 +506,7 @@ export class ResizePlugin<T extends PixiObject> extends PixiEvents {
 		this._element.stage.off('pointerup', this._endResize);
 		this._element.stage.off('mouseleave', this._endResize);
 		this._element.stage.off('pointermove', this._updateResize);
+		this._element.isResizing = false;
 	};
 
 	/**
