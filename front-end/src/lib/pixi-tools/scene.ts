@@ -22,12 +22,6 @@ export class Scene extends Application {
 	private readonly _grid: StaticGrid;
 
 	/**
-	 * An array of containers in the scene.
-	 * @public
-	 */
-	public readonly containers: Array<PixiObject> = [];
-
-	/**
 	 * Constructs a new Scene.
 	 * @param canvas - The canvas element to use for rendering.
 	 * @param darkMode - If the website use darkmode, the canvas is in darkmode
@@ -63,7 +57,7 @@ export class Scene extends Application {
 		this.ticker.start();
 
 		canvas.addEventListener('mouseout', () => {
-			for (const container of this.containers) {
+			for (const container of this._viewport.children as Array<PixiObject>) {
 				const isAction = container.isDragging || container.isResizing;
 				if (isAction) {
 					container.isDragging = false;
@@ -84,6 +78,29 @@ export class Scene extends Application {
 		});
 
 		this._viewport.on('zoomed', this._onViewportZoom)
+		// this._viewport.on('mousedown', () => {
+		// 	const vpos = this._viewport.getBounds();
+		// 	const vpos2 = this._viewport.getGlobalPosition();
+		// 	const vpos3 = this._viewport.getLocalBounds();
+			
+		// 	console.log("VIEWPORT BOUNDS::", vpos.x, vpos.y);
+		// 	console.log("VIEWPORT GLOBAL::", vpos2.x, vpos2.y);
+		// 	console.log("VIEWPORT LOCAL::", vpos3.x, vpos3.y);
+		// 	console.log("VIEWPORT", this._viewport.x, this._viewport.y);
+			
+		// 	if(this._viewport.children.length > 0) {
+		// 		const child = this._viewport.children[0];
+		// 		const pos = child.getBounds();
+		// 		const pos2 = child.getGlobalPosition();
+		// 		const pos3 = child.getLocalBounds();
+		// 		console.log(child);
+
+		// 		console.log("CHILD BOUNDS::", pos.x, pos.y);
+		// 		console.log("CHILD GLOBAL::", pos2.x, pos2.y);
+		// 		console.log("CHILD LOCAL::", pos3.x, pos3.y);
+		// 		console.log(child.x, child.y);
+		// 	}
+		// })
 	}
 
 	/**
@@ -105,8 +122,8 @@ export class Scene extends Application {
 			this._grid.dispatch.emit('updated', this.getOptions());
 		} else this._grid.dispatch.emit('cleared');
 
-		for (const container of this.containers) {
-			if (container.isSelected) {
+		for (const container of this._viewport.children as Array<PixiObject>) {
+			if (container.isSelected || container.isHovered) {
 				container.updateOnScale();
 			}
 		}
