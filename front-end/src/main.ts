@@ -1,12 +1,9 @@
-// import '@/config/env.validator';
-
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'flowbite';
 
-import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
 

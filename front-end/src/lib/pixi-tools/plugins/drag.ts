@@ -101,5 +101,6 @@ export class DragPlugin<T extends PixiObject> extends PixiEvents {
 		this._element.off('pointerup', this._stopDrag);
 		this._element.off('pointermove', this._moveDrag);
 		this._element.stage.off('pointermove', this._moveDrag);
+		this._element.isDragging = false;
 	};
 }
