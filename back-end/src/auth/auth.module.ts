@@ -9,11 +9,13 @@ import { UsersModule } from 'src/base/users/users.module';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { AuthEventEmitter } from 'src/auth/events/auth.events';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { MailjetListeners } from 'src/common/providers/mailjet.service';
+import { MailjetListeners } from 'src/common/providers/mailjet.provider';
+import { MailjetModule } from 'src/external-modules/mailjet/mailjet.module';
 
 @Module({
 	imports: [
 		DatabaseModule,
+		MailjetModule,
 		JwtModule.register({
 			secret: config.jwt.secret,
 			signOptions: { expiresIn: '30d' },

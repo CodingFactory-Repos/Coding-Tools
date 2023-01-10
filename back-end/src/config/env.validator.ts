@@ -9,7 +9,16 @@ dotenv.config();
 // \n compatible for macOS and Window
 import { EOL } from 'os';
 
-const envsToCheck = ['PORT', 'WHITELIST', 'FRONT_URL_REDIRECT', 'MONGO_URI', 'MONGO_DBNAME'];
+const envsToCheck = [
+	'PORT',
+	'WHITELIST',
+	'FRONT_URL_REDIRECT',
+	'MONGO_URI',
+	'MONGO_DBNAME',
+	'MAILJET_USER',
+	'MAILJET_PASS',
+	'MAILJET_NOREPLY',
+];
 
 const missing = [];
 for (const checked of envsToCheck) {
