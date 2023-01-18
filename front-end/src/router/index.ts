@@ -13,6 +13,7 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
+			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
 			{
 				name: 'newRetro',
 				path: '/newRetro',
