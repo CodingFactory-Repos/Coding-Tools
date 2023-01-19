@@ -97,6 +97,7 @@
 /front-end/src/vite-env.d.ts @Maghwyn
 /front-end/tailwind.config.cjs @Maghwyn
 /front-end/tsconfig.json @Maghwyn
-/front-end/types/ @Maghwyn
+/front-end/types/index.d.ts @Maghwyn
+/front-end/types/shims-mime.d.ts @Maghwyn
 /front-end/vite.config.ts @Maghwyn
 /SECURITY.md @Maghwyn
