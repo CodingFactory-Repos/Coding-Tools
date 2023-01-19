@@ -8,7 +8,7 @@
 /.github/workflows/auto_develop_G7.yml @Loule95450
 /.github/workflows/auto_develop_G8.yml @Loule95450
 /.github/workflows/auto_merge.yml @Loule95450
-/.gitignore @Maghwyn
+/.gitignore @Loule95450
 /back-end/ @Maghwyn
 /back-end/.eslintrc.js @AyakorK @Loule95450
 /back-end/package-lock.json @Loule95450
@@ -65,18 +65,21 @@
 /front-end/src/components/auth/ @Maghwyn
 /front-end/src/components/HelloWorld.vue @Maghwyn
 /front-end/src/components/Navbar.vue @TheoLandemaine
+/front-end/src/components/pixi-tools/ @Loule95450
 /front-end/src/components/retrospectiveComponents/ @AyakorK
 /front-end/src/components/retrospectiveComponents/ChooseTemplate.vue @Kevw94 @RuKaSuu
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @Kevw94 @RuKaSuu
 /front-end/src/components/retrospectiveComponents/PixieLayout.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/utils/ @Kevw94 @RuKaSuu
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
+/front-end/src/components/Test.vue @Loule95450
 /front-end/src/config/ @Maghwyn
 /front-end/src/config/config.ts @AyakorK
 /front-end/src/images/ @TheoLandemaine
 /front-end/src/layout/AppLayout.vue @TheoLandemaine
 /front-end/src/layout/FooterLayout.vue @Maghwyn
 /front-end/src/layout/HeaderLayout.vue @Maghwyn
+/front-end/src/lib/ @Loule95450
 /front-end/src/main.ts @Maghwyn @TheoLandemaine
 /front-end/src/router/ @Maghwyn
 /front-end/src/router/index.ts @AyakorK @Loule95450
@@ -98,6 +101,8 @@
 /front-end/tailwind.config.cjs @Maghwyn
 /front-end/tsconfig.json @Maghwyn
 /front-end/types/index.d.ts @Maghwyn
+/front-end/types/pixi-event.d.ts @Loule95450
+/front-end/types/pixi-viewport.d.ts @Loule95450
 /front-end/types/shims-mime.d.ts @Maghwyn
 /front-end/vite.config.ts @Maghwyn
 /SECURITY.md @Maghwyn
