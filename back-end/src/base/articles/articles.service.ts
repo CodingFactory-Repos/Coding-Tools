@@ -15,6 +15,11 @@ export class ArticlesService {
 	async addArticle(queryArticle) {
 		return await this.articlesRepository.createArticle(queryArticle);
 	}
+
+	async getArticle() {
+		return await this.articlesRepository.getAllArticles();
+	}
+
 	// Business logic methods goes there...
 	// Define your own methods
 }

@@ -11,6 +11,10 @@ export class ArticlesRepository {
 		return this.db.collection<Article>('articles');
 	}
 
+	async getAllArticles() {
+		return this.articles.find({}).toArray();
+	}
+
 	async createArticle(query: Article) {
 		return this.articles.insertOne(query);
 	}
