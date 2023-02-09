@@ -186,7 +186,7 @@ export default {
 		//Create a POST with axios
 		addArticle() {
 			axios
-				.post('http://localhost:8000/articles/add', {
+				.post('http://localhost:8010/articles/add', {
 					title: this.title,
 					description: this.description,
 					picture: this.picture,
