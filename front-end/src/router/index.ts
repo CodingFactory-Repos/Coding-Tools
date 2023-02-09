@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
 			{ path: '/test', component: () => import('../components/Test.vue') },
 			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
+			{ path: '/blog', component: () => import('../views/DisplayArticleView.vue') },
 			{
 				name: 'newRetro',
 				path: '/newRetro',
