@@ -3,64 +3,49 @@
 /.github/ @Loule95450
 /.gitignore @Loule95450
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
-/back-end/nest-cli.json @Maghwyn @Thomlam
-/back-end/package-lock.json @Maghwyn @Loule95450
-/back-end/src/ @Maghwyn @Thomlam
-/back-end/src/auth/auth.service.ts @AyakorK @Maghwyn @Loule95450
-/back-end/src/auth/dto/auth.dto.ts @Maghwyn @Thomlam
-/back-end/src/auth/strategy/jwt.strategy.ts @Maghwyn @Thomlam
+/back-end/src/auth/auth.service.ts @Maghwyn @AyakorK
+/back-end/src/auth/dto/auth.dto.ts @Maghwyn
+/back-end/src/auth/strategy/jwt.strategy.ts @Maghwyn
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/agileAnalysis/agileAnalysis.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/agileAnalysis/interfaces/agileAnalysis.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
-/back-end/src/base/articles/articles.module.ts @Maghwyn @Thomlam
+/back-end/src/base/articles/articles.module.ts @Maghwyn
 /back-end/src/base/articles/articles.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/calls/ @AyakorK @Loule95450 @Maghwyn
-/back-end/src/base/calls/calls.module.ts @Maghwyn @Thomlam
-/back-end/src/base/calls/calls.repository.ts @Maghwyn @Thomlam
-/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @Thomlam
+/back-end/src/base/calls/calls.module.ts @Maghwyn
+/back-end/src/base/calls/calls.repository.ts @Maghwyn
+/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn @Thomlam
+/back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Loule95450 @Maghwyn
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/materials.module.ts @Maghwyn @Thomlam
+/back-end/src/base/materials/materials.module.ts @Maghwyn
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/README.md @Maghwyn
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/users/dto/users.dto.ts @Maghwyn
 /back-end/src/base/users/events/users.events.ts @Maghwyn
-/back-end/src/base/users/interfaces/users.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/users/users.controller.ts @Maghwyn
-/back-end/src/base/users/users.repository.ts @Maghwyn @Loule95450
-/back-end/src/common/ @Maghwyn
-/back-end/src/common/constants/global.ts @Maghwyn @Thomlam
-/back-end/src/common/constants/README.md @Maghwyn
-/back-end/src/common/decorators/catch.decorator.ts @Maghwyn @Thomlam
-/back-end/src/common/decorators/README.md @Maghwyn
-/back-end/src/common/guards/auth.guard.ts @Maghwyn @Thomlam
-/back-end/src/common/helpers/string.helpes.ts @AyakorK @Maghwyn @Loule95450
-/back-end/src/common/providers/interfaces/events.interface.ts @Maghwyn @Thomlam
-/back-end/src/common/providers/mailjet.service.ts @Maghwyn @Thomlam
-/back-end/src/config/ @Maghwyn
+/back-end/src/base/users/interfaces/users.interface.ts @Maghwyn
+/back-end/src/common/guards/auth.guard.ts @Maghwyn
+/back-end/src/common/providers/interfaces/events.interface.ts @Maghwyn
 /back-end/src/config/config.ts @Maghwyn @AyakorK
 /back-end/src/config/cors.ts @Maghwyn @TheoLandemaine
-/back-end/src/config/interface/config.interface.ts @AyakorK @Maghwyn @Loule95450
-/back-end/src/external-modules/database/mongo.module.ts @Maghwyn @Thomlam
-/back-end/src/external-modules/mailjet/mailjet.module.ts @Maghwyn @Thomlam
-/back-end/tsconfig.build.json @Maghwyn @Thomlam
+/back-end/src/config/interface/config.interface.ts @Maghwyn @AyakorK
+/back-end/src/external-modules/database/mongo.module.ts @Maghwyn
+/back-end/src/external-modules/mailjet/mailjet.module.ts @Maghwyn
 /back-end/types/index.d.ts @Maghwyn
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
 /front-end/index.html @TheoLandemaine
