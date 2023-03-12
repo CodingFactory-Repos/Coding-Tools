@@ -52,7 +52,7 @@
 /front-end/package-lock.json @Loule95450 @Maghwyn
 /front-end/package.json @Loule95450 @Maghwyn
 /front-end/public/favicon.ico @Maghwyn
-/front-end/src/App.vue @TheoLandemaine
+/front-end/src/App.vue @TheoLandemaine @Maghwyn
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
 /front-end/src/components/Navbar.vue @TheoLandemaine
@@ -65,24 +65,22 @@
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/config/env.validator.ts @Maghwyn
 /front-end/src/images/ @TheoLandemaine
-/front-end/src/layout/AppLayout.vue @TheoLandemaine
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/css/index.css @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/js/index.js @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/media/favicon.ico @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/search.json @Loule95450
 /front-end/src/lib/pixi-tools/docs/class/Scene.html @Loule95450
-/front-end/src/main.ts @Maghwyn @TheoLandemaine
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Maghwyn @Loule95450 @AyakorK
 /front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/styles/scss/config.scss @Maghwyn
 /front-end/src/styles/style.css @TheoLandemaine
 /front-end/src/utils/helpers/string.helper.ts @Maghwyn
+/front-end/src/views/ @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/AboutView.vue @Maghwyn
 /front-end/src/views/AgilityView.vue @AyakorK @Loule95450 @RuKaSuu
-/front-end/src/views/MaterialsView.vue @RuKaSuu @AyakorK
-/front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
-/front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/RollCall.vue @AyakorK @Iagomorph
 /front-end/tailwind.config.cjs @TheoLandemaine
 /front-end/types/pixi-event.d.ts @Loule95450
