@@ -1,73 +1,56 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import {
-	canEnterAskValidation,
-	canEnterResetPassword,
-	canEnterAccountValidated,
-} from '@/router/guard';
 
 const routes: Array<RouteRecordRaw> = [
 	{
+		/**
+		 * This path contains every pages that aren't locked behind the signin.
+		 * This includes, hero, signin, signup, about and that's it.
+		 */
 		path: '/',
-		component: () => import('../layout/app/AppLayout.vue'),
-		children: [
-			{ path: '/about', component: () => import('../views/AboutView.vue') },
-			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
-			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
-			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
-			{
-				name: 'newRetro',
-				path: '/newRetro',
-				component: () => import('../views/NewRetrospective.vue'),
-			},
-		],
-	},
-	{
-		path: '/home', //! Later in the future, this path will be '/' and the old '/' will become '/app'
 		component: () => import('../layout/home/HomeLayout.vue'),
 		children: [
 			{ path: '', component: () => import('../views/home/HomeView.vue') },
+			{ path: '/about', component: () => import('../views/AboutView.vue') },
 			{ path: 'signin', component: () => import('../views/home/AuthView.vue') },
 			{ path: 'signup', component: () => import('../views/home/AuthView.vue') },
-			{ path: 'ask-reset', component: () => import('../views/home/AskReset.vue') },
-			{
-				name: 'ask-validate',
-				path: 'ask-validate',
-				component: () => import('../views/home/AskValidation.vue'),
-				beforeEnter: canEnterAskValidation,
-			},
-			{
-				path: 'activated',
-				component: () => import('../views/home/AccountValidated.vue'),
-				beforeEnter: canEnterAccountValidated,
-			},
-			{
-				path: 'reset',
-				component: () => import('../views/home/ResetPassword.vue'),
-				beforeEnter: canEnterResetPassword,
-			},
-		],
+		]
 	},
 	{
-		path: '/agility',
+		/**
+		 * This path contains every pages that are locked behind the signin and not accesible by the public.
+		 * This includes agility, rollcall, materials, retrospective, blog, ...
+		 */
+		path: '/app',
+		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
+			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
+			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+			{ path: 'retrospective', component: () => import('../views/Retrospective.vue') },
+			//! This is not valid, please fix.
+			{ path: 'blog/addArticle', component: () => import('../views/AddArticleView.vue') },
+			//! This is not valid, don't use camelCase, please fix.
+			{ path: 'newRetro', component: () => import('../views/NewRetrospective.vue') },
 			{
-				path: 'dashboard',
-				component: () => import('../layout/agility/AgilityLayout.vue'),
+				path: '/agility',
 				children: [
-					{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
 					{
-						path: 'documentation',
-						component: () => import('../components/agility/AgilityDocumentation.vue'),
+						path: 'dashboard',
+						component: () => import('../layout/agility/AgilityLayout.vue'),
+						children: [
+							{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
+							{
+								path: 'documentation',
+								component: () => import('../components/agility/AgilityDocumentation.vue'),
+							},
+						],
+					},
+					{
+						path: 'project/:slug',
+						component: () => import('../views/agility/AgilityProject.vue'),
 					},
 				],
 			},
-			{
-				path: 'project/:slug',
-				component: () => import('../views/agility/AgilityProject.vue'),
-			},
-		],
+		]
 	},
 	// Always leave it as last one.
 	{
