@@ -1,8 +1,8 @@
 <template>
 	<footer class="p-4 bg-gray-100 shadow md:px-6 md:py-6 dark:bg-gray-900">
-		<div class="sm:flex sm:items-center sm:justify-between">
+		<div class="flex items-center justify-between">
 			<RouterLink to="/" class="flex items-center">
-				<SvgLogo width="198" height="30"/>
+				<SvgLogo class="flex"/>
 			</RouterLink>
 		</div>
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />

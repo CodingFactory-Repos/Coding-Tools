@@ -1,10 +1,10 @@
 <template>
-	<div class="fixed py-3 px-3 lg:px-5 w-full shadow-md z-40 bg-white dark:bg-gray-800">
+	<div class="fixed py-3 px-5 w-full shadow-md z-40 bg-white dark:bg-gray-800">
 		<div class="flex justify-between items-center">
 			<div class="flex justify-start items-center">
 				<RouterLink to="/" class="flex items-center gap-1">
-					<SvgLogo class="lg:flex hidden" width="198" height="30"/>
-					<SvgLogoMinified class="lg:hidden"/>
+					<SvgLogo class="sm:flex hidden"/>
+					<SvgLogoMinified class="sm:hidden"/>
 				</RouterLink>
 			</div>
 			<div class="flex items-center gap-3">

@@ -2,7 +2,7 @@
 	<div class="view">
 		<HeaderLayout></HeaderLayout>
 
-		<div class="content pt-12 pb-12">
+		<div class="content mt-16 py-12 px-8 bg-white dark:bg-gray-800">
 			<router-view></router-view>
 		</div>
 
