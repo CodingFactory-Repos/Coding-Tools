@@ -1,5 +1,3 @@
-// import '@/config/env.validator';
-
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';

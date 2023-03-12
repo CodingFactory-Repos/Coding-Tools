@@ -15,7 +15,6 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ path: '/test', component: () => import('../components/Test.vue') },
 			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
 			{
 				name: 'newRetro',
@@ -50,7 +49,26 @@ const routes: Array<RouteRecordRaw> = [
 			},
 		],
 	},
-
+	{
+		path: '/agility',
+		children: [
+			{
+				path: 'dashboard',
+				component: () => import('../layout/agility/AgilityLayout.vue'),
+				children: [
+					{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
+					{
+						path: 'documentation',
+						component: () => import('../components/agility/AgilityDocumentation.vue'),
+					},
+				],
+			},
+			{
+				path: 'project/:slug',
+				component: () => import('../views/agility/AgilityProject.vue'),
+			},
+		],
+	},
 	// Always leave it as last one.
 	{
 		path: '/:catchAll(.*)*',
