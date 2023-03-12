@@ -10,6 +10,7 @@ import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
 
+//! Welcome to hell, bugfixes incoming
 // If you want to login before the application start, add a call here and store the data in the auth.store
 // After the response, boot the application.
 
