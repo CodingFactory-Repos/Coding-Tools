@@ -12,5 +12,5 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const isSignIn = computed(() => route.path === '/signin');
+const isSignIn = computed(() => route.path === '/home/signin');
 </script>

@@ -1,17 +1,6 @@
 <template>
 	<section>
 		<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-			<a
-				href="#"
-				class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-			>
-				<img
-					class="w-8 h-8 mr-2"
-					src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-					alt="logo"
-				/>
-				LOGO
-			</a>
 			<div
 				class="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700"
 			>
@@ -55,21 +44,23 @@
 							/>
 						</div>
 						<div class="flex items-center justify-between">
-							<a href="#" class="text-sm font-medium hover:underline text-gray-900 dark:text-white"
-								>Forgot password?</a
+							<RouterLink
+								to="/home/ask-reset"
+								class="text-sm font-medium hover:underline text-gray-900 dark:text-white"
+								>Forgot password?</RouterLink
 							>
 						</div>
 						<button
-							class="bg-sky-700 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded-lg focus:ring-4 focus:outline-none focus:ring-primary-300"
+							class="gradiant text-white font-bold py-2 px-4 rounded-lg focus:ring-4 focus:outline-none focus:ring-primary-300"
 						>
-							Button
+							Log me in
 						</button>
 						<p class="text-sm font-light text-gray-500 dark:text-gray-400">
 							Don't have an account yet?
-							<router-link
-								to="/signup"
+							<RouterLink
+								to="/home/signup"
 								class="font-medium text-primary-600 hover:underline text-sky-800 dark:text-primary-500"
-								>Sign up</router-link
+								>Sign up</RouterLink
 							>
 						</p>
 					</form>
@@ -84,10 +75,12 @@ import { isEmpty } from '@/utils/helpers/string.helper';
 import { defineComponent, reactive } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
+		const router = useRouter();
 
 		const defaultReactive = {
 			password: '',
@@ -97,7 +90,7 @@ export default defineComponent({
 		const error = reactive(defaultReactive);
 		const signin = reactive(defaultReactive);
 
-		const trySubmit = () => {
+		const trySubmit = async () => {
 			let isValid = true;
 
 			if (isEmpty(signin.email)) {
@@ -114,7 +107,10 @@ export default defineComponent({
 
 			error.email = defaultReactive.email;
 			error.password = defaultReactive.password;
-			authStore.trySignin(signin);
+			const redirect = await authStore.trySignin(signin);
+			if (redirect) {
+				router.push('/');
+			}
 		};
 
 		return {

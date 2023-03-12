@@ -1,17 +1,6 @@
 <template>
 	<section>
 		<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-			<a
-				href="#"
-				class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-			>
-				<img
-					class="w-8 h-8 mr-2"
-					src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-					alt="logo"
-				/>
-				LOGO
-			</a>
 			<div
 				class="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700"
 			>
@@ -83,16 +72,16 @@
 							/>
 						</div>
 						<button
-							class="bg-sky-700 hover:bg-sky-600 text-white font-bold mt-5 py-2 px-4 rounded-lg focus:ring-4 focus:outline-none focus:ring-primary-300"
+							class="gradiant text-white font-bold mt-5 py-2 px-4 rounded-lg focus:ring-4 focus:outline-none focus:ring-primary-300"
 						>
-							Button
+							Create my account
 						</button>
 						<p class="text-sm font-light text-gray-500 dark:text-gray-400">
 							Already have an account ?
-							<router-link
-								to="/signin"
+							<RouterLink
+								to="/home/signin"
 								class="font-medium text-primary-600 hover:underline text-sky-800 dark:text-primary-500"
-								>Sign in</router-link
+								>Sign in</RouterLink
 							>
 						</p>
 					</form>
@@ -107,10 +96,13 @@ import { isEmpty } from '@/utils/helpers/string.helper';
 import { defineComponent, reactive } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
 	setup() {
 		const authStore = useAuthStore();
+		const router = useRouter();
+		const route = useRoute();
 
 		const defaultReactive = {
 			firstName: '',
@@ -122,7 +114,7 @@ export default defineComponent({
 		const error = reactive(defaultReactive);
 		const signup = reactive(defaultReactive);
 
-		const trySubmit = () => {
+		const trySubmit = async () => {
 			let isValid = true;
 
 			if (isEmpty(signup.firstName)) {
@@ -149,7 +141,12 @@ export default defineComponent({
 
 			error.email = defaultReactive.email;
 			error.password = defaultReactive.password;
-			authStore.trySignup({ ...signup, status: 0 });
+			const redirect = await authStore.trySignup({ ...signup, status: 0 });
+			if (redirect) {
+				// Hack, we store the email in the params of the route (not the url);
+				route.params.email = signup.email;
+				router.push({ name: 'ask-validate' });
+			}
 		};
 
 		return {

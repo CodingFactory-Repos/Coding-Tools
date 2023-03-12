@@ -43,7 +43,7 @@
 								href="#"
 								class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white"
 							>
-								<img src="../images/CodingToolsLogo.png" class="h-32" alt="" />
+								<img src="src/images/CodingToolsLogo.png" class="h-32" alt="" />
 							</a>
 						</li>
 						<li>
@@ -258,7 +258,7 @@
 								href="#"
 								class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white"
 							>
-								<img src="../images/CodingToolsFavicon.png" class="min-w-100 w-[24px]" alt="" />
+								<img src="src/images/CodingToolsFavicon.png" class="min-w-100 w-[24px]" alt="" />
 							</a>
 						</li>
 						<li class="text-center">
@@ -451,16 +451,6 @@
 </template>
 
 <script lang="ts">
-//! Comments for Theo : The DrawerNavBar should not be a component, it should be a layout
-//! It was moved to layout/app/DrawerLayout.vue
-//! And removed from App.vue as this break the whole purpose of "layout".
-
-// Reason 0 : Using it in App.vue break the purpose of using a layout.
-// Reason 1 : You want an app like navigation and visual.
-// Reason 2 : Un-auth users should not have access to the app components. (only the visual, what's the app about)
-// Reason 3 : Signin/Home/Signup/Reset/Activate are all business outside the "app scope".
-// Reason 4 : Even if you remove the item from the nav when not auth, it's then Home Page, Signin, Signup. The drawer is overkill for that task.
-
 export default {
 	data() {
 		return {
