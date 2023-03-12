@@ -15,10 +15,7 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ path: '/test', component: () => import('../components/Test.vue') },
 			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
-			{ path: '/signin', component: () => import('../views/AuthView.vue') },
-			{ path: '/signup', component: () => import('../views/AuthView.vue') },
 			{
 				name: 'newRetro',
 				path: '/newRetro',
