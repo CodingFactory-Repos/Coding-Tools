@@ -6,7 +6,7 @@
 		:class="background"
 	>
 		<slot/>
-		<span class="text-black dark:text-white" :class="textStyle">{{ text }}</span>
+		<span :class="textStyle">{{ text }}</span>
 	</component>
 </template>
 
@@ -17,7 +17,7 @@ defineProps({
 	to: { type: String, required: false },
 	text: { type: String, required: true },
 	type: { type: String, required: false },
-	textStyle: { type: String,required: false },
+	textStyle: { type: String,required: false, default: () => "text-black dark:text-white" },
 	background: { type: String, required: false },
 })
 </script>
