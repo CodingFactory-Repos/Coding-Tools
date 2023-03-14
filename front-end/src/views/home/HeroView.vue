@@ -1,5 +1,14 @@
 <template>
-	<div class="flex items-center justify-center grow">
-		<img class="grow" src="https://codewatchers.com/secure/wp-content/uploads/2022/04/How-To-Add-Background-Masks-And-Patterns-In-A-Hero-Section-In-Divi.jpg">
+	<div class="flex items-center justify-center grow temporary">
+		<h1 class="absolute text-9xl">Hero page</h1>
 	</div>
 </template>
+
+<style>
+.temporary {
+	background-image: url("/img/temporary.jpg");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>
