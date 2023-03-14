@@ -1,3 +1,8 @@
-export type IStatus<I = Record<string, unknown>> = Partial<I> & {
-	status: string;
-};
+export type Status<I = {}> = I & {
+	status: `${STATUS}`;
+}
+
+export enum STATUS {
+	OK = 'ok',
+	ERROR = 'error'
+}
