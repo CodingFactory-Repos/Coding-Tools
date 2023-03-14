@@ -1,10 +1,17 @@
 <template>
-	<div class="grid w-full h-full content-center justify-items-center flex-col">
-		<h2 class="text-5xl w-3/4 font-bold">NOT FOUND 404</h2>
-		<RouterLink
-			to="/home"
-			class="text-white hover:text-white gradiant font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 focus:outline-none"
-			>Take me to safety</RouterLink
-		>
+	<div class="flex flex-col gap-24 w-full h-full justify-center items-center custom-background">
+		<Svg404/>
+		<DefaultButton
+			text="Go back home"
+			to="/"
+			text-style="text-gray-600"
+			background="bg-white"
+		/>
 	</div>
 </template>
+
+
+<script setup lang="ts">
+import DefaultButton from '@/components/common/buttons/Default.vue';
+import Svg404 from '@/components/common/svg/404.vue';
+</script>
