@@ -23,3 +23,7 @@
 .flex-row {
 	@include flex('row', 1rem);
 }
+
+html > body.swal2-height-auto { //! Nope, i refuse to use auto !important.
+	height: 100% !important;
+}
