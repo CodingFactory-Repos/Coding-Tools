@@ -1,50 +1,36 @@
-import { useAuthStore } from '@/store/modules/auth.store';
-import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+export {}
+// import { useAuthStore } from '@/store/modules/auth.store';
+// import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 
-// This file listen to route before enter and route before leave.
-// It manage the access of a route depending on the user permissions.
+// // This file listen to route before enter and route before leave.
+// // It manage the access of a route depending on the user permissions.
 
-export const canEnterAskValidation = (
-	to: RouteLocationNormalized,
-	from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { email } = from.params || {};
-	if (email === undefined) next('/error');
+//! To be reworked with the new sign in / sign up
 
-	to.params.email = email;
-	next();
-};
+// export const canEnterAskValidation = (
+// 	to: RouteLocationNormalized,
+// 	from: RouteLocationNormalized,
+// 	next: NavigationGuardNext,
+// ) => {
+// 	const { email } = from.params || {};
+// 	if (email === undefined) next('/error');
 
-export const canEnterAccountValidated = async (
-	to: RouteLocationNormalized,
-	_from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { token } = to.query || {};
-	if (token === undefined) next('/error');
+// 	to.params.email = email;
+// 	next();
+// };
 
-	const authStore = useAuthStore();
-	const isValid = await authStore.tryAccountActivate(token as string);
-	if (!isValid) next('/error');
+// export const canEnterAccountValidated = async (
+// 	to: RouteLocationNormalized,
+// 	_from: RouteLocationNormalized,
+// 	next: NavigationGuardNext,
+// ) => {
+// 	const { token } = to.query || {};
+// 	if (token === undefined) next('/error');
 
-	to.query = {};
-	next();
-};
+// 	const authStore = useAuthStore();
+// 	const isValid = await authStore.tryAccountActivate(token as string);
+// 	if (!isValid) next('/error');
 
-export const canEnterResetPassword = async (
-	to: RouteLocationNormalized,
-	_from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { token } = to.query || {};
-	if (!token) next('/error');
-
-	const authStore = useAuthStore();
-	const isValid = await authStore.tryCheckResetToken(token as string);
-	if (!isValid) next('/error');
-
-	to.query = {};
-	to.params.token = token as string;
-	next();
-};
+// 	to.query = {};
+// 	next();
+// };
