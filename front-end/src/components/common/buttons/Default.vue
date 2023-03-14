@@ -2,6 +2,7 @@
 	<component
 		:is="to ? RouterLink : 'button'"
 		:to="to"
+		:type="type"
 		class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2"
 		:class="background"
 	>
