@@ -1,6 +1,6 @@
 import argon2 from 'argon2';
 import { v4 as uuidv4 } from 'uuid';
-import { randomBytes } from 'crypto';
+import { randomBytes, randomInt } from 'crypto';
 
 export const generateRandomBuffer = (size: number) => {
 	return randomBytes(size);
@@ -17,6 +17,10 @@ export const generateUUID = () => {
 export const generateRandomToken = () => {
 	return bufferToHex(generateRandomBuffer(16));
 };
+
+export const generateCodeToken = () => {
+	return randomInt(60466176, 2176782335).toString(36);
+}
 
 export const hashPassword = async (password: string, salt: Buffer) => {
 	return argon2.hash(password, { salt });
