@@ -1,11 +1,10 @@
 import { SvgOptions, SvgIcons } from "@/interfaces/svg";
-import { SVGBurger, SVGDark, SVGDefault, SVGFilter, SVGFlagDE, SVGFlagFR, SVGFlagUS, SVGGear, SVGLight, SVGLogo, SVGApi, SVGLogout, SVGProject, SVGAdd, SVGCursor, SVGText, SVGPostIt, SVGShape, SVGFrame, SVGInfo, SVGExpand, SVGMinus, SVGArrows, SVGGroup, SVGDownload, SVGSideBar } from "@/components/common/svg";
+import { SVGDark, SVGDefault, SVGFilter, SVGFlagDE, SVGFlagFR, SVGFlagUS, SVGGear, SVGLight, SVGLogo, SVGApi, SVGLogout, SVGProject, SVGAdd, SVGCursor, SVGText, SVGPostIt, SVGShape, SVGFrame, SVGInfo, SVGExpand, SVGMinus, SVGArrows, SVGGroup, SVGDownload, SVGSideBar } from "@/components/common/svg";
 
 const icons: SvgIcons = Object.create({
 	add:       (data: Partial<SvgOptions>) => <SVGAdd        {...data}/>,
 	api:       (data: Partial<SvgOptions>) => <SVGApi        {...data}/>,
 	arrows:    (data: Partial<SvgOptions>) => <SVGArrows     {...data}/>,
-	burger:    (data: Partial<SvgOptions>) => <SVGBurger     {...data}/>,
 	cursor:    (data: Partial<SvgOptions>) => <SVGCursor     {...data}/>,
 	dark:      (data: Partial<SvgOptions>) => <SVGDark       {...data}/>,
 	download:  (data: Partial<SvgOptions>) => <SVGDownload   {...data}/>,
