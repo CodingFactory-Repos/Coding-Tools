@@ -185,6 +185,11 @@ export default {
 	methods: {
 		//Create a POST with axios
 		addArticle() {
+			//! This will crash the front in case of reject.
+			//! You're also using axios without the instance.
+			//! So with credentials is false and the the cookie token will not be attached to the request.
+			//! Consider using : http.post('/articles/add', { ... })
+			//! And for the catch : addArticle: withErrorHandler(async function() { ... } );
 			axios
 				.post('http://localhost:8000/articles/add', {
 					title: this.title,
