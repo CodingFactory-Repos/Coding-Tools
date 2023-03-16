@@ -24,6 +24,7 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/app',
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
+			{ path: 'account', component: () => import ('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'retrospective', component: () => import('../views/Retrospective.vue') },
