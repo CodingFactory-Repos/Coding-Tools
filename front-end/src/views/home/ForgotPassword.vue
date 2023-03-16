@@ -1,8 +1,8 @@
 <template>
 	<main class="w-full h-full flex items-center justify-center custom-background">
 		<template v-if="token === undefined">
-			<AskEmail @nextStep="nextStep" v-if="state === 1" />
-			<SendEmail :email="email" v-else-if="state === 0" />
+			<AskEmail @nextStep="nextStep" v-if="state === 0" />
+			<SendEmail :email="email" v-else-if="state === 1" />
 		</template>
 		<ResetPassword v-else :token="token"/>
 	</main>
