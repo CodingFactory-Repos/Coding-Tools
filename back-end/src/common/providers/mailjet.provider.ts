@@ -15,50 +15,45 @@ export class MailjetListeners {
 
 	@OnEvent(Events.alertPedago)
 	async handleSingupPo(payload: MailjetEmail) {
-		const { email, firstName } = payload;
-
-		//! We will need to retrieve the email and firstname of each pedago
-		//! Then pass them as recipients
+		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MaijetTemplate.alertPedago,
 			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
-			args: { email: email, firstName: firstName },
+			args: { email },
 		});
 	}
 
 	@OnEvent(Events.accountValidated)
 	async handleAccountValidated(payload: MailjetEmail) {
-		const { email, firstName } = payload;
+		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MaijetTemplate.accountValidated,
-			recipients: [{ Email: email, Name: firstName }],
-			args: { firstName: firstName },
+			recipients: [{ Email: email }],
 		});
 	}
 
 	@OnEvent(Events.askActivationToken)
 	async handleaskActivationToken(payload: MailjetAskToken) {
-		const { email, firstName, token } = payload;
-		const url = `${config.app.redirect}/home/activated?token=${token}`;
+		const { email, token } = payload;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MaijetTemplate.activationToken,
-			recipients: [{ Email: email, Name: firstName }],
-			args: { firstName: firstName, url: url },
+			recipients: [{ Email: email }],
+			args: { code: token },
 		});
 	}
 
 	@OnEvent(Events.askResetToken)
 	async handleaskResetToken(payload: MailjetAskToken) {
-		const { email, firstName, token } = payload;
-		const url = `${config.app.redirect}/home/reset?token=${token}`;
+		const { email, token } = payload;
+		const url = `${config.app.redirect}/forgot-password?token=${token}`;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MaijetTemplate.resetToken,
-			recipients: [{ Email: email, Name: firstName }],
-			args: { firstName: firstName, url: url },
+			recipients: [{ Email: email }],
+			args: { url },
 		});
 	}
 }
