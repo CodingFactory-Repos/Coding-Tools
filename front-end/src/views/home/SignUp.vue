@@ -24,10 +24,18 @@ import AskProfileInfo from '@/components/auth/signup/AskProfileInfo.vue';
 import AskAccountInfo from '@/components/auth/signup/AskAccountInfo.vue';
 import CodeVerification from '@/components/auth/signup/CodeVerification.vue';
 import SuccessVerified from '@/components/auth/signup/SuccessVerified.vue';
+import { onBeforeRouteLeave } from 'vue-router';
+import { useAuthStore } from '@/store/modules/auth.store';
 
 const state = ref(0);
 
 const nextStep = (newState: number) => {
 	state.value = newState
 }
+
+onBeforeRouteLeave(() => {
+	const authStore = useAuthStore();
+	authStore.tempAuthUser = {};
+	authStore.tempEmailUser = "";
+})
 </script>
