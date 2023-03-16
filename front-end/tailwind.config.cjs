@@ -5,5 +5,5 @@ module.exports = {
 		extend: {},
 	},
 	plugins: [require('flowbite/plugin')],
-	purge: ['./src/**/*.js', './src/**/*.html', './src/**/*.vue'],
+	purge: ['./src/**/*.html', './src/**/*.vue'],
 };
