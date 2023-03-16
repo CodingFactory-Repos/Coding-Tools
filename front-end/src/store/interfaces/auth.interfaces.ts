@@ -17,12 +17,12 @@ export interface AuthStore {
 export interface UserCreds {
 	email: string;
 	password: string;
-	userType?: number;
+	role?: number;
 }
 
 export type TempAuthUSer = Partial<UserCreds>;
 
 export interface User {
 	email?: string;
-	userType?: string;
+	role?: string;
 }

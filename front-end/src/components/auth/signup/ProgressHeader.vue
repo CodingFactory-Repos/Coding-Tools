@@ -22,7 +22,7 @@
 				<SvgRoundCheck
 					v-if="state > 1"
 					class="w-4 h-4 mr-2 sm:mb-3 sm:w-6 sm:h-6 sm:mx-auto"
-					:class="{ 'text-[burlywood]': state > 1 }"
+					:class="{ 'fill-[burlywood]': state > 1 }"
 				/>
 				<div v-else class="text-white mr-2 sm:mb-2 sm:mx-auto">2</div>
 				Account Info
@@ -35,7 +35,7 @@
 			<SvgRoundCheck
 				v-if="state > 2"
 				class="w-4 h-4 mr-2 sm:mb-3 sm:w-6 sm:h-6 sm:mx-auto"
-				:class="{ 'text-[burlywood]': state > 2 }"
+				:class="{ 'fill-[burlywood]': state > 2 }"
 			/>
 			<div v-else class="text-white mr-2 sm:mb-2 sm:mx-auto">3</div>
 			Confirmation

@@ -86,15 +86,15 @@ const picked = ref();
 
 // Necessary if the user goes from step 2 to step 1
 onMounted(() => {
-	if (authStore.tempAuthUser.userType !== undefined) {
-		picked.value = authStore.tempAuthUser.userType
+	if (authStore.tempAuthUser.role !== undefined) {
+		picked.value = authStore.tempAuthUser.role
 	}
 })
 
 watch(picked, value => {
 	if (value) {
 		canNextStep.value = true;
-		authStore.tempAuthUser.userType = value
+		authStore.tempAuthUser.role = value
 	}
 })
 </script>

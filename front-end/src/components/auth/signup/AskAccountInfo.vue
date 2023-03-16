@@ -159,7 +159,7 @@ const submitSignup = async () => {
 		const success = await authStore.signup({
 			email: email.value,
 			password: password.value,
-			userType: authStore.tempAuthUser.userType,
+			role: authStore.tempAuthUser.role,
 		})
 
 		if(!success) return errors.apiError = true;

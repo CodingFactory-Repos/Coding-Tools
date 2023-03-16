@@ -20,13 +20,17 @@
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/modules/auth.store';
 import SvgGuard from '@/components/common/svg/Guard.vue';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const signIn = async () => {
-	await authStore.getCurrentUser();
+	const success = await authStore.getCurrentUser();
+	if(!success) return;
+	router.push("/app/account");
 }
 </script>

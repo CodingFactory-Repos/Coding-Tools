@@ -5,7 +5,7 @@
 				Verify your email address
 			</h1>
 			<span class="text-lg font-light text-gray-300 text-center">
-				We emailed you a six-digit code to <span class="font-medium text-gray-900 dark:text-white">{{ emailToSend }}</span>.
+				We emailed you a six-digit code to <span class="font-medium text-white">{{ emailToSend }}</span>.
 			</span>
 			<span class="text-lg font-light text-gray-300 text-center">
 				Enter the code below to confirm your email address.
@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import Swal from 'sweetalert2';
-import { computed, ref, onMounted, nextTick, onUnmounted } from 'vue';
+import { computed, ref, onMounted, nextTick, onUnmounted, watch } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
@@ -79,6 +79,11 @@ const emailToSend = computed(() => authStore.tempEmailUser);
 const canVerifyAccount = ref(false);
 const disableRequestEmail = ref(false);
 const activationToken = ref(["", "", "", "", "", ""]);
+
+watch(activationToken, val => {
+	const code = val.join("");
+	canVerifyAccount.value = code.length === 6;
+})
 
 const addCode = (ev: Event, index: number) => {
 	const input = <HTMLInputElement> ev.target;
