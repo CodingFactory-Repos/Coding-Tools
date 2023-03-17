@@ -37,7 +37,6 @@ const routes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: 'dashboard',
-						component: () => import('../layout/agility/AgilityLayout.vue'),
 						children: [
 							{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
 							{
