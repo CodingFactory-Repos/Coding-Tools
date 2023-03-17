@@ -1,17 +1,14 @@
 <template>
-	<div class="w-auto flex flex-col gap-4 h-full">
+	<div class="w-full flex flex-col gap-4 h-full justify-start items-start">
 		<h1 class="text-2xl font-bold dark:text-gray-400">Your projects</h1>
-		<div v-if="metaProjects.length === 0" class="flex grow relative items-center rounded-xl bg-white dark:bg-gray-800">
-			<div class="w-2/4 p-5">
-				<SVGIllustrationProject :size="300"/>
-			</div>
-			<div class="w-2/4 flex flex-col items-center justify-center gap-5 z-10">
-				<h2 class="text-xl font-bold dark:text-gray-400">Welcome to coding tools agility !</h2>
+		<div v-if="metaProjects.length === 0" class="w-full flex grow relative items-center justify-center">
+			<div class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-white rounded-lg">
 				<h3 class="text-lg font-bold dark:text-gray-400 text-center">Your saved projects will be shown here in the future.</h3>
 				<DefaultButton
 					type="button"
 					text="Start my first project !"
 					background="bg-pink-600"
+					text-style="text-white"
 					@click="startNewProject('default')"
 				/>
 			</div>
@@ -34,7 +31,6 @@ import { useRouter } from 'vue-router';
 
 import { useAgilityStore } from '@/store/modules/agility.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import SVGIllustrationProject from '@/components/common/svg/illustrations/SVGIllustationProject';
 import AgilityProjectCard from '@/components/common/cards/AgilityProjectCard.vue';
 
 const router = useRouter();
@@ -45,11 +41,11 @@ const startNewProject = (key: string) => {
 	// key not used atm
 
 	const id = "fiuofpaiefzufb";
-	router.push(`/agility/project/${id}`);
+	router.push(`/app/agility/project/${id}`);
 }
 
 const openExistingProject = (id: string) => {
 	//id not used atm
-	router.push(`/agility/project/${id}`);
+	router.push(`/app/agility/project/${id}`);
 }
 </script>

@@ -2,58 +2,84 @@
 	<SelectionBox>
 		<template #top>
 			<div class="flex bg-white dark:bg-gray-800 gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
-				<DefaultButton to="/agility/dashboard" text="Dashboard" color="text-white hover:text-white"
-					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500">
-					<SVGLoader v-bind="{ name: 'arrows', size: '20px', color:'fill-white' }"/>	
+				<DefaultButton
+					to="/agility/dashboard"
+					text="Dashboard"
+					text-style="text-white hover:text-white"
+					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
+				>
+					<SvgArrows/>
 				</DefaultButton>
 				<hr class="h-full w-px bg-gray-400" />
-				<DefaultButton @click="activateProjectModal" type="button" :text="meta.title" color="text-gray-400"/>
+				<DefaultButton
+					@click="activateProjectModal"
+					:text="meta.title"
+					type="button"
+					text-style="text-gray-400"
+				/>
 			</div>
 			<div class="flex bg-white dark:bg-gray-800 gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
-				<IconButton type="button"
-					:logo="{ name: 'gear', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<DefaultButton type="button" text="Share" color="text-white hover:text-white"
-					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500">
-					<SVGLoader v-bind="{ name: 'group', size: '22px', color: 'fill-white' }"/>
+				<IconButton type="button">
+					<SvgGear/>
+				</IconButton>
+				<DefaultButton
+					type="button"
+					text="Share"
+					text-style="text-white hover:text-white"
+					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
+				>
+					<SvgGroup/>
 				</DefaultButton>
 			</div>
 		</template>
 		<template #left>
 			<div class="flex flex-col bg-white dark:bg-gray-800 gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
-				<IconButton @click="toggleCursor" type="button"
-					:logo="{ name: 'cursor', size: '24px', color: target === Target.DEFAULT ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton @click="toggleText" type="button"
-					:logo="{ name: 'text', size: '24px', color: target === Target.TEXT ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton @click="togglePostIt" type="button"
-					:logo="{ name: 'postit', size: '24px', color: target === Target.POSTIT ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton @click="toggleFrame" type="button"
-					:logo="{ name: 'frame', size: '24px', color: target === Target.FRAME ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton type="button"
-					:logo="{ name: 'shape', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton type="button" @click="startFocusMode"
-					:logo="{ name: 'default', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton @click="toggleCursor" type="button">
+					<SvgCursor/>
+				</IconButton>
+				<IconButton @click="toggleText" type="button">
+					<SvgText/>
+				</IconButton>
+				<IconButton @click="togglePostIt" type="button">
+					<SvgPostIt/>
+				</IconButton>
+				<IconButton @click="toggleFrame" type="button">
+					<SvgFrame/>
+				</IconButton>
+				<IconButton type="button">
+					<SvgShape/>
+				</IconButton>
+				<IconButton @click="startFocusMode" type="button">
+					<SvgDefault/>
+				</IconButton>
 			</div>
 			<div class="flex flex-col bg-white dark:bg-gray-800 gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
-				<IconButton @click="toggleCursor" type="button"
-					:logo="{ name: 'download', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
-				<IconButton @click="toggleCursor" type="button"
-					:logo="{ name: 'project', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton @click="toggleCursor" type="button">
+					<SvgDownload/>
+				</IconButton>
+				<IconButton @click="toggleCursor" type="button">
+					<SvgProject/>
+				</IconButton>
 			</div>
 		</template>
 		<template #bottom>
 			<div class="flex bg-white dark:bg-gray-800 gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
-				<IconButton type="button"
-					:logo="{ name: 'expand', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton type="button">
+					<SvgExpand/>
+				</IconButton>
 				<hr class="h-full w-px bg-gray-400" />
-				<IconButton type="button"
-					:logo="{ name: 'minus', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton type="button">
+					<SvgMinus/>
+				</IconButton>
 				<span class="font-semibold text-sm">1%</span>
-				<IconButton type="button"
-				:logo="{ name: 'add', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton type="button">
+					<SvgAdd/>
+				</IconButton>
 			</div>
 			<div class="flex bg-white dark:bg-gray-800 gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
-				<IconButton type="button" @click="toggleDrawer"
-					:logo="{ name: 'sidebar', size: '24px', color: false ? 'fill-blue-500 dark:fill-blue-400' : 'fill-[#666666] dark:fill-[#666666]' }" />
+				<IconButton type="button" @click="toggleDrawer">
+					<SvgSideBar/>
+				</IconButton>
 			</div>
 		</template>
 		<template #drawer-right>
@@ -71,11 +97,26 @@ import { computed, ref } from 'vue';
 
 import { useProjectStore } from '@/store/modules/project.store';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
-import SVGLoader from '@/components/common/SVGLoader';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import { Target } from '@/store/interfaces/project.interface';
 import ModalProject from '@/components/agility/modals/Project.vue';
+
+import SvgArrows from '@/components/common/svg/Arrows.vue';
+import SvgGear from '@/components/common/svg/Gear.vue';
+import SvgGroup from '@/components/common/svg/Group.vue';
+import SvgCursor from '@/components/common/svg/Cursor.vue';
+import SvgText from '@/components/common/svg/Text.vue';
+import SvgPostIt from '@/components/common/svg/PostIt.vue';
+import SvgFrame from '@/components/common/svg/Frame.vue';
+import SvgShape from '@/components/common/svg/Shape.vue';
+import SvgDefault from '@/components/common/svg/Default.vue';
+import SvgDownload from '@/components/common/svg/Download.vue';
+import SvgProject from '@/components/common/svg/Project.vue';
+import SvgExpand from '@/components/common/svg/Expand.vue';
+import SvgMinus from '@/components/common/svg/Minus.vue';
+import SvgAdd from '@/components/common/svg/Add.vue';
+import SvgSideBar from '@/components/common/svg/SideBar.vue';
 
 const emit = defineEmits(['update:focus-mode'])
 
