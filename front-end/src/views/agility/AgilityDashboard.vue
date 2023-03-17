@@ -1,6 +1,8 @@
 <template>
-	<AgilityTemplateDisplay/>
-	<AgilityProjectDisplay/>
+	<div class="w-full h-full flex flex-col gap-10 pt-20 p-4">
+		<AgilityTemplateDisplay/>
+		<AgilityProjectDisplay/>
+	</div>
 </template>
 
 <script lang="ts" setup>
