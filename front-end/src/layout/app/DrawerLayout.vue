@@ -1,6 +1,6 @@
 <template>
 	<div class="flex grow justify-start items-start overflow-hidden bg-gray-50 dark:bg-dark-mode-secondary w-full h-full">
-		<aside id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full flex transition-width" :class="{ 'w-64': active, 'lg:w-16 w-0': !active }" aria-label="Sidebar">
+		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full flex transition-width" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
 			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 bg-white border-solid border-r border-gray-200 dark:bg-dark-mode-primary dark:border-gray-700"  :class="{ 'lg:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
 					<div class="w-full flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
@@ -10,8 +10,8 @@
 							</DrawerRouterOption>
 						</ul>
 						<ul class="pt-2 space-y-2">
-							<DrawerRouterOption to="/app/agility" name="Agility" :fold="!active">
-								<SvgAgility/>
+							<DrawerRouterOption to="/app/agility/dashboard" name="Agility" :fold="!active">
+								<SvgProject/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="#" name="Edu Scrum" :fold="!active">
 								<SvgEduScrum/>
@@ -45,8 +45,8 @@
 				</div>
 			</div>
 		</aside>
-		<div id="main-content" class="flex flex-col overflow-y-auto relative w-full h-full bg-gray-50 dark:bg-gray-900 overflow-hidden gap-12 lg:ml-16">
-			<button @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-white p-1 rounded-lg" :class="{ 'left-52': active, 'left-4': !active }">
+		<div id="main-content" class="flex flex-col overflow-y-auto relative w-full h-full bg-gray-100 dark:bg-gray-900 overflow-hidden gap-12 md:ml-16" :class="{ 'ml-0 md:ml-0': isBlacklist }">
+			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-white p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
 				<SvgBurger width="30" height="30" fill="black"/>
 			</button>
 			<slot></slot>
@@ -60,7 +60,7 @@ import DrawerRouterOption from '@/components/common/drawer/RouterOption.vue';
 import ButtonIcon from '@/components/common/buttons/Icon.vue';
 import SvgBurger from '@/components/common/svg/Burger.vue';
 import SvgLogoMinified from '@/components/common/svg/LogoMinified.vue';
-import SvgAgility from '@/components/common/svg/Agility.vue';
+import SvgProject from '@/components/common/svg/Project.vue';
 import SvgEduScrum from '@/components/common/svg/EduScrum.vue';
 import SvgInventory from '@/components/common/svg/Inventory.vue';
 import SvgBlog from '@/components/common/svg/Blog.vue';
@@ -71,6 +71,11 @@ import SvgDark from '@/components/common/svg/Dark.vue';
 import SvgLight from '@/components/common/svg/Light.vue';
 import SvgLogout from '@/components/common/svg/Logout.vue';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const blacklist = [/^\/app\/agility\/project\/([a-z])+/];
+const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path)));
 
 const themeStore = useThemeStore();
 const theme = computed(() => themeStore.theme);
