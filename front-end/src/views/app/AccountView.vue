@@ -6,7 +6,7 @@
 			</div>
 		</div>
 		<div class="flex items-center justify-center px-6 pt-44 h-full w-full z-10">
-			<div class="grow h-full w-full flex flex-col items-center justify-start bg-gray-200 rounded-lg shadow gap-0">
+			<div class="grow w-full flex flex-col items-center justify-start bg-gray-200 rounded-lg shadow gap-0">
 				<div class="w-full flex relative shadow bg-gray-100 rounded-lg flex-col md:flex-row gap-0">
 					<div class="relative min-w-[15rem] w-full md:max-w-[19rem] h-24 flex justify-center items-center z-0">
 						<ButtonIcon class="absolute gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow">
@@ -16,7 +16,7 @@
 							<img class="object-cover h-full w-full" src="https://avatars.githubusercontent.com/u/91219719?v=4">
 						</div>
 					</div>
-					<div class="w-full h-24 flex justify-between py-4 px-4 md:pl-8 md:pr-4 gap-5 md:ml-[-5rem] z-10">
+					<div class="w-full flex justify-between py-4 px-4 md:pl-8 md:pr-4 gap-5 md:ml-[-5rem] z-10">
 						<div class="flex flex-col h-full gap-0 items-start">
 							<span class="text-black font-bold text-lg">Firstname Lastname</span>
 							<span class="text-black text-sm">L2 ALT PARIS</span>
