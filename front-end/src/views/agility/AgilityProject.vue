@@ -1,5 +1,7 @@
 <template>
-	<AgilityCanvas/>
+	<div class="w-full h-full flex flex-col gap-0">
+		<AgilityCanvas/>
+	</div>
 </template>
 
 <script lang="ts" setup>

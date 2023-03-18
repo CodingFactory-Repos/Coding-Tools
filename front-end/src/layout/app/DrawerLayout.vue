@@ -45,7 +45,7 @@
 				</div>
 			</div>
 		</aside>
-		<div id="main-content" class="flex flex-col overflow-y-auto relative w-full h-full bg-gray-100 dark:bg-gray-900 overflow-hidden gap-12" :class="{ 'ml-0': isBlacklist, 'md:ml-16': !isBlacklist }">
+		<div id="main-content" class="flex flex-col overflow-y-auto gap-0 relative w-full h-full bg-gray-100 dark:bg-gray-900 overflow-hidden gap-12" :class="{ 'ml-0': isBlacklist, 'md:ml-16': !isBlacklist }">
 			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-white p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
 				<SvgBurger width="30" height="30" fill="black"/>
 			</button>
