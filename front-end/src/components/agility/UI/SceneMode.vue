@@ -3,7 +3,7 @@
 		<template #top>
 			<div class="flex bg-white dark:bg-gray-800 gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
 				<DefaultButton
-					to="/agility/dashboard"
+					to="/app/agility/dashboard"
 					text="Dashboard"
 					text-style="text-white hover:text-white"
 					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
@@ -137,8 +137,8 @@ const togglePostIt = () => projectStore.setAction("postit", Target.POSTIT);
 const toggleFrame = () => projectStore.setAction("frame", Target.FRAME);
 
 const startFocusMode = () => {
-	projectStore.activateFocusMode();
-	emit("update:focus-mode", true);
+	const res = projectStore.activateFocusMode();
+	if(res) emit("update:focus-mode", true);
 }
 </script>
 

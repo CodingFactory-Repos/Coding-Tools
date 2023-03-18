@@ -1,9 +1,9 @@
 <template>
-	<div class="w-full flex flex-col" style="min-height: 100px;">
+	<div class="w-full flex flex-col gap-0" style="min-height: 100px;">
 		<div class="w-full flex justify-between bg-gray-900">
 			<div class="flex gap-2 p-1 rounded h-12">
 				<DefaultButton
-					to="/agility/dashboard"
+					to="app/agility/dashboard"
 					text="Dashboard"
 					text-style="text-white hover:text-white"
 					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"

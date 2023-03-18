@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js';
+import { Application, EventSystem } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 
 import { ElementOptions, PixiObject } from './types';
@@ -27,6 +27,7 @@ export class Scene extends Application {
 	 * @param darkMode - If the website use darkmode, the canvas is in darkmode.
 	 */
 	constructor(canvas: HTMLCanvasElement, darkMode = false) {
+		console.log(devicePixelRatio)
 		super({
 			view: canvas,
 			width: window.innerWidth,
@@ -34,15 +35,18 @@ export class Scene extends Application {
 			antialias: true,
 			autoDensity: true,
 			backgroundColor: darkMode ? 0x212121 : 0xe5e5e5,
-			resolution: devicePixelRatio,
+			resolution: 1, //! Break the zoom for whatever reason, but it also break the resolution if set to 0
 		});
+
+		const event = new EventSystem(this.renderer);
+		event.domElement = this.renderer.view as HTMLCanvasElement;
 
 		this._viewport = new Viewport({
 			worldWidth: 1000,
 			worldHeight: 1000,
 			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
-			divWheel: this.view as HTMLCanvasElement,
+			events: event,
 		});
 
 		this.viewport.drag().pinch({ percent: 2 }).wheel().decelerate();
