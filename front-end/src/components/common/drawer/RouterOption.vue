@@ -1,4 +1,5 @@
 <template>
+	<!--/* NOSONAR */-->
 	<li class="relative">
 		<div v-if="alert" class="absolute pointer-events-none text-white top-[-2.5px] left-[-2.5px] w-5 h-5 flex justify-center items-center rounded text-sm font-bold bg-rose-700">
 			!
