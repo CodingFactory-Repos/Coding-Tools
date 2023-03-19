@@ -1,16 +1,16 @@
 <template>
 	<SelectionBox>
 		<template #top>
-			<div class="flex bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
+			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
 				<DefaultButton
 					to="/app/agility/dashboard"
 					text="Dashboard"
 					text-style="text-white hover:text-white"
 					background="gradiant"
 				>
-					<SvgArrows/>
+					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
-				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
+				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
 				<DefaultButton
 					@click="activateProjectModal"
 					:text="meta.title"
@@ -18,7 +18,7 @@
 					text-style="text-gray-400"
 				/>
 			</div>
-			<div class="flex bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
+			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
 				<IconButton type="button">
 					<SvgGear/>
 				</IconButton>
@@ -28,12 +28,12 @@
 					text-style="text-white hover:text-white"
 					background="gradiant"
 				>
-					<SvgGroup/>
+					<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
 			</div>
 		</template>
 		<template #left>
-			<div class="flex flex-col bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
+			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
 				<IconButton @click="toggleCursor" type="button">
 					<SvgCursor/>
 				</IconButton>
@@ -53,7 +53,7 @@
 					<SvgDefault/>
 				</IconButton>
 			</div>
-			<div class="flex flex-col bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
+			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
 				<IconButton @click="toggleCursor" type="button">
 					<SvgDownload/>
 				</IconButton>
@@ -63,11 +63,11 @@
 			</div>
 		</template>
 		<template #bottom>
-			<div class="flex bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
+			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
 				<IconButton type="button">
 					<SvgExpand/>
 				</IconButton>
-				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
+				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
 				<IconButton type="button">
 					<SvgMinus/>
 				</IconButton>
@@ -76,14 +76,14 @@
 					<SvgAdd/>
 				</IconButton>
 			</div>
-			<div class="flex bg-light-secondary dark:bg-dark-highlight gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
+			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
 				<IconButton type="button" @click="toggleDrawer">
 					<SvgSideBar/>
 				</IconButton>
 			</div>
 		</template>
 		<template #drawer-right>
-			<div class="h-full bg-light-secondary dark:bg-dark-highlight duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
+			<div class="h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
 				
 			</div>
 		</template>

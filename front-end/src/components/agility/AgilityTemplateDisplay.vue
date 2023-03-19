@@ -25,7 +25,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useAgilityStore } from '@/store/modules/agility.store';
-import AgilityTemplateCard from '@/components/common/cards/AgilityTemplateCard.vue';
+import AgilityTemplateCard from '@/components/agility/cards/AgilityTemplateCard.vue';
 
 const router = useRouter();
 const agilityStore = useAgilityStore();

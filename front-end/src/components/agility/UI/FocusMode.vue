@@ -8,15 +8,15 @@
 					text-style="text-white hover:text-white"
 					background="gradiant"
 				>
-					<SvgArrows />
+					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
-				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
+				<hr class="h-full w-px  bg-light-tertiary dark:bg-dark-tertiary border-none" />
 				<DefaultButton
 					@click="activateProjectModal"
 					type="button" :text="meta.title"
 					text-style="text-gray-400"
 				/>
-				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
+				<hr class="h-full w-px  bg-light-tertiary dark:bg-dark-tertiary border-none" />
 			</div>
 			<div class="flex gap-2 p-1 rounded h-12 items-center">
 				<IconButton type="button">
@@ -28,7 +28,7 @@
 					text-style="text-white hover:text-white"
 					background="gradiant"
 				>
-					<SvgGroup/>
+					<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
 			</div>
 		</div>

@@ -31,7 +31,7 @@ import { useRouter } from 'vue-router';
 
 import { useAgilityStore } from '@/store/modules/agility.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import AgilityProjectCard from '@/components/common/cards/AgilityProjectCard.vue';
+import AgilityProjectCard from '@/components/agility/cards/AgilityProjectCard.vue';
 
 const router = useRouter();
 const agilityStore = useAgilityStore();

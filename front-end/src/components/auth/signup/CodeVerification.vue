@@ -25,7 +25,7 @@
 						maxlength="1"
 						type="text"
 						required
-						class="block text-white w-10 h-10 sm:w-14 sm:h-14 text-2xl sm:text-4xl font-extrabold text-center bg-transparent border border-white rounded-lg py-3 sm:py-4 focus:ring-primary-500 focus:border-primary-500"
+						class="block text-white w-10 h-10 sm:w-14 sm:h-14 text-2xl sm:text-4xl font-extrabold text-center bg-transparent border border-light-primary rounded-lg py-3 sm:py-4 focus:ring-primary-500 focus:border-primary-500"
 						@input="addCode($event, index - 1)"
 						@keydown="keysHandler($event, index - 1)"
 					>

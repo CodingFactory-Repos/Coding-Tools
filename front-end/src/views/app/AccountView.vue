@@ -7,12 +7,12 @@
 		</div>
 		<div class="flex items-center justify-center px-6 pt-44 h-full w-full z-10">
 			<div class="grow w-full flex flex-col items-center justify-start bg-light-tertiary dark:bg-dark-tertiary rounded-lg shadow gap-0">
-				<div class="w-full flex relative shadow bg-light-secondary dark:bg-dark-secondary rounded-lg flex-col md:flex-row gap-0">
+				<div class="w-full flex relative shadow bg-light-primary dark:bg-dark-secondary rounded-lg flex-col md:flex-row gap-0">
 					<div class="relative min-w-[15rem] w-full md:max-w-[19rem] h-24 flex justify-center items-center z-0">
 						<ButtonIcon class="absolute gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow">
-							<SvgEdit/>
+							<SvgEdit class="!fill-light-primary"/>
 						</ButtonIcon>
-						<div class="absolute w-44 h-44 border-8 border-light-primary dark:border-dark-tertiary rounded-full overflow-hidden shadow-md top-[-88px]">
+						<div class="absolute w-44 h-44 border-8 border-light-secondary dark:border-dark-tertiary rounded-full overflow-hidden shadow-md top-[-88px]">
 							<img class="object-cover h-full w-full" src="https://avatars.githubusercontent.com/u/91219719?v=4">
 						</div>
 					</div>
@@ -25,11 +25,11 @@
 						<div class="flex h-full grow gap-3 justify-end items-center">
 							<div class="flex flex-col h-full gap-2 justify-between">
 								<div class="flex gap-3 justify-end">
-									<ButtonIcon class="bg-[#24292E] hover:bg-[#24292E99] shadow">
-										<SvgGithub/>
+									<ButtonIcon class="bg-light-tertiary dark:bg-dark-highlight">
+										<SvgGithub class="dark:fill-white-icon"/>
 									</ButtonIcon>
-									<ButtonIcon class="bg-[#24292E] hover:bg-[#24292E99] shadow">
-										<SvgLinkedin/>
+									<ButtonIcon class="bg-light-tertiary dark:bg-dark-highlight">
+										<SvgLinkedin class="dark:fill-white-icon"/>
 									</ButtonIcon>
 								</div>
 								<div class="flex gap-1 justify-center items-center">
@@ -48,15 +48,15 @@
 						<hr class="w-full h-[1px] border-light-tertiary dark:border-dark-tertiary"/>
 						<div class="grow w-full flex flex-col justify-start items-start gap-2">
 							<div class="flex gap-2 justify-center items-center">
-								<SvgPhone width="30" height="30"/>
+								<SvgPhone width="30" height="30" class="dark:fill-white-icon"/>
 								<span class="text-sm text-black">03 04 05 03 02</span>
 							</div>
 							<div class="flex gap-2 justify-center items-center">
-								<SvgCalendar width="30" height="30"/>
+								<SvgCalendar width="30" height="30" class="dark:fill-white-icon"/>
 								<span class="text-sm text-black">02/12/1999</span>
 							</div>
 							<div class="flex gap-2 justify-center items-center">
-								<SvgMarker width="30" height="30"/>
+								<SvgMarker width="30" height="30" class="dark:fill-white-icon"/>
 								<span class="text-sm text-black">Paris</span>
 							</div>
 						</div>
@@ -75,7 +75,7 @@
 						</div>
 						<div class="flex items-center justify-center">
 							<a href="#" rel="noreferrer" class="w-16 h-16 rounded-lg bg-light-tertiary dark:bg-dark-tertiary flex items-center justify-center cursor-pointer">
-								<SvgLink width="45" height="45" fill="black"/>
+								<SvgLink width="45" height="45"/>
 							</a>
 						</div>
 					</div>

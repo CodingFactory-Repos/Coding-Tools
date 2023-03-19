@@ -34,7 +34,7 @@ export class Scene extends Application {
 			height: window.innerHeight,
 			antialias: true,
 			autoDensity: true,
-			backgroundColor: darkMode ? 0x212121 : 0xe5e5e5,
+			backgroundColor: darkMode ? 0x2c2e3a : 0xe5e5e5,
 			resolution: 1, //! Break the zoom for whatever reason, but it also break the resolution if set to 0
 		});
 
