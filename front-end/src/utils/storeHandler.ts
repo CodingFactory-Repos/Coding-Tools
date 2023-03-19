@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 
-type AsyncFunction = (...args: any[]) => Promise<any>;
+type AsyncFunction = (...args: unknown[]) => Promise<unknown>;
 
 export function withErrorHandler<T extends AsyncFunction> (action: T): (...args: Parameters<T>) => ReturnType<T> | Promise<undefined> {
 	return async function(this: unknown, ...args: Parameters<T>) {
