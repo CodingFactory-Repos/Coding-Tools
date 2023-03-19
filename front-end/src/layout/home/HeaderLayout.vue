@@ -10,10 +10,10 @@
 			<div class="flex items-center gap-3">
 				<template v-if="!isAuth">
 					<ButtonDefault
-					to="/signin"
-					text="Signin"
-					text-style="text-black dark:text-black font-bold text-sm"
-					background="bg-white hover:bg-gray-200"
+						to="/signin"
+						text="Signin"
+						text-style="text-black dark:text-black font-bold text-sm"
+						background="bg-white hover:bg-gray-200"
 					/>
 					<ButtonDefault
 						to="/signup"
