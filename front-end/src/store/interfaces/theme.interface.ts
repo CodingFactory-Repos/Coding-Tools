@@ -1,7 +1,7 @@
-import { WritableComputedRef } from "vue";
+import { WritableComputedRef } from 'vue';
 
 export interface ThemeStore {
-	theme: WritableComputedRef<boolean>,
+	theme: WritableComputedRef<boolean>;
 
 	switchTheme?: () => void;
 }

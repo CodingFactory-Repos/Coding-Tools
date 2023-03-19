@@ -11,7 +11,7 @@ import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
 
-import "@/router/guard";
+import '@/router/guard';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { withErrorHandler } from '@/utils/storeHandler';
 

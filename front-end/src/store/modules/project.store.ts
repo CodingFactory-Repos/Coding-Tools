@@ -51,9 +51,9 @@ export const useProjectStore = defineStore('project', {
 		},
 		activateFocusMode(this: ProjectStore) {
 			const focusedElement = this.scene.viewport.children.find(
-				(el: PixiObject & PixiObjectPluggin) => el.isSelected === true
+				(el: PixiObject & PixiObjectPluggin) => el.isSelected === true,
 			) as PixiObject & PixiObjectPluggin;
-			if(focusedElement === undefined) return false;
+			if (focusedElement === undefined) return false;
 
 			const vp = this.scene.viewport;
 			focusedElement.isFocused = true;
@@ -104,7 +104,7 @@ export const useProjectStore = defineStore('project', {
 		},
 		deactivateFocusMode(this: ProjectStore) {
 			const focusedElement = this.scene.viewport.children.find(
-				(el: PixiObject & PixiObjectPluggin) => el.isFocused
+				(el: PixiObject & PixiObjectPluggin) => el.isFocused,
 			) as PixiObject & PixiObjectPluggin;
 
 			const vp = this.scene.viewport;

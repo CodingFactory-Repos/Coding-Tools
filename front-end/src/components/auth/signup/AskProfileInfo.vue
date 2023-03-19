@@ -26,7 +26,7 @@
 					/>
 					<SvgRoundCheck
 						v-if="picked === 1"
-						class="absolute right-2 fill-green-500"
+						class="absolute right-2 fill-green-500 dark:fill-green-500"
 					/>
 				</label>
 			</div>

@@ -42,7 +42,8 @@ export class AuthController {
 
 	@Post('activate')
 	async activateAccount(@Res() res: Response, @Body() body: DTOActivationToken) {
-		await this.authService.activateAccount(body);
+		const { strategy } = await this.authService.activateAccount(body);
+		res.setHeader('Set-Cookie', createAuthCookie(strategy));
 		return res.status(201).json({ status: 'ok' });
 	}
 

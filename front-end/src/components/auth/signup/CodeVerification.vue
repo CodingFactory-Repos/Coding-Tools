@@ -4,10 +4,10 @@
 			<h1 class="text-2xl font-extrabold leading-tight tracking-tight text-white">
 				Verify your email address
 			</h1>
-			<span class="text-lg font-light light-font text-center">
+			<span class="text-lg font-light text-light-font text-center">
 				We emailed you a six-digit code to <span class="font-medium text-white">{{ emailToSend }}</span>.
 			</span>
-			<span class="text-lg font-light light-font text-center">
+			<span class="text-lg font-light text-light-font text-center">
 				Enter the code below to confirm your email address.
 			</span>
 		</div>
