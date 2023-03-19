@@ -147,4 +147,10 @@ export class AuthService {
 		if (user == null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
 		return user;
 	}
+
+	async checkAuth(userId: ObjectId) {
+		const user = await this.usersRepository.userExist({ _id: userId });
+		if (user === null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
+		return user;
+	}
 }

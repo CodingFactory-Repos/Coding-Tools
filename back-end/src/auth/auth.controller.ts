@@ -70,4 +70,11 @@ export class AuthController {
 		const currentUser = await this.authService.retrieveCurrentUser(userId);
 		return res.status(200).json({ status: 'ok', user: currentUser });
 	}
+
+	@Post('token')
+	@UseGuards(JwtAuthGuard)
+	async isAuth(@Jwt() userId: ObjectId, @Res() res: Response) {
+		await this.authService.checkAuth(userId);
+		return res.status(200).json({ status: 'ok' });
+	}
 }
