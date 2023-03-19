@@ -41,7 +41,6 @@ export const useAuthStore = defineStore('auth', {
 			if(res.data.status !== STATUS.OK)
 				throw new Error("The returned status was not expected");
 
-			this.isAuth = true;
 			await this.getCurrentUser!();
 			return true;
 		}),
@@ -86,6 +85,7 @@ export const useAuthStore = defineStore('auth', {
 			if(res.data.status !== STATUS.OK)
 				throw new Error("The returned status was not expected");
 
+			this.isAuth = true;
 			this.user = res.data.user;
 			return true;
 		}),
