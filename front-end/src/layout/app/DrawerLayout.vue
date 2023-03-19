@@ -1,7 +1,7 @@
 <template>
 	<div class="flex grow justify-start items-start overflow-hidden bg-gray-50 dark:bg-dark-mode-secondary w-full h-full">
 		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full flex transition-width" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
-			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 bg-white border-solid border-r border-gray-200 dark:bg-dark-mode-primary dark:border-gray-700"  :class="{ 'lg:border-solid border-none': !active }">
+			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 bg-white border-solid border-r border-gray-200 dark:bg-dark-mode-primary dark:border-gray-700"  :class="{ 'md:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
 					<div class="w-full flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
 						<ul class="pb-2 space-y-2">
@@ -34,7 +34,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full lg:flex" :class="{ 'p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
+				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
 					<ButtonIcon>
 						<SvgLogout/>
 					</ButtonIcon>
