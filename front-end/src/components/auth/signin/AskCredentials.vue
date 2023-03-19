@@ -112,7 +112,8 @@ const submitSignin = async () => {
 		})
 
 		if(!success) {
-			return errors.apiError = true;
+			errors.apiError = true;
+			return;
 		}
 		router.push('/app/account');
 	}

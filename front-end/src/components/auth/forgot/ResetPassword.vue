@@ -84,7 +84,8 @@ const submitNewPassword = async () => {
 	if(!errors.passwordInvalid) {
 		const success = authStore.sendNewPassword(password.value, props.token);
 		if(!success) {
-			return errors.apiError = true;
+			errors.apiError = true;
+			return
 		}
 		router.push('/signin');
 	}

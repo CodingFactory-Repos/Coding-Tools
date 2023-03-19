@@ -163,7 +163,8 @@ const submitSignup = async () => {
 		})
 
 		if(!success) {
-			return errors.apiError = true;
+			errors.apiError = true;
+			return;
 		}
 		emit('nextStep', 2);
 	}
