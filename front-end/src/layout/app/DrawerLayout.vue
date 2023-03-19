@@ -11,25 +11,25 @@
 						</ul>
 						<ul class="pt-2 space-y-2">
 							<DrawerRouterOption to="/app/agility/dashboard" name="Agility" :fold="!active">
-								<SvgProject/>
+								<SvgProject :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/agility') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/scrum" name="Edu Scrum" :fold="!active">
-								<SvgEduScrum/>
+								<SvgEduScrum :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/scrum') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/materials" name="Inventory" :fold="!active">
-								<SvgInventory/>
+								<SvgInventory :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/materials') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/blog" name="Blog" :fold="!active">
-								<SvgBlog/>
+								<SvgBlog :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/blog') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/ressource" name="Ressources" :fold="!active">
-								<SvgResource/>
+								<SvgResource :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/ressource') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/rollcall" name="Attendance" :fold="!active">
-								<SvgQrCode/>
+								<SvgQrCode :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/rollcall') }"/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/retrospective" name="Retrospective" :fold="!active">
-								<SvgNote/>
+								<SvgNote :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/retrospective') }"/>
 							</DrawerRouterOption>
 						</ul>
 					</div>
