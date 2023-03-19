@@ -1,32 +1,32 @@
 <template>
 	<div>
-		<div class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40" @click="closeModal"/>
+		<div class="bg-dark-primary bg-opacity-50 dark:bg-opacity-60 fixed inset-0 z-40" @click="closeModal"/>
 		<div
 			tabindex="-1"
-			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center flex"
+			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full inset-0 h-full justify-center items-center flex"
 		>
-			<div class="relative p-4 w-full h-full md:h-auto" :class="`${modalSizeClasses[size]}`">
+			<div class="relative p-4 w-full h-auto" :class="`${modalSizeClasses[size]}`">
 				<!-- Modal content -->
-				<div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-4">
+				<div class="relative rounded-lg shadow bg-light-primary dark:bg-dark-tertiary p-4">
 
-					<button @click="closeModal" type="button" class="absolute right-2 top-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+					<button @click="closeModal" type="button" class="absolute right-2 top-2 bg-transparent hover:bg-light-secondary dark:hover:bg-dark-tertiary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
 						<slot name="close-icon">
 							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
 						</slot>
 					</button>
 
 					<!-- Modal header -->
-					<div class="rounded-t flex justify-between items-center" :class="$slots.header ? 'border-b border-gray-200 dark:border-gray-600' : ''">
+					<div class="rounded-t flex justify-between items-center" :class="$slots.header ? 'border-b border-light-secondary dark:border-dark-highlight' : ''">
 						<slot name="header" />
 					</div>
 
 					<!-- Modal body -->
-					<div class="py-6" :class="$slots.header ? '' : 'pt-0'">
+					<div :class="$slots.footer ? '!py-6' : ''">
 						<slot name="body" />
 					</div>
 
 					<!-- Modal footer -->
-					<div v-if="$slots.footer" class="pt-6 rounded-b border-gray-200 border-t dark:border-gray-600">
+					<div v-if="$slots.footer" class="pt-6 rounded-b border-t border-light-secondary dark:border-dark-highlight">
 						<slot name="footer" />
 					</div>
 				</div>
@@ -38,26 +38,13 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 
-export type ModalPosition = 'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right';
-export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl';
-
 defineProps({
-	children: {
-		type: Array,
-		default() {
-			return []
-		},
-	},
-	popup: {
-		type: Boolean,
-		default: false,
-	},
 	position: {
-		type: String as PropType<ModalPosition>,
+		type: String as PropType<'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right'>,
 		default: 'center',
 	},
 	size: {
-		type: String as PropType<ModalSize>,
+		type: String as PropType<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'>,
 		default: '2xl',
 	},
 })

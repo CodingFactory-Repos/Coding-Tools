@@ -1,7 +1,7 @@
 <template>
 	<div class="flex w-full h-full absolute pointer-events-none">
 		<div class="p-3 w-full h-full relative flex flex-col justify-between gap-10">
-			<div class="h-12 flex gap-10 justify-between">
+			<div class="w-full h-12 flex gap-10 justify-between">
 				<slot name="top"/>
 			</div>
 			<div class="w-full grow flex justify-between gap-10">
@@ -12,7 +12,7 @@
 					<slot name="right"/>
 				</div>
 			</div>
-			<div class="h-12 flex gap-10 justify-between">
+			<div class="w-full h-12 flex gap-10 justify-between">
 				<slot name="bottom"/>
 			</div>
 		</div>

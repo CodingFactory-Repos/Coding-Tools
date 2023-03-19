@@ -1,5 +1,3 @@
 <template>
-	<div class="view w-auto">
-		<router-view />
-	</div>
+	<router-view />
 </template>

@@ -57,6 +57,12 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 	private _isHovered = false;
 
 	/**
+	 * A flag variable to determine whether the PixiObject is being focused or not.
+	 * @private
+	 */
+	private _isFocused = false;
+
+	/**
 	 * This plugin adds dragging functionality to a PixiObject.
 	 *
 	 * It extends the PixiObject with the `enableDragging` and `disableDragging` methods,
@@ -234,6 +240,14 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 	public set isHovered(value: boolean) {
 		this._isHovered = value;
 		this.updateOnScale();
+	}
+
+	public get isFocused(): boolean {
+		return this._isFocused;
+	}
+
+	public set isFocused(value: boolean) {
+		this._isFocused = value;
 	}
 
 	public get dragPlugin(): DragPlugin<this> {

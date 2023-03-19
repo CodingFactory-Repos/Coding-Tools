@@ -8,19 +8,19 @@ import { Events } from 'src/common/providers/interfaces/events.interface';
 export class AuthEventEmitter {
 	constructor(private eventEmitter: EventEmitter2) {}
 
-	async signupProductOwner(email: string, firstName: string) {
-		this.eventEmitter.emit(Events.alertPedago, new MailjetEmail(email, firstName));
+	async signupProductOwner(email: string) {
+		this.eventEmitter.emit(Events.alertPedago, new MailjetEmail(email));
 	}
 
-	async accountValidated(email: string, firstName: string) {
-		this.eventEmitter.emit(Events.accountValidated, new MailjetEmail(email, firstName));
+	async accountValidated(email: string) {
+		this.eventEmitter.emit(Events.accountValidated, new MailjetEmail(email));
 	}
 
-	async askActivationToken(email: string, firstName: string, token: string) {
-		this.eventEmitter.emit(Events.askActivationToken, new MailjetAskToken(email, firstName, token));
+	async askActivationToken(email: string, token: string) {
+		this.eventEmitter.emit(Events.askActivationToken, new MailjetAskToken(email, token));
 	}
 
-	async askResetToken(email: string, firstName: string, token: string) {
-		this.eventEmitter.emit(Events.askResetToken, new MailjetAskToken(email, firstName, token));
+	async askResetToken(email: string, token: string) {
+		this.eventEmitter.emit(Events.askResetToken, new MailjetAskToken(email, token));
 	}
 }

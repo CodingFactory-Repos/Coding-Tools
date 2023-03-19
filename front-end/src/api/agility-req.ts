@@ -1,13 +1,13 @@
 import { AgilityProjectMeta } from '../store/interfaces/agility.interface';
 
 import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
-import { IStatus } from '@/store/interfaces/axios.interface';
+import { Status } from '@/store/interfaces/axios.interface';
 import { AxiosResponse } from 'axios';
 
 export const apiTryGetTemplatesMeta = () => {
 	// Call
 
-	return Promise.resolve<Partial<AxiosResponse<IStatus<AgilityTemplateMeta>, unknown>>>({
+	return Promise.resolve<Partial<AxiosResponse<Status<AgilityTemplateMeta>, unknown>>>({
 		data: {
 			status: 'ok',
 			metaTemplates: [
@@ -43,7 +43,7 @@ export const apiTryGetTemplatesMeta = () => {
 export const apiTryGetProjectsMeta = () => {
 	// Call
 
-	return Promise.resolve<Partial<AxiosResponse<IStatus<AgilityProjectMeta>, unknown>>>({
+	return Promise.resolve<Partial<AxiosResponse<Status<AgilityProjectMeta>, unknown>>>({
 		data: {
 			status: 'ok',
 			metaProjects: [],

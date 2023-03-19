@@ -1,22 +1,23 @@
 import { ObjectId } from 'mongodb';
 
 export enum Roles {
-	student = 0,
-	productOwner = 1,
-	pedago = 2,
+	student = 1,
+	productOwner = 2,
+	pedago = 3,
 }
 
 export interface User {
 	_id?: ObjectId;
-	status?: Roles;
+	role?: Roles;
 	profile?: UserProfile;
 	hashedPassword?: string;
 	disciplinesTaught?: string;
 	academicYear?: AcademicYear;
 	createdAt?: Date | string;
-	isVerified?: boolean;
 	activationToken?: string;
 	resetToken?: string;
+	isVerified?: boolean;
+	requireAdminValidation?: boolean;
 }
 
 export interface UserProfile {

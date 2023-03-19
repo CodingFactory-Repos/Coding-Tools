@@ -2,16 +2,25 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import 'flowbite';
 
+import 'flowbite';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './styles/scss/config.scss';
+import './styles/scss/glassmorphism.scss';
 import './styles/tailwindcss.css';
 import './styles/style.css';
 import './styles/layout.css';
 
-// If you want to login before the application start, add a call here and store the data in the auth.store
-// After the response, boot the application.
+import "@/router/guard";
+import { useAuthStore } from '@/store/modules/auth.store';
+import { withErrorHandler } from '@/utils/storeHandler';
+
+const authStore = useAuthStore(store);
+
+withErrorHandler(async function () {
+	await authStore.getCurrentUser();
+	bootVueApp();
+})();
 
 function bootVueApp() {
 	const app = createApp(App);
@@ -20,5 +29,3 @@ function bootVueApp() {
 	app.use(store);
 	app.mount('#app');
 }
-
-bootVueApp();
