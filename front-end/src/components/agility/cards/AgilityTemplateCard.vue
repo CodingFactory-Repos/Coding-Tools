@@ -4,7 +4,7 @@
 
 		<img v-if="url" class="w-full h-24 rounded-lg cursor-pointer select" :src="url" :alt="`template_${name}_img`"/>
 		<div v-else class="w-full h-24 gradiant hover:from-violet-800 hover:to-pink-500 rounded-lg flex items-center justify-center cursor-pointer">
-			<SvgAdd/>
+			<SvgAdd class="fill-white-icon dark:fill-white-icon"/>
 		</div>
 
 		<span class="dark:text-gray-400 text-xs font-bold">{{ name }}</span>
