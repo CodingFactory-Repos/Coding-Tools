@@ -71,9 +71,6 @@ export class AuthService {
 		if (!passwordMatch) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
 		const strategy = await this.getTokenStrategy(user._id, user.role);
-		// console.log(user)
-		// const userData = omit(user as User, ["_id", "hashedPassword", "activationToken", "resetToken", "isVerified", "requireAdminValidation"]);
-		// console.log(userData)
 		return { strategy };
 	}
 
@@ -98,9 +95,12 @@ export class AuthService {
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
 		if (data.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
-		const { email } = data.value.profile;
+		const { _id, role, profile } = data.value;
 
-		this.authEventEmitter.accountValidated(email);
+		this.authEventEmitter.accountValidated(profile.email);
+		
+		const strategy = await this.getTokenStrategy(_id, role);
+		return { strategy };
 	}
 
 	async askActivationToken(payload: DTOAuthEmail) {
