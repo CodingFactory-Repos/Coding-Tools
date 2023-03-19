@@ -39,7 +39,7 @@
 			</div>
 			<div class="flex items-center justify-center" v-if="companyLink || companyLogo">
 				<a :href="companyLink" rel="noreferrer" class="w-16 h-16 rounded-lg bg-light-tertiary dark:bg-dark-tertiary flex items-center justify-center cursor-pointer">
-					<img v-if="companyLogo" :src="companyLogo" class="w-[45px] h-[45px]"/>
+					<img v-if="companyLogo" :src="companyLogo" class="w-[45px] h-[45px]" alt="company_logo"/>
 					<SvgLink v-else width="45" height="45"/>
 				</a>
 			</div>
