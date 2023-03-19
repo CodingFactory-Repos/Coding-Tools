@@ -1,4 +1,4 @@
-import { useDark, useToggle } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core';
 import { defineStore } from 'pinia';
 
 import { KeysRequired } from '../../interfaces/advanced-types.interface';
@@ -6,8 +6,8 @@ import { ThemeStore } from '../interfaces/theme.interface';
 import { pick } from '../../utils/object.helper';
 
 const themeStoreDefaultState = (): ThemeStore => ({
-	theme: useDark()
-})
+	theme: useDark(),
+});
 
 export const useThemeStore = defineStore('theme', {
 	state: (): ThemeStore => themeStoreDefaultState(),
@@ -18,10 +18,10 @@ export const useThemeStore = defineStore('theme', {
 			this.theme = currentTheme;
 		},
 		reset(this: ThemeStore, keys?: Array<KeysRequired<ThemeStore>>) {
-			Object.assign(this, keys?.length
-				? pick(themeStoreDefaultState(), keys)
-				: themeStoreDefaultState() // if no keys provided, reset all
+			Object.assign(
+				this,
+				keys?.length ? pick(themeStoreDefaultState(), keys) : themeStoreDefaultState(), // if no keys provided, reset all
 			);
-		}
+		},
 	},
 });

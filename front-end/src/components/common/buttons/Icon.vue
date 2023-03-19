@@ -1,7 +1,8 @@
 <template>
 	<component 
-		:is="to ? RouterLink : 'button'"
+		:is="to ? RouterLink : foreignLink ? 'a' : 'button'"
 		:to="to"
+		:href="url"
 		class="p-2 rounded-lg hover:bg-light-secondary dark:hover:bg-dark-tertiary"
 	>
 		<slot></slot>
@@ -13,6 +14,8 @@ import { RouterLink } from 'vue-router';
 
 defineProps({
 	to: { type: String, required: false },
-	type: { type: String, required: false }
+	type: { type: String, required: false },
+	foreignLink: { type: Boolean, required: false },
+	url: { type: String, required: false },
 })
 </script>

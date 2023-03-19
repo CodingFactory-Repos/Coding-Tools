@@ -21,11 +21,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
 						const parsed = <JwtTokenData>JSON.parse(data);
 						return parsed.token;
-					} catch(err) {
-						if(err instanceof Error) {
+					} catch (err) {
+						if (err instanceof Error) {
 							NestLogger.error(err.message);
 						}
-						return null
+						return null;
 					}
 				},
 			]),

@@ -10,9 +10,9 @@ export interface User {
 	_id?: ObjectId;
 	role?: Roles;
 	profile?: UserProfile;
+	schoolProfile?: UserSchoolProfile;
+	businessProfile?: UserBusinessProfile;
 	hashedPassword?: string;
-	disciplinesTaught?: string;
-	academicYear?: AcademicYear;
 	createdAt?: Date | string;
 	activationToken?: string;
 	resetToken?: string;
@@ -24,10 +24,30 @@ export interface UserProfile {
 	firstName?: string;
 	lastName?: string;
 	email?: string;
+	phone?: string;
 	birthDate?: Date;
-	locationSite?: string;
+	location?: string;
 	linkedinProfile?: string;
+	githubProfile?: string;
+	discordId?: string;
 	profilePicture?: string;
+	profileBackground?: string;
+	profileResume?: string;
+}
+
+export interface UserSchoolProfile {
+	groupeName: string;
+}
+
+export interface UserBusinessProfile {
+	disciplinesTaught: Array<string>;
+	students?: Array<ObjectId>;
+	companyJob: string;
+	companyName: string;
+	companyLink: string;
+	companyLogo: string;
+	workingFrom: Date;
+	workingTo: Date;
 }
 
 export interface PedagoProfile {
@@ -39,6 +59,7 @@ export interface Notifications {
 	// À définir
 }
 
+//! What's the point of this ?
 export interface AcademicYear {
 	title: string;
 	siteLocation: string;
