@@ -6,7 +6,7 @@
 
 <style>
 .temporary {
-	background-image: url("/img/temporary.jpg");
+	background-image: url("/temporary.jpg");
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;

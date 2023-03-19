@@ -18,6 +18,6 @@
 }
 
 .custom-background {
-	background-image: url("img/coding-theme.svg");
+	background-image: url("/coding-theme.svg");
 	@include custom-bg-pos(center center);
 }
