@@ -10,11 +10,11 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../layout/home/HomeLayout.vue'),
 		children: [
 			{ path: '', component: () => import('../views/home/HeroView.vue') },
-			{ path: '/about', component: () => import('../views/home/AboutView.vue') },
-			{ path: 'signin', component: () => import('../views/home/SignIn.vue') },
-			{ path: 'signup', component: () => import('../views/home/SignUp.vue') },
+			{ path: 'about', component: () => import('../views/home/AboutView.vue') },
 			{ path: 'forgot-password', component: () => import('../views/home/ForgotPassword.vue') },
-		]
+			{ path: 'signin', component: () => import('../views/home/SignIn.vue'), meta: { forbiddenAfterAuth: true } },
+			{ path: 'signup', component: () => import('../views/home/SignUp.vue'), meta: { forbiddenAfterAuth: true } },
+		],
 	},
 	{
 		/**
@@ -51,7 +51,10 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-		]
+		],
+		meta: {
+			requiresAuth: true,
+		}
 	},
 	// Always leave it as last one.
 	{
