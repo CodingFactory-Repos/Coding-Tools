@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
 						children: [
 							{
 								path: '',
-								component: () => import('../views/agility/AgilityDashboard.vue') },
+								component: () => import('../views/app/AgilityDashboard.vue') },
 							{
 								path: 'documentation',
 								component: () => import('../components/agility/AgilityDocumentation.vue'),
@@ -58,7 +58,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: 'project/:slug',
-						component: () => import('../views/agility/AgilityProject.vue'),
+						component: () => import('../views/app/AgilityProject.vue'),
 					},
 				],
 			},
