@@ -13,22 +13,22 @@
 							<DrawerRouterOption to="/app/agility/dashboard" name="Agility" :fold="!active">
 								<SvgProject/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="#" name="Edu Scrum" :fold="!active">
+							<DrawerRouterOption to="/app/scrum" name="Edu Scrum" :fold="!active">
 								<SvgEduScrum/>
 							</DrawerRouterOption>
 							<DrawerRouterOption to="/app/materials" name="Inventory" :fold="!active">
 								<SvgInventory/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="/" name="Blog" :fold="!active">
+							<DrawerRouterOption to="/app/blog" name="Blog" :fold="!active">
 								<SvgBlog/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="/" name="Ressources" :fold="!active">
+							<DrawerRouterOption to="/app/ressource" name="Ressources" :fold="!active">
 								<SvgResource/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="/" name="Attendance" :fold="!active">
+							<DrawerRouterOption to="/app/rollcall" name="Attendance" :fold="!active">
 								<SvgQrCode/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="/" name="Retrospective" :fold="!active">
+							<DrawerRouterOption to="/app/retrospective" name="Retrospective" :fold="!active">
 								<SvgNote/>
 							</DrawerRouterOption>
 						</ul>

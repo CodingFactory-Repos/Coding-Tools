@@ -27,7 +27,6 @@ export class Scene extends Application {
 	 * @param darkMode - If the website use darkmode, the canvas is in darkmode.
 	 */
 	constructor(canvas: HTMLCanvasElement, darkMode = false) {
-		console.log(devicePixelRatio)
 		super({
 			view: canvas,
 			width: window.innerWidth,
@@ -35,7 +34,10 @@ export class Scene extends Application {
 			antialias: true,
 			autoDensity: true,
 			backgroundColor: darkMode ? 0x2c2e3a : 0xe5e5e5,
-			resolution: 1, //! Break the zoom for whatever reason, but it also break the resolution if set to 0
+			resolution: 1, //! Break the zoom on for whatever reason.
+			//! 2 : (high quality) -> The wheel area is broken,
+			//! 1 : (bad quality) -> Fine,
+			//! 0 : (shit quality): -> Nope,
 		});
 
 		const event = new EventSystem(this.renderer);

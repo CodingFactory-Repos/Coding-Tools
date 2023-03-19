@@ -27,18 +27,29 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'account', component: () => import ('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: 'retrospective', component: () => import('../views/Retrospective.vue') },
-			//! This is not valid, please fix.
-			{ path: 'blog/addArticle', component: () => import('../views/AddArticleView.vue') },
-			//! This is not valid, don't use camelCase, please fix.
-			{ path: 'newRetro', component: () => import('../views/NewRetrospective.vue') },
+			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'retrospective',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/Retrospective.vue')
+					},
+					{
+						path: 'new',
+						component: () => import('../views/NewRetrospective.vue'),
+					}
+				],
+			},
 			{
 				path: 'agility',
 				children: [
 					{
 						path: 'dashboard',
 						children: [
-							{ path: '', component: () => import('../views/agility/AgilityDashboard.vue') },
+							{
+								path: '',
+								component: () => import('../views/agility/AgilityDashboard.vue') },
 							{
 								path: 'documentation',
 								component: () => import('../components/agility/AgilityDocumentation.vue'),
