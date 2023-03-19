@@ -2,7 +2,7 @@
 	<main class="relative w-full h-full flex items-center justify-center">
 		<div class="absolute top-0 w-full h-80 z-0">
 			<div class="relative w-full h-full flex items-start justify-center overflow-hidden">
-				<img class="absolute object-fill w-full" src="https://weraveyou.com/wp-content/uploads/2022/08/Underground-Party-Rave.jpg">
+				<img class="absolute object-fill w-full" src="https://weraveyou.com/wp-content/uploads/2022/08/Underground-Party-Rave.jpg" alt="user_background">
 			</div>
 		</div>
 		<div class="flex items-center justify-center px-6 pt-44 h-full w-full z-10">
@@ -13,7 +13,7 @@
 							<SvgEdit class="!fill-light-primary"/>
 						</ButtonIcon>
 						<div class="absolute w-44 h-44 border-8 border-light-secondary dark:border-dark-tertiary rounded-full overflow-hidden shadow-md top-[-88px]">
-							<img class="object-cover h-full w-full" src="https://avatars.githubusercontent.com/u/91219719?v=4">
+							<img class="object-cover h-full w-full" src="https://avatars.githubusercontent.com/u/91219719?v=4" alt="user_profile">
 						</div>
 					</div>
 					<div class="w-full flex justify-between py-4 px-4 md:pl-8 md:pr-4 gap-5 md:ml-[-5rem] z-10">

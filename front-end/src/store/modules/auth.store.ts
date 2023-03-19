@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', {
 			if(res.data.status !== STATUS.OK)
 				throw new Error("The returned status was not expected");
 
-			await this.getCurrentUser!();
+			await this.getCurrentUser();
 			return true;
 		}),
 		logout: withErrorHandler(async function(this: AuthStore) {

@@ -111,7 +111,9 @@ const submitSignin = async () => {
 			password: password.value
 		})
 
-		if(!success) return errors.apiError = true;
+		if(!success) {
+			return errors.apiError = true;
+		}
 		router.push('/app/account');
 	}
 }

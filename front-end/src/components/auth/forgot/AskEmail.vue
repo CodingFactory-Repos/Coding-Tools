@@ -80,7 +80,9 @@ const submitForgetPassword = async () => {
 
 	if(!errors.emailInvalid) {
 		const success = await authStore.forgotPassword(email.value);
-		if(!success) return errors.apiError = true;
+		if(!success) {
+			return errors.apiError = true;
+		}
 		emit('nextStep', 1, email.value);
 	}
 }

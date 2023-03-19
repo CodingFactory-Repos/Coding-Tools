@@ -162,7 +162,9 @@ const submitSignup = async () => {
 			role: authStore.tempAuthUser.role,
 		})
 
-		if(!success) return errors.apiError = true;
+		if(!success) {
+			return errors.apiError = true;
+		}
 		emit('nextStep', 2);
 	}
 }
