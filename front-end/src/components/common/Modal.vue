@@ -3,9 +3,9 @@
 		<div class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40" @click="closeModal"/>
 		<div
 			tabindex="-1"
-			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center flex"
+			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full inset-0 h-full justify-center items-center flex"
 		>
-			<div class="relative p-4 w-full h-full md:h-auto" :class="`${modalSizeClasses[size]}`">
+			<div class="relative p-4 w-full h-auto" :class="`${modalSizeClasses[size]}`">
 				<!-- Modal content -->
 				<div class="relative bg-white rounded-lg shadow dark:bg-gray-700 p-4">
 
@@ -21,7 +21,7 @@
 					</div>
 
 					<!-- Modal body -->
-					<div class="py-6" :class="$slots.header ? '' : 'pt-0'">
+					<div>
 						<slot name="body" />
 					</div>
 
@@ -38,26 +38,13 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue';
 
-export type ModalPosition = 'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right';
-export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl';
-
 defineProps({
-	children: {
-		type: Array,
-		default() {
-			return []
-		},
-	},
-	popup: {
-		type: Boolean,
-		default: false,
-	},
 	position: {
-		type: String as PropType<ModalPosition>,
+		type: String as PropType<'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right'>,
 		default: 'center',
 	},
 	size: {
-		type: String as PropType<ModalSize>,
+		type: String as PropType<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'>,
 		default: '2xl',
 	},
 })

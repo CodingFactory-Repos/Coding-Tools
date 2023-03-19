@@ -65,7 +65,7 @@
 		<template #footer>
 			<div class="flex gap-4 justify-center items-center">
 				<DefaultButton
-					@click="restoreProjectMeta()"
+					@click="restoreProjectMeta"
 					type="button"
 					text="Yes"
 					text-style="text-white hover:text-white"
@@ -74,7 +74,7 @@
 				/>
 
 				<DefaultButton
-					@click="saveProjectMeta()"
+					@click="saveProjectMeta"
 					type="button"
 					text="No, save the change"
 					color="text-white hover:text-white"
