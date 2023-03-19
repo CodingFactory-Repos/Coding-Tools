@@ -5,7 +5,7 @@
 			<h1 class="text-2xl font-extrabold leading-tight tracking-tight text-white">
 				Verified
 			</h1>
-			<span class="text-lg font-light text-gray-300 text-center">
+			<span class="text-lg font-light text-light-font text-center">
 				You have successfully verified your account.
 			</span>
 		</div>
@@ -13,7 +13,7 @@
 			@click="signIn"
 			type="button"
 			text="Log in to your account"
-			text-style="text-gray-700 font-bold text-sm"
+			text-style="text-black font-bold text-sm"
 			background="bg-light-primary"
 		/>
 	</div>

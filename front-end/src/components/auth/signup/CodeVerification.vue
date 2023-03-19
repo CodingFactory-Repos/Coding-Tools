@@ -4,10 +4,10 @@
 			<h1 class="text-2xl font-extrabold leading-tight tracking-tight text-white">
 				Verify your email address
 			</h1>
-			<span class="text-lg font-light text-gray-300 text-center">
+			<span class="text-lg font-light light-font text-center">
 				We emailed you a six-digit code to <span class="font-medium text-white">{{ emailToSend }}</span>.
 			</span>
-			<span class="text-lg font-light text-gray-300 text-center">
+			<span class="text-lg font-light light-font text-center">
 				Enter the code below to confirm your email address.
 			</span>
 		</div>
@@ -40,11 +40,11 @@
 					type="button"
 					text="Send me another Email"
 					class="w-full flex flex-col gap-0"
-					text-style="text-gray-600 font-bold text-xs"
+					text-style="text-black font-bold text-xs"
 					background="bg-light-primary hover:bg-light-secondary"
 					:disabled="disableRequestEmail"
 				>
-					<span class="text-gray-600 font-bold text-xs">Email not received ?</span>
+					<span class="text-black font-bold text-xs">Email not received ?</span>
 				</ButtonDefault>
 				<ButtonDefault
 					text="Verify Account"

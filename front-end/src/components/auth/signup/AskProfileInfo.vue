@@ -2,7 +2,7 @@
 	<div class="flex flex-col justify-center items-center w-full">
 		<div class="flex flex-col gap-3 mb-2">
 			<h1 class="text-2xl font-extrabold leading-tight tracking-tight text-white">Tell us about yourself</h1>
-			<span class="text-lg font-light text-gray-300">Are you a student or a product owner ?</span>
+			<span class="text-lg font-light text-light-font">Are you a student or a product owner ?</span>
 		</div>
 		<div class="flex flex-col gap-5 mb-4 w-full max-w-md">
 			<div class="flex w-full">
@@ -22,7 +22,7 @@
 						type="submit"
 						text="I'm a student"
 						class="w-full pointer-events-none"
-						text-style="text-gray-700 font-bold text-sm"
+						text-style="text-black font-bold text-sm"
 					/>
 					<SvgRoundCheck
 						v-if="picked === 1"
@@ -46,11 +46,11 @@
 						type="submit"
 						text="I'm a product owner"
 						class="w-full pointer-events-none pointer"
-						text-style="text-gray-700 font-bold text-sm"
+						text-style="text-black font-bold text-sm"
 					/>
 					<SvgRoundCheck
 						v-if="picked === 2"
-						class="absolute right-2 fill-green-500"
+						class="absolute right-2 fill-green-500 dark:fill-green-500"
 					/>
 				</label>
 			</div>
