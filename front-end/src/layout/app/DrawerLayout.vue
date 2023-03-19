@@ -35,7 +35,7 @@
 					</div>
 				</div>
 				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
-					<ButtonIcon>
+					<ButtonIcon @click="openLogoutModal">
 						<SvgLogout/>
 					</ButtonIcon>
 					<ButtonIcon @click="themeStore.switchTheme">
@@ -49,14 +49,21 @@
 			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-white p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
 				<SvgBurger width="30" height="30" fill="black"/>
 			</button>
+
 			<slot></slot>
 		</div>
+		<ModalLogout v-if="modalLogoutActive" @close="closeLogoutModal"/>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+import { useThemeStore } from '@/store/modules/theme.store';
 import DrawerRouterOption from '@/components/common/drawer/RouterOption.vue';
+import ModalLogout from '@/components/auth/ModalLogout.vue';
+
 import ButtonIcon from '@/components/common/buttons/Icon.vue';
 import SvgBurger from '@/components/common/svg/Burger.vue';
 import SvgLogoMinified from '@/components/common/svg/LogoMinified.vue';
@@ -70,18 +77,27 @@ import SvgNote from '@/components/common/svg/Note.vue';
 import SvgDark from '@/components/common/svg/Dark.vue';
 import SvgLight from '@/components/common/svg/Light.vue';
 import SvgLogout from '@/components/common/svg/Logout.vue';
-import { useThemeStore } from '@/store/modules/theme.store';
-import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const blacklist = [/^\/app\/agility\/project\/([a-z])+/];
-const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path)));
-
 const themeStore = useThemeStore();
-const theme = computed(() => themeStore.theme);
 
+// BlackList is an array of regex where the drawer is hidden;
+const blacklist = [/^\/app\/agility\/project\/([a-z])+/];
+
+const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path)));
+const theme = computed(() => themeStore.theme);
 const active = ref(false);
+const modalLogoutActive = ref(false);
+
 const drawerAction = () => {
 	active.value = !active.value;
+}
+
+const openLogoutModal = () => {
+	modalLogoutActive.value = true;
+}
+
+const closeLogoutModal = () => {
+	modalLogoutActive.value = false;
 }
 </script>
