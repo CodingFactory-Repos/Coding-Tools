@@ -20,7 +20,7 @@ export const generateRandomToken = () => {
 
 export const generateCodeToken = () => {
 	return randomInt(60466176, 2176782335).toString(36);
-}
+};
 
 export const hashPassword = async (password: string, salt: Buffer) => {
 	return argon2.hash(password, { salt });

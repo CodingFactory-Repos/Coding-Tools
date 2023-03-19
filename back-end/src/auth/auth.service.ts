@@ -15,7 +15,11 @@ import { AuthSignup } from '@/auth/interfaces/auth.interface';
 import { Roles, User } from '@/base/users/interfaces/users.interface';
 import { AuthEventEmitter } from '@/auth/events/auth.events';
 import { credentialsPassword } from '@/auth/utils/auth.security';
-import { verifyPassword, generateRandomToken, generateCodeToken } from '@/common/helpers/string.helper';
+import {
+	verifyPassword,
+	generateRandomToken,
+	generateCodeToken,
+} from '@/common/helpers/string.helper';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 import { PROJECTION_CURRENT_USER } from '@/auth/utils/auth.projection';
 
@@ -48,14 +52,14 @@ export class AuthService {
 			hashedPassword,
 			activationToken,
 		};
-		
+
 		//! This will send a validation email to the admin.
 		//! The PO will be able to use the website as a student in the meantime.
 		if (user.role === Roles.productOwner) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupProductOwner(email);
 		}
-		
+
 		this.usersRepository.createUser(newUser);
 		this.authEventEmitter.askActivationToken(email, activationToken);
 	}
@@ -98,7 +102,7 @@ export class AuthService {
 		const { _id, role, profile } = data.value;
 
 		this.authEventEmitter.accountValidated(profile.email);
-		
+
 		const strategy = await this.getTokenStrategy(_id, role);
 		return { strategy };
 	}
@@ -144,13 +148,21 @@ export class AuthService {
 
 	async retrieveCurrentUser(userId: ObjectId) {
 		const user = await this.usersRepository.findOne({ _id: userId }, PROJECTION_CURRENT_USER);
-		if (user == null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
+		if (user == null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
 		return user;
 	}
 
 	async checkAuth(userId: ObjectId) {
 		const user = await this.usersRepository.userExist({ _id: userId });
-		if (user === null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
+		if (user === null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
 		return user;
 	}
 }
