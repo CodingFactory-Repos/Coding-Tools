@@ -4,6 +4,6 @@ export const EMAIL_FORMAT = new RegExp(`${FORMAT_EMAIL_RECIPIENT}@${FORMAT_EMAIL
 
 const AT_LEAST_ONE_LETTER = "(?=.*[A-Za-z])" as const;
 const AT_LEAST_ONE_DIGIT = "(?=.*\\d)" as const;
-const AT_LEAST_ONE_SPECIAL_CHAR = "(?=.*[!\"#$%&'()*+,\\-\\/:;<=>?@[\\\\\\]^_\`{|}~\\.])" as const;
-const ALLOWED_CHAR = "[A-Za-z\\d!\"#$%&'()*+,\\-\\/:;<=>?@[\\\\\\]^_\`{|}~\\.]{8,}" as const;
+const AT_LEAST_ONE_SPECIAL_CHAR = "(?=.*[!\"#$%&'()*+,\\-\\/:;<=>?@[\\\\\\]^_`{|}~\\.])" as const;
+const ALLOWED_CHAR = "[A-Za-z\\d!\"#$%&'()*+,\\-\\/:;<=>?@[\\\\\\]^_`{|}~\\.]{8,}" as const;
 export const PASSWORD_FORMAT = new RegExp(`^${AT_LEAST_ONE_LETTER}${AT_LEAST_ONE_DIGIT}${AT_LEAST_ONE_SPECIAL_CHAR}${ALLOWED_CHAR}$`);
