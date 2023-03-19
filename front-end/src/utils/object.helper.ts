@@ -7,7 +7,7 @@ export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pi
 		if (key in obj) acc[key] = obj[key];
 		return acc;
 	}, {} as Pick<T, K>);
-}
+};
 
 /**
 	This function takes an object and an array of keys, and returns a new object that does not
@@ -15,9 +15,9 @@ export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[]): Pi
 */
 export const omit = <T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> => {
 	return Object.keys(obj).reduce((acc, key) => {
-		if(keys.indexOf(key as K) === -1) {
+		if (keys.indexOf(key as K) === -1) {
 			acc[key] = obj[key];
 		}
 		return acc;
 	}, {} as Omit<T, K>);
-}
+};

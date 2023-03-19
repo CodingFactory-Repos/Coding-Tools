@@ -12,8 +12,16 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '', component: () => import('../views/home/HeroView.vue') },
 			{ path: 'about', component: () => import('../views/home/AboutView.vue') },
 			{ path: 'forgot-password', component: () => import('../views/home/ForgotPassword.vue') },
-			{ path: 'signin', component: () => import('../views/home/SignIn.vue'), meta: { forbiddenAfterAuth: true } },
-			{ path: 'signup', component: () => import('../views/home/SignUp.vue'), meta: { forbiddenAfterAuth: true } },
+			{
+				path: 'signin',
+				component: () => import('../views/home/SignIn.vue'),
+				meta: { forbiddenAfterAuth: true },
+			},
+			{
+				path: 'signup',
+				component: () => import('../views/home/SignUp.vue'),
+				meta: { forbiddenAfterAuth: true },
+			},
 		],
 	},
 	{
@@ -24,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/app',
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
-			{ path: 'account', component: () => import ('../views/app/AccountView.vue') },
+			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
@@ -33,12 +41,12 @@ const routes: Array<RouteRecordRaw> = [
 				children: [
 					{
 						path: '',
-						component: () => import('../views/Retrospective.vue')
+						component: () => import('../views/Retrospective.vue'),
 					},
 					{
 						path: 'new',
 						component: () => import('../views/NewRetrospective.vue'),
-					}
+					},
 				],
 			},
 			{
@@ -49,7 +57,8 @@ const routes: Array<RouteRecordRaw> = [
 						children: [
 							{
 								path: '',
-								component: () => import('../views/app/AgilityDashboard.vue') },
+								component: () => import('../views/app/AgilityDashboard.vue'),
+							},
 							{
 								path: 'documentation',
 								component: () => import('../components/agility/AgilityDocumentation.vue'),
@@ -65,7 +74,7 @@ const routes: Array<RouteRecordRaw> = [
 		],
 		meta: {
 			requiresAuth: true,
-		}
+		},
 	},
 	// Always leave it as last one.
 	{
