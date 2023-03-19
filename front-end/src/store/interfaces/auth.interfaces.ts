@@ -23,6 +23,38 @@ export interface UserCreds {
 export type TempAuthUSer = Partial<UserCreds>;
 
 export interface User {
-	email?: string;
 	role?: string;
+	profile?: UserProfile;
+	schoolProfile?: UserSchoolProfile;
+	businessProfile?: UserBusinessProfile;
+}
+
+export interface UserProfile {
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+	phone?: string;
+	birthDate?: Date | string;
+	location?: string;
+	linkedinProfile?: string;
+	githubProfile?: string;
+	discordId?: string;
+	profilePicture?: string;
+	profileBackground?: string;
+	profileResume?: string;
+}
+
+export interface UserSchoolProfile {
+	groupeName: string;
+}
+
+export interface UserBusinessProfile {
+	disciplinesTaught: Array<string>;
+	students?: Array<User>;
+	companyJob: string;
+	companyName: string;
+	companyLink: string;
+	companyLogo: string;
+	workingFrom: Date | string;
+	workingTo: Date | string;
 }
