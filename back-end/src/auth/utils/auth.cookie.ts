@@ -1,7 +1,5 @@
 import cookie from 'cookie';
 
-// import { config } from 'src/config/config';
-
 export const createAuthCookie = (strategy: string) => {
 	return cookie.serialize('token', strategy, {
 		httpOnly: true,
