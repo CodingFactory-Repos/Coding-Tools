@@ -41,7 +41,7 @@
 					text="Send me another Email"
 					class="w-full flex flex-col gap-0"
 					text-style="text-gray-600 font-bold text-xs"
-					background="bg-white hover:bg-gray-200"
+					background="bg-light-primary hover:bg-light-secondary"
 					:disabled="disableRequestEmail"
 				>
 					<span class="text-gray-600 font-bold text-xs">Email not received ?</span>
@@ -52,7 +52,7 @@
 					class="w-full h-12"
 					:class="{ 'cursor-not-allowed': !canVerifyAccount, 'gradiant': canVerifyAccount }"
 					text-style="text-white font-bold text-sm"
-					background="bg-white"
+					background="bg-light-primary"
 					:disabled="!canVerifyAccount"
 				/>
 			</div>

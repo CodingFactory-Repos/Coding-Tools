@@ -1,9 +1,9 @@
 <template>
-	<div class="flex grow justify-start items-start overflow-hidden bg-gray-50 dark:bg-dark-mode-secondary w-full h-full">
-		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full flex transition-width" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
-			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 bg-white border-solid border-r border-gray-200 dark:bg-dark-mode-primary dark:border-gray-700"  :class="{ 'md:border-solid border-none': !active }">
+	<div class="flex grow justify-start items-start overflow-hidden bg-light-primary dark:bg-dark-primary w-full h-full">
+		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full transition-width bg-light-primary dark:bg-dark-primary" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
+			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 border-solid border-r boder-light-secondary dark:border-dark-tertiary"  :class="{ 'md:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
-					<div class="w-full flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
+					<div class="w-full flex-1 px-3 space-y-1 divide-y divide-white-tertiary dark:divide-dark-tertiary overflow-hidden">
 						<ul class="pb-2 space-y-2">
 							<DrawerRouterOption to="/app/account" name="Home" :fold="!active">
 								<SvgLogoMinified width="24" height="24"/>
@@ -45,8 +45,8 @@
 				</div>
 			</div>
 		</aside>
-		<div id="main-content" class="flex flex-col overflow-y-auto gap-0 relative w-full h-full bg-gray-100 dark:bg-gray-900 overflow-hidden gap-12" :class="{ 'ml-0': isBlacklist, 'md:ml-16': !isBlacklist }">
-			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-white p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
+		<div id="main-content" class="flex flex-col overflow-y-auto gap-0 relative w-full h-full overflow-hidden gap-12 bg-light-secondary dark:bg-dark-primary" :class="{ 'ml-0': isBlacklist, 'md:ml-16': !isBlacklist }">
+			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-light-primary dark:bg-dark-tertiary p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
 				<SvgBurger width="30" height="30" fill="black"/>
 			</button>
 

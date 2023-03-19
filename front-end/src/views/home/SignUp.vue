@@ -1,7 +1,7 @@
 <template>
 	<main class="flex w-full custom-background">
 		<div class="w-full flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 h-full">
-			<div class="w-full rounded-lg dark:bg-dark-mode-primary shadow-lg md:mt-0 sm:max-w-2xl xl:p-0 glassmorphism">
+			<div class="w-full rounded-lg shadow-lg md:mt-0 sm:max-w-2xl xl:p-0 glassmorphism">
 				<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 					<ProgressHeader :state="state"/>
 					<div class="lg:flex h-full">

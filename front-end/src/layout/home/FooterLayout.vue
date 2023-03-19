@@ -1,5 +1,5 @@
 <template>
-	<footer class="p-4 bg-gray-100 shadow md:px-6 md:py-6 dark:bg-gray-900">
+	<footer class="p-4 shadow md:px-6 md:py-6 bg-light-primary dark:bg-dark-primary">
 		<div class="flex items-center justify-between">
 			<RouterLink to="/" class="flex items-center">
 				<SvgLogo class="flex"/>

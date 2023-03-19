@@ -16,7 +16,7 @@
 								type="password"
 								name="password"
 								id="password"
-								class="bg-gray-50 border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+								class="bg-light-secondary border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
 								placeholder="jhon.doe@edu.esiee-it.fr"
 								@focus="onNewFocus"
 							/>

@@ -1,5 +1,5 @@
 <template>
-	<div class="fixed py-3 px-5 w-full shadow-md z-40 bg-white dark:bg-gray-800">
+	<div class="fixed py-3 px-5 w-full shadow-md z-40 bg-light-primary dark:bg-dark-primary">
 		<div class="flex justify-between items-center">
 			<div class="flex justify-start items-center">
 				<RouterLink to="/" class="flex items-center gap-1">
@@ -13,7 +13,7 @@
 						to="/signin"
 						text="Signin"
 						text-style="text-black dark:text-black font-bold text-sm"
-						background="bg-white hover:bg-gray-200"
+						background="bg-light-primary hover:bg-light-secondary"
 					/>
 					<ButtonDefault
 						to="/signup"

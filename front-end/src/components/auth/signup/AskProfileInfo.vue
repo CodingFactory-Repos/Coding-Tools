@@ -16,7 +16,7 @@
 					required
 				>
 				<label for="student"
-					class="flex relative w-full cursor-pointer bg-white hover:bg-gray-200 rounded-lg justify-center items-center"
+					class="flex relative w-full cursor-pointer bg-light-primary hover:bg-light-secondary rounded-lg justify-center items-center"
 				>
 					<ButtonDefault
 						type="submit"
@@ -40,7 +40,7 @@
 					class="hidden peer"
 				>
 				<label for="product_owner"
-					class="flex relative w-full cursor-pointer bg-white hover:bg-gray-200 rounded-lg justify-center items-center"
+					class="flex relative w-full cursor-pointer bg-light-primary hover:bg-light-secondary rounded-lg justify-center items-center"
 				>
 					<ButtonDefault
 						type="submit"
@@ -60,7 +60,7 @@
 				class="w-full"
 				:class="{ 'cursor-not-allowed': !canNextStep, 'gradiant': canNextStep }"
 				text-style="text-white font-bold text-sm"
-				background="bg-white"
+				background="bg-light-primary"
 				:disabled="!canNextStep"
 			/>
 		</div>

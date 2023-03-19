@@ -1,22 +1,22 @@
 <template>
 	<div class="w-full flex flex-col gap-0" style="min-height: 100px;">
-		<div class="w-full flex justify-between bg-gray-900">
+		<div class="w-full flex justify-between bg-light-primary dark:bg-dark-primary">
 			<div class="flex gap-2 p-1 rounded h-12">
 				<DefaultButton
-					to="app/agility/dashboard"
+					to="/app/agility/dashboard"
 					text="Dashboard"
 					text-style="text-white hover:text-white"
-					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
+					background="gradiant"
 				>
 					<SvgArrows />
 				</DefaultButton>
-				<hr class="h-full w-px bg-gray-400" />
+				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
 				<DefaultButton
 					@click="activateProjectModal"
 					type="button" :text="meta.title"
 					text-style="text-gray-400"
 				/>
-				<hr class="h-full w-px bg-gray-400" />
+				<hr class="h-full w-px bg-light-secondary dark:bg-dark-tertiary border-none" />
 			</div>
 			<div class="flex gap-2 p-1 rounded h-12 items-center">
 				<IconButton type="button">
@@ -26,13 +26,13 @@
 					type="button"
 					text="Share"
 					text-style="text-white hover:text-white"
-					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
+					background="gradiant"
 				>
 					<SvgGroup/>
 				</DefaultButton>
 			</div>
 		</div>
-		<div class="w-full flex bg-gray-800 items-center h-full px-2">
+		<div class="w-full flex bg-light-secondary dark:bg-dark-tertiary items-center h-full px-2">
 			<div class="w-full flex h-fit">
 				<IconButton type="button" @click="endFocusMode">
 					<SvgDefault/>

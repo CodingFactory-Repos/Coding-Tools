@@ -1,9 +1,9 @@
 <template>
 	<div class="flex grow overflow-hidden pt-16 bg-gray-50 dark:bg-gray-900 w-full">
 		<aside id="sidebar" class="flex hidden fixed top-0 left-0 z-20 flex-col flex-shrink-0 pt-16 w-64 h-full duration-75 lg:flex transition-width lg:w-64" :class="{ 'lg:w-64': active, 'lg:w-16': !active }" aria-label="Sidebar">
-			<div class="flex relative flex-col flex-1 pt-0 min-h-0 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+			<div class="flex relative flex-col flex-1 pt-0 min-h-0 bg-light-primary border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4">
-					<div class="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
+					<div class="flex-1 px-3 space-y-1 bg-light-primary divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 overflow-hidden">
 						<ul class="pb-2 space-y-2">
 							<li>
 								<DrawerRouterOption to="/home" name="Home" :logo="{ name:'logo', size:'24px', color:'dark:fill-gray-400 fill-[#666666]' }" :fold="!active"/>

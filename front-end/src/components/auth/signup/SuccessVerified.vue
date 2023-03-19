@@ -14,7 +14,7 @@
 			type="button"
 			text="Log in to your account"
 			text-style="text-gray-700 font-bold text-sm"
-			background="bg-white"
+			background="bg-light-primary"
 		/>
 	</div>
 </template>

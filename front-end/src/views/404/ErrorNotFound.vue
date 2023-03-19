@@ -5,7 +5,7 @@
 			text="Go back home"
 			to="/"
 			text-style="text-gray-600"
-			background="bg-white"
+			background="bg-light-primary"
 		/>
 	</div>
 </template>

@@ -6,13 +6,13 @@
 			</div>
 		</div>
 		<div class="flex items-center justify-center px-6 pt-44 h-full w-full z-10">
-			<div class="grow w-full flex flex-col items-center justify-start bg-gray-200 rounded-lg shadow gap-0">
-				<div class="w-full flex relative shadow bg-gray-100 rounded-lg flex-col md:flex-row gap-0">
+			<div class="grow w-full flex flex-col items-center justify-start bg-light-tertiary dark:bg-dark-tertiary rounded-lg shadow gap-0">
+				<div class="w-full flex relative shadow bg-light-secondary dark:bg-dark-secondary rounded-lg flex-col md:flex-row gap-0">
 					<div class="relative min-w-[15rem] w-full md:max-w-[19rem] h-24 flex justify-center items-center z-0">
 						<ButtonIcon class="absolute gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow">
 							<SvgEdit/>
 						</ButtonIcon>
-						<div class="absolute w-44 h-44 border-8 border-white rounded-full overflow-hidden shadow-md top-[-88px]">
+						<div class="absolute w-44 h-44 border-8 border-light-primary dark:border-dark-tertiary rounded-full overflow-hidden shadow-md top-[-88px]">
 							<img class="object-cover h-full w-full" src="https://avatars.githubusercontent.com/u/91219719?v=4">
 						</div>
 					</div>
@@ -41,11 +41,11 @@
 					</div>
 				</div>
 				<div class="w-full h-full p-4 flex-col flex-wrap gap-3 items-start">
-					<div class="h-fit flex flex-col w-full sm:w-80 rounded-lg p-4 bg-white gap-5">
+					<div class="h-fit flex flex-col w-full sm:w-80 rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
 						<span class="text-sm font-light text-black">
 							Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste saepe rem eos placeat. Consectetur tempore reprehenderit, deleniti voluptas harum, aut, exercitationem odit animi velit voluptates assumenda officia accusamus eos repudiandae!
 						</span>
-						<hr class="w-full h-[2px]"/>
+						<hr class="w-full h-[1px] border-light-tertiary dark:border-dark-tertiary"/>
 						<div class="grow w-full flex flex-col justify-start items-start gap-2">
 							<div class="flex gap-2 justify-center items-center">
 								<SvgPhone width="30" height="30"/>
@@ -61,7 +61,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="h-fit flex justify-between w-full sm:w-80 rounded-lg p-4 bg-white gap-5">
+					<div class="h-fit flex justify-between w-full sm:w-80 rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
 						<div class="flex flex-col items-start gap-1">
 							<span class="text-sm text-black font-bold">
 								Développeur full stack
@@ -74,9 +74,9 @@
 							</span>
 						</div>
 						<div class="flex items-center justify-center">
-							<button class="w-16 h-16 rounded-lg bg-gray-400 flex items-center justify-center cursor-pointer">
-								<SvgLink width="45" height="45" fill="#e5e7eb"/>
-							</button>
+							<a href="#" rel="noreferrer" class="w-16 h-16 rounded-lg bg-light-tertiary dark:bg-dark-tertiary flex items-center justify-center cursor-pointer">
+								<SvgLink width="45" height="45" fill="black"/>
+							</a>
 						</div>
 					</div>
 				</div>

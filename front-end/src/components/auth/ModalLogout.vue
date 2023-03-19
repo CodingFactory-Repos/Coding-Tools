@@ -8,7 +8,7 @@
 						@click="beforeModalClose"
 						text="Cancel"
 						text-style="text-black dark:text-black font-bold text-sm"
-						background="bg-gray-200 hover:bg-gray-300"
+						background="bg-light-secondary hover:bg-light-tertiary"
 					/>
 					<ButtonDefault
 						@click="logout"

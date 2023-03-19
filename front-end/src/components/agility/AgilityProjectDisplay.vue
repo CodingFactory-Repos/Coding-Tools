@@ -2,7 +2,7 @@
 	<div class="w-full flex flex-col gap-4 h-full justify-start items-start">
 		<h1 class="text-2xl font-bold dark:text-gray-400">Your projects</h1>
 		<div v-if="metaProjects.length === 0" class="w-full flex grow relative items-center justify-center">
-			<div class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-white rounded-lg">
+			<div class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-light-primary dark:bg-dark-tertiary rounded-lg">
 				<h3 class="text-lg font-bold dark:text-gray-400 text-center">Your saved projects will be shown here in the future.</h3>
 				<DefaultButton
 					type="button"

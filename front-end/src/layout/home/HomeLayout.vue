@@ -2,7 +2,7 @@
 	<div class="view">
 		<HeaderLayout></HeaderLayout>
 
-		<div class="content bg-white mt-16 dark:bg-gray-800">
+		<div class="content mt-16 bg-light-primary dark:bg-dark-primary">
 			<router-view></router-view>
 		</div>
 

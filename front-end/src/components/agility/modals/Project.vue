@@ -45,7 +45,7 @@
 				type="button"
 				text="Save"
 				text-style="text-white hover:text-white"
-				background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500"
+				background="gradiant"
 				:disabled="!isFormValid"
 			/>
 		</template>
