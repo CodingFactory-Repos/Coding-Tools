@@ -4,12 +4,12 @@
 			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 border-solid border-r boder-light-secondary dark:border-dark-tertiary"  :class="{ 'md:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
 					<div class="w-full flex-1 px-3 space-y-1 divide-y divide-white-tertiary dark:divide-dark-tertiary overflow-hidden">
-						<ul class="pb-2 space-y-2">
+						<div class="pb-2 space-y-2">
 							<DrawerRouterOption to="/app/account" name="Home" :fold="!active">
 								<SvgLogoMinified width="24" height="24"/>
 							</DrawerRouterOption>
-						</ul>
-						<ul class="pt-2 space-y-2">
+						</div>
+						<div class="pt-2 space-y-2">
 							<DrawerRouterOption to="/app/agility/dashboard" name="Agility" :fold="!active">
 								<SvgProject :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/agility') }"/>
 							</DrawerRouterOption>
@@ -31,7 +31,7 @@
 							<DrawerRouterOption to="/app/retrospective" name="Retrospective" :fold="!active">
 								<SvgNote :class="{ 'fill-selected-icon dark:fill-selected-icon': route.path.startsWith('/app/retrospective') }"/>
 							</DrawerRouterOption>
-						</ul>
+						</div>
 					</div>
 				</div>
 				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
