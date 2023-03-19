@@ -21,7 +21,7 @@
 					</div>
 
 					<!-- Modal body -->
-					<div>
+					<div :class="$slots.footer ? '!py-6' : ''">
 						<slot name="body" />
 					</div>
 
