@@ -1,6 +1,6 @@
 <template>
 	<component 
-		:is="to ? RouterLink : 'button'"
+		:is="to ? RouterLink : foreignLink ? 'a' : 'button'"
 		:to="to"
 		class="p-2 rounded-lg hover:bg-light-secondary dark:hover:bg-dark-tertiary"
 	>
@@ -13,6 +13,7 @@ import { RouterLink } from 'vue-router';
 
 defineProps({
 	to: { type: String, required: false },
-	type: { type: String, required: false }
+	type: { type: String, required: false },
+	foreignLink: { type: Boolean, required: false }
 })
 </script>
