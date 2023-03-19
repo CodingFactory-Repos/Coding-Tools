@@ -1,4 +1,4 @@
-export type Status<I = {}> = I & {
+export type Status<I extends Object = {}> = I & {
 	status: `${STATUS}`;
 }
 
