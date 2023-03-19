@@ -35,22 +35,22 @@
 		<template #left>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
 				<IconButton @click="toggleCursor" type="button">
-					<SvgCursor/>
+					<SvgCursor :class="{ 'fill-selected-icon dark:fill-selected-icon': target === Target.DEFAULT }"/>
 				</IconButton>
 				<IconButton @click="toggleText" type="button">
-					<SvgText/>
+					<SvgText :class="{ 'fill-selected-icon dark:fill-selected-icon': target === Target.TEXT }"/>
 				</IconButton>
 				<IconButton @click="togglePostIt" type="button">
-					<SvgPostIt/>
+					<SvgPostIt :class="{ 'fill-selected-icon dark:fill-selected-icon': target === Target.POSTIT }"/>
 				</IconButton>
 				<IconButton @click="toggleFrame" type="button">
-					<SvgFrame/>
+					<SvgFrame :class="{ 'fill-selected-icon dark:fill-selected-icon': target === Target.FRAME }"/>
 				</IconButton>
 				<IconButton type="button">
 					<SvgShape/>
 				</IconButton>
 				<IconButton @click="startFocusMode" type="button">
-					<SvgDefault/>
+					<SvgFocus/>
 				</IconButton>
 			</div>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
@@ -110,7 +110,7 @@ import SvgText from '@/components/common/svg/Text.vue';
 import SvgPostIt from '@/components/common/svg/PostIt.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgShape from '@/components/common/svg/Shape.vue';
-import SvgDefault from '@/components/common/svg/Default.vue';
+import SvgFocus from '@/components/common/svg/Focus.vue';
 import SvgDownload from '@/components/common/svg/Download.vue';
 import SvgProject from '@/components/common/svg/Project.vue';
 import SvgExpand from '@/components/common/svg/Expand.vue';

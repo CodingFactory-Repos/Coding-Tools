@@ -3,7 +3,7 @@
 		<template #body>
 			<div class="flex gap-10">
 				<form class="flex flex-col gap-3">
-					<div class="max-w-[14rem]">
+					<div class="max-w-[14rem] w-full">
 						<input
 							@input="updateTitle"
 							ref="formTitle"
@@ -13,7 +13,7 @@
 							maxlength="25"
 						>
 					</div>
-					<div class="max-w-[14rem]">
+					<div class="max-w-[14rem] w-full">
 						<textarea
 							@input="updateDescription"
 							ref="formDesc"
