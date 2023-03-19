@@ -8,18 +8,28 @@
 				</RouterLink>
 			</div>
 			<div class="flex items-center gap-3">
-				<ButtonDefault
+				<template v-if="!isAuth">
+					<ButtonDefault
 					to="/signin"
 					text="Signin"
 					text-style="text-black dark:text-black font-bold text-sm"
 					background="bg-white hover:bg-gray-200"
-				/>
-				<ButtonDefault
-					to="/signup"
-					text="Signup"
-					text-style="text-white dark:text-white font-bold text-sm"
-					background="gradiant"
-				/>
+					/>
+					<ButtonDefault
+						to="/signup"
+						text="Signup"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="gradiant"
+					/>
+				</template>
+				<template v-else>
+					<ButtonDefault
+						to="/app/account"
+						text="My account"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="gradiant"
+					/>
+				</template>
 				<ButtonIcon @click="themeStore.switchTheme">
 					<SvgDark v-if="theme"/>
 					<SvgLight v-else/>
@@ -32,6 +42,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { useAuthStore } from '@/store/modules/auth.store';
 import ButtonIcon from '@/components/common/buttons/Icon.vue';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
 
@@ -41,5 +52,7 @@ import SvgLight from '@/components/common/svg/Light.vue';
 import SvgLogoMinified from '@/components/common/svg/LogoMinified.vue';
 
 const themeStore = useThemeStore();
+const authStore = useAuthStore();
 const theme = computed(() => themeStore.theme);
+const isAuth = computed(() => authStore.isAuth);
 </script>
