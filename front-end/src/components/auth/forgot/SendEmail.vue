@@ -3,12 +3,12 @@
 		<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
 			<div class="w-full shadow-lg md:mt-0 sm:max-w-md xl:p-0 glassmorphism">
 				<div class="w-full p-6 space-y-4 md:space-y-6 sm:p-8">
-					<h1 class="mb-2 text-2xl font-extrabold tracking-tight text-gray-900 leding-tight text-white text-center">
+					<h1 class="mb-2 text-2xl font-extrabold tracking-tight text-black leding-tight text-white text-center">
 						Change your password
 					</h1>
 					<p class="font-light text-white text-center">
 						We emailed you a link to 
-						<span class="font-medium text-gray-900 text-white">{{ email }}</span>
+						<span class="font-medium text-black text-white">{{ email }}</span>
 						<br/>
 						Click on the link to change your password.
 					</p>

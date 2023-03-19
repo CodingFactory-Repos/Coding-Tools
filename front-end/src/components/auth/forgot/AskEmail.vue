@@ -16,12 +16,12 @@
 								type="email"
 								name="email"
 								id="email"
-								class="bg-light-secondary border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+								class="bg-light-secondary border text-black sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
 								placeholder="jhon.doe@edu.esiee-it.fr"
 								@focus="onNewFocus"
 							/>
 							<template v-if="emailError">
-								<SvgWarning class="absolute right-2 bottom-[10px]" />
+								<SvgWarning class="fill-red dark:fill-red absolute right-2 bottom-[10px]" />
 								<p class="absolute text-sm text-red-500 -bottom-6">
 									{{ errorMessage }}
 								</p>
@@ -48,6 +48,7 @@ import { ref, reactive, computed } from 'vue';
 import { FORMAT_EMAIL } from '@/utils/constants';
 import { useAuthStore } from '@/store/modules/auth.store';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
+import SvgWarning from '@/components/common/svg/Warning.vue';
 
 const emit = defineEmits<{
 	(event: 'nextStep', id: number, email: string): void,

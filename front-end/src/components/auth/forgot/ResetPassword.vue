@@ -16,12 +16,12 @@
 								type="password"
 								name="password"
 								id="password"
-								class="bg-light-secondary border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+								class="bg-light-secondary border text-black sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
 								placeholder="jhon.doe@edu.esiee-it.fr"
 								@focus="onNewFocus"
 							/>
 							<template v-if="passwordError">
-								<SvgWarning class="absolute right-2 bottom-[10px]" />
+								<SvgWarning class="fill-red dark:fill-red absolute right-2 bottom-[10px]" />
 								<p class="absolute text-sm text-red-500 -bottom-6">
 									{{ errorMessage }}
 								</p>
@@ -50,6 +50,7 @@ import { useRouter } from 'vue-router';
 import { FORMAT_PASSWORD } from '@/utils/constants';
 import { useAuthStore } from '@/store/modules/auth.store';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
+import SvgWarning from '@/components/common/svg/Warning.vue';
 
 const props = defineProps({
 	token: { type: String, required: true },

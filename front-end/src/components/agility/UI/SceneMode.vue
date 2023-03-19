@@ -15,7 +15,7 @@
 					@click="activateProjectModal"
 					:text="meta.title"
 					type="button"
-					text-style="text-gray-400"
+					text-style="text-dark-font"
 				/>
 			</div>
 			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">

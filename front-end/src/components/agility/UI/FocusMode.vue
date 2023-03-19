@@ -14,7 +14,7 @@
 				<DefaultButton
 					@click="activateProjectModal"
 					type="button" :text="meta.title"
-					text-style="text-gray-400"
+					text-style="text-dark-font"
 				/>
 				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
 			</div>

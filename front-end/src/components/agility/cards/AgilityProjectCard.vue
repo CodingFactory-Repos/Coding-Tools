@@ -1,7 +1,7 @@
 <template>
 	<div class="w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary p-3 rounded-lg gap-2 cursor-pointer select">
 		<img v-if="url" class="w-full h-48 rounded" :src="url" :alt="`project_${title}_snapshot`"/>
-		<span class="dark:text-gray-400 text-sm font-bold">{{ title }}</span>
+		<span class="dark:text-dark-font text-sm font-bold">{{ title }}</span>
 	</div>
 </template>
 

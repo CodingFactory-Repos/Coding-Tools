@@ -18,9 +18,9 @@
 					</div>
 					<div class="w-full flex justify-between py-4 px-4 md:pl-8 md:pr-4 gap-5 md:ml-[-5rem] z-10">
 						<div class="flex flex-col h-full gap-0 items-start">
-							<span class="text-black font-bold text-lg">Firstname Lastname</span>
-							<span class="text-black text-sm">L2 ALT PARIS</span>
-							<span class="text-black text-sm">24 ans</span>
+							<span class="text-black dark:text-dark-font font-bold text-lg">Firstname Lastname</span>
+							<span class="text-black dark:text-dark-font text-sm">L2 ALT PARIS</span>
+							<span class="text-black dark:text-dark-font text-sm">24 ans</span>
 						</div>
 						<div class="flex h-full grow gap-3 justify-end items-center">
 							<div class="flex flex-col h-full gap-2 justify-between">
@@ -33,7 +33,7 @@
 									</ButtonIcon>
 								</div>
 								<div class="flex gap-1 justify-center items-center">
-									<span class="text-black text-sm">Єɗọ ࿈#6010</span>
+									<span class="dark:text-dark-font text-black text-sm">Єɗọ ࿈#6010</span>
 									<SvgDiscord class="mb-[.15rem]"/>
 								</div>
 							</div>
@@ -42,34 +42,34 @@
 				</div>
 				<div class="w-full h-full p-4 flex-col flex-wrap gap-3 items-start">
 					<div class="h-fit flex flex-col w-full sm:w-80 rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
-						<span class="text-sm font-light text-black">
+						<span class="text-sm font-light text-black dark:text-dark-font">
 							Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste saepe rem eos placeat. Consectetur tempore reprehenderit, deleniti voluptas harum, aut, exercitationem odit animi velit voluptates assumenda officia accusamus eos repudiandae!
 						</span>
 						<hr class="w-full h-[1px] border-light-tertiary dark:border-dark-tertiary"/>
 						<div class="grow w-full flex flex-col justify-start items-start gap-2">
 							<div class="flex gap-2 justify-center items-center">
-								<SvgPhone width="30" height="30" class="dark:fill-white-icon"/>
-								<span class="text-sm text-black">03 04 05 03 02</span>
+								<SvgPhone width="30" height="30" class="dark:fill-lighter-icon"/>
+								<span class="text-sm text-black dark:text-dark-font">03 04 05 03 02</span>
 							</div>
 							<div class="flex gap-2 justify-center items-center">
-								<SvgCalendar width="30" height="30" class="dark:fill-white-icon"/>
-								<span class="text-sm text-black">02/12/1999</span>
+								<SvgCalendar width="30" height="30" class="dark:fill-lighter-icon"/>
+								<span class="text-sm text-black dark:text-dark-font">02/12/1999</span>
 							</div>
 							<div class="flex gap-2 justify-center items-center">
-								<SvgMarker width="30" height="30" class="dark:fill-white-icon"/>
-								<span class="text-sm text-black">Paris</span>
+								<SvgMarker width="30" height="30" class="dark:fill-lighter-icon"/>
+								<span class="text-sm text-black dark:text-dark-font">Paris</span>
 							</div>
 						</div>
 					</div>
 					<div class="h-fit flex justify-between w-full sm:w-80 rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
 						<div class="flex flex-col items-start gap-1">
-							<span class="text-sm text-black font-bold">
+							<span class="text-sm text-black font-bold dark:text-dark-font">
 								Développeur full stack
 							</span>
-							<span class="text-sm text-black font-light">
+							<span class="text-sm text-black font-light dark:text-dark-font">
 								Chez WebWeDev
 							</span>
-							<span class="text-sm text-black font-light">
+							<span class="text-sm text-black font-light dark:text-dark-font">
 								2022-2023
 							</span>
 						</div>

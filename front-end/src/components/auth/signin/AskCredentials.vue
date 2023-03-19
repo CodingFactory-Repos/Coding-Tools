@@ -15,12 +15,12 @@
 							type="email"
 							name="email"
 							id="email"
-							class="bg-light-secondary border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+							class="bg-light-secondary border text-black sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
 							placeholder="jhon.doe@edu.esiee-it.fr"
 							@focus="onNewFocus"
 						/>
 						<template v-if="errors.emailInvalid">
-							<SvgWarning class="absolute right-2 bottom-[10px]" />
+							<SvgWarning class="fill-red dark:fill-red absolute right-2 bottom-[10px]" />
 							<p class="absolute text-sm text-red-500 -bottom-6">
 								A correct email is required !
 							</p>
@@ -35,12 +35,12 @@
 							type="password"
 							name="password"
 							id="password"
-							class="bg-light-secondary border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+							class="bg-light-secondary border text-black sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
 							placeholder="••••••••"
 							@focus="onNewFocus"
 						>
 						<template v-if="errors.passwordInvalid">
-							<SvgWarning class="absolute right-2 bottom-[10px]" />
+							<SvgWarning class="fill-red dark:fill-red absolute right-2 bottom-[10px]" />
 							<p class="absolute text-sm text-red-500 -bottom-6">
 								The password is required !
 							</p>

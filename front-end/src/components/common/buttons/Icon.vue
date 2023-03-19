@@ -2,7 +2,7 @@
 	<component 
 		:is="to ? RouterLink : 'button'"
 		:to="to"
-		class="p-2 text-gray-500 rounded-lg hover:bg-light-secondary dark:hover:bg-dark-tertiary"
+		class="p-2 rounded-lg hover:bg-light-secondary dark:hover:bg-dark-tertiary"
 	>
 		<slot></slot>
 	</component>

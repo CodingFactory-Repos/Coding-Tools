@@ -6,7 +6,7 @@
 			</RouterLink>
 		</div>
 		<hr class="my-6 border-light-tertiary sm:mx-auto dark:border-dark-tertiary lg:my-8" />
-		<span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
+		<span class="block text-sm text-light-font sm:text-center dark:text-dark-font">
 			© 2023 Coding Tools™. All Rights Reserved.
 		</span>
 	</footer>
