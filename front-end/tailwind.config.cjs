@@ -13,8 +13,11 @@ module.exports = {
 				'light-tertiary': "#e5e7eb",
 				'dark-icon': "#5c5f73",
 				'light-icon': "#5c5f73",
+				'lighter-icon': "#9ea1b9",
 				'white-icon': 'white',
 				'selected-icon': "#246eaf",
+				'dark-font': '#9ca3af',
+				'light-font': '#d1d5db'
 			},
 		},
 	},
