@@ -8,7 +8,6 @@ router.beforeEach(async (to, from, next) => {
 	const isAuth = authStore.isAuth;
 
 	try {
-		console.log(isAuth, to.meta.requiresAuth, to.meta.forbiddenAfterAuth)
 		// If the flag is set to true and one of the meta is present
 		if(isAuth && (to.meta.requiresAuth || to.meta.forbiddenAfterAuth)) {
 			// We check for the validity of the auth token
