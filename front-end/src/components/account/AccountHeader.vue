@@ -21,7 +21,7 @@
 				<div class="flex flex-col h-full gap-2 justify-between">
 					<div class="flex gap-3 justify-end">
 						<ButtonIcon
-							:href="githubProfile"
+							:url="githubProfile"
 							:foreign-link="true"
 							rel="noreferrer"
 							class="bg-light-tertiary dark:bg-dark-highlight"
@@ -29,7 +29,7 @@
 							<SvgGithub class="dark:fill-white-icon"/>
 						</ButtonIcon>
 						<ButtonIcon
-							:href="linkedinProfile"
+							:url="linkedinProfile"
 							:foreign-link="true"
 							rel="noreferrer"
 							class="bg-light-tertiary dark:bg-dark-highlight"
