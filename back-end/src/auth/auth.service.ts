@@ -2,7 +2,7 @@ import { ObjectId, UpdateFilter } from 'mongodb';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
-import { UsersRepository } from 'src/base/users/users.repository';
+import { UsersRepository } from '@/base/users/users.repository';
 import {
 	DTOAuthEmail,
 	DTOAuthSignin,
@@ -10,13 +10,14 @@ import {
 	DTOResetPassword,
 	DTOResetToken,
 	DTOActivationToken,
-} from 'src/auth/dto/auth.dto';
-import { AuthSignup } from 'src/auth/interfaces/auth.interface';
-import { Roles, User } from 'src/base/users/interfaces/users.interface';
-import { AuthEventEmitter } from 'src/auth/events/auth.events';
-import { credentialsPassword } from 'src/auth/utils/auth.security';
-import { verifyPassword, generateRandomToken } from 'src/common/helpers/string.helper';
-import { ServiceError } from 'src/common/decorators/catch.decorator';
+} from '@/auth/dto/auth.dto';
+import { AuthSignup } from '@/auth/interfaces/auth.interface';
+import { Roles, User } from '@/base/users/interfaces/users.interface';
+import { AuthEventEmitter } from '@/auth/events/auth.events';
+import { credentialsPassword } from '@/auth/utils/auth.security';
+import { verifyPassword, generateRandomToken, generateCodeToken } from '@/common/helpers/string.helper';
+import { ServiceError } from '@/common/decorators/catch.decorator';
+import { PROJECTION_CURRENT_USER } from '@/auth/utils/auth.projection';
 
 @Injectable()
 export class AuthService {
@@ -32,10 +33,10 @@ export class AuthService {
 		const userExist = await this.usersRepository.userExist({ 'profile.email': user.email });
 		if (userExist) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
-		const { email, password, status, firstName, lastName } = user;
+		const { email, password, role } = user;
 		const hashedPassword = await credentialsPassword(password);
-		const activationToken = generateRandomToken();
-		const profile = { email, firstName, lastName };
+		const activationToken = generateCodeToken();
+		const profile = { email };
 		const createdAt = new Date();
 		const isVerified = false;
 
@@ -43,17 +44,20 @@ export class AuthService {
 			profile,
 			isVerified,
 			createdAt,
-			status,
+			role,
 			hashedPassword,
 			activationToken,
 		};
-		this.usersRepository.createUser(newUser);
-
-		if (user.status === Roles.productOwner) {
-			this.authEventEmitter.signupProductOwner(email, firstName);
-		} else {
-			this.authEventEmitter.askActivationToken(email, firstName, activationToken);
+		
+		//! This will send a validation email to the admin.
+		//! The PO will be able to use the website as a student in the meantime.
+		if (user.role === Roles.productOwner) {
+			newUser.requireAdminValidation = true;
+			this.authEventEmitter.signupProductOwner(email);
 		}
+		
+		this.usersRepository.createUser(newUser);
+		this.authEventEmitter.askActivationToken(email, activationToken);
 	}
 
 	async signin(payload: DTOAuthSignin) {
@@ -66,18 +70,17 @@ export class AuthService {
 		const passwordMatch = await verifyPassword(user.hashedPassword, password);
 		if (!passwordMatch) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
-		const strategy = await this.getTokenStrategy(user._id, user.status);
-		delete user.hashedPassword;
-		delete user.status;
-		delete user._id;
-
-		return { user, strategy };
+		const strategy = await this.getTokenStrategy(user._id, user.role);
+		// console.log(user)
+		// const userData = omit(user as User, ["_id", "hashedPassword", "activationToken", "resetToken", "isVerified", "requireAdminValidation"]);
+		// console.log(userData)
+		return { strategy };
 	}
 
-	async getTokenStrategy(userId: ObjectId, userStatus: Roles) {
+	async getTokenStrategy(userId: ObjectId, userRole: Roles) {
 		if (userId === null || userId === undefined) return null;
 
-		const token = await this.generateToken({ id: userId.toString(), status: userStatus });
+		const token = await this.generateToken({ id: userId.toString(), role: userRole });
 		return JSON.stringify({ token: token });
 	}
 
@@ -95,9 +98,9 @@ export class AuthService {
 		const data = await this.usersRepository.findOneAndUpdateUser(query, update);
 
 		if (data.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
-		const { email, firstName } = data.value.profile;
+		const { email } = data.value.profile;
 
-		this.authEventEmitter.accountValidated(email, firstName);
+		this.authEventEmitter.accountValidated(email);
 	}
 
 	async askActivationToken(payload: DTOAuthEmail) {
@@ -105,12 +108,11 @@ export class AuthService {
 		const query = { 'profile.email': email, isVerified: false };
 		const user = await this.usersRepository.findOne(query);
 		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
-		const { firstName } = user.profile;
 
 		const activationToken = generateRandomToken();
 		const update = { $set: { activationToken: activationToken } };
 		this.usersRepository.updateOneUser({ 'profile.email': email }, update);
-		this.authEventEmitter.askActivationToken(email, firstName, activationToken);
+		this.authEventEmitter.askActivationToken(email, activationToken);
 	}
 
 	async askResetToken(payload: DTOAuthEmail) {
@@ -118,12 +120,11 @@ export class AuthService {
 		const query = { 'profile.email': email };
 		const user = await this.usersRepository.findOne(query);
 		if (user === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
-		const { firstName } = user.profile;
 
 		const resetToken = generateRandomToken();
 		const update = { $set: { resetToken: resetToken } };
 		this.usersRepository.updateOneUser({ 'profile.email': email }, update);
-		this.authEventEmitter.askResetToken(email, firstName, resetToken);
+		this.authEventEmitter.askResetToken(email, resetToken);
 	}
 
 	async resetPassword(payload: DTOResetPassword) {
@@ -139,5 +140,17 @@ export class AuthService {
 		const { resetToken } = payload;
 		const userExists = await this.usersRepository.userExist({ resetToken });
 		if (userExists === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
+	}
+
+	async retrieveCurrentUser(userId: ObjectId) {
+		const user = await this.usersRepository.findOne({ _id: userId }, PROJECTION_CURRENT_USER);
+		if (user == null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
+		return user;
+	}
+
+	async checkAuth(userId: ObjectId) {
+		const user = await this.usersRepository.userExist({ _id: userId });
+		if (user === null) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource.');
+		return user;
 	}
 }

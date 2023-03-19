@@ -1,50 +1,36 @@
-import { useAuthStore } from '@/store/modules/auth.store';
-import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import { http } from "@/api/network/axios";
+import { Status, STATUS } from '@/store/interfaces/axios.interface';
+import { useAuthStore } from "@/store/modules/auth.store";
+import router from "@/router";
 
-// This file listen to route before enter and route before leave.
-// It manage the access of a route depending on the user permissions.
-
-export const canEnterAskValidation = (
-	to: RouteLocationNormalized,
-	from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { email } = from.params || {};
-	if (email === undefined) next('/error');
-
-	to.params.email = email;
-	next();
-};
-
-export const canEnterAccountValidated = async (
-	to: RouteLocationNormalized,
-	_from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { token } = to.query || {};
-	if (token === undefined) next('/error');
-
+router.beforeEach(async (to, from, next) => {
 	const authStore = useAuthStore();
-	const isValid = await authStore.tryAccountActivate(token as string);
-	if (!isValid) next('/error');
+	const isAuth = authStore.isAuth;
 
-	to.query = {};
-	next();
-};
+	try {
+		// If the flag is set to true and one of the meta is present
+		if(isAuth && (to.meta.requiresAuth || to.meta.forbiddenAfterAuth)) {
+			// We check for the validity of the auth token
+			const res = await http.post<Status>('/auth/token');
+			if(res.data.status !== STATUS.OK) throw new Error("unauthorized");
 
-export const canEnterResetPassword = async (
-	to: RouteLocationNormalized,
-	_from: RouteLocationNormalized,
-	next: NavigationGuardNext,
-) => {
-	const { token } = to.query || {};
-	if (!token) next('/error');
+			// We verify if the route require auth.
+			if(to.meta.requiresAuth)
+				return next();
 
-	const authStore = useAuthStore();
-	const isValid = await authStore.tryCheckResetToken(token as string);
-	if (!isValid) next('/error');
+			// We verify if the route is forbidden after auth.
+			if(to.meta.forbiddenAfterAuth)
+				return next(from.path || '/');
+		}
 
-	to.query = {};
-	to.params.token = token as string;
-	next();
-};
+		// If the flag is not set to true and the auth is required
+		if(!isAuth && to.meta.requiresAuth) {
+			return next('/signin');
+		}
+
+		// If none of check if valid, then we can assume the route is accessible no matter what.
+		return next();
+	} catch(_) {
+		return next('/signin');
+	}
+})

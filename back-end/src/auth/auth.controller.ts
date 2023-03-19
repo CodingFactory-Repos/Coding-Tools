@@ -1,18 +1,19 @@
-import { Body, Controller, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ObjectId } from 'mongodb';
 
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '@/auth/auth.service';
 import {
 	DTOActivationToken,
 	DTOAuthEmail,
 	DTOAuthSignin,
 	DTOAuthSignup,
 	DTOResetPassword,
-	DTOResetToken,
-} from 'src/auth/dto/auth.dto';
-import { createAuthCookie, expireAuthCookie } from 'src/auth/utils/auth.cookie';
-import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
-import { JwtAuthGuard } from 'src/common/guards/auth.guard';
+} from '@/auth/dto/auth.dto';
+import { createAuthCookie, expireAuthCookie } from '@/auth/utils/auth.cookie';
+import { ServiceErrorCatcher } from '@/common/decorators/catch.decorator';
+import { JwtAuthGuard } from '@/common/guards/auth.guard';
+import { Jwt } from '@/common/decorators/jwt.decorator';
 
 @Controller('auth')
 @UseFilters(ServiceErrorCatcher)
@@ -27,9 +28,9 @@ export class AuthController {
 
 	@Post('signin')
 	async signIn(@Body() body: DTOAuthSignin, @Res() res: Response) {
-		const { user, strategy } = await this.authService.signin(body);
+		const { strategy } = await this.authService.signin(body);
 		res.setHeader('Set-Cookie', createAuthCookie(strategy));
-		return res.status(201).json({ status: 'ok', user });
+		return res.status(201).json({ status: 'ok' });
 	}
 
 	@Post('logout')
@@ -63,9 +64,17 @@ export class AuthController {
 		return res.status(201).json({ status: 'ok' });
 	}
 
-	@Post('reset-token-check')
-	async verifyResetToken(@Res() res: Response, @Body() body: DTOResetToken) {
-		await this.authService.verifyResetToken(body);
-		return res.status(201).json({ status: 'ok' });
+	@Get('me')
+	@UseGuards(JwtAuthGuard)
+	async getMe(@Jwt() userId: ObjectId, @Res() res: Response) {
+		const currentUser = await this.authService.retrieveCurrentUser(userId);
+		return res.status(200).json({ status: 'ok', user: currentUser });
+	}
+
+	@Post('token')
+	@UseGuards(JwtAuthGuard)
+	async isAuth(@Jwt() userId: ObjectId, @Res() res: Response) {
+		await this.authService.checkAuth(userId);
+		return res.status(200).json({ status: 'ok' });
 	}
 }

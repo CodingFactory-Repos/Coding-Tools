@@ -1,31 +1,58 @@
 <template>
-	<header>
-		<nav class="px-4 lg:px-6 py-2.5 dark:bg-gray-800">
-			<div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-				<RouterLink to="/home" class="flex items-center">
-					<img
-						src="../../images/CodingToolsFavicon.png"
-						class="mr-3 h-6 sm:h-9"
-						alt="Flowbite Logo"
-					/>
-					<span
-						class="self-center hidden sm:flex text-xl text-gray-700 font-semibold whitespace-nowrap dark:text-white"
-						>Coding Tools</span
-					>
+	<div class="fixed py-3 px-5 w-full shadow-md z-40 bg-light-primary dark:bg-dark-primary">
+		<div class="flex justify-between items-center">
+			<div class="flex justify-start items-center">
+				<RouterLink to="/" class="flex items-center gap-1">
+					<SvgLogo class="sm:flex hidden"/>
+					<SvgLogoMinified class="sm:hidden"/>
 				</RouterLink>
-				<div class="flex items-center gap-4">
-					<RouterLink
-						to="/home/signin"
-						class="text-gray-700 hover:text-gray-700 bg-white dark:text-white hover:bg-gray-200 font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 dark:hover:bg-gray-700 focus:outline-none"
-						>Sign in</RouterLink
-					>
-					<RouterLink
-						to="/home/signup"
-						class="text-white hover:text-white gradiant font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-						>Sign up</RouterLink
-					>
-				</div>
 			</div>
-		</nav>
-	</header>
+			<div class="flex items-center gap-3">
+				<template v-if="!isAuth">
+					<ButtonDefault
+						to="/signin"
+						text="Signin"
+						text-style="text-black dark:text-black font-bold text-sm"
+						background="bg-light-primary hover:bg-light-secondary"
+					/>
+					<ButtonDefault
+						to="/signup"
+						text="Signup"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="gradiant"
+					/>
+				</template>
+				<template v-else>
+					<ButtonDefault
+						to="/app/account"
+						text="My account"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="gradiant"
+					/>
+				</template>
+				<ButtonIcon @click="themeStore.switchTheme">
+					<SvgDark v-if="theme"/>
+					<SvgLight v-else/>
+				</ButtonIcon>
+			</div>
+		</div>
+	</div>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useThemeStore } from '@/store/modules/theme.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import ButtonIcon from '@/components/common/buttons/Icon.vue';
+import ButtonDefault from '@/components/common/buttons/Default.vue';
+
+import SvgLogo from '@/components/common/svg/Logo.vue';
+import SvgDark from '@/components/common/svg/Dark.vue';
+import SvgLight from '@/components/common/svg/Light.vue';
+import SvgLogoMinified from '@/components/common/svg/LogoMinified.vue';
+
+const themeStore = useThemeStore();
+const authStore = useAuthStore();
+const theme = computed(() => themeStore.theme);
+const isAuth = computed(() => authStore.isAuth);
+</script>

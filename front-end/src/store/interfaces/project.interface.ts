@@ -11,7 +11,7 @@ export interface ProjectStore {
 	setCanvas?: (canvas: HTMLCanvasElement) => void;
 	setAction?: (cursor: string, target: number) => void;
 	updateCursor?: (cursor: string) => void;
-	activateFocusMode?: () => void;
+	activateFocusMode?: () => boolean;
 	deactivateFocusMode?: () => void;
 	_createCanvasElement?: () => void;
 }

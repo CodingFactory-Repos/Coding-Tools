@@ -3,11 +3,26 @@
 		<template #body>
 			<div class="flex gap-10">
 				<form class="flex flex-col gap-3">
-					<div class="max-w-[14rem]">
-						<input @input="updateTitle" ref="formTitle" :value="meta.title" class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 text-2xl font-bold text-black outline-none prevent-border" type="text" maxlength="25">
+					<div class="max-w-[14rem] w-full">
+						<input
+							@input="updateTitle"
+							ref="formTitle"
+							:value="meta.title"
+							class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 text-2xl font-bold text-black outline-none prevent-border"
+							type="text"
+							maxlength="25"
+						>
 					</div>
-					<div class="max-w-[14rem]">
-						<textarea @input="updateDescription" ref="formDesc" :value="meta.description" class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 resize-none text-black outline-none prevent-border" placeholder="Short description" rows="1" maxlength="100"></textarea>
+					<div class="max-w-[14rem] w-full">
+						<textarea
+							@input="updateDescription"
+							ref="formDesc"
+							:value="meta.description"
+							class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 resize-none text-black outline-none prevent-border"
+							placeholder="Short description"
+							rows="1"
+							maxlength="100"
+						></textarea>
 					</div>
 				</form>
 				<div class="flex gap-4 justify-center">
@@ -25,15 +40,21 @@
 			</div>
 		</template>
 		<template #footer>
-			<DefaultButton @click="() => isFormValid ? saveProjectMeta() : {}" type="button" text="Save" color="text-white hover:text-white"
-					background="bg-gradient-to-r from-violet-900 to-pink-600 hover:from-violet-800 hover:to-pink-500" :disabled="!isFormValid"/>
+			<DefaultButton
+				@click="() => isFormValid ? saveProjectMeta() : {}"
+				type="button"
+				text="Save"
+				text-style="text-white hover:text-white"
+				background="gradiant"
+				:disabled="!isFormValid"
+			/>
 		</template>
 	</ModalOverlay>
 	<ModalOverlay v-if="showWarningModal" @close="restoreProjectMeta" size="lg">
 		<template #body>
 			<div class="flex flex-col gap-4">
 				<div class="flex w-full gap-4 justify-center items-center">
-					<SVGLoader v-bind="{ name: 'info', size: '24px' }"/>
+					<SvgInfo/>
 					<span class="mt-1">You have unsaved changes</span>
 				</div>
 				<div class="flex w-full justify-center items-center">
@@ -43,11 +64,23 @@
 		</template>
 		<template #footer>
 			<div class="flex gap-4 justify-center items-center">
-				<DefaultButton @click="restoreProjectMeta()" type="button" text="Yes" color="text-white hover:text-white"
-					background="bg-red-600 hover:bg-red-500" :disabled="!isFormValid"/>
+				<DefaultButton
+					@click="restoreProjectMeta"
+					type="button"
+					text="Yes"
+					text-style="text-white hover:text-white"
+					background="bg-red-600 hover:bg-red-500"
+					:disabled="!isFormValid"
+				/>
 
-				<DefaultButton @click="saveProjectMeta()" type="button" text="No, save the change" color="text-white hover:text-white"
-					background="bg-blue-600 hover:bg-blue-500" :disabled="!isFormValid"/>
+				<DefaultButton
+					@click="saveProjectMeta"
+					type="button"
+					text="No, save the change"
+					color="text-white hover:text-white"
+					background="bg-blue-600 hover:bg-blue-500"
+					:disabled="!isFormValid"
+				/>
 			</div>
 		</template>
 	</ModalOverlay>
@@ -57,9 +90,9 @@
 import { computed, ref } from 'vue';
 
 import { useProjectStore } from '@/store/modules/project.store';
-import SVGLoader from '@/components/common/SVGLoader';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
+import SvgInfo from '@/components/common/svg/Info.vue';
 
 const emit = defineEmits(['close']);
 

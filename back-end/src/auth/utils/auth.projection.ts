@@ -3,3 +3,14 @@
 // 		_id: 0,
 // 	},
 // };
+
+
+export const PROJECTION_CURRENT_USER = {
+	projection: {
+		_id: 0,
+		profile: {
+			email: 1,
+		},
+		role: 1,
+	}
+}

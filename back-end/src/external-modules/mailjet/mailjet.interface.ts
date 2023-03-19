@@ -7,5 +7,5 @@ export interface EmailConstructorOptions {
 
 export interface EmailRecipient {
 	Email: string;
-	Name: string;
+	Name?: string;
 }

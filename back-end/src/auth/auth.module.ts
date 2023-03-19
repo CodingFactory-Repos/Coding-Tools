@@ -1,16 +1,16 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { config } from 'src/config/config';
-import { DatabaseModule } from 'src/external-modules/database/mongo.module';
-import { AuthService } from 'src/auth/auth.service';
-import { AuthController } from 'src/auth/auth.controller';
-import { UsersModule } from 'src/base/users/users.module';
-import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
-import { AuthEventEmitter } from 'src/auth/events/auth.events';
-import { UsersRepository } from 'src/base/users/users.repository';
-import { MailjetListeners } from 'src/common/providers/mailjet.provider';
-import { MailjetModule } from 'src/external-modules/mailjet/mailjet.module';
+import { config } from '@/config/config';
+import { DatabaseModule } from '@/external-modules/database/mongo.module';
+import { AuthService } from '@/auth/auth.service';
+import { AuthController } from '@/auth/auth.controller';
+import { UsersModule } from '@/base/users/users.module';
+import { JwtStrategy } from '@/auth/strategy/jwt.strategy';
+import { AuthEventEmitter } from '@/auth/events/auth.events';
+import { UsersRepository } from '@/base/users/users.repository';
+import { MailjetListeners } from '@/common/providers/mailjet.provider';
+import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
 
 @Module({
 	imports: [

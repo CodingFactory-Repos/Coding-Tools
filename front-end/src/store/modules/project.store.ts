@@ -50,8 +50,13 @@ export const useProjectStore = defineStore('project', {
 			this.canvas.classList.toggle(cursor);
 		},
 		activateFocusMode(this: ProjectStore) {
-			const focusedElement = this.scene.viewport.children[0] as PixiObject & PixiObjectPluggin;
+			const focusedElement = this.scene.viewport.children.find(
+				(el: PixiObject & PixiObjectPluggin) => el.isSelected === true
+			) as PixiObject & PixiObjectPluggin;
+			if(focusedElement === undefined) return false;
+
 			const vp = this.scene.viewport;
+			focusedElement.isFocused = true;
 
 			// Resize the windows height for the focused mode
 			const newWidth = window.innerWidth;
@@ -95,9 +100,13 @@ export const useProjectStore = defineStore('project', {
 			// dirty
 			vp.plugins.reset();
 			vp.dirty = true;
+			return true;
 		},
 		deactivateFocusMode(this: ProjectStore) {
-			const focusedElement = this.scene.viewport.children[0] as PixiObject & PixiObjectPluggin;
+			const focusedElement = this.scene.viewport.children.find(
+				(el: PixiObject & PixiObjectPluggin) => el.isFocused
+			) as PixiObject & PixiObjectPluggin;
+
 			const vp = this.scene.viewport;
 
 			// Resize the windows height for the scene mode
