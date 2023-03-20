@@ -12,7 +12,12 @@
   },
   "dependencies": {
     "axios": "^1.2.1",
+    "downloadjs": "^1.4.7",
     "flowbite": "^1.5.5",
+    "html-to-pdf": "^0.1.11",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
     "pinia": "^2.0.27",
     "pixi.js": "^7.0.4",
     "sass": "^1.56.1",
