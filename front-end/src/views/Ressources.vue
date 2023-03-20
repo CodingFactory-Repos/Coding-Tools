@@ -3,12 +3,11 @@
     <div>
         <h1>Ressources</h1>
         <div>
-            <button v-on:click=SetPage(0)>Cours</button>
+            <button v-on:click="setState(0)">Cours</button>
             <p></p>
-            <button v-on:click="SetPage(1)">JPO</button>
+            <button @click="setState(1)">JPO</button>
         </div>
         <div>
-            <h2 >{{state}}</h2>
 	        <CoursPage v-show="state == 0" />
 		    <OpenHousesPage  v-show="state == 1" />
         </div>
@@ -34,10 +33,10 @@ export default defineComponent({
         }
   
     },
-    computed : {
-        SetPage(index){
-           return this.state = index;
-        },
+    methods : {
+     setState(index){
+        this.state = index;
+     }
     },
 
 });
