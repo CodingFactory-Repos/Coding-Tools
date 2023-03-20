@@ -9,8 +9,10 @@ import { OpenHousesService } from 'src/base/openHouses/openHouses.service';
 export class OpenHousesController {
 	constructor(private readonly openHousesService: OpenHousesService) {}
 
-	@Get()
-	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
-	}
+	@Get('')
+    index(@Res() res: Response) {
+        this.openHousesService.getAllHouses().then((openHouses) => {
+            res.status(200).json(openHouses);
+        });
+    }
 }

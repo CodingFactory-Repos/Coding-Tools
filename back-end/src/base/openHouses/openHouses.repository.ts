@@ -38,4 +38,8 @@ export class OpenHousesRepository {
 		const options = { projection: { _id: 1 } };
 		return this.openHouses.findOne(query, options);
 	}
+
+	async getAllHouses() {
+        return this.openHouses.find().toArray();
+    }
 }
