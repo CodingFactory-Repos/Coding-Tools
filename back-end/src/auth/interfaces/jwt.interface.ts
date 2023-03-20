@@ -7,7 +7,7 @@ export interface JwtTokenData {
 
 export interface JwtPayload {
 	id: string | ObjectId;
-	status: Roles;
+	role: Roles;
 	iat: number;
 	exp: number;
 	refresh?: string;
