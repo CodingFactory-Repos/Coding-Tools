@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center flex items-center justify-center max-w-full h-full">
-		<div class="margin p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+		<div class="margin p-6 bg-light-primary border border-gray-200 rounded-lg shadow-md">
 			<h1 class="text-4xl mb-6 font-extrabold dark:text-white">Create Article</h1>
 			<form @submit.prevent="addArticle">
 				<div class="form-group flex flex-col items-center">
@@ -152,7 +152,7 @@
 
 				<button
 					type="submit"
-					class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+					class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
 				>
 					Create
 				</button>
@@ -185,6 +185,11 @@ export default {
 	methods: {
 		//Create a POST with axios
 		addArticle() {
+			//! This will crash the front in case of reject.
+			//! You're also using axios without the instance.
+			//! So with credentials is false and the the cookie token will not be attached to the request.
+			//! Consider using : http.post('/articles/add', { ... })
+			//! And for the catch : addArticle: withErrorHandler(async function() { ... } );
 			axios
 				.post('http://localhost:8000/articles/add', {
 					title: this.title,
