@@ -2,8 +2,12 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
 	{
+		/**
+		 * This path contains every pages that aren't locked behind the signin.
+		 * This includes, hero, signin, signup, about and that's it.
+		 */
 		path: '/',
-		component: () => import('../layout/AppLayout.vue'),
+		component: () => import('../layout/home/HomeLayout.vue'),
 		children: [
 			{ path: '', component: () => import('../views/HomeView.vue') },
 			{ path: '/about', component: () => import('../views/AboutView.vue') },
@@ -16,12 +20,75 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: '/test', component: () => import('../components/Test.vue') },
 			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
 			{ path: '/blog', component: () => import('../views/DisplayArticleView.vue') },
+			{ path: '/forgot-password', component: () => import('../views/home/ForgotPassword.vue') },
 			{
-				name: 'newRetro',
-				path: '/newRetro',
-				component: () => import('../views/NewRetrospective.vue'),
+				path: 'signin',
+				component: () => import('../views/home/SignIn.vue'),
+				meta: { forbiddenAfterAuth: true },
+			},
+			{
+				path: 'signup',
+				component: () => import('../views/home/SignUp.vue'),
+				meta: { forbiddenAfterAuth: true },
 			},
 		],
+	},
+	{
+		/**
+		 * This path contains every pages that are locked behind the signin and not accesible by the public.
+		 * This includes agility, rollcall, materials, retrospective, blog, ...
+		 */
+		path: '/app',
+		component: () => import('../layout/app/AppLayout.vue'),
+		children: [
+			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
+			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
+			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'retrospective',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/Retrospective.vue'),
+					},
+					{
+						path: 'new',
+						component: () => import('../views/NewRetrospective.vue'),
+					},
+				],
+			},
+			{
+				path: 'agility',
+				children: [
+					{
+						path: 'dashboard',
+						children: [
+							{
+								path: '',
+								component: () => import('../views/app/AgilityDashboard.vue'),
+							},
+							{
+								path: 'documentation',
+								component: () => import('../components/agility/AgilityDocumentation.vue'),
+							},
+						],
+					},
+					{
+						path: 'project/:slug',
+						component: () => import('../views/app/AgilityProject.vue'),
+					},
+				],
+			},
+		],
+		meta: {
+			requiresAuth: true,
+		},
+	},
+	// Always leave it as last one.
+	{
+		path: '/:catchAll(.*)*',
+		component: () => import('../views/404/ErrorNotFound.vue'),
 	},
 ];
 

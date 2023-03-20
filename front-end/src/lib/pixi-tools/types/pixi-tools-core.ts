@@ -53,6 +53,12 @@ interface PixiObjectDefinition {
 	set isHovered(value: boolean);
 
 	/**
+	 * A flag indicating whether the object is currently being focused.
+	 */
+	get isFocused(): boolean;
+	set isFocused(value: boolean);
+
+	/**
 	 * Gets the options for the object.
 	 * @returns {ElementOptions.ScaledDimensions} The options for the object.
 	 */

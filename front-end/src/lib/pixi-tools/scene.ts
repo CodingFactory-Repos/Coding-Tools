@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js';
+import { Application, EventSystem } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 
 import { ElementOptions, PixiObject } from './types';
@@ -33,16 +33,22 @@ export class Scene extends Application {
 			height: window.innerHeight,
 			antialias: true,
 			autoDensity: true,
-			backgroundColor: darkMode ? 0x212121 : 0xe5e5e5,
-			resolution: devicePixelRatio,
+			backgroundColor: darkMode ? 0x2c2e3a : 0xe5e5e5,
+			resolution: 1, //! Break the zoom on for whatever reason.
+			//! 2 : (high quality) -> The wheel area is broken,
+			//! 1 : (bad quality) -> Fine,
+			//! 0 : (shit quality): -> Nope,
 		});
+
+		const event = new EventSystem(this.renderer);
+		event.domElement = this.renderer.view as HTMLCanvasElement;
 
 		this._viewport = new Viewport({
 			worldWidth: 1000,
 			worldHeight: 1000,
 			screenWidth: window.innerWidth,
 			screenHeight: window.innerHeight,
-			divWheel: this.view as HTMLCanvasElement,
+			events: event,
 		});
 
 		this.viewport.drag().pinch({ percent: 2 }).wheel().decelerate();
