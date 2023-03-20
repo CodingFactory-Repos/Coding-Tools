@@ -76,9 +76,9 @@
 /front-end/src/components/common/uix/SelectionBox.vue @Maghwyn @Loule95450
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/retrospectiveComponents/ChooseTemplate.vue @Kevw94 @AyakorK @Maghwyn
-/front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @RuKaSuu @Kevw94
 /front-end/src/components/retrospectiveComponents/PixieLayout.vue @Maghwyn @AyakorK @Loule95450
-/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @RuKaSuu @Kevw94
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn @Loule95450
 /front-end/src/config/config.ts @Maghwyn @AyakorK
@@ -105,12 +105,12 @@
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
 /front-end/src/store/modules/auth.store.ts @Maghwyn
 /front-end/src/store/modules/template.store.ts @Maghwyn
-/front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/store/retrospective.store.ts @AyakorK @RuKaSuu @Kevw94
 /front-end/src/styles/scss/config.scss @Maghwyn
 /front-end/src/styles/scss/glassmorphism.scss @Maghwyn @Loule95450
 /front-end/src/styles/style.css @Maghwyn @TheoLandemaine
 /front-end/src/utils/ @Loule95450 @Maghwyn
-/front-end/src/views/ @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/ @AyakorK @Kevw94 @RuKaSuu
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AgilityView.vue @AyakorK @Loule95450 @RuKaSuu
 /front-end/src/views/app/ @Loule95450 @Maghwyn
