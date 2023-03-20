@@ -126,10 +126,6 @@
 // Post the data to the API
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
-// import htmlToPdf from 'html-to-pdf';
-// import jsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
-// import download from 'downloadjs';
 
 export default {
 	// name: 'CreateMaterials',
@@ -196,9 +192,6 @@ export default {
 				const html = this.generateHtml(data)
 				const options = {
 					filename: 'materials.pdf',
-					image: { type: 'jpeg', quality: 0.98 },
-					html2canvas: { scale: 2},
-					jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
 				}
 				html2pdf().from(html).set(options).save()
 			})
@@ -208,29 +201,46 @@ export default {
 			<html>
 				<head>
 					<style>
+						@page {
+							size: A4;
+							margin: 0;
+						}
 						* {
-							font-family: 'Helvetica';
+							box-sizing: border-box;
+							-moz-box-sizing: border-box;
+						}
+						body {
+							font-family: sans-serif;
+							margin: 0;
+							padding: 0;
+							width: 100%;
+							height: 100%;
 						}
 						table {
-							width: 85%;
-							margin: auto;
+							border-collapse: collapse;
+							width: 100%;
 						}
-						table, th, td {
-							border: 1px solid black;
-						}
-						th, td {
-							padding: 5px;
+						th,
+						td {
 							text-align: left;
+							padding: 8px;
 						}
-						table tr:nth-child(even) {
-							background-color: #eee;
+						tr:nth-child(even) {
+							background-color: #f2f2f2;
 						}
-						table tr:nth-child(odd) {
-							background-color: #fff;
-						}
-						table th {
-							background-color: black;
+						th {
+							background-color: #4caf50;
 							color: white;
+						}
+						@media print {
+							@page {
+								size: A4;
+								margin: 0;
+							}
+							body {
+								width: 210mm;
+								height: 297mm;
+							}
 						}
 						h1 {
 							color: black;
