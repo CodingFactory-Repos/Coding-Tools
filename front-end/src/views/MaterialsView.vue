@@ -2,33 +2,31 @@
 	<div class="container">
 		<h1>Materials</h1>
 		<button @click="showModal = true" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-			 Create a materials 
+			 Create a materials
 		</button>
-		<button @click="createPDF">
-			Create PDF
-		</button>
+		<button @click="createPDF">Create PDF</button>
 		<div v-if="showModal" class="popup">
 			<div class="popup-content">
 			<form @submit.prevent="addMaterial">
 			<div class="form-group relative z-0 w-full mb-6">
 				<label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-				<input 
-					type="text" 
-					id="name" 
-					v-model="name" 
-					name="name" 
-					class="form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
-					placeholder="Enter name" 
+				<input
+					type="text"
+					id="name"
+					v-model="name"
+					name="name"
+					class="form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+					placeholder="Enter name"
 					required />
 			</div>
 
 			<div class="form-group">
 				<label for="Type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
-				<select 
-					id="type" 
-					v-model="type" 
-					class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-					required 
+				<select
+					id="type"
+					v-model="type"
+					class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					required
 					>
 					<option value="Hardware">Hardware</option>
 					<option value="Mac">Mac</option>
@@ -62,8 +60,8 @@
 
 			<div class="form-group">
 				<label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-				<select 
-					v-model="state" 
+				<select
+					v-model="state"
 					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required>
 					<option value="Excellent">Etat Excellent</option>
@@ -74,8 +72,8 @@
 
 			<div class="form-group">
 				<label for="site" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Site</label>
-				<select 
-					v-model="site" 
+				<select
+					v-model="site"
 					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required>
 					<option value="Cergy">Cergy</option>
@@ -85,8 +83,8 @@
 
 			<div class="form-group">
 				<label for="storageCupboard" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Storage Cupboard</label>
-				<select 
-					v-model="storageCupboard" 
+				<select
+					v-model="storageCupboard"
 					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					required>
 					<option value="1">1</option>
@@ -118,6 +116,7 @@
 			</form>
 			</div>
 		</div>
+    <ListMaterials />
 	</div>
 </template>
 
@@ -125,7 +124,9 @@
 // Post the data to the API
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
+import ListMaterials from '@/components/materials/ListMaterials.vue';
 export default {
+  components: { ListMaterials },
 	// name: 'CreateMaterials',
 	data() {
 		return {
