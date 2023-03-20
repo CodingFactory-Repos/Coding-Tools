@@ -18,8 +18,8 @@
         </svg>
         <span class="base-timer__label">{{ formattedTimeLeft }}</span>
         </div>
-        <button class="btn btn-success" @click="start" :disabled="!isTimerRunning">Start</button>
-        <button class="btn btn-warning" v-on="isTimerPaused ? { click: start } : { click : pause }" :disabled="isTimerRunning">{{isTimerPaused ? 'Resume' : 'Pause'}}</button>
+        <button class="btn btn-success" v-on="isTimerRunning ? { click: pause } : { click : startTimer }" :disabled="isTimerPaused">{{isTimerRunning ? 'Resume' : 'Start'}}</button>
+        <button class="btn btn-warning" v-on="isTimerPaused ? { click: startTimer } : { click : pause }" :disabled="isTimerRunning">{{isTimerPaused ? 'Resume' : 'Pause'}}</button>
         <button class="btn btn-danger" @click="reset" :disabled="isTimerRunning">Reset</button>
     </template>
     
