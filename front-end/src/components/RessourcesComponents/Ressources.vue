@@ -3,7 +3,7 @@
         <h1>Ressources</h1>
         <div>
 	        <CoursPage v-if="state === 0" />
-		    <OpenHousesPage  v-else-if="state === 1" />
+			<OpenHousesPage v-else-if="state === 1" />
         </div>
 	</div>
 </template>
