@@ -1,13 +1,11 @@
 import cookie from 'cookie';
 
-import { config } from 'src/config/config';
-
 export const createAuthCookie = (strategy: string) => {
 	return cookie.serialize('token', strategy, {
 		httpOnly: true,
-		secure: config.jwt.cookie.secure,
+		secure: false, // config.jwt.cookie.secure
 		maxAge: 60 * 60 * 24 * 30,
-		sameSite: config.jwt.cookie.samesite,
+		sameSite: 'none', // config.jwt.cookie.samesite
 		path: '/',
 	});
 };
@@ -15,9 +13,9 @@ export const createAuthCookie = (strategy: string) => {
 export const expireAuthCookie = () => {
 	return cookie.serialize('token', '', {
 		httpOnly: true,
-		secure: config.jwt.cookie.secure,
+		secure: false, // config.jwt.cookie.secure
 		expires: new Date(0),
-		sameSite: config.jwt.cookie.samesite,
+		sameSite: 'none', // config.jwt.cookie.samesite
 		path: '/',
 	});
 };
