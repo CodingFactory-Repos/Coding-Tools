@@ -6,6 +6,8 @@
 <script>
 import VueQRious from 'vue-qrious';
 
+//? Pretty sure size is of type number, not string;
+
 export default {
 	name: 'QrCode',
 	components: {

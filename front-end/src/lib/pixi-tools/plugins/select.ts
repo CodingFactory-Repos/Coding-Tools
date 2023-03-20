@@ -90,5 +90,6 @@ export class SelectPlugin<T extends PixiObject> extends PixiEvents {
 		this._element.off('pointerdown', this._select);
 		this._element.off('pointerout', this._unhover);
 		this._element.stage.off('pointerdown', this._unselect);
+		this._element.isSelected = false;
 	};
 }

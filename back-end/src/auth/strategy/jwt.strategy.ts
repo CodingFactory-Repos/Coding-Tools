@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger as NestLogger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
@@ -15,11 +15,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 			secretOrKey: config.jwt.secret,
 			jwtFromRequest: ExtractJwt.fromExtractors([
 				(req: Request) => {
-					const data = <string>req?.cookies['token'];
-					if (!data) return null;
+					try {
+						const data = <string>req?.cookies['token'];
+						if (!data) return null;
 
-					const parsed = <JwtTokenData>JSON.parse(data);
-					return parsed.token;
+						const parsed = <JwtTokenData>JSON.parse(data);
+						return parsed.token;
+					} catch (err) {
+						if (err instanceof Error) {
+							NestLogger.error(err.message);
+						}
+						return null;
+					}
 				},
 			]),
 		});
@@ -27,7 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
 	async validate(payload: JwtPayload) {
 		if (!payload?.id) throw new UnauthorizedException();
-		if (!(payload?.status >= 0 && payload?.status <= 2)) throw new UnauthorizedException();
+		if (!(payload?.role >= 0 && payload?.role <= 2)) throw new UnauthorizedException();
 		payload.id = new ObjectId(payload.id);
 		return payload;
 	}

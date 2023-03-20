@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions } from 'mongodb';
 import { User } from './interfaces/users.interface';
 import { Db } from 'mongodb';
 
@@ -21,13 +21,13 @@ export class UsersRepository {
 
 	async findOneAndUpdateUser(
 		query: Filter<User>,
-		update: Partial<User>,
+		update: UpdateFilter<User>,
 		options: FindOneAndUpdateOptions = undefined,
 	) {
 		return this.users.findOneAndUpdate(query, update, options);
 	}
 
-	async findOne(query: Filter<User>, options: FindOneAndUpdateOptions = undefined) {
+	async findOne(query: Filter<User>, options: FindOptions<Document> = undefined) {
 		return this.users.findOne(query, options);
 	}
 
