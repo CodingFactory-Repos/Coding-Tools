@@ -8,7 +8,7 @@ import { ResizePlugin } from '../plugins/resize';
 import { SelectPlugin } from '../plugins/select';
 import { ElementOptions } from './pixi-element-options';
 import { Stage } from './pixi-type-aliases';
-
+import { ConfigBluePrint } from './blueprint-manager';
 /**
  * _PixiObjectDefinition is an interface made to manipulate a Pixi.js object model.
  */
