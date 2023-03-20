@@ -3,12 +3,8 @@
 		<button @click="chooseTemplate">Créer une nouvelle rétrospective</button>
 	</div>
 	<div>
-		<Overlay
-			v-model:active="active"
-			:fullSize="false"
-		>
-			<ChooseTemplate
-			/>
+		<Overlay v-model:active="active" :fullSize="false">
+			<ChooseTemplate />
 		</Overlay>
 	</div>
 </template>
@@ -20,9 +16,9 @@ import ChooseTemplate from './ChooseTemplate.vue';
 
 export default defineComponent({
 	components: {
-    Overlay,
-    ChooseTemplate
-},
+		Overlay,
+		ChooseTemplate,
+	},
 	setup() {
 		const active = ref(false);
 		const displayTemplate = ref(false);
@@ -34,13 +30,13 @@ export default defineComponent({
 			} else {
 				displayTemplate.value = false;
 			}
-		}
+		};
 
 		return {
 			chooseTemplate,
 			displayTemplate,
-			active
-		}
-	}
-})
+			active,
+		};
+	},
+});
 </script>

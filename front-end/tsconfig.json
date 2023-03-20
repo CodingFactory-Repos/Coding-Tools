@@ -1,26 +1,39 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "preserve",
-	"outDir": "/dist",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-	"baseUrl": "./",
-	"typeRoots": ["./node_modules/@types", "./types"],
-	"paths": {
-		"@/*": ["src/*"]
-	}
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+	"compilerOptions": {
+		"lib": [
+			"ESNext",
+			"es2022",
+			"es2020",
+			"dom",
+		],
+		"module": "commonjs",
+		"declaration": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "es2017",
+		"sourceMap": true,
+		"jsx": "preserve",
+		"outDir": "./dist",
+		"noEmit": true,
+		"baseUrl": "./",
+		"incremental": true,
+		"skipLibCheck": false,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"strictNullChecks": false,
+		"noImplicitAny": false,
+		"strictBindCallApply": false,
+		"forceConsistentCasingInFileNames": false,
+		"noFallthroughCasesInSwitch": false,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"typeRoots": ["./node_modules/@types", "./types"],
+		"paths": {
+			"@/*": ["./src/*"],
+		}
+	},
+	"exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+	"references": [{ "path": "./tsconfig.node.json" }]
 }

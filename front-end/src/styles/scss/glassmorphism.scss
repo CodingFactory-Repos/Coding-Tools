@@ -1,0 +1,23 @@
+@mixin custom-bg-pos($pos) {
+	background-position: $pos;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+@mixin custom-glassmorphism($blur, $shadowColor) {
+	background: #ffffff1a;
+	box-shadow: 0 8px 32px 0 $shadowColor;
+	backdrop-filter: blur( $blur );
+	-webkit-backdrop-filter: blur( $blur );
+	border-radius: 10px;
+	border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.glassmorphism {
+	@include custom-glassmorphism(3px, #442328);
+}
+
+.custom-background {
+	background-image: url("/coding-theme.svg");
+	@include custom-bg-pos(center center);
+}

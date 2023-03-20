@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
 	<div class="container">
 		<h1>Materials</h1>
@@ -126,7 +125,6 @@
 // Post the data to the API
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
-
 export default {
 	// name: 'CreateMaterials',
 	data() {
@@ -309,12 +307,10 @@ export default {
 	justify-content: center;
 	align-items: center;
 }
-
 .popup-content {
 	background-color: white;
 	padding: 20px;
 	border-radius: 10px;
 	width: 35%;
 }
-
 </style>
