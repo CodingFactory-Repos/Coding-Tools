@@ -33,7 +33,19 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
 			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
-			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
+			{
+				path: 'rollcall',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/RollCall.vue'),
+					},
+					{
+						path: 'student-list', 
+						component: () => import('../components/RollCallComponents/StudentList.vue'),
+					},
+				],
+			},
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
 			{

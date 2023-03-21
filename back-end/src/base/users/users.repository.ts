@@ -5,7 +5,7 @@ import { Db } from 'mongodb';
 
 @Injectable()
 export class UsersRepository {
-	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
+	constructor(@Inject('DATABASE_CONNECTION') private db: Db) { }
 
 	get users() {
 		return this.db.collection<User>('users');
@@ -34,5 +34,9 @@ export class UsersRepository {
 	async userExist(query: Filter<User>) {
 		const options = { projection: { _id: 1 } };
 		return this.users.findOne(query, options);
+	}
+
+	async findUser(query: Filter<User>) {
+		return this.users.find(query).toArray();
 	}
 }

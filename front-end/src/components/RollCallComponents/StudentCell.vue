@@ -1,17 +1,23 @@
 <script>
+import axios from 'axios';
 export default {
 	name: 'StudentCell',
 	props: {
-		studentname: String,
-		status: String,
+		studentName: String,
+		studentEmail: String,
+		studentPresenceStatus: String,
 	},
 };
 </script>
+
 <template>
 	<div>
-		{{ studentname }}
+		{{ studentName }}
 	</div>
 	<div>
-		{{ status }}
+		{{ studentEmail }}
+	</div>
+	<div>
+		{{ studentPresenceStatus }}
 	</div>
 </template>
