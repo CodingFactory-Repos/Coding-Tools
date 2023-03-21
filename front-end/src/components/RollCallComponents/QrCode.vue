@@ -29,7 +29,6 @@ export default {
 	},
 	methods: {
 		getQrCode() {
-			console.log('getQrCode');
 			http.get('/calls/qrcode_generator').then((response) => {
 				this.url = response.data.qrcode;
 			});
