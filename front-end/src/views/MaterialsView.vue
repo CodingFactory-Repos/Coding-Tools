@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
 	<div class="container">
-		<div class="tkt">
+		<div class="ButtonsContainer">
 			<h1>Materials</h1>
 			<ButtonsMaterials />
 		</div>
@@ -21,12 +21,11 @@ import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
 
 export default {
 	components: { ListMaterials, ButtonsMaterials },
-	// name: 'CreateMaterials',
 };
 </script>
 
 <style scoped>
-.tkt {
+.ButtonsContainer {
 	width: 100%;
 	text-align: center;
 }
