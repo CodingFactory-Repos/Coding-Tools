@@ -5,7 +5,7 @@
 </template>
 <script>
 import Talk from 'talkjs';
-
+/* TalkJs chat version, not ideal + might be unreliable later on */
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
 	name: 'Chat',

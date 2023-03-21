@@ -2,13 +2,13 @@
 import StudentList from '../components/RollCallComponents/StudentList.vue';
 import QrCode from '../components/RollCallComponents/QrCode.vue';
 import axios from 'axios';
-import Chat from '../components/RollCallComponents/RollCallChat.vue';
+import Chat from '../components/RollCallComponents/Chat.vue';
 
 export default {
 	components: {
 		StudentList,
 		QrCode,
-    Chat,
+		Chat,
 	},
 	data() {
 		return {
@@ -24,8 +24,10 @@ export default {
 // and pass it to the QrCode component
 </script>
 <template>
-	{{ url }}
-	<QrCode :url="url" />
-  <Chat/>
-	<StudentList />
+	<div class="flex">
+		{{ url }}
+		<QrCode :url="url" />
+		<Chat />
+		<StudentList />
+	</div>
 </template>
