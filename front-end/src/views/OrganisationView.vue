@@ -2,7 +2,7 @@
     <div class="container">
         <h1 class="marg">Organisation</h1>
         <div class="actualSprint marg">Sprint de la semaine: VueJS, du 05/12 au 09/12 avec François<br/>
-            <RouterLink to="/organisation/sprint" class="link">Afficher les sprints</RouterLink>
+            <RouterLink to="scrum/sprint" class="link">Afficher les sprints</RouterLink>
         </div>
         <div class="marg relative">
             <h2 style="font-size:36px;">Vos groupes</h2>

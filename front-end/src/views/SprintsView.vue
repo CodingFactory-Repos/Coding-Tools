@@ -4,7 +4,7 @@
         <h1 class="marg">Organisation</h1>
         <div class="marg relative">
             <h2 style="font-size:36px;">Vos sprints</h2>
-            <RouterLink to="/organisation" class="link">Retour</RouterLink>
+            <RouterLink to="/app/scrum" class="link">Retour</RouterLink>
             <button class="button" style="position:absolute;right:0px;top:5px;" @click="(this.showForm = true)">Créer un sprint</button>
 
             <table style="width:100%;background-color: #f0f0f0; border-radius: 10px;">
