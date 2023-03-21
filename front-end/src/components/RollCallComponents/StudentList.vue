@@ -30,8 +30,21 @@ export default {
     </div>
     <div v-else>
       <div v-for="student in studentList" :key="student">
-        <div class="flex flex-row">
-          <StudentCell :studentEmail="student.email" :studentName="student.name" :studentPresenceStatus="student.presenceStatus" />
+        <div>
+			<table class="border-2 border-black w-full">
+      <tr>
+        <th>#</th>
+        <th>Nom & Prénom</th>
+        <th>Email</th>
+        <th>Status de présence</th>
+      </tr>
+      <tr :key="index">
+        <th>{{ index + 1 }}</th>
+        <td><StudentCell :studentName="student.name" /></td>
+		<td><StudentCell :studentEmail="student.email" /></td>
+		<td><StudentCell :studentPresenceStatus="student.presenceStatus" /></td>
+      </tr>
+    </table>
         </div>
       </div>
     </div>
