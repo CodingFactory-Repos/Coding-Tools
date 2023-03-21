@@ -15,7 +15,7 @@ export class CallsService {
 		private jwtTokenService: JwtService,
 	) {}
 
-	async generateTempToken(payload: Record<string, any>) {
+	async generateTempToken(payload: Record<string, unknown>) {
 		const jwt = await this.jwtTokenService.signAsync(payload, { expiresIn: '3min' });
 		console.log(this.jwtTokenService.decode(jwt));
 		return jwt;
