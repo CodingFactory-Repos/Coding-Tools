@@ -12,8 +12,9 @@ To install and use this project, you will need Node.js and npm (which are usuall
 1. Download or clone the git repository to your computer.
 2. In a terminal, navigate to the `front-end` folder and install the project dependencies using the command `npm install`.
 3. In another terminal, navigate to the `back-end` folder and also install the dependencies using the command `npm install`.
-4. Once the dependencies are installed, you can start the back-end server using the command `npm start` in the `back-end` folder.
-5. In the `front-end` folder, start the app using the command `npm start`. This should open a browser window with the app running.
+4. Setup your ENV in back and front.
+5. Once the dependencies are installed, you can start the back-end server using the command `npm run dev` in the `back-end` folder.
+6. In the `front-end` folder, start the app using the command `npm run dev`. This should open a browser window with the app running.
 
 If everything went well, you should now be able to use the app. Note that you may need to modify the back-end server settings (such as the address and port) in the `front-end/src/config/config.js` file based on your configuration.
 
