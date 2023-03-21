@@ -9,18 +9,9 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/',
 		component: () => import('../layout/home/HomeLayout.vue'),
 		children: [
-			{ path: '', component: () => import('../views/HomeView.vue') },
-			{ path: '/about', component: () => import('../views/AboutView.vue') },
-			{ path: '/signin', component: () => import('../views/AuthView.vue') },
-			{ path: '/signup', component: () => import('../views/AuthView.vue') },
-			{ path: '/agility', component: () => import('../views/AgilityView.vue') },
-			{ path: '/rollcall', component: () => import('../views/RollCall.vue') },
-			{ path: '/materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: '/retrospective', component: () => import('../views/Retrospective.vue') },
-			{ path: '/test', component: () => import('../components/Test.vue') },
-			{ path: '/blog/addArticle', component: () => import('../views/AddArticleView.vue') },
-			{ path: '/blog', component: () => import('../views/DisplayArticleView.vue') },
-			{ path: '/forgot-password', component: () => import('../views/home/ForgotPassword.vue') },
+			{ path: '', component: () => import('../views/home/HeroView.vue') },
+			{ path: 'about', component: () => import('../views/home/AboutView.vue') },
+			{ path: 'forgot-password', component: () => import('../views/home/ForgotPassword.vue') },
 			{
 				path: 'signin',
 				component: () => import('../views/home/SignIn.vue'),
@@ -44,7 +35,19 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'blog',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: 'addArticle',
+						component: () => import('../views/addArticleView.vue'),
+					},
+				],
+			},
 			{
 				path: 'retrospective',
 				children: [
