@@ -137,13 +137,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 		// 	console.log("JeSuisla");
 		// 	const contentHeight = textinput.input.height; 
 		// 	const boxHeight = this._figure.height; 
-		  
-		// 	if (contentHeight <= boxHeight) {
-		// 		textinput.input.readOnly = true; 
-		// 	} else {
-		// 		textinput.input.readOnly = false; 
-		// 	}
-		// });
+
 		this.addChild(this._figure);
 		this.addChild(this._figure.border);
 		this.addChild(textinput);
