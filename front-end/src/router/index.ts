@@ -37,6 +37,17 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
 			{
+				path: 'scrum', 
+				children: [
+					{ 
+						path: '',
+						component: () => import('../views/OrganisationView.vue') },
+					{ 
+						path: 'sprint',
+						component: () => import('../views/SprintsView.vue') }
+				]
+			},
+			{
 				path: 'retrospective',
 				children: [
 					{
