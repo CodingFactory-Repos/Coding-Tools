@@ -36,11 +36,15 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
-			//{ path: 'scrum', component: () => import('../views/OrganisationView.vue') },
-			{ path: 'scrum', 
+			{
+				path: 'scrum', 
 				children: [
-					{ path: '', component: () => import('../views/OrganisationView.vue') },
-					{ path: 'sprint', component: () => import('../views/SprintView.vue') }
+					{ 
+						path: '',
+						component: () => import('../views/OrganisationView.vue') },
+					{ 
+						path: 'sprint',
+						component: () => import('../views/SprintsView.vue') }
 				]
 			},
 			{
