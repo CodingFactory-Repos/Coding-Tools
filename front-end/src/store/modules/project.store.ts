@@ -11,9 +11,16 @@ const DEFAULT_ACTION = {
 	target: Target.DEFAULT,
 };
 
+function round(value: number, precision?: number) {
+	if(value === undefined) return 1;
+	const multiplier = Math.pow(10, precision || 0);
+	return Math.round(value * multiplier) / multiplier;
+}
+
 export const useProjectStore = defineStore('project', {
 	state: (): ProjectStore => {
 		return {
+			fullscreen: false,
 			scene: undefined,
 			canvas: undefined,
 			action: DEFAULT_ACTION,
@@ -31,6 +38,16 @@ export const useProjectStore = defineStore('project', {
 				scaleY: undefined,
 			},
 		};
+	},
+	getters: {
+		getZoom(this: ProjectStore) {
+			const zoom = this.scene?.zoom?.value;
+			if(zoom > 1) {
+				return round(zoom);
+			} else {
+				return round(zoom, 1);
+			}
+		},
 	},
 	actions: {
 		setScene(this: ProjectStore, scene: Scene) {

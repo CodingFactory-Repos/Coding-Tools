@@ -5,8 +5,10 @@ export interface ProjectStore {
 	canvas: HTMLCanvasElement;
 	action: ProjectAction;
 	meta: Partial<ProjectMetaDetails>;
+	fullscreen: boolean;
 	viewportBounds: ViewportBounds;
 
+	getZoom?: () => number;
 	setScene?: (scene: Scene) => void;
 	setCanvas?: (canvas: HTMLCanvasElement) => void;
 	setAction?: (cursor: string, target: number) => void;
