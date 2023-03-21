@@ -2,10 +2,6 @@
 	<div>
 		<h2>Open Houses</h2>
 	</div>
-	<!-- list all open houses and their description -->
-	<div v-for="openHouse in openHouses" :key="openHouse.id">
-		<OpenHouse :openHouse="openHouse" />
-	</div>
 </template>
 
 <script>

@@ -40,6 +40,6 @@ export class OpenHousesRepository {
 	}
 
 	async getAllHouses() {
-        return this.openHouses.find().toArray();
-    }
+		return this.openHouses.find().toArray();
+	}
 }

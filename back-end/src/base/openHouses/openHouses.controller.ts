@@ -10,9 +10,9 @@ export class OpenHousesController {
 	constructor(private readonly openHousesService: OpenHousesService) {}
 
 	@Get('')
-    index(@Res() res: Response) {
-        this.openHousesService.getAllHouses().then((openHouses) => {
-            res.status(200).json(openHouses);
-        });
-    }
+	index(@Res() res: Response) {
+		this.openHousesService.getAllHouses().then((openHouses) => {
+			res.status(200).json(openHouses);
+		});
+	}
 }
