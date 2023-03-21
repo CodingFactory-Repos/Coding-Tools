@@ -3,6 +3,7 @@ import { Viewport } from 'pixi-viewport';
 
 import { ElementOptions, PixiObject } from './types';
 import { StaticGrid } from './models/static/grid';
+import { reactive, ref, Ref } from 'vue';
 
 /**
  * Scene is a subclass of PIXI.Application that manages a grid and a viewport.
@@ -20,6 +21,8 @@ export class Scene extends Application {
 	 * @private
 	 */
 	private readonly _grid: StaticGrid;
+
+	private _zoom = reactive({ value: 1 });
 
 	/**
 	 * Constructs a new Scene.
@@ -97,6 +100,8 @@ export class Scene extends Application {
 			this._viewport.scale.y = 0.25;
 		}
 
+		this._zoom.value = this._viewport.scale.x;
+
 		if (this._viewport.scale.x > 5) {
 			this._grid.dispatch.emit('updated', this.getOptions());
 		} else this._grid.dispatch.emit('cleared');
@@ -127,5 +132,9 @@ export class Scene extends Application {
 	 */
 	get viewport() {
 		return this._viewport;
+	}
+
+	get zoom() {
+		return this._zoom;
 	}
 }
