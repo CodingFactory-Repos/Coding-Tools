@@ -39,14 +39,19 @@ export class StaticRectangle extends StaticGraphics {
 
 		if (this.color === 0) this.alpha = 0;
 
+	
+
+
 		this.beginFill(this.color);
 		this.drawRoundedRect(0, 0, w, h, 0);
-		this.endFill();
+		this.endFill();		
+		
 
 		this._border = new Graphics();
 		this.dispatch.on('updated', (dimension: ElementOptions.ScaledDimensions) =>
 			this._updateBorder(dimension),
-		);
+			
+			);
 		this.dispatch.on('cleared', () => this._clearBorder());
 	}
 
@@ -84,4 +89,5 @@ export class StaticRectangle extends StaticGraphics {
 	get border() {
 		return this._border;
 	}
+	
 }

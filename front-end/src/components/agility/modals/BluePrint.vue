@@ -1,89 +1,36 @@
 <template>
-	<ModalOverlay v-if="showMetaModal" @close="beforeModalClose" size="lg">
-		<template #body>
-			<div class="flex gap-10">
-				<form class="flex flex-col gap-3">
-					<div class="max-w-[14rem] w-full">
-						<input
-							@input="updateTitle"
-							ref="formTitle"
-							:value="meta.title"
-							class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 text-2xl font-bold text-black outline-none prevent-border"
-							type="text"
-							maxlength="25"
-						/>
-					</div>
-					<div class="max-w-[14rem] w-full">
-						<textarea
-							@input="updateDescription"
-							ref="formDesc"
-							:value="meta.description"
-							class="w-full bg-transparent dark:text-white border-b border-l-0 border-t-0 border-r-0 pb-1 pl-1 resize-none text-black outline-none prevent-border"
-							placeholder="Short description"
-							rows="1"
-							maxlength="100"
-						></textarea>
-					</div>
-				</form>
-				<div class="flex gap-4 justify-center">
-					<div class="h-full flex flex-col justify-end">
-						<span class="text-sm">Owner</span>
-						<span class="text-sm">Created</span>
-						<span class="text-sm">Updated</span>
-					</div>
-					<div class="h-full flex flex-col justify-end">
-						<span class="text-sm text-black dark:text-white">{{ meta.owner }}</span>
-						<span class="text-sm text-black dark:text-white">{{ meta.createdAt }}</span>
-						<span class="text-sm text-black dark:text-white">{{ meta.updatedAt }}</span>
-					</div>
-				</div>
-			</div>
-		</template>
-		<template #footer>
-			<DefaultButton
-				@click="() => (isFormValid ? saveProjectMeta() : {})"
-				type="button"
-				text="Save"
-				text-style="text-white hover:text-white"
-				background="gradiant"
-				:disabled="!isFormValid"
-			/>
-		</template>
-	</ModalOverlay>
-	<ModalOverlay v-if="showWarningModal" @close="restoreProjectMeta" size="lg">
-		<template #body>
-			<div class="flex flex-col gap-4">
-				<div class="flex w-full gap-4 justify-center items-center">
-					<SvgInfo />
-					<span class="mt-1">You have unsaved changes</span>
-				</div>
-				<div class="flex w-full justify-center items-center">
-					<span class="tex-">Are you sure you want to proceed without saving ?</span>
-				</div>
-			</div>
-		</template>
-		<template #footer>
-			<div class="flex gap-4 justify-center items-center">
-				<DefaultButton
-					@click="restoreProjectMeta"
-					type="button"
-					text="Yes"
-					text-style="text-white hover:text-white"
-					background="bg-red-600 hover:bg-red-500"
-					:disabled="!isFormValid"
-				/>
+	<div class="fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="fixed inset-0 bg-gray-500 opacity-75"></div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden w-5/6 md:w-1/2 lg:w-1/3">
 
-				<DefaultButton
-					@click="saveProjectMeta"
-					type="button"
-					text="No, save the change"
-					color="text-white hover:text-white"
-					background="bg-blue-600 hover:bg-blue-500"
-					:disabled="!isFormValid"
-				/>
-			</div>
-		</template>
-	</ModalOverlay>
+      <div class="bg-gray-100 p-3">
+        <h2 class="text-lg font-bold">Titre du Modal</h2>
+      </div>
+
+      
+      <div class="flex flex-row">
+        <div class="w-1/2 p-4">
+          <h3 class="font-bold text-gray-700">Template</h3>
+          <p class="text-gray-600">Official</p>
+          <p class="text-gray-600">Communautary</p>
+          <p class="text-gray-600">My Template</p>
+        </div>
+        <div class="w-1/2 p-4">
+          <h3 class="font-bold text-gray-700">List Of template</h3>
+          <p class="text-gray-600">Blabla</p>
+          <p class="text-gray-600">Blabla</p>
+          <p class="text-gray-600">Blabla</p>
+        </div>
+      </div>
+
+    
+      <div class="bg-gray-100 p-3 flex justify-end">
+        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script lang="ts" setup>

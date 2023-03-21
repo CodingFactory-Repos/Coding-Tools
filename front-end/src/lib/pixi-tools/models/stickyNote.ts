@@ -1,4 +1,6 @@
 import { Viewport } from 'pixi-viewport';
+import TextInput from 'pixi-text-input';
+
 
 import { DownloadPlugin } from '../plugins/download';
 import { SelectPlugin } from './../plugins/select';
@@ -107,20 +109,46 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 	 */
 	constructor(stage: Stage, viewport: Viewport, options: Partial<ElementOptions.ShapeProperties>) {
 		super();
-
 		this._stage = stage;
 		this._viewport = viewport;
 		this._figure = new StaticRectangle(options);
-
 		this.x = this._figure.x;
 		this.y = this._figure.y;
 		this.cursor = 'pointer';
 		this.interactive = true;
-
+		const textinput = new TextInput({
+			input: {
+			  fontSize: '36px',
+			  padding: '12px',
+			  width: `${this._figure.width}px`,
+			  height: `${this._figure.height}px`,
+			  multiline: true,
+			  overflow:"hidden"
+			},
+			box: {
+			  default: { fill: 0x000000, rounded: 0, stroke: { color: 0x000000, width: 1 } },
+			  focused: { fill: 0x000000, rounded: 0, stroke: { color: 0x000000, width: 1 } },
+			  disabled: { fill: 0x000000, rounded: 0, stroke: { color: 0x000000, width: 1 } },
+			},
+		  })
+		textinput.x= this.x;
+		textinput.y= this.y;
+		// this.textinput.on('change', () => {
+		// 	console.log("JeSuisla");
+		// 	const contentHeight = textinput.input.height; 
+		// 	const boxHeight = this._figure.height; 
+		  
+		// 	if (contentHeight <= boxHeight) {
+		// 		textinput.input.readOnly = true; 
+		// 	} else {
+		// 		textinput.input.readOnly = false; 
+		// 	}
+		// });
 		this.addChild(this._figure);
 		this.addChild(this._figure.border);
+		this.addChild(textinput);
+	
 		this._stage.addChild(this);
-
 		this._dragPlugin = new DragPlugin(this);
 		this._dragPlugin.enableDragging();
 
@@ -132,6 +160,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 		this._downloadPlugin = new DownloadPlugin(this);
 		this._downloadPlugin.enableDownload();
+
 	}
 
 	/**
@@ -152,6 +181,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 		this.destroy();
 	}
 
+	
 	/**
 	 * Returns the current dimension of the PixiObject, including the width, height and position, aswell as the scene scale level.
 	 * @returns The current options for the scene.
@@ -264,5 +294,8 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 	public get downloadPlugin(): DownloadPlugin<this> {
 		return this._downloadPlugin;
+	}
+	get textinput() {
+		return this.textField;
 	}
 }
