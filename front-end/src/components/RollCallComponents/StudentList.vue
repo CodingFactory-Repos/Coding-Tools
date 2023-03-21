@@ -31,7 +31,7 @@ export default {
     <div v-else>
       <div v-for="student in studentList" :key="student">
         <div>
-			<table class="border-2 border-black w-full">
+			<table class="border-2 border-black w-full dark:border-[#59595b]">
       <tr>
         <th>#</th>
         <th>Nom & Prénom</th>
