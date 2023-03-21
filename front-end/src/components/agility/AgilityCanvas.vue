@@ -10,6 +10,7 @@ import { Scene } from '@/lib/pixi-tools/scene';
 import AgilityCanvasUI from './AgilityCanvasUI.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { PixiObject } from '@/lib/pixi-tools/types';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const projectStore = useProjectStore();
 const canvas = ref<HTMLCanvasElement>();
@@ -20,7 +21,6 @@ onMounted(() => {
 	projectStore.setScene(scene);
 	projectStore.setCanvas(canvas.value);
 	canvas.value.classList.toggle(projectStore.action.cursor);
-
 
 	document.addEventListener("keydown", (event: KeyboardEvent) => {
 		const key = event.key;
@@ -33,6 +33,12 @@ onMounted(() => {
 			})
 		}
 	})
+})
+
+onBeforeRouteLeave(() => {
+	if (document.exitFullscreen) {
+		document.exitFullscreen();
+	}
 })
 </script>
 

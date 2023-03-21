@@ -64,14 +64,17 @@
 		</template>
 		<template #bottom>
 			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
-				<IconButton type="button">
+				<IconButton type="button" @click="toggleFullScreen" v-if="!isFullScreen">
 					<SvgExpand/>
+				</IconButton>
+				<IconButton type="button" @click="toggleFullScreen" v-else>
+					<SvgShrink/>
 				</IconButton>
 				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
 				<IconButton type="button">
 					<SvgMinus/>
 				</IconButton>
-				<span class="font-semibold text-sm">1%</span>
+				<span class="font-semibold text-sm">{{ scale }}%</span>
 				<IconButton type="button">
 					<SvgAdd/>
 				</IconButton>
@@ -93,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useProjectStore } from '@/store/modules/project.store';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
@@ -117,6 +120,7 @@ import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
+import SvgShrink from '@/components/common/svg/Shrink.vue';
 
 const emit = defineEmits(['update:focus-mode'])
 
@@ -124,6 +128,8 @@ const projectStore = useProjectStore();
 const target = computed(() => projectStore.action.target);
 const meta = computed(() => projectStore.meta);
 
+const scale = computed(() => projectStore.getZoom);
+const isFullScreen = computed(() => projectStore.fullscreen);
 const activate = ref(false);
 const drawerOpen = ref(false);
 
@@ -135,6 +141,15 @@ const toggleCursor = () => projectStore.setAction("default", Target.DEFAULT);
 const toggleText = () => projectStore.setAction("text", Target.TEXT);
 const togglePostIt = () => projectStore.setAction("postit", Target.POSTIT);
 const toggleFrame = () => projectStore.setAction("frame", Target.FRAME);
+
+function toggleFullScreen() {
+	projectStore.fullscreen = !projectStore.fullscreen;
+	if (!document.fullscreenElement) {
+		document.documentElement.requestFullscreen();
+	} else if (document.exitFullscreen) {
+		document.exitFullscreen();
+	}
+}
 
 const startFocusMode = () => {
 	const res = projectStore.activateFocusMode();
