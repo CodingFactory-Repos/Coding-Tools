@@ -1,29 +1,37 @@
 <template>
 	<div>
-		<VueQRious :value="url" @change="onDataUrlChange" size="300" />
+		<qrcode v-if="url" :value="url" />
 	</div>
 </template>
-<script lang="ts">
-import VueQRious from 'vue-qrious';
 
-//? Pretty sure size is of type number, not string;
+<script lang="ts">
+import Qrcode from 'vue-qrcode';
+import { http } from '@/api/network/axios';
+
+let url = '';
 
 export default {
 	name: 'QrCode',
 	components: {
-		VueQRious,
-	},
-	props: {
-		url: String,
+		Qrcode,
 	},
 	data() {
 		return {
-			dataUrl: null,
+			url,
 		};
 	},
-	computed: {
-		onDataUrlChange(dataUrl) {
-			this.dataUrl = dataUrl;
+	mounted() {
+		setInterval(() => {
+			this.getQrCode();
+		}, 180000);
+
+		this.getQrCode();
+	},
+	methods: {
+		getQrCode() {
+			http.get('/calls/qrcode_generator').then((response) => {
+				this.url = response.data.qrcode;
+			});
 		},
 	},
 };
