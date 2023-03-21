@@ -1,4 +1,7 @@
-<script>
+<script lang="ts">
+
+import StudentList from '../components/RollCallComponents/StudentList.vue';
+import QrCode from '../components/RollCallComponents/QrCode.vue';
 import StudentGroup from '../components/RollCallComponents/StudentGroup.vue';
 import StudentList from '../components/RollCallComponents/StudentList.vue';
 import QrCode from '../components/RollCallComponents/QrCode.vue';
@@ -35,6 +38,9 @@ export default {
 			url
 		}
 	}
+			url: '',
+		};
+	},
 };
 // Generate the link of the QR code using api call
 // and pass it to the QrCode component
@@ -50,4 +56,5 @@ export default {
   </button>
   <router-view />
   <StudentGroup />
+	<QrCode />
 </template>

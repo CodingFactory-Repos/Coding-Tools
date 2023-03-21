@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import StudentCell from '../RollCallComponents/StudentCell.vue';
 import { useRollStore } from '@/store/roll.store';
 import { computed } from "vue";

@@ -8,3 +8,7 @@ export interface Call {
 	createdAt: Date;
 	listUsers: Array<User>;
 }
+
+export interface JwtQRCode {
+	jwt: string;
+}
