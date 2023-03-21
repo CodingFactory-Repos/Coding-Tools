@@ -11,13 +11,7 @@
 <script>
 import axios from 'axios';
 
-/* import OpenHouse for making a list through all database */
-
-
 export default {
-	components: {
-		
-	},
 	data() {
 		return {
 			/* list of all open houses */
