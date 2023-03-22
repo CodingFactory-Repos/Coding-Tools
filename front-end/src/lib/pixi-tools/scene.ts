@@ -146,7 +146,8 @@ export class Scene extends Application {
 	 * @private
 	 */
 	private _deduceZoomStep() {
-		this._step = Math.round((Math.log(this._viewport.scale.x / MIN_ZOOM) / Math.log(this._multiplicator)) - 0.45);
+		const threshold = 0.45;
+		this._step = Math.round((Math.log(this._viewport.scale.x / MIN_ZOOM) / Math.log(this._multiplicator)) - threshold);
 	}
 
 	/**
