@@ -35,7 +35,8 @@
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Loule95450 @Maghwyn
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/materials.module.ts @Maghwyn
+/back-end/src/base/materials/materials.module.ts @Maghwyn @RuKaSuu
+/back-end/src/base/materials/materials.service.ts @RuKaSuu @Maghwyn
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
@@ -74,6 +75,7 @@
 /front-end/src/components/agility/modals/Project.vue @Maghwyn @Loule95450
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
 /front-end/src/components/common/drawer/RouterOption.vue @Maghwyn @Loule95450
+/front-end/src/components/common/Modal.vue @Maghwyn @RuKaSuu @Loule95450
 /front-end/src/components/common/uix/SelectionBox.vue @Maghwyn @Loule95450
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/retrospectiveComponents/ChooseTemplate.vue @Kevw94 @AyakorK @Maghwyn
