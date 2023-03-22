@@ -35,6 +35,9 @@ export class MaterialsService {
 	async getMaterialById(id) {
 		return await this.materialsRepository.getMaterialById(id);
 	}
+	async getUserRole(userId) {
+		return await this.materialsRepository.getUserRole(userId);
+	}
 
 	// async getCurrentUser(userId: ObjectId) {
 	// 	return await this.materialsRepository.getCurrentUserId(userId);
