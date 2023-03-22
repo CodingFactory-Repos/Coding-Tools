@@ -7,17 +7,22 @@ export default {
 		studentEmail: String,
 		studentPresenceStatus: String,
 	},
+	data() {
+		return {
+			color: 'dark:text-white text-[#343a40]'
+		}
+	}
 };
 </script>
 
 <template>
-	<div>
+	<div :class="color">
 		{{ studentName }}
 	</div>
-	<div>
+	<div :class="color">
 		{{ studentEmail }}
 	</div>
-	<div>
+	<div :class="color">
 		{{ studentPresenceStatus }}
 	</div>
 </template>

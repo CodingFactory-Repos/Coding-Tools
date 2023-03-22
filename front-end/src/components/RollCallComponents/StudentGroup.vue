@@ -1,27 +1,22 @@
 <!-- eslint-disable prettier/prettier -->
-<script>
+<script >
 export default {
   setup() {
-  },
-};
-// 	data() {
-//   		list: [
-// 			{name: firstname },
-// 			{name: lastname },
-// 			{name: statuts },
-//   ]
-// }
 
-// var firstname = 'Vahé';
-// var lastname = 'Krikorian';
-// var status = 'Présent';
+  },
+
+  randomGroup() {
+      
+  }
+};
+
 </script>
 
 <template>
   <div>
     <h1 class="text-center">Groupes</h1>
 
-    <button
+    <button @click="randomGroup()"
       class="mr-10 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
     >
       Groupe aléatoire

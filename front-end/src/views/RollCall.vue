@@ -3,8 +3,6 @@
 import StudentList from '../components/RollCallComponents/StudentList.vue';
 import QrCode from '../components/RollCallComponents/QrCode.vue';
 import StudentGroup from '../components/RollCallComponents/StudentGroup.vue';
-import StudentList from '../components/RollCallComponents/StudentList.vue';
-import QrCode from '../components/RollCallComponents/QrCode.vue';
 import axios from 'axios';
 import { onMounted, ref, onBeforeMount } from "vue";
 import { useRouter } from 'vue-router';
@@ -37,17 +35,15 @@ export default {
 			router,
 			url
 		}
-	}
-			url: '',
-		};
 	},
+			url: '',
 };
 // Generate the link of the QR code using api call
 // and pass it to the QrCode component
 </script>
 <template>
   {{ url }}
-  <QrCode :url="url" />
+  <QrCode />
   <button
     @click="getStudentList"
     class="mr-10 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
@@ -56,5 +52,4 @@ export default {
   </button>
   <router-view />
   <StudentGroup />
-	<QrCode />
 </template>

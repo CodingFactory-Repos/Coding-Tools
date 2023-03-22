@@ -20,33 +20,38 @@ export default {
     return {
       studentList
     }
+  },
+  data() {
+	  return {
+		border: 'border-t-4 dark:border-[#1f2028] border-[#f3f4f6]', 
+		background: 'dark:bg-[#343a40] bg-[#ffff]', 
+		color: 'dark:text-white text-[#343a40]'
+	}
   }
 };
 </script>
 <template>
-  <div>
-    <div v-if="studentList.length === 0">
-      Pas d'étudiant trouvé
-    </div>
-    <div v-else>
-      <div v-for="student in studentList" :key="student">
-        <div>
-			<table class="border-2 border-black w-full dark:border-[#59595b]">
-      <tr>
-        <th>#</th>
-        <th>Nom & Prénom</th>
-        <th>Email</th>
-        <th>Status de présence</th>
-      </tr>
-      <tr :key="index">
-        <th>{{ index + 1 }}</th>
-        <td><StudentCell :studentName="student.name" /></td>
-		<td><StudentCell :studentEmail="student.email" /></td>
-		<td><StudentCell :studentPresenceStatus="student.presenceStatus" /></td>
-      </tr>
-    </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+	<div>
+	  <table class="w-[1000px] text-center">
+		<thead :class="background" class="border-b-[6px] h-14 dark:border-[#1f2028] border-[#f3f4f6]">
+		  <tr>
+			<th :class="color">#</th>
+			<th :class="color">Nom & Prénom</th>
+			<th :class="color">Email</th>
+			<th :class="color">Status de présence</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr v-if="studentList.length === 0">
+			<td :class="color" colspan="4">Pas d'étudiant trouvé</td>
+		  </tr>
+		  <tr :class="border" class="dark:hover:bg-[#43494e] h-12 dark:bg-[#343a40] hover:bg-[#91919128] bg-[#ffff]" v-else v-for="(student, index) in studentList" :key="index">
+			<th :class="color">{{ index + 1 }}</th>
+			<td><StudentCell :studentName="student.name" /></td>
+			<td><StudentCell :studentEmail="student.email" /></td>
+			<td><StudentCell :studentPresenceStatus="student.presenceStatus" /></td>
+		  </tr>
+		</tbody>
+	  </table>
+	</div>
+  </template>  
