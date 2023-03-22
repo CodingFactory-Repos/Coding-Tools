@@ -71,11 +71,11 @@
 					<SvgShrink/>
 				</IconButton>
 				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
-				<IconButton type="button">
+				<IconButton type="button" @click="decreaseZoom">
 					<SvgMinus/>
 				</IconButton>
 				<span class="font-semibold text-sm">{{ scale }}%</span>
-				<IconButton type="button">
+				<IconButton type="button" @click="increaseZoom">
 					<SvgAdd/>
 				</IconButton>
 			</div>
@@ -141,6 +141,14 @@ const toggleCursor = () => projectStore.setAction("default", Target.DEFAULT);
 const toggleText = () => projectStore.setAction("text", Target.TEXT);
 const togglePostIt = () => projectStore.setAction("postit", Target.POSTIT);
 const toggleFrame = () => projectStore.setAction("frame", Target.FRAME);
+
+const increaseZoom = () => {
+	projectStore.increaseZoom();
+}
+
+const decreaseZoom = () => {
+	projectStore.decreaseZoom();
+}
 
 function toggleFullScreen() {
 	projectStore.fullscreen = !projectStore.fullscreen;
