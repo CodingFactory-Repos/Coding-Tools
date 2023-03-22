@@ -1,8 +1,9 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { randomBytes } from 'crypto';
 
 import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { ObjectId } from 'mongodb';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class CallsService {
@@ -11,16 +12,31 @@ export class CallsService {
 		@Inject(forwardRef(() => CallsRepository))
 		private usersRepository: UsersRepository,
 		private callsRepository: CallsRepository,
+		private jwtTokenService: JwtService,
 	) {}
-	public generateQrCode() {
-		const qr = randomBytes(16)
-			.toString('base64')
-			.replace(/[^a-zA-Z0-9]/g, '');
-		return qr;
+
+	async generateTempToken(payload: Record<string, unknown>) {
+		const jwt = await this.jwtTokenService.signAsync(payload, { expiresIn: '3min' });
+		console.log(this.jwtTokenService.decode(jwt));
+		return jwt;
 	}
-	public generateQrLink() {
-		const qr = this.generateQrCode();
-		const link = `http://localhost:3000/calls/presence?qr=${qr}`;
-		return link;
+
+	async updateUserPresence(jwt: string, presence: boolean) {
+		console.log(jwt);
+		const jwt_decode = this.jwtTokenService.decode(jwt);
+		const userId = await jwt_decode['id'];
+		const courseId = await jwt_decode['courseId'];
+		await this.callsRepository.updateUserPresence(userId, courseId, presence);
+	}
+
+	async generator(userId: ObjectId, courseId: ObjectId) {
+		courseId = courseId || new ObjectId();
+		const jwt = await this.generateTempToken({ id: userId, courseId: courseId });
+		const url = await this.generateUrl(jwt);
+		return url;
+	}
+
+	async generateUrl(jwt: string) {
+		return `https://72ef-92-174-83-81.eu.ngrok.io/calls/presence/` + jwt;
 	}
 }
