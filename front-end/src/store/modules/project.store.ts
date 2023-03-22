@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 
 import { ProjectStore, Target } from '@/store/interfaces/project.interface';
-import { Scene } from '@/lib/pixi-tools/scene';
 import { StickyNote } from '@/lib/pixi-tools/models/stickyNote';
 import { toRaw } from 'vue';
 import { PixiObject, PixiObjectPluggin } from '@/lib/pixi-tools/types';
@@ -50,12 +49,11 @@ export const useProjectStore = defineStore('project', {
 		},
 	},
 	actions: {
-		setScene(this: ProjectStore, scene: Scene) {
-			console.log(scene);
-			this.scene = scene;
+		increaseZoom(this: ProjectStore) {
+			this.scene.updateZoomStep(1);
 		},
-		setCanvas(this: ProjectStore, canvas: HTMLCanvasElement) {
-			this.canvas = canvas;
+		decreaseZoom(this: ProjectStore) {
+			this.scene.updateZoomStep(0);
 		},
 		setAction(this: ProjectStore, cursor: string, target: number) {
 			this.updateCursor(cursor);
@@ -165,6 +163,12 @@ export const useProjectStore = defineStore('project', {
 			vp.plugins.reset();
 			vp.dirty = true;
 		},
+		// zoomIn(this: ProjectStore) {
+		// 	const { x, y } = this.scene.viewport.scale;
+		// 	const scale = []
+
+		// 	this.scene.viewport.scale = this.scene.viewport.scale.
+		// },
 		_createCanvasElement(this: ProjectStore, event: PointerEvent) {
 			const { clientX, clientY } = event;
 			const scene = toRaw(this.scene);

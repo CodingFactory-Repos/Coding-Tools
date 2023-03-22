@@ -9,8 +9,8 @@ export interface ProjectStore {
 	viewportBounds: ViewportBounds;
 
 	getZoom?: () => number;
-	setScene?: (scene: Scene) => void;
-	setCanvas?: (canvas: HTMLCanvasElement) => void;
+	increaseZoom?: () => void;
+	decreaseZoom?: () => void;
 	setAction?: (cursor: string, target: number) => void;
 	updateCursor?: (cursor: string) => void;
 	activateFocusMode?: () => boolean;
