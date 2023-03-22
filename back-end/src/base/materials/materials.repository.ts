@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
 
 import { Material } from 'src/base/materials/interfaces/materials.interface';
 
@@ -47,7 +47,8 @@ export class MaterialsRepository {
 	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
 		return this.materials.updateOne(query, update);
 	}
-	// async getCurrentUserId(userId: ObjectId) {
-	// 	return this.db.collection('users').findOne({ _id: userId});
-	// }
+	async getMaterialById(id: ObjectId) {
+		// return this.db.collection('materials').findOne({ _id: id });
+		return this.materials.findOne({ _id: id });
+	}
 }

@@ -8,14 +8,12 @@ import {
 	Res,
 	UseFilters,
 	UseGuards,
-	Param,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { MaterialsService } from 'src/base/materials/materials.service';
 import { ObjectId } from 'mongodb';
-import { JWTUsers } from 'src/base/materials/interfaces/materials.interface';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 
@@ -71,4 +69,9 @@ export class MaterialsController {
 		res.status(200).json(user);
 	}
 
+	@Get('/:id')
+	async getMaterialById(@Param('id') id: string, @Res() res: Response) {
+		const material = await this.materialsService.getMaterialById(id);
+		res.status(200).json(material);
+	}
 }
