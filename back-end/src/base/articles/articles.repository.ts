@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { Article } from 'src/base/articles/interfaces/articles.interface';
 
@@ -7,14 +7,23 @@ import { Article } from 'src/base/articles/interfaces/articles.interface';
 export class ArticlesRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
+	// Function to get the articles collection
 	get articles() {
 		return this.db.collection<Article>('articles');
 	}
 
+	// Function to get an article by its id
+	async getArticleById(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.articles.findOne({ _id: id });
+	}
+
+	// Function to get all articles
 	async getAllArticles() {
 		return this.articles.find({}).toArray();
 	}
 
+	// Function to add an article
 	async createArticle(query: Article) {
 		return this.articles.insertOne(query);
 	}

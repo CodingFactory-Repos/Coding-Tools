@@ -10,11 +10,6 @@ export class ArticlesController {
 	constructor(private readonly articlesService: ArticlesService) {}
 
 	@Get('')
-	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
-	}
-
-	@Get('/get')
 	getArticle(@Req() req: Request, @Res() res: Response) {
 		this.articlesService.getArticle().then((article) => {
 			return res.status(201).json(article);
@@ -24,6 +19,13 @@ export class ArticlesController {
 	@Post('/add')
 	addArticle(@Req() req: Request, @Res() res: Response) {
 		this.articlesService.addArticle(req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	@Get('/:id')
+	getArticleById(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.getArticleById(req.params.id).then((article) => {
 			return res.status(201).json(article);
 		});
 	}
