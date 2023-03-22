@@ -18,8 +18,8 @@ const canvas = ref<HTMLCanvasElement>();
 onMounted(() => {
 	const darkMode = true;
 	const scene = new Scene(canvas.value as HTMLCanvasElement, darkMode);
-	projectStore.setScene(scene);
-	projectStore.setCanvas(canvas.value);
+	projectStore.scene = scene;
+	projectStore.canvas = canvas.value;
 	canvas.value.classList.toggle(projectStore.action.cursor);
 
 	document.addEventListener("keydown", (event: KeyboardEvent) => {
