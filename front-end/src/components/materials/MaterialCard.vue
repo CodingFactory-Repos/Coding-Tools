@@ -1,19 +1,28 @@
 <template>
-	<div v-if="showModal" class="popup">
+	<div v-if="reservationModal" class="popup">
 		<div class="popup-content">
 			<FormMaterial :id="id" />
 			<button
-				@click="showModal = false"
+				@click="reservationModal = false"
 				class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
 			>
 				Fermer
 			</button>
 		</div>
 	</div>
+	<Modal v-if="detailsModal" @close="detailsModal = false">
+		<template #body>
+			<DetailsMaterials />
+		</template>
+	</Modal>
 	<div
 		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start"
 	>
-		<div class="w-32 h-full flex flex-col justify-between gap-2 relative" style="min-width: 8rem">
+		<div
+			@click="openModalByRef('detailsModal', id)"
+			class="w-32 h-full flex flex-col justify-between gap-2 relative"
+			style="min-width: 8rem"
+		>
 			<img
 				v-if="url"
 				class="w-100 h-100 rounded-lg cursor-pointer select h-100"
@@ -38,28 +47,30 @@
 			>
 				Not Available
 			</span>
-			<button
-				v-if="status === false"
-				disabled
-				data
-				class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
-			>
-				<span class="text-white">Reserved</span>
-			</button>
-			<button
-				v-else
-				@click="sendIdAndShowMOdal(id)"
-				class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
-			>
-				<span class="text-white">Reservation</span>
-			</button>
 		</div>
+		<button
+			v-if="status === false"
+			disabled
+			data
+			class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
+		>
+			<span class="text-white">Reserved</span>
+		</button>
+		<button
+			v-else
+			@click="openModalByRef('reservationModal', id)"
+			class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
+		>
+			<span class="text-white">Reservation</span>
+		</button>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import FormMaterial from '@/components/materials/FormMaterials.vue';
+import Modal from '../common/Modal.vue';
+import DetailsMaterials from './DetailsMaterials.vue';
 
 defineProps({
 	id: { type: String, required: true },
@@ -67,13 +78,21 @@ defineProps({
 	url: { type: String, required: true },
 	status: { type: Boolean, required: true },
 });
-let showModal = ref(false);
+let reservationModal = ref(false);
+let detailsModal = ref(false);
 
-function sendIdAndShowMOdal(identifiant){
-	console.log(identifiant);
-	this.id = identifiant;
-	this.showModal = true;
+function openModalByRef(ref, identifiant) {
+	if (ref === 'reservationModal') {
+		this.id = identifiant;
+		this.reservationModal = true;
+	} else if (ref === 'detailsModal') {
+		this.id = identifiant;
+		this.detailsModal = true;
+	}
 }
+// function sendIdAndShowMOdal(identifiant) {
+// 	console.log(identifiant);
+// }
 </script>
 
 <style scoped>

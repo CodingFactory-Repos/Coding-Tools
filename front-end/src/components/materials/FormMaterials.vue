@@ -89,8 +89,8 @@ function borrorwingMaterial(identifiant) {
 		console.log(response.data);
 		this.borrowingUsers = response.data;
 		console.log(this.borrowingUsers);
-		axios
-			.put('http://localhost:8000/materials/reservation/' + identifiant, {
+		http
+			.put('/materials/reservation/' + identifiant, {
 				borrowingHistory: {
 					borrowingDate: this.borrowingDate,
 					borrowingUser: this.borrowingUsers,
