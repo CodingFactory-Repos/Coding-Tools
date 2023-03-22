@@ -2,6 +2,7 @@ import { Graphics } from 'pixi.js';
 
 import { StaticGraphics } from '../../class/staticGraphics';
 import { ElementOptions } from '../../types';
+import LibraryTextInput from '../../class/lib_TextInput';
 
 /**
  * Class representing a static rectangle.
@@ -23,7 +24,7 @@ export class StaticRectangle extends StaticGraphics {
 	 * Creates a new StaticRectangle instance with a graphic rectangle shape and awaitng for emitter events.
 	 * @param {Partial<ElementOptions.ShapeProperties>} props - The props for the rectangle.
 	 */
-	constructor(props: Partial<ElementOptions.ShapeProperties>) {
+	constructor(props: Partial<ElementOptions.ShapeProperties> /*, textfield?: LibraryTextInput*/) {
 		super();
 
 		const w = props.width || 100;
@@ -39,19 +40,14 @@ export class StaticRectangle extends StaticGraphics {
 
 		if (this.color === 0) this.alpha = 0;
 
-	
-
-
 		this.beginFill(this.color);
 		this.drawRoundedRect(0, 0, w, h, 0);
-		this.endFill();		
-		
+		this.endFill();
 
 		this._border = new Graphics();
 		this.dispatch.on('updated', (dimension: ElementOptions.ScaledDimensions) =>
 			this._updateBorder(dimension),
-			
-			);
+		);
 		this.dispatch.on('cleared', () => this._clearBorder());
 	}
 
@@ -89,5 +85,4 @@ export class StaticRectangle extends StaticGraphics {
 	get border() {
 		return this._border;
 	}
-	
 }
