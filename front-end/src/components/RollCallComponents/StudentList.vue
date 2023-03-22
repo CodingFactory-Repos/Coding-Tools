@@ -31,8 +31,8 @@ export default {
 };
 </script>
 <template>
-	<div>
-	  <table class="w-[1000px] text-center">
+	<div class="relative w-full md:w-9/12">
+	  <table class="text-center w-full">
 		<thead :class="background" class="border-b-[6px] h-14 dark:border-[#1f2028] border-[#f3f4f6]">
 		  <tr>
 			<th :class="color">#</th>
