@@ -43,8 +43,8 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/DisplayArticleView.vue'),
 					},
 					{
-						path: 'addArticle',
-						component: () => import('../views/addArticleView.vue'),
+						path: ':id',
+						component: () => import('../views/ShowArticleView.vue'),
 					},
 				],
 			},
