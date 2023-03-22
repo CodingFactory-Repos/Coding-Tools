@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="ButtonsContainer">
 			<h1>Materials</h1>
-			<ButtonsMaterials />
+			<!-- <ButtonsMaterials /> -->
 		</div>
 		<div class="cards"> 
 			<ListMaterials
