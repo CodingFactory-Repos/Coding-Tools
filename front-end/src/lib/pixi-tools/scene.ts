@@ -3,7 +3,11 @@ import { Viewport } from 'pixi-viewport';
 
 import { ElementOptions, PixiObject } from './types';
 import { StaticGrid } from './models/static/grid';
-import { reactive, ref, Ref } from 'vue';
+import { reactive } from 'vue';
+
+const MAX_ZOOM = 50 as const;
+const MIN_ZOOM = 0.01 as const;
+const MAX_STEP = 14 as const;
 
 /**
  * Scene is a subclass of PIXI.Application that manages a grid and a viewport.
@@ -22,7 +26,23 @@ export class Scene extends Application {
 	 */
 	private readonly _grid: StaticGrid;
 
-	private _zoom = reactive({ value: 1 });
+	/**
+	 * A reactive property zoom that store the scale of viewport
+	 * @private
+	 */
+	private _zoom = reactive({ value: 0 });
+
+	/**
+	 * Define at the current step between min scale and max scale constraints by the exponential spacing;
+	 * @private
+	 */
+	private _step: number;
+
+	/**
+	 * The step multiplicator, the exponential spacing between min scale and max scale constraints by max step.
+	 * @private
+	 */
+	private _multiplicator: number;
 
 	/**
 	 * Constructs a new Scene.
@@ -83,6 +103,50 @@ export class Scene extends Application {
 		});
 
 		this._viewport.on('zoomed', this._onViewportZoom);
+		this._multiplicator = Math.pow((MAX_ZOOM / MIN_ZOOM), (1 / MAX_STEP));
+		this._deduceZoomStep();
+		this._updateZoomPercentage();
+	}
+
+	/**
+	 * Calculate the zoom percentage of the viewport size compared to the world view.
+	 * @private
+	 */
+	private _updateZoomPercentage() {
+		const { worldScreenWidth, worldScreenHeight, screenWidth, screenHeight } = this._viewport;
+		const zoomPercentage = Math.round(Math.min(screenWidth / worldScreenWidth, screenHeight / worldScreenHeight) * 100);
+		this._zoom.value = zoomPercentage;
+	}
+
+	/**
+	 * Increase and decrease the current zoom step, and update the scaling.
+	 * @param zoomIn 0 | 1
+	 * @returns void
+	 */
+	public updateZoomStep(zoomIn: number) {
+		if(zoomIn && this._step < MAX_STEP) {
+			this._step++;
+		} else if(!zoomIn && this._step > 0) {
+			this._step--;
+		} else {
+			return;
+		}
+
+		let scale = MIN_ZOOM;
+		for(let n = 0; n < this._step; n++) {
+			scale *= this._multiplicator;
+		}
+
+		this._viewport.setZoom(scale, true);
+		this._onViewportZoom();
+	}
+	
+	/**
+	 * Determine the current zoom step based on the viewport scale, how many spacing is possible with the current scale of the viewport.
+	 * @private
+	 */
+	private _deduceZoomStep() {
+		this._step = Math.round((Math.log(this._viewport.scale.x / MIN_ZOOM) / Math.log(this._multiplicator)) - 0.45);
 	}
 
 	/**
@@ -90,17 +154,18 @@ export class Scene extends Application {
 	 * @private
 	 */
 	private _onViewportZoom = () => {
-		if (this._viewport.scale.x > 255) {
-			this._viewport.scale.x = 255;
-			this._viewport.scale.y = 255;
+		if (this._viewport.scale.x > 50) {
+			this._viewport.scale.x = 50;
+			this._viewport.scale.y = 50;
 		}
 
-		if (this._viewport.scale.x < 0.25) {
-			this._viewport.scale.x = 0.25;
-			this._viewport.scale.y = 0.25;
+		if (this._viewport.scale.x < 0.01) {
+			this._viewport.scale.x = 0.01;
+			this._viewport.scale.y = 0.01;
 		}
 
-		this._zoom.value = this._viewport.scale.x;
+		this._deduceZoomStep();
+		this._updateZoomPercentage();
 
 		if (this._viewport.scale.x > 5) {
 			this._grid.dispatch.emit('updated', this.getOptions());
