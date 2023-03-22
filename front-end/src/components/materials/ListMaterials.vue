@@ -1,12 +1,14 @@
 <template>
-	<div class="w-1/3 flex flex-col gap-4 h-full">
+	<div class="w-100 flex flex-col gap-4 h-full">
 		<h1 class="text-2xl font-bold dark:text-dark-font">List of all materials</h1>
 		<div class="w-full flex flex-wrap flex-row">
 			<MaterialCard
 				v-for="material in materials"
 				:key="material.id"
+				:id="material._id"
 				:name="material.name"
 				:url="material.picture"
+				:status="material.status"
 			/>
 		</div>
 	</div>

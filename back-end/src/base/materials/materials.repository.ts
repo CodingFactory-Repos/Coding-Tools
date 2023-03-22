@@ -44,4 +44,11 @@ export class MaterialsRepository {
 	async deleteOneMaterial(query: Filter<Material>) {
 		return this.materials.deleteOne(query);
 	}
+	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
+		return this.materials.updateOne(query, update);
+	}
+	async getMaterialById(id: ObjectId) {
+		// return this.db.collection('materials').findOne({ _id: id });
+		return this.materials.findOne({ _id: id });
+	}
 }
