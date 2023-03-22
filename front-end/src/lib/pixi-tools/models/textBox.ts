@@ -1,4 +1,5 @@
 import { Viewport } from 'pixi-viewport';
+import LibTextInput from '../class/lib_TextInput.js';
 
 import { DownloadPlugin } from '../plugins/download';
 import { SelectPlugin } from './../plugins/select';
@@ -13,7 +14,7 @@ import { GraphicContainer } from '../class/graphicContainer';
  * It is a container with a `StaticRectangle` as its child, and it has various plugins attached to it for
  * different functionalities such as dragging, resizing, selecting and downloading.
  */
-export class StickyNote extends GraphicContainer implements PixiObject, PixiObjectPluggin {
+export class TextBox extends GraphicContainer implements PixiObject, PixiObjectPluggin {
 	/**
 	 * The stage to which this PixiObject belongs.
 	 * @private
@@ -30,7 +31,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 	 * The static graphic of this PixiObject.
 	 * @private
 	 */
-	private readonly _figure: StaticRectangle;
+	private readonly _figure: LibTextInput;
 
 	/**
 	 * A flag variable to determine whether the PixiObject is being dragged or not.
@@ -110,40 +111,57 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 
 		this._stage = stage;
 		this._viewport = viewport;
-		this._figure = new StaticRectangle(options);
 
-		// const textinput = new LibTextInput({
-		// 	input: {
-		// 		fontSize: '36px',
-		// 		padding: '2px',
-		// 		width: `${this._figure.width}px`,
-		// 		height: `${this._figure.height}px`,
-		// 		x: `${this._figure.x}px`,
-		// 		y: `${this._figure.y}px`,
-		// 		multiline: true,
-		// 		overflow: 'hidden',
-		// 	},
-		// 	box: {
-		// 		default: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
-		// 		focused: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
-		// 		disabled: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
-		// 	},
-		// });
+		this._figure = new LibTextInput({
+			input: {
+				fontSize: '36px',
+				padding: '2px',
+				width: options.width,
+				height: options.height,
+				x: options.positionX,
+				y: options.positionY,
+				multiline: true,
+				overflow: 'hidden',
+			},
+			box: {
+				default: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
+				focused: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
+				disabled: { fill: 0, rounded: 0, stroke: { color: 0, width: 0 } },
+			},
+		});
 
 		this.x = this._figure.x;
 		this.y = this._figure.y;
-		this.interactive = true;
-		// textinput.x = this.x;
-		// textinput.y = this.x;
-
 		this.cursor = 'pointer';
+		this.interactive = true;
 
 		this.addChild(this._figure);
-		this.addChild(this._figure.border);
-		// this.addChild(textinput);
+		// this.addChild(this._figure.border);
 
 		this._stage.addChild(this);
 
+		let lastClickTime = 0;
+		this.on('pointerdown', (e) => {
+			const currentTime = new Date().getTime();
+			const timeDifference = currentTime - lastClickTime;
+
+			if (timeDifference < 300) {
+				console.log('dblclick');
+				// // const rect = this..getBoundingClientRect();
+				// const x = e.clientX - rect.left;
+				// const y = e.clientY - rect.top;
+
+				// if (isInsideCube(x, y)) {
+				//     console.log('Cube double-clicked');
+				//     // Implement the action you want to perform on double-click here
+				// }
+			}
+
+			lastClickTime = currentTime;
+		});
+
+		//@ts-ignore
+		this.ondl;
 		this._dragPlugin = new DragPlugin(this);
 		this._dragPlugin.enableDragging();
 
@@ -224,7 +242,7 @@ export class StickyNote extends GraphicContainer implements PixiObject, PixiObje
 		return this._viewport;
 	}
 
-	public get figure(): StaticRectangle {
+	public get figure(): LibTextInput {
 		return this._figure;
 	}
 

@@ -4,6 +4,7 @@ import { ProjectStore, Target } from '@/store/interfaces/project.interface';
 import { StickyNote } from '@/lib/pixi-tools/models/stickyNote';
 import { toRaw } from 'vue';
 import { PixiObject, PixiObjectPluggin } from '@/lib/pixi-tools/types';
+import { TextBox } from '@/lib/pixi-tools/models/textBox';
 
 const DEFAULT_ACTION = {
 	cursor: 'inherit',
@@ -189,7 +190,7 @@ export const useProjectStore = defineStore('project', {
 			}
 
 			if (this.action.target === Target.TEXT) {
-				const textbox = new StickyNote(scene.stage, scene.viewport, {
+				const textbox = new TextBox(scene.stage, scene.viewport, {
 					width: originWidth,
 					height: originHeigh,
 					positionX: centerX,
