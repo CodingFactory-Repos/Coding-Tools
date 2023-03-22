@@ -12,7 +12,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 // Post the data to the API
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
