@@ -36,7 +36,7 @@ onMounted(() => {
 })
 
 onBeforeRouteLeave(() => {
-	if (document.exitFullscreen) {
+	if (document.exitFullscreen && projectStore.fullscreen) {
 		document.exitFullscreen();
 	}
 })

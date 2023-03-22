@@ -163,12 +163,6 @@ export const useProjectStore = defineStore('project', {
 			vp.plugins.reset();
 			vp.dirty = true;
 		},
-		// zoomIn(this: ProjectStore) {
-		// 	const { x, y } = this.scene.viewport.scale;
-		// 	const scale = []
-
-		// 	this.scene.viewport.scale = this.scene.viewport.scale.
-		// },
 		_createCanvasElement(this: ProjectStore, event: PointerEvent) {
 			const { clientX, clientY } = event;
 			const scene = toRaw(this.scene);
