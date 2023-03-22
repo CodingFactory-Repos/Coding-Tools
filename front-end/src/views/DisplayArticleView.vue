@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import DisplayArticles from '@/components/DisplayArticles.vue';
+import DisplayArticles from '@/components/blog/DisplayArticles.vue';
 </script>
