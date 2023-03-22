@@ -5,7 +5,7 @@
 			<h1>Materials</h1>
 			<ButtonsMaterials />
 		</div>
-		<div class="cards"> 
+		<div class="cards">
 			<ListMaterials
 			/>
 		</div>
