@@ -35,6 +35,19 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+			{ 
+				path: 'classes',
+				children:[
+					{
+						path: '',
+						component: () => import('../views/CoursesView.vue')
+					},
+					{
+						path:':slug',
+						component: () => import('../components/courses/CoursesDetail.vue')
+					}
+				]
+			},
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
 			{
 				path: 'retrospective',
