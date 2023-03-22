@@ -3,7 +3,7 @@
 		<VueQRious :value="url" @change="onDataUrlChange" size="300" />
 	</div>
 </template>
-<script>
+<script lang="ts">
 import VueQRious from 'vue-qrious';
 
 //? Pretty sure size is of type number, not string;

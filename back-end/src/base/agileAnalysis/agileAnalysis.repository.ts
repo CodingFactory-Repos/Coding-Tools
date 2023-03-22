@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
 
-import { AgileAnalysis } from 'src/base/AgileAnalysis/interfaces/agileAnalysis.interface';
+import { AgileAnalysis } from './interfaces/agileAnalysis.interface';
 
 @Injectable()
 export class AgileAnalysisRepository {

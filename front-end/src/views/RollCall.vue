@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import StudentList from '../components/RollCallComponents/StudentList.vue';
 import QrCode from '../components/RollCallComponents/QrCode.vue';
 import axios from 'axios';

@@ -3,10 +3,15 @@
 /.github/ @Loule95450
 /.gitignore @Loule95450
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
-/back-end/package-lock.json @Maghwyn @Loule95450
-/back-end/src/auth/auth.service.ts @AyakorK @Maghwyn @Loule95450
-/back-end/src/auth/dto/auth.dto.ts @Maghwyn
-/back-end/src/auth/strategy/jwt.strategy.ts @Maghwyn
+/back-end/src/auth/ @Kevw94 @Maghwyn
+/back-end/src/auth/auth.controller.ts @Maghwyn
+/back-end/src/auth/auth.service.ts @Maghwyn @AyakorK
+/back-end/src/auth/dto/auth.dto.ts @Maghwyn @Kevw94
+/back-end/src/auth/events/auth.events.req.ts @Maghwyn
+/back-end/src/auth/events/auth.events.ts @Maghwyn @Kevw94
+/back-end/src/auth/strategy/jwt.strategy.ts @Maghwyn @Kevw94
+/back-end/src/auth/utils/ @Loule95450 @Maghwyn
+/back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/agileAnalysis/agileAnalysis.repository.ts @Maghwyn @Loule95450
@@ -17,10 +22,10 @@
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/calls/ @AyakorK @Loule95450 @Maghwyn
-/back-end/src/base/calls/calls.module.ts @Maghwyn
-/back-end/src/base/calls/calls.repository.ts @Maghwyn
-/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn
+/back-end/src/base/calls/ @AyakorK @Loule95450 @RuKaSuu
+/back-end/src/base/calls/calls.module.ts @Maghwyn @Loule95450
+/back-end/src/base/calls/calls.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
@@ -30,7 +35,8 @@
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Loule95450 @Maghwyn
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/materials.module.ts @Maghwyn
+/back-end/src/base/materials/materials.module.ts @Maghwyn @RuKaSuu
+/back-end/src/base/materials/materials.service.ts @RuKaSuu @Maghwyn
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
@@ -41,53 +47,82 @@
 /back-end/src/base/users/events/users.events.ts @Maghwyn
 /back-end/src/base/users/interfaces/users.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/users/users.repository.ts @Maghwyn @Loule95450
+/back-end/src/common/constants/global.ts @Maghwyn @Kevw94
+/back-end/src/common/constants/README.md @Maghwyn
+/back-end/src/common/decorators/jwt.decorator.ts @Maghwyn @Loule95450
 /back-end/src/common/guards/auth.guard.ts @Maghwyn
-/back-end/src/common/helpers/string.helpes.ts @AyakorK @Maghwyn @Loule95450
-/back-end/src/common/providers/interfaces/events.interface.ts @Maghwyn
-/back-end/src/common/providers/mailjet.service.ts @Maghwyn
+/back-end/src/common/helpers/string.helper.ts @Maghwyn @Loule95450
+/back-end/src/common/providers/interfaces/events.interface.ts @Maghwyn @Loule95450
+/back-end/src/common/providers/mailjet.provider.ts @Maghwyn @Loule95450
 /back-end/src/config/config.ts @Maghwyn @AyakorK
 /back-end/src/config/cors.ts @Maghwyn @TheoLandemaine
-/back-end/src/config/interface/config.interface.ts @AyakorK @Maghwyn @Loule95450
+/back-end/src/config/interface/config.interface.ts @Maghwyn @AyakorK
 /back-end/src/external-modules/database/mongo.module.ts @Maghwyn
-/back-end/src/external-modules/mailjet/mailjet.module.ts @Maghwyn
+/back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/types/index.d.ts @Maghwyn
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
 /front-end/index.html @TheoLandemaine
 /front-end/package-lock.json @Loule95450 @Maghwyn
 /front-end/package.json @Loule95450 @Maghwyn
+/front-end/public/ @Loule95450 @Maghwyn
 /front-end/public/favicon.ico @Maghwyn
-/front-end/src/App.vue @TheoLandemaine
+/front-end/src/api/agility-req.ts @Maghwyn @Loule95450
+/front-end/src/App.vue @TheoLandemaine @Maghwyn
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
+/front-end/src/components/ @Loule95450 @Maghwyn
+/front-end/src/components/AddArticles.vue @Maghwyn @Kevw94
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
-/front-end/src/components/Navbar.vue @TheoLandemaine
-/front-end/src/components/pixi-tools/PixiCanvas.vue @Loule95450
-/front-end/src/components/retrospectiveComponents/ @AyakorK @Kevw94 @RuKaSuu
+/front-end/src/components/agility/modals/Project.vue @Maghwyn @Loule95450
+/front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
+/front-end/src/components/common/drawer/RouterOption.vue @Maghwyn @Loule95450
+/front-end/src/components/common/Modal.vue @Maghwyn @RuKaSuu @Loule95450
+/front-end/src/components/common/uix/SelectionBox.vue @Maghwyn @Loule95450
+/front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
+/front-end/src/components/retrospectiveComponents/ChooseTemplate.vue @Kevw94 @AyakorK @Maghwyn
+/front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/PixieLayout.vue @Maghwyn @AyakorK @Loule95450
-/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @RuKaSuu @Kevw94
-/front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph @Loule95450
-/front-end/src/components/Test.vue @Loule95450
+/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
+/front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn @Loule95450
 /front-end/src/config/config.ts @Maghwyn @AyakorK
-/front-end/src/config/env.validator.ts @Maghwyn
 /front-end/src/images/ @TheoLandemaine
-/front-end/src/layout/AppLayout.vue @TheoLandemaine
+/front-end/src/interfaces/advanced-types.interface.ts @Maghwyn @Loule95450
+/front-end/src/layout/ @Loule95450 @Maghwyn
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/css/index.css @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/js/index.js @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/media/favicon.ico @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/search.json @Loule95450
 /front-end/src/lib/pixi-tools/docs/class/Scene.html @Loule95450
-/front-end/src/main.ts @Maghwyn @TheoLandemaine
+/front-end/src/lib/pixi-tools/models/stickyNote.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools/plugins/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools/plugins/download.ts @Loule95450
+/front-end/src/lib/pixi-tools/scene.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools/types/pixi-tools-core.ts @Maghwyn @Loule95450
 /front-end/src/router/guard.ts @Maghwyn
-/front-end/src/router/index.ts @Maghwyn @Loule95450 @AyakorK
-/front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @RuKaSuu
+/front-end/src/router/index.ts @Maghwyn @Loule95450
+/front-end/src/store/ @Loule95450 @Maghwyn
+/front-end/src/store/index.ts @Maghwyn
+/front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @Kevw94
+/front-end/src/store/interfaces/axios.interface.ts @Maghwyn
+/front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
+/front-end/src/store/modules/auth.store.ts @Maghwyn
+/front-end/src/store/modules/template.store.ts @Maghwyn
+/front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/styles/scss/config.scss @Maghwyn
-/front-end/src/styles/style.css @TheoLandemaine
-/front-end/src/utils/helpers/string.helper.ts @Maghwyn
+/front-end/src/styles/scss/glassmorphism.scss @Maghwyn @Loule95450
+/front-end/src/styles/style.css @Maghwyn @TheoLandemaine
+/front-end/src/utils/ @Loule95450 @Maghwyn
+/front-end/src/views/ @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AgilityView.vue @AyakorK @Loule95450 @RuKaSuu
-/front-end/src/views/MaterialsView.vue @RuKaSuu @AyakorK
-/front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @RuKaSuu
-/front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @RuKaSuu
-/front-end/src/views/RollCall.vue @AyakorK @Iagomorph @Loule95450
-/front-end/tailwind.config.cjs @TheoLandemaine
+/front-end/src/views/app/ @Loule95450 @Maghwyn
+/front-end/src/views/home/ @Loule95450 @Maghwyn
+/front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
+/front-end/src/views/RollCall.vue @AyakorK @Loule95450
+/front-end/tailwind.config.cjs @Maghwyn @TheoLandemaine
+/front-end/tsconfig.json @Maghwyn @Loule95450
+/front-end/tsconfig.node.json @Maghwyn @Loule95450
 /front-end/types/pixi-event.d.ts @Loule95450
 /front-end/types/pixi-viewport.d.ts @Loule95450
+/README.md @Thomlam
