@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useProjectStore } from '@/store/modules/project.store';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
