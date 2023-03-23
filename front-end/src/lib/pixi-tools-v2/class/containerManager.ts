@@ -88,12 +88,12 @@ export class ContainerManager {
 				this.selectContainer(clickedContainer);
 			} else {
 				// regular click to select only the clicked container
-				this.deselectAllContainers();
+				// this.deselectAllContainers();
 				this.selectContainer(clickedContainer);
 			}
 		} else {
 			// click outside any container to deselect all
-			this.deselectAllContainers();
+			// this.deselectAllContainers();
 		}
 	}
 
