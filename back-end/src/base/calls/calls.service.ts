@@ -11,7 +11,7 @@ export class CallsService {
 	constructor(
 		@Inject(forwardRef(() => UsersRepository))
 		@Inject(forwardRef(() => CallsRepository))
-		public usersRepository: UsersRepository,
+		private usersRepository: UsersRepository,
 		private callsRepository: CallsRepository,
 		private jwtTokenService: JwtService,
 	) {}
@@ -43,7 +43,10 @@ export class CallsService {
 		return actualCourse;
 	}
 
-	getStudentList(courseId: CourseIdObject) {
-		return this.callsRepository.getStudentList(courseId.courseId);
+	getStudentIdList(courseId: CourseIdObject) {
+		return this.callsRepository.getStudentIdList(courseId.courseId);
+	}
+	getStudentList(studentIdList: Array<ObjectId>) {
+		return this.callsRepository.getStudentList(studentIdList);
 	}
 }
