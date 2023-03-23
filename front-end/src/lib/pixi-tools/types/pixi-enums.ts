@@ -39,3 +39,4 @@ export enum DownloadType {
 	/** MIME type for a Portable Document Format document */
 	MIME_PDF = 'application/pdf',
 }
+
