@@ -73,11 +73,19 @@ export class MaterialsController {
 		res.status(200).json(user);
 	}
 
-	@Get('test/:id')
+	@Get('get/:id')
 	getMaterialById(@Req() req, @Res() res: Response) {
 		console.log('ok');
 		const id = req.params.id;
 		const material = this.materialsService.getMaterialById(id).then((response) => {
+			res.status(200).json(response);
+		});
+	}
+
+	@Get('user/:id')
+	getUserInfo(@Req() req, @Res() res: Response) {
+		const id = req.params.id;
+		const user = this.materialsService.getUserInfo(id).then((response) => {
 			res.status(200).json(response);
 		});
 	}
