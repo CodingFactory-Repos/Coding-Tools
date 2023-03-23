@@ -37,138 +37,124 @@
 	</div>
 	<div v-if="userRole === 2 || userRole === 3">
 		<div class="mb-5"></div>
-		<form @submit.prevent="editMaterial">
-			<div class="form-group relative z-0 w-full mb-6">
-				<label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Name</label
-				>
-				<input
-					type="text"
-					id="name"
-					v-model="material.name"
-					name="name"
-					class="dark:text-white form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none"
-					placeholder="Enter name"
-					required
-				/>
-			</div>
+		<form>
+			<div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+				<div>
+					<label class="text-white dark:text-gray-200" for="username">Name</label>
+					<input
+						id="name"
+						v-model="material.name"
+						type="text"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					/>
+				</div>
 
-			<div class="form-group">
-				<label for="Type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Type</label
-				>
-				<select
-					id="type"
-					v-model="material.type"
-					class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					required
-				>
-					<option value="" disabled selected>Select the Type</option>
-					<option value="Hardware">Hardware</option>
-					<option value="Mac">Mac</option>
-					<option value="Livre">Livres</option>
-				</select>
-			</div>
+				<div>
+					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Type</label>
+					<select
+						v-model="material.type"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					>
+						<option value="Hardware">Hardware</option>
+						<option value="Mac">Mac</option>
+						<option value="Livre">Livres</option>
+					</select>
+				</div>
 
-			<div class="form-group">
-				<label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Price</label
-				>
-				<input
-					type="number"
-					class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					id="price"
-					v-model="material.price"
-					placeholder="Enter price"
-					required
-				/>
-			</div>
+				<div>
+					<label class="text-white dark:text-gray-200" for="password">Price</label>
+					<input
+						id="password"
+						type="number"
+						v-model="material.price"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					/>
+				</div>
 
-			<div class="form-group">
-				<label for="picture" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Picture</label
-				>
-				<input
-					type="url"
-					class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					id="picture"
-					v-model="material.picture"
-					placeholder="Enter picture"
-					required
-				/>
+				<div>
+					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Type</label>
+					<select
+						v-model="material.state"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					>
+						<option value="Excellent">Etat Excellent</option>
+						<option value="Bon">Bon Etat</option>
+						<option value="Mauvais">Mauvais Etat</option>
+					</select>
+				</div>
+				<div>
+					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Site</label>
+					<select
+						v-model="material.siteLocation"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					>
+						<option value="Cergy">Cergy</option>
+						<option value="Paris">Paris</option>
+					</select>
+				</div>
+				<div>
+					<label class="text-white dark:text-gray-200" for="passwordConfirmation"
+						>Storage Cupboard</label
+					>
+					<select
+						v-model="material.storageCupboard"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<div>
+					<label class="text-white dark:text-gray-200" for="passwordConfirmation"
+						>Description</label
+					>
+					<textarea
+						id="textarea"
+						type="textarea"
+						v-model="material.description"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+					></textarea>
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-white"> Image </label>
+					<div
+						class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+					>
+						<div class="space-y-1 text-center">
+							<svg
+								class="mx-auto h-12 w-12 text-white"
+								stroke="currentColor"
+								fill="none"
+								viewBox="0 0 48 48"
+								aria-hidden="true"
+							>
+								<path
+									d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+							<div class="flex text-sm text-gray-600">
+								<label
+									for="file-upload"
+									class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+								>
+									<span class="">Upload a file</span>
+									<input id="file-upload" name="file-upload" type="file" class="sr-only" />
+								</label>
+								<p class="pl-1 text-white">or drag and drop</p>
+							</div>
+							<p class="text-xs text-white">PNG, JPG, GIF up to 10MB</p>
+						</div>
+					</div>
+				</div>
 			</div>
-
-			<div class="form-group">
-				<label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>State</label
-				>
-				<select
-					v-model="material.state"
-					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					required
-				>
-					<option value="" disabled selected>Select the State</option>
-					<option value="Excellent">Etat Excellent</option>
-					<option value="Bon">Bon Etat</option>
-					<option value="Mauvais">Mauvais Etat</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<label for="site" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Site</label
-				>
-				<select
-					v-model="material.siteLocation"
-					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					required
-				>
-					<option value="" disabled selected>Select the Site</option>
-					<option value="Cergy">Cergy</option>
-					<option value="Paris">Paris</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<label
-					for="storageCupboard"
-					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Storage Cupboard</label
-				>
-				<select
-					v-model="material.storageCupboard"
-					class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-					required
-				>
-					<option value="" disabled selected>Select the Storage</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<label
-					for="description"
-					class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-					>Description</label
-				>
-				<input
-					type="text"
-					class="dark:text-white form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none"
-					id="description"
-					v-model="material.description"
-					placeholder="Enter description"
-					required
-				/>
-			</div>
-			<!-- Add a litte space between the 2 -->
-			<div class="mb-5"></div>
 			<div class="flex items-center justify-between">
 				<Button
-					href="#"
 					class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
 					>Edit</Button
 				>
@@ -233,7 +219,7 @@ export default {
 		const editMaterial = () => {
 			// console.log(typeof material.value._id);
 			http
-				.put(`materials/update/` + props.id, {
+				.put(`materials/update/${props.id}`, {
 					...material.value,
 				})
 				.then((res) => {
