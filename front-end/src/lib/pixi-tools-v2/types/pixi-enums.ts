@@ -16,3 +16,4 @@ export const GeometryTypes = {
 
 
 export type GeometryTypes = typeof GeometryTypes;
+export type LiteralGeometryTypes = keyof GeometryTypes;
