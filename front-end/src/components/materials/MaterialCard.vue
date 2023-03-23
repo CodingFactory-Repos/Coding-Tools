@@ -13,6 +13,7 @@
 				v-else
 				class="w-full h-24 rounded-lg cursor-pointer select"
 				src="https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"
+				alt="template_img"
 			/>
 
 			<span class="dark:text-dark-font text-s font-bold">{{ name }}</span>
