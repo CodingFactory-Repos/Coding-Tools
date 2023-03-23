@@ -25,14 +25,18 @@ export default {
 			url,
 			courseId,
 			message,
+			QrGen: '',
 		};
 	},
 	mounted() {
-		setInterval(() => {
+		this.QRGen = setInterval(() => {
 			this.getCourseId();
 		}, 180000);
 
 		this.getCourseId();
+	},
+	beforeUnmount() {
+		clearInterval(this.QRGen);
 	},
 	methods: {
 		getQrCode() {
