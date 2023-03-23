@@ -51,14 +51,11 @@ ul {
   margin-left: 10px;
   border: none;
   border-radius: 5px;
-  background-color: hsl(263, 100%, 97.2%);
-  color: rgb(104, 56, 135);
 }
 
 .btn-delete{
   border: none;
   border-radius: 5px;
-  color: rgb(184, 79, 149);
   float: right;
 }
 .task-list {
@@ -68,7 +65,6 @@ ul {
 .task-list-item {
   width: 100%;
   display:flex;
-  background-color: #decaff;
   align-items: center;
   padding: 1px;
   margin-top: 10px;

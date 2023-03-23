@@ -12,8 +12,8 @@ export class IdeasEquipmentsService {
 		private ideasEquipmentsRepository: IdeasEquipmentsRepository,
 	) {}
 
-	async get(){
-		return this.ideasEquipmentsRepository.ideasEquipments
+	async getAllIdeasEquipments(){
+		return this.ideasEquipmentsRepository.getAllIdeasEquipments();
 	}
 
 	async addIdea(queryIdea){

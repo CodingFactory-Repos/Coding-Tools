@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseFilters, Post, Req} from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Post, Req } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -7,11 +7,13 @@ import { IdeasEquipmentsService } from 'src/base/ideasEquipments/ideasEquipments
 @Controller('ideasequipments')
 @UseFilters(ServiceErrorCatcher)
 export class IdeasEquipmentsController {
-	constructor(private readonly ideasEquipmentsService: IdeasEquipmentsService) {}
+	constructor(private readonly ideasEquipmentsService: IdeasEquipmentsService) { }
 
 	@Get()
 	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
+		this.ideasEquipmentsService.getAllIdeasEquipments().then((ideasEquipments) => {
+			return res.status(200).json(ideasEquipments);
+		})
 	}
 
 	@Post('/add')

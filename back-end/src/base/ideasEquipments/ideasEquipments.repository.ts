@@ -11,6 +11,10 @@ export class IdeasEquipmentsRepository {
 		return this.db.collection<IdeaEquipment>('ideasEquipments');
 	}
 
+	async getAllIdeasEquipments() {
+		return this.ideasEquipments.find().toArray();
+	}
+
 	async createIdeaEquipment(query: IdeaEquipment) {
 		return this.ideasEquipments.insertOne(query);
 	}
