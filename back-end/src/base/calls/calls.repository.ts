@@ -1,8 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
-
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 import { Call } from 'src/base/calls/interfaces/calls.interface';
-import { ObjectId } from 'mongodb';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 
 @Injectable()
@@ -95,7 +93,7 @@ export class CallsRepository {
 	isStudentLate(period, timeOfScan) {
 		if (period === 'arrival') {
 			const fakeDate = new Date('2023-03-23T08:00:00.105Z');
-			if (!(timeOfScan < 9 * 60 * 60 * 1000)) {
+			if (timeOfScan >= 9 * 60 * 60 * 1000) {
 				const minutesOfLate = Math.floor(
 					Math.floor(timeOfScan.getTime() - fakeDate.getTime()) / 1000 / 60,
 				);

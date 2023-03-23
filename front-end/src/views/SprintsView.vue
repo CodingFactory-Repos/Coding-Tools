@@ -8,6 +8,7 @@
             <button class="button" style="position:absolute;right:0px;top:5px;" @click="(this.showForm = true)">Créer un sprint</button>
 
             <table style="width:100%;background-color: #f0f0f0; border-radius: 10px;">
+              <th>
                 <tbody>
                     <tr style="border-bottom:solid #bfbfbf;">
                         <td>Nom du sprint</td>
@@ -24,8 +25,8 @@
                         <td>09/12/22</td>
                         <td>François</td>
                         <td style="padding:10px;width: fit-content;">
-                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
+                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png" alt="button"></button>
+                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png" alt="button"></button>
                         </td>
                     </tr>
                     <tr>
@@ -35,12 +36,12 @@
                         <td>09/12/22</td>
                         <td>François</td>
                         <td style="padding:10px;width: 120px;">
-                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
+                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png" alt="button"></button>
+                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png" alt="button"></button>
                         </td>
                     </tr>
                 </tbody>
-
+              </th>
             </table>
            
         </div>
