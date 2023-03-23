@@ -47,7 +47,7 @@
 		</div>
 		<div class="w-full flex flex-wrap flex-row">
 			<MaterialCard
-				v-for="material in array"
+				v-for="material in materials"
 				:key="material.id"
 				:id="material._id"
 				:name="material.name"
@@ -58,46 +58,26 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { useMaterialStore } from '@/store/modules/material.store';
+import { http } from '@/api/network/axios';
+import { computed, ref, onMounted } from 'vue';
 import MaterialCard from '@/components/materials/MaterialCard.vue';
-import axios from 'axios';
+import { withErrorHandler } from '@/utils/storeHandler';
 
-export default {
-	name: 'ListMaterials',
-	components: { MaterialCard },
-	data() {
-		return {
-			materials: [],
-			input: '',
-			array: [],
-		};
-	},
-	created() {
-		this.getMaterials();
-		this.array = this.materials;
-	},
-	methods: {
-		getMaterials() {
-			axios
-				.get('http://localhost:8000/materials')
-				.then((response) => {
-					this.materials = response.data;
-					console.log(this.materials);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-		filteredList() {
-			this.materials.forEach((material) => {
-				if (material.name.toLowerCase().includes(this.input.toLowerCase())) {
-					this.array.push(material);
-				}
-			});
-			console.log(this.array);
-		},
-	},
+const materialStore = useMaterialStore();
+const materials = computed(() => materialStore.filteredMaterial);
+const input = ref('');
+const filteredList = () => {
+	materialStore.input = input.value;
 };
+const getMaterials = withErrorHandler(async function () {
+	const res = await http.get('/materials');
+	materialStore.materials = res.data;
+});
+onMounted(async () => {
+	await getMaterials();
+});
 </script>
 
 <style scoped></style>

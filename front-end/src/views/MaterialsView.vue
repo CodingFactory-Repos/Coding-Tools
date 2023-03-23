@@ -1,4 +1,3 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
 	<div class="container">
 		<div class="ButtonsContainer">
@@ -6,16 +5,12 @@
 			<ButtonsMaterials />
 		</div>
 		<div class="cards">
-			<ListMaterials
-			/>
+			<ListMaterials />
 		</div>
 	</div>
 </template>
 
-<script lang="ts">
-// Post the data to the API
-import axios from 'axios';
-import html2pdf from 'html2pdf.js';
+<script>
 import ListMaterials from '@/components/materials/ListMaterials.vue';
 import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
 
