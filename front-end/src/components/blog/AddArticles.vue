@@ -120,6 +120,7 @@
 // Post the data to the API
 import { ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
+import Swal from 'sweetalert2';
 
 // use the store
 const articleStore = useArticleStore();
@@ -138,6 +139,25 @@ const addDescription = () => {
 
 // Function to post the data to the API
 const addArticle = async () => {
+	// add verification if all the fields are filled
+	if (
+		!title.value ||
+		!picture.value ||
+		!tags.value ||
+		!type.value ||
+		!descriptions.value[0].value
+	) {
+		Swal.fire({
+			title: 'You have to fill all the fields',
+			text: 'Please fill all the fields to create a new article',
+			icon: 'error',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ok',
+		});
+		return;
+	}
+
 	let data = {
 		title: title.value,
 		descriptions: descriptions.value,
@@ -146,15 +166,28 @@ const addArticle = async () => {
 		type: type.value,
 	};
 
-	// post the data
-	await articleStore.addArticle(data);
-
 	//reset the form
 	title.value = '';
 	descriptions.value = [{ type: 'text', value: '' }];
 	picture.value = '';
 	tags.value = '';
 	type.value = '';
+
+	// reload the page
+
+	Swal.fire({
+		title: 'Your article has been created',
+		icon: 'success',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ok',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			// post the data
+			await articleStore.addArticle(data);
+			location.reload();
+		}
+	});
 };
 
 // export default {

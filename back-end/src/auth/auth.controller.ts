@@ -78,4 +78,28 @@ export class AuthController {
 		await this.authService.checkAuth(userId);
 		return res.status(200).json({ status: 'ok' });
 	}
+
+	@Post('addEvent')
+	@UseGuards(JwtAuthGuard)
+	async addEvents(
+		@Jwt() userId: ObjectId,
+		@Body() body: { eventId: string },
+		@Res() res: Response,
+	) {
+		const id = new ObjectId(body.eventId);
+		await this.authService.addEvent(userId, id);
+		return res.status(200).json({ status: 'ok' });
+	}
+
+	@Post('removeEvent')
+	@UseGuards(JwtAuthGuard)
+	async removeEvents(
+		@Jwt() userId: ObjectId,
+		@Body() body: { eventId: string },
+		@Res() res: Response,
+	) {
+		const id = new ObjectId(body.eventId);
+		await this.authService.removeEvent(userId, id);
+		return res.status(200).json({ status: 'ok' });
+	}
 }

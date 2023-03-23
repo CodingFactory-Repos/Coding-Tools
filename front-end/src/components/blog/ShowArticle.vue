@@ -1,12 +1,37 @@
 <template>
 	<div>
-		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="xl">
+		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="2xl">
 			<template #header>
 				<h2 class="text-lg font-medium text-gray-900 dark:text-white">List of participants</h2>
 			</template>
 			<template #body>
-				<div v-for="participant in oneItems.participants">
-					{{ participant.email }}
+				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+						<thead
+							class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+						>
+							<tr>
+								<th scope="col" class="px-6 py-3">Email</th>
+								<th scope="col" class="px-6 py-3">FirstName</th>
+								<th scope="col" class="px-6 py-3">LastName</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								v-for="participant in oneItems.participants"
+								class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+							>
+								<th
+									scope="row"
+									class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+								>
+									{{ participant.email }}
+								</th>
+								<td class="px-6 py-4">participant.firstName</td>
+								<td class="px-6 py-4">participant.lastName</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</template>
 		</ModalOverlay>
@@ -183,7 +208,7 @@ const participationEvent = (id) => {
 		Swal.fire({
 			title: 'Do you want to unsubscribe from the event ?',
 			text: 'You can always re-register after',
-			icon: 'warning',
+			icon: 'question',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
@@ -191,6 +216,7 @@ const participationEvent = (id) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				articleStore.removeParticipant(id, user.value.profile);
+				authStore.removeEventToUser(id);
 				window.location.reload();
 			}
 		});
@@ -198,7 +224,7 @@ const participationEvent = (id) => {
 		Swal.fire({
 			title: 'Are you sure you want to participate in this event ?',
 			text: 'You can always unsubscribe after',
-			icon: 'warning',
+			icon: 'question',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
@@ -213,6 +239,9 @@ const participationEvent = (id) => {
 				}
 
 				articleStore.addParticipant(id, user.value.profile);
+
+				// add event to user
+				authStore.addEventToUser(id);
 
 				window.location.reload();
 			}
