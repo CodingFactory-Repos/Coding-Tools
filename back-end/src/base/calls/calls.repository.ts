@@ -1,8 +1,9 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
 
 import { Call } from 'src/base/calls/interfaces/calls.interface';
 import { ObjectId } from 'mongodb';
+import { Course } from '@/base/courses/interfaces/courses.interface';
 
 @Injectable()
 export class CallsRepository {
@@ -10,6 +11,9 @@ export class CallsRepository {
 
 	get calls() {
 		return this.db.collection<Call>('calls');
+	}
+	get courses() {
+		return this.db.collection<Course>('courses');
 	}
 
 	async createCall(query: Call) {
@@ -36,33 +40,53 @@ export class CallsRepository {
 		const options = { projection: { _id: 1 } };
 		return this.calls.findOne(query, options);
 	}
-	async updateUserPresence(userId: ObjectId, courseId: ObjectId, presence: boolean) {
-		const course = await this.db.collection('courses').findOne({ _id: courseId });
-		const user = await this.db.collection('users').findOne({ _id: userId });
+	async updateUserPresence(userId: ObjectId, courseId: string, presence: boolean) {
+		const courseObjectId = new ObjectId(courseId);
+		const userObjectId = new ObjectId(userId);
+		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
+		const user = await this.db.collection('users').findOne({ _id: userObjectId });
+		const date = new Date();
+		const period = ['arrival', 'departure'];
 
-		if (!course) {
-			throw new NotFoundException('Course not found');
-		}
+		const periodIndex = date.getHours() < 16 ? 0 : 1;
+		const call = await this.db
+			.collection('calls')
+			.findOne({ course: courseObjectId, period: period[periodIndex] });
 
 		if (!user) {
 			throw new NotFoundException('User not found');
 		}
 
-		if (!course.students.includes(userId.toHexString())) {
-			throw new BadRequestException('User is not registered in this course');
+		if (!course) {
+			throw new NotFoundException('Course not found');
+		}
+		if (!call) {
+			// Create a new call if one does not already exist
+			await this.db.collection('calls').insertOne({
+				course: courseObjectId,
+				period: period[periodIndex],
+				students: [],
+			});
+		} else if (call.students.find((student) => student.student == userId)) {
+			return {
+				message: 'User already registered',
+			};
 		}
 
-		const query = {
-			course_id: courseId,
-			user_id: userId,
-		};
-		const update = {
-			$set: {
-				present: presence,
+		// Update the call with the student's presence
+		await this.db.collection('calls').updateOne(
+			{ course: courseObjectId, period: period[periodIndex] },
+			{
+				$push: {
+					students: {
+						student: userObjectId,
+						presence: presence,
+						late: this.isStudentLate(period[periodIndex], date),
+						leftEarly: this.didStudentLeftEarly(period[periodIndex], date),
+					},
+				},
 			},
-		};
-
-		await this.calls.updateOne(query, update);
+		);
 
 		return {
 			message: 'User presence updated successfully',

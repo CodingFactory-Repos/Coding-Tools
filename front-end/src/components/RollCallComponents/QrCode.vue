@@ -36,15 +36,19 @@ export default {
 		};
 	},
 	mounted() {
-		setInterval(() => {
-			this.getQrCode();
+		this.QRGen = setInterval(() => {
+			this.getCourseId();
 		}, 180000);
 
-		this.getQrCode();
+		this.getCourseId();
+	},
+	beforeUnmount() {
+		clearInterval(this.QRGen);
 	},
 	methods: {
 		getQrCode() {
-			http.get('/calls/qrcode_generator').then((response) => {
+			const courseId = this.courseId;
+			http.get(`/calls/qrcode_generator/${courseId}`).then((response) => {
 				this.url = response.data.qrcode;
 			});
 		},
@@ -63,6 +67,7 @@ export default {
 				this.message = "Vous n'avez pas de cours aujourd'hui";
 			}
 		},
+
 		getStudentList() {
 			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
 				this.studentList = response.data.studentList;
