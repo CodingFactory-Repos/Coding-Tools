@@ -8,10 +8,10 @@ export const GeometryTypes = {
 
 	"RECTANGLE": new GeometryTemplate.Rectangle(0,0,0,0,0)
 	//"CIRCLE": 'CIRCLE',
-	// "Ellipse": 'ellipse',
-	// "Polygon":'polygon',
-	// "Polyline": 'polyline',
-	// "MultiPoint": 'multipoint',
+	// "ELLIPSE": 'ellipse',
+	// "POLYGON":'polygon',
+	// "POLYLINE": 'polyline',
+	// "MULTIPOINT": 'multipoint',
 } as const;
 
 
