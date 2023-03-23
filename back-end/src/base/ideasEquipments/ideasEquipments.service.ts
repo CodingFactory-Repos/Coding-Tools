@@ -12,6 +12,14 @@ export class IdeasEquipmentsService {
 		private ideasEquipmentsRepository: IdeasEquipmentsRepository,
 	) {}
 
+	async get(){
+		return this.ideasEquipmentsRepository.ideasEquipments
+	}
+
+	async addIdea(queryIdea){
+		return await this.ideasEquipmentsRepository.createIdeaEquipment(queryIdea);
+	}
+
 	// Business logic methods goes there...
 	// Define your own methods
 }

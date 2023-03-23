@@ -71,6 +71,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
 		],
 		meta: {
 			requiresAuth: true,

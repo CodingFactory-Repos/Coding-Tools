@@ -1,0 +1,73 @@
+.popUpItem {
+    display: flex;
+    padding: 0;
+    border-radius: 10px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 60%;
+    height: 500px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    min-width: 370px;
+    max-width: 520px;
+
+}
+
+.popUpItem span{
+    padding: 15px;
+}
+
+
+.popUpItem form {
+    width: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.popUpItem h2 {
+    font-size: xx-large;
+    text-align: center;
+}
+
+.popUpItem input {
+    margin: 10px;
+}
+
+.popUpItem button {
+    width: fit-content;
+}
+
+.popUpItem .closeBtn {
+    align-self: flex-end;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.formIdeas {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 350px;
+}
+
+.formIdeas button{
+    align-self: center;
+    margin-top: 10px;
+}
+
+.backdrop{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+    backdrop-filter: blur(4px) brightness(80%);   
+}
