@@ -42,4 +42,11 @@ export class CallsService {
 		const actualCourse = await this.callsRepository.getActualCourse(userId);
 		return actualCourse;
 	}
+
+	getStudentIdList(courseId: CourseIdObject) {
+		return this.callsRepository.getStudentIdList(courseId.courseId);
+	}
+	getStudentList(studentIdList: Array<ObjectId>) {
+		return this.callsRepository.getStudentList(studentIdList);
+	}
 }

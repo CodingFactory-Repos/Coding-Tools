@@ -38,4 +38,12 @@ export class CallsController {
 		const actualCourse = await this.callsService.getActualCourse(userId);
 		return res.status(201).json({ status: 'ok', actualCourse: actualCourse });
 	}
+
+	@Get('/student_list/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async studentList(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const studentIdList = await this.callsService.getStudentIdList(courseId);
+		const studentList = await this.callsService.getStudentList(studentIdList);
+		return res.status(201).json({ status: 'ok', studentList: studentList });
+	}
 }

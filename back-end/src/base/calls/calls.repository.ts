@@ -92,7 +92,6 @@ export class CallsRepository {
 			message: 'User presence updated successfully',
 		};
 	}
-
 	isStudentLate(period, timeOfScan) {
 		if (period === 'arrival') {
 			const fakeDate = new Date('2023-03-23T08:00:00.105Z');
@@ -138,5 +137,18 @@ export class CallsRepository {
 			students: userId,
 		});
 		return studentClass ? studentClass._id : null;
+	}
+
+	async getStudentIdList(courseId: string) {
+		const courseObjectId = new ObjectId(courseId);
+		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
+		const classId = course.classId;
+		const classroom = await this.db.collection('classes').findOne({ _id: classId });
+
+		return classroom.students;
+	}
+	async getStudentList(studentIdList: Array<ObjectId>) {
+		const studentList = await this.db.collection('users').find({ _id: { $in: studentIdList } }).toArray();
+		return studentList;
 	}
 }
