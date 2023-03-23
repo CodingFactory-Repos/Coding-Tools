@@ -10,7 +10,7 @@ export class CallsService {
 	constructor(
 		@Inject(forwardRef(() => UsersRepository))
 		@Inject(forwardRef(() => CallsRepository))
-		private usersRepository: UsersRepository,
+		public usersRepository: UsersRepository,
 		private callsRepository: CallsRepository,
 		private jwtTokenService: JwtService,
 	) {}
@@ -38,5 +38,9 @@ export class CallsService {
 
 	async generateUrl(jwt: string) {
 		return `https://72ef-92-174-83-81.eu.ngrok.io/calls/presence/` + jwt;
+	}
+
+	getStudentList(courseId: CourseIdObject) {
+		return this.callsRepository.getStudentList(courseId.courseId);
 	}
 }

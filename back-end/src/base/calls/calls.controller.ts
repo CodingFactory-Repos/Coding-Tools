@@ -29,4 +29,17 @@ export class CallsController {
 		await this.callsService.updateUserPresence(param.jwt, true);
 		return res.status(201).json({ status: 'ok' });
 	}
+
+	@Get('/student_list/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async studentList(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const studentIdList = await this.callsService.getStudentList(courseId);
+		const studentList = await Promise.all(
+			studentIdList.map(async (studentId) => {
+				const student = await this.callsService.usersRepository.findOne({ _id: studentId });
+				return student;
+			}),
+		);
+		return res.status(201).json({ status: 'ok', studentList: studentList });
+	}
 }
