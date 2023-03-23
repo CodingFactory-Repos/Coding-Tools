@@ -8,7 +8,7 @@
 import { ref, onMounted } from 'vue';
 import { Scene } from '@/lib/pixi-tools-v2/scene';
 import AgilityCanvasUI from './AgilityCanvasUI.vue';
-import { useProjectStorev2 } from '@/store/modules/projectv2.store';
+import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 const projectStore = useProjectStorev2();
 const canvas = ref<HTMLCanvasElement>();

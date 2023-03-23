@@ -82,7 +82,7 @@ const route = useRoute();
 const themeStore = useThemeStore();
 
 // BlackList is an array of regex where the drawer is hidden;
-const blacklist = [/^\/app\/agility\/project\/([a-z])+/];
+const blacklist = [/^\/app\/agility\/project\/([a-z])+/, /^\/app\/agility\/new/];
 
 const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path)));
 const theme = computed(() => themeStore.theme);

@@ -12,7 +12,7 @@ export class Scene extends Application {
 			height: window.innerHeight,
 			antialias: true,
 			autoDensity: true,
-			backgroundColor: 0xe5e5e5,
+			backgroundColor: 0x2c2e3a,
 			resolution: 1,
 		});
 
