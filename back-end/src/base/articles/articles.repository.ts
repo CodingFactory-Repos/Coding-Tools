@@ -29,6 +29,9 @@ export class ArticlesRepository {
 	}
 
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
+		console.log('query', query);
+		console.log('update', update);
+
 		return this.articles.updateOne(query, update);
 	}
 

@@ -138,7 +138,7 @@ const addDescription = () => {
 
 // Function to post the data to the API
 const addArticle = async () => {
-	const data = {
+	let data = {
 		title: title.value,
 		descriptions: descriptions.value,
 		picture: picture.value,

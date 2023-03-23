@@ -8,6 +8,7 @@ export const useArticleStore = defineStore('article', {
 		return {
 			items: [
 				{
+					_id: '',
 					title: '',
 					descriptions: [
 						{
@@ -21,6 +22,7 @@ export const useArticleStore = defineStore('article', {
 				},
 			],
 			oneItems: {
+				_id: '',
 				title: '',
 				descriptions: [
 					{
@@ -31,6 +33,13 @@ export const useArticleStore = defineStore('article', {
 				picture: '',
 				tags: '',
 				type: '',
+				participants: [
+					{
+						firstName: '',
+						lastName: '',
+						email: '',
+					},
+				],
 			},
 		};
 	},
@@ -53,6 +62,28 @@ export const useArticleStore = defineStore('article', {
 		//get article by id from the database
 		getArticleById: withErrorHandler(async function (id: string) {
 			const response = await http.get(`/articles/${id}`);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// add participant to the array of participants in article in the database
+		addParticipant: withErrorHandler(async function (id: string, participant: any) {
+			console.log('id', id);
+			console.log('participant', participant);
+
+			const response = await http.put(`/articles/participant/${id}`, participant);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// remove participant from the array of participants in article in the database
+		removeParticipant: withErrorHandler(async function (id: string, participant: any) {
+			console.log('id', id);
+			console.log('participant', participant);
+
+			const response = await http.put(`/articles/removeParticipant/${id}`, participant);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;
