@@ -153,6 +153,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="mb-5"></div>
 			<div class="flex items-center justify-between">
 				<Button
 					class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
