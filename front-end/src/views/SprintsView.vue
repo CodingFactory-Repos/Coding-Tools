@@ -8,6 +8,7 @@
             <button class="button" style="position:absolute;right:0px;top:5px;" @click="(this.showForm = true)">Créer un sprint</button>
 
             <table style="width:100%;background-color: #f0f0f0; border-radius: 10px;">
+              <caption>Liste des sprints</caption>
               <th>
                 <tbody>
                     <tr style="border-bottom:solid #bfbfbf;">
