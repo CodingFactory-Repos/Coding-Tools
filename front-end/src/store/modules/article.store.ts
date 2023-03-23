@@ -69,9 +69,6 @@ export const useArticleStore = defineStore('article', {
 
 		// add participant to the array of participants in article in the database
 		addParticipant: withErrorHandler(async function (id: string, participant: any) {
-			console.log('id', id);
-			console.log('participant', participant);
-
 			const response = await http.put(`/articles/participant/${id}`, participant);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
@@ -80,9 +77,6 @@ export const useArticleStore = defineStore('article', {
 
 		// remove participant from the array of participants in article in the database
 		removeParticipant: withErrorHandler(async function (id: string, participant: any) {
-			console.log('id', id);
-			console.log('participant', participant);
-
 			const response = await http.put(`/articles/removeParticipant/${id}`, participant);
 			const oneItems = response.data;
 			this.oneItems = oneItems;

@@ -177,7 +177,6 @@ export class AuthService {
 
 	// remove events from user
 	async removeEvent(userId: ObjectId, eventId: ObjectId) {
-		console.log('userId', eventId);
 		const user = await this.usersRepository.findOneAndUpdateUser(
 			{ _id: userId },
 			{ $pull: { events: eventId } },
