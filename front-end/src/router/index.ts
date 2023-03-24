@@ -36,6 +36,7 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{ path: 'test', component: () => import('../views/BoardEduScrum.vue') },
 			{
 				path: 'scrum', 
 				children: [
