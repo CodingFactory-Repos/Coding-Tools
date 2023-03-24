@@ -30,6 +30,17 @@ export class Scene extends Application {
 		this._viewport.drag().pinch({ percent: 2 }).wheel().decelerate();
 		this.stage.addChild(this._viewport);
 		this.ticker.start();
+
+		window.addEventListener('resize', () => {
+			const newWidth = window.innerWidth;
+			const newHeight = window.innerHeight;
+
+			this.renderer.resize(newWidth, newHeight);
+			this._viewport.screenWidth = newWidth;
+			this._viewport.screenHeight = newHeight;
+			this._viewport.worldWidth = newWidth;
+			this._viewport.worldHeight = newHeight;
+		});
 	}
 
 	get viewport() {
