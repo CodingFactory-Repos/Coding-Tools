@@ -42,4 +42,8 @@ export class OpenHousesRepository {
 	async getAllHouses() {
 		return this.openHouses.find().toArray();
 	}
+
+	async createOpenHouses(query: OpenHouse) {
+		return this.openHouses.insertOne(query);
+	}
 }

@@ -7,4 +7,5 @@ export class UsersController {
 	index(@Res() res: Response) {
 		return res.status(201).json({ status: 'ok' });
 	}
+	
 }

@@ -18,4 +18,10 @@ export class OpenHousesService {
 	async getAllHouses() {
 		return await this.openHousesRepository.getAllHouses();
 	}
+	async createOpenHouses(query) {
+		return await this.openHousesRepository.createOpenHouses(query);
+	}
+	async getAllUsers(){
+		return await this.usersRepository.getAllUsers();
+	}
 }
