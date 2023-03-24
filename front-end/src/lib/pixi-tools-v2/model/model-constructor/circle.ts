@@ -1,21 +1,21 @@
 import { Graphics } from 'pixi.js';
 import { GraphicAttributes } from '../../types/pixi-container-options';
 
-export class Rectangle extends Graphics {
+export class Circle extends Graphics {
 	private _color: number;
+	private _radius: number;
 
 	constructor(attr: GraphicAttributes) {
 		super();
 
-		const { width, height, x, y, color } = attr;
+		const { x, y, color, radius } = attr;
 
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this._radius = radius;
 		this._color = color;
 		this.beginFill(this._color);
-		this.drawRect(x, y, width, height);
+		this.drawCircle(x, y, radius);
 		this.endFill();
 	}
 }
