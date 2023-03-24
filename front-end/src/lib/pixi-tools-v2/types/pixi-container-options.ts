@@ -30,7 +30,7 @@ export interface GraphicAttributes {
 }
 
 export interface GraphicConstructor {
-	Graphic: Rectangle | Circle;
+	Graphic: typeof Rectangle /* | Circle*/;
 	attributes: GraphicAttributes;
 }
 
