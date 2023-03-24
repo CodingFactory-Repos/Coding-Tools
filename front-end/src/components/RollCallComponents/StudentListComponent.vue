@@ -1,14 +1,23 @@
 <template>
-	<div class="flex flex-col items-center mt-10">
-		<div v-if="studentList">
-			<div class="grid grid-cols-4 gap-x-20 gap-y-3">
-				<div v-for="student in studentList" :key="student.id">
-					<p>{{ student.profile.firstName }} {{ student.profile.lastName }}</p>
-				</div>
-			</div>
-		</div>
+	<div v-if="studentList" class="relative w-full md:w-9/12">
+	  <table class="text-center w-full">
+		<thead :class="background" class="border-b-[6px] h-14 dark:border-[#1f2028] border-[#f3f4f6]">
+		  <tr>
+			<th :class="color">#</th>
+			<th :class="color">Nom & Prénom</th>
+			<th :class="color">Status de présence</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr :class="border" class="dark:hover:bg-[#43494e] h-12 dark:bg-[#343a40] hover:bg-[#91919128] bg-[#ffff]" v-for="(student, index) in studentList" :key="student.id">
+			<th :class="color">{{ index + 1 }}</th>
+			<td><p>{{ student.profile.firstName }} {{ student.profile.lastName }}</p></td>
+			<td><p>{{ student.profile.status }}</p></td>
+		  </tr>
+		</tbody>
+	  </table>
 	</div>
-</template>
+</template>  
 
 <script lang="ts">
 import { http } from '@/api/network/axios';
@@ -23,6 +32,9 @@ export default {
 		return {
 			courseId,
 			studentList,
+			border: 'border-t-4 dark:border-[#1f2028] border-[#f3f4f6]', 
+			background: 'dark:bg-[#343a40] bg-[#ffff]', 
+			color: 'dark:text-white text-[#343a40]'
 		};
 	},
 	mounted() {
