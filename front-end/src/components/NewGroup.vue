@@ -2,7 +2,7 @@
     <div class="popupcontainer">
         <div class="fond"></div>
         <form class="newGroupForm">
-            <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png"></button>
+            <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png" alt="Close"></button>
             <div class="formInput">
                 <label for="name">Nom du groupe</label><br/>
                 <input type="text" name="name"><br/>

@@ -7,14 +7,15 @@
             <button class="button" style="position:absolute;right:0px;top:5px;" @click="(this.showForm = true)">Créer un sprint</button>
 
             <table style="width:100%;background-color: #f0f0f0; border-radius: 10px; margin-top:10px;">
+                <caption>Liste des sprints enregistrés</caption>
                 <tbody>
                     <tr style="border-bottom:solid #bfbfbf;">
-                        <td>Nom du sprint</td>
-                        <td>Matière</td>
-                        <td>Début</td>
-                        <td>Fin</td>
-                        <td>PO</td>
-                        <td></td>
+                        <th>Nom du sprint</th>
+                        <th>Matière</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>PO</th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Labday semaine 1</td>
@@ -23,8 +24,8 @@
                         <td>09/12/22</td>
                         <td>François</td>
                         <td style="padding:10px;width: fit-content;">
-                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
+                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png" alt="More"></button>
+                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png" alt="Delete"></button>
                         </td>
                     </tr>
                     <tr>
@@ -34,8 +35,8 @@
                         <td>09/12/22</td>
                         <td>François</td>
                         <td style="padding:10px;width: 120px;">
-                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
+                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"  alt="More"></button>
+                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png" alt="Delete"></button>
                         </td>
                     </tr>
                 </tbody>
@@ -122,8 +123,5 @@ button {
 .icon {
     width: 20px;
     height: 20px;
-}
-NewSprint{
-    height: 0px;
 }
 </style>
