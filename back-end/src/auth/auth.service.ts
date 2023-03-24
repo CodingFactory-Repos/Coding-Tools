@@ -185,9 +185,6 @@ export class AuthService {
 	}
 
 	async addArticles(userId: ObjectId, articleId: ObjectId) {
-		console.log('service userId', userId);
-		console.log('service articleId', articleId);
-
 		const user = await this.usersRepository.findOneAndUpdateUser(
 			{ _id: userId },
 			{ $push: { myArticles: articleId } },

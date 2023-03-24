@@ -111,9 +111,7 @@ export class AuthController {
 		@Body() body: { articleId: string },
 		@Res() res: Response,
 	) {
-		console.log('body', body);
 		const id = new ObjectId(body.articleId);
-		console.log('id', id);
 		await this.authService.addArticles(userId, id);
 		return res.status(200).json({ status: 'ok' });
 	}
