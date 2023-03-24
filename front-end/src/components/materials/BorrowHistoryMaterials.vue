@@ -61,8 +61,6 @@ export default {
 				},
 			}),
 		);
-		console.log(props.history);
-		console.log(props.userInfo);
 
 		return {
 			...props,

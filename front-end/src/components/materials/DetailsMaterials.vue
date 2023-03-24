@@ -191,13 +191,11 @@ export default {
 		let userInfo = ref({});
 		let showLink = ref({});
 		let showHistory = ref(false);
-		// console.log(props.userId);
 
 		const getUserInfo = () => {
 			http
 				.get(`materials/user/` + props.userId)
 				.then((res) => {
-					console.log(res.data);
 					userInfo.value = res.data;
 				})
 				.catch((err) => {
@@ -214,7 +212,6 @@ export default {
 					//delete the _id
 					delete res.data._id;
 					material.value = res.data;
-					// console.log(material.value);
 				})
 				.catch((err) => {
 					console.log(err);
@@ -222,7 +219,6 @@ export default {
 		};
 
 		const editMaterial = () => {
-			// console.log(typeof material.value._id);
 			http
 				.put(`materials/update/${props.id}`, {
 					...material.value,
