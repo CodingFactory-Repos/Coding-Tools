@@ -32,10 +32,10 @@
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/ @Loule95450 @Maghwyn
+/back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/materials.module.ts @Maghwyn @RuKaSuu
-/back-end/src/base/materials/materials.service.ts @RuKaSuu @Maghwyn
+/back-end/src/base/materials/materials.controller.ts @Maghwyn @RuKaSuu @AyakorK
+/back-end/src/base/materials/materials.repository.ts @Loule95450 @RuKaSuu
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
