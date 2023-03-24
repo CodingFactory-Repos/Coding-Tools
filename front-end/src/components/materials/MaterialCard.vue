@@ -32,6 +32,7 @@
 			<img
 				v-else
 				class="w-full h-24 rounded-lg cursor-pointer select"
+				alt="template_img"
 				src="https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"
 			/>
 
