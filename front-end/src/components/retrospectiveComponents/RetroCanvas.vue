@@ -5,22 +5,51 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onBeforeMount, watch } from 'vue';
 import { Scene } from '@/lib/pixi-tools/scene';
 import RetroCanvasUI from './UI/RetroCanvasUI.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { PixiObject } from '@/lib/pixi-tools/types';
 import createRetroTemplate from '@/composables/createRetroTemplate';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
+import { useRoute } from 'vue-router';
 
 const projectStore = useProjectStore();
 const retroStore = useRetrospectiveStore();
 const canvas = ref<HTMLCanvasElement>();
 const templateOptions = computed(() => retroStore.retro.optionTemplate);
+const route = useRoute();
 
+onBeforeMount(() => {
+	retroStore.getCurrentRetro(route.params.slug as string);
+});
+
+watch(templateOptions, value => {
+	if (value !== 0) {
+		const darkMode = true;
+		const scene = new Scene(canvas.value as HTMLCanvasElement, darkMode);
+		createRetroTemplate(scene, templateOptions.value);
+
+		projectStore.setScene(scene);
+
+		projectStore.setCanvas(canvas.value);
+		canvas.value.classList.toggle(projectStore.action.cursor);
+
+
+		document.addEventListener("keydown", (event: KeyboardEvent) => {
+			const key = event.key;
+
+			if (key === "Backspace") {
+				scene.viewport.children.forEach((container: PixiObject) => {
+					if (container.isSelected) {
+						container.destroyObject();
+					}
+				})
+			}
+		})
+	}
+})
 onMounted(() => {
-	console.log("template", templateOptions.value);
-
 	const darkMode = true;
 	const scene = new Scene(canvas.value as HTMLCanvasElement, darkMode);
 	createRetroTemplate(scene, templateOptions.value);
@@ -43,6 +72,7 @@ onMounted(() => {
 		}
 	})
 })
+
 </script>
 
 <style>

@@ -1,4 +1,4 @@
-import { tryCreateNewRetro } from '@/api/retrospective-req';
+import { tryCreateNewRetro, tryGetCurrentRetro } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 
 // We do not want this store to be reset.
@@ -16,6 +16,12 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.retro.title = isRetroCreated.newRetro.title;
 			this.retro.optionTemplate = isRetroCreated.newRetro.optionTemplate;
 			return isRetroCreated.newRetro.slug;
+		},
+		async getCurrentRetro(currentSlugRetro: string) {
+			const { currentRetro } = (await tryGetCurrentRetro(currentSlugRetro)).data;
+			this.retro.title = currentRetro.title;
+			this.retro.optionTemplate = currentRetro.optionTemplate;
+			console.log(this.retro.optionTemplate);
 		}
 	},
 });
