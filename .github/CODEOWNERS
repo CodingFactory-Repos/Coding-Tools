@@ -22,10 +22,9 @@
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/calls/ @AyakorK @Loule95450 @RuKaSuu
+/back-end/src/base/calls/ @AyakorK @Maghwyn
 /back-end/src/base/calls/calls.module.ts @Maghwyn @Loule95450
-/back-end/src/base/calls/calls.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
@@ -33,10 +32,10 @@
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/ @Loule95450 @Maghwyn
+/back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/materials.module.ts @Maghwyn @RuKaSuu
-/back-end/src/base/materials/materials.service.ts @RuKaSuu @Maghwyn
+/back-end/src/base/materials/materials.controller.ts @Maghwyn @RuKaSuu @AyakorK
+/back-end/src/base/materials/materials.repository.ts @Loule95450 @RuKaSuu
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
@@ -83,7 +82,7 @@
 /front-end/src/components/retrospectiveComponents/PixieLayout.vue @Maghwyn @AyakorK @Loule95450
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
-/front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn @Loule95450
+/front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/images/ @TheoLandemaine
 /front-end/src/interfaces/advanced-types.interface.ts @Maghwyn @Loule95450
