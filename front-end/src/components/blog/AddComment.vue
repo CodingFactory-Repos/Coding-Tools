@@ -1,0 +1,140 @@
+<template>
+	<div class="text-center p-6 bg-light-primary border border-gray-200 rounded-lg shadow-md">
+		<form @submit.prevent="addComment(oneItems._id)">
+			<div>
+				<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+					>Title</label
+				>
+				<div class="relative mb-6">
+					<input
+						type="text"
+						id="title"
+						class="form-control w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						placeholder="Enter Title"
+						v-model="title"
+					/>
+				</div>
+			</div>
+			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+				>Description</label
+			>
+			<div class="mb-6">
+				<div v-for="(description, index) in descriptions" :key="index">
+					<div class="relative mb-6 flex">
+						<textarea
+							type="text"
+							v-model="description.value"
+							rows="1"
+							class="p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							placeholder="Enter text or image url"
+						/>
+						<button
+							v-if="descriptions.length > 1"
+							type="button"
+							@click="removeDescription(index)"
+							class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+						>
+							X
+						</button>
+					</div>
+				</div>
+			</div>
+			<button
+				type="button"
+				class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+				@click="addDescription"
+			>
+				Add Description
+			</button>
+
+			<div>
+				<button
+					type="submit"
+					class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+				>
+					Create
+				</button>
+			</div>
+		</form>
+	</div>
+</template>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>
+
+<script lang="ts" setup>
+// Post the data to the API
+import { ref, computed } from 'vue';
+import { useArticleStore } from '@/store/modules/article.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import Swal from 'sweetalert2';
+
+// use the store
+const articleStore = useArticleStore();
+const oneItems = computed(() => articleStore.oneItems);
+
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
+
+// form data
+const title = ref('');
+const descriptions = ref([{ value: '' }]);
+
+// Function to add description object to the array
+const addDescription = () => {
+	descriptions.value.push({ value: '' });
+};
+
+// Function to remove description object from the array
+const removeDescription = (index: number) => {
+	descriptions.value.splice(index, 1);
+};
+
+// Function to post the data to the API
+const addComment = async (id) => {
+	// add verification if all the fields are filled
+	if (!title.value || !descriptions.value[0].value) {
+		Swal.fire({
+			title: 'You have to fill all the fields',
+			text: 'Please fill all the fields to create a new article',
+			icon: 'error',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ok',
+		});
+		return;
+	}
+
+	const date = new Date();
+
+	let data = {
+		title: title.value,
+		descriptions: descriptions.value,
+		date: date,
+		email: user.value.profile.email,
+		firstName: user.value.profile.firstName,
+		lastName: user.value.profile.lastName,
+	};
+
+	//reset the form
+	title.value = '';
+	descriptions.value = [{ value: '' }];
+
+	Swal.fire({
+		title: 'Your article has been created',
+		icon: 'success',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ok',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			await articleStore.addComment(id, data);
+			// reload the page
+			window.location.reload();
+		}
+	});
+};
+</script>
