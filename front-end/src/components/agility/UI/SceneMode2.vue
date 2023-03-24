@@ -41,7 +41,7 @@
 					<SvgText />
 				</IconButton>
 				<IconButton  type="button">
-					<SvgPostIt />
+					<SvgPostIt @click="createRectangle"/>
 				</IconButton>
 				<IconButton  type="button">
 					<SvgFrame />
@@ -122,13 +122,18 @@ import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
-// import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 // const emit = defineEmits(['update:focus-mode'])
 
-// const projectStore = useProjectStorev2();
+const projectStore = useProjectStorev2();
 const activate = ref(false);
 const drawerOpen = ref(false);
+
+const createRectangle = () => {
+	projectStore.deferredGeometry = "RECTANGLE";
+	projectStore.setDeferredEvent("pointer");
+}
 
 const activateProjectModal = () => activate.value = true;
 const deactivateProjectModal = () => activate.value = false;

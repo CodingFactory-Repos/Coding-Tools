@@ -40,6 +40,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.scene = scene;
 
 			this.canvas.classList.toggle("default");
+			this.deferredGeometry = null;
 			this.canvas.removeEventListener('pointerup', this.createGeometry);
 		}
 	},
