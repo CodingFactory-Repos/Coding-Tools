@@ -91,8 +91,16 @@ export class CallsRepository {
 		};
 	}
 	isStudentLate(period, timeOfScan) {
+		const fakeDate = new Date(
+			timeOfScan.getFullYear(),
+			timeOfScan.getMonth(),
+			timeOfScan.getDate(),
+			9,
+			0,
+			0,
+			0,
+		);
 		if (period === 'arrival') {
-			const fakeDate = new Date('2023-03-23T08:00:00.105Z');
 			if (timeOfScan >= 9 * 60 * 60 * 1000) {
 				const minutesOfLate = Math.floor(
 					Math.floor(timeOfScan.getTime() - fakeDate.getTime()) / 1000 / 60,
@@ -107,8 +115,16 @@ export class CallsRepository {
 
 	didStudentLeftEarly(period, timeOfScan) {
 		if (period === 'departure') {
-			const fakeDate = new Date('2023-03-23T16:00:00.105Z');
-			if (timeOfScan.getHours() == 16 && timeOfScan.getMinutes() < 50) {
+			const fakeDate = new Date(
+				timeOfScan.getFullYear(),
+				timeOfScan.getMonth(),
+				timeOfScan.getDate(),
+				17,
+				0,
+				0,
+				0,
+			);
+			if (timeOfScan.getHours() == 14 && timeOfScan.getMinutes() < 50) {
 				const minutesOfLate = Math.floor(
 					Math.floor(fakeDate.getTime() - timeOfScan.getTime()) / 1000 / 60,
 				);
@@ -146,7 +162,38 @@ export class CallsRepository {
 		return classroom.students;
 	}
 	async getStudentList(studentIdList: Array<ObjectId>) {
-		const studentList = await this.db.collection('users').find({ _id: { $in: studentIdList } }).toArray();
+		const studentList = await this.db
+			.collection('users')
+			.find({ _id: { $in: studentIdList } })
+			.toArray();
 		return studentList;
 	}
+
+	async createGroups(groups: Array<Array<ObjectId>>, courseId: string) {
+		const courseObjectId = new ObjectId(courseId);
+		const actualDate = new Date();
+		const course = await this.db.collection('courses').findOne({
+			_id: courseObjectId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		if (!course) {
+			throw new NotFoundException('Course not found');
+		}
+		if (!course.groups) {
+			await this.db.collection('courses').updateOne(
+				{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
+				{
+					$set: {
+						groups: groups,
+					},
+				},
+			);
+		}
+		return {
+			message: 'Groups updated successfully',
+		};
+	}
+
+	// async updateGroups(groups: Array<Array<ObjectId>>, courseId: string) {}
 }

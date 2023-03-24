@@ -35,7 +35,7 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
-		return `https://1f25-2a01-cb00-e91-b600-30f3-a390-1412-28a2.eu.ngrok.io/calls/presence/` + jwt;
+		return `https://df07-46-35-27-53.eu.ngrok.io/calls/presence/` + jwt;
 	}
 
 	async getActualCourse(userId: ObjectId) {
@@ -50,28 +50,30 @@ export class CallsService {
 		return this.callsRepository.getStudentList(studentIdList);
 	}
 
-	async arrayGenerator(studentAmount: number) {
-		const hashs = this.calculateGroups(studentAmount);
+	async arrayGenerator(studentAmount: number, courseId: CourseIdObject) {
+		const amountOfHash = this.calculateGroups(studentAmount);
 
-		const finalHashs = [];
+		const finalHash = [];
 
-		for (let i = 1; i <= hashs['groupsOf4']; i++) {
-			const hash = {};
+		for (let i = 1; i <= amountOfHash['groupsOf4']; i++) {
+			const hash = [];
 			for (let j = 0; j <= 3; j++) {
-				hash[j] = '';
+				hash.push('');
 			}
-			finalHashs.push({ [finalHashs.length + 1]: hash });
+			finalHash.push(hash);
 		}
 
-		for (let i = 1; i <= hashs['groupsOf3']; i++) {
-			const hash = {};
+		for (let i = 1; i <= amountOfHash['groupsOf3']; i++) {
+			const hash = [];
 			for (let j = 0; j <= 2; j++) {
-				hash[j] = '';
+				hash.push('');
 			}
-			finalHashs.push({ [finalHashs.length + 1]: hash });
+			finalHash.push(hash);
 		}
 
-		return finalHashs;
+		await this.callsRepository.createGroups(finalHash, courseId.courseId);
+
+		return finalHash;
 	}
 
 	calculateGroups(studentAmount: number) {
