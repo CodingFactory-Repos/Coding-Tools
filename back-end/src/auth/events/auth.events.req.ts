@@ -1,9 +1,17 @@
-import { User } from 'src/base/users/interfaces/users.interface';
+export class MailjetEmail {
+	email: string;
 
-export class MailjetSignupPO {
-	user: User;
+	constructor(email: string) {
+		this.email = email;
+	}
+}
 
-	constructor(user: User) {
-		this.user = user;
+export class MailjetAskToken {
+	email: string;
+	token: string;
+
+	constructor(email: string, token: string) {
+		this.email = email;
+		this.token = token;
 	}
 }

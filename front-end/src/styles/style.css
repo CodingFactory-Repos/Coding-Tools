@@ -1,7 +1,6 @@
 :root {
 	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 	font-size: 16px;
-	line-height: 24px;
 	font-weight: 400;
 
 	color-scheme: light dark;
@@ -22,7 +21,6 @@
 
 	font-family: Inter, sans-serif;
 	color: #666;
-	line-height: 1.7em;
 	-moz-osx-font-smoothing: grayscale;
 }
 
@@ -55,7 +53,7 @@ h1 {
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	background-color: #e8e8e8;
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
@@ -75,7 +73,6 @@ button:focus-visible {
 	max-width: 1280px;
 	margin: 0 auto;
 	padding: 2rem;
-	text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
