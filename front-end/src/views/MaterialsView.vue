@@ -17,7 +17,6 @@
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import ListMaterials from '@/components/materials/ListMaterials.vue';
-// import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
 
 export default {
 	components: { ListMaterials },

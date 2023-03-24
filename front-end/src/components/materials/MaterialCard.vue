@@ -95,13 +95,9 @@ function openModalByRef(ref, identifiant) {
 		this.reservationModal = true;
 	} else if (ref === 'detailsModal') {
 		this.cardId = identifiant;
-		console.log(this.cardId);
 		this.detailsModal = true;
 	}
 }
-// function sendIdAndShowMOdal(identifiant) {
-// 	console.log(identifiant);
-// }
 </script>
 
 <style scoped>

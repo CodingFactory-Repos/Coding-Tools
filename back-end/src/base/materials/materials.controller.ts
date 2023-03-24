@@ -35,10 +35,10 @@ export class MaterialsController {
 		});
 	}
 	@Put('/update/:id')
-	updateMaterial(@Req() req, @Res() res: Response) {
+	updateMaterial(@Req() req) {
 		const query = { _id: new ObjectId(req.params.id) };
 		const update = { $set: req.body };
-		this.materialsService.updateMaterial(query, update).then((response) => {
+		this.materialsService.updateMaterial(query, update).then(() => {
 			res.status(200).json({ message: 'Material updated' });
 		});
 	}
