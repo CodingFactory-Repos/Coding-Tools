@@ -15,7 +15,7 @@
 						<span class="font-bold">Date :</span> {{ formattedDate(openHouse.date) }}
 					</p>
 					<p class="mb-2">
-						<span class="font-bold">Address :</span> {{ formattedAddress(openHouse.address) }}
+						<span class="font-bold">Addresse :</span> {{ formattedAddress(openHouse.address) }}
 					</p>
 				</div>
 				<div style="display: flex; justify-content: center; align-items: center">
@@ -28,40 +28,30 @@
 	</div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { http } from '@/api/network/axios';
+import { Status } from '@/store/interfaces/axios.interface';
+import { withErrorHandler } from '@/utils/storeHandler'; // storeHandler c'est pas ouf comme nom en vrai.
+
+interface objNameA {
+	propA: string;
+	propB: boolean;
+}
+
+interface objNameB {
+	something: objNameA;
+}
 
 export default {
-	data() {
-		return {
-			openHouses: [],
-		};
-	},
-	mounted() {
-		axios
-			.get('http://localhost:8010/openhouses')
-			.then((response) => {
-				this.openHouses = response.data;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	},
 	methods: {
-		// Change computed to methods
-		formattedDate(date) {
-			// Remove the check for openHouses length and accept date as a parameter
-			const parsedDate = new Date(date);
-			return parsedDate.toLocaleDateString('fr-FR', {
-				day: '2-digit',
-				month: '2-digit',
-				year: 'numeric',
-			});
-		},
-		formattedAddress(address) {
-			// Remove the check for openHouses length and accept address as a parameter
-			return `${address.street} ${address.city} ${address.zipCode}`;
-		},
+		myMethod: withErrorHandler(async function () {
+			const res = await http.get<Status<objNameB>>('/openHouses');
+			const data = res.data;
+			data.status; // typé
+			data.something; // typé
+			data.something.propA; // typé
+			data.something.propB; // typé
+		}),
 	},
 };
 </script>

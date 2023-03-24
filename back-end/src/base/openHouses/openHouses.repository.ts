@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { OpenHouse } from 'src/base/openHouses/interfaces/openHouses.interface';
 
@@ -40,6 +40,11 @@ export class OpenHousesRepository {
 	}
 
 	async getAllHouses() {
-		return this.openHouses.find().toArray();
+		return this.openHouses.find({}).toArray();
+	}
+
+	async getOpenHouseById(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.openHouses.findOne({ _id: id });
 	}
 }

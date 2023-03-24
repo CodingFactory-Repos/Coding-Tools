@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseFilters } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Req } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -10,9 +10,16 @@ export class OpenHousesController {
 	constructor(private readonly openHousesService: OpenHousesService) {}
 
 	@Get('')
-	index(@Res() res: Response) {
+	getOpenHouse(@Req() req: Request, @Res() res: Response) {
 		this.openHousesService.getAllHouses().then((openHouses) => {
-			res.status(200).json(openHouses);
+			return res.status(201).json(openHouses);
+		});
+	}
+
+	@Get('/:id')
+	getOpenHouseById(@Req() req: Request, @Res() res: Response) {
+		this.openHousesService.getAllHouses().then((openHouses) => {
+			return res.status(201).json(openHouses);
 		});
 	}
 }
