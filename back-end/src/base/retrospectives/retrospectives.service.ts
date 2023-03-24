@@ -29,5 +29,9 @@ export class RetrospectivesService {
 		};
 		this.retrospectivesRepository.createRetrospective(newRetro);
 		return newRetro;
+	};
+	async getCurrentRetro(idRetro: string) {
+		const isCurrentRetro = await this.retrospectivesRepository.findOne({slug: idRetro});
+		return isCurrentRetro;
 	}
 }

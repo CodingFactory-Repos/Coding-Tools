@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -23,6 +23,12 @@ export class RetrospectivesController {
 	async createRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: DTONewRetro) {
 		const newRetro = await this.retrospectivesService.createNewRetro(body, userId);
 		return res.status(201).json({ status: 'ok', newRetro: newRetro });
+	}
+
+	@Get(':slug')
+	async getCurrentRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Param('slug') retroSlug: string) {
+		const currentRetro = await this.retrospectivesService.getCurrentRetro(retroSlug);
+		return res.status(201).json({ status: 'ok', currentRetro: currentRetro });
 	}
 
 }
