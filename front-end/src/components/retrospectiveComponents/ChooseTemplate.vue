@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -43,12 +43,9 @@ export default defineComponent({
 		const retrospectiveStore = useRetrospectiveStore();
 		const titleRetro = ref('');
 		const router = useRouter();
-		const newRetro = (option: number) => {
-			//TODO add prevent from null data
-			retrospectiveStore.titleNewRetro = titleRetro.value;
-			retrospectiveStore.optionTemplate = option;
-
-			router.push('/app/retrospective/new');
+		const newRetro = async (option: number) => {
+			const slug = await retrospectiveStore.createRetro({title: titleRetro.value, optionTemplate: option});
+			router.push(`/app/retrospective/${slug}`);
 		};
 
 		return {

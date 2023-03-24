@@ -44,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/Retrospective.vue'),
 					},
 					{
-						path: 'new',
+						path: ':slug',
 						component: () => import('../views/NewRetrospective.vue'),
 					},
 				],

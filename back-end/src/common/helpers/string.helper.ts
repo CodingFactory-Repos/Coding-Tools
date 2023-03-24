@@ -31,6 +31,10 @@ export const verifyPassword = async (oldPass: string, newPass: string) => {
 	return argon2.verify(oldPass, newPass);
 };
 
+export const generateSlug = () => {
+	return randomInt(60466176, 2176782335).toString(36);
+}
+
 /**
  * @method isEmpty
  * @param {String | Number | Object} value

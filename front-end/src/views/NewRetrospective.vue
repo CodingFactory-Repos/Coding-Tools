@@ -1,16 +1,16 @@
 <template>
-	<div><PixieLayout /></div>
+	<RetroCanvas/>
 </template>
 
 <script lang="ts">
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { defineComponent } from 'vue';
-import PixieLayout from '@/components/retrospectiveComponents/PixieLayout.vue';
+import RetroCanvas from '@/components/retrospectiveComponents/RetroCanvas.vue';
 
 export default defineComponent({
 	components: {
-		PixieLayout,
-	},
+    RetroCanvas
+},
 	setup() {
 		const retrospectiveStore = useRetrospectiveStore();
 	},
