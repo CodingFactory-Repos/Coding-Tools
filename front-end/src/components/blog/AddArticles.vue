@@ -1,0 +1,219 @@
+<template>
+	<div class="margin text-center p-6 bg-light-primary border border-gray-200 rounded-lg shadow-md">
+		<form @submit.prevent="addArticle">
+			<div class="grid gap-6 mb-6 md:grid-cols-2">
+				<div>
+					<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+						>Title</label
+					>
+					<div class="relative mb-6">
+						<input
+							type="text"
+							id="title"
+							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							placeholder="Enter Title"
+							v-model="title"
+						/>
+					</div>
+				</div>
+				<div>
+					<label
+						for="countries"
+						class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+						>Select an option</label
+					>
+					<div class="relative mb-6">
+						<select
+							id="countries"
+							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							v-model="type"
+						>
+							<option value="" selected disabled>Select type</option>
+							<option value="Infos">Infos</option>
+							<option value="Tuto">Tuto</option>
+							<option value="Evenement">Evenement</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+				>Description</label
+			>
+			<div class="mb-6">
+				<div v-for="(description, index) in descriptions" :key="index">
+					<div class="relative mb-6 flex">
+						<textarea
+							type="text"
+							v-model="description.value"
+							rows="1"
+							class="p-2.5 w-4/5 text-sm text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							placeholder="Enter text or image url"
+						/>
+
+						<select
+							v-model="description.type"
+							class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						>
+							<option value="text">Text</option>
+							<option value="image">Image</option>
+						</select>
+						<button
+							v-if="descriptions.length > 1"
+							type="button"
+							@click="removeDescription(index)"
+							class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+						>
+							X
+						</button>
+					</div>
+				</div>
+			</div>
+			<button
+				type="button"
+				class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+				@click="addDescription"
+			>
+				Add Description
+			</button>
+
+			<div class="grid gap-6 mb-6 md:grid-cols-2">
+				<div>
+					<label for="picture" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+						>Picture</label
+					>
+					<div class="relative mb-6">
+						<input
+							type="text"
+							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							id="picture"
+							v-model="picture"
+							placeholder="Enter picture link"
+						/>
+					</div>
+				</div>
+				<div>
+					<label for="tags" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+						>Tags</label
+					>
+					<div class="relative mb-6">
+						<input
+							type="text"
+							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							id="tags"
+							v-model="tags"
+							placeholder="Enter tags"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<button
+					type="submit"
+					class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+				>
+					Create
+				</button>
+			</div>
+		</form>
+	</div>
+</template>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>
+
+<script lang="ts" setup>
+// Post the data to the API
+import { ref, computed } from 'vue';
+import { useArticleStore } from '@/store/modules/article.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import Swal from 'sweetalert2';
+import { objectTypeIndexer } from '@babel/types';
+
+// use the store
+const articleStore = useArticleStore();
+const items = computed(() => articleStore.items);
+const idArticle = computed(() => articleStore.idArticle);
+
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
+
+// form data
+const title = ref('');
+const descriptions = ref([{ type: 'text', value: '' }]);
+const picture = ref('');
+const tags = ref('');
+const type = ref('');
+
+// Function to add description object to the array
+const addDescription = () => {
+	descriptions.value.push({ type: 'text', value: '' });
+};
+
+// Function to remove description object from the array
+const removeDescription = (index: number) => {
+	descriptions.value.splice(index, 1);
+};
+
+// Function to post the data to the API
+const addArticle = async () => {
+	// add verification if all the fields are filled
+	if (
+		!title.value ||
+		!picture.value ||
+		!tags.value ||
+		!type.value ||
+		!descriptions.value[0].value
+	) {
+		Swal.fire({
+			title: 'You have to fill all the fields',
+			text: 'Please fill all the fields to create a new article',
+			icon: 'error',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ok',
+		});
+		return;
+	}
+
+	let data = {
+		title: title.value,
+		descriptions: descriptions.value,
+		picture: picture.value,
+		tags: tags.value,
+		type: type.value,
+	};
+
+	//reset the form
+
+	title.value = '';
+	descriptions.value = [{ type: 'text', value: '' }];
+	picture.value = '';
+	tags.value = '';
+	type.value = '';
+
+	// reload the page
+
+	Swal.fire({
+		title: 'Your article has been created',
+		icon: 'success',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ok',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			// post the data
+			await articleStore.addArticle(data);
+			// add article in user database
+
+			await authStore.addArticleToUser(idArticle.value);
+
+			// reload the page
+			location.reload();
+		}
+	});
+};
+</script>

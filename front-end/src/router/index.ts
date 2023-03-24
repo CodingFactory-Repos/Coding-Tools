@@ -35,7 +35,19 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
 			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'blog',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: ':id',
+						component: () => import('../views/ShowArticleView.vue'),
+					},
+				],
+			},
 			{
 				path: 'retrospective',
 				children: [
