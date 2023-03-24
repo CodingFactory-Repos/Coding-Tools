@@ -4,6 +4,7 @@ export interface ArticleStore {
 }
 
 export interface Article {
+	_id?: string;
 	title: string;
 	descriptions: {
 		type: string;

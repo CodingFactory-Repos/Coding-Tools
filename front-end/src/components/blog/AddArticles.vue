@@ -143,16 +143,32 @@ const addDescription = () => {
 
 // Function to post the data to the API
 const addArticle = async () => {
-	const data = {
+	// add verification if all the fields are filled
+	if (
+		!title.value ||
+		!picture.value ||
+		!tags.value ||
+		!type.value ||
+		!descriptions.value[0].value
+	) {
+		Swal.fire({
+			title: 'You have to fill all the fields',
+			text: 'Please fill all the fields to create a new article',
+			icon: 'error',
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ok',
+		});
+		return;
+	}
+
+	let data = {
 		title: title.value,
 		descriptions: descriptions.value,
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
 	};
-
-	// post the data
-	await articleStore.addArticle(data);
 
 	//reset the form
 	title.value = '';
@@ -178,6 +194,7 @@ const addArticle = async () => {
 			// await authStore.addArticleToUser(user.value._id);
 
 			// location.reload();
+			location.reload();
 		}
 	});
 };

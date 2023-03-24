@@ -250,6 +250,8 @@ onMounted(() => {
 
 // Function to open the article
 const openArticle = (id: string) => {
+	console.log(items);
+	console.log(id);
 	router.push(`/app/blog/${id}`);
 };
 </script>

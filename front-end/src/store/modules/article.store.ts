@@ -8,6 +8,7 @@ export const useArticleStore = defineStore('article', {
 		return {
 			items: [
 				{
+					_id: '',
 					title: '',
 					descriptions: [
 						{
@@ -21,6 +22,7 @@ export const useArticleStore = defineStore('article', {
 				},
 			],
 			oneItems: {
+				_id: '',
 				title: '',
 				descriptions: [
 					{
