@@ -17,10 +17,9 @@ export class ArticlesController {
 	}
 
 	@Post('/add')
-	addArticle(@Req() req: Request, @Res() res: Response) {
-		this.articlesService.addArticle(req.body).then((article) => {
-			return res.status(201).json(article);
-		});
+	async addArticle(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.addArticle(req.body);
+		return res.status(201).json({ article, id: article.insertedId });
 	}
 
 	@Get('/:id')

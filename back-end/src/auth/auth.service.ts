@@ -185,9 +185,12 @@ export class AuthService {
 	}
 
 	async addArticles(userId: ObjectId, articleId: ObjectId) {
+		console.log('service userId', userId);
+		console.log('service articleId', articleId);
+
 		const user = await this.usersRepository.findOneAndUpdateUser(
 			{ _id: userId },
-			{ $push: { articles: articleId } },
+			{ $push: { myArticles: articleId } },
 		);
 		if (user.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
 	}
