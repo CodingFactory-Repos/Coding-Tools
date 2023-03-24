@@ -90,20 +90,14 @@ export default {
 		let returnDate = '';
 
 		function borrorwingMaterial(identifiant) {
-
-
-			http
-				.put('/materials/reservation/' + identifiant, {
-					borrowingHistory: {
-						borrowingDate: this.borrowingDate,
-						borrowingUser: props.userId,
-						description: this.description,
-						returnDate: this.returnDate,
-					},
-				})
-				.then((response) => {
-					console.log(response);
-				});
+			http.put('/materials/reservation/' + identifiant, {
+				borrowingHistory: {
+					borrowingDate: this.borrowingDate,
+					borrowingUser: props.userId,
+					description: this.description,
+					returnDate: this.returnDate,
+				},
+			});
 		}
 
 		return {
