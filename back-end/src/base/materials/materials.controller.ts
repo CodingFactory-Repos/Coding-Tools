@@ -38,8 +38,8 @@ export class MaterialsController {
 	updateMaterial(@Req() req, @Res() res: Response) {
 		const query = { _id: new ObjectId(req.params.id) };
 		const update = { $set: req.body };
-		this.materialsService.updateMaterial(query, update).then((material) => {
-			res.status(200).json(material);
+		this.materialsService.updateMaterial(query, update).then(() => {
+			res.status(200).json({ message: 'Material updated' });
 		});
 	}
 	@Put('reservation/:id')
@@ -69,9 +69,26 @@ export class MaterialsController {
 		res.status(200).json(user);
 	}
 
-	@Get('/:id')
-	async getMaterialById(@Param('id') id: string, @Res() res: Response) {
+	@Get('get/:id')
+	async getMaterialById(@Req() req, @Res() res: Response) {
+		const id = req.params.id;
 		const material = await this.materialsService.getMaterialById(id);
 		res.status(200).json(material);
+	}
+
+	@Get('user/:id')
+	getUserInfo(@Req() req, @Res() res: Response) {
+		const id = req.params.id;
+		this.materialsService.getUserInfo(id).then((response) => {
+			res.status(200).json(response);
+		});
+	}
+
+	@Get('user/role/:id')
+	getUserRole(@Req() req, @Res() res: Response) {
+		const id = req.params.id;
+		this.materialsService.getUserRole(id).then((response) => {
+			res.status(200).json(response.role);
+		});
 	}
 }

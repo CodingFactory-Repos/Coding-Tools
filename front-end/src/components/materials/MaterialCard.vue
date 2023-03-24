@@ -1,7 +1,7 @@
 <template>
 	<div v-if="reservationModal" class="popup">
 		<div class="popup-content">
-			<FormMaterial :id="id" />
+			<FormMaterial :id="id" :userId="currentUserId" />
 			<button
 				@click="reservationModal = false"
 				class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
@@ -12,11 +12,11 @@
 	</div>
 	<Modal v-if="detailsModal" @close="detailsModal = false">
 		<template #body>
-			<DetailsMaterials />
+			<DetailsMaterials v-if="detailsModal" :id="cardId" :userId="currentUserId" />
 		</template>
 	</Modal>
 	<div
-		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start"
+		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-center"
 	>
 		<div
 			@click="openModalByRef('detailsModal', id)"
@@ -72,6 +72,7 @@ import { ref } from 'vue';
 import FormMaterial from '@/components/materials/FormMaterials.vue';
 import Modal from '../common/Modal.vue';
 import DetailsMaterials from './DetailsMaterials.vue';
+import { http } from '@/api/network/axios';
 
 defineProps({
 	id: { type: String, required: true },
@@ -81,19 +82,23 @@ defineProps({
 });
 let reservationModal = ref(false);
 let detailsModal = ref(false);
+let cardId = ref('');
+let currentUserId = ref('');
+
+http.get('/materials/user').then((res) => {
+	console.log(res.data);
+	currentUserId.value = res.data;
+});
 
 function openModalByRef(ref, identifiant) {
 	if (ref === 'reservationModal') {
-		this.id = identifiant;
+		this.cardId = identifiant;
 		this.reservationModal = true;
 	} else if (ref === 'detailsModal') {
-		this.id = identifiant;
+		this.cardId = identifiant;
 		this.detailsModal = true;
 	}
 }
-// function sendIdAndShowMOdal(identifiant) {
-// 	console.log(identifiant);
-// }
 </script>
 
 <style scoped>
