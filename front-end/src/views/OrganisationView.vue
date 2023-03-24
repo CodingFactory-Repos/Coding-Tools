@@ -1,4 +1,5 @@
 <template>
+    <NewGroup id="newGroupForm" v-if="showForm" @close="(this.showForm=false)"></NewGroup>
     <div class="container">
         <h1 class="marg">Organisation</h1>
         <div class="actualSprint marg">Sprint de la semaine: VueJS, du 05/12 au 09/12 avec François<br/>
@@ -6,7 +7,7 @@
         </div>
         <div class="marg relative">
             <h2 style="font-size:36px;">Vos groupes</h2>
-            <button class="button" style="position:absolute;right:10px;top:5px;">Créer un groupe</button>
+            <button class="button" style="position:absolute;right:10px;top:5px;" @click="(this.showForm = true)">Créer un groupe</button>
             <div class="groups">
                 <div class="iconeGroupe">
                     <span style="font-size:20px;">Nom du groupe</span>
@@ -45,7 +46,22 @@
     </div>  
 </template>
 
-<script>
+<script lang='ts'>
+import NewGroup from '../components/NewGroup.vue';
+export default {
+    components: {
+        NewGroup
+    },
+    data() {
+        return {
+            showForm: false,
+
+        }
+    },
+    mounted() {
+        console.log(this.showForm);
+    }
+}
 </script>
 
 <style>
