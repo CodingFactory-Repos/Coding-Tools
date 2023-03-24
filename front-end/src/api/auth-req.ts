@@ -33,3 +33,15 @@ export const tryResetPassword = (password: string, resetToken: string) => {
 export const tryGetMe = async () => {
 	return http.get<Status<{ user: User }>>('/auth/me');
 };
+
+export const tryAddEvents = async (eventId: string) => {
+	return http.post<Status>('/auth/addEvent', { eventId });
+};
+
+export const tryRemoveEvents = async (eventId: string) => {
+	return http.post<Status>('/auth/removeEvent', { eventId });
+};
+
+export const tryAddArticles = async (articleId: string) => {
+	return http.post<Status>('/auth/addArticle', { articleId });
+};
