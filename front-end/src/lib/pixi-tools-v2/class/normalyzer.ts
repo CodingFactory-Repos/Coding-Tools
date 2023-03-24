@@ -73,12 +73,12 @@ export class Normalizer {
 			texture: attr.texture | 0,
 		}
 
-		if(Graphic instanceof Rectangle) {
+		if(typeof Graphic === typeof Rectangle) {
 			attributes.width = originWidth;
 			attributes.height = originHeigh;
 		}
 
-		if(Graphic instanceof Circle) {
+		if(typeof Graphic === typeof Circle) {
 			attributes.radius = attr.radius | 0;
 		}
 
