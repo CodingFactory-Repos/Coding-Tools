@@ -2,7 +2,6 @@ import {
 	Controller,
 	Delete,
 	Get,
-	Param,
 	Post,
 	Put,
 	Req,
@@ -77,7 +76,7 @@ export class MaterialsController {
 	getMaterialById(@Req() req, @Res() res: Response) {
 		console.log('ok');
 		const id = req.params.id;
-		const material = this.materialsService.getMaterialById(id).then((response) => {
+		this.materialsService.getMaterialById(id).then((response) => {
 			res.status(200).json(response);
 		});
 	}
@@ -85,7 +84,7 @@ export class MaterialsController {
 	@Get('user/:id')
 	getUserInfo(@Req() req, @Res() res: Response) {
 		const id = req.params.id;
-		const user = this.materialsService.getUserInfo(id).then((response) => {
+		this.materialsService.getUserInfo(id).then((response) => {
 			res.status(200).json(response);
 		});
 	}
@@ -93,7 +92,7 @@ export class MaterialsController {
 	@Get('user/role/:id')
 	getUserRole(@Req() req, @Res() res: Response) {
 		const id = req.params.id;
-		const role = this.materialsService.getUserRole(id).then((response) => {
+		this.materialsService.getUserRole(id).then((response) => {
 			res.status(200).json(response.role);
 		});
 	}
