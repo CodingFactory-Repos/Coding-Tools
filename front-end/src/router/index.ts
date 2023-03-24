@@ -47,7 +47,19 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'blog',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: ':id',
+						component: () => import('../views/ShowArticleView.vue'),
+					},
+				],
+			},
 			{
 				path: 'scrum',
 				children: [
