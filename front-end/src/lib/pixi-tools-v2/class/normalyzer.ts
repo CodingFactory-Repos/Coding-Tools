@@ -52,7 +52,7 @@ export class Normalizer {
 		}
 	}
 
-	private normalizeProperties(props: GeometryEvent, attr?: GraphicAttributes) {
+	private normalizeProperties(props: GeometryEvent, attr: GraphicAttributes = {} as GraphicAttributes) {
 		const Graphic = GeometryTypes[props.geometry];
 
 		//! Calculate the center x,y of the graphic
