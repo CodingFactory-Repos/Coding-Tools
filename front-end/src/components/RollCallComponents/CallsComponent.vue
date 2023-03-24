@@ -4,7 +4,7 @@
 		<div v-else>
 			<p>{{ message }}</p>
 		</div>
-		<a v-bind:href="url" v-if="url" target="_blank">
+		<a :href="url" v-if="url" target="_blank">
 			<button class="bg-gray-500 text-black py-0.5 px-5 rounded mt-2 mb-4">Ouvrir le lien</button>
 		</a>
 	</div>
