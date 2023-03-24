@@ -1,5 +1,4 @@
 <template>
-    <NewGroup id="newGroupForm" v-if="showForm" @close="(this.showForm=false)"></NewGroup>
     <div class="container">
         <h1 class="marg">Organisation</h1>
         <div class="actualSprint marg">Sprint de la semaine: VueJS, du 05/12 au 09/12 avec François<br/>
@@ -44,6 +43,7 @@
             </div>
         </div>
     </div>  
+    <NewGroup id="newGroupForm" v-if="showForm" @close="(this.showForm=false)"></NewGroup>
 </template>
 
 <script lang='ts'>

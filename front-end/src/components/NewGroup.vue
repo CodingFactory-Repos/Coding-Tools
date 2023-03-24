@@ -1,7 +1,7 @@
 <template>
     <div class="popupcontainer">
         <div class="fond"></div>
-        <form class="newSprintForm">
+        <form class="newGroupForm">
             <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png"></button>
             <div class="formInput">
                 <label for="name">Nom du groupe</label><br/>
@@ -34,7 +34,7 @@
     left: 0;
     z-index: 1;
 }
-.newSprintForm{
+.newGroupForm{
     background-color: white;
     width: 50%;
     height: 50%;
@@ -45,7 +45,7 @@
     border-radius: 10px;
     padding: 10px;
     z-index: 2;
-    box-shadow: 0px 5px 5px #bfbfbf;
+    border: solid 0.5px black;
 
     display: flex;
     flex-direction: column;
