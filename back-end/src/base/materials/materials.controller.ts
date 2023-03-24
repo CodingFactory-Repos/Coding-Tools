@@ -35,7 +35,7 @@ export class MaterialsController {
 		});
 	}
 	@Put('/update/:id')
-	updateMaterial(@Req() req) {
+	updateMaterial(@Req() req, @Res() res: Response) {
 		const query = { _id: new ObjectId(req.params.id) };
 		const update = { $set: req.body };
 		this.materialsService.updateMaterial(query, update).then(() => {
@@ -70,11 +70,10 @@ export class MaterialsController {
 	}
 
 	@Get('get/:id')
-	getMaterialById(@Req() req, @Res() res: Response) {
+	async getMaterialById(@Req() req, @Res() res: Response) {
 		const id = req.params.id;
-		this.materialsService.getMaterialById(id).then((response) => {
-			res.status(200).json(response);
-		});
+		const material = await this.materialsService.getMaterialById(id);
+		res.status(200).json(material);
 	}
 
 	@Get('user/:id')
