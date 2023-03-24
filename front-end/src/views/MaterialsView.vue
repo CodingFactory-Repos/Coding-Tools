@@ -1,18 +1,15 @@
-<!-- eslint-disable prettier/prettier -->
 <template>
 	<div class="container">
 		<div class="ButtonsContainer">
 			<h1>Materials</h1>
 		</div>
-		<div class="cards"> 
-			<ListMaterials
-			/>
+		<div class="cards">
+			<ListMaterials />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-// Post the data to the API
 import ListMaterials from '@/components/materials/ListMaterials.vue';
 
 export default {
@@ -28,6 +25,6 @@ export default {
 .cards {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: left;
 }
 </style>
