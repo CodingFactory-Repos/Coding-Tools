@@ -49,4 +49,47 @@ export class CallsService {
 	getStudentList(studentIdList: Array<ObjectId>) {
 		return this.callsRepository.getStudentList(studentIdList);
 	}
+
+	async arrayGenerator(studentAmount: number) {
+		const hashs = this.calculateGroups(studentAmount);
+
+		const finalHashs = [];
+
+		for (let i = 1; i <= hashs['groupsOf4']; i++) {
+			const hash = {};
+			for (let j = 0; j <= 3; j++) {
+				hash[j] = '';
+			}
+			finalHashs.push({ [finalHashs.length + 1]: hash });
+		}
+
+		for (let i = 1; i <= hashs['groupsOf3']; i++) {
+			const hash = {};
+			for (let j = 0; j <= 2; j++) {
+				hash[j] = '';
+			}
+			finalHashs.push({ [finalHashs.length + 1]: hash });
+		}
+
+		return finalHashs;
+	}
+
+	calculateGroups(studentAmount: number) {
+		let groupsOf3 = 0;
+		let groupsOf4 = 0;
+
+		while (studentAmount > 0) {
+			if (studentAmount % 4 === 0) {
+				groupsOf4 += 1;
+				studentAmount -= 4;
+			} else if (studentAmount % 3 === 0) {
+				groupsOf3 += 1;
+				studentAmount -= 3;
+			} else {
+				groupsOf4 += 1;
+				studentAmount -= 4;
+			}
+		}
+		return { groupsOf3: groupsOf3, groupsOf4: groupsOf4 };
+	}
 }

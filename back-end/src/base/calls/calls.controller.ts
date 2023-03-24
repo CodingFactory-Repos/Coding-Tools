@@ -46,4 +46,10 @@ export class CallsController {
 		const studentList = await this.callsService.getStudentList(studentIdList);
 		return res.status(201).json({ status: 'ok', studentList: studentList });
 	}
+
+	@Get('/array_generator/:studentAmount')
+	async arrayGenerator(@Param() studentAmount: { studentAmount: number }, @Res() res: Response) {
+		const array = await this.callsService.arrayGenerator(studentAmount.studentAmount);
+		return res.status(201).json({ status: 'ok', array: array });
+	}
 }
