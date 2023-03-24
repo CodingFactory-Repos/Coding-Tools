@@ -1,34 +1,4 @@
 <template>
-	<div class="flex flex-col items-center mt-10">
-		<div v-if="arrayList">
-			<div class="grid grid-cols-4 gap-x-20 gap-y-3">
-				<div v-for="(array, index) in arrayList" :key="index" class="items-center">
-					<h2 class="font-bold text-lg mb-2 text-center">Groupe {{ index + 1 }}</h2>
-					<div
-						v-for="(group, groupIndex) in array"
-						:key="`group${index}-member${groupIndex}`"
-						class="flex items-center"
-					>
-						<table>
-							<div
-								v-for="(member, memberIndex) in group"
-								:key="`member${memberIndex}`"
-								class="flex items-center"
-							>
-								<tr>
-									<td
-										class="border-2 border-gray-500 hover:border-gray-600 rounded-lg p-2 w-64 text-center"
-									>
-										{{ member || 'Vide' }}
-									</td>
-								</tr>
-							</div>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </template>
 
 <script lang="ts">
@@ -36,14 +6,16 @@ import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
 
 let courseId = '';
-let arrayList = [];
+let groupList = [];
+let studentList = [];
 
 export default {
 	name: 'StudentList',
 	data() {
 		return {
 			courseId,
-			arrayList,
+      groupList,
+      studentList,
 		};
 	},
 	mounted() {
@@ -68,9 +40,8 @@ export default {
 			});
 		}),
 		setNumberArrays: withErrorHandler(async function () {
-			console.log('You are here', this.studentList);
-			http.get(`/calls/array_generator/${this.studentList}`).then((response) => {
-				this.arrayList = response.data.array;
+			http.get(`/calls/array_generator/${this.studentList}/${this.courseId}`).then((response) => {
+				this.groupList = response.data.array;
 			});
 		}),
 	},

@@ -62,7 +62,6 @@ export default {
 		isThereCourse() {
 			if (this.courseId) {
 				this.getQrCode();
-				this.getStudentList();
 				this.message = '';
 			} else {
 				this.message = "Vous n'avez pas de cours aujourd'hui";
