@@ -90,14 +90,7 @@ export default {
 		let returnDate = '';
 
 		function borrorwingMaterial(identifiant) {
-			console.log('Borrowing material');
 
-			// this.borrowingUsers = props.userId;
-
-			console.log(props.userId);
-			console.count(this.borrowingDate);
-			console.log(this.description);
-			console.log(this.returnDate);
 
 			http
 				.put('/materials/reservation/' + identifiant, {
