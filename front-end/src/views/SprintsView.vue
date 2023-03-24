@@ -1,5 +1,4 @@
 <template>
-    <NewSprint id="newSprintForm" v-if="showForm" @close="(this.showForm=false)"></NewSprint>
     <div class="container">
         <h1 class="marg">Organisation</h1>
         <div class="marg relative">
@@ -7,7 +6,7 @@
             <RouterLink to="/app/scrum" class="link">Retour</RouterLink>
             <button class="button" style="position:absolute;right:0px;top:5px;" @click="(this.showForm = true)">Créer un sprint</button>
 
-            <table style="width:100%;background-color: #f0f0f0; border-radius: 10px;">
+            <table style="width:100%;background-color: #f0f0f0; border-radius: 10px; margin-top:10px;">
                 <tbody>
                     <tr style="border-bottom:solid #bfbfbf;">
                         <td>Nom du sprint</td>
@@ -45,6 +44,7 @@
            
         </div>
     </div>  
+    <NewSprint id="newSprintForm" v-if="showForm" @close="(this.showForm=false)"></NewSprint>
 </template>
 
 <script>
@@ -122,5 +122,8 @@ button {
 .icon {
     width: 20px;
     height: 20px;
+}
+NewSprint{
+    height: 0px;
 }
 </style>
