@@ -65,77 +65,53 @@
 	</form>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 //Import datepicker from flowbite from node_modules
-import { defineProps } from 'vue';
-import axios from 'axios';
+import { defineProps, toRefs } from 'vue';
 import { http } from '@/api/network/axios';
-import Vue from 'vue';
 
-defineProps({
-	id: { type: String, required: true },
-});
-let today = new Date().toISOString().substr(0, 10);
-let borrowingDate = '';
-let borrowingUser = '';
-let description = '';
-let returnDate = '';
+export default {
+	props: {
+		id: String,
+		userId: String,
+	},
+	setup(props) {
+		const data = toRefs(
+			defineProps({
+				id: { type: String, required: true },
+				userId: { type: String, required: true },
+			}),
+		);
 
-function borrorwingMaterial(identifiant) {
-	console.log('Borrowing material');
-	let borrowingUsers = '';
+		let today = new Date().toISOString().substr(0, 10);
+		let borrowingDate = '';
+		let borrowingUser = '';
+		let description = '';
+		let returnDate = '';
 
-	http.get('/materials/user').then((response) => {
-		console.log(response.data);
-		this.borrowingUsers = response.data;
-		console.log(this.borrowingUsers);
-		http
-			.put('/materials/reservation/' + identifiant, {
+		function borrorwingMaterial(identifiant) {
+			http.put('/materials/reservation/' + identifiant, {
 				borrowingHistory: {
 					borrowingDate: this.borrowingDate,
-					borrowingUser: this.borrowingUsers,
+					borrowingUser: props.userId,
 					description: this.description,
 					returnDate: this.returnDate,
 				},
-			})
-			.then((response) => {
-				console.log(response);
 			});
-	});
-}
-// export default {
-// 	name: 'FormMaterials',
-// 	data() {
-// 		return {
-// 			borrowingDate: '',
-// 			borrowingUser: '',
-// 			description: '',
-// 			returnDate: '',
-// 			today: new Date().toISOString().substr(0, 10),
-// 		};
-// 	},
-// 	methods: {
-// 		borrowMaterial(identifiant) {
-// 			console.log('Borrowing material');
-// 			console.log(identifiant);
-// 			// axios.put('http://localhost:8000/materials/update/' + this.id, {
-// 			// 	borrowingDate: this.borrowingDate,
-// 			// 	borrowingUser: this.borrowingUser,
-// 			// 	description: this.description,
-// 			// 	returnDate: this.returnDate,
-// 			// });
-// 		},
-// 		// getActualDate() {
-// 		// 	var today: Date | string = new Date();
-// 		// 	var dd = String(today.getDate()).padStart(2, '0');
-// 		// 	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-// 		// 	var yyyy = today.getFullYear();
+		}
 
-// 		// 	today = yyyy + '-' + mm + '-' + dd;
-// 		// 	this.today = today;
-// 		// },
-// 	},
-// };
+		return {
+			...data,
+			...props,
+			today,
+			borrowingDate,
+			borrowingUser,
+			description,
+			returnDate,
+			borrorwingMaterial,
+		};
+	},
+};
 </script>
 
 <style scoped></style>
