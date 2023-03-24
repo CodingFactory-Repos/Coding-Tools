@@ -165,4 +165,30 @@ export class AuthService {
 			);
 		return user;
 	}
+
+	// add events into user
+	async addEvent(userId: ObjectId, eventId: ObjectId) {
+		const user = await this.usersRepository.findOneAndUpdateUser(
+			{ _id: userId },
+			{ $push: { events: eventId } },
+		);
+		if (user.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
+	}
+
+	// remove events from user
+	async removeEvent(userId: ObjectId, eventId: ObjectId) {
+		const user = await this.usersRepository.findOneAndUpdateUser(
+			{ _id: userId },
+			{ $pull: { events: eventId } },
+		);
+		if (user.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
+	}
+
+	async addArticles(userId: ObjectId, articleId: ObjectId) {
+		const user = await this.usersRepository.findOneAndUpdateUser(
+			{ _id: userId },
+			{ $push: { myArticles: articleId } },
+		);
+		if (user.value === null) throw new ServiceError('BAD_REQUEST', 'Error 400');
+	}
 }
