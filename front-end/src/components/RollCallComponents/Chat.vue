@@ -1,34 +1,34 @@
 <template>
-	<div class="chatbox flex-col w-9/12 max-w-9/12 max-h-[750px] relative">
+	<div class="chatbox flex-col w-4/12 max-h-[750px] relative">
 		<div
 			class="chatbox_messages h-[750px] max-h-[750px] overflow-y-hidden flex flex-col-reverse z-0"
 		>
 			<chat-multi-message v-for="message in messages" :key="message.id" :message="message" />
 		</div>
-		<div class="chatbox_input flex-col">
-			<div>
+		<div class="chatbox_input flex-col w-full">
+			<div class="w-full">
 				<div
-					class="gif-container flex mt-30 items-center z-10 w-full overflow-x-scroll absolute fixed bottom-0"
+					class="gif-container max-h-[200px] flex mt-30 items-center z-10 w-full overflow-x-scroll absolute fixed bottom-10"
 				>
 					<img
 						v-for="gif in gifs"
 						:src="gif"
 						:key="gif.id"
-						class="h-full w-full w-[200px] h-[200px] z-1000"
+						class="w-[200px] h-[200px] z-1000"
 						@click="sendGifMessage(gif)"
 					/>
 				</div>
 				<input
 					v-model="newMessageText"
 					@keydown.enter="sendMessage"
-					placeholder="Envoyer un message"
-					class="w-9/12 text-white max-h-[27.2px] relative"
+					placeholder="  Envoyer un message"
+					class="w-9/12 text-white max-h-[27.2px] relative rounded-tl-full rounded-bl-full"
 				/>
 				<input
 					v-model="searchTerm"
 					@keydown.enter="getGifs()"
-					placeholder="Cherchez un gif"
-					class="w-3/12 text-white max-h-[27.2px]"
+					placeholder="Gif"
+					class="w-3/12 text-white max-h-[27.2px] rounded-br-full rounded-tr-full"
 				/>
 			</div>
 		</div>
@@ -36,6 +36,12 @@
 </template>
 <script>
 import ChatMultiMessage from './ChatMultiMessage.vue';
+import { useAuthStore } from '../../store/modules/auth.store';
+import { io } from 'socket.io-client';
+
+const authStore = useAuthStore();
+const currentUser = authStore.user;
+let socket = io('http://localhost:8000/');
 
 export default {
 	components: {
@@ -50,6 +56,22 @@ export default {
 			gifs: [],
 		};
 	},
+	created() {
+		socket.connect();
+		socket.on('connect', () => {
+			console.log('connected');
+		});
+		socket.emit('message', 'Hello Server!');
+		socket.on('message', (message) => {
+			console.log(`Nouveau message: ${message}`);
+		});
+		socket.emit('connection');
+		socket.on('chatMessage', (data) => {
+			console.log('chatMessage');
+			console.log(data);
+			this.messages.unshift(data[0]);
+		});
+	},
 	methods: {
 		getDate() {
 			const current = new Date();
@@ -62,12 +84,12 @@ export default {
 				url: url,
 				type: 'gif',
 				sender_id: 1 /* user.id */,
-				sender_name: 'philémon' /* user.name */,
+				sender_name: currentUser.profile.firstName /* user.name */,
 				date: this.getDate(),
 			};
-			this.messages.unshift(newGifMessage);
 			this.gifs = [];
 			this.searchTerm = '';
+			socket.emit('newMessage', newGifMessage);
 		},
 		buildGifs(json) {
 			this.gifs = json.data
@@ -77,6 +99,7 @@ export default {
 				});
 		},
 		getGifs() {
+			// gets the gifs preview ( limit is the number fo choices available )
 			let apiKey = '12ujTlV1hDN8v0xzjdlyDq2u48DCR1qy';
 			let searchEndPoint = 'https://api.giphy.com/v1/gifs/search?';
 			let limit = 20;
@@ -95,23 +118,19 @@ export default {
 					console.log(err);
 				});
 		},
-		/*TODO Discuss how to refresh the page and update the conv to display all messages */
-		sendMessage() {
+		async sendMessage() {
 			if (!this.newMessageText) return;
 			const newMessage = {
 				type: 'msg',
 				text: this.newMessageText,
 				sender_id: 1 /* user.id */,
-				sender_name: 'philémon' /* user.name */,
+				sender_name: currentUser.profile.firstName,
 				date: this.getDate(),
 			};
-			this.messages.unshift(newMessage);
+			socket.emit('message', 'feur de pute');
+			socket.emit('newMessage', newMessage);
 			this.newMessageText = ''; /* reset the message state */
-			// if GET getConv(conversation_Id) = undefined / null => POST createConv()
-			// PUT Api call on updateConv(conversation_Id, messages)
 		},
 	},
 };
-// create conversation (in db ) if there are no messages
-//conversation { id pageId(same as QrCode) messagesList{} }
 </script>

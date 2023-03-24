@@ -8,7 +8,7 @@ module.exports = {
 	apps: [
 		{
 			name: 'prod', // pm2 start App name
-			script: 'dist/server.js',
+			script: 'dist/server.ts',
 			exec_mode: 'cluster', // 'cluster' or 'fork'
 			instance_var: 'INSTANCE_ID', // instance variable
 			instances: 2, // pm2 instance count
@@ -52,7 +52,7 @@ module.exports = {
 			host: '0.0.0.0',
 			ref: 'origin/master',
 			repo: 'git@github.com:repo.git',
-			path: 'dist/server.js',
+			path: 'dist/server.ts',
 			'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --only prod',
 		},
 	},

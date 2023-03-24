@@ -19,9 +19,9 @@ export default {
 // and pass it to the QrCode component
 </script>
 <template>
-  <div class="flex">
-	<QrCode />
-	<StudentList />
-  <Chat />
-  </div>
+	<div class="flex w-full ml-28">
+		<QrCode />
+		<StudentList />
+		<Chat />
+	</div>
 </template>
