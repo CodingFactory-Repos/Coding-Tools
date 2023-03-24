@@ -1,38 +1,21 @@
-import * as PIXI from 'pixi.js';
-import { StaticGraphics } from '@/lib/pixi-tools-v2/class/staticGraphics';
-import { ElementOptions } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { Graphics } from 'pixi.js';
+import { GraphicAttributes } from '../../types/pixi-container-options';
 
-export class Rectangle { // Extends StaticsGraphics à l'avenir
-    graphics: PIXI.Graphics;
+export class Rectangle extends Graphics { // Extends StaticsGraphics à l'avenir
+	private _color: number;
 
-    constructor(private x: number, private y: number, private width: number, private height: number, private color: number) {
-      this.graphics = new PIXI.Graphics();
-      this.graphics.beginFill(color);
-      this.graphics.drawRect(x, y, width, height);
-      this.graphics.endFill();
-    }
-  
-    public addToStage(stage: PIXI.Container): void {
-      stage.addChild(this.graphics);
-    }
-  
-    public removeFromStage(stage: PIXI.Container): void {
-      stage.removeChild(this.graphics);
-    }
-  
-    public setPosition(x: number, y: number): void {
-      this.graphics.position.set(x, y);
-    }
-  
-    public setWidth(width: number): void {
-      this.graphics.width = width;
-    }
-  
-    public setHeight(height: number): void {
-      this.graphics.height = height;
-    }
-  
-    public setFillColor(color: number): void {
-      this.graphics.tint = color;
-    }
+	constructor(attr: GraphicAttributes) {
+		super();
+
+		const { width, height, x, y, color, rotation, alpha, texture } = attr;
+
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this._color = color;
+		this.beginFill(this._color);
+		this.drawRect(x, y, width, height);
+		this.endFill();
+	}
 }
