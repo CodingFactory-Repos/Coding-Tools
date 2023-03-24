@@ -2,7 +2,6 @@
 	<div class="container">
 		<div class="ButtonsContainer">
 			<h1>Materials</h1>
-			<ButtonsMaterials />
 		</div>
 		<div class="cards">
 			<ListMaterials />
@@ -10,12 +9,11 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import ListMaterials from '@/components/materials/ListMaterials.vue';
-import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
 
 export default {
-	components: { ListMaterials, ButtonsMaterials },
+	components: { ListMaterials },
 };
 </script>
 
