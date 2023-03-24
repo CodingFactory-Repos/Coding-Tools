@@ -19,8 +19,15 @@ const retroStore = useRetrospectiveStore();
 const canvas = ref<HTMLCanvasElement>();
 const templateOptions = computed(() => retroStore.retro.optionTemplate);
 const route = useRoute();
+const isFromSlug = ref(false);
 
 onBeforeMount(() => {
+	console.log("templateOptions", templateOptions.value);
+	if (templateOptions.value === 0) {
+		isFromSlug.value = true;
+	} else {
+		isFromSlug.value = false;
+	}
 	retroStore.getCurrentRetro(route.params.slug as string);
 });
 
@@ -50,27 +57,29 @@ watch(templateOptions, value => {
 	}
 })
 onMounted(() => {
-	const darkMode = true;
-	const scene = new Scene(canvas.value as HTMLCanvasElement, darkMode);
-	createRetroTemplate(scene, templateOptions.value);
+	if (isFromSlug.value === false) {
+		const darkMode = true;
+		const scene = new Scene(canvas.value as HTMLCanvasElement, darkMode);
+		createRetroTemplate(scene, templateOptions.value);
 
-	projectStore.setScene(scene);
+		projectStore.setScene(scene);
 
-	projectStore.setCanvas(canvas.value);
-	canvas.value.classList.toggle(projectStore.action.cursor);
+		projectStore.setCanvas(canvas.value);
+		canvas.value.classList.toggle(projectStore.action.cursor);
 
 
-	document.addEventListener("keydown", (event: KeyboardEvent) => {
-		const key = event.key;
+		document.addEventListener("keydown", (event: KeyboardEvent) => {
+			const key = event.key;
 
-		if (key === "Backspace") {
-			scene.viewport.children.forEach((container: PixiObject) => {
-				if (container.isSelected) {
-					container.destroyObject();
-				}
-			})
-		}
-	})
+			if (key === "Backspace") {
+				scene.viewport.children.forEach((container: PixiObject) => {
+					if (container.isSelected) {
+						container.destroyObject();
+					}
+				})
+			}
+		})
+	}
 })
 
 </script>
