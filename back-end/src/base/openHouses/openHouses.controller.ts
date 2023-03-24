@@ -1,5 +1,5 @@
 import { Controller, Get, Res, UseFilters, Req } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { OpenHousesService } from 'src/base/openHouses/openHouses.service';
@@ -17,7 +17,7 @@ export class OpenHousesController {
 	}
 
 	@Get('/:id')
-	getOpenHouseById(@Req() req: Request, @Res() res: Response) {
+	getOpenHouseById(@Req() _req: Request, @Res() res: Response) {
 		this.openHousesService.getAllHouses().then((openHouses) => {
 			return res.status(201).json(openHouses);
 		});
