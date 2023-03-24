@@ -223,25 +223,15 @@ export default {
 				.put(`materials/update/${props.id}`, {
 					...material.value,
 				})
-				.then((res) => {
-					//Reload the page
-					window.location.reload();
-				})
 				.catch((err) => {
 					console.log(err);
 				});
 		};
 
 		const deleteMaterial = () => {
-			http
-				.delete(`materials/delete/` + props.id)
-				.then((res) => {
-					//Reload the page
-					window.location.reload();
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			http.delete(`materials/delete/` + props.id).catch((err) => {
+				console.log(err);
+			});
 		};
 
 		onMounted(() => {
