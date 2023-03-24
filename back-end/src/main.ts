@@ -1,14 +1,16 @@
 import { Logger as NestLogger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
-
 // Check environement configuration
 import 'src/config/env.validator';
 import { config } from 'src/config/config';
 
 import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
-
+import { createServer } from 'http';
+import express from 'express';
+import { Server } from 'socket.io';
+import initializeChat from '@/external-modules/chat/server';
 //! Proxy settings, production only
 // import { NestExpressApplication } from '@nestjs/platform-express';
 // <NestExpressApplication>
@@ -19,7 +21,6 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		bufferLogs: true,
 	});
-
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,
@@ -30,6 +31,7 @@ async function bootstrap() {
 	);
 
 	app.use(cookieParser());
+
 	app.enableCors(corsOptionsDelegate);
 	//! versioning, production only
 	// app.enableVersioning({
@@ -37,8 +39,20 @@ async function bootstrap() {
 	// 	defaultVersion: '1',
 	// 	prefix: 'api/v',
 	// });
-
 	await app.listen(PORT);
+
+	const chatApp = express();
+
+	// http server for chatrooms
+	const httpServer = createServer(chatApp);
+	httpServer.listen(8000);
+	const io = new Server(httpServer, {
+		cors: {
+			origin: 'http://localhost:5173',
+		},
+	});
+	initializeChat(io); // functions for chat server client communication
+
 	return app.getUrl();
 }
 
