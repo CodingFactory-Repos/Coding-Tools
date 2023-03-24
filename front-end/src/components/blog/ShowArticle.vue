@@ -33,8 +33,12 @@
 								>
 									{{ participant.email }}
 								</th>
-								<td class="px-6 py-4">participant.firstName</td>
-								<td class="px-6 py-4">participant.lastName</td>
+								<td class="px-6 py-4">
+									{{ participant.firstName ? participant.firstName : 'No firstName' }}
+								</td>
+								<td class="px-6 py-4">
+									{{ participant.lastName ? participant.lastName : 'No lastName' }}
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -51,7 +55,7 @@
 			alt=""
 		/>
 		<div class="text-center pt-4">
-			<div class="flex flew-row items-center justify-around">
+			<div v-if="oneItems.type == 'Evenement'" class="flex flew-row items-center justify-around">
 				<button
 					v-if="isParticipant()"
 					@click="participationEvent(oneItems._id)"
@@ -84,6 +88,11 @@
 							: `See the ${oneItems.participants?.length} participants`
 					}}
 				</button>
+			</div>
+			<div v-else>
+				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
+				</h1>
 			</div>
 			<div class="pt-3 pb-2">
 				<span
@@ -231,6 +240,7 @@ import { useAuthStore } from '@/store/modules/auth.store';
 import ModalOverlay from '@/components/common/Modal.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
+import { last } from 'lodash';
 
 // get store
 const articleStore = useArticleStore();
@@ -278,6 +288,9 @@ onMounted(() => {
 
 // function to throw a sweet alert to confirm the participation or to unsubscribe from the event
 const participationEvent = (id) => {
+	console.log('oneItems.value.participants', oneItems.value.participants);
+	console.log('user.value.profile.email', user.value.profile.email);
+
 	const isParticipant = oneItems.value.participants?.some(
 		(participant) => participant.email === user.value.profile.email,
 	);
@@ -315,6 +328,8 @@ const participationEvent = (id) => {
 				if (oneItems.value.participants?.includes(user.value.profile)) {
 					return;
 				}
+
+				console.log(user.value.profile);
 
 				articleStore.addParticipant(id, user.value.profile);
 
