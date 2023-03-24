@@ -97,8 +97,6 @@ onMounted(() => {
 
 // function to check if user is participant
 const openArticle = (id: string) => {
-	// console.log(items);
-	// console.log(id);
 	router.push(`/app/blog/${id}`);
 };
 </script>

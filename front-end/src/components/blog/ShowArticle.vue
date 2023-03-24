@@ -291,9 +291,6 @@ onMounted(() => {
 
 // function to throw a sweet alert to confirm the participation or to unsubscribe from the event
 const participationEvent = (id) => {
-	console.log('oneItems.value.participants', oneItems.value.participants);
-	console.log('user.value.profile.email', user.value.profile.email);
-
 	const isParticipant = oneItems.value.participants?.some(
 		(participant) => participant.email === user.value.profile.email,
 	);
@@ -331,8 +328,6 @@ const participationEvent = (id) => {
 				if (oneItems.value.participants?.includes(user.value.profile)) {
 					return;
 				}
-
-				console.log(user.value.profile);
 
 				articleStore.addParticipant(id, user.value.profile);
 

@@ -109,20 +109,8 @@ const getArticles = async () => {
 	await articleStore.getArticle();
 };
 
-const getArticleById = async (id: string) => {
-	await articleStore.getArticleById(id);
-};
-
 // Call the getArticles method when the component is created
 onMounted(() => {
 	getArticles();
-	// getArticleById(user.value.events);
 });
-
-// Function to open the article
-const openArticle = (id: string) => {
-	console.log(items);
-	console.log(id);
-	router.push(`/app/blog/${id}`);
-};
 </script>
