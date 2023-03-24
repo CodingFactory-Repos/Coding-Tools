@@ -55,14 +55,15 @@ export const useArticleStore = defineStore('article', {
 					},
 				],
 			},
+			idArticle: '',
 		};
 	},
 	actions: {
 		//add article to store and to the database
 		addArticle: withErrorHandler(async function (this: ArticleStore, article: Article) {
-			this.items.push(article);
-
-			await http.post('/articles/add', article);
+			const res = await http.post('/articles/add', article);
+			const idArticle = res.data.id;
+			this.idArticle = idArticle;
 		}),
 
 		//get article from the database

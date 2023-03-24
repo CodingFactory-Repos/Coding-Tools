@@ -1,6 +1,7 @@
 export interface ArticleStore {
 	items: Article[];
 	oneItems: Article;
+	idArticle: string;
 }
 
 export interface Article {

@@ -43,5 +43,6 @@ export const tryRemoveEvents = async (eventId: string) => {
 };
 
 export const tryAddArticles = async (articleId: string) => {
+	console.log('articleId', articleId);
 	return http.post<Status>('/auth/addArticle', { articleId });
 };
