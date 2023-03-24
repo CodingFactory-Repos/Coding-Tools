@@ -36,12 +36,9 @@ export class MaterialsController {
 	}
 	@Put('/update/:id')
 	updateMaterial(@Req() req, @Res() res: Response) {
-		console.log(req.params.id);
 		const query = { _id: new ObjectId(req.params.id) };
 		const update = { $set: req.body };
-		// console.log(req.body);
 		this.materialsService.updateMaterial(query, update).then((response) => {
-			console.log(response);
 			res.status(200).json({ message: 'Material updated' });
 		});
 	}
@@ -74,7 +71,6 @@ export class MaterialsController {
 
 	@Get('get/:id')
 	getMaterialById(@Req() req, @Res() res: Response) {
-		console.log('ok');
 		const id = req.params.id;
 		this.materialsService.getMaterialById(id).then((response) => {
 			res.status(200).json(response);

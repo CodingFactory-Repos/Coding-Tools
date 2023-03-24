@@ -48,7 +48,6 @@ export class MaterialsRepository {
 		return this.materials.updateOne(query, update);
 	}
 	async getMaterialById(id: string) {
-		// return this.db.collection('materials').find({ _id: new ObjectId(id) }).toArray();
 		return this.materials.findOne({ _id: new ObjectId(id) });
 	}
 	async getUserRole(userId: string) {

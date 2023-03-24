@@ -125,37 +125,6 @@ export default {
 		};
 	},
 };
-
-// defineProps({
-// 	id: { type: String, required: true },
-// 	userId: { type: String, required: true },
-// });
-// let today = new Date().toISOString().substr(0, 10);
-// let borrowingDate = '';
-// let borrowingUser = '';
-// let description = '';
-// let returnDate = '';
-
-// function borrorwingMaterial(identifiant) {
-// 	console.log('Borrowing material');
-
-// 	this.borrowingUsers = props.userId;
-
-// 	console.log(this.borrowingUsers)
-
-// 	http
-// 		.put('/materials/reservation/' + identifiant, {
-// 			borrowingHistory: {
-// 				borrowingDate: this.borrowingDate,
-// 				borrowingUser: this.borrowingUsers,
-// 				description: this.description,
-// 				returnDate: this.returnDate,
-// 			},
-// 		})
-// 		.then((response) => {
-// 			console.log(response);
-// 		});
-// }
 </script>
 
 <style scoped></style>
