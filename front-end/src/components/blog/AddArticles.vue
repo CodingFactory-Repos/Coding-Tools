@@ -118,11 +118,16 @@
 
 <script lang="ts" setup>
 // Post the data to the API
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import Swal from 'sweetalert2';
 
 // use the store
 const articleStore = useArticleStore();
+
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
 // form data
 const title = ref('');
@@ -155,61 +160,25 @@ const addArticle = async () => {
 	picture.value = '';
 	tags.value = '';
 	type.value = '';
+
+	// reload the page
+
+	Swal.fire({
+		title: 'Your article has been created',
+		icon: 'success',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ok',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			// post the data
+			await articleStore.addArticle(data);
+			// add article in user database
+			console.log(data);
+			// await authStore.addArticleToUser(user.value._id);
+
+			// location.reload();
+		}
+	});
 };
-
-// export default {
-// 	name: 'CreateMaterials',
-// 	components: {
-// 		ModalOverlay,
-// 	},
-// 	data() {
-// 		return {
-// 			title: '',
-// 			descriptions: [{ type: 'text', value: '' }],
-// 			picture: '',
-// 			tags: '',
-// 			type: '',
-// 			showMetaModal: false,
-
-// 		};
-// 	},
-// 	methods: {
-// 		//Create a POST with axios
-// 		addDescription() {
-// 			this.descriptions.push({ type: 'text', value: '' });
-// 		},
-// 		addArticle() {
-// 			// ! This will crash the front in case of reject.
-// 			// ! You're also using axios without the instance.
-// 			// ! So with credentials is false and the the cookie token will not be attached to the request.
-// 			// ! Consider using : http.post('/articles/add', { ... })
-// 			// ! And for the catch : addArticle: withErrorHandler(async function() { ... } );
-// 			axios
-// 				.post('http://localhost:8010/articles/add', {
-// 					title: this.title,
-// 					descriptions: this.descriptions,
-// 					picture: this.picture,
-// 					tags: this.tags,
-// 					type: this.type,
-// 				})
-// 				.then((response) => {
-// 					console.log(response);
-// 				})
-// 				.catch((error) => {
-// 					console.log(error);
-// 				});
-// 			// Reset the form
-// 			this.title = '';
-// 			this.descriptions = [{ type: 'text', value: '' }];
-
-// 			this.picture = '';
-// 			this.tags = '';
-// 			this.type = '';
-// 		},
-// 		beforeModalClose() {
-// 			closeMetaModal();
-
-// 				emit('close');
-// 		},
-// 	};
 </script>

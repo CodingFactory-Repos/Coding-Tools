@@ -29,4 +29,28 @@ export class ArticlesController {
 			return res.status(201).json(article);
 		});
 	}
+
+	// add participant to the array of participants in article in the database
+	@Put('/participant/:id')
+	addParticipant(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.addParticipant(req.params.id, req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	// remove participant from the array of participants in article in the database
+	@Put('/removeParticipant/:id')
+	removeParticipant(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.removeParticipant(req.params.id, req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	// add comment
+	@Put('/comment/:id')
+	addComment(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.addComment(req.params.id, req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
 }
