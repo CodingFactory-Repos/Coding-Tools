@@ -12,12 +12,12 @@
               <th>
                 <tbody>
                     <tr style="border-bottom:solid #bfbfbf;">
-                        <td>Nom du sprint</td>
-                        <td>Matière</td>
-                        <td>Début</td>
-                        <td>Fin</td>
-                        <td>PO</td>
-                        <td></td>
+                        <th>Nom du sprint</th>
+                        <th>Matière</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>PO</th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Labday semaine 1</td>
