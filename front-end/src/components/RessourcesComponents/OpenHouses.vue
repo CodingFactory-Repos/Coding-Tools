@@ -1,15 +1,13 @@
 <template>
 	<div>
-        <h2>Open Houses</h2>
-        <button @click="getUsers()" >Add open house</button>
-        <FormOpenHouse :usersNames="usersNames" v-show="openForm"/>
+        <FormOpenHouse />
 
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import {http} from "@/api/network/axios"
-import FormOpenHouse from './FormOpenHouses.vue';
+import FormOpenHouse from "./FormOpenHouses.vue"
 
 export default {
     data(){
@@ -23,23 +21,21 @@ export default {
 
         }   
     }, 
-       components: {
-		FormOpenHouse,
+    components: {
+        FormOpenHouse
 	},
     methods : {
         getUsers() {
-            this.openForm=!this.openForm
+          //  this.openForm=!this.openForm
             
 		    http.get('http://localhost:8010/openhouses/users').then((response) => {
-			this.users = response.data;
-            this.users.forEach(element => {
-                this.userName = {firstName: element.profile.firstName, lastName: element.profile.lastName};
-                if(!this.userCheckList()){
-                    this.usersNames.push(this.userName);
-                }
-
-            });
-            console.log(this.usersNames);
+			    this.users = response.data;
+                this.users.forEach(element => {
+                    this.userName = {firstName: element.profile.firstName, lastName: element.profile.lastName};
+                    if(!this.userCheckList()){
+                        this.usersNames.push(this.userName);
+                    }
+                });
 		    });
         },
 

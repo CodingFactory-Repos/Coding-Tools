@@ -1,5 +1,9 @@
 <template>
-			<form @submit.prevent="addOpenHouses">
+	<div>
+		<button @click="openMetaModal"> add open house</button>
+        <ModalOverlay v-if="showMetaModal" @close="closeMetaModal" size="lg">
+			<template #body>
+				<form @submit.prevent="addOpenHouses">
 				<input type="text" name="title" v-model="title" placeholder="Title :"><br>
 				<input type="datetime-local" v-model="date"><br>
 				<input type="url" placeholder="picture link" v-model="picture" ><br>
@@ -15,111 +19,61 @@
 				<input type="file" @change="onFileSelected" ><br>
 				<button type="submit">Submit</button>
 			</form>
+			</template>
+		</ModalOverlay>
+	</div>
 </template>
 
-<!--script lang="ts" >
-import axios from 'axios';
 
-export default {
-	props : {
-		usersNames : Array
-	},
-	data() {
-		return {
-			title: '',
-			date: '',
-			schedule: [],
-			adress: '',
-			project: [],
-			participants: [],
-			participant: '',
-			description: '',
-			count: 0,
-			Users : this.usersNames,
-		};
-	},
-	
-	methods :  {
-		addParticipants(){
-			if(this.participant != null){
-				this.participants.push(this.participant);
-				this.participant = null;
-				
-			}
-		},	//Create a POST with axios
-		addOpenHouses() {
-			//! This will crash the front in case of reject.
-			//! You're also using axios without the instance.
-			//! So with credentials is false and the the cookie token will not be attached to the request.
-			//! Consider using : http.post('/articles/add', { ... })
-			//! And for the catch : addArticle: withErrorHandler(async function() { ... } );
-
-			//! By the way : Date.now() won't work. You're missing the "new" identifier.
-			axios.post('http://localhost:8010/openhouses/create', {
-					title: this.title,
-					date: this.date,
-					adress: this.adress,
-					description: this.description,
-					participants: this.participants,
-				})
-				.then((response) => {
-					console.log(response);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		},
-		searchUser(){
-			console.log(this.Users);
-			/*usersNames.forEach(element => {
-				if(element.contains(this.participant)){
-					console.log("test");
-				}
-			});*/
-	
-		},
-		
-
-	},
-	
-}
-
-</script>-->
-
-<script lang="ts">
+<script setup lang="ts">
+import ModalOverlay from '@/components/common/Modal.vue';
+import FormOpenHouse from './FormOpenHouses.vue';
+import { useOpenHouseStore } from "@/store/modules/openHouse.store";
+import { setgroups } from 'process';
 import { ref } from 'vue';
 import activity from "./NewActivity.vue";
 import participant from "./NewParticipant.vue"
 import { http } from "@/api/network/axios";
 
-export default {
-	data(){
-		return {
-			title : '',
-			date  : "",
-			street : "",
-			zipCode : "",
-			town : "",
-			description : "",
-			picture : "",
-			adress : {
+const openHouseStore = useOpenHouseStore();
+
+const showMetaModal = ref(false);
+
+const openMetaModal = () => showMetaModal.value = true;
+const closeMetaModal = () => showMetaModal.value = false;
+
+    
+
+
+
+
+//	data(){
+	//	return {
+			const title =  '';
+			const date  = "";
+			const street = "";
+			const zipCode = "";
+			const town = "";
+			const description = "";
+			const picture = "";
+			const adress = {
 				street: "",
 				zipCode: "",
 				city: "",
-			},
-			participants : [],
-			Activities : [],
-		}
-	},
-	components : {
+			};
+			const participants = [];
+			const Activities = [];
+	//	}
+//	},
+/*	components : {
 		activity,
 		participant,
-	},
+	},*/
 
-	methods : {
+//	methods : {
 	
 
-		addOpenHouses(){
+		const addOpenHouses = function(){
 			this.adress = {
 				street: this.street,
 				zipCode: this.zipCode,
@@ -149,14 +103,14 @@ export default {
 			this.Activities = [];
 			this.participants = [];
 
-		},
+		};
 		
-		onFileSelected(event){
+		const onFileSelected = function(event){
 			console.log(event);
 			
-		},
-	 },
+		};
+//	 },
 
 
-}
+//}
 </script>
