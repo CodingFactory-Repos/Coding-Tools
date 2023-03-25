@@ -1,8 +1,7 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
-
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 import { Call } from 'src/base/calls/interfaces/calls.interface';
-import { ObjectId } from 'mongodb';
+import { Course } from '@/base/courses/interfaces/courses.interface';
 
 @Injectable()
 export class CallsRepository {
@@ -10,6 +9,9 @@ export class CallsRepository {
 
 	get calls() {
 		return this.db.collection<Call>('calls');
+	}
+	get courses() {
+		return this.db.collection<Course>('courses');
 	}
 
 	async createCall(query: Call) {
@@ -36,36 +38,115 @@ export class CallsRepository {
 		const options = { projection: { _id: 1 } };
 		return this.calls.findOne(query, options);
 	}
-	async updateUserPresence(userId: ObjectId, courseId: ObjectId, presence: boolean) {
-		const course = await this.db.collection('courses').findOne({ _id: courseId });
-		const user = await this.db.collection('users').findOne({ _id: userId });
+	async updateUserPresence(userId: ObjectId, courseId: string, presence: boolean) {
+		const courseObjectId = new ObjectId(courseId);
+		const userObjectId = new ObjectId(userId);
+		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
+		const user = await this.db.collection('users').findOne({ _id: userObjectId });
+		const date = new Date();
+		const period = ['arrival', 'departure'];
 
-		if (!course) {
-			throw new NotFoundException('Course not found');
-		}
+		const periodIndex = date.getHours() < 16 ? 0 : 1;
+		const call = await this.db
+			.collection('calls')
+			.findOne({ course: courseObjectId, period: period[periodIndex] });
 
 		if (!user) {
 			throw new NotFoundException('User not found');
 		}
 
-		if (!course.students.includes(userId.toHexString())) {
-			throw new BadRequestException('User is not registered in this course');
+		if (!course) {
+			throw new NotFoundException('Course not found');
+		}
+		if (!call) {
+			// Create a new call if one does not already exist
+			await this.db.collection('calls').insertOne({
+				course: courseObjectId,
+				period: period[periodIndex],
+				students: [],
+			});
+		} else if (call.students.find((student) => student.student == userId)) {
+			return {
+				message: 'User already registered',
+			};
 		}
 
-		const query = {
-			course_id: courseId,
-			user_id: userId,
-		};
-		const update = {
-			$set: {
-				present: presence,
+		// Update the call with the student's presence
+		await this.db.collection('calls').updateOne(
+			{ course: courseObjectId, period: period[periodIndex] },
+			{
+				$push: {
+					students: {
+						student: userObjectId,
+						presence: presence,
+						late: this.isStudentLate(period[periodIndex], date),
+						leftEarly: this.didStudentLeftEarly(period[periodIndex], date),
+					},
+				},
 			},
-		};
-
-		await this.calls.updateOne(query, update);
+		);
 
 		return {
 			message: 'User presence updated successfully',
 		};
+	}
+	isStudentLate(period, timeOfScan) {
+		if (period === 'arrival') {
+			const fakeDate = new Date('2023-03-23T08:00:00.105Z');
+			if (timeOfScan >= 9 * 60 * 60 * 1000) {
+				const minutesOfLate = Math.floor(
+					Math.floor(timeOfScan.getTime() - fakeDate.getTime()) / 1000 / 60,
+				);
+				const hoursOfLate = Math.floor(minutesOfLate / 60);
+				const minutesOfLateConverted = minutesOfLate % 60;
+				return [true, `${hoursOfLate}h${minutesOfLateConverted}`];
+			}
+		}
+		return false;
+	}
+
+	didStudentLeftEarly(period, timeOfScan) {
+		if (period === 'departure') {
+			const fakeDate = new Date('2023-03-23T16:00:00.105Z');
+			if (timeOfScan.getHours() == 16 && timeOfScan.getMinutes() < 50) {
+				const minutesOfLate = Math.floor(
+					Math.floor(fakeDate.getTime() - timeOfScan.getTime()) / 1000 / 60,
+				);
+				const hoursOfEarly = Math.floor(minutesOfLate / 60);
+				const minutesOfEarlyConverted = minutesOfLate % 60;
+				return [true, `${hoursOfEarly}h${minutesOfEarlyConverted}`];
+			}
+		}
+		return false;
+	}
+
+	async getActualCourse(userId: ObjectId) {
+		const actualDate = new Date();
+		const classId = await this.getStudentClassId(userId);
+		const actualCourse = await this.db.collection('courses').findOne({
+			classId: classId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		return actualCourse ? actualCourse._id : null;
+	}
+	async getStudentClassId(userId: ObjectId) {
+		const studentClass = await this.db.collection('classes').findOne({
+			students: userId,
+		});
+		return studentClass ? studentClass._id : null;
+	}
+
+	async getStudentIdList(courseId: string) {
+		const courseObjectId = new ObjectId(courseId);
+		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
+		const classId = course.classId;
+		const classroom = await this.db.collection('classes').findOne({ _id: classId });
+
+		return classroom.students;
+	}
+	async getStudentList(studentIdList: Array<ObjectId>) {
+		const studentList = await this.db.collection('users').find({ _id: { $in: studentIdList } }).toArray();
+		return studentList;
 	}
 }

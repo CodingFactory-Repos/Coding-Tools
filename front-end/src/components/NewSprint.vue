@@ -2,7 +2,7 @@
     <div class="popupcontainer">
         <div class="fond"></div>
         <form class="newSprintForm">
-            <button class="iconBig" type="button" @click="$emit('close')"><img alt="cross" src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png"></button>
+            <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png" alt="flatIcon"></button>
             <div class="formInput">
                 <label for="titre">Titre du sprint</label><br/>
                 <input type="text" name="titre"><br/>

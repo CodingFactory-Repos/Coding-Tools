@@ -12,3 +12,7 @@ export interface Call {
 export interface JwtQRCode {
 	jwt: string;
 }
+
+export interface CourseIdObject {
+	courseId: string;
+}
