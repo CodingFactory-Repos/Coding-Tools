@@ -27,26 +27,11 @@ export class WrappedContainer extends Container {
 	public drawBorder() {
 		this.destroyBorder();
 
-		let containerX = Infinity;
-		let containerY = Infinity;
-
-		for(let i = 0; i < this.children.length; i++) {
-			for(let n = 0; n < this.children[i].children.length; n++) {
-				const child = this.children[i].children[n] as Graphics;
-
-				if(containerX > child.x) {
-					containerX = child.x;
-				}
-				
-				if(containerY > child.y) {
-					containerY = child.y;
-				}
-			}
-		}
+		const { x, y } = this.getLocalBounds();
 
 		this._border = new Border({
-			x: containerX,
-			y: containerY,
+			x: (x / 2),
+			y: (y / 2),
 			width: this.width,
 			height: this.height,
 			scale: this._viewport.scale.x
