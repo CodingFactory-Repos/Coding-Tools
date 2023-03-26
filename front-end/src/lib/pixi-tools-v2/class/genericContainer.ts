@@ -21,7 +21,7 @@ export class GenericContainer extends Container {
 		for(let i = 0; i < context.constructors.length; i++) {
 			const { Graphic, attributes } = context.constructors[i];
 			const element = new Graphic(attributes);
-			element.on("pointerdown", this._onChildSelected);
+			element.on("pointerdown", this._onChildSelected.bind(this));
 			this.addChild(element);
 		}
 	}
