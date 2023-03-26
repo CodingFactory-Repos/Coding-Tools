@@ -1,8 +1,7 @@
-import { Circle } from "pixi.js";
+import { Circle } from "./model-constructor/circle";
 import { Rectangle } from "./model-constructor/rectangle";
 
 export default {
 	Rectangle,
-
 	Circle,
 }
