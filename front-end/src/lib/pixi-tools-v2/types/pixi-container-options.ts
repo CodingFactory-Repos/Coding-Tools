@@ -1,14 +1,13 @@
 import { Viewport } from 'pixi-viewport';
-import { Circle } from 'pixi.js';
 
 import { Stage } from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
-import { Rectangle } from '../model/model-constructor/rectangle';
+import GeometryTemplate from '@/lib/pixi-tools-v2/model/template';
 import { GeometryTypes, LiteralGeometryTypes } from './pixi-enums';
+import { TypesRequired } from '@/interfaces/advanced-types.interface';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
 }
-
 
 export interface GeometryEvent {
 	geometry: LiteralGeometryTypes;
@@ -23,14 +22,15 @@ export interface GraphicAttributes {
 	width?: number,
 	height?: number,
 	radius?: number,
-	color: number,
-	alpha: number,
-	rotation: number,
-	texture: number,
+	color?: number,
+	alpha?: number,
+	rotation?: number,
+	texture?: number,
+	scale?: number,
 }
 
 export interface GraphicConstructor {
-	Graphic: typeof Rectangle /* | Circle*/;
+	Graphic: TypesRequired<typeof GeometryTemplate>;
 	attributes: GraphicAttributes;
 }
 
