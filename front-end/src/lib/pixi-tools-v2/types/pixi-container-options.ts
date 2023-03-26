@@ -4,6 +4,7 @@ import { Stage } from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
 import GeometryTemplate from '@/lib/pixi-tools-v2/model/template';
 import { GeometryTypes, LiteralGeometryTypes } from './pixi-enums';
 import { TypesRequired } from '@/interfaces/advanced-types.interface';
+import { ContainerManager } from '../class/containerManager';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
@@ -38,6 +39,7 @@ export interface ContainerContext {
 	stage: Stage;
 	viewport: Viewport;
 	constructors: Array<GraphicConstructor>;
+	manager?: ContainerManager;
 }
 
 export interface NormalizedObject {
