@@ -1,5 +1,6 @@
+import { StaticGraphicsEvents } from '@/lib/pixi-tools/types';
 import { Graphics, utils } from 'pixi.js';
-import { StaticGraphicsEvents } from '../types';
+
 
 /**
  * StaticGraphics is a subclass of PIXI.Graphics that use a custom PIXI.utils.EventEmitter with strongly-typed events.
