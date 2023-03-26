@@ -1,7 +1,8 @@
-import { Container, Text } from "pixi.js";
+import { Container, FederatedPointerEvent, Text } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
 import { ContainerContext, GraphicAttributes } from "../types/pixi-container-options";
 import { Viewport } from 'pixi-viewport';
+import { ContainerManager } from "./containerManager";
 
 export class FramedContainer extends Container {
 	public id: string;
@@ -10,6 +11,7 @@ export class FramedContainer extends Container {
 	private _title: Text;
 	private _isSelected: boolean;
 	private _viewport: Viewport;
+	private _manager: ContainerManager;
 	private _border: Border;
 	private _containerX = Infinity;
 	private _containerY = Infinity;
@@ -22,6 +24,7 @@ export class FramedContainer extends Container {
 		this.interactive = true;
 		this._isSelected = false;
 		this._viewport = context.viewport;
+		this._manager = context.manager;
 		this._mainContainer = new Container();
 		this._titleContainer = new Container();
 		this._titleContainer.interactive = true;
@@ -33,7 +36,7 @@ export class FramedContainer extends Container {
 		for(let i = 0; i < context.constructors.length; i++) {
 			const { Graphic, attributes } = context.constructors[i];
 			const element = new Graphic(attributes);
-			element.on("pointerdown", (e) => element.onSelect(e, this));
+			element.on("pointerdown", this._onChildSelected.bind(this));
 			this._mainContainer.addChild(element);
 
 			if (attributes.x < this._containerX) this._containerX = attributes.x;
@@ -50,6 +53,12 @@ export class FramedContainer extends Container {
 		this.addChild(this._titleContainer);
 
 		this._titleContainer.on("pointerdown", () => this._onTitleSelect());
+	}
+
+	private _onChildSelected(e: FederatedPointerEvent) {
+		// e.shiftKey even if known in the object return undefined;
+		const isShift = e.originalEvent.shiftKey;
+		this._manager.selectContainer(this, isShift);
 	}
 
 	private _onTitleSelect(): void {
