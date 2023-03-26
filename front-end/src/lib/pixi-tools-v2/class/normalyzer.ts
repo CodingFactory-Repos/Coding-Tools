@@ -1,5 +1,5 @@
 import { Viewport } from 'pixi-viewport';
-import { GeometryEvent, GraphicAttributes, GraphicConstructor } from '@/lib/pixi-tools-v2/types/pixi-container-options';
+import { ContainerContext, GeometryEvent, GraphicAttributes, GraphicConstructor } from '@/lib/pixi-tools-v2/types/pixi-container-options';
 import { GeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums'
 import { Stage} from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
 import { Circle } from 'pixi.js';
@@ -24,7 +24,7 @@ export class Normalizer {
 		this._viewport = viewport;
 	}
 
-	public normalizeManyGraphic(event: GeometryEvent, attrs: Array<GraphicAttributes>) {
+	public normalizeManyGraphic(event: GeometryEvent, attrs: Array<GraphicAttributes>): ContainerContext {
 		const constructors: Array<GraphicConstructor> = [];
 
 		for(let i = 0; i < attrs.length; i++) {
@@ -39,11 +39,14 @@ export class Normalizer {
 		}
 	}
 
-	public normalizeOneGraphic(event: GeometryEvent) {
+	public normalizeOneGraphic(event: GeometryEvent): ContainerContext {
 		const constructors: Array<GraphicConstructor> = [];
 
 		const { Graphic, attributes } = this.normalizeProperties(event);
 		constructors.push({ Graphic, attributes });
+		//! Testing for the frames
+		// const t = {...attributes, x: 100, y: 100 };
+		// constructors.push({ Graphic, attributes: t })
 
 		return {
 			stage: this._stage,
