@@ -1,9 +1,11 @@
 import { Viewport } from 'pixi-viewport';
 import { Application, EventSystem } from 'pixi.js';
+import { ContainerManager } from './class/containerManager';
 
 
 export class Scene extends Application {
 	private _viewport: Viewport;
+	private _manager: ContainerManager;
 
 	constructor(canvas: HTMLCanvasElement) {
 		super({
@@ -31,6 +33,8 @@ export class Scene extends Application {
 		this.stage.addChild(this._viewport);
 		this.ticker.start();
 
+		this._manager = new ContainerManager(this);
+
 		window.addEventListener('resize', () => {
 			const newWidth = window.innerWidth;
 			const newHeight = window.innerHeight;
@@ -45,5 +49,9 @@ export class Scene extends Application {
 
 	get viewport() {
 		return this._viewport;
+	}
+
+	get manager() {
+		return this._manager;
 	}
 }

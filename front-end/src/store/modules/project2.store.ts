@@ -37,8 +37,9 @@ export const useProjectStorev2 = defineStore('projectv2', {
 				color: 0xffffff,
 			});
 
-			const genericContainer = new FramedContainer(context);
-			scene.viewport.addChild(genericContainer);
+			context.manager = scene.manager;
+			const framedContainer = new FramedContainer(context);
+			scene.viewport.addChild(framedContainer);
 			this.scene = scene;
 
 			this.canvas.classList.toggle("default");
@@ -59,6 +60,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 				color: 0xffffff,
 			});
 
+			context.manager = scene.manager;
 			const genericContainer = new GenericContainer(context);
 			scene.viewport.addChild(genericContainer);
 			this.scene = scene;
