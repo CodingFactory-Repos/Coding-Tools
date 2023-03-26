@@ -7,6 +7,7 @@ export interface ProjectStorev2 {
 	canvas: HTMLCanvasElement;
 	deferredGeometry: LiteralGeometryTypes;
 
-	setDeferredEvent?: (cursor: CSStyleProperty.Cursor) => void;
+	setDeferredEvent?: (cursor: CSStyleProperty.Cursor, framed: boolean) => void;
 	createGeometry?: () => void;
+	createFramedGeometry?: () => void;
 }

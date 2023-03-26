@@ -1,3 +1,4 @@
+import { FramedContainer } from './../../lib/pixi-tools-v2/class/framedContainer';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
@@ -16,10 +17,33 @@ export const useProjectStorev2 = defineStore('projectv2', {
 	actions: {
 		setDeferredEvent(
 			this: ProjectStorev2,
-			cursor: CSStyleProperty.Cursor
+			cursor: CSStyleProperty.Cursor,
+			framed: boolean
 		) {
 			this.canvas.classList.toggle(cursor);
-			this.canvas.addEventListener('pointerup', this.createGeometry);
+			this.canvas.addEventListener('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
+		},
+		createFramedGeometry(
+			this: ProjectStorev2,
+			event: PointerEvent
+		) {
+			const scene = toRaw(this.scene);
+			const normalizer = new Normalizer(scene.stage, scene.viewport);
+			
+			const context = normalizer.normalizeOneGraphic({
+				geometry: this.deferredGeometry,
+				clientX: event.clientX,
+				clientY: event.clientY,
+				color: 0xffffff,
+			});
+
+			const genericContainer = new FramedContainer(context);
+			scene.viewport.addChild(genericContainer);
+			this.scene = scene;
+
+			this.canvas.classList.toggle("default");
+			this.deferredGeometry = null;
+			this.canvas.removeEventListener('pointerup', this.createFramedGeometry);
 		},
 		createGeometry(
 			this: ProjectStorev2,

@@ -40,10 +40,10 @@
 				<IconButton  type="button">
 					<SvgText />
 				</IconButton>
-				<IconButton  type="button">
-					<SvgPostIt @click="createRectangle"/>
+				<IconButton  type="button" @click="createRectangle">
+					<SvgPostIt />
 				</IconButton>
-				<IconButton  type="button">
+				<IconButton  type="button" @click="createFrame">
 					<SvgFrame />
 				</IconButton>
 				<IconButton type="button">
@@ -132,7 +132,12 @@ const drawerOpen = ref(false);
 
 const createRectangle = () => {
 	projectStore.deferredGeometry = "RECTANGLE";
-	projectStore.setDeferredEvent("pointer");
+	projectStore.setDeferredEvent("pointer", false);
+}
+
+const createFrame = () => {
+	projectStore.deferredGeometry = "RECTANGLE";
+	projectStore.setDeferredEvent("pointer", true);
 }
 
 const activateProjectModal = () => activate.value = true;
