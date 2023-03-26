@@ -8,7 +8,7 @@ export class Border extends Graphics {
 		super();
 
 		const { x, y, width, height, scale } = attr;
-		const lineWidth = Math.max(2 / scale, 0.5);
+		const lineWidth = Math.max(3 / scale, 0.5);
 
 		this.id = "border";
 		this.x = x;
