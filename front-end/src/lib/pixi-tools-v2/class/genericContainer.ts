@@ -32,6 +32,7 @@ export class GenericContainer extends Container {
 	}
 
 	private _onChildSelected(e: FederatedPointerEvent) {
+		e.stopPropagation();
 		// e.shiftKey even if known in the object return undefined;
 		const isShift = e.originalEvent.shiftKey;
 		this._manager.selectContainer(this, isShift);

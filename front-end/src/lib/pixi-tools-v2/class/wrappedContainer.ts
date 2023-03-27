@@ -66,7 +66,9 @@ export class WrappedContainer extends Container {
 			height: this.height,
 			color: 0
 		});
+		this._emptySpace.interactive = true;
 		this.addChildAt(this._emptySpace, 0);
+		this._emptySpace.on("pointerdown", (e) => e.stopPropagation());
 	}
 
 	public restoreOriginChildren() {

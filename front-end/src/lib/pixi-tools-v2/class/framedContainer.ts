@@ -76,6 +76,7 @@ export class FramedContainer extends Container {
 	}
 
 	private _onTitleSelected(e: FederatedPointerEvent) {
+		e.stopPropagation();
 		// e.shiftKey even if known in the object return undefined;
 		const isShift = e.originalEvent.shiftKey;
 		this._manager.selectContainer(this, isShift);
