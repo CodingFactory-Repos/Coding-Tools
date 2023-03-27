@@ -1,15 +1,16 @@
 import { Container, FederatedPointerEvent, Text } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
-import { ContainerContext, GraphicAttributes } from "../types/pixi-container-options";
+import { ContainerContext } from "../types/pixi-container-options";
 import { Viewport } from 'pixi-viewport';
 import { ContainerManager } from "./containerManager";
+import { GenericContainer } from "./genericContainer";
 
 export class FramedContainer extends Container {
 	public id: string;
+	public frameNumber: number;
 	private _mainContainer: Container;
 	private _titleContainer: Container;
 	private _title: Text;
-	private _isSelected: boolean;
 	private _viewport: Viewport;
 	private _manager: ContainerManager;
 	private _border: Border;
@@ -22,7 +23,6 @@ export class FramedContainer extends Container {
 		this.id = "frame";
 		this.cursor = "pointer";
 		this.interactive = true;
-		this._isSelected = false;
 		this._viewport = context.viewport;
 		this._manager = context.manager;
 		this._mainContainer = new Container();
@@ -30,14 +30,24 @@ export class FramedContainer extends Container {
 		this._titleContainer.interactive = true;
 		this._mainContainer.interactive = true;
 
-		const frameNumber = this._viewport.children.filter(el => el.id === "frame").length;
-		this._title = new Text(`Frame ${frameNumber}`, { fontSize: 14, fill: 0xffffff });
+		this.frameNumber = this._viewport.children.filter(el => el.id === "frame").length;
+		this._title = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
 		
 		for(let i = 0; i < context.constructors.length; i++) {
-			const { Graphic, attributes } = context.constructors[i];
-			const element = new Graphic(attributes);
-			element.on("pointerdown", this._onChildSelected.bind(this));
-			this._mainContainer.addChild(element);
+			const attributes =  context.constructors[i].attributes;
+			const genericContainer = new GenericContainer({
+				stage: context.stage,
+				viewport: context.viewport,
+				manager: context.manager,
+				constructors: [{
+					Graphic: context.constructors[i].Graphic,
+					attributes: attributes,
+				}]
+			}, {
+				isAttached: true,
+				to: this.frameNumber,
+			});
+			this._mainContainer.addChild(genericContainer);
 
 			if (attributes.x < this._containerX) this._containerX = attributes.x;
 			if (attributes.y < this._containerY) this._containerY = attributes.y;
@@ -52,32 +62,23 @@ export class FramedContainer extends Container {
 		this.addChild(this._mainContainer);
 		this.addChild(this._titleContainer);
 
-		this._titleContainer.on("pointerdown", () => this._onTitleSelect());
+		this._titleContainer.on("pointerdown", this._onTitleSelected.bind(this));
 	}
 
-	private _onChildSelected(e: FederatedPointerEvent) {
+	private _onTitleSelected(e: FederatedPointerEvent) {
 		// e.shiftKey even if known in the object return undefined;
 		const isShift = e.originalEvent.shiftKey;
 		this._manager.selectContainer(this, isShift);
 	}
 
-	private _onTitleSelect(): void {
-		if(!this._isSelected) {
-			this._isSelected = true;
-			this._destroyBorder();
-			this._mainContainer.children.forEach(el => { el.isSelected = false });
-			this._drawBorder();
-		}
-	}
-
-	private _destroyBorder() {
+	public destroyBorder() {
 		if(this._border) {
 			this._border.destroy();
 			this._border = null;
 		}
 	}
 
-	private _drawBorder() {
+	public drawBorder() {
 		this._border = new Border({
 			x: this._containerX,
 			y: this._containerY,
@@ -88,26 +89,7 @@ export class FramedContainer extends Container {
 		this.addChild(this._border);
 	}
 
-	public drawChildBorder(attr: GraphicAttributes) {
-		this._isSelected = false;
-		this._destroyBorder();
-
-		this._border = new Border({
-			x: attr.x,
-			y: attr.y,
-			width: attr.width,
-			height: attr.height,
-			scale: this._viewport.scale.x,
-		})
-		this.addChild(this._border);
-	}
-
-	public set isSelected(value: boolean) {
-		this._destroyBorder();
-		this._isSelected = value;
-	}
-
-	public get isSelected(): boolean {
-		return this._isSelected;
+	get mainContainer(): Container {
+		return this._mainContainer;
 	}
 }

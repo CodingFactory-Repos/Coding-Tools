@@ -36,7 +36,7 @@ export class ContainerManager {
 			// add all of its children to the viewport + remove them and destroy its border.
 			if (!isShift && this._wrappedContainer.children.length > 0) {
 				this._wrappedContainer.destroyBorder();
-				this._scene.viewport.addChild(...this._wrappedContainer.children);
+				this._wrappedContainer.restoreOriginChildren();
 				this._wrappedContainer.removeChildren();
 			}
 			
@@ -66,14 +66,14 @@ export class ContainerManager {
 			if(index === -1) return;
 
 			this._wrappedContainer.destroyBorder();
-			this._scene.viewport.addChild(...this._wrappedContainer.children);
+			this._wrappedContainer.restoreOriginChildren();
 			this._wrappedContainer.removeChildren();
 			this.deselectAllExceptThisContainer(index);
 			this.drawBorder();
 		}
 	}
 
-	public deselectAllExceptThisContainer(index: number) {		
+	public deselectAllExceptThisContainer(index: number) {
 		const selected: Array<Container> = [];
 		const unselected: Array<Container> = [];
 

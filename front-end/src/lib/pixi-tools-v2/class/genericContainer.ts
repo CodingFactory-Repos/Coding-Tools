@@ -1,20 +1,25 @@
 import { ContainerManager } from './containerManager';
 import { Container, FederatedPointerEvent } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
-import { ContainerContext } from "../types/pixi-container-options";
+import { ContainerContext, FrameContext } from "../types/pixi-container-options";
 import { Viewport } from 'pixi-viewport';
 
 export class GenericContainer extends Container {
 	public id: string;
+	public isAttachedToFrame: boolean;
+	public frameNumber: number;
 	private _border: Border;
 	private _viewport: Viewport;
 	private _manager: ContainerManager;
 
-	constructor(context: ContainerContext) {
+	constructor(context: ContainerContext, frameCtx: FrameContext) {
 		super();
 
+		this.id = "generic"
 		this.cursor = "pointer";
 		this.interactive = true;
+		this.isAttachedToFrame = frameCtx.isAttached;
+		this.frameNumber = frameCtx.to === 0 ? 0 : frameCtx.to || -1;
 		this._viewport = context.viewport;
 		this._manager = context.manager;
 		
