@@ -1,8 +1,6 @@
 import 'pixi-viewport';
 import { ArgumentMapNever } from '@/lib/pixi-tools/types/pixi-subclass-emitter';
 import { Container, DisplayObject, DisplayObjectEvents } from 'pixi.js';
-import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
-import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-container-options';
 
 interface ViewportEvents extends DisplayObjectEvents {
