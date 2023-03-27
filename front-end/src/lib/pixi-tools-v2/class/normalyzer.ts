@@ -46,8 +46,8 @@ export class Normalizer {
 		constructors.push({ Graphic, attributes });
 		//! Testing for the frames
 		if(isFrame) {
-			const t = {...attributes, x: 100, y: 100 };
-			constructors.push({ Graphic, attributes: t });
+			// const t = {...attributes, x: 100, y: 100 };
+			// constructors.push({ Graphic, attributes: t });
 		}
 
 		return {
