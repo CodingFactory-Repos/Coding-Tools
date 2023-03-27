@@ -1,6 +1,7 @@
 import { Viewport } from "pixi-viewport";
-import { Container, Graphics } from "pixi.js";
+import { Container } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
+import { FramedContainer } from "./framedContainer";
 
 
 export class WrappedContainer extends Container {
@@ -37,6 +38,16 @@ export class WrappedContainer extends Container {
 			scale: this._viewport.scale.x
 		})
 		this.addChild(this._border);
+	}
+
+	public restoreOriginChildren() {
+		const framed = this.children.filter(ctn => ctn.isAttachedToFrame);
+		for(let n = 0; n < framed.length; n++) {
+			const frame = this._viewport.children.find(ctn => ctn.id === "frame" && ctn.frameNumber === framed[n].frameNumber) as FramedContainer;
+			if(frame) frame.mainContainer.addChild(framed[n]);
+		}
+
+		this._viewport.addChild(...this.children);
 	}
 
 
