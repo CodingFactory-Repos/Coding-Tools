@@ -1,5 +1,5 @@
 import { ContainerManager } from './containerManager';
-import { Container, FederatedPointerEvent } from "pixi.js";
+import { Container, FederatedPointerEvent } from 'pixi.js';
 import { Border } from "../model/model-constructor/border";
 import { ContainerContext, FrameContext } from "../types/pixi-container-options";
 import { Viewport } from 'pixi-viewport';

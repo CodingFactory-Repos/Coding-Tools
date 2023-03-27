@@ -61,7 +61,10 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			}, false);
 
 			context.manager = scene.manager;
-			const genericContainer = new GenericContainer(context, false);
+			const genericContainer = new GenericContainer(context, {
+				isAttached: false,
+				to: -1
+			});
 			scene.viewport.addChild(genericContainer);
 			this.scene = scene;
 
