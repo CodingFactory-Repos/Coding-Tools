@@ -49,7 +49,9 @@ export class WrappedContainer extends Container {
 			if(frame) frame.mainContainer.addChild(framed[n]);
 		}
 
-		this._viewport.addChild(...this.children);
+		if(this.children.length > 0) {
+			this._viewport.addChild(...this.children);
+		}
 	}
 
 
