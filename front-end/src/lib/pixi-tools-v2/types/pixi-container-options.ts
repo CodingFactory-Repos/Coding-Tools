@@ -42,6 +42,11 @@ export interface ContainerContext {
 	manager?: ContainerManager;
 }
 
+export interface FrameContext {
+	isAttached: boolean,
+	to: number,
+}
+
 export interface NormalizedObject {
     graphic: GeometryRequest["type"],
     x:number,
