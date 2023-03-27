@@ -1,3 +1,4 @@
+import { FederatedPointerEvent } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import { Application, EventSystem } from 'pixi.js';
 import { ContainerManager } from './class/containerManager';
@@ -46,8 +47,11 @@ export class Scene extends Application {
 			this._viewport.worldHeight = newHeight;
 		});
 
-		this.stage.on("pointerdown", () => {
-			this._manager.deselectAll();
+		this._viewport.on("pointerdown", (e: FederatedPointerEvent) => {
+			const wrap = this._manager.wrappedContainer;
+			const loc = wrap.toLocal(e.global);
+			if(wrap.getBounds().contains(loc.x, loc.y)) return;
+			else this._manager.deselectAll();
 		})
 	}
 
