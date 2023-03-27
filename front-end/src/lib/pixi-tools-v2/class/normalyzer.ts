@@ -39,14 +39,16 @@ export class Normalizer {
 		}
 	}
 
-	public normalizeOneGraphic(event: GeometryEvent): ContainerContext {
+	public normalizeOneGraphic(event: GeometryEvent, isFrame: boolean): ContainerContext {
 		const constructors: Array<GraphicConstructor> = [];
 
 		const { Graphic, attributes } = this.normalizeProperties(event);
 		constructors.push({ Graphic, attributes });
 		//! Testing for the frames
-		// const t = {...attributes, x: 100, y: 100 };
-		// constructors.push({ Graphic, attributes: t })
+		if(isFrame) {
+			const t = {...attributes, x: 100, y: 100 };
+			constructors.push({ Graphic, attributes: t });
+		}
 
 		return {
 			stage: this._stage,

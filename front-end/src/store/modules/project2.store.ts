@@ -35,7 +35,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 				clientX: event.clientX,
 				clientY: event.clientY,
 				color: 0xffffff,
-			});
+			}, true);
 
 			context.manager = scene.manager;
 			const framedContainer = new FramedContainer(context);
@@ -58,10 +58,10 @@ export const useProjectStorev2 = defineStore('projectv2', {
 				clientX: event.clientX,
 				clientY: event.clientY,
 				color: 0xffffff,
-			});
+			}, false);
 
 			context.manager = scene.manager;
-			const genericContainer = new GenericContainer(context);
+			const genericContainer = new GenericContainer(context, false);
 			scene.viewport.addChild(genericContainer);
 			this.scene = scene;
 
