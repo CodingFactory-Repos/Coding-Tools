@@ -45,6 +45,10 @@ export class Scene extends Application {
 			this._viewport.worldWidth = newWidth;
 			this._viewport.worldHeight = newHeight;
 		});
+
+		this.stage.on("pointerdown", () => {
+			this._manager.deselectAll();
+		})
 	}
 
 	get viewport() {

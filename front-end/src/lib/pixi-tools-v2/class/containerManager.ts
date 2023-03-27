@@ -88,6 +88,18 @@ export class ContainerManager {
 		}
 	}
 
+	public deselectAll() {
+		if(this._wrappedContainer.children.length > 0) {
+			this._wrappedContainer.destroyBorder();
+			this._wrappedContainer.destroyEmptySpace();
+			this._wrappedContainer.restoreOriginChildren();
+			this._wrappedContainer.removeChildren();
+		}
+
+		this.destroyBorder(this._selectedContainers);
+		this._selectedContainers = [];
+	}
+
 	public deselectAllExceptThisContainer(index: number) {
 		const selected: Array<CanvasContainer> = [];
 		const unselected: Array<CanvasContainer> = [];
