@@ -8,16 +8,19 @@ export class Rectangle extends Graphics {
 	constructor(attr: GraphicAttributes) {
 		super();
 
-		const { width, height, x, y, color } = attr;
-
 		this.id = "graphic";
-		this._color = color;
 		this.interactive = true;
+		this.draw(attr);
+	}
+
+	public draw(attr: GraphicAttributes) {
+		const { width, height, x, y, color } = attr;
 
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		if(color !== undefined) this._color = color;
 		if(this._color === 0) this.alpha = 0;
 		this.beginFill(this._color);
 		this.drawRect(x, y, width, height);
