@@ -4,6 +4,7 @@ import { ContainerContext } from "../types/pixi-container-options";
 import { Viewport } from 'pixi-viewport';
 import { ContainerManager } from "./containerManager";
 import { GenericContainer } from "./genericContainer";
+import { Rectangle } from "../model/model-constructor/rectangle";
 
 export class FramedContainer extends Container {
 	public id: string;
@@ -11,6 +12,7 @@ export class FramedContainer extends Container {
 	public frameNumber: number;
 	private _mainContainer: Container;
 	private _titleContainer: Container;
+	private _staticGraphic: Rectangle;
 	private _title: Text;
 	private _viewport: Viewport;
 	private _manager: ContainerManager;
@@ -49,9 +51,19 @@ export class FramedContainer extends Container {
 		}
 
 		this.addChild(this._mainContainer);
-
+		
 		const { x, y } = this._mainContainer.getLocalBounds();
-
+		
+		this._staticGraphic = new Rectangle({ 
+			x: (x / 2),
+			y: (y / 2),
+			width: this._mainContainer.width,
+			height: this._mainContainer.height,
+			color: 0,
+			scale: this._viewport.scaled,
+		});
+		this._mainContainer.addChildAt(this._staticGraphic, 0);
+		
 		this._title.x = (x / 2);
 		this._title.y = (y / 2);
 		this._titleContainer.x = (x / 2);
@@ -59,8 +71,8 @@ export class FramedContainer extends Container {
 		this._titleContainer.addChild(this._title);
 
 		this.addChild(this._titleContainer);
-
 		this._titleContainer.on("pointerdown", this._onTitleSelected.bind(this));
+
 	}
 
 	private _onTitleSelected(e: FederatedPointerEvent) {
