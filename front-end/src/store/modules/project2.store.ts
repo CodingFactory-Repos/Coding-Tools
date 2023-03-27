@@ -21,6 +21,12 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			framed: boolean
 		) {
 			this.canvas.classList.toggle(cursor);
+
+			// We remove all the event related to pointerup if they exist.
+			// Know a better way to do it ? Be my guest.
+			this.canvas.removeEventListener('pointerup', this.createFramedGeometry);
+			this.canvas.removeEventListener('pointerup', this.createGeometry);
+
 			this.canvas.addEventListener('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
 		},
 		createFramedGeometry(
