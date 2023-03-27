@@ -12,14 +12,14 @@ export class Scene extends Application {
 			view: canvas,
 			width: window.innerWidth,
 			height: window.innerHeight,
-			antialias: true,
 			autoDensity: true,
 			backgroundColor: 0x2c2e3a,
-			resolution: 1,
+			resolution: devicePixelRatio,
 		});
 
 		const event = new EventSystem(this.renderer);
 		event.domElement = this.renderer.view as HTMLCanvasElement;
+		event.resolution = devicePixelRatio;
 
 		this._viewport = new Viewport({
 			worldWidth: 1000,
