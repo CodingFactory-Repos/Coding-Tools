@@ -9,7 +9,6 @@ import { FramedContainer } from "./framedContainer";
 export class WrappedContainer extends Container {
 	public id: string;
 	public readonly children: Array<CanvasContainer>
-	private _emptySpace: Rectangle;
 	private _viewport: Viewport;
 	private _border: Border;
 
@@ -29,13 +28,6 @@ export class WrappedContainer extends Container {
 		}
 	}
 
-	public destroyEmptySpace() {
-		if(this._emptySpace) {
-			this._emptySpace.destroy();
-			this._emptySpace = null;
-		}
-	}
-
 	public drawBorder() {
 		this.destroyBorder();
 
@@ -49,26 +41,6 @@ export class WrappedContainer extends Container {
 			scale: this._viewport.scale.x
 		})
 		this.addChild(this._border);
-		
-		// Why is this called there you may ask ?
-		// Because if we add it in the constructor, it affects the localBounds.
-		// If we add it after childAdded event, we create a recursive.
-		this._drawEmptySpaceCover(x,y);
-	}
-
-	private _drawEmptySpaceCover(x: number, y: number) {
-		this.destroyEmptySpace();
-
-		this._emptySpace = new Rectangle({
-			x: (x / 2),
-			y: (y / 2),
-			width: this.width,
-			height: this.height,
-			color: 0
-		});
-		this._emptySpace.interactive = true;
-		this.addChildAt(this._emptySpace, 0);
-		this._emptySpace.on("pointerdown", (e) => e.stopPropagation());
 	}
 
 	public restoreOriginChildren() {
@@ -80,6 +52,7 @@ export class WrappedContainer extends Container {
 
 		if(this.children.length > 0) {
 			this._viewport.addChild(...this.children);
+			this._viewport.removeChild(this);
 		}
 	}
 }

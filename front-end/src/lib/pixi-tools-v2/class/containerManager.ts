@@ -31,7 +31,6 @@ export class ContainerManager {
 		if (key === "Backspace") {
 			this._selectedContainers.forEach((ctn) => ctn.destroy());
 			this._wrappedContainer.destroyBorder();
-			this._wrappedContainer.destroyEmptySpace();
 			this._selectedContainers = [];
 		}
 	}
@@ -65,7 +64,6 @@ export class ContainerManager {
 			// add all of its children to the viewport + remove them and destroy its border.
 			if (!isShift && this._wrappedContainer.children.length > 0) {
 				this._wrappedContainer.destroyBorder();
-				this._wrappedContainer.destroyEmptySpace();
 				this._wrappedContainer.restoreOriginChildren();
 				this._wrappedContainer.removeChildren();
 			}
@@ -96,7 +94,6 @@ export class ContainerManager {
 			if(index === -1) return;
 
 			this._wrappedContainer.destroyBorder();
-			this._wrappedContainer.destroyEmptySpace();
 			this._wrappedContainer.restoreOriginChildren();
 			this._wrappedContainer.removeChildren();
 			this.deselectAllExceptThisContainer(index);
@@ -107,7 +104,6 @@ export class ContainerManager {
 	public deselectAll() {
 		if(this._wrappedContainer.children.length > 0) {
 			this._wrappedContainer.destroyBorder();
-			this._wrappedContainer.destroyEmptySpace();
 			this._wrappedContainer.restoreOriginChildren();
 			this._wrappedContainer.removeChildren();
 		}
@@ -148,6 +144,10 @@ export class ContainerManager {
 		this._wrappedContainer.addChild(...this._selectedContainers);
 		this._wrappedContainer.drawBorder();
 		this._scene.viewport.addChild(this._wrappedContainer);
+	}
+
+	get wrappedContainer(): WrappedContainer {
+		return this._wrappedContainer;
 	}
 
 
