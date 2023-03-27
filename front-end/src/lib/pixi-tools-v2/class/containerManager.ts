@@ -19,6 +19,17 @@ export class ContainerManager {
 		this._selectPlugin = null;
 		this._resizePlugin = null;
 		this._downloadPlugin = null;
+
+		window.onkeydown = this.destroySelected.bind(this);
+	}
+
+	public destroySelected(e: KeyboardEvent) {
+		const key = e.key;
+
+		if (key === "Backspace") {
+			this._selectedContainers.forEach((ctn) => ctn.destroy());
+			this._wrappedContainer.destroyBorder();
+		}
 	}
 
 	/**
