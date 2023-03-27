@@ -31,10 +31,11 @@
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/materials.controller.ts @Maghwyn @RuKaSuu @AyakorK
+/back-end/src/base/materials/materials.module.ts @Maghwyn @RuKaSuu
 /back-end/src/base/materials/materials.repository.ts @Loule95450 @RuKaSuu
+/back-end/src/base/materials/materials.service.ts @RuKaSuu @AyakorK
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
@@ -78,9 +79,9 @@
 /front-end/src/components/common/uix/SelectionBox.vue @Maghwyn @Loule95450
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/retrospectiveComponents/ChooseTemplate.vue @Kevw94 @AyakorK @Maghwyn
-/front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @RuKaSuu @Kevw94
+/front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/PixieLayout.vue @Maghwyn @AyakorK @Loule95450
-/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @RuKaSuu @Kevw94
+/front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/config/config.ts @Maghwyn @AyakorK
@@ -108,7 +109,7 @@
 /front-end/src/store/modules/article.store.ts @TheoLandemaine
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/template.store.ts @Maghwyn
-/front-end/src/store/retrospective.store.ts @AyakorK @RuKaSuu @Kevw94
+/front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/styles/ @Maghwyn @TheoLandemaine
 /front-end/src/styles/scss/config.scss @Maghwyn
 /front-end/src/styles/scss/glassmorphism.scss @Maghwyn @Loule95450
@@ -119,11 +120,11 @@
 /front-end/src/views/app/ @Loule95450 @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
-/front-end/src/views/NewRetrospective.vue @AyakorK @RuKaSuu @Kevw94
-/front-end/src/views/Retrospective.vue @AyakorK @RuKaSuu @Kevw94
+/front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/views/RollCall.vue @AyakorK @Loule95450
 /front-end/src/vite-env.d.ts @Maghwyn
-/front-end/tailwind.config.cjs @Maghwyn @TheoLandemaine
+/front-end/tailwind.config.cjs @Maghwyn @Kevw94
 /front-end/tsconfig.json @Maghwyn @Loule95450
 /front-end/tsconfig.node.json @Maghwyn @Loule95450
 /front-end/types/pixi-event.d.ts @Loule95450
