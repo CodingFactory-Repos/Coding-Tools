@@ -2,6 +2,7 @@ import { Container } from 'pixi.js';
 import { Scene } from "@/lib/pixi-tools-v2/scene";
 import { WrappedContainer } from './wrappedContainer';
 import { CanvasContainer } from '../types/pixi-container-options';
+import { FramedContainer } from './framedContainer';
 
 export class ContainerManager {
 	private _scene: Scene;
@@ -31,6 +32,7 @@ export class ContainerManager {
 			this._selectedContainers.forEach((ctn) => ctn.destroy());
 			this._wrappedContainer.destroyBorder();
 			this._wrappedContainer.destroyEmptySpace();
+			this._selectedContainers = [];
 		}
 	}
 
@@ -42,6 +44,20 @@ export class ContainerManager {
 	 */
 	public selectContainer(container: CanvasContainer, isShift: boolean) {
 		if (!this._selectedContainers.includes(container)) {
+			// If the container is a FramedContainer,
+			// try to find all its selected children,
+			// if some children were found, remove them from the selected array and destroy any existing borders and finally add them back to the frame.
+			//! This prevent a bug where the children context is lost when doing : select children then select frame
+			if(container instanceof FramedContainer) {
+				const childsOfFrame = this._selectedContainers.filter((ctn) => ctn.frameNumber === container.frameNumber);
+				if(childsOfFrame.length > 0) {
+					this._selectedContainers = this._selectedContainers.filter((ctn) => !childsOfFrame.includes(ctn));
+					childsOfFrame.forEach((ctn) => ctn.destroyBorder());
+					container.mainContainer.addChild(...childsOfFrame);
+				}
+			}
+
+			// Select the container and retrieve the position index
 			const len = this._selectedContainers.push(container);
 			const index = len - 1;
 
