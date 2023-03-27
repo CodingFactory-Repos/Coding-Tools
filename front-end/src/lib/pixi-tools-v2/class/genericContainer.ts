@@ -45,15 +45,15 @@ export class GenericContainer extends Container {
 	}
 
 	public drawBorder() {
-		const graphic = this.children.find(el => el.id === "graphic");
+		const { x, y } = this.getLocalBounds();
 
 		this._border = new Border({
-			x: graphic.x,
-			y: graphic.y,
-			width: graphic.width,
-			height: graphic.height,
-			scale: this._viewport.scale.x
+			x: (x / 2),
+			y: (y / 2),
+			width: this.width,
+			height: this.height,
+			scale: this._viewport.scaled
 		})
-		this.addChild(this._border)
+		this.addChild(this._border);
 	}
 }

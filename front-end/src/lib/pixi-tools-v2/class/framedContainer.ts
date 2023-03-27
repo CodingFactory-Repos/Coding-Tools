@@ -7,6 +7,7 @@ import { GenericContainer } from "./genericContainer";
 
 export class FramedContainer extends Container {
 	public id: string;
+	public isAttachedToFrame: boolean;
 	public frameNumber: number;
 	private _mainContainer: Container;
 	private _titleContainer: Container;
@@ -14,8 +15,6 @@ export class FramedContainer extends Container {
 	private _viewport: Viewport;
 	private _manager: ContainerManager;
 	private _border: Border;
-	private _containerX = Infinity;
-	private _containerY = Infinity;
 
 	constructor(context: ContainerContext) {
 		super();
@@ -34,32 +33,31 @@ export class FramedContainer extends Container {
 		this._title = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
 		
 		for(let i = 0; i < context.constructors.length; i++) {
-			const attributes =  context.constructors[i].attributes;
 			const genericContainer = new GenericContainer({
 				stage: context.stage,
 				viewport: context.viewport,
 				manager: context.manager,
 				constructors: [{
 					Graphic: context.constructors[i].Graphic,
-					attributes: attributes,
+					attributes: context.constructors[i].attributes,
 				}]
 			}, {
 				isAttached: true,
 				to: this.frameNumber,
 			});
 			this._mainContainer.addChild(genericContainer);
-
-			if (attributes.x < this._containerX) this._containerX = attributes.x;
-			if (attributes.y < this._containerY) this._containerY = attributes.y;
 		}
 
-		this._title.x = this._containerX;
-		this._title.y = this._containerY;
-		this._titleContainer.x = this._containerX;
-		this._titleContainer.y = this._containerY - 30; //padding
+		this.addChild(this._mainContainer);
+
+		const { x, y } = this._mainContainer.getLocalBounds();
+
+		this._title.x = (x / 2);
+		this._title.y = (y / 2);
+		this._titleContainer.x = (x / 2);
+		this._titleContainer.y = (y / 2) - 30; //padding
 		this._titleContainer.addChild(this._title);
 
-		this.addChild(this._mainContainer);
 		this.addChild(this._titleContainer);
 
 		this._titleContainer.on("pointerdown", this._onTitleSelected.bind(this));
@@ -79,12 +77,14 @@ export class FramedContainer extends Container {
 	}
 
 	public drawBorder() {
+		const { x, y } = this._mainContainer.getLocalBounds();
+
 		this._border = new Border({
-			x: this._containerX,
-			y: this._containerY,
+			x: (x / 2),
+			y: (y / 2),
 			width: this._mainContainer.width,
 			height: this._mainContainer.height,
-			scale: this._viewport.scale.x,
+			scale: this._viewport.scaled,
 		});
 		this.addChild(this._border);
 	}

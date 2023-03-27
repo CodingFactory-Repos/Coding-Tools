@@ -1,10 +1,11 @@
 import { Container } from 'pixi.js';
 import { Scene } from "@/lib/pixi-tools-v2/scene";
 import { WrappedContainer } from './wrappedContainer';
+import { CanvasContainer } from '../types/pixi-container-options';
 
 export class ContainerManager {
 	private _scene: Scene;
-	private _selectedContainers: Array<Container>;
+	private _selectedContainers: Array<CanvasContainer>;
 	private _wrappedContainer: WrappedContainer;
 	private _dragPlugin: any;
 	private _selectPlugin: any;
@@ -38,7 +39,7 @@ export class ContainerManager {
 	 * @param isShift 
 	 * @returns void
 	 */
-	public selectContainer(container: Container, isShift: boolean) {
+	public selectContainer(container: CanvasContainer, isShift: boolean) {
 		if (!this._selectedContainers.includes(container)) {
 			const len = this._selectedContainers.push(container);
 			const index = len - 1;
@@ -85,8 +86,8 @@ export class ContainerManager {
 	}
 
 	public deselectAllExceptThisContainer(index: number) {
-		const selected: Array<Container> = [];
-		const unselected: Array<Container> = [];
+		const selected: Array<CanvasContainer> = [];
+		const unselected: Array<CanvasContainer> = [];
 
 		for(let n = 0; n < this._selectedContainers.length; n++) {
 			if(index === n) {
@@ -100,7 +101,7 @@ export class ContainerManager {
 		return unselected;
 	}
 
-	public destroyBorder(container: Array<Container>) {
+	public destroyBorder(container: Array<CanvasContainer>) {
 		for(let n = 0; n < container.length; n++) {
 			container[n].destroyBorder();
 		}

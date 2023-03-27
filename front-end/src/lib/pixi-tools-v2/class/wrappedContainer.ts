@@ -1,11 +1,13 @@
 import { Viewport } from "pixi-viewport";
 import { Container } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
+import { CanvasContainer } from "../types/pixi-container-options";
 import { FramedContainer } from "./framedContainer";
 
 
 export class WrappedContainer extends Container {
 	public id: string;
+	public readonly children: Array<CanvasContainer>
 	private _viewport: Viewport;
 	private _border: Border;
 
