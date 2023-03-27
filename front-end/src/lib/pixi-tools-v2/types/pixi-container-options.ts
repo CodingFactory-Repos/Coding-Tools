@@ -5,10 +5,14 @@ import GeometryTemplate from '@/lib/pixi-tools-v2/model/template';
 import { GeometryTypes, LiteralGeometryTypes } from './pixi-enums';
 import { TypesRequired } from '@/interfaces/advanced-types.interface';
 import { ContainerManager } from '../class/containerManager';
+import { FramedContainer } from '../class/framedContainer';
+import { GenericContainer } from '../class/genericContainer';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
 }
+
+export type CanvasContainer = FramedContainer | GenericContainer;
 
 export interface GeometryEvent {
 	geometry: LiteralGeometryTypes;
