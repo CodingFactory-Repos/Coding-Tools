@@ -12,7 +12,7 @@ export class FramedContainer extends Container {
 	public frameNumber: number;
 	private _mainContainer: Container;
 	private _titleContainer: Container;
-	private _staticGraphic: Rectangle;
+	private _emptySpace: Rectangle;
 	private _title: Text;
 	private _viewport: Viewport;
 	private _manager: ContainerManager;
@@ -54,7 +54,7 @@ export class FramedContainer extends Container {
 		
 		const { x, y } = this._mainContainer.getLocalBounds();
 		
-		this._staticGraphic = new Rectangle({ 
+		this._emptySpace = new Rectangle({ 
 			x: (x / 2),
 			y: (y / 2),
 			width: this._mainContainer.width,
@@ -62,7 +62,7 @@ export class FramedContainer extends Container {
 			color: 0,
 			scale: this._viewport.scaled,
 		});
-		this._mainContainer.addChildAt(this._staticGraphic, 0);
+		this._mainContainer.addChildAt(this._emptySpace, 0);
 		
 		this._title.x = (x / 2);
 		this._title.y = (y / 2);

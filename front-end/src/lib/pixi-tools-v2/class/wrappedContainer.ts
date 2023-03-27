@@ -1,6 +1,7 @@
 import { Viewport } from "pixi-viewport";
 import { Container } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
+import { Rectangle } from "../model/model-constructor/rectangle";
 import { CanvasContainer } from "../types/pixi-container-options";
 import { FramedContainer } from "./framedContainer";
 
@@ -8,6 +9,7 @@ import { FramedContainer } from "./framedContainer";
 export class WrappedContainer extends Container {
 	public id: string;
 	public readonly children: Array<CanvasContainer>
+	private _emptySpace: Rectangle;
 	private _viewport: Viewport;
 	private _border: Border;
 
@@ -27,6 +29,13 @@ export class WrappedContainer extends Container {
 		}
 	}
 
+	public destroyEmptySpace() {
+		if(this._emptySpace) {
+			this._emptySpace.destroy();
+			this._emptySpace = null;
+		}
+	}
+
 	public drawBorder() {
 		this.destroyBorder();
 
@@ -40,6 +49,24 @@ export class WrappedContainer extends Container {
 			scale: this._viewport.scale.x
 		})
 		this.addChild(this._border);
+		
+		// Why is this called there you may ask ?
+		// Because if we add it in the constructor, it affects the localBounds.
+		// If we add it after childAdded event, we create a recursive.
+		this._drawEmptySpaceCover(x,y);
+	}
+
+	private _drawEmptySpaceCover(x: number, y: number) {
+		this.destroyEmptySpace();
+
+		this._emptySpace = new Rectangle({
+			x: (x / 2),
+			y: (y / 2),
+			width: this.width,
+			height: this.height,
+			color: 0
+		});
+		this.addChildAt(this._emptySpace, 0);
 	}
 
 	public restoreOriginChildren() {
@@ -53,28 +80,4 @@ export class WrappedContainer extends Container {
 			this._viewport.addChild(...this.children);
 		}
 	}
-
-
-	//! I have something in mind, but we'll see when i get there witht the lib
-	// addChild<U extends DisplayObject[]>(...children: U): U[0] {
-	// 	if (children.length > 1) {
-	// 		for (let i = 0; i < children.length; i++) {
-	// 			this.addChild(children[i]);
-	// 		}
-	// 	} else {
-	// 		const child = children[0];
-	// 		if (child.parent) {
-	// 			child.parent.removeChild(child);
-	// 		}
-	// 		child.parent = this;
-	// 		this.sortDirty = true;
-	// 		child.transform._parentID = -1;
-	// 		this.children.push(child);
-	// 		this._boundsID++;
-	// 		this.onChildrenChange(this.children.length - 1);
-	// 		this.emit("childAdded", child, this, this.children.length - 1);
-	// 		child.emit("added", this);
-	// 	}
-	// 	return children[0];
-	// }
 }
