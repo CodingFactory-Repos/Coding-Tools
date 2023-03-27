@@ -18,6 +18,7 @@ export class Rectangle extends Graphics {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		if(this._color === 0) this.alpha = 0;
 		this.beginFill(this._color);
 		this.drawRect(x, y, width, height);
 		this.endFill();
