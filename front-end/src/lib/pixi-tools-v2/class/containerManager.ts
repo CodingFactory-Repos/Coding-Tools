@@ -1,17 +1,17 @@
 import { Container } from 'pixi.js';
 import { Scene } from "@/lib/pixi-tools-v2/scene";
 import { WrappedContainer } from './wrappedContainer';
-import { CanvasContainer } from '../types/pixi-container-options';
+import { CanvasContainer, PluginContainer } from '../types/pixi-container-options';
 import { FramedContainer } from './framedContainer';
 import { GenericContainer } from './genericContainer';
+import { ResizePlugin } from '../plugins/resizePlugin';
 
 export class ContainerManager {
 	private _scene: Scene;
 	private _selectedContainers: Array<CanvasContainer>;
 	private _wrappedContainer: WrappedContainer;
 	private _dragPlugin: any;
-	private _selectPlugin: any;
-	private _resizePlugin: any;
+	private _resizePlugin: ResizePlugin;
 	private _downloadPlugin: any;
 
 	constructor(scene: Scene) {
@@ -19,8 +19,7 @@ export class ContainerManager {
 		this._selectedContainers = [];
 		this._wrappedContainer = new WrappedContainer(scene.viewport);
 		this._dragPlugin = null;
-		this._selectPlugin = null;
-		this._resizePlugin = null;
+		this._resizePlugin = new ResizePlugin(scene.viewport);
 		this._downloadPlugin = null;
 
 		window.onkeydown = this.destroySelected.bind(this);
@@ -54,6 +53,7 @@ export class ContainerManager {
 			// If the shift key is not pressed and there is more than one children of the wrappedContainer,
 			// add all of its children to the viewport + remove them and destroy its border.
 			if (!isShift && this._wrappedContainer.children.length > 0) {
+				this.detachPlugins();
 				this._wrappedContainer.destroyBorder();
 				this._wrappedContainer.restoreOriginChildren();
 				this._wrappedContainer.removeChildren();
@@ -62,6 +62,7 @@ export class ContainerManager {
 			// If the shift key is pressed and there is more than one container selected,
 			// wrap the selected containers in a temporary parent container and destroy any existing borders.
 			 if(isShift && len > 1) {
+				this.detachPlugins();
 				this.destroyBorder(this._selectedContainers);
 				this.wrapWithTemporaryParent();
 				return;
@@ -69,14 +70,18 @@ export class ContainerManager {
 			// If there is more than one container selected,
 			// deselect all other containers except for the current container and destroy any existing borders.
 			} else if (len > 1) {
+				this.detachPlugins();
 				const unselected = this.deselectAllExceptThisContainer(index);
 				this.destroyBorder(unselected);
 				this.drawBorder();
+				this.attachPlugins(this._selectedContainers[0]);
 				return;
 			}
 
 			// Draw the border of the currently selected element.
+			this.detachPlugins();
 			this.drawBorder();
+			this.attachPlugins(this._selectedContainers[index]);
 
 		// If there is more than one children of the wrappedContainer,
 		//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
@@ -84,11 +89,15 @@ export class ContainerManager {
 			const index = this._selectedContainers.findIndex(el => el === container);
 			if(index === -1) return;
 
+			this.detachPlugins();
 			this._wrappedContainer.destroyBorder();
 			this._wrappedContainer.restoreOriginChildren();
 			this._wrappedContainer.removeChildren();
 			this.deselectAllExceptThisContainer(index);
 			this.drawBorder();
+
+			console.log("bruh")
+			this.attachPlugins(this._selectedContainers[0]);
 		}
 	}
 
@@ -165,76 +174,22 @@ export class ContainerManager {
 		this._wrappedContainer.addChild(...this._selectedContainers);
 		this._wrappedContainer.drawBorder();
 		this._scene.viewport.addChild(this._wrappedContainer);
+		this.attachPlugins(this._wrappedContainer);
+	}
+
+	public attachPlugins(container: PluginContainer) {
+		// this._dragPlugin.attach(container);
+		this._resizePlugin.attach(container);
+		// this._downloadPlugin.attach(container);
+	}
+
+	public detachPlugins() {
+		// this._dragPlugin.detach(container);
+		this._resizePlugin.detach();
+		// this._downloadPlugin.detach(container);
 	}
 
 	get wrappedContainer(): WrappedContainer {
 		return this._wrappedContainer;
-	}
-
-
-
-
-
-
-
-	// Everything below is work in progress
-
-
-
-
-
-
-
-
-
-	public attachPlugins(container: Container) {
-		this._dragPlugin.attach(container);
-		this._selectPlugin.attach(container);
-		this._resizePlugin.attach(container);
-		this._downloadPlugin.attach(container);
-	}
-
-	public detachPlugins(container: Container) {
-		this._dragPlugin.detach(container);
-		this._selectPlugin.detach(container);
-		this._resizePlugin.detach(container);
-		this._downloadPlugin.detach(container);
-	}
-
-	handleEvent(event) {
-
-	}
-
-	handleSelect(event: KeyboardEvent) {
-		const clickedContainer = this._selectPlugin.getContainerUnderMouse(this._scene.stage);
-		if (clickedContainer) {
-			if (event.shiftKey && this._selectedContainers.length > 0) {
-				// shift-click to add to selection
-				// this.selectContainer(clickedContainer);
-			} else {
-				// regular click to select only the clicked container
-				// this.deselectAllContainers();
-				// this.selectContainer(clickedContainer);
-			}
-		} else {
-			// click outside any container to deselect all
-			// this.deselectAllContainers();
-		}
-	}
-
-	handleDrag(event: any) {
-		for(let c = 0; c < this._selectedContainers.length; c++) {
-			this._resizePlugin.handleResize(this._selectedContainers[c]);
-		}
-	}
-
-	handleResize(event: any) {
-		for(let c = 0; c < this._selectedContainers.length; c++) {
-			this._resizePlugin.handleResize(this._selectedContainers[c]);
-		}
-	}
-
-	handleDownload(event: any) {
-		// Pause, parce que le download je ne suis pas certain qu'il puisse target un container.
 	}
 }
