@@ -42,67 +42,43 @@ const showMetaModal = ref(false);
 const openMetaModal = () => showMetaModal.value = true;
 const closeMetaModal = () => showMetaModal.value = false;
 
-    
+	let title =  '';
+	let date  = "";
+	let street = "";
+	let zipCode = "";
+	let town = "";
+	let description = "";
+	let picture = "";
+	let participants = [];
+	let Activities = [];
 
-
-
-
-//	data(){
-	//	return {
-			const title =  '';
-			const date  = "";
-			const street = "";
-			const zipCode = "";
-			const town = "";
-			const description = "";
-			const picture = "";
-			const adress = {
-				street: "",
-				zipCode: "",
-				city: "",
-			};
-			const participants = [];
-			const Activities = [];
-	//	}
-//	},
-/*	components : {
-		activity,
-		participant,
-	},*/
-
-//	methods : {
-	
-
-		const addOpenHouses = function(){
-			this.adress = {
-				street: this.street,
-				zipCode: this.zipCode,
-				city: this.town,
-			};
-			console.log(this.Activities);
-			http.post('/openhouses/create', {
-					title: this.title,
-					date: this.date,
-					picture: this.picture,
-					schedule: this.Activities,
-					adress: this.adress,
-					description: this.description,
-					participants: this.participants,
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-
-			this.title = "";
-			this.date= "";
-			this.picture = "";
-			this.street = "";
-			this.zipCode = "";
-			this.town = "";
-			this.description = "";
-			this.Activities = [];
-			this.participants = [];
-
+	const addOpenHouses = function(){
+		let adress = {
+			street: street,
+			zipCode: zipCode,
+			city: town,
+		};
+		http.post('/openhouses/create', {
+			title: title,
+			date: date,
+			picture: picture,
+			schedule: Activities,
+			adress: adress,
+			description: description,
+			participants: participants,
+		}).catch((error) => {
+			console.log(error);
+		});
+		title = "";
+		date= "";
+		picture = "";
+		street = "";
+		zipCode = "";
+		town = "";
+		description = "";
+		Activities = [];
+		participants = [];
+		closeMetaModal();
 		};
 		
 		const onFileSelected = function(event){

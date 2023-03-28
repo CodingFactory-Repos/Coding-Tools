@@ -48,6 +48,7 @@ export default{
 			this.startTime = "";
 			this.endTime = "";
 			this.activityDesc = "";
+            //console.log(this.Activities);
 		},
     },
 
