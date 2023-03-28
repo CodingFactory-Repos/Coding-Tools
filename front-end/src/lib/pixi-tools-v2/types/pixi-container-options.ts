@@ -7,12 +7,14 @@ import { TypesRequired } from '@/interfaces/advanced-types.interface';
 import { ContainerManager } from '../class/containerManager';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
+import { WrappedContainer } from '../class/wrappedContainer';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
 }
 
 export type CanvasContainer = FramedContainer | GenericContainer;
+export type PluginContainer = CanvasContainer | WrappedContainer;
 
 export interface GeometryEvent {
 	geometry: LiteralGeometryTypes;
