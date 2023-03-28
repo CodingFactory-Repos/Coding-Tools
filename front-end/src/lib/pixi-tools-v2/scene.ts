@@ -15,12 +15,12 @@ export class Scene extends Application {
 			height: window.innerHeight,
 			autoDensity: true,
 			backgroundColor: 0x2c2e3a,
-			resolution: devicePixelRatio,
+			resolution: devicePixelRatio + 1,
 		});
 
 		const event = new EventSystem(this.renderer);
 		event.domElement = this.renderer.view as HTMLCanvasElement;
-		event.resolution = devicePixelRatio;
+		event.resolution = devicePixelRatio + 1;
 
 		this._viewport = new Viewport({
 			worldWidth: 1000,
@@ -51,7 +51,10 @@ export class Scene extends Application {
 			const wrap = this._manager.wrappedContainer;
 			const loc = wrap.toLocal(e.global);
 			if(wrap.getBounds().contains(loc.x, loc.y)) return;
-			else this._manager.deselectAll();
+			else {
+				this._manager.deselectAll();
+				this._manager.detachPlugins();
+			}
 		})
 	}
 
