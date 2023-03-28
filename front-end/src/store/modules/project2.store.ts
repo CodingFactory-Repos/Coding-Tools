@@ -5,14 +5,20 @@ import { toRaw } from 'vue';
 import { ProjectStorev2 } from '@/store/interfaces/projectv2.interface';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
+import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 
 export const useProjectStorev2 = defineStore('projectv2', {
 	state: (): ProjectStorev2 => {
 		return {
 			scene: null,
 			canvas: null,
+			default: true,
 			deferredGeometry: null,
+			selectionBox: null,
 		};
+	},
+	getters: {
+
 	},
 	actions: {
 		setDeferredEvent(
@@ -20,6 +26,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			cursor: CSStyleProperty.Cursor,
 			framed: boolean
 		) {
+			this.default = false;
 			this.canvas.classList.toggle(cursor);
 
 			// We remove all the event related to pointerup if they exist.
@@ -28,6 +35,17 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.canvas.removeEventListener('pointerup', this.createGeometry);
 
 			this.canvas.addEventListener('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
+		},
+		toggleDefaultCanvasMode(this: ProjectStorev2, destroy: boolean = false) {
+			if(destroy && this.selectionBox) {
+				this.selectionBox.destroy();
+				this.selectionBox = null;
+				return;
+			}
+
+			if (!this.selectionBox) {
+				this.selectionBox = new SelectionBox(toRaw(this.scene));
+			}
 		},
 		createFramedGeometry(
 			this: ProjectStorev2,
@@ -51,6 +69,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.canvas.classList.toggle("default");
 			this.deferredGeometry = null;
 			this.canvas.removeEventListener('pointerup', this.createFramedGeometry);
+			this.default = true;
 		},
 		createGeometry(
 			this: ProjectStorev2,
@@ -77,6 +96,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.canvas.classList.toggle("default");
 			this.deferredGeometry = null;
 			this.canvas.removeEventListener('pointerup', this.createGeometry);
+			this.default = true;
 		}
 	},
 });
