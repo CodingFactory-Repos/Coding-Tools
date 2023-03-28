@@ -1,7 +1,6 @@
 import { Viewport } from "pixi-viewport";
 import { Container } from "pixi.js";
 import { Border } from "../model/model-constructor/border";
-import { Rectangle } from "../model/model-constructor/rectangle";
 import { CanvasContainer } from "../types/pixi-container-options";
 import { FramedContainer } from "./framedContainer";
 

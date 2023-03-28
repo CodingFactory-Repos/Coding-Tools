@@ -4,7 +4,6 @@ import { WrappedContainer } from './wrappedContainer';
 import { CanvasContainer } from '../types/pixi-container-options';
 import { FramedContainer } from './framedContainer';
 import { GenericContainer } from './genericContainer';
-import { off } from 'process';
 
 export class ContainerManager {
 	private _scene: Scene;
@@ -45,27 +44,8 @@ export class ContainerManager {
 	 */
 	public selectContainer(container: CanvasContainer, isShift: boolean) {
 		if (!this._selectedContainers.includes(container)) {
-			// If the container is a FramedContainer,
-			// try to find all its selected children,
-			// if some children were found, remove them from the selected array and destroy any existing borders and finally add them back to the frame.
-			//! This prevent a bug where the children context is lost when doing : select children of frame then select frame
-			if(container instanceof FramedContainer) {
-				const childsOfFrame = this._selectedContainers.filter((ctn) => ctn.frameNumber === container.frameNumber);
-				if(childsOfFrame.length > 0) {
-					this._selectedContainers = this._selectedContainers.filter((ctn) => !childsOfFrame.includes(ctn));
-					childsOfFrame.forEach((ctn) => ctn.destroyBorder());
-					container.mainContainer.addChild(...childsOfFrame);
-				}
-
-			//! This prevent a bug where the children context is lost when doing : select frame then select children of frame
-			} else if(container instanceof GenericContainer && container.frameNumber !== -1) {
-				const frames = this._selectedContainers.filter((ctn) => ctn.id === "frame") as Array<FramedContainer>;
-				for(let n = 0; n < frames.length; n++) {
-					if(frames[n].mainContainer.children[n].parent === container.parent) {
-						return;
-					}
-				}
-			}
+			const shouldReturn = this.fixFrameChildrenContext(container);
+			if(shouldReturn) return;
 
 			// Select the container and retrieve the position index
 			const len = this._selectedContainers.push(container);
@@ -110,6 +90,36 @@ export class ContainerManager {
 			this.deselectAllExceptThisContainer(index);
 			this.drawBorder();
 		}
+	}
+
+	/**
+	 * This method is used once, and has its name suggest it's a fix of an issue.
+	 * This issue could potentially be reworked later, but for readability it will be separated to avoid dirtying the selectContainer method.
+	 */
+	private fixFrameChildrenContext(container: CanvasContainer) {
+		// If the container is a FramedContainer,
+		// try to find all its selected children,
+		// if some children were found, remove them from the selected array and destroy any existing borders and finally add them back to the frame.
+		//! This prevent a bug where the children context is lost when doing : select children of frame then select frame
+		if(container instanceof FramedContainer) {
+			const childsOfFrame = this._selectedContainers.filter((ctn) => ctn.frameNumber === container.frameNumber);
+			if(childsOfFrame.length > 0) {
+				this._selectedContainers = this._selectedContainers.filter((ctn) => !childsOfFrame.includes(ctn));
+				childsOfFrame.forEach((ctn) => ctn.destroyBorder());
+				container.mainContainer.addChild(...childsOfFrame);
+			}
+
+		//! This prevent a bug where the children context is lost when doing : select frame then select children of frame
+		} else if(container instanceof GenericContainer && container.frameNumber !== -1) {
+			const frames = this._selectedContainers.filter((ctn) => ctn.id === "frame") as Array<FramedContainer>;
+			for(let n = 0; n < frames.length; n++) {
+				if(frames[n].mainContainer.children[n].parent === container.parent) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public deselectAll() {
