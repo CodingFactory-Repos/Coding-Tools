@@ -1,13 +1,18 @@
 
-import { Graphics, FederatedPointerEvent, Point } from 'pixi.js';
+import { Graphics, FederatedPointerEvent, Point, Container } from 'pixi.js';
 import { Drag, Viewport } from 'pixi-viewport';
 import { Scene } from '@/lib/pixi-tools-v2/scene';
+import { ContainerManager } from './containerManager';
+import { CanvasContainer } from '../types/pixi-container-options';
+import { GenericContainer } from './genericContainer';
+import { FramedContainer } from './framedContainer';
 
 export class SelectionBox extends Graphics {
 	private _startPos: Point;
 	private _viewport: Viewport;
 	private _box: Graphics;
 	private _dragPlugin: Drag;
+	private _manager: ContainerManager;
 
 	constructor(scene: Scene) {
 		super();
@@ -18,6 +23,7 @@ export class SelectionBox extends Graphics {
 		this._box.visible = false;
 		this.addChild(this._box);
 		
+		this._manager = scene.manager;
 		this._viewport = scene.viewport;
 		this._viewport.on('pointerdown', this.startSelection);
 		this._dragPlugin = this._viewport.plugins.get("drag");
@@ -68,6 +74,23 @@ export class SelectionBox extends Graphics {
 		this._dragPlugin.resume();
 		this._viewport.off('pointermove', this.updateSelection);
 		this._viewport.off('pointerup', this.endSelection);
+
+		const selectionBounds = this.getBounds();
+
+		const selectedChildren: Array<CanvasContainer> = [];
+		for(let n = 0; n < this._viewport.children.length; n++) {
+			const child = this._viewport.children[n];
+
+			if(child instanceof GenericContainer || child instanceof FramedContainer) {
+				if(child.getBounds().intersects(selectionBounds)) {
+					selectedChildren.push(this._viewport.children[n]);
+				}
+			}
+		}
+
+		for(let n = 0; n < selectedChildren.length; n++) {
+			this._manager.selectContainer(selectedChildren[n], true);
+		}
 	}
 
 	public destroy() {
