@@ -89,6 +89,10 @@ export class FramedContainer extends Container {
 		}
 	}
 
+	public getFrameLocalBounds() {
+		return this._mainContainer.getLocalBounds();
+	}
+
 	public drawBorder() {
 		const { x, y } = this._mainContainer.getLocalBounds();
 
