@@ -17,5 +17,6 @@ onMounted(() => {
 	const scene = new Scene(canvas.value as HTMLCanvasElement);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
+	projectStore.toggleDefaultCanvasMode();
 })
 </script>

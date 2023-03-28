@@ -35,7 +35,7 @@
 		<template #left>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
 				<IconButton  type="button">
-					<SvgCursor />
+					<SvgCursor :class="{ 'fill-selected-icon dark:fill-selected-icon': isDefault }"/>
 				</IconButton>
 				<IconButton  type="button">
 					<SvgText />
@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 
 /**zfzefzef */
 
@@ -124,9 +124,14 @@ import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 
-// const emit = defineEmits(['update:focus-mode'])
-
 const projectStore = useProjectStorev2();
+
+const isDefault = computed(() => projectStore.default);
+watch(isDefault, val => {
+	if(val) projectStore.toggleDefaultCanvasMode()
+	else projectStore.toggleDefaultCanvasMode(true);
+});
+
 const activate = ref(false);
 const drawerOpen = ref(false);
 
