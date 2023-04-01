@@ -4,24 +4,16 @@ import { GeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums'
 import { Stage} from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
 import { Circle } from 'pixi.js';
 import { Rectangle } from '@/lib/pixi-tools-v2/model/model-constructor/rectangle';
+import { ViewportUI } from '../viewportUI';
 
 
 export class Normalizer {
-	/**
-	 * The stage to which this PixiObject belongs.
-	 * @private
-	 */
-	private readonly _stage: Stage;
+	protected readonly stage: Stage;
+	protected readonly viewport: ViewportUI;
 
-	/**
-	 * The viewport to which this PixiObject belongs.
-	 * @private
-	 */
-	private readonly _viewport: Viewport;
-
-	constructor(stage: Stage, viewport: Viewport) {
-		this._stage = stage;
-		this._viewport = viewport;
+	constructor(stage: Stage, viewport: ViewportUI) {
+		this.stage = stage;
+		this.viewport = viewport;
 	}
 
 	public normalizeManyGraphic(event: GeometryEvent, attrs: Array<GraphicAttributes>): ContainerContext {
@@ -33,26 +25,27 @@ export class Normalizer {
 		}
 
 		return {
-			stage: this._stage,
-			viewport: this._viewport,
+			stage: this.stage,
+			viewport: this.viewport,
 			constructors: constructors,
 		}
 	}
 
 	public normalizeOneGraphic(event: GeometryEvent, isFrame: boolean): ContainerContext {
-		const constructors: Array<GraphicConstructor> = [];
+		let constructors: GraphicConstructor | Array<GraphicConstructor>;
 
 		const { Graphic, attributes } = this.normalizeProperties(event);
-		constructors.push({ Graphic, attributes });
-		//! Testing for the frames
+		if(isFrame) constructors = [{ Graphic, attributes }];
+		else constructors = { Graphic, attributes };
+
 		if(isFrame) {
 			// const t = {...attributes, x: 100, y: 100 };
 			// constructors.push({ Graphic, attributes: t });
 		}
 
 		return {
-			stage: this._stage,
-			viewport: this._viewport,
+			stage: this.stage,
+			viewport: this.viewport,
 			constructors: constructors,
 		}
 	}
@@ -63,17 +56,14 @@ export class Normalizer {
 		//! Calculate the center x,y of the graphic
 		const originWidth = attr.width | 200; //TODO | Need to find a solution rather than hardcoded
 		const originHeigh = attr.height | 200; //TODO | Need to find a solution rather than hardcoded
-		const scale = this._viewport.scale.x;
-		const canvasX = (props.clientX - this._viewport.x) / scale / 2;
-		const canvasY = (props.clientY - this._viewport.y) / scale / 2;
-		const centerX = canvasX - originWidth / 4;
-		const centerY = canvasY - originHeigh / 4;
+		const centerX = props.x - originWidth / 2;
+		const centerY = props.y - originHeigh / 2;
 
 		const attributes: GraphicAttributes = {
 			x: centerX,
 			y: centerY,
 			color: attr.color | props.color,
-			alpha: attr.alpha | 0,
+			alpha: attr.alpha | 1,
 			rotation: attr.rotation | 0,
 			texture: attr.texture | 0,
 		}
