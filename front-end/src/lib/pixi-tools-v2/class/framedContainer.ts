@@ -1,4 +1,4 @@
-import { Container, DisplayObject, FederatedPointerEvent, Text } from "pixi.js";
+import { Container, FederatedPointerEvent, Text } from "pixi.js";
 import { ContainerContext, GraphicConstructor } from "../types/pixi-container-options";
 import { ContainerManager } from "./containerManager";
 import { GenericContainer } from "./genericContainer";
@@ -81,6 +81,7 @@ export class FramedContainer extends PluginContainer {
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
 
+	// TODO: Broken
 	public updateAbsoluteBounds() {
 		let minX = Infinity;
 		let minY = Infinity;
@@ -88,8 +89,15 @@ export class FramedContainer extends PluginContainer {
 		let maxY = 0;
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
-			// TODO: Check if not including it has any side effect
-			// if(this.mainContainer.children[n].id === "framebox") continue;
+			if(this.mainContainer.children[n].id === "framebox") {
+				const { x, y, width, height } = this.mainContainer.children[n];
+				minX = x;
+				minY = y;
+				maxX = x + width;
+				maxY = y + height;
+				continue;
+			}
+
 			const geometry = this.mainContainer.children[n].getGeometry();
 			if(geometry === null) continue;
 
@@ -107,6 +115,7 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxY = maxY;
 	}
 
+	// TODO: Broken
 	public getGeometry(padding: boolean = true) {
 		if(!this.destroyed) {
 			this.updateAbsoluteBounds();
@@ -121,7 +130,18 @@ export class FramedContainer extends PluginContainer {
 		}
 	}
 
-	public getGraphicChildren(): DisplayObject[] {
-		throw new Error("Method not implemented.");
+	// TODO: Broken
+	public getGraphicChildren() {
+		const graphics = [];
+
+		for(let n = 0; n < this.mainContainer.children.length; n++) {
+			if(this.mainContainer.children[n].id === "framebox") {
+				graphics.push(this.mainContainer.children[n]);
+				continue;
+			}
+			graphics.push(this.mainContainer.children[n].getGraphicChildren());
+		}
+
+		return graphics.flat();
 	}
 }
