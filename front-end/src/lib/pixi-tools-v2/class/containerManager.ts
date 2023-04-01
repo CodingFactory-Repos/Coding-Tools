@@ -1,36 +1,31 @@
-import { Container } from 'pixi.js';
-import { Scene } from "@/lib/pixi-tools-v2/scene";
 import { WrappedContainer } from './wrappedContainer';
 import { CanvasContainer, PluginContainer } from '../types/pixi-container-options';
 import { FramedContainer } from './framedContainer';
 import { GenericContainer } from './genericContainer';
 import { ResizePlugin } from '../plugins/resizePlugin';
+import { ViewportUI } from "../viewportUI";
 
 export class ContainerManager {
-	private _scene: Scene;
+	protected readonly viewport: ViewportUI;
+	protected readonly resizePlugin: ResizePlugin;
 	private _selectedContainers: Array<CanvasContainer>;
-	private _wrappedContainer: WrappedContainer;
-	private _dragPlugin: any;
-	private _resizePlugin: ResizePlugin;
-	private _downloadPlugin: any;
+	public readonly  wrappedContainer: WrappedContainer;
 
-	constructor(scene: Scene) {
-		this._scene = scene;
+	constructor(viewport: ViewportUI) {
+		this.viewport = viewport;
+		this.wrappedContainer = new WrappedContainer(this.viewport);
+		this.resizePlugin = new ResizePlugin(this.viewport);
 		this._selectedContainers = [];
-		this._wrappedContainer = new WrappedContainer(scene.viewport);
-		this._dragPlugin = null;
-		this._resizePlugin = new ResizePlugin(scene.viewport);
-		this._downloadPlugin = null;
 
-		window.onkeydown = this.destroySelected.bind(this);
+		window.onkeydown = this._destroySelected.bind(this);
 	}
 
-	public destroySelected(e: KeyboardEvent) {
+	private _destroySelected(e: KeyboardEvent) {
 		const key = e.key;
 
 		if (key === "Backspace") {
 			this._selectedContainers.forEach((ctn) => ctn.destroy());
-			this._wrappedContainer.destroyBorder();
+			this.viewport.destroyBorder();
 			this._selectedContainers = [];
 		}
 	}
@@ -38,7 +33,7 @@ export class ContainerManager {
 	/**
 	 * Selects the given container and updates the selected containers list
 	 * @param container
-	 * @param isShift 
+	 * @param isShift
 	 * @returns void
 	 */
 	public selectContainer(container: CanvasContainer, isShift: boolean) {
@@ -52,18 +47,18 @@ export class ContainerManager {
 
 			// If the shift key is not pressed and there is more than one children of the wrappedContainer,
 			// add all of its children to the viewport + remove them and destroy its border.
-			if (!isShift && this._wrappedContainer.children.length > 0) {
+			if (!isShift && this.wrappedContainer.children.length > 0) {
 				this.detachPlugins();
-				this._wrappedContainer.destroyBorder();
-				this._wrappedContainer.restoreOriginChildren();
-				this._wrappedContainer.removeChildren();
+				this.viewport.destroyBorder();
+				this.wrappedContainer.restoreOriginChildren();
+				this.wrappedContainer.removeChildren();
 			}
 			
 			// If the shift key is pressed and there is more than one container selected,
 			// wrap the selected containers in a temporary parent container and destroy any existing borders.
 			 if(isShift && len > 1) {
 				this.detachPlugins();
-				this.destroyBorder(this._selectedContainers);
+				this.viewport.destroyBorder();
 				this.wrapWithTemporaryParent();
 				return;
 			
@@ -71,32 +66,30 @@ export class ContainerManager {
 			// deselect all other containers except for the current container and destroy any existing borders.
 			} else if (len > 1) {
 				this.detachPlugins();
-				const unselected = this.deselectAllExceptThisContainer(index);
-				this.destroyBorder(unselected);
-				this.drawBorder();
+				this.deselectAllExceptThisContainer(index);
+				this.viewport.destroyBorder();
+				this.drawBorder(this._selectedContainers[0]);
 				this.attachPlugins(this._selectedContainers[0]);
 				return;
 			}
 
 			// Draw the border of the currently selected element.
 			this.detachPlugins();
-			this.drawBorder();
+			this.drawBorder(this._selectedContainers[index]);
 			this.attachPlugins(this._selectedContainers[index]);
 
 		// If there is more than one children of the wrappedContainer,
 		//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
-		} else if(this._wrappedContainer.children.length > 0) {
+		} else if(this.wrappedContainer.children.length > 0) {
 			const index = this._selectedContainers.findIndex(el => el === container);
 			if(index === -1) return;
 
 			this.detachPlugins();
-			this._wrappedContainer.destroyBorder();
-			this._wrappedContainer.restoreOriginChildren();
-			this._wrappedContainer.removeChildren();
+			this.viewport.destroyBorder();
+			this.wrappedContainer.restoreOriginChildren();
+			this.wrappedContainer.removeChildren();
 			this.deselectAllExceptThisContainer(index);
-			this.drawBorder();
-
-			console.log("bruh")
+			this.drawBorder(this._selectedContainers[0]);
 			this.attachPlugins(this._selectedContainers[0]);
 		}
 	}
@@ -114,7 +107,7 @@ export class ContainerManager {
 			const childsOfFrame = this._selectedContainers.filter((ctn) => ctn.frameNumber === container.frameNumber);
 			if(childsOfFrame.length > 0) {
 				this._selectedContainers = this._selectedContainers.filter((ctn) => !childsOfFrame.includes(ctn));
-				childsOfFrame.forEach((ctn) => ctn.destroyBorder());
+				this.viewport.destroyBorder();
 				container.mainContainer.addChild(...childsOfFrame);
 			}
 
@@ -132,13 +125,13 @@ export class ContainerManager {
 	}
 
 	public deselectAll() {
-		if(this._wrappedContainer.children.length > 0) {
-			this._wrappedContainer.destroyBorder();
-			this._wrappedContainer.restoreOriginChildren();
-			this._wrappedContainer.removeChildren();
+		if(this.wrappedContainer.children.length > 0) {
+			this.viewport.destroyBorder();
+			this.wrappedContainer.restoreOriginChildren();
+			this.wrappedContainer.removeChildren();
 		}
 
-		this.destroyBorder(this._selectedContainers);
+		this.viewport.destroyBorder();
 		this._selectedContainers = [];
 	}
 
@@ -158,38 +151,31 @@ export class ContainerManager {
 		return unselected;
 	}
 
-	public destroyBorder(container: Array<CanvasContainer>) {
-		for(let n = 0; n < container.length; n++) {
-			container[n].destroyBorder();
-		}
-	}
+	public drawBorder(container: PluginContainer) {
+		const borderOptions = container.getGeometry();
 
-	public drawBorder() {
-		for(let n = 0; n < this._selectedContainers.length; n++) {
-			this._selectedContainers[n].drawBorder();
-		}
+		this.viewport.createBorder({
+			...borderOptions,
+			scale: this.viewport.scaled
+		});
 	}
 
 	public wrapWithTemporaryParent() {
-		this._wrappedContainer.addChild(...this._selectedContainers);
-		this._wrappedContainer.drawBorder();
-		this._scene.viewport.addChild(this._wrappedContainer);
-		this.attachPlugins(this._wrappedContainer);
+		this.wrappedContainer.addChild(...this._selectedContainers);
+		const borderOptions = this.wrappedContainer.getGeometry();
+		this.viewport.createBorder({
+			...borderOptions,
+			scale: this.viewport.scaled
+		});
+		this.viewport.addChild(this.wrappedContainer);
+		this.attachPlugins(this.wrappedContainer);
 	}
 
 	public attachPlugins(container: PluginContainer) {
-		// this._dragPlugin.attach(container);
-		this._resizePlugin.attach(container);
-		// this._downloadPlugin.attach(container);
+		this.resizePlugin.attach(container);
 	}
 
 	public detachPlugins() {
-		// this._dragPlugin.detach(container);
-		this._resizePlugin.detach();
-		// this._downloadPlugin.detach(container);
-	}
-
-	get wrappedContainer(): WrappedContainer {
-		return this._wrappedContainer;
+		this.resizePlugin.detach();
 	}
 }
