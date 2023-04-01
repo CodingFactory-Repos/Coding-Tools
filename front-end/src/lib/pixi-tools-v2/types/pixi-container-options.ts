@@ -9,6 +9,7 @@ import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
 import { ViewportUI } from '../viewportUI';
+import { Graphics } from 'pixi.js';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
@@ -74,3 +75,28 @@ export interface NormalizedObject {
     texture:number // If u want to use texture
   }
 
+export interface InitialResizeState {
+	child: Graphics;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+}
+
+export interface ContainerSize {
+	width: number;
+	height: number;
+}
+
+export interface ProportionScaleOptions {
+	parentInitialWidth: number,
+	parentInitialHeight: number,
+	parentPrimeWidth: number,
+	parentPrimeHeight: number,
+	anchorX: number,
+	anchorY: number,
+	childInitialX: number,
+	childInitialY: number,
+	childInitialWidth: number,
+	childInitialHeight: number,
+}
