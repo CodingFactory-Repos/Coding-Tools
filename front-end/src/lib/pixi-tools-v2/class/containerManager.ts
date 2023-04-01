@@ -26,6 +26,8 @@ export class ContainerManager {
 		if (key === "Backspace") {
 			this._selectedContainers.forEach((ctn) => ctn.destroy());
 			this.viewport.destroyBorder();
+			this.viewport.destroyResizeHandles();
+			this.viewport.destroyResizeHitArea();
 			this._selectedContainers = [];
 		}
 	}
