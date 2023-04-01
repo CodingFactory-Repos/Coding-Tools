@@ -8,6 +8,7 @@ import { ContainerManager } from '../class/containerManager';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
+import { ViewportUI } from '../viewportUI';
 
 export interface GeometryRequest {
 	type : GeometryTypes,
@@ -17,13 +18,14 @@ export type CanvasContainer = FramedContainer | GenericContainer;
 export type PluginContainer = CanvasContainer | WrappedContainer;
 
 export interface GeometryEvent {
+	x: number;
+	y: number;
 	geometry: LiteralGeometryTypes;
-	clientX: number;
-	clientY: number;
 	color?: number;
 }
 
 export interface GraphicAttributes {
+	id?: string,
 	x: number,
 	y: number,
 	width?: number,
@@ -34,6 +36,10 @@ export interface GraphicAttributes {
 	rotation?: number,
 	texture?: number,
 	scale?: number,
+	cursor?: CSStyleProperty.Cursor,
+	endX?: number,
+	endY?: number,
+	lineWidth?: number,
 }
 
 export interface GraphicConstructor {
@@ -43,8 +49,8 @@ export interface GraphicConstructor {
 
 export interface ContainerContext {
 	stage: Stage;
-	viewport: Viewport;
-	constructors: Array<GraphicConstructor>;
+	viewport: ViewportUI;
+	constructors: GraphicConstructor | Array<GraphicConstructor>;
 	manager?: ContainerManager;
 }
 
