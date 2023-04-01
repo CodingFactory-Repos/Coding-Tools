@@ -27,6 +27,6 @@ export class HitArea extends ModelGraphics {
 		this.lineStyle(lineWidth, this.color);
 		this.moveTo(x, y);
 		this.lineTo(endX, endY);
-		this.hitArea = this.getBounds();
+		this.hitArea = this.getLocalBounds();
 	}
 }
