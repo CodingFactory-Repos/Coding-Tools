@@ -1,4 +1,3 @@
-import { Viewport } from 'pixi-viewport';
 import { ContainerContext, GeometryEvent, GraphicAttributes, GraphicConstructor } from '@/lib/pixi-tools-v2/types/pixi-container-options';
 import { GeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums'
 import { Stage} from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
