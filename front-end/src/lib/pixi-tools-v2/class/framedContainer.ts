@@ -1,22 +1,28 @@
-import { Container, FederatedPointerEvent, Text } from "pixi.js";
-import { Border } from "../model/model-constructor/border";
-import { ContainerContext } from "../types/pixi-container-options";
-import { Viewport } from 'pixi-viewport';
+import { Container, DisplayObject, FederatedPointerEvent, Text } from "pixi.js";
+import { ContainerContext, GraphicConstructor } from "../types/pixi-container-options";
 import { ContainerManager } from "./containerManager";
 import { GenericContainer } from "./genericContainer";
 import { Rectangle } from "../model/model-constructor/rectangle";
+import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
+import { ViewportUI } from "../viewportUI";
 
-export class FramedContainer extends Container {
-	public id: string;
+export class FramedContainer extends PluginContainer {
+	protected readonly viewport: ViewportUI;
+	protected readonly manager: ContainerManager;
+	protected readonly frameBox: Rectangle;
+	protected readonly boxTitle: Text;
+	public readonly children: Array<Container>;
+	public readonly mainContainer: FramedMainContainer;
+	public readonly titleContainer: Container;
+	public readonly id: string;
+
+	public absMinX: number;
+	public absMinY: number;
+	public absMaxX: number;
+	public absMaxY: number;
+
 	public isAttachedToFrame: boolean;
 	public frameNumber: number;
-	private _mainContainer: Container;
-	private _titleContainer: Container;
-	private _emptySpace: Rectangle;
-	private _title: Text;
-	private _viewport: Viewport;
-	private _manager: ContainerManager;
-	private _border: Border;
 
 	constructor(context: ContainerContext) {
 		super();
@@ -24,89 +30,98 @@ export class FramedContainer extends Container {
 		this.id = "frame";
 		this.cursor = "pointer";
 		this.interactive = true;
-		this._viewport = context.viewport;
-		this._manager = context.manager;
-		this._mainContainer = new Container();
-		this._titleContainer = new Container();
-		this._titleContainer.interactive = true;
-		this._mainContainer.interactive = true;
+		this.viewport = context.viewport;
+		this.manager = context.manager;
 
-		this.frameNumber = this._viewport.children.filter(el => el.id === "frame").length;
-		this._title = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
+		// TODO: frameNumber will break with multi user, because the frame can be moved out of the viewport (ie. wrapped container)
+		this.frameNumber = this.viewport.children.filter(el => el.id === "frame").length;
+
+		this.mainContainer = new FramedMainContainer();
+		this.titleContainer = new Container();
+		this.titleContainer.interactive = true;
+		this.mainContainer.interactive = true;
 		
-		for(let i = 0; i < context.constructors.length; i++) {
+		const constructors = context.constructors as Array<GraphicConstructor>;
+		for(let i = 0; i < constructors.length; i++) {
 			const genericContainer = new GenericContainer({
-				stage: context.stage,
-				viewport: context.viewport,
-				manager: context.manager,
-				constructors: [{
-					Graphic: context.constructors[i].Graphic,
-					attributes: context.constructors[i].attributes,
-				}]
+				...context,
+				constructors: {
+					Graphic: constructors[i].Graphic,
+					attributes: constructors[i].attributes,
+				}
 			}, {
 				isAttached: true,
 				to: this.frameNumber,
 			});
-			this._mainContainer.addChild(genericContainer);
+			this.mainContainer.addChild(genericContainer);
 		}
 
-		this.addChild(this._mainContainer);
+		this.addChild(this.mainContainer);
+		this.mainContainer.on("added", this.updateAbsoluteBounds.bind(this));
 		
-		const { x, y } = this._mainContainer.getLocalBounds();
-		
-		this._emptySpace = new Rectangle({ 
-			x: (x / 2),
-			y: (y / 2),
-			width: this._mainContainer.width,
-			height: this._mainContainer.height,
-			color: 0,
-			scale: this._viewport.scaled,
+		const geometry = this.getGeometry(false);
+		this.frameBox = new Rectangle({
+			...geometry,
+			id: "framebox",
+			color: 0xff00ff,
+			scale: this.viewport.scaled,
 		});
-		this._mainContainer.addChildAt(this._emptySpace, 0);
-		
-		this._title.x = (x / 2);
-		this._title.y = (y / 2);
-		this._titleContainer.x = (x / 2);
-		this._titleContainer.y = (y / 2) - 30; //padding
-		this._titleContainer.addChild(this._title);
+		this.mainContainer.addChildAt(this.frameBox, 0);
 
-		this.addChild(this._titleContainer);
-		this._titleContainer.on("pointerdown", this._onTitleSelected.bind(this));
-
+		this.boxTitle = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
+		this.boxTitle.x = geometry.x;
+		this.boxTitle.y = geometry.y - 30;
+		this.titleContainer.addChild(this.boxTitle);
+		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
+		this.addChild(this.titleContainer);
 	}
 
-	private _onTitleSelected(e: FederatedPointerEvent) {
+	protected onSelected(e: FederatedPointerEvent) {
 		e.stopPropagation();
-		// e.shiftKey even if known in the object return undefined;
-		const isShift = e.originalEvent.shiftKey;
-		this._manager.selectContainer(this, isShift);
+		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
 
-	public destroyBorder() {
-		if(this._border) {
-			this._border.destroy();
-			this._border = null;
+	public updateAbsoluteBounds() {
+		let minX = Infinity;
+		let minY = Infinity;
+		let maxX = 0;
+		let maxY = 0;
+
+		for(let n = 0; n < this.mainContainer.children.length; n++) {
+			// TODO: Check if not including it has any side effect
+			// if(this.mainContainer.children[n].id === "framebox") continue;
+			const geometry = this.mainContainer.children[n].getGeometry();
+			if(geometry === null) continue;
+
+			const { x, y, width, height } = geometry;
+
+			if(x < minX) minX = x;
+			if(y < minY) minY = y;
+			if(x + width > maxX) maxX = x + width;
+			if(y + height > maxY) maxY = y + height;
+		}
+
+		this.absMinX = minX;
+		this.absMinY = minY;
+		this.absMaxX = maxX;
+		this.absMaxY = maxY;
+	}
+
+	public getGeometry(padding: boolean = true) {
+		if(!this.destroyed) {
+			this.updateAbsoluteBounds();
+			return {
+				x: this.absMinX,
+				y: this.absMinY - (padding ? 30 : 0),
+				width: this.width,
+				height: this.height,
+			}
+		} else {
+			return null;
 		}
 	}
 
-	public getFrameLocalBounds() {
-		return this._mainContainer.getLocalBounds();
-	}
-
-	public drawBorder() {
-		const { x, y } = this._mainContainer.getLocalBounds();
-
-		this._border = new Border({
-			x: (x / 2),
-			y: (y / 2),
-			width: this._mainContainer.width,
-			height: this._mainContainer.height,
-			scale: this._viewport.scaled,
-		});
-		this.addChild(this._border);
-	}
-
-	get mainContainer(): Container {
-		return this._mainContainer;
+	public getGraphicChildren(): DisplayObject[] {
+		throw new Error("Method not implemented.");
 	}
 }
