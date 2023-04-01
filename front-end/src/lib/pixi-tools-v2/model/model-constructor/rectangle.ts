@@ -1,29 +1,32 @@
-import { Graphics } from 'pixi.js';
+import { ModelGraphics } from '../../types/pixi-class';
 import { GraphicAttributes } from '../../types/pixi-container-options';
 
-export class Rectangle extends Graphics {
-	public id: string;
-	private _color: number;
+export class Rectangle extends ModelGraphics {
+	public readonly id: string;
+	protected color: number;
 
 	constructor(attr: GraphicAttributes) {
 		super();
 
-		this.id = "graphic";
+		const { color, cursor, alpha, id } = attr;
+
+		this.id = id ?? "graphic";
+		this.cursor = cursor ?? "default";
+		this.color = color ?? 0x0c8ce9;
+		this.alpha = alpha ?? 1;
 		this.interactive = true;
 		this.draw(attr);
 	}
 
 	public draw(attr: GraphicAttributes) {
-		const { width, height, x, y, color } = attr;
-
-		this.x = x;
-		this.y = y;
-		this.width = width;
+		const { width, height, x, y } = attr;
+		this.position.set(x, y);
 		this.height = height;
-		if(color !== undefined) this._color = color;
-		if(this._color === 0) this.alpha = 0;
-		this.beginFill(this._color);
-		this.drawRect(x, y, width, height);
+		this.width = width;
+
+		this.clear();
+		this.beginFill(this.color);
+		this.drawRect(0, 0, height, width);
 		this.endFill();
 	}
 }

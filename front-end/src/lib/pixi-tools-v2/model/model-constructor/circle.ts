@@ -1,29 +1,31 @@
-import { Graphics } from 'pixi.js';
+import { ModelGraphics } from '../../types/pixi-class';
 import { GraphicAttributes } from '../../types/pixi-container-options';
 
-export class Circle extends Graphics {
-	public id: string;
-	private _color: number;
-	private _radius: number;
+export class Circle extends ModelGraphics {
+	public readonly id: string;
+	protected color: number;
+	public radius: number;
 
 	constructor(attr: GraphicAttributes) {
 		super();
 
-		const { x, y, color, radius } = attr;
+		const { color, alpha, cursor } = attr;
 
 		this.id = "graphic";
-		this._color = color;
-		this._radius = radius;
+		this.cursor = cursor ?? "default";
+		this.color = color ?? 0x0c8ce9;
+		this.alpha = alpha ?? 1;
 		this.interactive = true;
-
-		this.x = x;
-		this.y = y;
-		this.beginFill(this._color);
-		this.drawCircle(x, y, radius);
-		this.endFill();
 	}
 
-	public get radius(): number {
-		return this._radius;
+	public draw(attr: GraphicAttributes) {
+		const { x, y, radius } = attr;
+		this.radius = radius;
+		this.position.set(x, y);
+
+		this.clear();
+		this.beginFill(this.color);
+		this.drawCircle(x, y, this.radius);
+		this.endFill();
 	}
 }
