@@ -1,5 +1,5 @@
 import { IViewportOptions, Viewport } from "pixi-viewport";
-import { Container, FederatedPointerEvent, Graphics, Point } from "pixi.js";
+import { FederatedPointerEvent } from "pixi.js";
 import { Scene } from "./scene";
 import { Stage } from "../pixi-tools/types";
 import { ContainerManager } from "./class/containerManager";
@@ -10,55 +10,35 @@ import { Handle } from "./model/model-constructor/handle";
 import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
 import { HitArea } from "./model/model-constructor/hitArea";
 import { Grid } from "./model/model-constructor/grid";
-import { reactive } from "vue";
+import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
 
 
 export class ViewportUI extends Viewport {
 	protected readonly scene: Scene;
-	protected readonly MAX_ZOOM: number;
-	protected readonly MIN_ZOOM: number;
-	protected readonly MAX_STEP: number;
-	protected readonly MULTIPLICATOR: number;
+	public readonly zoomPlugin: ViewportZoomPlugin;
 	public readonly manager: ContainerManager;
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
 	public readonly parent: Stage;
 	public readonly grid: Grid;
-	protected STEP: number;
-	public ZOOM = reactive({ value: 0 });
 	public border: Border = null;
-
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
-		this.manager = new ContainerManager(this);
-		this.grid = new Grid({ color: 0x222327 });
 		this.scene = scene;
+
+		this.manager = new ContainerManager(this);
+		this.zoomPlugin = new ViewportZoomPlugin(this, this.manager);
+		this.grid = new Grid({ color: 0x222327 });
 		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
 		this.on('zoomed', this._onViewportZoomed);
-	
-		this.on("pointerdown", (e: FederatedPointerEvent) => {
-			const wrap = this.manager.wrappedContainer;
-			const loc = wrap.toLocal(e.global);
-			if(wrap.getBounds().contains(loc.x, loc.y)) return;
-			else {
-				this.manager.deselectAll();
-				this.manager.detachPlugins();
-			}
-		})
-
-		this.MAX_ZOOM = 50;
-		this.MIN_ZOOM = 0.01;
-		this.MAX_STEP = 14;
-		this.MULTIPLICATOR = Math.pow((this.MAX_ZOOM / this.MIN_ZOOM), (1 / this.MAX_STEP));
-		this._deduceZoomStep();
-		this._updateZoomPercentage();
+		this.on("pointerdown", this._onViewportUnselect);
 	}
 
 	public offWindowResized() {
@@ -75,10 +55,28 @@ export class ViewportUI extends Viewport {
 		this.worldWidth = newWidth;
 		this.worldHeight = newHeight;
 
-		this._drawGrid();
+		this.drawGrid();
 	}
 
-	private _drawGrid() {
+	private _onViewportMoved() {
+		this.drawGrid();
+	}
+
+	private _onViewportZoomed() {
+		this.zoomPlugin.updateZoomScale();
+	}
+
+	private _onViewportUnselect(e: FederatedPointerEvent) {
+		const wrap = this.manager.wrappedContainer;
+		const loc = wrap.toLocal(e.global);
+		if(wrap.getBounds().contains(loc.x, loc.y)) return;
+		else {
+			this.manager.deselectAll();
+			this.manager.detachPlugins();
+		}
+	}
+
+	public drawGrid() {
 		if (this.scaled > 5) {
 			this.grid.draw({
 				width: this.worldScreenWidth,
@@ -90,59 +88,6 @@ export class ViewportUI extends Viewport {
 		} else {
 			this.grid.purge();
 		}
-	}
-
-	private _onViewportMoved() {
-		this._drawGrid();
-	}
-
-	private _onViewportZoomed() {
-		if (this.scaled > this.MAX_ZOOM) {
-			this.scale.x = this.MAX_ZOOM;
-			this.scale.y = this.MAX_ZOOM;
-		}
-
-		if (this.scaled < this.MIN_ZOOM) {
-			this.scale.x = this.MIN_ZOOM;
-			this.scale.y = this.MIN_ZOOM;
-		}
-
-		this._deduceZoomStep();
-		this._updateZoomPercentage();
-	}
-
-	private _deduceZoomStep() {
-		const threshold = 0.45;
-		this.STEP = Math.round((Math.log(this.scaled / this.MIN_ZOOM) / Math.log(this.MULTIPLICATOR)) - threshold);
-	}
-
-	private _updateZoomPercentage() {
-		const { worldScreenWidth, worldScreenHeight, screenWidth, screenHeight } = this;
-		const zoomPercentage = Math.round(Math.min(screenWidth / worldScreenWidth, screenHeight / worldScreenHeight) * 100);
-		const multiplier = Math.pow(10, 1);
-		this.ZOOM.value = Math.round(zoomPercentage * multiplier) / multiplier;
-	}
-
-	public updateZoomStep(zoomIn: number) {
-		if(zoomIn && this.STEP < this.MAX_STEP) {
-			this.STEP++;
-		} else if(!zoomIn && this.STEP > 0) {
-			this.STEP--;
-		} else {
-			return;
-		}
-
-		let scale = this.MIN_ZOOM;
-		for(let n = 0; n < this.STEP; n++) {
-			scale *= this.MULTIPLICATOR;
-		}
-
-		const point = this.manager.getSelectedCenter();
-		if(point) this.center = point;
-
-		this.setZoom(scale, true);
-		this._onViewportZoomed();
-		this._drawGrid();
 	}
 
 	public destroyBorder() {

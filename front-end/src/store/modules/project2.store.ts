@@ -21,7 +21,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 	},
 	getters: {
 		getZoom(this: ProjectStorev2) {
-			return this.scene?.viewport?.ZOOM.value;
+			return this.scene?.viewport?.zoomPlugin?.ZOOM?.value;
 		},
 	},
 	actions: {
@@ -101,10 +101,10 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.default = true;
 		},
 		increaseZoom(this: ProjectStorev2) {
-			this.scene.viewport.updateZoomStep(1);
+			this.scene.viewport.zoomPlugin.updateZoomStep(1);
 		},
 		decreaseZoom(this: ProjectStorev2) {
-			this.scene.viewport.updateZoomStep(0);
+			this.scene.viewport.zoomPlugin.updateZoomStep(-1);
 		}
 	},
 });
