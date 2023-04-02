@@ -4,6 +4,7 @@ import { FramedContainer } from './framedContainer';
 import { GenericContainer } from './genericContainer';
 import { ResizePlugin } from '../plugins/resizePlugin';
 import { ViewportUI } from "../viewportUI";
+import { Point } from 'pixi.js';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -179,5 +180,26 @@ export class ContainerManager {
 
 	public detachPlugins() {
 		this.resizePlugin.detach();
+	}
+
+	public getSelectedCenter() {
+		const len = this._selectedContainers.length;
+		if(len === 0) return null;
+
+		let minX = Infinity;
+		let minY = Infinity;
+		let maxX = 0;
+		let maxY = 0;
+
+		for(let n = 0; n < len; n++) {
+			const { x, y, width, height } = this._selectedContainers[n].getGeometry();
+
+			if(x < minX) minX = x;
+			if(y < minY) minY = y;
+			if(x + width > maxX) maxX = x + width;
+			if(y + height > maxY) maxY = y + height;
+		}
+
+		return new Point((minX + maxX) / 2, (minY + maxY) / 2);
 	}
 }

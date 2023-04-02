@@ -1,5 +1,5 @@
 import { IViewportOptions, Viewport } from "pixi-viewport";
-import { Container, FederatedPointerEvent, Graphics } from "pixi.js";
+import { Container, FederatedPointerEvent, Graphics, Point } from "pixi.js";
 import { Scene } from "./scene";
 import { Stage } from "../pixi-tools/types";
 import { ContainerManager } from "./class/containerManager";
@@ -11,7 +11,6 @@ import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
 import { HitArea } from "./model/model-constructor/hitArea";
 import { Grid } from "./model/model-constructor/grid";
 import { reactive } from "vue";
-
 
 
 export class ViewportUI extends Viewport {
@@ -128,11 +127,7 @@ export class ViewportUI extends Viewport {
 		if(zoomIn && this.STEP < this.MAX_STEP) {
 			this.STEP++;
 		} else if(!zoomIn && this.STEP > 0) {
-			const currentStep = this.STEP;
-			this._deduceZoomStep();
-			if(currentStep !== this.STEP) {
-				this.STEP--;
-			}
+			this.STEP--;
 		} else {
 			return;
 		}
@@ -142,6 +137,8 @@ export class ViewportUI extends Viewport {
 			scale *= this.MULTIPLICATOR;
 		}
 
+		const point = this.manager.getSelectedCenter();
+		if(point) this.center = point;
 
 		this.setZoom(scale, true);
 		this._onViewportZoomed();
