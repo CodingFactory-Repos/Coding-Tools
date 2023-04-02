@@ -5,14 +5,15 @@ import { ViewportUI } from './viewportUI';
 
 export class Scene extends Application {
 	public readonly viewport: ViewportUI;
+	public heightOffset: number;
 
-	constructor(canvas: HTMLCanvasElement) {
+	constructor(canvas: HTMLCanvasElement, heightOffset: number) {
 		super({
 			view: canvas,
 			width: window.innerWidth,
-			height: window.innerHeight,
+			height: window.innerHeight - heightOffset,
 			autoDensity: true,
-			backgroundColor: 0x2c2e3a,
+			backgroundColor: 0x202126,
 			resolution: devicePixelRatio + 1,
 		});
 
@@ -24,10 +25,11 @@ export class Scene extends Application {
 			worldWidth: 1000,
 			worldHeight: 1000,
 			screenWidth: window.innerWidth,
-			screenHeight: window.innerHeight,
+			screenHeight: window.innerHeight - heightOffset,
 			events: event,
 		}
 
+		this.heightOffset = heightOffset;
 		this.viewport = new ViewportUI(viewportOptions, this);
 		this.stage.addChild(this.viewport);
 		this.ticker.start();

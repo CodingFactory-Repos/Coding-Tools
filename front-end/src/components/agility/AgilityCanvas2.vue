@@ -15,7 +15,8 @@ const projectStore = useProjectStorev2();
 const canvas = ref<HTMLCanvasElement>();
 
 onMounted(() => {
-	const scene = new Scene(canvas.value as HTMLCanvasElement);
+	// 84 represent the offset height due to tabs
+	const scene = new Scene(canvas.value as HTMLCanvasElement, 84);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
 	projectStore.toggleDefaultCanvasMode();
@@ -28,7 +29,6 @@ const onFullscreenChange = () => {
 		projectStore.onFullscreen = true;
 	}
 }
-
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);

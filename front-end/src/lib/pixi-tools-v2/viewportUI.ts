@@ -32,7 +32,7 @@ export class ViewportUI extends Viewport {
 
 		this.manager = new ContainerManager(this);
 		this.zoomPlugin = new ViewportZoomPlugin(this, this.manager);
-		this.grid = new Grid({ color: 0x222327 });
+		this.grid = new Grid({ color: 0x27282d });
 		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
@@ -47,7 +47,7 @@ export class ViewportUI extends Viewport {
 
 	private _onWindowResized() {
 		const newWidth = window.innerWidth;
-		const newHeight = window.innerHeight;
+		const newHeight = window.innerHeight - this.scene.heightOffset;
 
 		this.scene.renderer.resize(newWidth, newHeight);
 		this.screenWidth = newWidth;
