@@ -1,5 +1,5 @@
 import { IViewportOptions, Viewport } from "pixi-viewport";
-import { FederatedPointerEvent } from "pixi.js";
+import { Container, FederatedPointerEvent, Graphics } from "pixi.js";
 import { Scene } from "./scene";
 import { Stage } from "../pixi-tools/types";
 import { ContainerManager } from "./class/containerManager";
@@ -9,6 +9,8 @@ import { ResizeHandle } from "./types/pixi-enums";
 import { Handle } from "./model/model-constructor/handle";
 import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
 import { HitArea } from "./model/model-constructor/hitArea";
+import { Grid } from "./model/model-constructor/grid";
+
 
 
 export class ViewportUI extends Viewport {
@@ -18,6 +20,7 @@ export class ViewportUI extends Viewport {
 	public readonly lineHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
 	public readonly parent: Stage;
+	public readonly grid: Grid;
 	public border: Border = null;
 
 	constructor(options: IViewportOptions, scene: Scene) {
@@ -25,10 +28,13 @@ export class ViewportUI extends Viewport {
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
 		this.manager = new ContainerManager(this);
+		this.grid = new Grid({ color: 0x222327 });
 		this.scene = scene;
+		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResize);
-
+		this.on('moved', this._onViewportMoved);
+	
 		this.on("pointerdown", (e: FederatedPointerEvent) => {
 			const wrap = this.manager.wrappedContainer;
 			const loc = wrap.toLocal(e.global);
@@ -49,6 +55,20 @@ export class ViewportUI extends Viewport {
 		this.screenHeight = newHeight;
 		this.worldWidth = newWidth;
 		this.worldHeight = newHeight;
+	}
+
+	private _onViewportMoved() {
+		if (this.scaled > 5) {
+			this.grid.draw({
+				width: this.worldScreenWidth,
+				height: this.worldScreenHeight,
+				scale: this.scaled,
+				left: this.left,
+				top: this.top,
+			});
+		} else {
+			this.grid.purge();
+		}
 	}
 
 	public offWindowResize() {
