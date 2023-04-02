@@ -71,11 +71,11 @@
 					<SvgShrink/>
 				</IconButton> -->
 				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
-				<IconButton type="button">
+				<IconButton type="button" @click="decreaseZoom">
 					<SvgMinus/>
 				</IconButton>
-				<!-- <span class="font-semibold text-sm">{{ scale }}%</span> -->
-				<IconButton type="button" >
+				<span class="font-semibold text-sm text-dark-icon">{{ scale }}%</span>
+				<IconButton type="button" @click="increaseZoom">
 					<SvgAdd/>
 				</IconButton>
 			</div>
@@ -103,7 +103,6 @@ import { computed, ref, watch, onMounted } from 'vue';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-import { Target } from '@/store/interfaces/project.interface';
 import ModalProject from '@/components/agility/modals/Project.vue';
 
 import SvgArrows from '@/components/common/svg/Arrows.vue';
@@ -132,8 +131,18 @@ watch(isDefault, val => {
 	else projectStore.toggleDefaultCanvasMode(true);
 });
 
+const scale = computed(() => projectStore.scene?.viewport?.ZOOM.value);
+
 const activate = ref(false);
 const drawerOpen = ref(false);
+
+const increaseZoom = () => {
+	projectStore.increaseZoom();
+}
+
+const decreaseZoom = () => {
+	projectStore.decreaseZoom();
+}
 
 const createRectangle = () => {
 	projectStore.deferredGeometry = "RECTANGLE";
