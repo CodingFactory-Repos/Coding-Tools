@@ -10,8 +10,8 @@ export class ViewportZoomPlugin {
 	protected readonly MIN_ZOOM: number;
 	protected readonly MAX_STEP: number;
 	protected readonly MULTIPLICATOR: number;
-	protected CURRENT_PREV_STEP: number;
-	protected CURRENT_NEXT_STEP: number;
+	protected PREV_STEP: number;
+	protected NEXT_STEP: number;
 	protected CURRENT_STEP: number;
 	public ZOOM = reactive({ value: 0 });
 
@@ -33,8 +33,8 @@ export class ViewportZoomPlugin {
 		const prevStep = Math.floor(percentage - offset);
 		const nextStep = Math.ceil(percentage + offset);
 		const curStep = Math.round(percentage);
-		this.CURRENT_PREV_STEP = Math.max(0, Math.min(this.MAX_STEP, prevStep));
-		this.CURRENT_NEXT_STEP = Math.max(0, Math.min(this.MAX_STEP, nextStep));
+		this.PREV_STEP = Math.max(0, Math.min(this.MAX_STEP, prevStep));
+		this.NEXT_STEP = Math.max(0, Math.min(this.MAX_STEP, nextStep));
 		this.CURRENT_STEP = Math.max(0, Math.min(this.MAX_STEP, curStep));
 	}
 
@@ -64,7 +64,7 @@ export class ViewportZoomPlugin {
 		const isInBounds = value + this.CURRENT_STEP <= this.MAX_STEP && value + this.CURRENT_STEP >= 0;
 		if(!isInBounds) return;
 		
-		const gotoStep = value > 0 ? this.CURRENT_NEXT_STEP : this.CURRENT_PREV_STEP;
+		const gotoStep = value > 0 ? this.NEXT_STEP : this.PREV_STEP;
 
 		let scale = this.MIN_ZOOM;
 		for(let n = 0; n < gotoStep; n++) {
