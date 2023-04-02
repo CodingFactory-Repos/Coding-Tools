@@ -27,8 +27,8 @@ export interface GeometryEvent {
 
 export interface GraphicAttributes {
 	id?: string,
-	x: number,
-	y: number,
+	x?: number,
+	y?: number,
 	width?: number,
 	height?: number,
 	radius?: number,
@@ -41,6 +41,10 @@ export interface GraphicAttributes {
 	endX?: number,
 	endY?: number,
 	lineWidth?: number,
+	left?: number,
+	top?: number,
+	right?: number,
+	bottom?: number,
 }
 
 export interface GraphicConstructor {
