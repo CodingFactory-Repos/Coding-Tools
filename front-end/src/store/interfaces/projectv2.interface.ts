@@ -9,9 +9,11 @@ export interface ProjectStorev2 {
 	default: boolean;
 	selectionBox: SelectionBox;
 	onFullscreen: boolean;
+	immersion: boolean;
 
 	getZoom?: () => number;
 
+	toggleImmersion?: () => void;
 	toggleDefaultCanvasMode?: (destroy?: boolean) => void;
 	setDeferredEvent?: (cursor: CSStyleProperty.Cursor, framed: boolean) => void;
 	createGeometry?: () => void;

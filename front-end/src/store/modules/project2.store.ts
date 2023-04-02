@@ -17,6 +17,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			deferredGeometry: null,
 			selectionBox: null,
 			onFullscreen: false,
+			immersion: false,
 		};
 	},
 	getters: {
@@ -105,6 +106,19 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		},
 		decreaseZoom(this: ProjectStorev2) {
 			this.scene.viewport.zoomPlugin.updateZoomStep(-1);
+		},
+		toggleImmersion(this: ProjectStorev2) {
+			this.immersion = !this.immersion;
+			
+			//! Hardcoded
+			const offset = this.immersion ? 36 : 84;
+
+			const newWidth = window.innerWidth;
+			const newHeight = window.innerHeight - offset;
+			this.scene.heightOffset = offset;
+			this.scene.renderer.resize(newWidth, newHeight);
+			this.scene.viewport.screenHeight = newHeight;
+			this.scene.viewport.worldHeight = newHeight;
 		}
 	},
 });
