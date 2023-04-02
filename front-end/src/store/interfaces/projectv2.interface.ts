@@ -9,8 +9,12 @@ export interface ProjectStorev2 {
 	default: boolean;
 	selectionBox: SelectionBox;
 
+	getZoom?: () => number;
+
 	toggleDefaultCanvasMode?: (destroy?: boolean) => void;
 	setDeferredEvent?: (cursor: CSStyleProperty.Cursor, framed: boolean) => void;
 	createGeometry?: () => void;
 	createFramedGeometry?: () => void;
+	increaseZoom?: () => void;
+	decreaseZoom?: () => void;
 }

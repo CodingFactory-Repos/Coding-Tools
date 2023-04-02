@@ -19,7 +19,9 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		};
 	},
 	getters: {
-
+		getZoom(this: ProjectStorev2) {
+			return this.scene?.viewport?.ZOOM.value;
+		},
 	},
 	actions: {
 		setDeferredEvent(
@@ -96,6 +98,12 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.canvas.classList.toggle("default");
 			this.deferredGeometry = null;
 			this.default = true;
+		},
+		increaseZoom(this: ProjectStorev2) {
+			this.scene.viewport.updateZoomStep(1);
+		},
+		decreaseZoom(this: ProjectStorev2) {
+			this.scene.viewport.updateZoomStep(0);
 		}
 	},
 });
