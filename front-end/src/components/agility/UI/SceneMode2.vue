@@ -64,12 +64,12 @@
 		</template>
 		<template #bottom>
 			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 items-center shadow-md pointer-events-auto">
-				<!-- <IconButton type="button" @click="toggleFullScreen" v-if="!isFullScreen">
+				<IconButton type="button" @click="toggleFullScreen" v-if="!isFullScreen">
 					<SvgExpand/>
-				</IconButton> -->
-				<!-- <IconButton type="button" @click="toggleFullScreen" v-else>
+				</IconButton>
+				<IconButton type="button" @click="toggleFullScreen" v-else>
 					<SvgShrink/>
-				</IconButton> -->
+				</IconButton>
 				<hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" />
 				<IconButton type="button" @click="decreaseZoom">
 					<SvgMinus/>
@@ -96,9 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, onMounted } from 'vue';
-
-/**zfzefzef */
+import { computed, ref, watch } from 'vue';
 
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
@@ -131,7 +129,8 @@ watch(isDefault, val => {
 	else projectStore.toggleDefaultCanvasMode(true);
 });
 
-const scale = computed(() => projectStore.scene?.viewport?.ZOOM.value);
+const scale = computed(() => projectStore.getZoom);
+const isFullScreen = computed(() => projectStore.onFullscreen);
 
 const activate = ref(false);
 const drawerOpen = ref(false);
@@ -157,6 +156,14 @@ const createFrame = () => {
 const activateProjectModal = () => activate.value = true;
 const deactivateProjectModal = () => activate.value = false;
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
+
+function toggleFullScreen() {
+	if (!document.fullscreenElement) {
+		document.documentElement.requestFullscreen();
+	} else if (document.exitFullscreen) {
+		document.exitFullscreen();
+	}
+}
 </script>
 
 <style>

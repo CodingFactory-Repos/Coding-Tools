@@ -8,6 +8,7 @@ export interface ProjectStorev2 {
 	deferredGeometry: LiteralGeometryTypes;
 	default: boolean;
 	selectionBox: SelectionBox;
+	onFullscreen: boolean;
 
 	getZoom?: () => number;
 
