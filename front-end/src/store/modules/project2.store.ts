@@ -16,6 +16,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			default: true,
 			deferredGeometry: null,
 			selectionBox: null,
+			onFullscreen: false,
 		};
 	},
 	getters: {
