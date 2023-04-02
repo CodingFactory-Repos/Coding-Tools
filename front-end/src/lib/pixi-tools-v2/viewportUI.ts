@@ -10,18 +10,26 @@ import { Handle } from "./model/model-constructor/handle";
 import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
 import { HitArea } from "./model/model-constructor/hitArea";
 import { Grid } from "./model/model-constructor/grid";
+import { reactive } from "vue";
 
 
 
 export class ViewportUI extends Viewport {
 	protected readonly scene: Scene;
+	protected readonly MAX_ZOOM: number;
+	protected readonly MIN_ZOOM: number;
+	protected readonly MAX_STEP: number;
+	protected readonly MULTIPLICATOR: number;
 	public readonly manager: ContainerManager;
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
 	public readonly parent: Stage;
 	public readonly grid: Grid;
+	protected STEP: number;
+	public ZOOM = reactive({ value: 0 });
 	public border: Border = null;
+
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
@@ -32,8 +40,9 @@ export class ViewportUI extends Viewport {
 		this.scene = scene;
 		this.addChildAt(this.grid, 0);
 
-		window.addEventListener('resize', this._onWindowResize.bind(this));
+		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
+		this.on('zoomed', this._onViewportZoomed);
 	
 		this.on("pointerdown", (e: FederatedPointerEvent) => {
 			const wrap = this.manager.wrappedContainer;
@@ -44,9 +53,20 @@ export class ViewportUI extends Viewport {
 				this.manager.detachPlugins();
 			}
 		})
+
+		this.MAX_ZOOM = 50;
+		this.MIN_ZOOM = 0.01;
+		this.MAX_STEP = 14;
+		this.MULTIPLICATOR = Math.pow((this.MAX_ZOOM / this.MIN_ZOOM), (1 / this.MAX_STEP));
+		this._deduceZoomStep();
+		this._updateZoomPercentage();
 	}
 
-	private _onWindowResize() {
+	public offWindowResized() {
+		window.removeEventListener('resize', this._onWindowResized);
+	}
+
+	private _onWindowResized() {
 		const newWidth = window.innerWidth;
 		const newHeight = window.innerHeight;
 
@@ -56,18 +76,10 @@ export class ViewportUI extends Viewport {
 		this.worldWidth = newWidth;
 		this.worldHeight = newHeight;
 
-		if (this.scaled > 5) {
-			this.grid.draw({
-				width: this.worldScreenWidth,
-				height: this.worldScreenHeight,
-				scale: this.scaled,
-				left: this.left,
-				top: this.top,
-			});
-		}
+		this._drawGrid();
 	}
 
-	private _onViewportMoved() {
+	private _drawGrid() {
 		if (this.scaled > 5) {
 			this.grid.draw({
 				width: this.worldScreenWidth,
@@ -81,8 +93,59 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public offWindowResize() {
-		window.removeEventListener('resize', this._onWindowResize);
+	private _onViewportMoved() {
+		this._drawGrid();
+	}
+
+	private _onViewportZoomed() {
+		if (this.scaled > this.MAX_ZOOM) {
+			this.scale.x = this.MAX_ZOOM;
+			this.scale.y = this.MAX_ZOOM;
+		}
+
+		if (this.scaled < this.MIN_ZOOM) {
+			this.scale.x = this.MIN_ZOOM;
+			this.scale.y = this.MIN_ZOOM;
+		}
+
+		this._deduceZoomStep();
+		this._updateZoomPercentage();
+	}
+
+	private _deduceZoomStep() {
+		const threshold = 0.45;
+		this.STEP = Math.round((Math.log(this.scaled / this.MIN_ZOOM) / Math.log(this.MULTIPLICATOR)) - threshold);
+	}
+
+	private _updateZoomPercentage() {
+		const { worldScreenWidth, worldScreenHeight, screenWidth, screenHeight } = this;
+		const zoomPercentage = Math.round(Math.min(screenWidth / worldScreenWidth, screenHeight / worldScreenHeight) * 100);
+		const multiplier = Math.pow(10, 1);
+		this.ZOOM.value = Math.round(zoomPercentage * multiplier) / multiplier;
+	}
+
+	public updateZoomStep(zoomIn: number) {
+		if(zoomIn && this.STEP < this.MAX_STEP) {
+			this.STEP++;
+		} else if(!zoomIn && this.STEP > 0) {
+			const currentStep = this.STEP;
+			this._deduceZoomStep();
+			if(currentStep !== this.STEP) {
+				this.STEP--;
+			}
+		} else {
+			return;
+		}
+
+		let scale = this.MIN_ZOOM;
+		for(let n = 0; n < this.STEP; n++) {
+			scale *= this.MULTIPLICATOR;
+		}
+
+
+		this.setZoom(scale, true);
+		this._onViewportZoomed();
+		this._drawGrid();
 	}
 
 	public destroyBorder() {
