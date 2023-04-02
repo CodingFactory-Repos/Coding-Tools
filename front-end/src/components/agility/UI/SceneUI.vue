@@ -9,16 +9,11 @@
 		<slot/>
 		<ContextMenu
 			v-model:show="showContextMenu"
-			:options="{
-				x: 15,
-				y: 40,
-				zIndex: 999,
-				minWidth: 230,
-				theme: 'default dark',
-				customClass: '!text-white dark:bg-dark-tertiary shadow-none p-0 overflow-hidden'
-			}"
+			:options="contextMenuOptions"
 		>
-			<ContextMenuItem label="Switch UI" class="cursor-pointer" @click="switchUI"/>
+			<ContextMenuItem class="cursor-pointer" @click="switchUI">
+				<span class="text-sm text-center w-full">Switch UI</span>
+			</ContextMenuItem>
 		</ContextMenu>
 	</div>
 </template>
@@ -27,20 +22,41 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
-import { ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
+import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 
 import CanvasTabulation from '@/components/agility/UI/CanvasTabulation.vue';
 import SvgBurger from '@/components/common/svg/Burger.vue';
 
 const projectStore = useProjectStorev2();
 
+const contextMenuOptions = ref<MenuOptions>({
+	x: 10,
+	y: 40,
+	zIndex: 999,
+	minWidth: 300,
+	theme: 'default dark',
+	customClass: '!text-white dark:bg-darker-primary shadow-none p-0 overflow-hidden min-h-[10rem] min-w-[10rem]',
+})
+
 const showContextMenu = ref(false);
 const onContextMenu = (e: MouseEvent) => {
 	e.preventDefault();
 	showContextMenu.value = true;
+	contextMenuOptions.value.x = e.x;
+	contextMenuOptions.value.y = e.y;
 }
 
 const switchUI = () => {
 	projectStore.toggleImmersion();
 }
 </script>
+
+<style>
+.mx-context-menu-item .label {
+	padding: unset;
+}
+
+.mx-context-menu-item:hover {
+	background: #2c2e3a;
+}
+</style>

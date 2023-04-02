@@ -1,18 +1,5 @@
 <template>
 	<SelectionBox class="grow h-auto">
-		<template #top>
-			<div class="flex gap-2 p-1 rounded h-10 items-center pointer-events-auto">
-				<DefaultButton
-					to="/app/agility/dashboard"
-					text="Dashboard"
-					text-style="text-white hover:text-white"
-					background="gradiant"
-					class="h-9"
-				>
-					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
-				</DefaultButton>
-			</div>
-		</template>
 		<template #bottom>
 			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="toggleFullScreen" v-if="!isFullScreen">
@@ -50,11 +37,9 @@
 import { computed, ref, watch } from 'vue';
 
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
-import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import ModalProject from '@/components/agility/modals/Project.vue';
 
-import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';

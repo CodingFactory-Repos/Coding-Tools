@@ -1,5 +1,16 @@
 <template>
-	<div class="w-full flex dark:bg-dark-secondary h-12 border-b border-darker-primary gap-4 py-1 px-2 items-center justify-between">
+	<div class="w-full flex dark:bg-dark-secondary h-12 border-b border-darker-primary gap-4 py-1 px-3 items-center justify-between">
+		<div class="flex h-full gap-1 items-center">
+			<DefaultButton
+				to="/app/agility/dashboard"
+				text="Dashboard"
+				text-style="text-white hover:text-white"
+				background="gradiant"
+				class="h-9"
+			>
+				<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
+			</DefaultButton>
+		</div>
 		<div class="grow flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button">
 				<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
@@ -42,6 +53,7 @@
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 import { computed, watch } from 'vue';
 
+import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
 import SvgText from '@/components/common/svg/Text.vue';
 import SvgPostIt from '@/components/common/svg/PostIt.vue';

@@ -110,7 +110,6 @@ import SvgText from '@/components/common/svg/Text.vue';
 import SvgPostIt from '@/components/common/svg/PostIt.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgShape from '@/components/common/svg/Shape.vue';
-import SvgFocus from '@/components/common/svg/Focus.vue';
 import SvgDownload from '@/components/common/svg/Download.vue';
 import SvgProject from '@/components/common/svg/Project.vue';
 import SvgExpand from '@/components/common/svg/Expand.vue';
