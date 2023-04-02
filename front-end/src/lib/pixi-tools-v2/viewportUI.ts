@@ -32,7 +32,7 @@ export class ViewportUI extends Viewport {
 		this.scene = scene;
 		this.addChildAt(this.grid, 0);
 
-		window.addEventListener('resize', this._onWindowResize);
+		window.addEventListener('resize', this._onWindowResize.bind(this));
 		this.on('moved', this._onViewportMoved);
 	
 		this.on("pointerdown", (e: FederatedPointerEvent) => {
@@ -55,6 +55,16 @@ export class ViewportUI extends Viewport {
 		this.screenHeight = newHeight;
 		this.worldWidth = newWidth;
 		this.worldHeight = newHeight;
+
+		if (this.scaled > 5) {
+			this.grid.draw({
+				width: this.worldScreenWidth,
+				height: this.worldScreenHeight,
+				scale: this.scaled,
+				left: this.left,
+				top: this.top,
+			});
+		}
 	}
 
 	private _onViewportMoved() {
