@@ -23,6 +23,7 @@ export class ViewportUI extends Viewport {
 	public readonly parent: Stage;
 	public readonly grid: Grid;
 	public border: Border = null;
+	private _isHiddenUI: boolean = false;
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
@@ -67,6 +68,18 @@ export class ViewportUI extends Viewport {
 
 		if(this.manager.isActive) {
 			const size = this.manager.getSelectedSize();
+			const viewportWidth = this.worldWidth;
+			const scaledWidth = size.width * this.scaled;
+
+			if (scaledWidth < viewportWidth * 0.025) {
+				if(!this._isHiddenUI) {
+					this._isHiddenUI = true;
+					this.toggleUIVisibilty(false);
+				}
+			} else if(this._isHiddenUI) {
+				this._isHiddenUI = false;
+				this.toggleUIVisibilty(true);
+			}
 
 			if(this.border) {
 				this.border.draw({
@@ -77,20 +90,22 @@ export class ViewportUI extends Viewport {
 				})
 			}
 
-			if(this.resizeHandles?.length > 0) {
-				this.updateResizeHandles({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-				}, true);
-			}
-
-			if(this.resizeHitAreas?.length > 0) {
-				this.updateResizeHitAreas({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-				})
+			if(!this._isHiddenUI) {
+				if(this.resizeHandles?.length > 0) {
+					this.updateResizeHandles({
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					}, true);
+				}
+	
+				if(this.resizeHitAreas?.length > 0) {
+					this.updateResizeHitAreas({
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					})
+				}
 			}
 		}
 	}
@@ -264,6 +279,16 @@ export class ViewportUI extends Viewport {
 				lineWidth: size,
 				scale: scale,
 			});
+		}
+	}
+
+	public toggleUIVisibilty(visible: boolean) {
+		for(let n = 0; n < this.resizeHandles.length; n++) {
+			this.resizeHandles[n].visible = visible;
+		}
+
+		for(let n = 0; n < this.resizeHitAreas.length; n++) {
+			this.resizeHitAreas[n].visible = visible;
 		}
 	}
 }
