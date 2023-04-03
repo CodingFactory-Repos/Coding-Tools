@@ -18,11 +18,11 @@
 			<IconButton class="h-fit" type="button">
 				<SvgText width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
-			<IconButton class="h-fit" type="button">
-				<SvgPostIt width="22" height="22" class="!fill-gray-400" @click="createRectangle"/>
+			<IconButton class="h-fit" type="button" @click="createRectangle">
+				<SvgPostIt width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
-			<IconButton class="h-fit" type="button">
-				<SvgFrame width="22" height="22" class="!fill-gray-400" @click="createFrame"/>
+			<IconButton class="h-fit" type="button" @click="createFrame">
+				<SvgFrame width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 			<IconButton class="h-fit" type="button">
 				<SvgShape width="22" height="22" class="!fill-gray-400"/>
