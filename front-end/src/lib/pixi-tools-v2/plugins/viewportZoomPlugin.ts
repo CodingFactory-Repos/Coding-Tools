@@ -75,7 +75,7 @@ export class ViewportZoomPlugin {
 		if(point) this.viewport.center = point;
 
 		this.viewport.setZoom(scale, true);
-		this.updateZoomScale();
+		this.viewport.emit('zoomed', null);
 		this.viewport.drawGrid();
 	}
 }
