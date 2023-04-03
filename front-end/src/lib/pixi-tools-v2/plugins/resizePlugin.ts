@@ -238,7 +238,7 @@ export class ResizePlugin {
 		this.viewport.destroyBorder();
 		this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
 		this.viewport.updateResizeHitAreas(geometry);
-		this.viewport.updateResizeHandles(geometry);
+		this.viewport.updateResizeHandles(geometry, false);
 	}
 
 	private _endResizeTransform = (e: FederatedPointerEvent) => {
