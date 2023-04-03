@@ -10,7 +10,7 @@ export class Handle extends ModelGraphics {
 	constructor(attr: GraphicAttributes, handleId: number) {
 		super();
 
-		const { color, cursor, alpha } = attr;
+		const { color, cursor, alpha, radius } = attr;
 
 		this.id = "handle";
 		this.handleId = handleId;
@@ -18,19 +18,22 @@ export class Handle extends ModelGraphics {
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.interactive = true;
+		this.radius = radius;
 		this.draw(attr);
 	}
 
 	public draw(attr: GraphicAttributes) {
-		const { x, y, radius, scale } = attr;
-		this.radius = radius;
+		const { x, y, scale } = attr;
+		const lineWidth = Math.max(0.05, 1 / scale);
+		const rad = Math.max(0.25, this.radius * 1 / scale);
 		this.position.set(x, y);
+		this.visible = false;
 		
 		// TODO: need a secondary color in the options
 		this.clear();
-		this.lineStyle(1 / scale, 0x0c8ce9);
+		this.lineStyle(lineWidth, 0x0c8ce9);
 		this.beginFill(this.color);
-		this.drawCircle(0, 0, this.radius);
+		this.drawCircle(0, 0, rad);
 		this.endFill();
 	}
 }

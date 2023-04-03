@@ -19,10 +19,11 @@ export class Border extends ModelGraphics {
 
 	public draw(attr: GraphicAttributes) {
 		const { x, y, width, height, scale } = attr;
+		const lineWidth = Math.min(20, Math.max(0.1, 2 / scale));
 		this.position.set(x, y);
 
 		this.clear();
-		this.lineStyle(2 / scale, this.color);
+		this.lineStyle(lineWidth, this.color);
 		this.drawRect(0, 0, width, height);
 		this.endFill();
 	}
