@@ -41,7 +41,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 
 			this.scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
 		},
-		toggleDefaultCanvasMode(this: ProjectStorev2, destroy: boolean = false) {
+		enableSelectionBox(this: ProjectStorev2, destroy: boolean = false) {
 			if(destroy && this.selectionBox) {
 				this.selectionBox.destroy();
 				this.selectionBox = null;

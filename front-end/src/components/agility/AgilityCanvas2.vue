@@ -19,7 +19,7 @@ onMounted(() => {
 	const scene = new Scene(canvas.value as HTMLCanvasElement, 84);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
-	projectStore.toggleDefaultCanvasMode();
+	projectStore.enableSelectionBox();
 })
 
 const onFullscreenChange = () => {

@@ -36,17 +36,17 @@
 		</template>
 		<template #left>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-10 shadow-md pointer-events-auto">
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
+				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="setDefaultMode">
 					<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgText width="22" height="22" class="!fill-gray-400" />
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createRectangle">
-					<SvgPostIt width="22" height="22" class="!fill-gray-400"/>
+					<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'RECTANGLE' }"/>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createFrame">
-					<SvgFrame width="22" height="22" class="!fill-gray-400" />
+					<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'FRAME' }"/>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgShape width="22" height="22" class="!fill-gray-400"/>
@@ -121,10 +121,11 @@ import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 const projectStore = useProjectStorev2();
 
+const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {
-	if(val) projectStore.toggleDefaultCanvasMode()
-	else projectStore.toggleDefaultCanvasMode(true);
+	if(val) projectStore.enableSelectionBox()
+	else projectStore.enableSelectionBox(true);
 });
 
 const scale = computed(() => projectStore.getZoom);
@@ -141,13 +142,17 @@ const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
 
+const setDefaultMode = () => {
+	projectStore.default = true;
+}
+
 const createRectangle = () => {
 	projectStore.deferredGeometry = "RECTANGLE";
 	projectStore.setDeferredEvent("pointer", false);
 }
 
 const createFrame = () => {
-	projectStore.deferredGeometry = "RECTANGLE";
+	projectStore.deferredGeometry = "FRAME";
 	projectStore.setDeferredEvent("pointer", true);
 }
 

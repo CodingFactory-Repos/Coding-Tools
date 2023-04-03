@@ -7,6 +7,7 @@ export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
 
 	"RECTANGLE": GeometryTemplate.Rectangle,
+	"FRAME": GeometryTemplate.Rectangle,
 	//"CIRCLE": 'CIRCLE',
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',

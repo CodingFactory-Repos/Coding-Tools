@@ -14,7 +14,7 @@ export interface ProjectStorev2 {
 	getZoom?: () => number;
 
 	toggleImmersion?: () => void;
-	toggleDefaultCanvasMode?: (destroy?: boolean) => void;
+	enableSelectionBox?: (destroy?: boolean) => void;
 	setDeferredEvent?: (cursor: CSStyleProperty.Cursor, framed: boolean) => void;
 	createGeometry?: () => void;
 	createFramedGeometry?: () => void;

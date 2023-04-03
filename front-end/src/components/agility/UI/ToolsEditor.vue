@@ -12,17 +12,17 @@
 			</DefaultButton>
 		</div>
 		<div class="grow flex h-full gap-1 items-center">
-			<IconButton class="h-fit" type="button">
+			<IconButton class="h-fit" type="button" @click="setDefaultMode">
 				<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 			</IconButton>
 			<IconButton class="h-fit" type="button">
 				<SvgText width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="createRectangle">
-				<SvgPostIt width="22" height="22" class="!fill-gray-400"/>
+				<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'RECTANGLE' }"/>
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="createFrame">
-				<SvgFrame width="22" height="22" class="!fill-gray-400"/>
+				<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'FRAME' }"/>
 			</IconButton>
 			<IconButton class="h-fit" type="button">
 				<SvgShape width="22" height="22" class="!fill-gray-400"/>
@@ -67,11 +67,16 @@ import SvgGroup from '@/components/common/svg/Group.vue';
 
 const projectStore = useProjectStorev2();
 
+const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {
-	if(val) projectStore.toggleDefaultCanvasMode()
-	else projectStore.toggleDefaultCanvasMode(true);
+	if(val) projectStore.enableSelectionBox()
+	else projectStore.enableSelectionBox(true);
 });
+
+const setDefaultMode = () => {
+	projectStore.default = true;
+}
 
 const createRectangle = () => {
 	projectStore.deferredGeometry = "RECTANGLE";
@@ -79,7 +84,7 @@ const createRectangle = () => {
 }
 
 const createFrame = () => {
-	projectStore.deferredGeometry = "RECTANGLE";
+	projectStore.deferredGeometry = "FRAME";
 	projectStore.setDeferredEvent("pointer", true);
 }
 </script>

@@ -51,8 +51,8 @@ const projectStore = useProjectStorev2();
 
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {
-	if(val) projectStore.toggleDefaultCanvasMode()
-	else projectStore.toggleDefaultCanvasMode(true);
+	if(val) projectStore.enableSelectionBox()
+	else projectStore.enableSelectionBox(true);
 });
 
 const scale = computed(() => projectStore.getZoom);
