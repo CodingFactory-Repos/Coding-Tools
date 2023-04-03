@@ -64,6 +64,27 @@ export class ViewportUI extends Viewport {
 
 	private _onViewportZoomed() {
 		this.zoomPlugin.updateZoomScale();
+
+		if(this.manager.isActive) {
+			const size = this.manager.getSelectedSize();
+
+			if(this.border) {
+				this.border.draw({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+					scale: this.scaled
+				})
+			}
+
+			if(this.resizeHandles.length > 0) {
+				this.updateResizeHandles({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				}, true);
+			}
+		}
 	}
 
 	private _onViewportUnselect(e: FederatedPointerEvent) {
@@ -125,19 +146,19 @@ export class ViewportUI extends Viewport {
 	}
 
 	public createResizeHandles(x: number, y: number, width: number, height: number) {
-		const scale = this.scaled;
-		const size = 5 / scale;
+		const size = 5;
+		const offset = size / this.scaled;
 
-		const handleScaledLeft = (x + size / 4);
-		const handleScaledRight = (x - size / 4 + width);
-		const handleScaledTop = (y + size / 4);
-		const handleScaledBottom = (y - size / 4 + height);
+		const scaledLeft = (x + offset / 4);
+		const scaledRight = (x - offset / 4 + width);
+		const scaledTop = (y + offset / 4);
+		const scaledBottom = (y - offset / 4 + height);
 
 		const handlePositions: Array<HandleOptions> = [
-			{ x: handleScaledLeft,  y: handleScaledTop,    cursor: "nwse-resize", handleId: ResizeHandle.LT },
-			{ x: handleScaledRight, y: handleScaledTop,    cursor: "nesw-resize", handleId: ResizeHandle.RT },
-			{ x: handleScaledRight, y: handleScaledBottom, cursor: "nwse-resize", handleId: ResizeHandle.RB },
-			{ x: handleScaledLeft,  y: handleScaledBottom, cursor: "nesw-resize", handleId: ResizeHandle.LB },
+			{ x: scaledLeft,  y: scaledTop,    cursor: "nwse-resize", handleId: ResizeHandle.LT },
+			{ x: scaledRight, y: scaledTop,    cursor: "nesw-resize", handleId: ResizeHandle.RT },
+			{ x: scaledRight, y: scaledBottom, cursor: "nwse-resize", handleId: ResizeHandle.RB },
+			{ x: scaledLeft,  y: scaledBottom, cursor: "nesw-resize", handleId: ResizeHandle.LB },
 		]
 
 		for (let n = 0; n < handlePositions.length; n++) {
@@ -147,7 +168,7 @@ export class ViewportUI extends Viewport {
 				...attr,
 				color: 0xff00ff,
 				radius: size,
-				scale: scale,
+				scale: this.scaled,
 			}, handleId);
 
 			handle.zIndex = 100;
@@ -185,7 +206,7 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public updateResizeHandles(attr: GraphicAttributes) {
+	public updateResizeHandles(attr: GraphicAttributes, redraw: boolean) {
 		const scale = this.scaled;
 		const size = 5 / scale;
 
@@ -202,9 +223,10 @@ export class ViewportUI extends Viewport {
 			{ x: scaledRight, y: scaledBottom },
 			{ x: scaledLeft,  y: scaledBottom },
 		]
-
+		
 		for (let n = 0; n < this.resizeHandles.length; n++) {
-			this.resizeHandles[n].position.set(positions[n].x, positions[n].y);
+			if(redraw) this.resizeHandles[n].draw({...positions[n], scale: scale });
+			else this.resizeHandles[n].position.set(positions[n].x, positions[n].y);
 		}
 	}
 
