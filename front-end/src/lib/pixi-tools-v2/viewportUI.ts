@@ -77,12 +77,20 @@ export class ViewportUI extends Viewport {
 				})
 			}
 
-			if(this.resizeHandles.length > 0) {
+			if(this.resizeHandles?.length > 0) {
 				this.updateResizeHandles({
 					...size,
 					x: this.border.x,
 					y: this.border.y,
 				}, true);
+			}
+
+			if(this.resizeHitAreas?.length > 0) {
+				this.updateResizeHitAreas({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				})
 			}
 		}
 	}
@@ -166,7 +174,7 @@ export class ViewportUI extends Viewport {
 
 			const handle = new Handle({
 				...attr,
-				color: 0xff00ff,
+				color: 0xd5d5d5,
 				radius: size,
 				scale: this.scaled,
 			}, handleId);
@@ -187,10 +195,10 @@ export class ViewportUI extends Viewport {
 		const hitLineBottom = y + height;
 
 		const hitAreaPosition: Array<HitAreaOptions> = [
-			{ x: hitLineLeft,  y: hitLineTop,    endX: hitLineRight, endY: hitLineTop,    lineWidth: size, cursor: "ns-resize", handleId: ResizeHandle.T },
-			{ x: hitLineRight, y: hitLineTop,    endX: hitLineRight, endY: hitLineBottom, lineWidth: size, cursor: "ew-resize", handleId: ResizeHandle.R },
-			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineRight, endY: hitLineBottom, lineWidth: size, cursor: "ns-resize", handleId: ResizeHandle.B },
-			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineLeft,  endY: hitLineTop,    lineWidth: size, cursor: "ew-resize", handleId: ResizeHandle.L },
+			{ x: hitLineLeft,  y: hitLineTop,    endX: hitLineRight, endY: hitLineTop,    cursor: "ns-resize", handleId: ResizeHandle.T },
+			{ x: hitLineRight, y: hitLineTop,    endX: hitLineRight, endY: hitLineBottom, cursor: "ew-resize", handleId: ResizeHandle.R },
+			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineRight, endY: hitLineBottom, cursor: "ns-resize", handleId: ResizeHandle.B },
+			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineLeft,  endY: hitLineTop,    cursor: "ew-resize", handleId: ResizeHandle.L },
 		]
 
 		for (let n = 0; n < hitAreaPosition.length; n++) {
@@ -198,7 +206,9 @@ export class ViewportUI extends Viewport {
 
 			const line = new HitArea({
 				...attr,
-				alpha: 0
+				alpha: 0,
+				lineWidth: size,
+				scale: scale,
 			}, handleId);
 			line.zIndex = 100;
 			this.resizeHitAreas.push(line);
@@ -242,14 +252,18 @@ export class ViewportUI extends Viewport {
 		const hitLineBottom = y + height;
 
 		const positions = [
-			{ x: hitLineLeft,  y: hitLineTop,    endX: hitLineRight, endY: hitLineTop,    lineWidth: size },
-			{ x: hitLineRight, y: hitLineTop,    endX: hitLineRight, endY: hitLineBottom, lineWidth: size },
-			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineRight, endY: hitLineBottom, lineWidth: size },
-			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineLeft,  endY: hitLineTop,    lineWidth: size },
+			{ x: hitLineLeft,  y: hitLineTop,    endX: hitLineRight, endY: hitLineTop,   },
+			{ x: hitLineRight, y: hitLineTop,    endX: hitLineRight, endY: hitLineBottom },
+			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineRight, endY: hitLineBottom },
+			{ x: hitLineLeft,  y: hitLineBottom, endX: hitLineLeft,  endY: hitLineTop,   },
 		]
 
 		for (let n = 0; n < this.resizeHitAreas.length; n++) {
-			this.resizeHitAreas[n].draw(positions[n]);
+			this.resizeHitAreas[n].draw({
+				...positions[n],
+				lineWidth: size,
+				scale: scale,
+			});
 		}
 	}
 }
