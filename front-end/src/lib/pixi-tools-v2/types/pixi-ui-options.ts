@@ -10,7 +10,6 @@ export interface HitAreaOptions {
 	y: number;
 	endX: number;
 	endY: number;
-	lineWidth: number;
 	handleId: number;
 	cursor: CSStyleProperty.Cursor;
 }
