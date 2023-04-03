@@ -27,7 +27,6 @@ export class Handle extends ModelGraphics {
 		const lineWidth = Math.max(0.05, 1 / scale);
 		const rad = Math.max(0.25, this.radius * 1 / scale);
 		this.position.set(x, y);
-		this.visible = false;
 		
 		// TODO: need a secondary color in the options
 		this.clear();

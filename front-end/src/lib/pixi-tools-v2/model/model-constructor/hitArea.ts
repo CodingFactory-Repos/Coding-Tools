@@ -5,26 +5,29 @@ export class HitArea extends ModelGraphics {
 	public readonly handleId: number;
 	public readonly id: string;
 	protected color: number;
+	public lineWidth: number;
 
 	constructor(attr: GraphicAttributes, handleId: number) {
 		super();
 
-		const { color, cursor, alpha } = attr;
+		const { color, cursor, alpha, lineWidth } = attr;
 
 		this.id = "line";
 		this.handleId = handleId;
 		this.cursor = cursor ?? "default";
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
+		this.lineWidth = lineWidth ?? 5;
 		this.interactive = true;
 		this.draw(attr);
 	}
 
 	public draw(attr: GraphicAttributes) {
-		const { x, y, endX, endY, lineWidth } = attr;
+		const { x, y, endX, endY, scale } = attr;
+		const lineWidth = Math.min(80, Math.max(0.4, this.lineWidth / scale));
 
 		this.clear();
-		this.lineStyle(lineWidth, this.color);
+		this.lineStyle(lineWidth, 0xff00ff);
 		this.moveTo(x, y);
 		this.lineTo(endX, endY);
 		this.hitArea = this.getLocalBounds();
