@@ -202,4 +202,24 @@ export class ContainerManager {
 
 		return new Point((minX + maxX) / 2, (minY + maxY) / 2);
 	}
+
+	public getSelectedSize() {
+		if(this._selectedContainers.length === 0) return null;
+
+		if(this._selectedContainers.length > 1) {
+			return {
+				width: this.wrappedContainer.width,
+				height: this.wrappedContainer.height,
+			}
+		} else {
+			return {
+				width: this._selectedContainers[0].width,
+				height: this._selectedContainers[0].height,
+			}
+		}
+	}
+
+	get isActive() {
+		return this._selectedContainers.length > 0;
+	}
 }
