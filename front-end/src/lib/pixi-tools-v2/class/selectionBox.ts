@@ -20,7 +20,7 @@ export class SelectionBox extends Graphics {
 		this.box.alpha = 0.2;
 		this.box.visible = false;
 		this.addChild(this.box);
-		
+
 		this.viewport = viewport;
 		this.viewport.on('pointerdown', this.startSelection);
 		this.nativeDragPlugin = this.viewport.plugins.get("drag");
@@ -47,6 +47,7 @@ export class SelectionBox extends Graphics {
 			this.nativeDragPlugin.pause();
 		}
 
+		this.viewport.selectionBoxActive = true;
 		const scale = this.viewport.scaled;
 		const point = this.viewport.toWorld(e.global.clone());
 		const startX = Math.min(point.x, this._startPos.x);
@@ -88,6 +89,8 @@ export class SelectionBox extends Graphics {
 		for(let n = 0; n < selectedChildren.length; n++) {
 			this.viewport.manager.selectContainer(selectedChildren[n], true);
 		}
+
+		this.viewport.selectionBoxActive = false;
 	}
 
 	public destroy() {
