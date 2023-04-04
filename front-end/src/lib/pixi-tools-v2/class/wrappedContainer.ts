@@ -1,3 +1,4 @@
+import { EventBoundary } from "pixi.js";
 import { BoundsContainer } from "../types/pixi-class";
 import { CanvasContainer } from "../types/pixi-container-options";
 import { ViewportUI } from "../viewportUI";
@@ -28,20 +29,25 @@ export class WrappedContainer extends BoundsContainer {
 		this.on('pointerdown', (e) => {
 			e.stopPropagation();
 
-			if(timeout) {
-				clearTimeout(timeout);
-				timeout = null;
+			const { x, y } = e.global;
+			const eventBoundary = new EventBoundary(this);
+	
+			if(eventBoundary.hitTest(x, y) !== this) {
+				if(timeout) {
+					clearTimeout(timeout);
+					timeout = null;
+				}
+	
+				if(!active) {
+					this.toggleChildrenInteractive(true);
+					active = true;
+				}
+	
+				timeout = setTimeout(() => {
+					this.toggleChildrenInteractive(false);
+					active = false;
+				}, 400);
 			}
-
-			if(!active) {
-				this.toggleChildrenInteractive(true);
-				active = true;
-			}
-
-			timeout = setTimeout(() => {
-				this.toggleChildrenInteractive(false);
-				active = false;
-			}, 400);
 		})
 	}
 
