@@ -33,14 +33,17 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);
+			this.removeGeometryEvent()
 
+			const scene = toRaw(this.scene);
+			scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
+		},
+		removeGeometryEvent(this: ProjectStorev2) {
 			// We remove all the event related to pointerup if they exist.
 			// Know a better way to do it ? Be my guest.
 			const scene = toRaw(this.scene);
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			scene.viewport.off('pointerup', this.createGeometry);
-
-			scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
 		},
 		enableSelectionBox(this: ProjectStorev2, destroy: boolean = false) {
 			if(destroy && this.selectionBox) {

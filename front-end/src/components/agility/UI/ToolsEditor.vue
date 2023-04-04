@@ -76,6 +76,8 @@ watch(isDefault, val => {
 
 const setDefaultMode = () => {
 	projectStore.default = true;
+	projectStore.deferredGeometry = null;
+	projectStore.removeGeometryEvent();
 }
 
 const createRectangle = () => {
