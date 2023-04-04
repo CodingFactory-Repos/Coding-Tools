@@ -5,17 +5,20 @@ import { GenericContainer } from './genericContainer';
 import { ResizePlugin } from '../plugins/resizePlugin';
 import { ViewportUI } from "../viewportUI";
 import { Point } from 'pixi.js';
+import { DragPlugin } from '../plugins/dragPlugin';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
 	protected readonly resizePlugin: ResizePlugin;
+	protected readonly dragPlugin: DragPlugin;
 	private _selectedContainers: Array<CanvasContainer>;
-	public readonly  wrappedContainer: WrappedContainer;
+	public readonly wrappedContainer: WrappedContainer;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
 		this.wrappedContainer = new WrappedContainer(this.viewport);
 		this.resizePlugin = new ResizePlugin(this.viewport);
+		this.dragPlugin = new DragPlugin(this.viewport);
 		this._selectedContainers = [];
 
 		window.onkeydown = this._destroySelected.bind(this);
@@ -39,7 +42,7 @@ export class ContainerManager {
 	 * @param isShift
 	 * @returns void
 	 */
-	public selectContainer(container: CanvasContainer, isShift: boolean) {
+	public selectContainer(container: CanvasContainer, isShift: boolean, ) {
 		if (!this._selectedContainers.includes(container)) {
 			const shouldReturn = this.fixFrameChildrenContext(container);
 			if(shouldReturn) return;
@@ -170,16 +173,19 @@ export class ContainerManager {
 			...borderOptions,
 			scale: this.viewport.scaled
 		});
+		this.wrappedContainer.hitArea = this.wrappedContainer.getLocalBounds();
 		this.viewport.addChild(this.wrappedContainer);
 		this.attachPlugins(this.wrappedContainer);
 	}
 
 	public attachPlugins(container: PluginContainer) {
 		this.resizePlugin.attach(container);
+		this.dragPlugin.attach(container);
 	}
 
 	public detachPlugins() {
 		this.resizePlugin.detach();
+		this.dragPlugin.detach();
 	}
 
 	public getSelectedCenter() {
