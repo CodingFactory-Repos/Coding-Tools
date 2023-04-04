@@ -13,32 +13,16 @@ export class ResizePlugin {
 	protected initialCursorPosition: Point = null;
 	protected handleId: ResizeHandle = null;
 	protected container: PluginContainer = null;
+	protected isResizing: boolean = false;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
-		this.handler = this._update.bind(this);
+		this.handler = this._updateResizeTransform.bind(this);
 	}
 
 	public attach(container: PluginContainer) {
 		this.container = container;
-		this._createResizeTransform();
-	}
 
-	public detach() {
-		this.initialGraphicsState.length = 0;
-		this.initialCursorPosition = null;
-		this.initialContainerSize = null;
-		this.container = null;
-		this.handleId = null;
-		this._destroyResizeTransform();
-	}
-
-	private _destroyResizeTransform() {
-		this.viewport.destroyResizeHitArea();
-		this.viewport.destroyResizeHandles();
-	}
-
-	private _createResizeTransform() {
 		const { x, y, width, height } = this.container.getGeometry();
 		this.viewport.createResizeHitAreas(x, y, width, height);
 		this.viewport.createResizeHandles(x, y, width, height);
@@ -52,12 +36,25 @@ export class ResizePlugin {
 		})
 	}
 
+	public detach() {
+		if(this.isResizing) return;
+		this.initialGraphicsState.length = 0;
+		this.initialCursorPosition = null;
+		this.initialContainerSize = null;
+		this.container = null;
+		this.handleId = null;
+
+		this.viewport.destroyResizeHitArea();
+		this.viewport.destroyResizeHandles();
+	}
+
 	private _initResizeTransform = (e: FederatedPointerEvent) => {
 		e.stopPropagation();
 		const target = e.target as Handle | HitArea;
 		this.handleId = target.handleId;
 
-		const graphics = this.container.getGraphicChildren();
+		// TODO: Types
+		const graphics: any[] = this.container.getGraphicChildren();
 		for(let n = 0; n < graphics.length; n++) {
 			this.initialGraphicsState.push({
 				child: graphics[n],
@@ -75,7 +72,7 @@ export class ResizePlugin {
 		this.container.on('pointerup', this._endResizeTransform);
 		this.viewport.on('pointerup', this._endResizeTransform);
 		this.viewport.on('mouseleave', this._endResizeTransform);
-		this.viewport.on('pointermove', this._update);
+		this.viewport.on('pointermove', this._updateResizeTransform);
 		if(this.handleId < 4) {
 			this.viewport.resizeHandles[this.handleId].on('pointermove', this.handler);
 		} else {
@@ -83,12 +80,13 @@ export class ResizePlugin {
 		}
 	}
 
-	private _update = (e: FederatedPointerEvent) => {
+	private _updateResizeTransform = (e: FederatedPointerEvent) => {
 		e.stopPropagation();
+		this.isResizing = true;
 		const shift = e.originalEvent.shiftKey;
 		const cursorPosition = this.viewport.toWorld(e.global.clone());
-		const dx = (cursorPosition.x - this.initialCursorPosition.x)
-		const dy = (cursorPosition.y - this.initialCursorPosition.y)
+		const dx = (cursorPosition.x - this.initialCursorPosition.x);
+		const dy = (cursorPosition.y - this.initialCursorPosition.y);
 
 		const ratioA = this.initialContainerSize.height / this.initialContainerSize.width;
 		const ratioB = this.initialContainerSize.width / this.initialContainerSize.height;
@@ -242,11 +240,12 @@ export class ResizePlugin {
 	}
 
 	private _endResizeTransform = (e: FederatedPointerEvent) => {
-		e.stopPropagation();
+		if(e) e.stopPropagation();
+		this.isResizing = false;
 		this.container.off('pointerup', this._endResizeTransform);
 		this.viewport.off('pointerup', this._endResizeTransform);
 		this.viewport.off('mouseleave', this._endResizeTransform);
-		this.viewport.off('pointermove', this._update);
+		this.viewport.off('pointermove', this._updateResizeTransform);
 
 		if(this.handleId < 4) {
 			this.viewport.resizeHandles[this.handleId].off('pointermove', this.handler);
