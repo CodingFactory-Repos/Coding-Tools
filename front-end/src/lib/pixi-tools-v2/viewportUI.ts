@@ -1,5 +1,5 @@
 import { IViewportOptions, Viewport } from "pixi-viewport";
-import { FederatedPointerEvent } from "pixi.js";
+import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point } from "pixi.js";
 import { Scene } from "./scene";
 import { Stage } from "../pixi-tools/types";
 import { ContainerManager } from "./class/containerManager";
@@ -15,6 +15,8 @@ import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
 
 export class ViewportUI extends Viewport {
 	protected readonly scene: Scene;
+	private _isHiddenUI: boolean = false;
+	public readonly renderer: IRenderer<ICanvas>;
 	public readonly zoomPlugin: ViewportZoomPlugin;
 	public readonly manager: ContainerManager;
 	public readonly resizeHandles: Array<Handle> = [];
@@ -23,13 +25,16 @@ export class ViewportUI extends Viewport {
 	public readonly parent: Stage;
 	public readonly grid: Grid;
 	public border: Border = null;
-	private _isHiddenUI: boolean = false;
+	public cursor: CSStyleProperty.Cursor;
+	public mouse: Point;
+	public selectionBoxActive: boolean = false;
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
 		this.scene = scene;
+		this.renderer = scene.renderer;
 
 		this.manager = new ContainerManager(this);
 		this.zoomPlugin = new ViewportZoomPlugin(this, this.manager);
@@ -39,7 +44,10 @@ export class ViewportUI extends Viewport {
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
 		this.on('zoomed', this._onViewportZoomed);
-		this.on("pointerdown", this._onViewportUnselect);
+		this.on('pointerup', this._onViewportUnselect);
+		this.on('pointermove', (e: FederatedPointerEvent) => {
+			this.mouse = e.global;
+		})
 	}
 
 	public offWindowResized() {
@@ -111,10 +119,10 @@ export class ViewportUI extends Viewport {
 	}
 
 	private _onViewportUnselect(e: FederatedPointerEvent) {
-		const wrap = this.manager.wrappedContainer;
-		const loc = wrap.toLocal(e.global);
-		if(wrap.getBounds().contains(loc.x, loc.y)) return;
-		else {
+		const { x, y } = e.global;
+		const eventBoundary = new EventBoundary(this);
+
+		if(eventBoundary.hitTest(x, y) === this) {
 			this.manager.deselectAll();
 			this.manager.detachPlugins();
 		}
