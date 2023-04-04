@@ -36,20 +36,23 @@ export const useProjectStorev2 = defineStore('projectv2', {
 
 			// We remove all the event related to pointerup if they exist.
 			// Know a better way to do it ? Be my guest.
-			this.scene.viewport.off('pointerup', this.createFramedGeometry);
-			this.scene.viewport.off('pointerup', this.createGeometry);
+			const scene = toRaw(this.scene);
+			scene.viewport.off('pointerup', this.createFramedGeometry);
+			scene.viewport.off('pointerup', this.createGeometry);
 
-			this.scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
+			scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
 		},
 		enableSelectionBox(this: ProjectStorev2, destroy: boolean = false) {
 			if(destroy && this.selectionBox) {
-				this.selectionBox.destroy();
+				const selectionBox = toRaw(this.selectionBox);
+				selectionBox.destroy();
 				this.selectionBox = null;
 				return;
 			}
 
 			if (!this.selectionBox) {
-				this.selectionBox = new SelectionBox(toRaw(this.scene.viewport));
+				const scene = toRaw(this.scene);
+				this.selectionBox = new SelectionBox(scene.viewport);
 			}
 		},
 		createFramedGeometry(
@@ -70,7 +73,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			const framedContainer = new FramedContainer(context);
 			scene.viewport.addChild(framedContainer);
 
-			this.scene.viewport.off('pointerup', this.createFramedGeometry);
+			scene.viewport.off('pointerup', this.createFramedGeometry);
 			this.canvas.classList.toggle("default");
 			this.deferredGeometry = null;
 			this.default = true;
@@ -96,7 +99,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			});
 			scene.viewport.addChild(genericContainer);
 
-			this.scene.viewport.off('pointerup', this.createGeometry);
+			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle("default");
 			this.deferredGeometry = null;
 			this.default = true;
