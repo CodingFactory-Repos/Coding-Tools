@@ -28,11 +28,12 @@ export class GenericContainer extends PluginContainer {
 
 		const { Graphic, attributes } = context.constructors as GraphicConstructor;
 		const element = new Graphic(attributes);
-		element.on("pointerdown", this.onSelected.bind(this));
+		this.on("pointerdown", this.onSelected);
 		this.addChild(element);
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
+		if(e.forced || !this.interactive) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	};

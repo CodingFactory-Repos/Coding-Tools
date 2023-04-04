@@ -21,9 +21,32 @@ export class WrappedContainer extends BoundsContainer {
 		this.cursor = "pointer";
 		this.interactive = true;
 		this.viewport = viewport;
+
+
+		let active = false;
+		let timeout: NodeJS.Timeout = null;
+		this.on('pointerdown', (e) => {
+			e.stopPropagation();
+
+			if(timeout) {
+				clearTimeout(timeout);
+				timeout = null;
+			}
+
+			if(!active) {
+				this.toggleChildrenInteractive(true);
+				active = true;
+			}
+
+			timeout = setTimeout(() => {
+				this.toggleChildrenInteractive(false);
+				active = false;
+			}, 400);
+		})
 	}
 
 	public restoreOriginChildren() {
+		this.toggleChildrenInteractive(true);
 		const framed = this.children.filter(ctn => ctn.isAttachedToFrame);
 		for(let n = 0; n < framed.length; n++) {
 			const frame = this.viewport.children.find(ctn => ctn.id === "frame" && ctn.frameNumber === framed[n].frameNumber) as FramedContainer;
@@ -33,6 +56,12 @@ export class WrappedContainer extends BoundsContainer {
 		if(this.children.length > 0) {
 			this.viewport.addChild(...this.children);
 			this.viewport.removeChild(this);
+		}
+	}
+
+	protected toggleChildrenInteractive = (interactive: boolean) => {
+		for(let n = 0; n < this.children.length; n++) {
+			this.children[n].interactive = interactive;
 		}
 	}
 
