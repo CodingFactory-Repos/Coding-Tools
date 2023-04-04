@@ -2,28 +2,28 @@
 	<div class="grow h-full flex justify-start items-end bg-darker-primary overflow-x-scroll px-1 gap-1" style="scrollbar-width: none;">
 		<div
 			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected.index === 0 }"
+			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected === null }"
 			@click="selectDefault"
 		>
 			<div class="flex gap-2">
-				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected.index === 0 }"/>
+				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected === null }"/>
 				<span class="text-xs text-light-tertiary font-bold">Projet name</span>
 			</div>
 		</div>
 		<div
-			v-for="(_, i) in frames"
+			v-for="(frame, i) in frames"
 			@click="selectTab(i)"
 			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected.index === _.index }"
+			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected?.frameNumber === frame.frameNumber }"
 			:key="`tab_${i}`"
 		>
 			<div class="flex gap-2">
-				<SvgFrame width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected.index === _.index }"/>
-				<span class="text-xs text-light-tertiary font-bold">Frame {{ _.index  }}</span>
+				<SvgFrame width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected?.frameNumber === frame.frameNumber }"/>
+				<span class="text-xs text-light-tertiary font-bold">Frame {{ frame.frameNumber }}</span>
 			</div>
 			<button
 				class="w-4 h-4 flex justify-center items-center hover:bg-dark-highlight rounded-lg"
-				:class="{ 'hover:!bg-[#2e7bbe]': selected.index === _.index }"
+				:class="{ 'hover:!bg-[#2e7bbe]': selected?.frameNumber === frame.frameNumber }"
 				@click.stop="removeFrame(i)"
 			>
 				<SvgCross width="10" height="10" class="fill-white-icon dark:fill-white-icon"/>
@@ -33,33 +33,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useProjectStorev2 } from '@/store/modules/project2.store';
+
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
+import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 
-const frames = ref([
-	{
-		index: 1,
-	},
-	{
-		index: 2,
-	},
-	{
-		index: 3,
-	},
-	{
-		index: 4,
-	},
-	{
-		index: 5,
-	},
-]);
+const projectStore = useProjectStorev2();
+const frames = computed(() => projectStore.frames as Array<FramedContainer>);
 
-const selected = ref({ index: 0 });
+const selected = ref<FramedContainer>(null);
 
 const selectDefault = () => {
-	selected.value = { index: 0 };
+	selected.value = null;
 }
 
 const selectTab = (index: number) => {

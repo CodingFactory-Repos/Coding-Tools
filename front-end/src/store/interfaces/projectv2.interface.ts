@@ -1,6 +1,7 @@
 import { Scene } from "@/lib/pixi-tools-v2/scene";
 import { LiteralGeometryTypes } from "@/lib/pixi-tools-v2/types/pixi-enums";
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
+import { FramedContainer } from "@/lib/pixi-tools-v2/class/framedContainer";
 
 export interface ProjectStorev2 {
 	scene: Scene;
@@ -10,6 +11,7 @@ export interface ProjectStorev2 {
 	selectionBox: SelectionBox;
 	onFullscreen: boolean;
 	immersion: boolean;
+	frames: Array<FramedContainer>;
 
 	getZoom?: () => number;
 

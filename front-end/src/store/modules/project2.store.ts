@@ -18,6 +18,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			selectionBox: null,
 			onFullscreen: false,
 			immersion: false,
+			frames: [],
 		};
 	},
 	getters: {
@@ -78,6 +79,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			this.canvas.classList.toggle("default");
+			this.frames.push(framedContainer);
 			this.deferredGeometry = null;
 			this.default = true;
 		},
