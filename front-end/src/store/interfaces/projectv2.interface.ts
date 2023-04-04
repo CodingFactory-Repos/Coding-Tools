@@ -12,6 +12,7 @@ export interface ProjectStorev2 {
 	onFullscreen: boolean;
 	immersion: boolean;
 	frames: Array<FramedContainer>;
+	viewportDefaultPos: ViewportDefaultPosition;
 
 	getZoom?: () => number;
 
@@ -23,4 +24,11 @@ export interface ProjectStorev2 {
 	createFramedGeometry?: () => void;
 	increaseZoom?: () => void;
 	decreaseZoom?: () => void;
+	setFrameCanvas?: (index: number) => void;
+	setDefaultCanvas?: () => void;
+}
+
+export interface ViewportDefaultPosition {
+	scale?: { x: number, y: number },
+	pos?: { x: number, y: number },
 }

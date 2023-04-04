@@ -19,6 +19,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			onFullscreen: false,
 			immersion: false,
 			frames: [],
+			viewportDefaultPos: {},
 		};
 	},
 	getters: {
@@ -127,6 +128,13 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.scene.renderer.resize(newWidth, newHeight);
 			this.scene.viewport.screenHeight = newHeight;
 			this.scene.viewport.worldHeight = newHeight;
+		},
+		setFrameCanvas(this: ProjectStorev2, index: number) {
+			this.scene.viewport.toggleHidding(false);
+			this.frames[index].visible = true;
+		},
+		setDefaultCanvas(this: ProjectStorev2) {
+			this.scene.viewport.toggleHidding(true);
 		}
 	},
 });

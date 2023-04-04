@@ -11,6 +11,7 @@ import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
 import { HitArea } from "./model/model-constructor/hitArea";
 import { Grid } from "./model/model-constructor/grid";
 import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
+import { FramedContainer } from "./class/framedContainer";
 
 
 export class ViewportUI extends Viewport {
@@ -126,6 +127,10 @@ export class ViewportUI extends Viewport {
 			this.manager.deselectAll();
 			this.manager.detachPlugins();
 		}
+	}
+
+	public toggleHidding(hide: boolean) {
+		this.children.forEach((child) => child.visible = hide);
 	}
 
 	public drawGrid() {

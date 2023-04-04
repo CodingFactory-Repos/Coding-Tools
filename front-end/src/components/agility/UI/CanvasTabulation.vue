@@ -47,11 +47,13 @@ const frames = computed(() => projectStore.frames as Array<FramedContainer>);
 const selected = ref<FramedContainer>(null);
 
 const selectDefault = () => {
+	projectStore.setDefaultCanvas();
 	selected.value = null;
 }
 
 const selectTab = (index: number) => {
 	selected.value = frames.value[index];
+	projectStore.setFrameCanvas(index);
 }
 
 const removeFrame = (index: number) => {
