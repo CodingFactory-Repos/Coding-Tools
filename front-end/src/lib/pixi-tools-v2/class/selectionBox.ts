@@ -78,6 +78,7 @@ export class SelectionBox extends Graphics {
 		const selectedChildren: Array<CanvasContainer> = [];
 		for(let n = 0; n < this.viewport.children.length; n++) {
 			const child = this.viewport.children[n];
+			if(!child.visible) continue;
 
 			if(child instanceof GenericContainer || child instanceof FramedContainer) {
 				if(child.getBounds().intersects(selectionBounds)) {
@@ -91,6 +92,8 @@ export class SelectionBox extends Graphics {
 		}
 
 		this.viewport.selectionBoxActive = false;
+		this.clear();
+		this.box.clear();
 	}
 
 	public destroy() {
