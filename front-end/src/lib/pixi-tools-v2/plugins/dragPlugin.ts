@@ -1,4 +1,6 @@
 import { EventBoundary, FederatedPointerEvent, Point } from "pixi.js";
+import { FramedContainer } from "../class/framedContainer";
+import { WrappedContainer } from "../class/wrappedContainer";
 import { PluginContainer } from "../types/pixi-class";
 import { InitialResizeState } from "../types/pixi-container-options";
 import { ViewportUI } from "../viewportUI";
@@ -85,6 +87,18 @@ export class DragPlugin {
 		for(let n = 0; n < this.initialGraphicsState.length; n++) {
 			const { child, x, y } = this.initialGraphicsState[n];
 			child.position.set(x + dx, y + dy);
+		}
+
+		if(this.container instanceof FramedContainer) {
+			this.container.emit("moved", null)
+		}
+
+		if(this.container instanceof WrappedContainer) {
+			for(let n = 0; n < this.container.children.length; n++) {
+				if(this.container.children[n].id === "frame") {
+					this.container.children[n].emit("moved", null);
+				}
+			}
 		}
 
 		const geometry = this.container.getGeometry();

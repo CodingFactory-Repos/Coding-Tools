@@ -4,6 +4,8 @@ import { ViewportUI } from '../viewportUI';
 import { ResizeHandle } from '../types/pixi-enums';
 import { Handle } from '../model/model-constructor/handle';
 import { HitArea } from '../model/model-constructor/hitArea';
+import { FramedContainer } from '../class/framedContainer';
+import { WrappedContainer } from '../class/wrappedContainer';
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;
@@ -230,6 +232,18 @@ export class ResizePlugin {
 			this.initialGraphicsState[n].child.height = updates.height;
 			this.initialGraphicsState[n].child.x = updates.x;
 			this.initialGraphicsState[n].child.y = updates.y;
+		}
+
+		if(this.container instanceof FramedContainer) {
+			this.container.emit("moved", null)
+		}
+
+		if(this.container instanceof WrappedContainer) {
+			for(let n = 0; n < this.container.children.length; n++) {
+				if(this.container.children[n].id === "frame") {
+					this.container.children[n].emit("moved", null);
+				}
+			}
 		}
 
 		const geometry = this.container.getGeometry();
