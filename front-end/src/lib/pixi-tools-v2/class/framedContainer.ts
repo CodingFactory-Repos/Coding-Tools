@@ -71,12 +71,21 @@ export class FramedContainer extends PluginContainer {
 		this.boxTitle = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
 		this.boxTitle.x = geometry.x;
 		this.boxTitle.y = geometry.y - 30;
+		this.titleContainer.cursor = "pointer";
 		this.titleContainer.addChild(this.boxTitle);
 		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
-		this.addChild(this.titleContainer);
+		//! TODO: Adding it to the framedContainer break the resize on the y axis. (resistance)
+		this.viewport.addChild(this.titleContainer);
+
+		this.on("moved", () => {
+			const geometry = this.getGeometry(true);
+			this.boxTitle.x = geometry.x;
+			this.boxTitle.y = geometry.y;
+		})
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
+		if(e.forced || !this.interactive) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
@@ -122,15 +131,14 @@ export class FramedContainer extends PluginContainer {
 			return {
 				x: this.absMinX,
 				y: this.absMinY - (padding ? 30 : 0),
-				width: this.width,
-				height: this.height,
+				width: this.mainContainer.width,
+				height: this.mainContainer.height + (padding ? 30 : 0),
 			}
 		} else {
 			return null;
 		}
 	}
 
-	// TODO: Broken
 	public getGraphicChildren() {
 		const graphics = [];
 
