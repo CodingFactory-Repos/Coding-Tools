@@ -61,6 +61,7 @@
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/types/index.d.ts @Maghwyn
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
+/front-end/.gitignore @Loule95450
 /front-end/index.html @TheoLandemaine
 /front-end/package-lock.json @Loule95450 @Maghwyn
 /front-end/package.json @Loule95450 @Maghwyn
