@@ -1,12 +1,13 @@
-import { EventBoundary } from "pixi.js";
 import { BoundsContainer } from "../types/pixi-class";
 import { CanvasContainer } from "../types/pixi-container-options";
 import { ViewportUI } from "../viewportUI";
+import { ContainerManager } from "./containerManager";
 import { FramedContainer } from "./framedContainer";
 
 
 export class WrappedContainer extends BoundsContainer {
 	protected readonly viewport: ViewportUI;
+	protected readonly manager: ContainerManager;
 	public readonly children: Array<CanvasContainer>;
 	public readonly id: string;
 
@@ -15,38 +16,42 @@ export class WrappedContainer extends BoundsContainer {
 	public absMaxX: number;
 	public absMaxY: number;
 
-	constructor(viewport: ViewportUI) {
+	constructor(manager: ContainerManager, viewport: ViewportUI) {
 		super();
 
 		this.id = "wrap";
 		this.cursor = "pointer";
 		this.interactive = true;
 		this.viewport = viewport;
-
+		this.manager = manager;
 
 		let active = false;
 		let timeout: NodeJS.Timeout = null;
 		this.on('pointerdown', (e) => {
-			e.stopPropagation();
-
-			const { x, y } = e.global;
-			const eventBoundary = new EventBoundary(this);
+			if(e) e.stopPropagation();
+			if(e.forced) return;
 	
-			if(eventBoundary.hitTest(x, y) !== this) {
+			if(!active) {
 				if(timeout) {
 					clearTimeout(timeout);
 					timeout = null;
 				}
-	
-				if(!active) {
-					this.toggleChildrenInteractive(true);
-					active = true;
-				}
-	
+
+				this.toggleChildrenInteractive(true);
+				active = true;
+
 				timeout = setTimeout(() => {
 					this.toggleChildrenInteractive(false);
 					active = false;
+					timeout = null;
 				}, 400);
+			} else {
+				this.toggleChildrenInteractive(true);
+				this.manager.deselectAll();
+				this.manager.detachPlugins();
+				clearTimeout(timeout);
+				timeout = null;
+				active = false;
 			}
 		})
 	}
@@ -65,9 +70,14 @@ export class WrappedContainer extends BoundsContainer {
 		}
 	}
 
-	protected toggleChildrenInteractive = (interactive: boolean) => {
+	public toggleChildrenInteractive = (interactive: boolean) => {
 		for(let n = 0; n < this.children.length; n++) {
-			this.children[n].interactive = interactive;
+			const child = this.children[n];
+			child.interactive = interactive;
+
+			if(child instanceof FramedContainer) {
+				child.mainContainer.children.forEach((ctn) => ctn.interactive = interactive);
+			}
 		}
 	}
 
