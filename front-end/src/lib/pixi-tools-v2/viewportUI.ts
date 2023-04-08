@@ -23,7 +23,7 @@ export class ViewportUI extends Viewport {
 	public readonly parent: Stage;
 	public readonly grid: Grid;
 	public border: Border = null;
-	public cursor: CSStyleProperty.Cursor;
+	public cursor: CSSStyleProperty.Cursor;
 	public mouse: Point;
 	public selectionBoxActive: boolean = false;
 

@@ -1,10 +1,10 @@
 import { Graphics } from 'pixi.js';
-import type { TypesRequired } from '@/interfaces/advanced-types.interface';
 
 import { ViewportUI } from '../viewportUI';
 import { ContainerManager } from '../class/containerManager';
 import * as GeometryTemplate from '../model/template';
 
+import type { TypesRequired } from './pixi-utils-type';
 import type { GeometryTypes } from './pixi-enums';
 import type { Stage } from './pixi-aliases';
 
@@ -20,7 +20,7 @@ export interface GraphicAttributes {
 	rotation?: number,
 	texture?: number,
 	scale?: number,
-	cursor?: CSStyleProperty.Cursor,
+	cursor?: CSSStyleProperty.Cursor,
 	endX?: number,
 	endY?: number,
 	lineWidth?: number,

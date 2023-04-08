@@ -33,7 +33,7 @@ export abstract class PluginContainer extends BoundsContainer {
 export abstract class ModelGraphics extends Graphics implements WithId {
 	public readonly id: string;
 	protected color: number;
-	public cursor: CSStyleProperty.Cursor;
+	public cursor: CSSStyleProperty.Cursor;
 	
 	abstract draw(attr: GraphicAttributes): void;
 }

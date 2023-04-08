@@ -2,7 +2,7 @@ import "pixi.js";
 
 declare module "pixi.js" {
 	interface FederatedEvent {
-	  shiftKey: boolean;
+		shiftKey: boolean;
 	}
 
 	interface FederatedPointerEvent {
@@ -11,5 +11,10 @@ declare module "pixi.js" {
 		 * Attach a forced FederatedPointerEvent.
 		 */
 		forced: boolean;
+	}
+
+	interface DisplayObjectEvents {
+		// Extends emitter event here if necessary, ex : 
+		// "custom": () => void;
 	}
 }

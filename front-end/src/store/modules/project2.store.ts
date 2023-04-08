@@ -1,12 +1,13 @@
-import { FramedContainer } from './../../lib/pixi-tools-v2/class/framedContainer';
+import { FederatedPointerEvent } from 'pixi.js';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
-import { ProjectStorev2 } from '@/store/interfaces/projectv2.interface';
-import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
+import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
-import { FederatedPointerEvent } from 'pixi.js';
+import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
+
+import type { ProjectStorev2 } from '@/store/interfaces/projectv2.interface';
 
 export const useProjectStorev2 = defineStore('projectv2', {
 	state: (): ProjectStorev2 => {
@@ -30,7 +31,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 	actions: {
 		setDeferredEvent(
 			this: ProjectStorev2,
-			cursor: CSStyleProperty.Cursor,
+			cursor: CSSStyleProperty.Cursor,
 			framed: boolean
 		) {
 			this.default = false;

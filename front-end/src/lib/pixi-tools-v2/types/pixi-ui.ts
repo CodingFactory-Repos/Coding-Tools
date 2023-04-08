@@ -1,7 +1,7 @@
 export interface HandleOptions {
 	x: number;
 	y: number;
-	cursor: CSStyleProperty.Cursor;
+	cursor: CSSStyleProperty.Cursor;
 	handleId: number;
 }
 
@@ -11,5 +11,5 @@ export interface HitAreaOptions {
 	endX: number;
 	endY: number;
 	handleId: number;
-	cursor: CSStyleProperty.Cursor;
+	cursor: CSSStyleProperty.Cursor;
 }
