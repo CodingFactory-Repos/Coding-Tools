@@ -27,6 +27,10 @@ export class ContainerManager {
 		const key = e.key;
 
 		if (key === "Backspace") {
+			if(this.wrappedContainer.children.length > 0) {
+				this.wrappedContainer.restoreStateContext();
+			}
+
 			this._selectedContainers.forEach((ctn) => ctn.destroy());
 			this.viewport.destroyBorder();
 			this.viewport.destroyResizeHandles();
@@ -51,10 +55,8 @@ export class ContainerManager {
 			// add all of its children to the viewport + remove them and destroy its border.
 			if (!isShift && this.wrappedContainer.children.length > 0) {
 				this.detachPlugins();
+				this.wrappedContainer.restoreStateContext();
 				this.viewport.destroyBorder();
-				console.log("detached")
-				this.wrappedContainer.restoreOriginChildren();
-				this.wrappedContainer.removeChildren();
 			}
 			
 			// If the shift key is pressed and there is more than one container selected,
@@ -88,10 +90,8 @@ export class ContainerManager {
 			if(index === -1) return;
 
 			this.detachPlugins();
+			this.wrappedContainer.restoreStateContext();
 			this.viewport.destroyBorder();
-			console.log("one of more")
-			this.wrappedContainer.restoreOriginChildren();
-			this.wrappedContainer.removeChildren();
 			this.deselectAllExceptThisContainer(index);
 			this.drawBorder(this._selectedContainers[0]);
 			this.attachPlugins(this._selectedContainers[0]);
@@ -100,10 +100,7 @@ export class ContainerManager {
 
 	public deselectAll() {
 		if(this.wrappedContainer.children.length > 0) {
-			this.viewport.destroyBorder();
-			console.log("deselect all")
-			this.wrappedContainer.restoreOriginChildren();
-			this.wrappedContainer.removeChildren();
+			this.wrappedContainer.restoreStateContext();
 		}
 
 		this.viewport.destroyBorder();
@@ -137,7 +134,7 @@ export class ContainerManager {
 
 	public wrapWithTemporaryParent() {
 		const frames = this._selectedContainers.filter((ctn) => ctn.id === "frame") as Array<FramedContainer>;
-		const childs = [];
+		const childs = [] as Array<CanvasContainer>;
 		for(let n = 0; n < this._selectedContainers.length; n++) {
 			if(this._selectedContainers[n].id !== "frame") {
 				let found = false;
@@ -155,16 +152,13 @@ export class ContainerManager {
 			}
 		}
 
-		this.wrappedContainer.removeChildren();
-		this.wrappedContainer.addChild(...childs);
+		this.wrappedContainer.createWrappedBox(childs);
 		const borderOptions = this.wrappedContainer.getGeometry();
 		this.viewport.createBorder({
 			...borderOptions,
 			scale: this.viewport.scaled
 		});
-		this.wrappedContainer.hitArea = this.wrappedContainer.getLocalBounds();
-		this.viewport.addChild(this.wrappedContainer);
-		this.wrappedContainer.toggleChildrenInteractive(false);
+		this.viewport.addChildAt(this.wrappedContainer, this.viewport.children.length);
 		this.attachPlugins(this.wrappedContainer);
 	}
 

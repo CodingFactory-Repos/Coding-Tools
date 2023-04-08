@@ -1,14 +1,19 @@
+import { Rectangle } from "../model/model-constructor/rectangle";
 import { BoundsContainer } from "../types/pixi-class";
 import { CanvasContainer } from "../types/pixi-container-options";
 import { ViewportUI } from "../viewportUI";
 import { ContainerManager } from "./containerManager";
 import { FramedContainer } from "./framedContainer";
+import { FederatedPointerEvent } from 'pixi.js';
 
 
 export class WrappedContainer extends BoundsContainer {
 	protected readonly viewport: ViewportUI;
 	protected readonly manager: ContainerManager;
-	public readonly children: Array<CanvasContainer>;
+	protected awaitDblClick: boolean = false;
+	protected timeout: NodeJS.Timeout = null;
+	public absoluteChildren: Array<CanvasContainer>;
+	public wrappedBox: Rectangle = null;
 	public readonly id: string;
 
 	public absMinX: number;
@@ -25,65 +30,37 @@ export class WrappedContainer extends BoundsContainer {
 		this.viewport = viewport;
 		this.manager = manager;
 
-		let active = false;
-		let timeout: NodeJS.Timeout = null;
-		this.on('pointerdown', (e) => {
-			if(e) e.stopPropagation();
-			if(e.forced) return;
-	
-			if(!active) {
-				if(timeout) {
-					clearTimeout(timeout);
-					timeout = null;
-				}
-
-				this.toggleChildrenInteractive(true);
-				active = true;
-
-				timeout = setTimeout(() => {
-					this.toggleChildrenInteractive(false);
-					active = false;
-					timeout = null;
-				}, 400);
-			} else {
-				this.toggleChildrenInteractive(true);
-				this.manager.deselectAll();
-				this.manager.detachPlugins();
-				clearTimeout(timeout);
-				timeout = null;
-				active = false;
-			}
-		})
+		this.on('pointerdown', this.onPointerDown);
 	}
 
-	public restoreOriginChildren() {
+	public restoreStateContext() {
+		clearTimeout(this.timeout);
+		this.timeout = null;
+		this.awaitDblClick = false;
 		this.toggleChildrenInteractive(true);
-		const framed = this.children.filter(ctn => ctn.isAttachedToFrame);
-		for(let n = 0; n < framed.length; n++) {
-			const frame = this.viewport.children.find(ctn => ctn.id === "frame" && ctn.frameNumber === framed[n].frameNumber) as FramedContainer;
-			if(frame) frame.mainContainer.addChild(framed[n]);
-		}
-
-		if(this.children.length > 0) {
-			this.viewport.addChild(...this.children);
-			this.viewport.removeChild(this);
-		}
+		this.removeChildren();
+		this.wrappedBox.destroy();
+		this.wrappedBox = null;
+		this.absoluteChildren = [];
+		this.viewport.removeChild(this);
 	}
 
 	public toggleChildrenInteractive = (interactive: boolean) => {
-		for(let n = 0; n < this.children.length; n++) {
-			const child = this.children[n];
+		for(let n = 0; n < this.absoluteChildren.length; n++) {
+			const child = this.absoluteChildren[n];
 			child.interactive = interactive;
-
+			
 			if(child instanceof FramedContainer) {
-				child.mainContainer.children.forEach((ctn) => ctn.interactive = interactive);
+				child.mainContainer.children.forEach((ctn) => {
+					ctn.interactive = interactive
+					ctn.children.forEach((graph) => graph.interactive = interactive);
+				});
+			} else {
+				child.children.forEach((graph) => {
+					graph.interactive = interactive;
+				})
 			}
 		}
-	}
-
-	protected onChildrenChange(_length?: number): void {
-		super.onChildrenChange(_length);
-		this.updateAbsoluteBounds();
 	}
 
 	protected updateAbsoluteBounds() {
@@ -92,8 +69,8 @@ export class WrappedContainer extends BoundsContainer {
 		let maxX = 0;
 		let maxY = 0;
 
-		for(let n = 0; n < this.children.length; n++) {
-			const geometry = this.children[n].getGeometry();
+		for(let n = 0; n < this.absoluteChildren.length; n++) {
+			const geometry = this.absoluteChildren[n].getGeometry();
 			if(geometry === null) continue;
 
 			const { x, y, width, height } = geometry;
@@ -115,18 +92,67 @@ export class WrappedContainer extends BoundsContainer {
 		return {
 			x: this.absMinX,
 			y: this.absMinY,
-			width: this.width,
-			height: this.height,
+			width: this.absMaxX - this.absMinX,
+			height: this.absMaxY - this.absMinY,
 		}
 	}
 
 	public getGraphicChildren() {
 		const graphics = [];
 
-		for(let n = 0; n < this.children.length; n++) {
-			graphics.push(this.children[n].getGraphicChildren());
+		for(let n = 0; n < this.absoluteChildren.length; n++) {
+			graphics.push(this.absoluteChildren[n].getGraphicChildren());
+		}
+
+		if(this.wrappedBox) {
+			graphics.push(this.wrappedBox);
 		}
 
 		return graphics.flat();
+	}
+
+	public createWrappedBox(childs: Array<CanvasContainer>) {
+		this.removeChildren();
+		this.absoluteChildren = childs;
+
+		const geometry = this.getGeometry();
+		this.wrappedBox = new Rectangle({
+			...geometry,
+			id: "wrappedBox",
+			color: 0xff00ff,
+			alpha: 0,
+			scale: this.viewport.scaled,
+		});
+		this.wrappedBox.cursor = "pointer";
+		this.wrappedBox.interactive = true;
+		this.addChildAt(this.wrappedBox, 0);
+		this.toggleChildrenInteractive(false);
+		this.awaitDblClick = false;
+		this.timeout = null;
+	}
+
+	protected onPointerDown(e: FederatedPointerEvent) {
+		if(e.forced) return;
+		if(!this.awaitDblClick) {
+			if(this.timeout) clearTimeout(this.timeout);
+			
+			this.toggleChildrenInteractive(true);
+			this.viewport.setChildIndex(this, 1);
+			this.timeout = null;
+			this.awaitDblClick = true;
+
+			this.timeout = setTimeout(() => {
+				this.toggleChildrenInteractive(false);
+				this.viewport.setChildIndex(this, this.viewport.children.length - 9);
+				this.awaitDblClick = false;
+				this.timeout = null;
+			}, 300);
+		} else {
+			clearTimeout(this.timeout);
+			this.manager.deselectAll();
+			this.manager.detachPlugins();
+			this.timeout = null;
+			this.awaitDblClick = false;
+		}
 	}
 }
