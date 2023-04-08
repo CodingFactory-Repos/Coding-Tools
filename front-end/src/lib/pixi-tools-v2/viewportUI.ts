@@ -123,7 +123,7 @@ export class ViewportUI extends Viewport {
 		const { x, y } = e.global;
 		const eventBoundary = new EventBoundary(this);
 
-		if(eventBoundary.hitTest(x, y) === this) {
+		if(eventBoundary.hitTest(x, y) === this && this.manager.isActive) {
 			e.stopPropagation();
 			this.manager.deselectAll();
 			this.manager.detachPlugins();
