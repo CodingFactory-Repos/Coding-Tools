@@ -59,7 +59,7 @@ export class FramedContainer extends PluginContainer {
 		this.addChild(this.mainContainer);
 		this.mainContainer.on("added", this.updateAbsoluteBounds.bind(this));
 		
-		const geometry = this.getGeometry(false);
+		const geometry = this.getGeometry();
 		this.frameBox = new Rectangle({
 			...geometry,
 			id: "framebox",
@@ -74,13 +74,12 @@ export class FramedContainer extends PluginContainer {
 		this.titleContainer.cursor = "pointer";
 		this.titleContainer.addChild(this.boxTitle);
 		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
-		//! TODO: Adding it to the framedContainer break the resize on the y axis. (resistance)
-		this.viewport.addChild(this.titleContainer);
+		this.addChild(this.titleContainer);
 
 		this.on("moved", () => {
-			const geometry = this.getGeometry(true);
+			const geometry = this.getGeometry();
 			this.boxTitle.x = geometry.x;
-			this.boxTitle.y = geometry.y;
+			this.boxTitle.y = geometry.y - 30;
 		})
 	}
 
@@ -90,7 +89,6 @@ export class FramedContainer extends PluginContainer {
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
 
-	// TODO: Broken
 	public updateAbsoluteBounds() {
 		let minX = Infinity;
 		let minY = Infinity;
@@ -100,10 +98,10 @@ export class FramedContainer extends PluginContainer {
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
 			if(this.mainContainer.children[n].id === "framebox") {
 				const { x, y, width, height } = this.mainContainer.children[n];
-				minX = x;
-				minY = y;
-				maxX = x + width;
-				maxY = y + height;
+				if(x < minX) minX = x;
+				if(y < minY) minY = y;
+				if(x + width > maxX) maxX = x + width;
+				if(y + height > maxY) maxY = y + height;
 				continue;
 			}
 
@@ -124,15 +122,14 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxY = maxY;
 	}
 
-	// TODO: Broken
-	public getGeometry(padding: boolean = true) {
+	public getGeometry() {
 		if(!this.destroyed) {
 			this.updateAbsoluteBounds();
 			return {
 				x: this.absMinX,
-				y: this.absMinY - (padding ? 30 : 0),
+				y: this.absMinY,
 				width: this.mainContainer.width,
-				height: this.mainContainer.height + (padding ? 30 : 0),
+				height: this.mainContainer.height,
 			}
 		} else {
 			return null;
