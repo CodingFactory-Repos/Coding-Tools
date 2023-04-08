@@ -1,9 +1,10 @@
 import { EventBoundary, FederatedPointerEvent, Point } from "pixi.js";
 import { FramedContainer } from "../class/framedContainer";
 import { WrappedContainer } from "../class/wrappedContainer";
-import { PluginContainer } from "../types/pixi-class";
-import { InitialResizeState } from "../types/pixi-container-options";
 import { ViewportUI } from "../viewportUI";
+
+import type { InitialResizeState } from "../types/pixi-container";
+import type { PluginContainer } from "../types/pixi-aliases";
 
 
 export class DragPlugin {

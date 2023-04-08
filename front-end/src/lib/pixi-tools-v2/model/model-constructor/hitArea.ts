@@ -1,19 +1,18 @@
 import { ModelGraphics } from "../../types/pixi-class";
-import { GraphicAttributes } from "../../types/pixi-container-options";
+import { GraphicAttributes } from "../../types/pixi-container";
 
 export class HitArea extends ModelGraphics {
-	public readonly handleId: number;
 	public readonly id: string;
+	public handleId: number;
 	protected color: number;
 	public lineWidth: number;
 
-	constructor(attr: GraphicAttributes, handleId: number) {
+	constructor(attr: GraphicAttributes) {
 		super();
 
 		const { color, cursor, alpha, lineWidth } = attr;
 
 		this.id = "line";
-		this.handleId = handleId;
 		this.cursor = cursor ?? "default";
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;

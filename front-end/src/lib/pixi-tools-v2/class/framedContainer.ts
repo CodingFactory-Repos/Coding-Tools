@@ -1,10 +1,11 @@
 import { Container, FederatedPointerEvent, Text } from "pixi.js";
-import { ContainerContext, GraphicConstructor } from "../types/pixi-container-options";
 import { ContainerManager } from "./containerManager";
 import { GenericContainer } from "./genericContainer";
-import { Rectangle } from "../model/model-constructor/rectangle";
-import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
+import { Rectangle } from "../model/template";
 import { ViewportUI } from "../viewportUI";
+
+import type { ContainerContext, GraphicConstructor } from "../types/pixi-container";
+import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
 
 export class FramedContainer extends PluginContainer {
 	protected readonly viewport: ViewportUI;

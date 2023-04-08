@@ -1,5 +1,5 @@
 import { ModelGraphics } from "../../types/pixi-class";
-import { GraphicAttributes } from "../../types/pixi-container-options";
+import { GraphicAttributes } from "../../types/pixi-container";
 
 export class Grid extends ModelGraphics {
 	protected readonly gridSpacing =  1; // 1 pixel

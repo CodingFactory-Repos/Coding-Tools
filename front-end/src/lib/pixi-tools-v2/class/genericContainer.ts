@@ -1,7 +1,8 @@
 import { FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from './containerManager';
-import { ContainerContext, FrameContext, GraphicConstructor } from '../types/pixi-container-options';
+
 import { PluginContainer } from '../types/pixi-class';
+import type { ContainerContext, FrameContext, GraphicConstructor } from '../types/pixi-container';
 
 export class GenericContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;

@@ -1,10 +1,12 @@
 
-import { Graphics, FederatedPointerEvent, Point } from 'pixi.js';
 import { Drag } from 'pixi-viewport';
-import { CanvasContainer } from '../types/pixi-container-options';
+import { Graphics, FederatedPointerEvent, Point } from 'pixi.js';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { ViewportUI } from '../viewportUI';
+
+import type { CanvasContainer } from '../types/pixi-aliases';
+
 
 export class SelectionBox extends Graphics {
 	protected readonly nativeDragPlugin: Drag;

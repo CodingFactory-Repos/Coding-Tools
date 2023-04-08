@@ -1,19 +1,18 @@
 import { ModelGraphics } from '../../types/pixi-class';
-import { GraphicAttributes } from '../../types/pixi-container-options';
+import { GraphicAttributes } from '../../types/pixi-container';
 
 export class Handle extends ModelGraphics {
-	public readonly handleId: number;
 	public readonly id: string;
+	public handleId: number;
 	protected color: number;
 	public radius: number;
 
-	constructor(attr: GraphicAttributes, handleId: number) {
+	constructor(attr: GraphicAttributes) {
 		super();
 
 		const { color, cursor, alpha, radius } = attr;
 
 		this.id = "handle";
-		this.handleId = handleId;
 		this.cursor = cursor ?? "default";
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;

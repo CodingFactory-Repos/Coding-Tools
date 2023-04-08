@@ -1,4 +1,4 @@
-import GeometryTemplate from '@/lib/pixi-tools-v2/model/template';
+import { Rectangle } from '../model/template';
 
 
 // Enumerate the different types of shapes
@@ -6,18 +6,14 @@ import GeometryTemplate from '@/lib/pixi-tools-v2/model/template';
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
 
-	"RECTANGLE": GeometryTemplate.Rectangle,
-	"FRAME": GeometryTemplate.Rectangle,
+	"RECTANGLE": Rectangle,
+	"FRAME": Rectangle,
 	//"CIRCLE": 'CIRCLE',
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',
 	// "MULTIPOINT": 'multipoint',
 } as const;
-
-
-export type GeometryTypes = typeof GeometryTypes;
-export type LiteralGeometryTypes = keyof GeometryTypes;
 
 export enum ResizeHandle {
 	LT = 0, // LeftTop
@@ -29,3 +25,6 @@ export enum ResizeHandle {
 	B = 6, // Bottom
 	L = 7, // Left
 }
+
+export type GeometryTypes = typeof GeometryTypes;
+export type LiteralGeometryTypes = keyof GeometryTypes;

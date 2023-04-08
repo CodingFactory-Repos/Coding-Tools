@@ -1,11 +1,13 @@
+
 import { Point, FederatedPointerEvent } from 'pixi.js';
-import { ContainerSize, InitialResizeState, PluginContainer, ProportionScaleOptions } from "../types/pixi-container-options";
-import { ViewportUI } from '../viewportUI';
-import { ResizeHandle } from '../types/pixi-enums';
-import { Handle } from '../model/model-constructor/handle';
-import { HitArea } from '../model/model-constructor/hitArea';
 import { FramedContainer } from '../class/framedContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
+import { Handle, HitArea } from '../model/template';
+import { ViewportUI } from '../viewportUI';
+
+import { ResizeHandle } from '../types/pixi-enums';
+import type { ContainerSize, InitialResizeState, ProportionScaleOptions } from "../types/pixi-container";
+import type { PluginContainer } from '../types/pixi-aliases';
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;

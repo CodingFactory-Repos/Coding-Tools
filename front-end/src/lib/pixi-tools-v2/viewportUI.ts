@@ -1,17 +1,14 @@
 import { IViewportOptions, Viewport } from "pixi-viewport";
 import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point } from "pixi.js";
 import { Scene } from "./scene";
-import { Stage } from "../pixi-tools/types";
 import { ContainerManager } from "./class/containerManager";
-import { Border } from "./model/model-constructor/border";
-import { GraphicAttributes } from "./types/pixi-container-options";
-import { ResizeHandle } from "./types/pixi-enums";
-import { Handle } from "./model/model-constructor/handle";
-import { HandleOptions, HitAreaOptions } from "./types/pixi-ui-options";
-import { HitArea } from "./model/model-constructor/hitArea";
-import { Grid } from "./model/model-constructor/grid";
 import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
-import { FramedContainer } from "./class/framedContainer";
+import { Border, Handle, HitArea, Grid } from "./model/template";
+import { ResizeHandle } from "./types/pixi-enums";
+
+import type { Stage } from "./types/pixi-aliases";
+import type { GraphicAttributes } from "./types/pixi-container";
+import type { HandleOptions, HitAreaOptions } from "./types/pixi-ui";
 
 
 export class ViewportUI extends Viewport {
@@ -206,9 +203,9 @@ export class ViewportUI extends Viewport {
 				color: 0xd5d5d5,
 				radius: size,
 				scale: this.scaled,
-			}, handleId);
-
+			});
 			handle.zIndex = 100;
+			handle.handleId = handleId;
 			this.resizeHandles.push(handle);
 			this.addChildAt(handle, this.children.length);
 		}
@@ -238,8 +235,9 @@ export class ViewportUI extends Viewport {
 				alpha: 0,
 				lineWidth: size,
 				scale: scale,
-			}, handleId);
+			});
 			line.zIndex = 100;
+			line.handleId = handleId;
 			this.resizeHitAreas.push(line);
 			this.addChildAt(line, this.children.length);
 		}

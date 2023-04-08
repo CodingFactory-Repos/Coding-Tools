@@ -1,10 +1,11 @@
+import { Point } from 'pixi.js';
 import { WrappedContainer } from './wrappedContainer';
-import { CanvasContainer, PluginContainer } from '../types/pixi-container-options';
 import { FramedContainer } from './framedContainer';
 import { ResizePlugin } from '../plugins/resizePlugin';
-import { ViewportUI } from "../viewportUI";
-import { Point } from 'pixi.js';
 import { DragPlugin } from '../plugins/dragPlugin';
+import { ViewportUI } from "../viewportUI";
+
+import type { CanvasContainer, PluginContainer} from '../types/pixi-aliases';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;

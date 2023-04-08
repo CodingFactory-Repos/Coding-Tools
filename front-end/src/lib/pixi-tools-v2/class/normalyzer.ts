@@ -1,9 +1,11 @@
-import { ContainerContext, GeometryEvent, GraphicAttributes, GraphicConstructor } from '@/lib/pixi-tools-v2/types/pixi-container-options';
-import { GeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums'
-import { Stage} from '@/lib/pixi-tools-v2/types/pixi-type-aliases';
 import { Circle } from 'pixi.js';
-import { Rectangle } from '@/lib/pixi-tools-v2/model/model-constructor/rectangle';
+import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
+
+import { GeometryTypes } from '../types/pixi-enums'
+import type { ContainerContext, GraphicAttributes, GraphicConstructor } from '../types/pixi-container';
+import type { GeometryEvent } from '../types/pixi-event';
+import type { Stage} from '../types/pixi-aliases';
 
 
 export class Normalizer {
@@ -82,6 +84,8 @@ export class Normalizer {
 		}
 	}
 }
+
+/** //! Everything below is deprecated */
 
 // import { Viewport } from 'pixi-viewport';
 // import * as PIXI from 'pixi.js';

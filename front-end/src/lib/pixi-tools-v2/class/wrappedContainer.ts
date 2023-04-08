@@ -1,10 +1,11 @@
-import { Rectangle } from "../model/model-constructor/rectangle";
-import { BoundsContainer } from "../types/pixi-class";
-import { CanvasContainer } from "../types/pixi-container-options";
-import { ViewportUI } from "../viewportUI";
+import { FederatedPointerEvent } from 'pixi.js';
 import { ContainerManager } from "./containerManager";
 import { FramedContainer } from "./framedContainer";
-import { FederatedPointerEvent } from 'pixi.js';
+import { Rectangle } from "../model/template";
+import { ViewportUI } from "../viewportUI";
+
+import { BoundsContainer } from "../types/pixi-class";
+import type { CanvasContainer } from '../types/pixi-aliases';
 
 
 export class WrappedContainer extends BoundsContainer {

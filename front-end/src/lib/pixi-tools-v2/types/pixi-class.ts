@@ -1,7 +1,7 @@
 import { Container, DisplayObject, FederatedPointerEvent, Graphics } from "pixi.js";
 import { ContainerManager } from "../class/containerManager";
 import { GenericContainer } from "../class/genericContainer";
-import { GraphicAttributes } from "./pixi-container-options";
+import { GraphicAttributes } from "./pixi-container";
 
 export interface Bounds {
 	x: number;
