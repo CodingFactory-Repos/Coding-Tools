@@ -6,8 +6,8 @@ import { Handle, HitArea } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { ResizeHandle } from '../types/pixi-enums';
-import type { ContainerSize, InitialResizeState, ProportionScaleOptions } from "../types/pixi-container";
 import type { PluginContainer } from '../types/pixi-aliases';
+import type { ContainerSize, InitialResizeState, ProportionScaleOptions } from "../types/pixi-container";
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;
@@ -59,8 +59,7 @@ export class ResizePlugin {
 		const target = e.target as Handle | HitArea;
 		this.handleId = target.handleId;
 
-		// TODO: Types
-		const graphics: any[] = this.container.getGraphicChildren();
+		const graphics = this.container.getGraphicChildren();
 		for(let n = 0; n < graphics.length; n++) {
 			this.initialGraphicsState.push({
 				child: graphics[n],

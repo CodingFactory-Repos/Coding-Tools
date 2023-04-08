@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from 'pixi.js';
+import { FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from "./containerManager";
 import { FramedContainer } from "./framedContainer";
 import { Rectangle } from "../model/template";
@@ -100,7 +100,7 @@ export class WrappedContainer extends BoundsContainer {
 	}
 
 	public getGraphicChildren() {
-		const graphics = [];
+		const graphics: Array<Graphics | Array<Graphics>> = [];
 
 		for(let n = 0; n < this.absoluteChildren.length; n++) {
 			graphics.push(this.absoluteChildren[n].getGraphicChildren());

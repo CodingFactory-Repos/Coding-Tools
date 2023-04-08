@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, Text } from "pixi.js";
+import { Container, FederatedPointerEvent, Graphics, Text } from "pixi.js";
 import { ContainerManager } from "./containerManager";
 import { GenericContainer } from "./genericContainer";
 import { Rectangle } from "../model/template";
@@ -138,14 +138,16 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		const graphics = [];
+		const graphics: Array<Graphics | Array<Graphics>> = [];
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
-			if(this.mainContainer.children[n].id === "framebox") {
-				graphics.push(this.mainContainer.children[n]);
+			const child = this.mainContainer.children[n];
+
+			if(child.id === "framebox" && child instanceof Rectangle) {
+				graphics.push(child);
 				continue;
 			}
-			graphics.push(this.mainContainer.children[n].getGraphicChildren());
+			graphics.push(child.getGraphicChildren());
 		}
 
 		return graphics.flat();

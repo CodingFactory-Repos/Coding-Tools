@@ -50,8 +50,7 @@ export class DragPlugin {
 		if(e) e.stopPropagation();
 		if(this.container === null) return;
 
-		// TODO: Types
-		const graphics: any[] = this.container.getGraphicChildren();
+		const graphics = this.container.getGraphicChildren();
 		for(let n = 0; n < graphics.length; n++) {
 			graphics[n].cursor = "grabbing";
 			this.initialGraphicsState.push({
