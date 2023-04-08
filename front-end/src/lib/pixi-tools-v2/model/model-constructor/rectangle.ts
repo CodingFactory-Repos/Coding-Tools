@@ -26,7 +26,7 @@ export class Rectangle extends ModelGraphics {
 
 		this.clear();
 		this.beginFill(this.color);
-		this.drawRect(0, 0, height, width);
+		this.drawRect(0, 0, width, height);
 		this.endFill();
 	}
 }
