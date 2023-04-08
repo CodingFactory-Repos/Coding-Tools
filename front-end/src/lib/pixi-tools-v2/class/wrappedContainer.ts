@@ -43,6 +43,7 @@ export class WrappedContainer extends BoundsContainer {
 		this.wrappedBox = null;
 		this.absoluteChildren = [];
 		this.viewport.removeChild(this);
+		this.removeAllListeners("pointerup");
 	}
 
 	public toggleChildrenInteractive = (interactive: boolean) => {
