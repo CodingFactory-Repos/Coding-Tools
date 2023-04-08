@@ -124,6 +124,7 @@ export class ViewportUI extends Viewport {
 		const eventBoundary = new EventBoundary(this);
 
 		if(eventBoundary.hitTest(x, y) === this) {
+			e.stopPropagation();
 			this.manager.deselectAll();
 			this.manager.detachPlugins();
 		}
