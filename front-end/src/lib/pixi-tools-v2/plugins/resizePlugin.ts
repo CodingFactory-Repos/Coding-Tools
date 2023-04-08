@@ -68,7 +68,7 @@ export class ResizePlugin {
 		}
 
 		const { width, height } = this.container;
-		this.initialContainerSize = { width, height },
+		this.initialContainerSize = { width, height };
 		this.initialCursorPosition = this.viewport.toWorld(e.global.clone());
 
 		this.container.on('pointerup', this._endResizeTransform);
@@ -239,9 +239,9 @@ export class ResizePlugin {
 		}
 
 		if(this.container instanceof WrappedContainer) {
-			for(let n = 0; n < this.container.children.length; n++) {
-				if(this.container.children[n].id === "frame") {
-					this.container.children[n].emit("moved", null);
+			for(let n = 0; n < this.container.absoluteChildren.length; n++) {
+				if(this.container.absoluteChildren[n].id === "frame") {
+					this.container.absoluteChildren[n].emit("moved", null);
 				}
 			}
 		}

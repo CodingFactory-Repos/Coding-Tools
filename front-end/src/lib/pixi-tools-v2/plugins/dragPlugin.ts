@@ -21,15 +21,12 @@ export class DragPlugin {
 
 	public attach(container: PluginContainer) {
 		this.container = container;
-		
-		// What now ? Well, welcome to event hell where side effects might happen
-		this._endDragging(null);
-
 		this.container.on('pointerdown', this._initDragging);
 
 		if(!this.viewport.selectionBoxActive) {
 			// What's this shenanigans you may ask ?
 			// This is a controlled fake event so that we can drag on the first pointerdown (selection)
+			// .forced is used to prevent the trigger of other event registered with a pointerdown, but you have to define it manually.
 			const eventBoundary = new EventBoundary(this.container);
 			const fakeEvent = new FederatedPointerEvent(eventBoundary);
 			fakeEvent.forced = true;
@@ -40,19 +37,17 @@ export class DragPlugin {
 
 	public detach() {
 		if(this.isDragging) return;
-
-		// Ensure that the events are removed
 		if(this.container) {
 			this.container.off('pointerdown', this._initDragging);
 			this._endDragging(null);
 		}
-
-		this.container = null;
 		this.initialCursorPosition = null;
+		this.container = null;
 	}
 
 	private _initDragging = (e: FederatedPointerEvent) => {
-		e.stopPropagation();
+		if(e) e.stopPropagation();
+		if(this.container === null) return;
 
 		// TODO: Types
 		const graphics: any[] = this.container.getGraphicChildren();
@@ -78,7 +73,9 @@ export class DragPlugin {
 	}
 
 	private _updateDragging = (e: FederatedPointerEvent) => {
-		e.stopPropagation();
+		if(e) e.stopPropagation();
+		if(this.container === null) return;
+
 		this.isDragging = true;
 		const cursorPosition = this.viewport.toWorld(e.global.clone());
 		const dx = (cursorPosition.x - this.initialCursorPosition.x);
@@ -94,9 +91,9 @@ export class DragPlugin {
 		}
 
 		if(this.container instanceof WrappedContainer) {
-			for(let n = 0; n < this.container.children.length; n++) {
-				if(this.container.children[n].id === "frame") {
-					this.container.children[n].emit("moved", null);
+			for(let n = 0; n < this.container.absoluteChildren.length; n++) {
+				if(this.container.absoluteChildren[n].id === "frame") {
+					this.container.absoluteChildren[n].emit("moved", null);
 				}
 			}
 		}
@@ -110,6 +107,8 @@ export class DragPlugin {
 
 	private _endDragging(e: FederatedPointerEvent) {
 		if(e) e.stopPropagation();
+		if(this.container === null) return;
+
 		this.isDragging = false;
 		this.viewport.off('pointermove', this._updateDragging);
 		this.viewport.off('pointerup', this.endHandler);
