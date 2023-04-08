@@ -76,53 +76,71 @@ export class DragPlugin {
 		if(e) e.stopPropagation();
 		if(this.container === null) return;
 
-		this.isDragging = true;
-		const cursorPosition = this.viewport.toWorld(e.global.clone());
-		const dx = (cursorPosition.x - this.initialCursorPosition.x);
-		const dy = (cursorPosition.y - this.initialCursorPosition.y);
+		try { // Prevent an error when mouse move event and deletion event at the same time
+			this.isDragging = true;
+			const cursorPosition = this.viewport.toWorld(e.global.clone());
+			const dx = (cursorPosition.x - this.initialCursorPosition.x);
+			const dy = (cursorPosition.y - this.initialCursorPosition.y);
 
-		for(let n = 0; n < this.initialGraphicsState.length; n++) {
-			const { child, x, y } = this.initialGraphicsState[n];
-			child.position.set(x + dx, y + dy);
-		}
+			for(let n = 0; n < this.initialGraphicsState.length; n++) {
+				const { child, x, y } = this.initialGraphicsState[n];
+				child.position.set(x + dx, y + dy);
+			}
 
-		if(this.container instanceof FramedContainer) {
-			this.container.emit("moved", null)
-		}
+			if(this.container instanceof FramedContainer) {
+				this.container.emit("moved", null)
+			}
 
-		if(this.container instanceof WrappedContainer) {
-			for(let n = 0; n < this.container.absoluteChildren.length; n++) {
-				if(this.container.absoluteChildren[n].id === "frame") {
-					this.container.absoluteChildren[n].emit("moved", null);
+			if(this.container instanceof WrappedContainer) {
+				for(let n = 0; n < this.container.absoluteChildren.length; n++) {
+					if(this.container.absoluteChildren[n].id === "frame") {
+						this.container.absoluteChildren[n].emit("moved", null);
+					}
 				}
 			}
-		}
 
-		const geometry = this.container.getGeometry();
-		this.viewport.destroyBorder();
-		this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
-		this.viewport.updateResizeHitAreas(geometry);
-		this.viewport.updateResizeHandles(geometry, false);
+			const geometry = this.container.getGeometry();
+			this.viewport.destroyBorder();
+			this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
+			this.viewport.updateResizeHitAreas(geometry);
+			this.viewport.updateResizeHandles(geometry, false);
+		} catch(err) {
+			if(err instanceof Error) {
+				console.error("Unexpected error during drag :", err.message);
+			}
+
+			this._removeViewportDragEvent();
+		}
 	}
 
 	private _endDragging(e: FederatedPointerEvent) {
 		if(e) e.stopPropagation();
 		if(this.container === null) return;
 
-		this.isDragging = false;
+		try { // Prevent an error when mouse up event and deletion event at the same time
+			this.container.off('pointerup', this.endHandler);
+			this.container.off('pointermove', this._updateDragging);
+			this._removeViewportDragEvent();
+			
+			this.initialGraphicsState.forEach((el) => {
+				el.child.cursor = "pointer";
+			})
+			
+			this.initialGraphicsState.length = 0;
+			this.initialCursorPosition = null;
+			this.container.cursor = "pointer";
+			this.isDragging = false;
+		} catch(err) {
+			if(err instanceof Error) {
+				console.error("Unexpected error during end drag :", err.message);
+			}
+		}
+	}
+
+	private _removeViewportDragEvent = () => {
 		this.viewport.off('pointermove', this._updateDragging);
 		this.viewport.off('pointerup', this.endHandler);
-		this.container.off('pointerup', this.endHandler);
-		this.container.off('pointermove', this._updateDragging);
-
-		this.initialGraphicsState.forEach((el) => {
-			el.child.cursor = "pointer";
-		})
-
-		this.initialGraphicsState.length = 0;
-		this.initialCursorPosition = null;
-
 		this.viewport.cursor = "default";
-		this.container.cursor = "pointer";
+		this.isDragging = false;
 	}
 }
