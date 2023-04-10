@@ -50,10 +50,16 @@ export interface FrameContext {
 export interface ContainerSize {
 	width: number;
 	height: number;
+	absMinX: number;
+	absMaxY: number;
+	absMaxX: number;
+	absMinY: number;
 }
 
-export interface InitialResizeState extends ContainerSize {
+export interface InitialResizeState {
 	child: Graphics;
+	width: number;
+	height: number;
 	x: number;
 	y: number;
 }
