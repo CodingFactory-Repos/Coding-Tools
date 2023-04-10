@@ -22,7 +22,7 @@ export interface ProjectStorev2 {
 	createFramedGeometry?: () => void;
 	increaseZoom?: () => void;
 	decreaseZoom?: () => void;
-	setFrameCanvas?: (index: number) => void;
+	setFrameCanvas?: (frameNumber: number) => void;
 	setDefaultCanvas?: () => void;
 }
 

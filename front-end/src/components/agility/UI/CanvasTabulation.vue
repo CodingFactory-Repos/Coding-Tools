@@ -2,29 +2,29 @@
 	<div class="grow h-full flex justify-start items-end bg-darker-primary overflow-x-scroll px-1 gap-1" style="scrollbar-width: none;">
 		<div
 			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected === null }"
+			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === null }"
 			@click="selectDefault"
 		>
 			<div class="flex gap-2">
-				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected === null }"/>
+				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selectedNumber === null }"/>
 				<span class="text-xs text-light-tertiary font-bold">Projet name</span>
 			</div>
 		</div>
 		<div
-			v-for="(frame, i) in frames"
-			@click="selectTab(i)"
+			v-for="(frameNumber, i) in frames"
+			@click="selectTab(frameNumber)"
 			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selected?.frameNumber === frame.frameNumber }"
+			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === frameNumber }"
 			:key="`tab_${i}`"
 		>
 			<div class="flex gap-2">
-				<SvgFrame width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selected?.frameNumber === frame.frameNumber }"/>
-				<span class="text-xs text-light-tertiary font-bold">Frame {{ frame.frameNumber }}</span>
+				<SvgFrame width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selectedNumber === frameNumber }"/>
+				<span class="text-xs text-light-tertiary font-bold">Frame {{ frameNumber }}</span>
 			</div>
 			<button
 				class="w-4 h-4 flex justify-center items-center hover:bg-dark-highlight rounded-lg"
-				:class="{ 'hover:!bg-[#2e7bbe]': selected?.frameNumber === frame.frameNumber }"
-				@click.stop="removeFrame(i)"
+				:class="{ 'hover:!bg-[#2e7bbe]': selectedNumber === frameNumber }"
+				@click.stop="removeFrame(frameNumber)"
 			>
 				<SvgCross width="10" height="10" class="fill-white-icon dark:fill-white-icon"/>
 			</button>
@@ -46,13 +46,13 @@ const projectStore = useProjectStorev2();
 const frames = computed(() => projectStore.getFrames);
 const viewport = computed(() => projectStore?.scene?.viewport);
 
-const selected = ref<FramedContainer>(null);
+const selectedNumber = ref<number>(null);
 
 watch(frames, val => {
-	if(selected.value !== null) {
-		const index = val.indexOf(selected.value as FramedContainer);
+	if(selectedNumber.value !== null) {
+		const index = val.indexOf(selectedNumber.value);
 		if(index === -1) {
-			selected.value = null;
+			selectedNumber.value = null;
 		}
 	}
 }, { deep: true });
@@ -65,16 +65,16 @@ const deleteCanvasUI = () => {
 const selectDefault = () => {
 	deleteCanvasUI();
 	projectStore.setDefaultCanvas();
-	selected.value = null;
+	selectedNumber.value = null;
 }
 
-const selectTab = (index: number) => {
+const selectTab = (frameNumber: number) => {
 	deleteCanvasUI();
-	selected.value = frames.value[index];
-	projectStore.setFrameCanvas(index);
+	selectedNumber.value = frameNumber;
+	projectStore.setFrameCanvas(frameNumber);
 }
 
-const removeFrame = async (index: number) => {
+const removeFrame = async (frameNumber: number) => {
 	const res = await Swal.fire({
 		title: "Are you sure ?",
 		text: "If you proceed, the frame will be deleted as it is an action outside of the canvas.",
@@ -90,7 +90,7 @@ const removeFrame = async (index: number) => {
 	});
 
 	if(res.isConfirmed) {
-		frames.value[index].destroy();
+		viewport.value.children.find((child) => child.id === "frame" && child.frameNumber === frameNumber).destroy();
 		deleteCanvasUI();
 		selectDefault();
 	}

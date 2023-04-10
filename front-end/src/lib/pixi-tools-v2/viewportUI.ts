@@ -29,7 +29,7 @@ export class ViewportUI extends Viewport {
 	public mouse: Point;
 	public selectionBoxActive: boolean = false;
 
-	public readonly frames: Array<FramedContainer> = reactive([]);
+	public readonly activeFrames: Array<number> = reactive([]);
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
@@ -53,15 +53,15 @@ export class ViewportUI extends Viewport {
 
 		this.on('childAdded', (child: CanvasContainer) => {
 			if(child.id === "frame" && child instanceof FramedContainer) {
-				this.frames.push(child);
+				this.activeFrames.push(child.frameNumber);
 			}
 		})
 
 		this.on('childRemoved', (child: CanvasContainer) => {
 			if(child.id === "frame" && child instanceof FramedContainer) {
-				const index = this.frames.indexOf(child);
+				const index = this.activeFrames.indexOf(child.frameNumber);
 				if(index !== -1) {
-					this.frames.splice(index, 1);
+					this.activeFrames.splice(index, 1);
 				}
 			}
 		})
