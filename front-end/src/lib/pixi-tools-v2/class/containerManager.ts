@@ -6,6 +6,7 @@ import { DragPlugin } from '../plugins/dragPlugin';
 import { ViewportUI } from "../viewportUI";
 
 import type { CanvasContainer, PluginContainer} from '../types/pixi-aliases';
+import { FramedMainContainer } from '../types/pixi-class';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -203,9 +204,16 @@ export class ContainerManager {
 				height: this.wrappedContainer.height,
 			}
 		} else {
-			return {
-				width: this._selectedContainers[0].width,
-				height: this._selectedContainers[0].height,
+			if(this._selectedContainers[0] instanceof FramedContainer) {
+				return {
+					width: this._selectedContainers[0].mainContainer.width,
+					height: this._selectedContainers[0].mainContainer.height,
+				}
+			} else {
+				return {
+					width: this._selectedContainers[0].width,
+					height: this._selectedContainers[0].height,
+				}
 			}
 		}
 	}
