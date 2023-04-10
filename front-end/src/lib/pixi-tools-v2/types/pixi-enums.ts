@@ -26,5 +26,21 @@ export enum ResizeHandle {
 	L = 7, // Left
 }
 
+export const ResizeHandleOppositeOf = {
+	[ResizeHandle.LT]: { x: ResizeHandle.RT, y: ResizeHandle.LB },
+	[ResizeHandle.RT]: { x: ResizeHandle.LT, y: ResizeHandle.RB },
+	[ResizeHandle.RB]: { x: ResizeHandle.LB, y: ResizeHandle.RT },
+	[ResizeHandle.LB]: { x: ResizeHandle.RB, y: ResizeHandle.LT },
+	[ResizeHandle.T]:  { x: null,            y: ResizeHandle.B },
+	[ResizeHandle.B]:  { x: null,            y: ResizeHandle.T },
+	[ResizeHandle.R]:  { x: ResizeHandle.L,  y: null },
+	[ResizeHandle.L]:  { x: ResizeHandle.R,  y: null },
+}
+
+export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
+export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];
+export const TopWall = [ResizeHandle.LB, ResizeHandle.RB, ResizeHandle.B];
+export const BottomWall = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.T];
+
 export type GeometryTypes = typeof GeometryTypes;
 export type LiteralGeometryTypes = keyof GeometryTypes;
