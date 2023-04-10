@@ -42,7 +42,7 @@ export class ViewportUI extends Viewport {
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
 		this.on('zoomed', this._onViewportZoomed);
-		this.on('pointerup', this._onViewportUnselect);
+		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
 		})
