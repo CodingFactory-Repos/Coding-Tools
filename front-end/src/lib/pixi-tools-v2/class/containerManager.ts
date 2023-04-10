@@ -178,10 +178,10 @@ export class ContainerManager {
 		const len = this._selectedContainers.length;
 		if(len === 0) return null;
 
-		let minX = Infinity;
-		let minY = Infinity;
-		let maxX = 0;
-		let maxY = 0;
+		let minX = Number.MAX_SAFE_INTEGER;
+		let minY = Number.MAX_SAFE_INTEGER;
+		let maxX = Number.MIN_SAFE_INTEGER;
+		let maxY = Number.MIN_SAFE_INTEGER;
 
 		for(let n = 0; n < len; n++) {
 			const { x, y, width, height } = this._selectedContainers[n].getGeometry();

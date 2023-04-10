@@ -66,10 +66,10 @@ export class WrappedContainer extends BoundsContainer {
 	}
 
 	protected updateAbsoluteBounds() {
-		let minX = Infinity;
-		let minY = Infinity;
-		let maxX = 0;
-		let maxY = 0;
+		let minX = Number.MAX_SAFE_INTEGER;
+		let minY = Number.MAX_SAFE_INTEGER;
+		let maxX = Number.MIN_SAFE_INTEGER;
+		let maxY = Number.MIN_SAFE_INTEGER;
 
 		for(let n = 0; n < this.absoluteChildren.length; n++) {
 			const geometry = this.absoluteChildren[n].getGeometry();
