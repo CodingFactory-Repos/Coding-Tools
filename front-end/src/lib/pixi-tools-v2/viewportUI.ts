@@ -77,6 +77,7 @@ export class ViewportUI extends Viewport {
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
+			console.log(scaledWidth, viewportWidth * 0.025)
 			if (scaledWidth < viewportWidth * 0.025) {
 				if(!this._isHiddenUI) {
 					this._isHiddenUI = true;
@@ -211,6 +212,7 @@ export class ViewportUI extends Viewport {
 			handle.handleId = handleId;
 			this.resizeHandles.push(handle);
 			this.addChildAt(handle, this.children.length);
+			if(this._isHiddenUI) handle.visible = false;
 		}
 	}
 
@@ -243,6 +245,7 @@ export class ViewportUI extends Viewport {
 			line.handleId = handleId;
 			this.resizeHitAreas.push(line);
 			this.addChildAt(line, this.children.length);
+			if(this._isHiddenUI) line.visible = false;
 		}
 	}
 
