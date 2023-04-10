@@ -55,14 +55,21 @@ watch(frames, val => {
 			selected.value = null;
 		}
 	}
-}, { deep: true })
+}, { deep: true });
+
+const deleteCanvasUI = () => {
+	viewport.value.manager.deselectAll();
+	viewport.value.manager.detachPlugins();
+}
 
 const selectDefault = () => {
+	deleteCanvasUI();
 	projectStore.setDefaultCanvas();
 	selected.value = null;
 }
 
 const selectTab = (index: number) => {
+	deleteCanvasUI();
 	selected.value = frames.value[index];
 	projectStore.setFrameCanvas(index);
 }
@@ -84,9 +91,7 @@ const removeFrame = async (index: number) => {
 
 	if(res.isConfirmed) {
 		frames.value[index].destroy();
-		viewport.value.destroyBorder();
-		viewport.value.destroyResizeHandles();
-		viewport.value.destroyResizeHitArea();
+		deleteCanvasUI();
 		selectDefault();
 	}
 }
