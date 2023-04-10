@@ -77,7 +77,6 @@ export class ViewportUI extends Viewport {
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
-			console.log(scaledWidth, viewportWidth * 0.025)
 			if (scaledWidth < viewportWidth * 0.025) {
 				if(!this._isHiddenUI) {
 					this._isHiddenUI = true;
