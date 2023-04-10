@@ -26,6 +26,7 @@ export interface ProjectStorev2 {
 	decreaseZoom?: () => void;
 	setFrameCanvas?: (frameNumber: number) => void;
 	setDefaultCanvas?: () => void;
+	canvasDownload?: () => void;
 }
 
 export interface ViewportDefaultPosition {

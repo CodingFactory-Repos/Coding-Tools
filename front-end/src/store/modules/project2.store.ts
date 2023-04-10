@@ -142,6 +142,10 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		},
 		setDefaultCanvas(this: ProjectStorev2) {
 			this.scene.viewport.toggleHidding(true);
+		},
+		canvasDownload(this: ProjectStorev2) {
+			const scene = toRaw(this.scene);
+			scene.viewport.manager.downloadSelected();
 		}
 	},
 });
