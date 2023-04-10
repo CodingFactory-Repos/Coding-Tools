@@ -215,8 +215,8 @@ export class ViewportUI extends Viewport {
 	}
 
 	public createResizeHitAreas(x: number, y: number, width: number, height: number) {
+		const size = 5;
 		const scale = this.scaled;
-		const size = 5 / scale;
 
 		const hitLineLeft = x;
 		const hitLineRight = x + width;
