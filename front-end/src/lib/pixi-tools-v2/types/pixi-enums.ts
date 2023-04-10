@@ -44,3 +44,10 @@ export const BottomWall = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.T];
 
 export type GeometryTypes = typeof GeometryTypes;
 export type LiteralGeometryTypes = keyof GeometryTypes;
+
+export enum DownloadType {
+	MIME_PNG = 'image/png',
+	MIME_JPG = 'image/jpeg',
+	MIME_WEBP = 'image/webp',
+	MIME_PDF = 'application/pdf',
+}
