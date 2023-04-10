@@ -113,10 +113,12 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.default = true;
 		},
 		increaseZoom(this: ProjectStorev2) {
-			this.scene.viewport.zoomPlugin.updateZoomStep(1);
+			const scene = toRaw(this.scene);
+			scene.viewport.zoomPlugin.updateZoomStep(1);
 		},
 		decreaseZoom(this: ProjectStorev2) {
-			this.scene.viewport.zoomPlugin.updateZoomStep(-1);
+			const scene = toRaw(this.scene);
+			scene.viewport.zoomPlugin.updateZoomStep(-1);
 		},
 		toggleImmersion(this: ProjectStorev2) {
 			this.immersion = !this.immersion;
