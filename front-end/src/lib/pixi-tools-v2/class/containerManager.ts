@@ -220,13 +220,13 @@ export class ContainerManager {
 		}
 	}
 
-	public downloadSelected() {
+	public downloadSelected(mime: string) {
 		if(!this.isActive) return;
 
 		if(this._selectedContainers.length > 1) {
-			this.downloadPlugin.downloadMany(this._selectedContainers);
+			this.downloadPlugin.downloadMany(this._selectedContainers, mime);
 		} else {
-			this.downloadPlugin.downloadOne(this._selectedContainers[0]);
+			this.downloadPlugin.downloadOne(this._selectedContainers[0], mime);
 		}
 	}
 
