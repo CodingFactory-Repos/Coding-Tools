@@ -33,16 +33,18 @@
 </template>
 
 <script lang="ts" setup>
+import Swal from 'sweetalert2';
 import { ref, computed, watch } from 'vue';
+import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
-import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 
 const projectStore = useProjectStorev2();
 const frames = computed(() => projectStore.getFrames);
+const viewport = computed(() => projectStore?.scene?.viewport);
 
 const selected = ref<FramedContainer>(null);
 
@@ -65,9 +67,28 @@ const selectTab = (index: number) => {
 	projectStore.setFrameCanvas(index);
 }
 
-const removeFrame = (index: number) => {
-	frames.value.splice(index, 1);
-	selectDefault();
+const removeFrame = async (index: number) => {
+	const res = await Swal.fire({
+		title: "Are you sure ?",
+		text: "If you proceed, the frame will be deleted as it is an action outside of the canvas.",
+		icon: 'info',
+		showCancelButton: true,
+		cancelButtonColor: '',
+		focusConfirm: false,
+		cancelButtonText: 'Cancel',
+		confirmButtonColor: 'red',
+		confirmButtonText: 'Confirm',
+		reverseButtons: true,
+		width: 400,
+	});
+
+	if(res.isConfirmed) {
+		frames.value[index].destroy();
+		viewport.value.destroyBorder();
+		viewport.value.destroyResizeHandles();
+		viewport.value.destroyResizeHitArea();
+		selectDefault();
+	}
 }
 </script>
 
