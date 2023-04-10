@@ -26,9 +26,10 @@ export class HitArea extends ModelGraphics {
 		const lineWidth = Math.min(80, Math.max(0.4, this.lineWidth / scale));
 
 		this.clear();
+		this.position.set(x, y);
 		this.lineStyle(lineWidth, 0xff00ff);
-		this.moveTo(x, y);
-		this.lineTo(endX, endY);
+		this.moveTo(0, 0);
+		this.lineTo(endX - x, endY - y);
 		this.hitArea = this.getLocalBounds();
 	}
 }
