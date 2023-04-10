@@ -53,8 +53,22 @@
 				</IconButton>
 			</div>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-10 shadow-md pointer-events-auto">
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
+				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="onContextMenu">
 					<SvgDownload width="22" height="22" class="!fill-gray-400"/>
+					<ContextMenu
+						v-model:show="showDownloadContextMenu"
+						:options="contextMenuOptions"
+					>
+						<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_PNG)">
+							<span class="text-sm text-center w-full">Export PNG</span>
+						</ContextMenuItem>
+						<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_JPG)">
+							<span class="text-sm text-center w-full">Export JPG</span>
+						</ContextMenuItem>
+						<ContextMenuItem class="cursor-pointer" @click="download(DownloadType.MIME_WEBP)">
+							<span class="text-sm text-center w-full">Export WEBP</span>
+						</ContextMenuItem>
+					</ContextMenu>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgProject width="22" height="22" class="!fill-gray-400"/>
@@ -95,7 +109,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, watch, ref } from 'vue';
+import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
+import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
@@ -117,7 +134,6 @@ import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
-import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 const projectStore = useProjectStorev2();
 
@@ -167,6 +183,27 @@ function toggleFullScreen() {
 	} else if (document.exitFullscreen) {
 		document.exitFullscreen();
 	}
+}
+
+const contextMenuOptions = ref<MenuOptions>({
+	x: 10,
+	y: 40,
+	zIndex: 999,
+	minWidth: 300,
+	theme: 'default dark',
+	customClass: '!text-white dark:bg-darker-primary shadow-none p-0 overflow-hidden min-w-[10rem]',
+})
+
+const showDownloadContextMenu = ref(false);
+const onContextMenu = (e: MouseEvent) => {
+	e.preventDefault();
+	showDownloadContextMenu.value = true;
+	contextMenuOptions.value.x = e.x;
+	contextMenuOptions.value.y = e.y;
+}
+
+const download = (mime: string) => {
+	projectStore.canvasDownload(mime);
 }
 </script>
 

@@ -28,8 +28,22 @@
 				<SvgShape width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 			<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
-			<IconButton class="h-fit" type="button" @click="download">
+			<IconButton class="h-fit" type="button" @click="onContextMenu">
 				<SvgDownload width="22" height="22" class="!fill-gray-400"/>
+				<ContextMenu
+					v-model:show="showDownloadContextMenu"
+					:options="contextMenuOptions"
+				>
+					<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_PNG)">
+						<span class="text-sm text-center w-full">Export PNG</span>
+					</ContextMenuItem>
+					<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_JPG)">
+						<span class="text-sm text-center w-full">Export JPG</span>
+					</ContextMenuItem>
+					<ContextMenuItem class="cursor-pointer" @click="download(DownloadType.MIME_WEBP)">
+						<span class="text-sm text-center w-full">Export WEBP</span>
+					</ContextMenuItem>
+				</ContextMenu>
 			</IconButton>
 			<IconButton class="h-fit" type="button">
 				<SvgProject width="22" height="22" class="!fill-gray-400"/>
@@ -50,8 +64,10 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch, ref } from 'vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
-import { computed, watch } from 'vue';
+import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
+import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
@@ -90,7 +106,24 @@ const createFrame = () => {
 	projectStore.setDeferredEvent("pointer", true);
 }
 
-const download = () => {
-	projectStore.canvasDownload();
+const contextMenuOptions = ref<MenuOptions>({
+	x: 10,
+	y: 40,
+	zIndex: 999,
+	minWidth: 300,
+	theme: 'default dark',
+	customClass: '!text-white dark:bg-darker-primary shadow-none p-0 overflow-hidden min-w-[10rem]',
+})
+
+const showDownloadContextMenu = ref(false);
+const onContextMenu = (e: MouseEvent) => {
+	e.preventDefault();
+	showDownloadContextMenu.value = true;
+	contextMenuOptions.value.x = e.x;
+	contextMenuOptions.value.y = e.y;
+}
+
+const download = (mime: string) => {
+	projectStore.canvasDownload(mime);
 }
 </script>
