@@ -54,7 +54,7 @@
 			</div>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-10 shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="onContextMenu">
-					<SvgDownload width="22" height="22" class="!fill-gray-400"/>
+					<SvgDownload width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"/>
 					<ContextMenu
 						v-model:show="showDownloadContextMenu"
 						:options="contextMenuOptions"

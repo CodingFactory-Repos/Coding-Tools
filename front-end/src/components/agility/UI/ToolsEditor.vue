@@ -29,7 +29,7 @@
 			</IconButton>
 			<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
 			<IconButton class="h-fit" type="button" @click="onContextMenu">
-				<SvgDownload width="22" height="22" class="!fill-gray-400"/>
+				<SvgDownload width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"/>
 				<ContextMenu
 					v-model:show="showDownloadContextMenu"
 					:options="contextMenuOptions"
