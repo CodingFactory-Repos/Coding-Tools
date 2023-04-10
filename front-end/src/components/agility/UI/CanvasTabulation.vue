@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
@@ -42,9 +42,18 @@ import SvgCross from '@/components/common/svg/Cross.vue';
 import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 
 const projectStore = useProjectStorev2();
-const frames = computed(() => projectStore.frames as Array<FramedContainer>);
+const frames = computed(() => projectStore.getFrames);
 
 const selected = ref<FramedContainer>(null);
+
+watch(frames, val => {
+	if(selected.value !== null) {
+		const index = val.indexOf(selected.value as FramedContainer);
+		if(index === -1) {
+			selected.value = null;
+		}
+	}
+}, { deep: true })
 
 const selectDefault = () => {
 	projectStore.setDefaultCanvas();
