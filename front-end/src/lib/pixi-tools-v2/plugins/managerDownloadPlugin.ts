@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { Renderer } from 'pixi.js';
+import { Renderer, RenderTexture } from 'pixi.js';
 import { ViewportUI } from "../viewportUI";
 
 import type { CanvasContainer } from "../types/pixi-aliases";
@@ -14,10 +14,9 @@ export class DownloadPlugin {
 	public downloadOne(container: CanvasContainer, mime: string) {
 		const cloneContainer = container.cloneToContainer();
 		const { width, height, x, y} = cloneContainer.getBounds();
-		console.log(width, height, x, y)
 		cloneContainer.position.set(-x, -y);
 
-		const renderer = new Renderer({ resolution: 1, width, height });
+		const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
 		renderer.render(cloneContainer);
 		
 		const canvas = renderer.view;
@@ -45,7 +44,7 @@ export class DownloadPlugin {
 			const { width, height, x, y } = cloneContainer.getBounds();
 			cloneContainer.position.set(-x, -y);
 		
-			const renderer = new Renderer({ resolution: 1, width, height });
+			const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
 			renderer.render(cloneContainer);
 		
 			const canvas = renderer.view;
