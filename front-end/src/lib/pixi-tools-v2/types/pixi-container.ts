@@ -40,9 +40,11 @@ export interface ContainerContext {
 	viewport: ViewportUI;
 	constructors: GraphicConstructor | Array<GraphicConstructor>;
 	manager?: ContainerManager;
+	tabNumber?: number;
 }
 
 export interface FrameContext {
+	tabFrameNumber?: number,
 	isAttached: boolean,
 	to: number,
 }

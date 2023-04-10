@@ -14,6 +14,7 @@ export class GenericContainer extends PluginContainer {
 	public absMaxX: number;
 	public absMaxY: number;
 	
+	public tabNumberContext = null;
 	public isAttachedToFrame: boolean;
 	public frameNumber: number;
 
@@ -23,6 +24,7 @@ export class GenericContainer extends PluginContainer {
 		this.id = "generic"
 		this.cursor = "pointer";
 		this.interactive = true;
+		this.tabNumberContext = context.tabNumber;
 		this.isAttachedToFrame = frameCtx.isAttached;
 		this.frameNumber = frameCtx.to ?? -1;
 		this.manager = context.manager;

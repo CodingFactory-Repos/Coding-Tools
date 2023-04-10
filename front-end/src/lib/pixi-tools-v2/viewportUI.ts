@@ -146,8 +146,14 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public toggleHidding(hide: boolean) {
-		this.children.forEach((child) => child.visible = hide);
+	public toggleHidding(hide: boolean, frameNumber: number = null) {
+		this.children.forEach((child) => {
+			if(frameNumber && child.tabNumberContext === frameNumber) {
+				child.visible = true;
+			} else {
+				child.visible = hide
+			}
+		});
 	}
 
 	public drawGrid() {

@@ -6,7 +6,6 @@ import { DragPlugin } from '../plugins/dragPlugin';
 import { ViewportUI } from "../viewportUI";
 
 import type { CanvasContainer, PluginContainer} from '../types/pixi-aliases';
-import { FramedMainContainer } from '../types/pixi-class';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;

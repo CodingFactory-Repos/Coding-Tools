@@ -22,6 +22,7 @@ export class FramedContainer extends PluginContainer {
 	public absMaxX: number;
 	public absMaxY: number;
 
+	public tabNumberContext: number;
 	public isAttachedToFrame: boolean;
 	public frameNumber: number;
 
@@ -37,6 +38,7 @@ export class FramedContainer extends PluginContainer {
 		const allFrames = this.viewport.children.filter(child => child.id === "frame");
 		const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 		this.frameNumber = [...new Set(frameNumbers)].reduce((acc, cur) => cur === acc ? acc + 1 : cur > acc ? acc : cur, 1);
+		this.tabNumberContext = context.tabNumber;
 
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new Container();
