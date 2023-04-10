@@ -34,8 +34,7 @@
 
 <script lang="ts" setup>
 import Swal from 'sweetalert2';
-import { ref, computed, watch } from 'vue';
-import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
+import { computed, watch } from 'vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
@@ -45,17 +44,16 @@ import SvgCross from '@/components/common/svg/Cross.vue';
 const projectStore = useProjectStorev2();
 const frames = computed(() => projectStore.getFrames);
 const viewport = computed(() => projectStore?.scene?.viewport);
-
-const selectedNumber = ref<number>(null);
+const selectedNumber = computed(() => projectStore.selectedFrameNumber);
 
 watch(frames, val => {
 	if(selectedNumber.value !== null) {
 		const index = val.indexOf(selectedNumber.value);
 		if(index === -1) {
-			selectedNumber.value = null;
+			projectStore.selectedFrameNumber = null;
 		}
 	}
-}, { deep: true });
+});
 
 const deleteCanvasUI = () => {
 	viewport.value.manager.deselectAll();
@@ -65,12 +63,12 @@ const deleteCanvasUI = () => {
 const selectDefault = () => {
 	deleteCanvasUI();
 	projectStore.setDefaultCanvas();
-	selectedNumber.value = null;
+	projectStore.selectedFrameNumber = null;
 }
 
 const selectTab = (frameNumber: number) => {
 	deleteCanvasUI();
-	selectedNumber.value = frameNumber;
+	projectStore.selectedFrameNumber = frameNumber;
 	projectStore.setFrameCanvas(frameNumber);
 }
 
@@ -96,9 +94,3 @@ const removeFrame = async (frameNumber: number) => {
 	}
 }
 </script>
-
-<style>
-.t {
-	color: #2e7bbe
-}
-</style>

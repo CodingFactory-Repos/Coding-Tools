@@ -20,6 +20,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			onFullscreen: false,
 			immersion: false,
 			viewportDefaultPos: {},
+			selectedFrameNumber: null,
 		};
 	},
 	getters: {
@@ -78,6 +79,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			}, true);
 
 			context.manager = scene.viewport.manager;
+			context.tabNumber = null; // TODO: Not supported yet, we need to discuss it
 			const framedContainer = new FramedContainer(context);
 			scene.viewport.addChild(framedContainer);
 
@@ -101,9 +103,10 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			}, false);
 
 			context.manager = scene.viewport.manager;
+			context.tabNumber = this.selectedFrameNumber;
 			const genericContainer = new GenericContainer(context, {
 				isAttached: false,
-				to: -1
+				to: -1,
 			});
 			scene.viewport.addChild(genericContainer);
 
@@ -134,7 +137,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			this.scene.viewport.worldHeight = newHeight;
 		},
 		setFrameCanvas(this: ProjectStorev2, frameNumber: number) {
-			this.scene.viewport.toggleHidding(false);
+			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
 			this.scene.viewport.children.find((child) => child.id === "frame" && child.frameNumber === frameNumber).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStorev2) {

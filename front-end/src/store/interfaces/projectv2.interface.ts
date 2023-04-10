@@ -11,8 +11,10 @@ export interface ProjectStorev2 {
 	onFullscreen: boolean;
 	immersion: boolean;
 	viewportDefaultPos: ViewportDefaultPosition;
+	selectedFrameNumber: number;
 
 	getZoom?: () => number;
+	getFrames?: () => Array<number>;
 
 	toggleImmersion?: () => void;
 	removeGeometryEvent?: () => void;
