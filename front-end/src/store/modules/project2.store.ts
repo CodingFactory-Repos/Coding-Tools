@@ -19,7 +19,6 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			selectionBox: null,
 			onFullscreen: false,
 			immersion: false,
-			frames: [],
 			viewportDefaultPos: {},
 		};
 	},
@@ -27,6 +26,9 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		getZoom(this: ProjectStorev2) {
 			return this.scene?.viewport?.zoomPlugin?.ZOOM?.value;
 		},
+		getFrames(this: ProjectStorev2) {
+			return this.scene?.viewport?.frames || [];
+		}
 	},
 	actions: {
 		setDeferredEvent(
@@ -81,7 +83,6 @@ export const useProjectStorev2 = defineStore('projectv2', {
 
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			this.canvas.classList.toggle("default");
-			this.frames.push(framedContainer);
 			this.deferredGeometry = null;
 			this.default = true;
 		},
@@ -132,7 +133,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		},
 		setFrameCanvas(this: ProjectStorev2, index: number) {
 			this.scene.viewport.toggleHidding(false);
-			this.frames[index].visible = true;
+			this.scene.viewport.frames[index].visible = true;
 		},
 		setDefaultCanvas(this: ProjectStorev2) {
 			this.scene.viewport.toggleHidding(true);
