@@ -34,8 +34,9 @@ export class FramedContainer extends PluginContainer {
 		this.viewport = context.viewport;
 		this.manager = context.manager;
 
-		// TODO: frameNumber will break with multi user, because the frame can be moved out of the viewport (ie. wrapped container)
-		this.frameNumber = this.viewport.children.filter(el => el.id === "frame").length;
+		const allFrames = this.viewport.children.filter(child => child.id === "frame");
+		const frameNumbers = allFrames.map((frame) => frame.frameNumber);
+		this.frameNumber = [...new Set(frameNumbers)].reduce((acc, cur) => cur === acc ? acc + 1 : cur > acc ? acc : cur, 1);
 
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new Container();
