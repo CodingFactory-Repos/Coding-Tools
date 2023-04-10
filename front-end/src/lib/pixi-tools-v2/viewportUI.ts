@@ -195,6 +195,9 @@ export class ViewportUI extends Viewport {
 			{ x: scaledLeft,  y: scaledBottom, cursor: "nesw-resize", handleId: ResizeHandle.LB },
 		]
 
+		// TEST: for testing the handles position
+		// const color = [0xd5d5d5, 0xff00ff, 0x00ffff, 0xffff00];
+
 		for (let n = 0; n < handlePositions.length; n++) {
 			const { handleId, ...attr } = handlePositions[n];
 
