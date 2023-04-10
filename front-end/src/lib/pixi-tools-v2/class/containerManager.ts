@@ -1,24 +1,27 @@
 import { Point } from 'pixi.js';
 import { WrappedContainer } from './wrappedContainer';
 import { FramedContainer } from './framedContainer';
-import { ResizePlugin } from '../plugins/resizePlugin';
-import { DragPlugin } from '../plugins/dragPlugin';
+import { ResizePlugin } from '../plugins/containerResizePlugin';
+import { DragPlugin } from '../plugins/containerDragPlugin';
 import { ViewportUI } from "../viewportUI";
 
 import type { CanvasContainer, PluginContainer} from '../types/pixi-aliases';
+import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
 	protected readonly resizePlugin: ResizePlugin;
 	protected readonly dragPlugin: DragPlugin;
-	private _selectedContainers: Array<CanvasContainer>;
 	public readonly wrappedContainer: WrappedContainer;
+	public readonly downloadPlugin: DownloadPlugin;
+	private _selectedContainers: Array<CanvasContainer>;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
 		this.wrappedContainer = new WrappedContainer(this, this.viewport);
 		this.resizePlugin = new ResizePlugin(this.viewport);
 		this.dragPlugin = new DragPlugin(this.viewport);
+		this.downloadPlugin = new DownloadPlugin(this.viewport);
 		this._selectedContainers = [];
 
 		window.onkeydown = this._destroySelected.bind(this);
@@ -214,6 +217,16 @@ export class ContainerManager {
 					height: this._selectedContainers[0].height,
 				}
 			}
+		}
+	}
+
+	public downloadSelected() {
+		if(!this.isActive) return;
+
+		if(this._selectedContainers.length > 1) {
+			this.downloadPlugin.downloadMany(this._selectedContainers);
+		} else {
+			this.downloadPlugin.downloadOne(this._selectedContainers[0]);
 		}
 	}
 

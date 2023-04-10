@@ -155,4 +155,21 @@ export class FramedContainer extends PluginContainer {
 
 		return graphics.flat();
 	}
+
+	public cloneToContainer(): Container {
+		const cloned = new Container();
+
+		this.mainContainer.children.forEach((child) => {
+			if(child.id === "framebox" && child instanceof Rectangle) {
+				const clonedChild = child.clone();
+				clonedChild.position.copyFrom(child.position);
+				cloned.addChild(clonedChild);
+			} else {
+				const clonedContainer = child.cloneToContainer();
+				cloned.addChild(clonedContainer);
+			}
+		});
+
+		return cloned;
+	}
 }

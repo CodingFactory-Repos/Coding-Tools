@@ -1,4 +1,4 @@
-import { FederatedPointerEvent, Graphics } from 'pixi.js';
+import { Container, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { PluginContainer } from '../types/pixi-class';
@@ -73,5 +73,17 @@ export class GenericContainer extends PluginContainer {
 
 	public getGraphicChildren() {
 		return [this.children[0]];
+	}
+
+	public cloneToContainer(): Container {
+		const cloned = new Container();
+
+		this.children.forEach((child) => {
+			const clonedChild = child.clone();
+			clonedChild.position.copyFrom(child.position)
+			cloned.addChild(clonedChild);
+		});
+
+		return cloned;
 	}
 }
