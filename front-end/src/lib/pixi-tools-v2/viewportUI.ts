@@ -6,9 +6,11 @@ import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
 import { Border, Handle, HitArea, Grid } from "./model/template";
 import { ResizeHandle } from "./types/pixi-enums";
 
-import type { Stage } from "./types/pixi-aliases";
+import type { CanvasContainer, Stage } from "./types/pixi-aliases";
 import type { GraphicAttributes } from "./types/pixi-container";
 import type { HandleOptions, HitAreaOptions } from "./types/pixi-ui";
+import { reactive } from "vue";
+import { FramedContainer } from "./class/framedContainer";
 
 
 export class ViewportUI extends Viewport {
@@ -26,6 +28,8 @@ export class ViewportUI extends Viewport {
 	public cursor: CSSStyleProperty.Cursor;
 	public mouse: Point;
 	public selectionBoxActive: boolean = false;
+
+	public readonly frames: Array<FramedContainer> = reactive([]);
 
 	constructor(options: IViewportOptions, scene: Scene) {
 		super(options);
@@ -45,6 +49,21 @@ export class ViewportUI extends Viewport {
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
+		})
+
+		this.on('childAdded', (child: CanvasContainer) => {
+			if(child.id === "frame" && child instanceof FramedContainer) {
+				this.frames.push(child);
+			}
+		})
+
+		this.on('childRemoved', (child: CanvasContainer) => {
+			if(child.id === "frame" && child instanceof FramedContainer) {
+				const index = this.frames.indexOf(child);
+				if(index !== -1) {
+					this.frames.splice(index, 1);
+				}
+			}
 		})
 	}
 
