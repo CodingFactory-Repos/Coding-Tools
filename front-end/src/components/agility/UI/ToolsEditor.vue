@@ -28,10 +28,10 @@
 				<SvgShape width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 			<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
-			<IconButton type="button">
+			<IconButton class="h-fit" type="button" @click="download">
 				<SvgDownload width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
-			<IconButton type="button">
+			<IconButton class="h-fit" type="button">
 				<SvgProject width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 		</div>
@@ -88,5 +88,9 @@ const createRectangle = () => {
 const createFrame = () => {
 	projectStore.deferredGeometry = "FRAME";
 	projectStore.setDeferredEvent("pointer", true);
+}
+
+const download = () => {
+	projectStore.canvasDownload();
 }
 </script>
