@@ -1,11 +1,16 @@
-import { EventBoundary, FederatedPointerEvent, Point } from "pixi.js";
+import { EventBoundary, FederatedPointerEvent, Point, Rectangle } from "pixi.js";
 import { FramedContainer } from "../class/framedContainer";
 import { WrappedContainer } from "../class/wrappedContainer";
 import { ViewportUI } from "../viewportUI";
 
 import type { InitialResizeState } from "../types/pixi-container";
 import type { PluginContainer } from "../types/pixi-aliases";
+import { GenericContainer } from '../class/genericContainer';
 
+type FrameIntersect = {
+	frame: FramedContainer;
+	childs: Array<GenericContainer>;
+}
 
 export class DragPlugin {
 	protected readonly viewport: ViewportUI;
@@ -14,6 +19,9 @@ export class DragPlugin {
 	protected container: PluginContainer = null;
 	protected initialCursorPosition: Point = null;
 	protected isDragging: boolean = false;
+	protected frameIntersect: Array<FrameIntersect> = [];
+	protected unconstraints: Array<GenericContainer> = [];
+	protected contextRemoved: boolean = false;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
@@ -42,7 +50,10 @@ export class DragPlugin {
 			this.container.off('pointerdown', this._initDragging);
 			this._endDragging(null);
 		}
+		this.frameIntersect = [];
+		this.unconstraints = [];
 		this.initialCursorPosition = null;
+		this.contextRemoved = false;
 		this.container = null;
 	}
 
@@ -62,6 +73,7 @@ export class DragPlugin {
 			})
 		}
 
+		this.frameIntersect = [];
 		this.initialCursorPosition = this.viewport.toWorld(e.global.clone());
 		this.viewport.on('pointermove', this._updateDragging);
 		this.viewport.on('pointerup', this.endHandler);
@@ -72,9 +84,24 @@ export class DragPlugin {
 		this.container.cursor = "grabbing";
 	}
 
+	private _removeFromContext() {
+		if(this.contextRemoved) return;
+		this.contextRemoved = true;
+
+		for(let n = 0; n < this.initialGraphicsState.length; n++) {
+			const graphic = this.initialGraphicsState[n].child;
+			if(graphic.id === "graphic") {
+				this.viewport.addChildAt(graphic.parent, this.viewport.children.length - 9);
+			}
+		}
+	}
+
 	private _updateDragging = (e: FederatedPointerEvent) => {
 		if(e) e.stopPropagation();
 		if(this.container === null) return;
+		this._removeFromContext();
+
+		const frames = this.viewport.children.filter((el) => el.visible && el.id === "frame") as Array<FramedContainer>;
 
 		try { // Prevent an error when mouse move event and deletion event at the same time
 			this.isDragging = true;
@@ -85,6 +112,48 @@ export class DragPlugin {
 			for(let n = 0; n < this.initialGraphicsState.length; n++) {
 				const { child, x, y } = this.initialGraphicsState[n];
 				child.position.set(x + dx, y + dy);
+				if(child.id !== "graphic") continue;
+
+				const parent = child.parent as GenericContainer;
+				const childBounds = child.getBounds();
+				const centerX = childBounds.x + (childBounds.width / 2);
+				const centerY = childBounds.y + (childBounds.height / 2);
+				
+				for(let i = 0; i < frames.length; i++) {
+					if(frames[i].getBounds().contains(centerX, centerY)) {
+						parent.alpha = 0.7;
+
+						const frameIndex = this.frameIntersect.findIndex((el) => el.frame === frames[i]);
+						if(frameIndex === -1) {
+							this.frameIntersect.push({
+								frame: frames[i],
+								childs: [parent],
+							})
+						} else {
+							const exist = this.frameIntersect[frameIndex].childs.indexOf(parent);
+							if(exist === -1) {
+								this.frameIntersect[frameIndex].childs.push(parent);
+							}
+						}
+						break;
+					} else {
+						parent.alpha = 1;
+
+						const genericIndex = this.unconstraints.indexOf(parent);
+						if(genericIndex === -1) this.unconstraints.push(parent);
+
+						const frameIndex = this.frameIntersect.findIndex((el) => el.frame === frames[i]);
+						if(frameIndex !== -1) {
+							const exist = this.frameIntersect[frameIndex].childs.indexOf(parent);
+							if(exist !== -1) {
+								this.frameIntersect[frameIndex].childs.splice(exist, 1);
+								if(this.frameIntersect[frameIndex].childs.length === 0) {
+									this.frameIntersect.splice(frameIndex, 1);
+								}
+							}
+						}
+					}
+				}
 			}
 
 			if(this.container instanceof FramedContainer) {
@@ -125,7 +194,24 @@ export class DragPlugin {
 			this.initialGraphicsState.forEach((el) => {
 				el.child.cursor = "pointer";
 			})
-			
+
+			this.frameIntersect.forEach((intersect) => {
+				intersect.childs.forEach((el) => {
+					el.isAttachedToFrame = true;
+					el.frameNumber = intersect.frame.frameNumber;
+					el.alpha = 1;
+				})
+				intersect.frame.mainContainer.addChild(...intersect.childs);
+			})
+
+			this.unconstraints.forEach((ctn) => {
+				ctn.isAttachedToFrame = false;
+				ctn.frameNumber = -1;
+			})
+
+			this.frameIntersect = [];
+			this.unconstraints = [];
+			this.contextRemoved = false;
 			this.initialGraphicsState.length = 0;
 			this.initialCursorPosition = null;
 			this.container.cursor = "pointer";
