@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import { Renderer, RenderTexture } from 'pixi.js';
+import { Renderer } from 'pixi.js';
 import { ViewportUI } from "../viewportUI";
 
 import type { CanvasContainer } from "../types/pixi-aliases";
