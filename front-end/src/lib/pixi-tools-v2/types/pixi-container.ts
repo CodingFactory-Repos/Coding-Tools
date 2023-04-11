@@ -1,12 +1,10 @@
-import { Graphics } from 'pixi.js';
-
 import { ViewportUI } from '../viewportUI';
 import { ContainerManager } from '../class/containerManager';
 import * as GeometryTemplate from '../model/template';
 
 import type { TypesRequired } from './pixi-utils-type';
 import type { GeometryTypes } from './pixi-enums';
-import type { Stage } from './pixi-aliases';
+import type { GraphicsId, Stage } from './pixi-aliases';
 
 export interface GraphicAttributes {
 	id?: string,
@@ -59,7 +57,7 @@ export interface ContainerSize {
 }
 
 export interface InitialResizeState {
-	child: Graphics;
+	child: GraphicsId;
 	width: number;
 	height: number;
 	x: number;
