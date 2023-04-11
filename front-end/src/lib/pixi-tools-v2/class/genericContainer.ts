@@ -3,6 +3,7 @@ import { ContainerManager } from './containerManager';
 
 import { PluginContainer } from '../types/pixi-class';
 import type { ContainerContext, FrameContext, GraphicConstructor } from '../types/pixi-container';
+import { GraphicsId } from '../types/pixi-aliases';
 
 export class GenericContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -72,7 +73,7 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		return [this.children[0]];
+		return [this.children[0]] as Array<GraphicsId>;
 	}
 
 	public cloneToContainer(): Container {

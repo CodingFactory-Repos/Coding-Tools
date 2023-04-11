@@ -6,6 +6,7 @@ import { ViewportUI } from "../viewportUI";
 
 import type { ContainerContext, GraphicConstructor } from "../types/pixi-container";
 import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
+import { GraphicsId } from "../types/pixi-aliases";
 
 export class FramedContainer extends PluginContainer {
 	protected readonly viewport: ViewportUI;
@@ -65,7 +66,10 @@ export class FramedContainer extends PluginContainer {
 		
 		const geometry = this.getGeometry();
 		this.frameBox = new Rectangle({
-			...geometry,
+			x: constructors[0].attributes.x,
+			y: constructors[0].attributes.y,
+			width: 400,
+			height: 300,
 			id: "framebox",
 			color: 0xff00ff,
 			scale: this.viewport.scaled,
@@ -149,11 +153,10 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		const graphics: Array<Graphics | Array<Graphics>> = [];
+		const graphics: Array<GraphicsId | Array<GraphicsId>> = [];
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
-
 			if(child.id === "framebox" && child instanceof Rectangle) {
 				graphics.push(child);
 				continue;
