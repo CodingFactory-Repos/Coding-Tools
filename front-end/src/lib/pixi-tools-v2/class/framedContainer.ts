@@ -70,6 +70,8 @@ export class FramedContainer extends PluginContainer {
 			color: 0xff00ff,
 			scale: this.viewport.scaled,
 		});
+		this.frameBox.interactive = true;
+		this.frameBox.on("pointerdown", this.onSelected.bind(this));
 		this.mainContainer.addChildAt(this.frameBox, 0);
 
 		this.boxTitle = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
@@ -78,12 +80,18 @@ export class FramedContainer extends PluginContainer {
 		this.titleContainer.cursor = "pointer";
 		this.titleContainer.addChild(this.boxTitle);
 		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
-		this.addChild(this.titleContainer);
+		// This is added to the viewport for conveniance reason, it mess the resize because of its bounds otherwise.
+		// But no worry, it's synched to the frame.
+		this.viewport.addChild(this.titleContainer);
 
 		this.on("moved", () => {
 			const geometry = this.getGeometry();
 			this.boxTitle.x = geometry.x;
 			this.boxTitle.y = geometry.y - 30;
+		})
+
+		this.on("destroyed", () => {
+			this.viewport.removeChild(this.titleContainer);
 		})
 	}
 
