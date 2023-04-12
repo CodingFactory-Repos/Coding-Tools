@@ -87,4 +87,35 @@ export class GenericContainer extends PluginContainer {
 
 		return cloned;
 	}
+
+	public serializeData() {
+		const graphic = this.getGraphicChildren()[0];
+
+		const data = {
+			id: "generic",
+			x: this.absMinX,
+			y: this.absMinY,
+			x2: this.absMaxX,
+			y2: this.absMaxY,
+			cursor: this.cursor,
+			interactive: this.interactive,
+			tabNumberContext: this.tabNumberContext,
+			isAttachedToFrame: this.isAttachedToFrame,
+			frameNumber: this.frameNumber,
+			child: [
+				{
+					id: graphic.id,
+					x: graphic.x,
+					y: graphic.y,
+					width: graphic.width,
+					height: graphic.height,
+					cursor: graphic.cursor,
+					interactive: graphic.interactive,
+					color: graphic.color
+				}
+			]
+		}
+
+		return data;
+	}
 }

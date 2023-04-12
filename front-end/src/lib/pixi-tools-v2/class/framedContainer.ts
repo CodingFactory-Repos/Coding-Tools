@@ -183,4 +183,43 @@ export class FramedContainer extends PluginContainer {
 
 		return cloned;
 	}
+
+	public serializeData() {
+		const childSerializedData = [];
+		let frameBox: Rectangle;
+		for(let n = 0; n < this.mainContainer.children.length; n++) {
+			const child = this.mainContainer.children[n];
+			if(child.id === "framebox" && child instanceof Rectangle) {
+				frameBox = child;
+			} else {
+				childSerializedData.push(child.serializeData());
+			}
+		}
+
+		const data = {
+			id: "frame",
+			x: this.absMinX,
+			y: this.absMinY,
+			x2: this.absMaxX,
+			y2: this.absMaxY,
+			cursor: this.cursor,
+			interactive: this.interactive,
+			tabNumberContext: this.tabNumberContext,
+			isAttachedToFrame: this.isAttachedToFrame,
+			frameNumber: this.frameNumber,
+			background: {
+				id: frameBox.id,
+				x: frameBox.x,
+				y: frameBox.y,
+				width: frameBox.width,
+				height: frameBox.height,
+				cursor: frameBox.cursor,
+				interactive: frameBox.interactive,
+				color: frameBox.color
+			},
+			child: childSerializedData,
+		}
+
+		return data;
+	}
 }
