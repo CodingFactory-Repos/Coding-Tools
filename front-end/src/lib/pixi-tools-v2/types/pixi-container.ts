@@ -77,6 +77,36 @@ export interface ProportionScaleOptions {
 	childInitialHeight: number,
 }
 
+export interface SerializedObject {
+	id: string,
+	x: number,
+	y: number,
+	interactive: boolean,
+	tabNumberContext: number,
+	isAttachedToFrame: boolean,
+	frameNumber: number
+}
+
+export interface SerializedGraphic extends SerializedObject {
+	width?: number,
+	height?: number,
+	radius?: number,
+	color: string,
+}
+
+export interface SerializedContainer extends SerializedObject {
+	x2: number,
+	y2: number,
+	child: Array<SerializedObject>;
+}
+
+export interface SerializedGenericContainer extends SerializedContainer {}
+
+export interface SerializedFramedContainer extends SerializedContainer {
+	background: SerializedGraphic,
+}
+
+
 /** ----------------------------------------- */
 
 /**
