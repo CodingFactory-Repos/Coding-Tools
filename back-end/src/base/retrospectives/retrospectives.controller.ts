@@ -7,12 +7,16 @@ import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { DTONewRetro } from './dto/retrospectives.dto';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
+import { RetrospectivesGateway } from './retrospectives.gateway';
 
 @Controller('retrospectives')
 @UseFilters(ServiceErrorCatcher)
 @UseGuards(JwtAuthGuard)
 export class RetrospectivesController {
-	constructor(private readonly retrospectivesService: RetrospectivesService) {}
+	constructor(
+		private readonly retrospectivesService: RetrospectivesService,
+		private readonly retrospectivesGateway: RetrospectivesGateway
+		) {}
 
 	@Get()
 	index(@Res() res: Response) {
@@ -28,6 +32,7 @@ export class RetrospectivesController {
 	@Get(':slug')
 	async getCurrentRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Param('slug') retroSlug: string) {
 		const currentRetro = await this.retrospectivesService.getCurrentRetro(retroSlug);
+		this.retrospectivesGateway.server.emit("test")
 		return res.status(201).json({ status: 'ok', currentRetro: currentRetro });
 	}
 

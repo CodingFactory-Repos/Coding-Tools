@@ -14,6 +14,7 @@ export namespace Configuration {
 		env: string;
 		whitelist: Array<string>;
 		redirect: string;
+		frontPort: string;
 	}
 
 	export interface MongoDB {

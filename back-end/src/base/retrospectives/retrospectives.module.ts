@@ -7,10 +7,11 @@ import { UsersRepository } from 'src/base/users/users.repository';
 import { RetrospectivesRepository } from 'src/base/retrospectives/retrospectives.repository';
 import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.service';
 import { RetrospectivesController } from 'src/base/retrospectives/retrospectives.controller';
+import { RetrospectivesGateway } from './retrospectives.gateway';
 
 @Module({
 	imports: [DatabaseModule, forwardRef(() => AuthModule)],
-	providers: [RetrospectivesService, RetrospectivesRepository, UsersRepository],
+	providers: [RetrospectivesService, RetrospectivesRepository, UsersRepository, RetrospectivesGateway],
 	controllers: [RetrospectivesController],
 	exports: [RetrospectivesService, RetrospectivesRepository],
 })

@@ -21,6 +21,7 @@
     "pixi-viewport": "^5.0.1",
     "pixi.js": "^7.1.4",
     "sass": "^1.59.3",
+    "socket.io-client": "^4.6.1",
     "sweetalert2": "^11.7.3",
     "vue": "^3.2.47",
     "vue-qrious": "^3.1.0",

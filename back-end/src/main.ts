@@ -8,6 +8,7 @@ import { config } from 'src/config/config';
 
 import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
+import { SocketIOAdapter } from './external-modules/socket-io-adapter';
 
 //! Proxy settings, production only
 // import { NestExpressApplication } from '@nestjs/platform-express';
@@ -29,6 +30,7 @@ async function bootstrap() {
 		}),
 	);
 
+
 	app.use(cookieParser());
 	app.enableCors(corsOptionsDelegate);
 	//! versioning, production only
@@ -37,6 +39,7 @@ async function bootstrap() {
 	// 	defaultVersion: '1',
 	// 	prefix: 'api/v',
 	// });
+	app.useWebSocketAdapter(new SocketIOAdapter(app));
 
 	await app.listen(PORT);
 	return app.getUrl();
