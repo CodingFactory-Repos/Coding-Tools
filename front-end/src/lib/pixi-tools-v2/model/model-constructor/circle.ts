@@ -3,7 +3,7 @@ import { GraphicAttributes } from '../../types/pixi-container';
 
 export class Circle extends ModelGraphics {
 	public readonly id: string;
-	protected color: number;
+	public color: number;
 	public radius: number;
 
 	constructor(attr: GraphicAttributes) {

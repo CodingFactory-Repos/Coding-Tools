@@ -4,7 +4,7 @@ import { GraphicAttributes } from '../../types/pixi-container';
 export class Handle extends ModelGraphics {
 	public readonly id: string;
 	public handleId: number;
-	protected color: number;
+	public color: number;
 	public radius: number;
 
 	constructor(attr: GraphicAttributes) {

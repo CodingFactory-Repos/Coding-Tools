@@ -3,7 +3,7 @@ import { GraphicAttributes } from '../../types/pixi-container';
 
 export class Rectangle extends ModelGraphics {
 	public readonly id: string;
-	protected color: number;
+	public color: number;
 
 	constructor(attr: GraphicAttributes) {
 		super();

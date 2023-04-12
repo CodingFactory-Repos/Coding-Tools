@@ -6,7 +6,7 @@ export class Grid extends ModelGraphics {
 	protected readonly lineWidth = 1;
 	protected readonly offset = 5;
 	public readonly id: string;
-	protected color: number;
+	public color: number;
 
 	constructor(attr: GraphicAttributes) {
 		super();

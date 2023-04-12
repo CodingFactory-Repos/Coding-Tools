@@ -4,7 +4,7 @@ import { GraphicAttributes } from "../../types/pixi-container";
 export class HitArea extends ModelGraphics {
 	public readonly id: string;
 	public handleId: number;
-	protected color: number;
+	public color: number;
 	public lineWidth: number;
 
 	constructor(attr: GraphicAttributes) {
