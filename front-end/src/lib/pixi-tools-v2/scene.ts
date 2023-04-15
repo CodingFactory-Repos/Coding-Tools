@@ -1,13 +1,14 @@
 import { IViewportOptions } from 'pixi-viewport';
 import { Application, EventSystem } from 'pixi.js';
-import { ViewportUI } from './viewportUI';
 
+import { ViewportUI } from './viewportUI';
+import { CanvasSocketOptions } from './plugins/viewportSocketPlugin';
 
 export class Scene extends Application {
 	public readonly viewport: ViewportUI;
 	public heightOffset: number;
 
-	constructor(canvas: HTMLCanvasElement, heightOffset: number) {
+	constructor(canvas: HTMLCanvasElement, heightOffset: number, socketOptions?: CanvasSocketOptions) {
 		super({
 			view: canvas,
 			width: window.innerWidth,
@@ -30,7 +31,7 @@ export class Scene extends Application {
 		}
 
 		this.heightOffset = heightOffset;
-		this.viewport = new ViewportUI(viewportOptions, this);
+		this.viewport = new ViewportUI(this, viewportOptions, socketOptions);
 		this.stage.addChild(this.viewport);
 		this.ticker.start();
 	}
