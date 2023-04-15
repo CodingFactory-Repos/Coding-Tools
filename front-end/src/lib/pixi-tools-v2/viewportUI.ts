@@ -11,13 +11,14 @@ import type { GraphicAttributes } from "./types/pixi-container";
 import type { HandleOptions, HitAreaOptions } from "./types/pixi-ui";
 import { reactive } from "vue";
 import { FramedContainer } from "./class/framedContainer";
-
+import { CanvasSocketOptions, ViewportSocketPlugin } from "./plugins/viewportSocketPlugin";
 
 export class ViewportUI extends Viewport {
-	protected readonly scene: Scene;
+	public readonly scene: Scene;
 	private _isHiddenUI: boolean = false;
 	public readonly renderer: IRenderer<ICanvas>;
 	public readonly zoomPlugin: ViewportZoomPlugin;
+	public readonly socketPlugin: ViewportSocketPlugin;
 	public readonly manager: ContainerManager;
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
@@ -31,7 +32,7 @@ export class ViewportUI extends Viewport {
 
 	public readonly activeFrames: Array<number> = reactive([]);
 
-	constructor(options: IViewportOptions, scene: Scene) {
+	constructor(scene: Scene, options: IViewportOptions, socketOptions?: CanvasSocketOptions) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
@@ -40,6 +41,10 @@ export class ViewportUI extends Viewport {
 
 		this.manager = new ContainerManager(this);
 		this.zoomPlugin = new ViewportZoomPlugin(this, this.manager);
+		if(socketOptions) {
+			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
+		}
+
 		this.grid = new Grid({ color: 0x27282d });
 		this.addChildAt(this.grid, 0);
 
@@ -52,13 +57,13 @@ export class ViewportUI extends Viewport {
 		})
 
 		this.on('childAdded', (child: CanvasContainer) => {
-			if(child.id === "frame" && child instanceof FramedContainer) {
+			if(child instanceof FramedContainer) {
 				this.activeFrames.push(child.frameNumber);
 			}
 		})
 
 		this.on('childRemoved', (child: CanvasContainer) => {
-			if(child.id === "frame" && child instanceof FramedContainer) {
+			if(child instanceof FramedContainer) {
 				const index = this.activeFrames.indexOf(child.frameNumber);
 				if(index !== -1) {
 					this.activeFrames.splice(index, 1);
@@ -166,7 +171,7 @@ export class ViewportUI extends Viewport {
 				top: this.top,
 			});
 		} else {
-			this.grid.purge();
+			this.grid.clear();
 		}
 	}
 
