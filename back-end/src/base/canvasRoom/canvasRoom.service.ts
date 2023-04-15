@@ -1,15 +1,15 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
-import { AgileAnalysisRepository } from 'src/base/agileAnalysis/agileAnalysis.repository';
+import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 
 @Injectable()
-export class AgileAnalysisService {
+export class CanvasRoomService {
 	constructor(
 		@Inject(forwardRef(() => UsersRepository))
-		@Inject(forwardRef(() => AgileAnalysisRepository))
+		@Inject(forwardRef(() => CanvasRoomRepository))
 		private usersRepository: UsersRepository,
-		private agileAnalysisRepository: AgileAnalysisRepository,
+		private CanvasRoomRepository: CanvasRoomRepository,
 	) {}
 
 	// Business logic methods goes there...

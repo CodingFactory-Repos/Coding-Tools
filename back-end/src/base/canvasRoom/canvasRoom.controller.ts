@@ -2,12 +2,12 @@ import { Controller, Get, Res, UseFilters } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
-import { AgileAnalysisService } from 'src/base/agileAnalysis/agileAnalysis.service';
+import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
 
-@Controller('agileanalysis')
+@Controller('canvasroom')
 @UseFilters(ServiceErrorCatcher)
-export class AgileAnalysisController {
-	constructor(private readonly agileAnalysisService: AgileAnalysisService) {}
+export class CanvasRoomController {
+	constructor(private readonly CanvasRoomService: CanvasRoomService) {}
 
 	@Get()
 	index(@Res() res: Response) {
