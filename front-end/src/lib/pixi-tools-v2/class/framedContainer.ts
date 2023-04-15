@@ -84,11 +84,8 @@ export class FramedContainer extends PluginContainer {
 		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
 		viewport.addChild(this.titleContainer);
 
-		this.on("moved", () => {
-			const geometry = this.getGeometry();
-			this.boxTitle.x = geometry.x;
-			this.boxTitle.y = geometry.y - 30;
-		})
+		background.on("moved", this.onMoved.bind(this));
+		this.on("moved", this.onMoved);
 
 		this.on("destroyed", () => {
 			viewport.removeChild(this.titleContainer);
@@ -97,6 +94,12 @@ export class FramedContainer extends PluginContainer {
 		if(viewport.socketPlugin) {
 			viewport.socketPlugin.emit("ws-element-added", this, remote);
 		}
+	}
+
+	protected onMoved() {
+		const geometry = this.getGeometry();
+		this.boxTitle.x = geometry.x;
+		this.boxTitle.y = geometry.y - 30;
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {

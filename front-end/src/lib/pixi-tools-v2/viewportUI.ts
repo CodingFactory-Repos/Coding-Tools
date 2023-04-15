@@ -60,6 +60,10 @@ export class ViewportUI extends Viewport {
 			if(child instanceof FramedContainer) {
 				this.activeFrames.push(child.frameNumber);
 			}
+
+			if(this.socketPlugin) {
+				this.socketPlugin.trackElementByUUID(child);
+			}
 		})
 
 		this.on('childRemoved', (child: CanvasContainer) => {
@@ -68,6 +72,10 @@ export class ViewportUI extends Viewport {
 				if(index !== -1) {
 					this.activeFrames.splice(index, 1);
 				}
+			}
+
+			if(this.socketPlugin) {
+				this.socketPlugin.pruneDestroyedElements();
 			}
 		})
 	}

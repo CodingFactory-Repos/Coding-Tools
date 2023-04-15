@@ -5,6 +5,9 @@ import { ViewportUI } from "../viewportUI";
 import { CanvasContainer } from "../types/pixi-aliases";
 import { ElementPosition } from "../types/pixi-container";
 import { SocketManager } from "../class/socketManager";
+import { ModelGraphics } from "../types/pixi-class";
+import { FramedContainer } from "../class/framedContainer";
+import { GenericContainer } from "../class/genericContainer";
 
 interface CanvasSocketEvents {
 	"ws-element-deleted": (uuid: string) => void;
@@ -22,6 +25,7 @@ export interface CanvasSocketOptions {
 
 export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents> {
 	protected readonly socketManager: SocketManager;
+	public readonly elements: Record<string, CanvasContainer> | Record<string, ModelGraphics> = {};
 
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
@@ -48,5 +52,39 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 	public disconnect() {
 		this.socketManager._close();
+	}
+
+	public trackElementByUUID(container: GenericContainer | FramedContainer) {
+		if(container instanceof FramedContainer) {
+			this.elements[container.uuid] = container;
+		
+			for(let n = 0; n < container.mainContainer.children.length; n++) {
+				const subChild = container.mainContainer.children[n];
+
+				if(subChild instanceof GenericContainer) {
+					this.elements[subChild.uuid] = subChild;
+					const genericChild = subChild.getGraphicChildren()[0];
+					this.elements[genericChild.uuid] = genericChild;
+				} else {
+					this.elements[subChild.uuid] = subChild;
+				}
+			}
+			return;
+		}
+
+		if(container instanceof GenericContainer) {
+			this.elements[container.uuid] =  container;
+			const genericChild = container.getGraphicChildren()[0];
+			this.elements[genericChild.uuid] =  genericChild;
+		}
+	}
+
+	public pruneDestroyedElements() {
+		const keys = Object.keys(this.elements);
+		for (let n = 0; n < keys.length; n++) {
+			if(this.elements[keys[n]].destroyed) {
+				delete this.elements[keys[n]];
+			}
+		}
 	}
 }

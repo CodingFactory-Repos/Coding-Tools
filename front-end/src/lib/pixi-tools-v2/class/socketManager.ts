@@ -2,15 +2,8 @@ import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
-import { GenericContainer } from './genericContainer';
-import { ModelGraphics } from '../types/pixi-class';
-import { FramedContainer } from './framedContainer';
 import { temporaryNotification } from '../utils/temporary.notification';
-
-interface ElementPosition {
-	x: number;
-	y: number;
-}
+import { ElementPosition } from '../types/pixi-container';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -38,51 +31,27 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('element-deleted', (uuid: string) => {
-			for(let n = 0; n < this.viewport.children.length; n++) {
-				const child = this.viewport.children[n];
-				if(child.uuid && child.uuid === uuid) {
-					child.destroy();
-					break;
+			try {
+				const element = this.viewport.socketPlugin.elements[uuid];
+				element.destroy();
+			} catch(err) {
+				if(err instanceof Error) {
+					console.error(err.message);
 				}
 			}
 		});
 
+
 		this.canvasSocket.on('element-position-updated', (uuid: string, position: ElementPosition) => {
-			// TODO: This is too heavy, would be easier if all elements of the canvas were listed by [key: string]: Instance
-			viewport: for(let n = 0; n < this.viewport.children.length; n++) {
-				const child = this.viewport.children[n];
+			try {
+				const element = this.viewport.socketPlugin.elements[uuid];
+				element.position.set(position.x, position.y);
 
-				if(child instanceof GenericContainer) {
-					if(child.uuid && child.uuid === uuid) {
-						child.children[0].position.set(position.x, position.y);
-						break;
-					}
-
-					for(let i = 0; i < child.children?.length; i++) {
-						const subChild = child.children[i] as GenericContainer | ModelGraphics;
-						
-						if(subChild.uuid && subChild.uuid === uuid) {
-							child.children[0].position.set(position.x, position.y);
-							break viewport;
-						}
-					}
-				}
-
-				// TODO: Broken, i'm not very surprised
-				if(child instanceof FramedContainer) {
-					// if(child.uuid && child.uuid === uuid) {
-					// 	child.mainContainer.position.set(position.x, position.y);
-					// 	break;
-					// }
-
-					// for(let i = 0; i < child.children?.length; i++) {
-					// 	const subChild = child.children[i] as GenericContainer | ModelGraphics;
-						
-					// 	if(subChild.uuid && subChild.uuid === uuid) {
-					// 		child.children[0].position.set(position.x, position.y);
-					// 		break viewport;
-					// 	}
-					// }
+				if(element.parent.parent)
+				element.emit("moved", null);
+			} catch(err) {
+				if(err instanceof Error) {
+					console.error(err.message);
 				}
 			}
 		});
