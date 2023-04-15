@@ -1,4 +1,6 @@
-import { Rectangle } from '../model/template';
+import { FramedContainer } from '../class/framedContainer';
+import { GenericContainer } from '../class/genericContainer';
+import { Circle, Rectangle } from '../model/template';
 
 
 // Enumerate the different types of shapes
@@ -6,14 +8,23 @@ import { Rectangle } from '../model/template';
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
 
-	"RECTANGLE": Rectangle,
-	"FRAME": Rectangle,
-	//"CIRCLE": 'CIRCLE',
+	"rectangle": Rectangle,
+	"circle": Circle,
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',
 	// "MULTIPOINT": 'multipoint',
 } as const;
+
+export type GeometryTypes = typeof GeometryTypes;
+export type LiteralGeometryTypes = keyof GeometryTypes;
+
+export const ContainerType = {
+	"generic": GenericContainer,
+	"frame": FramedContainer,
+} as const;
+
+export type ContainerType = typeof ContainerType;
 
 export enum ResizeHandle {
 	LT = 0, // LeftTop
@@ -41,9 +52,6 @@ export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
 export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];
 export const TopWall = [ResizeHandle.LB, ResizeHandle.RB, ResizeHandle.B];
 export const BottomWall = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.T];
-
-export type GeometryTypes = typeof GeometryTypes;
-export type LiteralGeometryTypes = keyof GeometryTypes;
 
 export enum DownloadType {
 	MIME_PNG = 'image/png',

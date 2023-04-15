@@ -1,7 +1,9 @@
 import { Container, DisplayObject, FederatedPointerEvent, Graphics } from "pixi.js";
 import { ContainerManager } from "../class/containerManager";
 import { GenericContainer } from "../class/genericContainer";
+import { SerializedGraphic } from './pixi-serialize';
 import { GraphicAttributes } from "./pixi-container";
+import { Rectangle } from "../model/template";
 
 export interface Bounds {
 	x: number;
@@ -11,7 +13,8 @@ export interface Bounds {
 }
 
 export abstract class WithId {
-	public readonly id: string;
+	public readonly uuid: string;
+	public readonly typeId: string;
 }
 
 export abstract class BoundsContainer extends Container {
@@ -31,13 +34,15 @@ export abstract class PluginContainer extends BoundsContainer {
 }
 
 export abstract class ModelGraphics extends Graphics implements WithId {
-	public readonly id: string;
-	protected color: number;
+	public readonly uuid: string;
+	public readonly typeId: string;
+	public color: number;
 	public cursor: CSSStyleProperty.Cursor;
 	
 	abstract draw(attr: GraphicAttributes): void;
+	abstract serialized(): SerializedGraphic;
 }
 
 export class FramedMainContainer extends Container {
-	public readonly children: Array<GenericContainer>
+	public readonly children: Array<GenericContainer | Rectangle>
 }

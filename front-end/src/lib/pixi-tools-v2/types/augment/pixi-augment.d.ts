@@ -1,5 +1,7 @@
 import "pixi.js";
-
+import { ElementPosition } from "../pixi-container";
+import { CanvasContainer } from "../pixi-aliases";
+import { DisplayObjectEvents } from 'pixi.js'
 declare module "pixi.js" {
 	interface FederatedEvent {
 		shiftKey: boolean;

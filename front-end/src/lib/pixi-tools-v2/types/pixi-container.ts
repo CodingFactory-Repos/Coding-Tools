@@ -7,7 +7,7 @@ import type { GeometryTypes } from './pixi-enums';
 import type { GraphicsId, Stage } from './pixi-aliases';
 
 export interface GraphicAttributes {
-	id?: string,
+	typeId?: string,
 	x?: number,
 	y?: number,
 	width?: number,
@@ -56,12 +56,21 @@ export interface ContainerSize {
 	absMinY: number;
 }
 
-export interface InitialResizeState {
-	child: GraphicsId;
-	width: number;
-	height: number;
+export interface ElementPosition {
 	x: number;
 	y: number;
+}
+
+export interface ElementSize {
+	width?: number;
+	height?: number;
+	radius?: number;
+}
+
+export interface ElementBounds extends ElementPosition, ElementSize {}
+
+export interface InitialResizeState extends ElementBounds {
+	child: GraphicsId;
 }
 
 export interface ProportionScaleOptions {
@@ -77,34 +86,9 @@ export interface ProportionScaleOptions {
 	childInitialHeight: number,
 }
 
-export interface SerializedObject {
-	id: string,
-	x: number,
-	y: number,
-	interactive: boolean,
-	tabNumberContext: number,
-	isAttachedToFrame: boolean,
-	frameNumber: number
-}
-
-export interface SerializedGraphic extends SerializedObject {
-	width?: number,
-	height?: number,
-	radius?: number,
-	color: string,
-}
-
-export interface SerializedContainer extends SerializedObject {
-	x2: number,
-	y2: number,
-	child: Array<SerializedObject>;
-}
-
-export interface SerializedGenericContainer extends SerializedContainer {}
-
-export interface SerializedFramedContainer extends SerializedContainer {
-	background: SerializedGraphic,
-}
+// export interface SerializedFramedContainer extends SerializedContainer {
+// 	background: SerializedGraphic,
+// }
 
 
 /** ----------------------------------------- */
