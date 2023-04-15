@@ -1,5 +1,5 @@
 import { ModelGraphics } from '../../types/pixi-class';
-import { GraphicAttributes } from '../../types/pixi-container';
+import { GraphicUIProperties } from "../../types/pixi-ui";
 import { InternalTypeId } from '../../types/pixi-serialize';
 
 export class Handle extends ModelGraphics {
@@ -10,7 +10,7 @@ export class Handle extends ModelGraphics {
 	public radius: number;
 	public color: number;
 
-	constructor(attr: GraphicAttributes) {
+	constructor(attr: Partial<GraphicUIProperties>) {
 		super();
 
 		const { color, cursor, alpha, radius } = attr;
@@ -24,7 +24,7 @@ export class Handle extends ModelGraphics {
 		this.draw(attr);
 	}
 
-	public draw(attr: GraphicAttributes) {
+	public draw(attr: Partial<GraphicUIProperties>) {
 		const { x, y, scale } = attr;
 		const lineWidth = Math.max(0.05, 1 / scale);
 		const rad = Math.max(0.25, this.radius * 1 / scale);

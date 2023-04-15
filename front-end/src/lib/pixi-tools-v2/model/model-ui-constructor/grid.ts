@@ -1,5 +1,5 @@
 import { ModelGraphics } from "../../types/pixi-class";
-import { GraphicAttributes } from "../../types/pixi-container";
+import { GraphicUIProperties } from "../../types/pixi-ui";
 import { InternalTypeId } from "../../types/pixi-serialize";
 import { generateUniqueId } from "../../utils/uniqueId";
 
@@ -12,7 +12,7 @@ export class Grid extends ModelGraphics {
 	public cursor: CSSStyleProperty.Cursor;
 	public color: number;
 
-	constructor(attr: GraphicAttributes) {
+	constructor(attr: Partial<GraphicUIProperties>) {
 		super();
 
 		const { color } = attr;
@@ -22,7 +22,7 @@ export class Grid extends ModelGraphics {
 		this.color = color;
 	}
 
-	public draw(attr: GraphicAttributes) {
+	public draw(attr: Partial<GraphicUIProperties>) {
 		const { width, height, scale, left, top } = attr;
 
 		const viewportWidth = width;

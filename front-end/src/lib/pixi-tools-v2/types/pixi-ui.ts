@@ -1,15 +1,19 @@
-export interface HandleOptions {
-	x: number;
-	y: number;
-	cursor: CSSStyleProperty.Cursor;
+import { ElementColorimetry, ElementCursor, ElementDimension, ElementPosition } from './pixi-container';
+
+export interface MaxElementPosition {
+	endX: number;
+	endY: number;
+}
+
+export interface GraphicUIProperties extends ElementPosition, ElementDimension, ElementCursor, ElementColorimetry, MaxElementPosition {
+	lineWidth?: number,
+	scale?: number,
+	left?: number,
+	top?: number,
+}
+
+export interface HandleOptions extends ElementPosition, ElementCursor {
 	handleId: number;
 }
 
-export interface HitAreaOptions {
-	x: number;
-	y: number;
-	endX: number;
-	endY: number;
-	handleId: number;
-	cursor: CSSStyleProperty.Cursor;
-}
+export interface HitAreaOptions extends HandleOptions, MaxElementPosition {};

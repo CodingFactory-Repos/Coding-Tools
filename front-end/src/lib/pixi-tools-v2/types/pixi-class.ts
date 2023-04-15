@@ -2,8 +2,8 @@ import { Container, DisplayObject, FederatedPointerEvent, Graphics } from "pixi.
 import { ContainerManager } from "../class/containerManager";
 import { GenericContainer } from "../class/genericContainer";
 import { SerializedGraphic } from './pixi-serialize';
-import { GraphicAttributes } from "./pixi-container";
 import { Rectangle } from "../model/template";
+import type { GraphicUIProperties } from "./pixi-ui";
 
 export interface Bounds {
 	x: number;
@@ -39,7 +39,7 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 	public color: number;
 	public cursor: CSSStyleProperty.Cursor;
 	
-	abstract draw(attr: GraphicAttributes): void;
+	abstract draw(attr: Partial<GraphicUIProperties>): void;
 	abstract serialized(): SerializedGraphic;
 }
 

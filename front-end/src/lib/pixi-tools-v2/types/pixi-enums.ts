@@ -2,9 +2,6 @@ import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { Circle, Rectangle } from '../model/template';
 
-
-// Enumerate the different types of shapes
-
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
 
@@ -16,15 +13,10 @@ export const GeometryTypes = {
 	// "MULTIPOINT": 'multipoint',
 } as const;
 
-export type GeometryTypes = typeof GeometryTypes;
-export type LiteralGeometryTypes = keyof GeometryTypes;
-
 export const ContainerType = {
 	"generic": GenericContainer,
 	"frame": FramedContainer,
 } as const;
-
-export type ContainerType = typeof ContainerType;
 
 export enum ResizeHandle {
 	LT = 0, // LeftTop
@@ -59,3 +51,7 @@ export enum DownloadType {
 	MIME_WEBP = 'image/webp',
 	MIME_PDF = 'application/pdf',
 }
+
+export type GeometryTypes = typeof GeometryTypes;
+export type LiteralGeometryTypes = keyof GeometryTypes;
+export type ContainerType = typeof ContainerType;

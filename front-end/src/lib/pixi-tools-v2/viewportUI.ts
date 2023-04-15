@@ -7,7 +7,7 @@ import { Border, Handle, HitArea, Grid } from "./model/template-ui";
 import { ResizeHandle } from "./types/pixi-enums";
 
 import type { CanvasContainer, Stage } from "./types/pixi-aliases";
-import type { GraphicAttributes } from "./types/pixi-container";
+import type { GraphicUIProperties } from "./types/pixi-ui";
 import type { HandleOptions, HitAreaOptions } from "./types/pixi-ui";
 import { reactive } from "vue";
 import { FramedContainer } from "./class/framedContainer";
@@ -203,7 +203,7 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public createBorder(attr: GraphicAttributes) {
+	public createBorder(attr: Partial<GraphicUIProperties>) {
 		this.border = new Border(attr);
 		this.border.zIndex = 10;
 		this.addChildAt(this.border, this.children.length - 8 > 0 ? this.children.length - 8 : this.children.length);
@@ -278,7 +278,7 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public updateResizeHandles(attr: GraphicAttributes, redraw: boolean) {
+	public updateResizeHandles(attr: Partial<GraphicUIProperties>, redraw: boolean) {
 		const scale = this.scaled;
 		const size = 5 / scale;
 
@@ -302,7 +302,7 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
-	public updateResizeHitAreas(attr: GraphicAttributes) {
+	public updateResizeHitAreas(attr: Partial<GraphicUIProperties>) {
 		const scale = this.scaled;
 		const size = 5 / scale;
 

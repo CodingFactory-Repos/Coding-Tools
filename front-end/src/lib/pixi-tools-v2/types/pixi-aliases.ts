@@ -1,9 +1,8 @@
-import { Container, DisplayObject, Graphics } from 'pixi.js';
+import { Container, DisplayObject } from 'pixi.js';
 
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
-import { WithId } from './pixi-class';
 
 /**
  * Type representing a stage in a PIXI.js application.

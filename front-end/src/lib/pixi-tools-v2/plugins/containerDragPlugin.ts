@@ -1,9 +1,9 @@
-import { EventBoundary, FederatedPointerEvent, Point, Rectangle } from "pixi.js";
+import { EventBoundary, FederatedPointerEvent, Point } from "pixi.js";
 import { FramedContainer } from "../class/framedContainer";
 import { WrappedContainer } from "../class/wrappedContainer";
 import { ViewportUI } from "../viewportUI";
 
-import type { InitialResizeState } from "../types/pixi-container";
+import type { InitialGraphicState } from "../types/pixi-container";
 import type { PluginContainer } from "../types/pixi-aliases";
 import { GenericContainer } from '../class/genericContainer';
 
@@ -14,7 +14,7 @@ type FrameIntersect = {
 
 export class DragPlugin {
 	protected readonly viewport: ViewportUI;
-	protected readonly initialGraphicsState: Array<InitialResizeState> = [];
+	protected readonly initialGraphicsState: Array<InitialGraphicState> = [];
 	protected readonly endHandler: (e: FederatedPointerEvent) => void;
 	protected container: PluginContainer = null;
 	protected initialCursorPosition: Point = null;

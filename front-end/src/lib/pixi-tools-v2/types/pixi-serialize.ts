@@ -1,4 +1,4 @@
-import { ElementBounds } from "./pixi-container";
+import { ElementBounds, ElementColorimetry, ElementCursor } from "./pixi-container";
 
 export type ContainerTypeId = "generic" | "frame";
 export type GraphicTypeId = "rectangle" | "circle";
@@ -29,8 +29,7 @@ export interface SerializedContainerAnchors {
 	absMaxY: number;
 }
 
-export interface SerializedProperties {
-	cursor: CSSStyleProperty.Cursor;
+export interface SerializedProperties extends ElementCursor {
 	interactive: boolean;
 }
 
@@ -40,7 +39,6 @@ export interface SerializedContainerProperties extends SerializedProperties {
 	frameNumber: number;
 }
 
-export interface SerializedGraphicProperties extends SerializedProperties {
-	color: number;
-	alpha: number;
+export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
+	rotation?: number;
 }

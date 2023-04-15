@@ -6,11 +6,24 @@ import { ViewportUI } from '../viewportUI';
 
 import { ResizeHandle, ResizeHandleOppositeOf, RightWall, LeftWall, TopWall, BottomWall } from '../types/pixi-enums';
 import type { PluginContainer } from '../types/pixi-aliases';
-import type { ContainerSize, InitialResizeState, ProportionScaleOptions } from "../types/pixi-container";
+import type { ContainerSize, InitialGraphicState } from "../types/pixi-container";
+
+export interface ProportionScaleOptions {
+	parentInitialWidth: number,
+	parentInitialHeight: number,
+	parentPrimeWidth: number,
+	parentPrimeHeight: number,
+	anchorX: number,
+	anchorY: number,
+	childInitialX: number,
+	childInitialY: number,
+	childInitialWidth: number,
+	childInitialHeight: number,
+}
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;
-	protected readonly initialGraphicsState: Array<InitialResizeState> = [];
+	protected readonly initialGraphicsState: Array<InitialGraphicState> = [];
 	protected readonly handler: (e: FederatedPointerEvent) => void;
 	protected initialContainerSize: ContainerSize = null;
 	protected initialCursorPosition: Point = null;

@@ -1,5 +1,5 @@
 import { ModelGraphics } from "../../types/pixi-class";
-import { GraphicAttributes } from "../../types/pixi-container";
+import { GraphicUIProperties } from "../../types/pixi-ui";
 import { InternalTypeId } from "../../types/pixi-serialize";
 
 export class HitArea extends ModelGraphics {
@@ -10,7 +10,7 @@ export class HitArea extends ModelGraphics {
 	public handleId: number;
 	public color: number;
 
-	constructor(attr: GraphicAttributes) {
+	constructor(attr: Partial<GraphicUIProperties>) {
 		super();
 
 		const { color, cursor, alpha, lineWidth } = attr;
@@ -24,7 +24,7 @@ export class HitArea extends ModelGraphics {
 		this.draw(attr);
 	}
 
-	public draw(attr: GraphicAttributes) {
+	public draw(attr: Partial<GraphicUIProperties>) {
 		const { x, y, endX, endY, scale } = attr;
 		const lineWidth = Math.min(80, Math.max(0.4, this.lineWidth / scale));
 

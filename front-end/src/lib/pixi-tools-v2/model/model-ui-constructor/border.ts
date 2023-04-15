@@ -1,5 +1,5 @@
 import { ModelGraphics } from '../../types/pixi-class';
-import { GraphicAttributes } from '../../types/pixi-container';
+import { GraphicUIProperties } from "../../types/pixi-ui";
 import { InternalTypeId } from '../../types/pixi-serialize';
 
 export class Border extends ModelGraphics {
@@ -8,7 +8,7 @@ export class Border extends ModelGraphics {
 	public cursor: CSSStyleProperty.Cursor;
 	public color: number;
 
-	constructor(attr: GraphicAttributes) {
+	constructor(attr: Partial<GraphicUIProperties>) {
 		super();
 
 		const { color, alpha, cursor } = attr;
@@ -20,7 +20,7 @@ export class Border extends ModelGraphics {
 		this.draw(attr);
 	}
 
-	public draw(attr: GraphicAttributes) {
+	public draw(attr: Partial<GraphicUIProperties>) {
 		const { x, y, width, height, scale } = attr;
 		const lineWidth = Math.min(20, Math.max(0.1, 2 / scale));
 		this.position.set(x, y);
