@@ -34,12 +34,13 @@
 
 <script lang="ts" setup>
 import Swal from 'sweetalert2';
-import { computed, watch } from 'vue';
+import { computed, watch, toRaw } from 'vue';
 import { useProjectStorev2 } from '@/store/modules/project2.store';
 
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
+import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
 
 const projectStore = useProjectStorev2();
 const frames = computed(() => projectStore.getFrames);
@@ -88,8 +89,18 @@ const removeFrame = async (frameNumber: number) => {
 	});
 
 	if(res.isConfirmed) {
-		viewport.value.children.find((child) => child.id === "frame" && child.frameNumber === frameNumber).destroy();
-		deleteCanvasUI();
+		const vp = toRaw(viewport.value);
+		const frame = vp.children.find((ctn) => {
+			if(ctn instanceof FramedContainer && ctn.frameNumber === frameNumber) {
+				return ctn;
+			}
+		})
+
+		if(vp.socketPlugin) {
+			vp.socketPlugin.emit('ws-element-deleted', frame.uuid);
+		}
+
+		frame.destroy();
 		selectDefault();
 	}
 }
