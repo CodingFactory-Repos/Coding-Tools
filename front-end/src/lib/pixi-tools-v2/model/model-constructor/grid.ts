@@ -1,11 +1,15 @@
 import { ModelGraphics } from "../../types/pixi-class";
 import { GraphicAttributes } from "../../types/pixi-container";
+import { InternalTypeId } from "../../types/pixi-serialize";
+import { generateUniqueId } from "../../utils/uniqueId";
 
 export class Grid extends ModelGraphics {
 	protected readonly gridSpacing =  1; // 1 pixel
 	protected readonly lineWidth = 1;
 	protected readonly offset = 5;
-	public readonly id: string;
+	public readonly uuid: string;
+	public readonly typeId: InternalTypeId;
+	public cursor: CSSStyleProperty.Cursor;
 	public color: number;
 
 	constructor(attr: GraphicAttributes) {
@@ -13,7 +17,8 @@ export class Grid extends ModelGraphics {
 
 		const { color } = attr;
 		
-		this.id = "grid";
+		this.typeId = "grid";
+		this.uuid = generateUniqueId();
 		this.color = color;
 	}
 
@@ -48,7 +53,22 @@ export class Grid extends ModelGraphics {
 		);
 	}
 
-	public purge() {
-		this.clear();
+	public serialized() {
+		return {
+			uuid: this.uuid,
+			typeId: this.typeId,
+			bounds: {
+				x: this.x,
+				y: this.y,
+				width: this.width,
+				height: this.height,
+			},
+			properties: {
+				cursor: this.cursor,
+				interactive: this.interactive,
+				color: this.color,
+				alpha: this.alpha,
+			}
+		}
 	}
 }
