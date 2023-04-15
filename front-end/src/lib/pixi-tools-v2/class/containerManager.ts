@@ -35,7 +35,11 @@ export class ContainerManager {
 				this.wrappedContainer.restoreStateContext();
 			}
 
-			this._selectedContainers.forEach((ctn) => ctn.destroy());
+			this._selectedContainers.forEach((ctn) => {
+				if(this.viewport.socketPlugin)
+					this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
+				ctn.destroy();
+			});
 			this.viewport.destroyBorder();
 			this.viewport.destroyResizeHandles();
 			this.viewport.destroyResizeHitArea();
@@ -137,10 +141,10 @@ export class ContainerManager {
 	}
 
 	public wrapWithTemporaryParent() {
-		const frames = this._selectedContainers.filter((ctn) => ctn.id === "frame") as Array<FramedContainer>;
+		const frames = this._selectedContainers.filter((ctn) => ctn.typeId === "frame") as Array<FramedContainer>;
 		const childs = [] as Array<CanvasContainer>;
 		for(let n = 0; n < this._selectedContainers.length; n++) {
-			if(this._selectedContainers[n].id !== "frame") {
+			if(this._selectedContainers[n].typeId !== "frame") {
 				let found = false;
 				frames.forEach((frame) => {
 					if(frame.frameNumber === this._selectedContainers[n].frameNumber) {

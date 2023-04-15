@@ -90,7 +90,7 @@ export class DragPlugin {
 
 		for(let n = 0; n < this.initialGraphicsState.length; n++) {
 			const graphic = this.initialGraphicsState[n].child;
-			if(graphic.id === "graphic") {
+			if(graphic.typeId === "graphic") {
 				this.viewport.addChildAt(graphic.parent, this.viewport.children.length - 9);
 			}
 		}
@@ -101,7 +101,7 @@ export class DragPlugin {
 		if(this.container === null) return;
 		this._removeFromContext();
 
-		const frames = this.viewport.children.filter((el) => el.visible && el.id === "frame") as Array<FramedContainer>;
+		const frames = this.viewport.children.filter((el) => el.visible && el.typeId === "frame") as Array<FramedContainer>;
 
 		try { // Prevent an error when mouse move event and deletion event at the same time
 			this.isDragging = true;
@@ -111,8 +111,11 @@ export class DragPlugin {
 
 			for(let n = 0; n < this.initialGraphicsState.length; n++) {
 				const { child, x, y } = this.initialGraphicsState[n];
-				child.position.set(x + dx, y + dy);
-				if(child.id !== "graphic") continue;
+				const newX = x + dx, nexY = y + dy;
+				child.position.set(newX, nexY);
+				if(this.viewport.socketPlugin)
+					this.viewport.socketPlugin.emit("ws-element-dragged", child.uuid, { x: newX, y: nexY });
+				if(child.typeId !== "graphic") continue;
 
 				const parent = child.parent as GenericContainer;
 				const childBounds = child.getBounds();
@@ -162,7 +165,7 @@ export class DragPlugin {
 
 			if(this.container instanceof WrappedContainer) {
 				for(let n = 0; n < this.container.absoluteChildren.length; n++) {
-					if(this.container.absoluteChildren[n].id === "frame") {
+					if(this.container.absoluteChildren[n].typeId === "frame") {
 						this.container.absoluteChildren[n].emit("moved", null);
 					}
 				}

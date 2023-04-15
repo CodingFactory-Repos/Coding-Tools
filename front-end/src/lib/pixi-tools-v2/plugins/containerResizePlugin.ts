@@ -294,7 +294,7 @@ export class ResizePlugin {
 
 			if(this.container instanceof WrappedContainer) {
 				for(let n = 0; n < this.container.absoluteChildren.length; n++) {
-					if(this.container.absoluteChildren[n].id === "frame") {
+					if(this.container.absoluteChildren[n].typeId === "frame") {
 						this.container.absoluteChildren[n].emit("moved", null);
 					}
 				}
