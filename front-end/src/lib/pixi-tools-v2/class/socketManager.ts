@@ -5,6 +5,7 @@ import { Normalizer } from './normalyzer';
 import { GenericContainer } from './genericContainer';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from './framedContainer';
+import { temporaryNotification } from '../utils/temporary.notification';
 
 interface ElementPosition {
 	x: number;
@@ -23,12 +24,12 @@ export class SocketManager extends Manager {
 		this.canvasSocket = this.socket('/canvas');
 		this.canvasSocket.auth = { roomId };
 
-		this.canvasSocket.on('peer-connected', (peerId: string) => {
-			console.log(`Peer ${peerId} connected`);
+		this.canvasSocket.on('peer-connected', (peerEmail: string) => {
+			temporaryNotification("#42984b", "#ffffff", `${peerEmail} connected`);
 		})
 
-		this.canvasSocket.on('peer-disconnected', (peerId: string) => {
-			console.log(`Peer ${peerId} disconnected`);
+		this.canvasSocket.on('peer-disconnected', (peerEmail: string) => {
+			temporaryNotification("#9e0000", "#ffffff", `${peerEmail} disconnected`);
 		});
 
 		this.canvasSocket.on('element-added', (container: SerializedContainer) => {
