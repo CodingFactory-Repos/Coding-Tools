@@ -8,6 +8,7 @@ import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 
 import type { ProjectStorev2 } from '@/store/interfaces/projectv2.interface';
+import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export const useProjectStorev2 = defineStore('projectv2', {
 	state: (): ProjectStorev2 => {
@@ -69,18 +70,14 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			event: FederatedPointerEvent
 		) {
 			const scene = toRaw(this.scene);
-			const normalizer = new Normalizer(scene.stage, scene.viewport);
 			const point = scene.viewport.toWorld(event.global.clone());
-			
-			const context = normalizer.normalizeOneGraphic({
-				...point,
-				geometry: this.deferredGeometry,
-				color: 0xffffff,
-			}, true);
-
-			context.manager = scene.viewport.manager;
-			context.tabNumber = null; // TODO: Not supported yet, we need to discuss it
-			const framedContainer = new FramedContainer(context);
+			const data: Partial<SerializedContainer> = {
+				typeId: "frame",
+				background: {
+					typeId: "rectangle",
+				},
+			}
+			const framedContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(framedContainer);
 
 			scene.viewport.off('pointerup', this.createFramedGeometry);
@@ -93,21 +90,14 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			event: FederatedPointerEvent
 		) {
 			const scene = toRaw(this.scene);
-			const normalizer = new Normalizer(scene.stage, scene.viewport);
 			const point = scene.viewport.toWorld(event.global.clone());
-			
-			const context = normalizer.normalizeOneGraphic({
-				...point,
-				geometry: this.deferredGeometry,
-				color: 0xffffff,
-			}, false);
-
-			context.manager = scene.viewport.manager;
-			context.tabNumber = this.selectedFrameNumber;
-			const genericContainer = new GenericContainer(context, {
-				isAttached: false,
-				to: -1,
-			});
+			const data: Partial<SerializedContainer> = {
+				typeId: "generic",
+				childs: [{
+					typeId: "rectangle",
+				}],
+			}
+			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(genericContainer);
 
 			scene.viewport.off('pointerup', this.createGeometry);
@@ -138,7 +128,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		},
 		setFrameCanvas(this: ProjectStorev2, frameNumber: number) {
 			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
-			this.scene.viewport.children.find((child) => child.id === "frame" && child.frameNumber === frameNumber).visible = true;
+			this.scene.viewport.children.find((child) => child.typeId === "frame" && child.frameNumber === frameNumber).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStorev2) {
 			this.scene.viewport.toggleHidding(true);
