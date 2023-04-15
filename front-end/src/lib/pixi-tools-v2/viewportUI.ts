@@ -3,7 +3,7 @@ import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point } from 
 import { Scene } from "./scene";
 import { ContainerManager } from "./class/containerManager";
 import { ViewportZoomPlugin } from "./plugins/viewportZoomPlugin";
-import { Border, Handle, HitArea, Grid } from "./model/template";
+import { Border, Handle, HitArea, Grid } from "./model/template-ui";
 import { ResizeHandle } from "./types/pixi-enums";
 
 import type { CanvasContainer, Stage } from "./types/pixi-aliases";

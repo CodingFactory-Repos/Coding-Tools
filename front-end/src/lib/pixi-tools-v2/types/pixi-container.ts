@@ -86,10 +86,6 @@ export interface ProportionScaleOptions {
 	childInitialHeight: number,
 }
 
-// export interface SerializedFramedContainer extends SerializedContainer {
-// 	background: SerializedGraphic,
-// }
-
 
 /** ----------------------------------------- */
 

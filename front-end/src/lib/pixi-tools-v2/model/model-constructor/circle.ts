@@ -23,7 +23,7 @@ export class Circle extends ModelGraphics {
 		this.interactive = properties.interactive;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
-		// this.alpha = properties.alpha;
+		this.alpha = properties.alpha;
 
 		this.draw(bounds);
 	}

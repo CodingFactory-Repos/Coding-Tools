@@ -1,7 +1,7 @@
 import { Point, FederatedPointerEvent } from 'pixi.js';
 import { FramedContainer } from '../class/framedContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
-import { Handle, HitArea } from '../model/template';
+import { Handle, HitArea } from '../model/template-ui';
 import { ViewportUI } from '../viewportUI';
 
 import { ResizeHandle, ResizeHandleOppositeOf, RightWall, LeftWall, TopWall, BottomWall } from '../types/pixi-enums';
