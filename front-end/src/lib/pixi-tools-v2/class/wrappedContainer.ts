@@ -4,8 +4,8 @@ import { FramedContainer } from "./framedContainer";
 import { Rectangle } from "../model/template";
 import { ViewportUI } from "../viewportUI";
 
-import { BoundsContainer } from "../types/pixi-class";
-import type { CanvasContainer, GraphicsId } from '../types/pixi-aliases';
+import { BoundsContainer, ModelGraphics } from "../types/pixi-class";
+import type { CanvasContainer } from '../types/pixi-aliases';
 
 
 export class WrappedContainer extends BoundsContainer {
@@ -100,7 +100,7 @@ export class WrappedContainer extends BoundsContainer {
 	}
 
 	public getGraphicChildren() {
-		const graphics: Array<GraphicsId | Array<GraphicsId>> = [];
+		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
 		for(let n = 0; n < this.absoluteChildren.length; n++) {
 			graphics.push(this.absoluteChildren[n].getGraphicChildren());

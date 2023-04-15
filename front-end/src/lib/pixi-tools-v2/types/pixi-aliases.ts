@@ -19,5 +19,3 @@ export type CanvasContainer = FramedContainer | GenericContainer;
  * 
  */
 export type PluginContainer = CanvasContainer | WrappedContainer;
-
-export type GraphicsId = Graphics & WithId & { color: number };

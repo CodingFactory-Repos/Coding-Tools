@@ -3,8 +3,7 @@ import { ContainerManager } from "./containerManager";
 import { Rectangle } from "../model/template";
 import { ViewportUI } from "../viewportUI";
 
-import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
-import { GraphicsId } from "../types/pixi-aliases";
+import { FramedMainContainer, ModelGraphics, PluginContainer } from "../types/pixi-class";
 import { ContainerTypeId, SerializedContainer, SerializedGraphic } from "../types/pixi-serialize";
 import { GenericContainer } from "./genericContainer";
 
@@ -156,7 +155,7 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		const graphics: Array<GraphicsId | Array<GraphicsId>> = [];
+		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];

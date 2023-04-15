@@ -2,9 +2,10 @@ import { ViewportUI } from '../viewportUI';
 import { ContainerManager } from '../class/containerManager';
 import * as GeometryTemplate from '../model/template';
 
+import { ModelGraphics } from './pixi-class';
 import type { TypesRequired } from './pixi-utils-type';
 import type { GeometryTypes } from './pixi-enums';
-import type { GraphicsId, Stage } from './pixi-aliases';
+import type { Stage } from './pixi-aliases';
 
 export interface GraphicAttributes {
 	typeId?: string,
@@ -70,7 +71,7 @@ export interface ElementSize {
 export interface ElementBounds extends ElementPosition, ElementSize {}
 
 export interface InitialResizeState extends ElementBounds {
-	child: GraphicsId;
+	child: ModelGraphics;
 }
 
 export interface ProportionScaleOptions {

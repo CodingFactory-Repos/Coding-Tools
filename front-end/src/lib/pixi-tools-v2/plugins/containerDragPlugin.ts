@@ -33,9 +33,6 @@ export class DragPlugin {
 		this.container.on('pointerdown', this._initDragging);
 
 		if(!this.viewport.selectionBoxActive) {
-			// What's this shenanigans you may ask ?
-			// This is a controlled fake event so that we can drag on the first pointerdown (selection)
-			// .forced is used to prevent the trigger of other event registered with a pointerdown, but you have to define it manually.
 			const eventBoundary = new EventBoundary(this.container);
 			const fakeEvent = new FederatedPointerEvent(eventBoundary);
 			fakeEvent.forced = true;
