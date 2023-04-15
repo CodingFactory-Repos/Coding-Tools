@@ -46,6 +46,9 @@ onMounted(() => {
 })
 
 onBeforeRouteLeave(() => {
+	const vp = projectStore.scene.viewport;
+	vp.socketPlugin.disconnect();
+
 	if (document.exitFullscreen && projectStore.onFullscreen) {
 		projectStore.onFullscreen = false;
 		document.exitFullscreen();

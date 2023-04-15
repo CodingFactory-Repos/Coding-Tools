@@ -45,4 +45,8 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			this.socketManager.deleteElement(uuid);
 		})
 	}
+
+	public disconnect() {
+		this.socketManager._close();
+	}
 }
