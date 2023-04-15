@@ -128,7 +128,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 		},
 		setFrameCanvas(this: ProjectStorev2, frameNumber: number) {
 			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
-			this.scene.viewport.children.find((child) => child.typeId === "frame" && child.frameNumber === frameNumber).visible = true;
+			this.scene.viewport.children.find((ctn) => ctn instanceof FramedContainer && ctn.frameNumber === frameNumber).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStorev2) {
 			this.scene.viewport.toggleHidding(true);

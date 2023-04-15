@@ -76,7 +76,7 @@ export class Normalizer {
 		}
 
 		if(!attributes.properties) {
-			const allFrames = viewport.children.filter(child => child.typeId === "frame");
+			const allFrames = viewport.children.filter(ctn => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 			const frameNumber = [...new Set(frameNumbers)].reduce((acc, cur) => cur === acc ? acc + 1 : cur > acc ? acc : cur, 1);
 

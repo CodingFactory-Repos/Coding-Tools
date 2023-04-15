@@ -141,22 +141,24 @@ export class ContainerManager {
 	}
 
 	public wrapWithTemporaryParent() {
-		const frames = this._selectedContainers.filter((ctn) => ctn.typeId === "frame") as Array<FramedContainer>;
+		const frames = this._selectedContainers.filter((ctn) => ctn instanceof FramedContainer) as Array<FramedContainer>;
 		const childs = [] as Array<CanvasContainer>;
 		for(let n = 0; n < this._selectedContainers.length; n++) {
-			if(this._selectedContainers[n].typeId !== "frame") {
+			const ctn = this._selectedContainers[n];
+
+			if(ctn instanceof FramedContainer) {
 				let found = false;
 				frames.forEach((frame) => {
-					if(frame.frameNumber === this._selectedContainers[n].frameNumber) {
+					if(frame.frameNumber === ctn.frameNumber) {
 						// ensure context is kept, it won't add it if it already exist
-						frame.mainContainer.addChild(this._selectedContainers[n])
+						frame.mainContainer.addChild(ctn)
 						found = true;
 					}
 				})
 
-				if(!found) childs.push(this._selectedContainers[n]);
+				if(!found) childs.push(ctn);
 			} else {
-				childs.push(this._selectedContainers[n]);
+				childs.push(ctn);
 			}
 		}
 
