@@ -1,92 +1,89 @@
-import { Container, FederatedPointerEvent, Graphics, Text } from "pixi.js";
+import { Container, FederatedPointerEvent, Text } from "pixi.js";
 import { ContainerManager } from "./containerManager";
-import { GenericContainer } from "./genericContainer";
 import { Rectangle } from "../model/template";
 import { ViewportUI } from "../viewportUI";
 
-import type { ContainerContext, GraphicConstructor } from "../types/pixi-container";
 import { FramedMainContainer, PluginContainer } from "../types/pixi-class";
 import { GraphicsId } from "../types/pixi-aliases";
+import { ContainerTypeId, SerializedContainer, SerializedGraphic } from "../types/pixi-serialize";
+import { GenericContainer } from "./genericContainer";
 
 export class FramedContainer extends PluginContainer {
-	protected readonly viewport: ViewportUI;
 	protected readonly manager: ContainerManager;
 	protected readonly frameBox: Rectangle;
 	protected readonly boxTitle: Text;
 	public readonly children: Array<Container>;
 	public readonly mainContainer: FramedMainContainer;
 	public readonly titleContainer: Container;
-	public readonly id: string;
+	public readonly uuid: string;
+	public readonly typeId: ContainerTypeId;
 
 	public absMinX: number;
 	public absMinY: number;
 	public absMaxX: number;
 	public absMaxY: number;
 
+	public cursor: CSSStyleProperty.Cursor;
 	public tabNumberContext: number;
 	public isAttachedToFrame: boolean;
 	public frameNumber: number;
 
-	constructor(context: ContainerContext) {
+	static registerContainer(
+		viewport: ViewportUI,
+		attributes: Partial<SerializedContainer>,
+		children: Array<GenericContainer>,
+		remote: boolean,
+		background?: Rectangle
+	) {
+		return new FramedContainer(viewport, attributes, children, remote, background);
+	}
+
+	constructor(
+		viewport: ViewportUI,
+		attributes: Partial<SerializedContainer>,
+		children: Array<GenericContainer>,
+		remote: boolean,
+		background?: Rectangle
+	) {
 		super();
 
-		this.id = "frame";
-		this.cursor = "pointer";
-		this.interactive = true;
-		this.viewport = context.viewport;
-		this.manager = context.manager;
+		const { uuid, typeId, anchors, properties } = attributes;
 
-		const allFrames = this.viewport.children.filter(child => child.id === "frame");
-		const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-		this.frameNumber = [...new Set(frameNumbers)].reduce((acc, cur) => cur === acc ? acc + 1 : cur > acc ? acc : cur, 1);
-		this.tabNumberContext = context.tabNumber;
-
+		this.uuid = uuid;
+		this.typeId = typeId as ContainerTypeId;
+		this.cursor = properties.cursor;
+		this.interactive = properties.interactive;
+		this.tabNumberContext = properties.tabNumberContext;
+		this.isAttachedToFrame = properties.isAttachedToFrame;
+		this.frameNumber = properties.frameNumber;
+		this.absMinX = anchors.absMinX;
+		this.absMinY = anchors.absMinY;
+		this.absMaxX = anchors.absMaxX;
+		this.absMaxY = anchors.absMaxY;
+		this.manager = viewport.manager;
+		
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new Container();
 		this.titleContainer.interactive = true;
 		this.mainContainer.interactive = true;
-		
-		const constructors = context.constructors as Array<GraphicConstructor>;
-		for(let i = 0; i < constructors.length; i++) {
-			const genericContainer = new GenericContainer({
-				...context,
-				constructors: {
-					Graphic: constructors[i].Graphic,
-					attributes: constructors[i].attributes,
-				}
-			}, {
-				isAttached: true,
-				to: this.frameNumber,
-			});
-			this.mainContainer.addChild(genericContainer);
+
+		for(let n = 0; n < children.length; n++) {
+			this.mainContainer.addChild(children[n]);
 		}
 
 		this.addChild(this.mainContainer);
 		this.mainContainer.on("added", this.updateAbsoluteBounds.bind(this));
-		
-		const geometry = this.getGeometry();
-		this.frameBox = new Rectangle({
-			x: constructors[0].attributes.x,
-			y: constructors[0].attributes.y,
-			width: 400,
-			height: 300,
-			id: "framebox",
-			color: 0xff00ff,
-			scale: this.viewport.scaled,
-		});
-		this.frameBox.interactive = true;
-		this.frameBox.on("pointerdown", this.onSelected.bind(this));
-		this.mainContainer.addChildAt(this.frameBox, 0);
+		this.mainContainer.addChildAt(background, 0);
+		background.on("pointerdown", this.onSelected.bind(this));
 
+		const geometry = this.getGeometry();
 		this.boxTitle = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
 		this.boxTitle.x = geometry.x;
 		this.boxTitle.y = geometry.y - 30;
 		this.titleContainer.cursor = "pointer";
 		this.titleContainer.addChild(this.boxTitle);
 		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
-		// This is added to the viewport for conveniance reason, it mess the resize because of its bounds otherwise.
-		// But no worry, it's synched to the frame.
-		this.viewport.addChild(this.titleContainer);
+		viewport.addChild(this.titleContainer);
 
 		this.on("moved", () => {
 			const geometry = this.getGeometry();
@@ -95,8 +92,12 @@ export class FramedContainer extends PluginContainer {
 		})
 
 		this.on("destroyed", () => {
-			this.viewport.removeChild(this.titleContainer);
+			viewport.removeChild(this.titleContainer);
 		})
+
+		if(viewport.socketPlugin) {
+			viewport.socketPlugin.emit("ws-element-added", this, remote);
+		}
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
@@ -112,24 +113,26 @@ export class FramedContainer extends PluginContainer {
 		let maxY = Number.MIN_SAFE_INTEGER;
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
-			if(this.mainContainer.children[n].id === "framebox") {
-				const { x, y, width, height } = this.mainContainer.children[n];
+			const child = this.mainContainer.children[n];
+
+			if (child instanceof Rectangle) {
+				const { x, y, width, height } = child;
 				if(x < minX) minX = x;
 				if(y < minY) minY = y;
 				if(x + width > maxX) maxX = x + width;
 				if(y + height > maxY) maxY = y + height;
-				continue;
+
+			} else if (child instanceof GenericContainer) {
+				const geometry = child.getGeometry();
+				if(geometry === null) continue;
+
+				const { x, y, width, height } = geometry;
+
+				if(x < minX) minX = x;
+				if(y < minY) minY = y;
+				if(x + width > maxX) maxX = x + width;
+				if(y + height > maxY) maxY = y + height;
 			}
-
-			const geometry = this.mainContainer.children[n].getGeometry();
-			if(geometry === null) continue;
-
-			const { x, y, width, height } = geometry;
-
-			if(x < minX) minX = x;
-			if(y < minY) minY = y;
-			if(x + width > maxX) maxX = x + width;
-			if(y + height > maxY) maxY = y + height;
 		}
 
 		this.absMinX = minX;
@@ -157,11 +160,12 @@ export class FramedContainer extends PluginContainer {
 
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
-			if(child.id === "framebox" && child instanceof Rectangle) {
+			if (child instanceof Rectangle) {
 				graphics.push(child);
-				continue;
+
+			} else if (child instanceof GenericContainer) {
+				graphics.push(child.getGraphicChildren());
 			}
-			graphics.push(child.getGraphicChildren());
 		}
 
 		return graphics.flat();
@@ -171,11 +175,12 @@ export class FramedContainer extends PluginContainer {
 		const cloned = new Container();
 
 		this.mainContainer.children.forEach((child) => {
-			if(child.id === "framebox" && child instanceof Rectangle) {
+			if(child instanceof Rectangle) {
 				const clonedChild = child.clone();
 				clonedChild.position.copyFrom(child.position);
 				cloned.addChild(clonedChild);
-			} else {
+
+			} else if(child instanceof GenericContainer) {
 				const clonedContainer = child.cloneToContainer();
 				cloned.addChild(clonedContainer);
 			}
@@ -184,42 +189,37 @@ export class FramedContainer extends PluginContainer {
 		return cloned;
 	}
 
-	public serializeData() {
-		const childSerializedData = [];
-		let frameBox: Rectangle;
+	public serializeData(): SerializedContainer {
+		const genericContainerSerialized: Array<SerializedContainer> = [];
+		let backgroundSerialized: SerializedGraphic;
+
 		for(let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
-			if(child.id === "framebox" && child instanceof Rectangle) {
-				frameBox = child;
-			} else {
-				childSerializedData.push(child.serializeData());
+			if(child instanceof Rectangle) {
+				backgroundSerialized = child.serialized();
+			} else if(child instanceof GenericContainer) {
+				genericContainerSerialized.push(child.serializeData());
 			}
 		}
-
-		const data = {
-			id: "frame",
-			x: this.absMinX,
-			y: this.absMinY,
-			x2: this.absMaxX,
-			y2: this.absMaxY,
-			cursor: this.cursor,
-			interactive: this.interactive,
-			tabNumberContext: this.tabNumberContext,
-			isAttachedToFrame: this.isAttachedToFrame,
-			frameNumber: this.frameNumber,
-			background: {
-				id: frameBox.id,
-				x: frameBox.x,
-				y: frameBox.y,
-				width: frameBox.width,
-				height: frameBox.height,
-				cursor: frameBox.cursor,
-				interactive: frameBox.interactive,
-				color: frameBox.color
+		
+		return {
+			uuid: this.uuid,
+			typeId: this.typeId,
+			anchors: {
+				absMinX: this.absMinX,
+				absMinY: this.absMinY,
+				absMaxX: this.absMaxX,
+				absMaxY: this.absMaxY,
 			},
-			child: childSerializedData,
+			background: backgroundSerialized,
+			properties: {
+				cursor: this.cursor,
+				interactive: this.interactive,
+				tabNumberContext: this.tabNumberContext,
+				isAttachedToFrame: this.isAttachedToFrame,
+				frameNumber: this.frameNumber,
+			},
+			childs: genericContainerSerialized,
 		}
-
-		return data;
 	}
 }

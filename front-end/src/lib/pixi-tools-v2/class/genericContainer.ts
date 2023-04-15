@@ -1,39 +1,66 @@
 import { Container, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
-import { PluginContainer } from '../types/pixi-class';
-import type { ContainerContext, FrameContext, GraphicConstructor } from '../types/pixi-container';
-import { GraphicsId } from '../types/pixi-aliases';
+import { ModelGraphics, PluginContainer } from '../types/pixi-class';
+import { ContainerTypeId, SerializedContainer } from '../types/pixi-serialize';
+import { ViewportUI } from '../viewportUI';
 
 export class GenericContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
 	public readonly children: Array<Graphics>;
-	public readonly id: string;
-
+	public readonly uuid: string;
+	public readonly typeId: ContainerTypeId;
+	
 	public absMinX: number;
 	public absMinY: number;
 	public absMaxX: number;
 	public absMaxY: number;
 	
-	public tabNumberContext = null;
+	public cursor: CSSStyleProperty.Cursor;
 	public isAttachedToFrame: boolean;
+	public tabNumberContext = null;
 	public frameNumber: number;
 
-	constructor(context: ContainerContext, frameCtx: FrameContext) {
+	static registerContainer(
+		viewport: ViewportUI,
+		attributes: Partial<SerializedContainer>,
+		children: Array<ModelGraphics>,
+		remote: boolean
+	) {
+		return new GenericContainer(viewport, attributes, children, remote);
+	}
+
+	constructor(
+		viewport: ViewportUI,
+		attributes: Partial<SerializedContainer>,
+		children: Array<any>,
+		remote: boolean
+	) {
 		super();
 
-		this.id = "generic"
-		this.cursor = "pointer";
-		this.interactive = true;
-		this.tabNumberContext = context.tabNumber;
-		this.isAttachedToFrame = frameCtx.isAttached;
-		this.frameNumber = frameCtx.to ?? -1;
-		this.manager = context.manager;
+		const { uuid, typeId, anchors, properties } = attributes;
 
-		const { Graphic, attributes } = context.constructors as GraphicConstructor;
-		const element = new Graphic(attributes);
+		this.uuid = uuid;
+		this.typeId = typeId as ContainerTypeId;
+		this.cursor = properties.cursor;
+		this.interactive = properties.interactive;
+		this.tabNumberContext = properties.tabNumberContext;
+		this.isAttachedToFrame = properties.isAttachedToFrame;
+		this.frameNumber = properties.frameNumber;
+		this.absMinX = anchors.absMinX;
+		this.absMinY = anchors.absMinY;
+		this.absMaxX = anchors.absMaxX;
+		this.absMaxY = anchors.absMaxY;
+		this.manager = viewport.manager;
 		this.on("pointerdown", this.onSelected);
-		this.addChild(element);
+
+		for(let n = 0; n < children.length; n++) {
+			this.addChild(children[n]);
+		}
+
+		if(viewport.socketPlugin) {
+			viewport.socketPlugin.emit("ws-element-added", this, remote);
+		}
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
@@ -73,7 +100,7 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		return [this.children[0]] as Array<GraphicsId>;
+		return [this.children[0]] as Array<ModelGraphics>;
 	}
 
 	public cloneToContainer(): Container {
@@ -88,34 +115,27 @@ export class GenericContainer extends PluginContainer {
 		return cloned;
 	}
 
-	public serializeData() {
+	public serializeData(): SerializedContainer {
 		const graphic = this.getGraphicChildren()[0];
+		const graphicSerialized = graphic.serialized();
 
-		const data = {
-			id: "generic",
-			x: this.absMinX,
-			y: this.absMinY,
-			x2: this.absMaxX,
-			y2: this.absMaxY,
-			cursor: this.cursor,
-			interactive: this.interactive,
-			tabNumberContext: this.tabNumberContext,
-			isAttachedToFrame: this.isAttachedToFrame,
-			frameNumber: this.frameNumber,
-			child: [
-				{
-					id: graphic.id,
-					x: graphic.x,
-					y: graphic.y,
-					width: graphic.width,
-					height: graphic.height,
-					cursor: graphic.cursor,
-					interactive: graphic.interactive,
-					color: graphic.color
-				}
-			]
+		return {
+			uuid: this.uuid,
+			typeId: this.typeId,
+			anchors: {
+				absMinX: this.absMinX,
+				absMinY: this.absMinY,
+				absMaxX: this.absMaxX,
+				absMaxY: this.absMaxY,
+			},
+			properties: {
+				cursor: this.cursor,
+				interactive: this.interactive,
+				tabNumberContext: this.tabNumberContext,
+				isAttachedToFrame: this.isAttachedToFrame,
+				frameNumber: this.frameNumber,
+			},
+			childs: [graphicSerialized]
 		}
-
-		return data;
 	}
 }

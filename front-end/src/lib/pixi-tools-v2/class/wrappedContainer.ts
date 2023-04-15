@@ -15,7 +15,7 @@ export class WrappedContainer extends BoundsContainer {
 	protected timeout: NodeJS.Timeout = null;
 	public absoluteChildren: Array<CanvasContainer>;
 	public wrappedBox: Rectangle = null;
-	public readonly id: string;
+	public readonly typeId: string;
 
 	public absMinX: number;
 	public absMinY: number;
@@ -25,7 +25,7 @@ export class WrappedContainer extends BoundsContainer {
 	constructor(manager: ContainerManager, viewport: ViewportUI) {
 		super();
 
-		this.id = "wrap";
+		this.typeId = "wrap";
 		this.cursor = "pointer";
 		this.interactive = true;
 		this.viewport = viewport;
@@ -119,11 +119,15 @@ export class WrappedContainer extends BoundsContainer {
 
 		const geometry = this.getGeometry();
 		this.wrappedBox = new Rectangle({
-			...geometry,
-			id: "wrappedBox",
-			color: 0xff00ff,
-			alpha: 0,
-			scale: this.viewport.scaled,
+			uuid: null,
+			typeId: "rectangle",
+			bounds: geometry,
+			properties: {
+				color: 0xff00ff,
+				cursor: "pointer",
+				interactive: true,
+				alpha: 0,
+			}
 		});
 		this.wrappedBox.cursor = "pointer";
 		this.wrappedBox.interactive = true;
