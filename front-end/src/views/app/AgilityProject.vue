@@ -4,17 +4,26 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
+import { defineComponent } from '@vue/runtime-dom';
 import AgilityCanvas from '@/components/agility/AgilityCanvas.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
 
-const agilityStore = useAgilityStore();
-
-const meta = {
-	snapshot: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
-	title: "Labday",
-	id: "zuiebfiuzbe",
-}
-
-agilityStore.metaProjects.push(meta);
+export default defineComponent({
+	components: {
+		AgilityCanvas,
+	},
+	async beforeRouteEnter(to, _, next) {
+		try {
+			const agilityStore = useAgilityStore();
+			const roomId = to.path.match(/[^/]+$/)[0];
+			const res = await agilityStore.tryGetRoomProject(roomId);
+			console.log(res)
+			if(res) next();
+			else next('/app/agility/dashboard');
+		} catch(err) {
+			next('/app/agility/dashboard');
+		}
+	},
+})
 </script>
