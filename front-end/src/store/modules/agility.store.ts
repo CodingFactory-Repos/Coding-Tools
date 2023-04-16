@@ -1,17 +1,42 @@
 import { defineStore } from 'pinia';
 
 import { AgilityStore } from '@/store/interfaces/agility.interface';
-import { apiTryGetTemplatesMeta, apiTryGetProjectsMeta } from '@/api/agility-req';
+import { apiTryGetTemplatesMeta, apiTryGetProjectsMeta, apiTryCreateNewProject, apiTryGetRoomProject } from '@/api/agility-req';
+import { withErrorHandler } from '@/utils/storeHandler';
 
 export const useAgilityStore = defineStore('agility', {
 	state: (): AgilityStore => {
 		return {
-			metaProjects: [],
+			projects: [],
 			metaTemplates: [],
-			currentProject: {},
+			currentProject: [],
 		};
 	},
 	actions: {
+		tryCreateNewProject: withErrorHandler(async function(this: AgilityStore) {
+			const res = await apiTryCreateNewProject();
+			if(res.data.status === 'ok') {
+				return res.data.roomId
+			}
+			return false;
+		}),
+		tryGetProjectsMeta: withErrorHandler(async function(this: AgilityStore) {
+			const res = await apiTryGetProjectsMeta();
+			if(res.data.status === 'ok') {
+				this.projects = res.data.projects;
+				return true;
+			}
+			return false;
+		}),
+		tryGetRoomProject: withErrorHandler(async function(this: AgilityStore, roomId: string) {
+			const res = await apiTryGetRoomProject(roomId);
+			if(res.data.status === 'ok') {
+				this.currentProject = res.data.project;
+				return true;
+			}
+			return false;
+		}),
+
 		async tryGetTemplatesMeta(this: AgilityStore) {
 			try {
 				const res = await apiTryGetTemplatesMeta().then((res) => res.data);
@@ -20,17 +45,6 @@ export const useAgilityStore = defineStore('agility', {
 				}
 			} catch {
 				this.metaTemplates = [];
-			}
-		},
-		async tryGetProjectsMeta(this: AgilityStore) {
-			try {
-				if (this.metaProjects.length > 0) return;
-				const res = await apiTryGetProjectsMeta().then((res) => res.data);
-				if (res.status === 'ok') {
-					this.metaProjects = res.metaProjects;
-				}
-			} catch {
-				this.metaProjects = [];
 			}
 		},
 	},
