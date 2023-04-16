@@ -18,12 +18,15 @@ export default defineComponent({
 			const agilityStore = useAgilityStore();
 			const roomId = to.path.match(/[^/]+$/)[0];
 			const res = await agilityStore.tryGetRoomProject(roomId);
-			console.log(res)
 			if(res) next();
 			else next('/app/agility/dashboard');
 		} catch(err) {
 			next('/app/agility/dashboard');
 		}
 	},
+	async setup() {
+		const agilityStore = useAgilityStore();
+		await agilityStore.tryGetProjectsMeta();
+	}
 })
 </script>
