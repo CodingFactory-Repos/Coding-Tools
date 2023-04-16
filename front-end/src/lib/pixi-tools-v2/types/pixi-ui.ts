@@ -16,4 +16,4 @@ export interface HandleOptions extends ElementPosition, ElementCursor {
 	handleId: number;
 }
 
-export interface HitAreaOptions extends HandleOptions, MaxElementPosition {};
+export interface HitAreaOptions extends HandleOptions, MaxElementPosition {}

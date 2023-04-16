@@ -23,14 +23,14 @@ export abstract class BoundsContainer extends Container {
 	public absMaxX: number;
 	public absMaxY: number;
 
-	protected updateAbsoluteBounds(): void {};
+	protected updateAbsoluteBounds(): void {}
 	abstract getGeometry(): Bounds;
 	abstract getGraphicChildren(): Array<DisplayObject>;
 }
 
 export abstract class PluginContainer extends BoundsContainer {
 	protected readonly manager: ContainerManager;
-	protected onSelected(e: FederatedPointerEvent): void {};
+	protected onSelected(e: FederatedPointerEvent): void {}
 }
 
 export abstract class ModelGraphics extends Graphics implements WithId {

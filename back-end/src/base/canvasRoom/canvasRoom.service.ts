@@ -69,7 +69,7 @@ export class CanvasRoomService {
 		if(!roomId || roomId === 'null' || roomId === 'undefined')
 			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
 
-		let lastUpdatedAt = new Date();
+		const lastUpdatedAt = new Date();
 
 		if(meta.readonly) {
 			const query = { _id: new ObjectId(roomId), owner: userId };

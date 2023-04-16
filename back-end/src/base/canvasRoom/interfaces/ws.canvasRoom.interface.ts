@@ -15,8 +15,8 @@ export interface ElementRadius {
 	radius: number;
 }
 
-export interface ElementDimension extends ElementSize, ElementRadius {};
-export interface ElementBounds extends ElementPosition, Partial<ElementDimension> {};
+export interface ElementDimension extends ElementSize, ElementRadius {}
+export interface ElementBounds extends ElementPosition, Partial<ElementDimension> {}
 
 export interface SerializedElement {
 	uuid: string;

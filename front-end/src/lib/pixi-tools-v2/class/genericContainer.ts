@@ -67,7 +67,7 @@ export class GenericContainer extends PluginContainer {
 		if(e.forced || !this.interactive) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
-	};
+	}
 
 	protected onChildrenChange(_length?: number): void {
 		super.onChildrenChange(_length);
