@@ -3,9 +3,9 @@ import { WrappedContainer } from './wrappedContainer';
 import { FramedContainer } from './framedContainer';
 import { ResizePlugin } from '../plugins/containerResizePlugin';
 import { DragPlugin } from '../plugins/containerDragPlugin';
-import { ViewportUI } from "../viewportUI";
+import { ViewportUI } from '../viewportUI';
 
-import type { CanvasContainer, PluginContainer} from '../types/pixi-aliases';
+import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
 
 export class ContainerManager {
@@ -30,13 +30,13 @@ export class ContainerManager {
 	private _destroySelected(e: KeyboardEvent) {
 		const key = e.key;
 
-		if (key === "Backspace") {
-			if(this.wrappedContainer.children.length > 0) {
+		if (key === 'Backspace') {
+			if (this.wrappedContainer.children.length > 0) {
 				this.wrappedContainer.restoreStateContext();
 			}
 
 			this._selectedContainers.forEach((ctn) => {
-				if(this.viewport.socketPlugin)
+				if (this.viewport.socketPlugin)
 					this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
 				ctn.destroy();
 			});
@@ -66,17 +66,17 @@ export class ContainerManager {
 				this.wrappedContainer.restoreStateContext();
 				this.viewport.destroyBorder();
 			}
-			
+
 			// If the shift key is pressed and there is more than one container selected,
 			// wrap the selected containers in a temporary parent container and destroy any existing borders.
-			 if(isShift && len > 1) {
+			if (isShift && len > 1) {
 				this.detachPlugins();
 				this.viewport.destroyBorder();
 				this.wrapWithTemporaryParent();
 				return;
-			
-			// If there is more than one container selected,
-			// deselect all other containers except for the current container and destroy any existing borders.
+
+				// If there is more than one container selected,
+				// deselect all other containers except for the current container and destroy any existing borders.
 			} else if (len > 1) {
 				this.detachPlugins();
 				this.deselectAllExceptThisContainer(index);
@@ -91,11 +91,11 @@ export class ContainerManager {
 			this.drawBorder(this._selectedContainers[index]);
 			this.attachPlugins(this._selectedContainers[index]);
 
-		// If there is more than one children of the wrappedContainer,
-		//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
-		} else if(this.wrappedContainer.children.length > 0) {
-			const index = this._selectedContainers.findIndex(el => el === container);
-			if(index === -1) return;
+			// If there is more than one children of the wrappedContainer,
+			//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
+		} else if (this.wrappedContainer.children.length > 0) {
+			const index = this._selectedContainers.findIndex((el) => el === container);
+			if (index === -1) return;
 
 			this.detachPlugins();
 			this.wrappedContainer.restoreStateContext();
@@ -107,7 +107,7 @@ export class ContainerManager {
 	}
 
 	public deselectAll() {
-		if(this.wrappedContainer.children.length > 0) {
+		if (this.wrappedContainer.children.length > 0) {
 			this.wrappedContainer.restoreStateContext();
 		}
 
@@ -119,8 +119,8 @@ export class ContainerManager {
 		const selected: Array<CanvasContainer> = [];
 		const unselected: Array<CanvasContainer> = [];
 
-		for(let n = 0; n < this._selectedContainers.length; n++) {
-			if(index === n) {
+		for (let n = 0; n < this._selectedContainers.length; n++) {
+			if (index === n) {
 				selected.push(this._selectedContainers[n]);
 			} else {
 				unselected.push(this._selectedContainers[n]);
@@ -136,7 +136,7 @@ export class ContainerManager {
 
 		this.viewport.createBorder({
 			...borderOptions,
-			scale: this.viewport.scaled
+			scale: this.viewport.scaled,
 		});
 	}
 
@@ -167,7 +167,7 @@ export class ContainerManager {
 		const borderOptions = this.wrappedContainer.getGeometry();
 		this.viewport.createBorder({
 			...borderOptions,
-			scale: this.viewport.scaled
+			scale: this.viewport.scaled,
 		});
 		this.viewport.addChildAt(this.wrappedContainer, this.viewport.children.length);
 		this.attachPlugins(this.wrappedContainer);
@@ -185,52 +185,52 @@ export class ContainerManager {
 
 	public getSelectedCenter() {
 		const len = this._selectedContainers.length;
-		if(len === 0) return null;
+		if (len === 0) return null;
 
 		let minX = Number.MAX_SAFE_INTEGER;
 		let minY = Number.MAX_SAFE_INTEGER;
 		let maxX = Number.MIN_SAFE_INTEGER;
 		let maxY = Number.MIN_SAFE_INTEGER;
 
-		for(let n = 0; n < len; n++) {
+		for (let n = 0; n < len; n++) {
 			const { x, y, width, height } = this._selectedContainers[n].getGeometry();
 
-			if(x < minX) minX = x;
-			if(y < minY) minY = y;
-			if(x + width > maxX) maxX = x + width;
-			if(y + height > maxY) maxY = y + height;
+			if (x < minX) minX = x;
+			if (y < minY) minY = y;
+			if (x + width > maxX) maxX = x + width;
+			if (y + height > maxY) maxY = y + height;
 		}
 
 		return new Point((minX + maxX) / 2, (minY + maxY) / 2);
 	}
 
 	public getSelectedSize() {
-		if(this._selectedContainers.length === 0) return null;
+		if (this._selectedContainers.length === 0) return null;
 
-		if(this._selectedContainers.length > 1) {
+		if (this._selectedContainers.length > 1) {
 			return {
 				width: this.wrappedContainer.width,
 				height: this.wrappedContainer.height,
-			}
+			};
 		} else {
-			if(this._selectedContainers[0] instanceof FramedContainer) {
+			if (this._selectedContainers[0] instanceof FramedContainer) {
 				return {
 					width: this._selectedContainers[0].mainContainer.width,
 					height: this._selectedContainers[0].mainContainer.height,
-				}
+				};
 			} else {
 				return {
 					width: this._selectedContainers[0].width,
 					height: this._selectedContainers[0].height,
-				}
+				};
 			}
 		}
 	}
 
 	public downloadSelected(mime: string) {
-		if(!this.isActive) return;
+		if (!this.isActive) return;
 
-		if(this._selectedContainers.length > 1) {
+		if (this._selectedContainers.length > 1) {
 			this.downloadPlugin.downloadMany(this._selectedContainers, mime);
 		} else {
 			this.downloadPlugin.downloadOne(this._selectedContainers[0], mime);

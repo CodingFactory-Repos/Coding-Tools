@@ -5,9 +5,9 @@ import { Circle, Rectangle } from '../model/template';
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
 
-	"rectangle": Rectangle,
-	"circle": Circle,
-	"framebox": Rectangle,
+	rectangle: Rectangle,
+	circle: Circle,
+	framebox: Rectangle,
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',
@@ -15,8 +15,8 @@ export const GeometryTypes = {
 } as const;
 
 export const ContainerType = {
-	"generic": GenericContainer,
-	"frame": FramedContainer,
+	generic: GenericContainer,
+	frame: FramedContainer,
 } as const;
 
 export enum ResizeHandle {
@@ -35,11 +35,11 @@ export const ResizeHandleOppositeOf = {
 	[ResizeHandle.RT]: { x: ResizeHandle.LT, y: ResizeHandle.RB },
 	[ResizeHandle.RB]: { x: ResizeHandle.LB, y: ResizeHandle.RT },
 	[ResizeHandle.LB]: { x: ResizeHandle.RB, y: ResizeHandle.LT },
-	[ResizeHandle.T]:  { x: null,            y: ResizeHandle.B },
-	[ResizeHandle.B]:  { x: null,            y: ResizeHandle.T },
-	[ResizeHandle.R]:  { x: ResizeHandle.L,  y: null },
-	[ResizeHandle.L]:  { x: ResizeHandle.R,  y: null },
-}
+	[ResizeHandle.T]: { x: null, y: ResizeHandle.B },
+	[ResizeHandle.B]: { x: null, y: ResizeHandle.T },
+	[ResizeHandle.R]: { x: ResizeHandle.L, y: null },
+	[ResizeHandle.L]: { x: ResizeHandle.R, y: null },
+};
 
 export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
 export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];

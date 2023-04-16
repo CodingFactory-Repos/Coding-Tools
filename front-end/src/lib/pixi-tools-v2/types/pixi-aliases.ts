@@ -10,11 +10,11 @@ import { WrappedContainer } from '../class/wrappedContainer';
 export type Stage = Container<DisplayObject>;
 
 /**
- * 
+ *
  */
 export type CanvasContainer = FramedContainer | GenericContainer;
 
 /**
- * 
+ *
  */
 export type PluginContainer = CanvasContainer | WrappedContainer;

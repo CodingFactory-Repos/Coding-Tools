@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length, Matches, IsNumber, Min, Max, IsOptional, IsBoolean } from "class-validator";
+import { IsNotEmpty, IsString, Length, IsOptional, IsBoolean } from 'class-validator';
 
 export class ProjectMetaDTO {
 	@IsNotEmpty()

@@ -1,6 +1,6 @@
-import { ModelGraphics } from "../../types/pixi-class";
-import { GraphicUIProperties } from "../../types/pixi-ui";
-import { InternalTypeId } from "../../types/pixi-serialize";
+import { ModelGraphics } from '../../types/pixi-class';
+import { GraphicUIProperties } from '../../types/pixi-ui';
+import { InternalTypeId } from '../../types/pixi-serialize';
 
 export class HitArea extends ModelGraphics {
 	public readonly uuid: string;
@@ -15,8 +15,8 @@ export class HitArea extends ModelGraphics {
 
 		const { color, cursor, alpha, lineWidth } = attr;
 
-		this.typeId = "hitarea";
-		this.cursor = cursor ?? "default";
+		this.typeId = 'hitarea';
+		this.cursor = cursor ?? 'default';
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.lineWidth = lineWidth ?? 5;
@@ -51,7 +51,7 @@ export class HitArea extends ModelGraphics {
 				interactive: this.interactive,
 				color: this.color,
 				alpha: this.alpha,
-			}
-		}
+			},
+		};
 	}
 }

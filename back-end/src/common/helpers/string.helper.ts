@@ -54,9 +54,9 @@ export const isEmpty = (value: string | number | object): boolean => {
 export const parseCookieString = (cookieData: string) => {
 	const cookies = cookieData.split('; ');
 	const cookieObj = {};
-	cookies.forEach(cookie => {
+	cookies.forEach((cookie) => {
 		const [name, value] = cookie.split('=');
 		cookieObj[decodeURIComponent(name)] = decodeURIComponent(value);
 	});
 	return cookieObj;
-}
+};

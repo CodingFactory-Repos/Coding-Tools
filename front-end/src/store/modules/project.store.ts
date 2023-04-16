@@ -8,7 +8,6 @@ import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 import type { ProjectStore } from '@/store/interfaces/project.interface';
 
-
 export const useProjectStore = defineStore('project', {
 	state: (): ProjectStore => {
 		return {
@@ -29,17 +28,13 @@ export const useProjectStore = defineStore('project', {
 		},
 		getFrames(this: ProjectStore) {
 			return this.scene?.viewport?.activeFrames || [];
-		}
+		},
 	},
 	actions: {
-		setDeferredEvent(
-			this: ProjectStore,
-			cursor: CSSStyleProperty.Cursor,
-			framed: boolean
-		) {
+		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);
-			this.removeGeometryEvent()
+			this.removeGeometryEvent();
 
 			const scene = toRaw(this.scene);
 			scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
@@ -51,8 +46,8 @@ export const useProjectStore = defineStore('project', {
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			scene.viewport.off('pointerup', this.createGeometry);
 		},
-		enableSelectionBox(this: ProjectStore, destroy: boolean = false) {
-			if(destroy && this.selectionBox) {
+		enableSelectionBox(this: ProjectStore, destroy = false) {
+			if (destroy && this.selectionBox) {
 				const selectionBox = toRaw(this.selectionBox);
 				selectionBox.destroy();
 				this.selectionBox = null;
@@ -64,43 +59,39 @@ export const useProjectStore = defineStore('project', {
 				this.selectionBox = new SelectionBox(scene.viewport);
 			}
 		},
-		createFramedGeometry(
-			this: ProjectStore,
-			event: FederatedPointerEvent
-		) {
+		createFramedGeometry(this: ProjectStore, event: FederatedPointerEvent) {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
 			const data: Partial<SerializedContainer> = {
-				typeId: "frame",
+				typeId: 'frame',
 				background: {
-					typeId: "framebox",
+					typeId: 'framebox',
 				},
-			}
+			};
 			const framedContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(framedContainer);
 
 			scene.viewport.off('pointerup', this.createFramedGeometry);
-			this.canvas.classList.toggle("default");
+			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
 			this.default = true;
 		},
-		createGeometry(
-			this: ProjectStore,
-			event: FederatedPointerEvent
-		) {
+		createGeometry(this: ProjectStore, event: FederatedPointerEvent) {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
 			const data: Partial<SerializedContainer> = {
-				typeId: "generic",
-				childs: [{
-					typeId: this.deferredGeometry,
-				}],
-			}
+				typeId: 'generic',
+				childs: [
+					{
+						typeId: this.deferredGeometry,
+					},
+				],
+			};
 			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(genericContainer);
 
 			scene.viewport.off('pointerup', this.createGeometry);
-			this.canvas.classList.toggle("default");
+			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
 			this.default = true;
 		},
@@ -114,7 +105,7 @@ export const useProjectStore = defineStore('project', {
 		},
 		toggleImmersion(this: ProjectStore) {
 			this.immersion = !this.immersion;
-			
+
 			//! Hardcoded
 			const offset = this.immersion ? 36 : 84;
 
@@ -127,7 +118,9 @@ export const useProjectStore = defineStore('project', {
 		},
 		setFrameCanvas(this: ProjectStore, frameNumber: number) {
 			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
-			this.scene.viewport.children.find((ctn) => ctn instanceof FramedContainer && ctn.frameNumber === frameNumber).visible = true;
+			this.scene.viewport.children.find(
+				(ctn) => ctn instanceof FramedContainer && ctn.frameNumber === frameNumber,
+			).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStore) {
 			this.scene.viewport.toggleHidding(true);
@@ -135,6 +128,6 @@ export const useProjectStore = defineStore('project', {
 		canvasDownload(this: ProjectStore, mime: string) {
 			const scene = toRaw(this.scene);
 			scene.viewport.manager.downloadSelected(mime);
-		}
+		},
 	},
 });

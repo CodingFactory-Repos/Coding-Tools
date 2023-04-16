@@ -1,4 +1,3 @@
-
 // import { ConfigBluePrint } from '../types/blueprint-manager';
 // import { PixiEvents, PixiObject } from '../types';
 

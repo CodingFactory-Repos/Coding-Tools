@@ -1,5 +1,5 @@
-export type ContainerTypeId = "generic" | "frame";
-export type GraphicTypeId = "rectangle" | "circle" | "framebox";
+export type ContainerTypeId = 'generic' | 'frame';
+export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox';
 
 export interface ElementPosition {
 	x: number;

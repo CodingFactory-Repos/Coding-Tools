@@ -42,17 +42,17 @@ export const apiTryGetTemplatesMeta = () => {
 };
 
 export const apiTryGetProjectsMeta = () => {
-	return http.get<Status<{ projects: Array<ProjectMeta>}>>('/canvas-room/list');
+	return http.get<Status<{ projects: Array<ProjectMeta> }>>('/canvas-room/list');
 };
 
 export const apiTryCreateNewProject = () => {
 	return http.post<Status<{ roomId: string }>>('/canvas-room/new');
-}
+};
 
 export const apiTryGetRoomProject = (roomId: string) => {
 	return http.get<Status<{ project: any }>>(`/canvas-room/${roomId}`);
-}
+};
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
 	return http.post<Status<{ updatedAt: string }>>(`/canvas-room/save-meta/${roomId}`, meta);
-}
+};

@@ -1,8 +1,6 @@
-import "pixi.js";
-import { ElementPosition } from "../pixi-container";
-import { CanvasContainer } from "../pixi-aliases";
-import { DisplayObjectEvents } from 'pixi.js'
-declare module "pixi.js" {
+import 'pixi.js';
+
+declare module 'pixi.js' {
 	interface FederatedEvent {
 		shiftKey: boolean;
 	}
@@ -15,8 +13,8 @@ declare module "pixi.js" {
 		forced: boolean;
 	}
 
-	interface DisplayObjectEvents {
-		// Extends emitter event here if necessary, ex : 
-		// "custom": () => void;
-	}
+	// interface DisplayObjectEvents {
+	// 	// Extends emitter event here if necessary, ex :
+	// 	// "custom": () => void;
+	// }
 }

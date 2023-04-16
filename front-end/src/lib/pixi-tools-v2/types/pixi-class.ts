@@ -1,9 +1,9 @@
-import { Container, DisplayObject, FederatedPointerEvent, Graphics } from "pixi.js";
-import { ContainerManager } from "../class/containerManager";
-import { GenericContainer } from "../class/genericContainer";
+import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
+import { ContainerManager } from '../class/containerManager';
+import { GenericContainer } from '../class/genericContainer';
 import { SerializedGraphic } from './pixi-serialize';
-import { Rectangle } from "../model/template";
-import type { GraphicUIProperties } from "./pixi-ui";
+import { Rectangle } from '../model/template';
+import type { GraphicUIProperties } from './pixi-ui';
 
 export interface Bounds {
 	x: number;
@@ -23,14 +23,14 @@ export abstract class BoundsContainer extends Container {
 	public absMaxX: number;
 	public absMaxY: number;
 
-	protected updateAbsoluteBounds(): void {}
+	protected abstract updateAbsoluteBounds(): void;
 	abstract getGeometry(): Bounds;
 	abstract getGraphicChildren(): Array<DisplayObject>;
 }
 
 export abstract class PluginContainer extends BoundsContainer {
 	protected readonly manager: ContainerManager;
-	protected onSelected(e: FederatedPointerEvent): void {}
+	protected abstract onSelected(e: FederatedPointerEvent): void;
 }
 
 export abstract class ModelGraphics extends Graphics implements WithId {
@@ -38,11 +38,11 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 	public readonly typeId: string;
 	public color: number;
 	public cursor: CSSStyleProperty.Cursor;
-	
+
 	abstract draw(attr: Partial<GraphicUIProperties>): void;
 	abstract serialized(): SerializedGraphic;
 }
 
 export class FramedMainContainer extends Container {
-	public readonly children: Array<GenericContainer | Rectangle>
+	public readonly children: Array<GenericContainer | Rectangle>;
 }

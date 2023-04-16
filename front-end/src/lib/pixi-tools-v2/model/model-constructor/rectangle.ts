@@ -54,7 +54,7 @@ export class Rectangle extends ModelGraphics {
 				interactive: this.interactive,
 				color: this.color,
 				alpha: this.alpha,
-			}
-		}
+			},
+		};
 	}
 }

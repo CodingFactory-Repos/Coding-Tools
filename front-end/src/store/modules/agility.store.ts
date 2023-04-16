@@ -1,7 +1,13 @@
 import { defineStore } from 'pinia';
 
 import { AgilityStore, ProjectMeta } from '@/store/interfaces/agility.interface';
-import { apiTryGetTemplatesMeta, apiTryGetProjectsMeta, apiTryCreateNewProject, apiTryGetRoomProject, apiTrySaveProjectMeta } from '@/api/agility-req';
+import {
+	apiTryGetTemplatesMeta,
+	apiTryGetProjectsMeta,
+	apiTryCreateNewProject,
+	apiTryGetRoomProject,
+	apiTrySaveProjectMeta,
+} from '@/api/agility-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 
 export const useAgilityStore = defineStore('agility', {
@@ -13,34 +19,34 @@ export const useAgilityStore = defineStore('agility', {
 		};
 	},
 	actions: {
-		tryCreateNewProject: withErrorHandler(async function(this: AgilityStore) {
+		tryCreateNewProject: withErrorHandler(async function (this: AgilityStore) {
 			const res = await apiTryCreateNewProject();
-			if(res.data.status === 'ok') {
-				return res.data.roomId
+			if (res.data.status === 'ok') {
+				return res.data.roomId;
 			}
 			return false;
 		}),
-		tryGetProjectsMeta: withErrorHandler(async function(this: AgilityStore) {
+		tryGetProjectsMeta: withErrorHandler(async function (this: AgilityStore) {
 			const res = await apiTryGetProjectsMeta();
-			if(res.data.status === 'ok') {
+			if (res.data.status === 'ok') {
 				this.projects = res.data.projects;
 				return true;
 			}
 			return false;
 		}),
-		tryGetRoomProject: withErrorHandler(async function(this: AgilityStore, roomId: string) {
+		tryGetRoomProject: withErrorHandler(async function (this: AgilityStore, roomId: string) {
 			const res = await apiTryGetRoomProject(roomId);
-			if(res.data.status === 'ok') {
+			if (res.data.status === 'ok') {
 				this.currentProject = res.data.project;
 				return true;
 			}
 			return false;
 		}),
-		trySaveProjectMeta: withErrorHandler(async function(this: AgilityStore, project: ProjectMeta) {
+		trySaveProjectMeta: withErrorHandler(async function (this: AgilityStore, project: ProjectMeta) {
 			const res = await apiTrySaveProjectMeta(project.meta, project.roomId);
-			if(res.data.status === 'ok') {
-				for(let n = 0; n < this.projects.length; n++) {
-					if(this.projects[n].roomId === project.roomId) {
+			if (res.data.status === 'ok') {
+				for (let n = 0; n < this.projects.length; n++) {
+					if (this.projects[n].roomId === project.roomId) {
 						this.projects[n].meta = project.meta;
 						this.projects[n].lastUpdatedAt = res.data.updatedAt;
 						break;

@@ -54,7 +54,7 @@ export class Circle extends ModelGraphics {
 				interactive: this.interactive,
 				color: this.color,
 				alpha: this.alpha,
-			}
-		}
+			},
+		};
 	}
 }

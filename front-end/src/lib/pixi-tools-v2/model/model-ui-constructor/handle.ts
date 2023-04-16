@@ -1,5 +1,5 @@
 import { ModelGraphics } from '../../types/pixi-class';
-import { GraphicUIProperties } from "../../types/pixi-ui";
+import { GraphicUIProperties } from '../../types/pixi-ui';
 import { InternalTypeId } from '../../types/pixi-serialize';
 
 export class Handle extends ModelGraphics {
@@ -15,8 +15,8 @@ export class Handle extends ModelGraphics {
 
 		const { color, cursor, alpha, radius } = attr;
 
-		this.typeId = "handle";
-		this.cursor = cursor ?? "default";
+		this.typeId = 'handle';
+		this.cursor = cursor ?? 'default';
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.interactive = true;
@@ -27,9 +27,9 @@ export class Handle extends ModelGraphics {
 	public draw(attr: Partial<GraphicUIProperties>) {
 		const { x, y, scale } = attr;
 		const lineWidth = Math.max(0.05, 1 / scale);
-		const rad = Math.max(0.25, this.radius * 1 / scale);
+		const rad = Math.max(0.25, (this.radius * 1) / scale);
 		this.position.set(x, y);
-		
+
 		// TODO: need a secondary color in the options
 		this.clear();
 		this.lineStyle(lineWidth, 0x0c8ce9);
@@ -53,7 +53,7 @@ export class Handle extends ModelGraphics {
 				interactive: this.interactive,
 				color: this.color,
 				alpha: this.alpha,
-			}
-		}
+			},
+		};
 	}
 }

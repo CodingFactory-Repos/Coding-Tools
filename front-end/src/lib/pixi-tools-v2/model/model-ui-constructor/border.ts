@@ -1,5 +1,5 @@
 import { ModelGraphics } from '../../types/pixi-class';
-import { GraphicUIProperties } from "../../types/pixi-ui";
+import { GraphicUIProperties } from '../../types/pixi-ui';
 import { InternalTypeId } from '../../types/pixi-serialize';
 
 export class Border extends ModelGraphics {
@@ -13,8 +13,8 @@ export class Border extends ModelGraphics {
 
 		const { color, alpha, cursor } = attr;
 
-		this.typeId = "border";
-		this.cursor = cursor ?? "default";
+		this.typeId = 'border';
+		this.cursor = cursor ?? 'default';
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.draw(attr);
@@ -46,7 +46,7 @@ export class Border extends ModelGraphics {
 				interactive: this.interactive,
 				color: this.color,
 				alpha: this.alpha,
-			}
-		}
+			},
+		};
 	}
 }

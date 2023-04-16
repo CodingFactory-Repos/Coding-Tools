@@ -1,8 +1,8 @@
 import JSZip from 'jszip';
 import { Renderer } from 'pixi.js';
-import { ViewportUI } from "../viewportUI";
+import { ViewportUI } from '../viewportUI';
 
-import type { CanvasContainer } from "../types/pixi-aliases";
+import type { CanvasContainer } from '../types/pixi-aliases';
 
 export class DownloadPlugin {
 	protected readonly viewport: ViewportUI;
@@ -13,12 +13,12 @@ export class DownloadPlugin {
 
 	public downloadOne(container: CanvasContainer, mime: string) {
 		const cloneContainer = container.cloneToContainer();
-		const { width, height, x, y} = cloneContainer.getBounds();
+		const { width, height, x, y } = cloneContainer.getBounds();
 		cloneContainer.position.set(-x, -y);
 
 		const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
 		renderer.render(cloneContainer);
-		
+
 		const canvas = renderer.view;
 		const imageData = canvas.toDataURL(mime);
 		const extension = imageData.split(',')[0].split(';')[0].split('/')[1];
@@ -43,20 +43,20 @@ export class DownloadPlugin {
 			const cloneContainer = container.cloneToContainer();
 			const { width, height, x, y } = cloneContainer.getBounds();
 			cloneContainer.position.set(-x, -y);
-		
+
 			const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
 			renderer.render(cloneContainer);
-		
+
 			const canvas = renderer.view;
 			const imageData = canvas.toDataURL(mime);
 			const extension = imageData.split(',')[0].split(';')[0].split('/')[1];
 			const fileContent = imageData.split(',')[1];
 			zip.file(`graphic-${n + 1}.${extension}`, fileContent, { base64: true });
-		
+
 			cloneContainer.destroy();
 			renderer.destroy();
 		}
-		
+
 		// generate the zip file and download it
 		const zipBlob = await zip.generateAsync({ type: 'blob' });
 		const downloadLink = document.createElement('a');

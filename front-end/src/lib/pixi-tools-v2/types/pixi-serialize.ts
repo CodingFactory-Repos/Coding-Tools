@@ -1,8 +1,8 @@
-import { ElementBounds, ElementColorimetry, ElementCursor } from "./pixi-container";
+import { ElementBounds, ElementColorimetry, ElementCursor } from './pixi-container';
 
-export type ContainerTypeId = "generic" | "frame";
-export type GraphicTypeId = "rectangle" | "circle" | "framebox";
-export type InternalTypeId = "border" | "handle" | "hitarea" | "grid";
+export type ContainerTypeId = 'generic' | 'frame';
+export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox';
+export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
 	uuid: string;

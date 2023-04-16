@@ -1,4 +1,3 @@
-
 import { Drag } from 'pixi-viewport';
 import { Graphics, FederatedPointerEvent, Point } from 'pixi.js';
 import { GenericContainer } from './genericContainer';
@@ -6,7 +5,6 @@ import { FramedContainer } from './framedContainer';
 import { ViewportUI } from '../viewportUI';
 
 import type { CanvasContainer } from '../types/pixi-aliases';
-
 
 export class SelectionBox extends Graphics {
 	protected readonly nativeDragPlugin: Drag;
@@ -25,12 +23,12 @@ export class SelectionBox extends Graphics {
 
 		this.viewport = viewport;
 		this.viewport.on('pointerdown', this.startSelection);
-		this.nativeDragPlugin = this.viewport.plugins.get("drag");
+		this.nativeDragPlugin = this.viewport.plugins.get('drag');
 		this.viewport.addChild(this);
 	}
 
 	private startSelection = (e: FederatedPointerEvent) => {
-		if(e.originalEvent.shiftKey) {
+		if (e.originalEvent.shiftKey) {
 			this._startPos = this.viewport.toWorld(e.global.clone());
 
 			this.clear();
@@ -41,7 +39,7 @@ export class SelectionBox extends Graphics {
 			this.viewport.on('pointermove', this.updateSelection);
 			this.viewport.on('pointerup', this.endSelection);
 		}
-	}
+	};
 
 	private updateSelection = (e: FederatedPointerEvent) => {
 		if (!this.visible) return;
@@ -66,7 +64,7 @@ export class SelectionBox extends Graphics {
 		this.box.beginFill(0x0c8ce9);
 		this.box.drawRect(startX, startY, width, height);
 		this.box.endFill();
-	}
+	};
 
 	private endSelection = () => {
 		this.visible = false;
@@ -78,25 +76,25 @@ export class SelectionBox extends Graphics {
 		const selectionBounds = this.getBounds();
 
 		const selectedChildren: Array<CanvasContainer> = [];
-		for(let n = 0; n < this.viewport.children.length; n++) {
+		for (let n = 0; n < this.viewport.children.length; n++) {
 			const child = this.viewport.children[n];
-			if(!child.visible) continue;
+			if (!child.visible) continue;
 
-			if(child instanceof GenericContainer || child instanceof FramedContainer) {
-				if(child.getBounds().intersects(selectionBounds)) {
+			if (child instanceof GenericContainer || child instanceof FramedContainer) {
+				if (child.getBounds().intersects(selectionBounds)) {
 					selectedChildren.push(this.viewport.children[n]);
 				}
 			}
 		}
 
-		for(let n = 0; n < selectedChildren.length; n++) {
+		for (let n = 0; n < selectedChildren.length; n++) {
 			this.viewport.manager.selectContainer(selectedChildren[n], true);
 		}
 
 		this.viewport.selectionBoxActive = false;
 		this.clear();
 		this.box.clear();
-	}
+	};
 
 	public destroy() {
 		super.destroy();

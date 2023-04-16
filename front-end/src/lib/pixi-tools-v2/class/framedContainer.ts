@@ -1,11 +1,11 @@
-import { Container, FederatedPointerEvent, Text } from "pixi.js";
-import { ContainerManager } from "./containerManager";
-import { Rectangle } from "../model/template";
-import { ViewportUI } from "../viewportUI";
+import { Container, FederatedPointerEvent, Text } from 'pixi.js';
+import { ContainerManager } from './containerManager';
+import { Rectangle } from '../model/template';
+import { ViewportUI } from '../viewportUI';
 
-import { FramedMainContainer, ModelGraphics, PluginContainer } from "../types/pixi-class";
-import { ContainerTypeId, SerializedContainer, SerializedGraphic } from "../types/pixi-serialize";
-import { GenericContainer } from "./genericContainer";
+import { FramedMainContainer, ModelGraphics, PluginContainer } from '../types/pixi-class';
+import { ContainerTypeId, SerializedContainer, SerializedGraphic } from '../types/pixi-serialize';
+import { GenericContainer } from './genericContainer';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -32,7 +32,7 @@ export class FramedContainer extends PluginContainer {
 		attributes: Partial<SerializedContainer>,
 		children: Array<GenericContainer>,
 		remote: boolean,
-		background?: Rectangle
+		background?: Rectangle,
 	) {
 		return new FramedContainer(viewport, attributes, children, remote, background);
 	}
@@ -42,7 +42,7 @@ export class FramedContainer extends PluginContainer {
 		attributes: Partial<SerializedContainer>,
 		children: Array<GenericContainer>,
 		remote: boolean,
-		background?: Rectangle
+		background?: Rectangle,
 	) {
 		super();
 
@@ -61,39 +61,39 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
 		this.frameBox = background;
-		
+
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new Container();
 		this.titleContainer.interactive = true;
 		this.mainContainer.interactive = true;
 
-		for(let n = 0; n < children.length; n++) {
+		for (let n = 0; n < children.length; n++) {
 			this.mainContainer.addChild(children[n]);
 		}
 
 		this.addChild(this.mainContainer);
-		this.mainContainer.on("added", this.updateAbsoluteBounds.bind(this));
+		this.mainContainer.on('added', this.updateAbsoluteBounds.bind(this));
 		this.mainContainer.addChildAt(background, 0);
-		background.on("pointerdown", this.onSelected.bind(this));
+		background.on('pointerdown', this.onSelected.bind(this));
 
 		const geometry = this.getGeometry();
 		this.boxTitle = new Text(`Frame ${this.frameNumber}`, { fontSize: 14, fill: 0xffffff });
 		this.boxTitle.x = geometry.x;
 		this.boxTitle.y = geometry.y - 30;
-		this.titleContainer.cursor = "pointer";
+		this.titleContainer.cursor = 'pointer';
 		this.titleContainer.addChild(this.boxTitle);
-		this.titleContainer.on("pointerdown", this.onSelected.bind(this));
+		this.titleContainer.on('pointerdown', this.onSelected.bind(this));
 		viewport.addChild(this.titleContainer);
 
-		background.on("moved", this.onMoved.bind(this));
-		this.on("moved", this.onMoved);
+		background.on('moved', this.onMoved.bind(this));
+		this.on('moved', this.onMoved);
 
-		this.on("destroyed", () => {
+		this.on('destroyed', () => {
 			viewport.removeChild(this.titleContainer);
-		})
+		});
 
-		if(viewport.socketPlugin) {
-			viewport.socketPlugin.emit("ws-element-added", this, remote);
+		if (viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this, remote);
 		}
 	}
 
@@ -104,8 +104,8 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
-		if(e.forced || !this.interactive) return;
-		if(e.target === this.frameBox && this.listeners("pointerdown").length > 0) return;
+		if (e.forced || !this.interactive) return;
+		if (e.target === this.frameBox && this.listeners('pointerdown').length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
@@ -116,26 +116,25 @@ export class FramedContainer extends PluginContainer {
 		let maxX = Number.MIN_SAFE_INTEGER;
 		let maxY = Number.MIN_SAFE_INTEGER;
 
-		for(let n = 0; n < this.mainContainer.children.length; n++) {
+		for (let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
 
 			if (child instanceof Rectangle) {
 				const { x, y, width, height } = child;
-				if(x < minX) minX = x;
-				if(y < minY) minY = y;
-				if(x + width > maxX) maxX = x + width;
-				if(y + height > maxY) maxY = y + height;
-
+				if (x < minX) minX = x;
+				if (y < minY) minY = y;
+				if (x + width > maxX) maxX = x + width;
+				if (y + height > maxY) maxY = y + height;
 			} else if (child instanceof GenericContainer) {
 				const geometry = child.getGeometry();
-				if(geometry === null) continue;
+				if (geometry === null) continue;
 
 				const { x, y, width, height } = geometry;
 
-				if(x < minX) minX = x;
-				if(y < minY) minY = y;
-				if(x + width > maxX) maxX = x + width;
-				if(y + height > maxY) maxY = y + height;
+				if (x < minX) minX = x;
+				if (y < minY) minY = y;
+				if (x + width > maxX) maxX = x + width;
+				if (y + height > maxY) maxY = y + height;
 			}
 		}
 
@@ -146,14 +145,14 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public getGeometry() {
-		if(!this.destroyed) {
+		if (!this.destroyed) {
 			this.updateAbsoluteBounds();
 			return {
 				x: this.absMinX,
 				y: this.absMinY,
 				width: this.mainContainer.width,
 				height: this.mainContainer.height,
-			}
+			};
 		} else {
 			return null;
 		}
@@ -162,11 +161,10 @@ export class FramedContainer extends PluginContainer {
 	public getGraphicChildren() {
 		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
-		for(let n = 0; n < this.mainContainer.children.length; n++) {
+		for (let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
 			if (child instanceof Rectangle) {
 				graphics.push(child);
-
 			} else if (child instanceof GenericContainer) {
 				graphics.push(child.getGraphicChildren());
 			}
@@ -179,12 +177,11 @@ export class FramedContainer extends PluginContainer {
 		const cloned = new Container();
 
 		this.mainContainer.children.forEach((child) => {
-			if(child instanceof Rectangle) {
+			if (child instanceof Rectangle) {
 				const clonedChild = child.clone();
 				clonedChild.position.copyFrom(child.position);
 				cloned.addChild(clonedChild);
-
-			} else if(child instanceof GenericContainer) {
+			} else if (child instanceof GenericContainer) {
 				const clonedContainer = child.cloneToContainer();
 				cloned.addChild(clonedContainer);
 			}
@@ -197,15 +194,15 @@ export class FramedContainer extends PluginContainer {
 		const genericContainerSerialized: Array<SerializedContainer> = [];
 		let backgroundSerialized: SerializedGraphic;
 
-		for(let n = 0; n < this.mainContainer.children.length; n++) {
+		for (let n = 0; n < this.mainContainer.children.length; n++) {
 			const child = this.mainContainer.children[n];
-			if(child instanceof Rectangle) {
+			if (child instanceof Rectangle) {
 				backgroundSerialized = child.serialized();
-			} else if(child instanceof GenericContainer) {
+			} else if (child instanceof GenericContainer) {
 				genericContainerSerialized.push(child.serializeData());
 			}
 		}
-		
+
 		return {
 			uuid: this.uuid,
 			typeId: this.typeId,
@@ -224,6 +221,6 @@ export class FramedContainer extends PluginContainer {
 				frameNumber: this.frameNumber,
 			},
 			childs: genericContainerSerialized,
-		}
+		};
 	}
 }

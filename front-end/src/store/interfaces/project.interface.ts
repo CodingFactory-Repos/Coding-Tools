@@ -1,5 +1,5 @@
-import { Scene } from "@/lib/pixi-tools-v2/scene";
-import { LiteralGeometryTypes } from "@/lib/pixi-tools-v2/types/pixi-enums";
+import { Scene } from '@/lib/pixi-tools-v2/scene';
+import { LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 
 export interface ProjectStore {
@@ -30,6 +30,6 @@ export interface ProjectStore {
 }
 
 export interface ViewportDefaultPosition {
-	scale?: { x: number, y: number },
-	pos?: { x: number, y: number },
+	scale?: { x: number; y: number };
+	pos?: { x: number; y: number };
 }

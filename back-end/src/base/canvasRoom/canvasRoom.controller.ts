@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -22,7 +22,11 @@ export class CanvasRoomController {
 
 	@Get(':roomId')
 	@UseGuards(JwtAuthGuard)
-	async retrieveProject(@Jwt() userId: ObjectId, @Param('roomId') roomId: string, @Res() res: Response) {
+	async retrieveProject(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
 		const project = await this.canvasRoomService.retrieveProject(roomId, userId);
 		return res.status(201).json({ status: 'ok', project });
 	}
@@ -36,7 +40,12 @@ export class CanvasRoomController {
 
 	@Post('save-meta/:roomId')
 	@UseGuards(JwtAuthGuard)
-	async saveProjectMeta(@Jwt() userId: ObjectId, @Body() body: ProjectMetaDTO, @Param('roomId') roomId: string, @Res() res: Response) {
+	async saveProjectMeta(
+		@Jwt() userId: ObjectId,
+		@Body() body: ProjectMetaDTO,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
 		const updatedAt = await this.canvasRoomService.saveProjectMeta(body, roomId, userId);
 		return res.status(201).json({ status: 'ok', updatedAt });
 	}

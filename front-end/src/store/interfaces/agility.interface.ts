@@ -23,9 +23,6 @@ export interface ProjectMetaDetails {
 	readonly: boolean;
 }
 
-
-
-
 export interface AgilityTemplateMeta {
 	metaTemplates: Array<AgilityTemplateMetaDetails>;
 }

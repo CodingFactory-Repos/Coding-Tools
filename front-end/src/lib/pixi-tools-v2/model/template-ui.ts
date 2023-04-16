@@ -3,9 +3,4 @@ import { Border } from './model-ui-constructor/border';
 import { Handle } from './model-ui-constructor/handle';
 import { Grid } from './model-ui-constructor/grid';
 
-export {
-	Border,
-	HitArea,
-	Handle,
-	Grid,
-}
+export { Border, HitArea, Handle, Grid };

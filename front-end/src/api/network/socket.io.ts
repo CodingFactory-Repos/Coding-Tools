@@ -1,8 +1,7 @@
+import { Manager } from 'socket.io-client';
 
-import { Manager } from "socket.io-client";
-
-export const manager = new Manager("ws://localhost:8010", {
-	transports: ["websocket"],
+export const manager = new Manager('ws://localhost:8010', {
+	transports: ['websocket'],
 	withCredentials: true,
-	path: '/socket.io'
+	path: '/socket.io',
 });

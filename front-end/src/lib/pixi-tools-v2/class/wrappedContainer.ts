@@ -1,17 +1,16 @@
-import { FederatedPointerEvent, Graphics } from 'pixi.js';
-import { ContainerManager } from "./containerManager";
-import { FramedContainer } from "./framedContainer";
-import { Rectangle } from "../model/template";
-import { ViewportUI } from "../viewportUI";
+import { FederatedPointerEvent } from 'pixi.js';
+import { ContainerManager } from './containerManager';
+import { FramedContainer } from './framedContainer';
+import { Rectangle } from '../model/template';
+import { ViewportUI } from '../viewportUI';
 
-import { BoundsContainer, ModelGraphics } from "../types/pixi-class";
+import { BoundsContainer, ModelGraphics } from '../types/pixi-class';
 import type { CanvasContainer } from '../types/pixi-aliases';
-
 
 export class WrappedContainer extends BoundsContainer {
 	protected readonly viewport: ViewportUI;
 	protected readonly manager: ContainerManager;
-	protected awaitDblClick: boolean = false;
+	protected awaitDblClick = false;
 	protected timeout: NodeJS.Timeout = null;
 	public absoluteChildren: Array<CanvasContainer>;
 	public wrappedBox: Rectangle = null;
@@ -25,8 +24,8 @@ export class WrappedContainer extends BoundsContainer {
 	constructor(manager: ContainerManager, viewport: ViewportUI) {
 		super();
 
-		this.typeId = "wrap";
-		this.cursor = "pointer";
+		this.typeId = 'wrap';
+		this.cursor = 'pointer';
 		this.interactive = true;
 		this.viewport = viewport;
 		this.manager = manager;
@@ -44,26 +43,26 @@ export class WrappedContainer extends BoundsContainer {
 		this.wrappedBox = null;
 		this.absoluteChildren = [];
 		this.viewport.removeChild(this);
-		this.removeAllListeners("pointerup");
+		this.removeAllListeners('pointerup');
 	}
 
 	public toggleChildrenInteractive = (interactive: boolean) => {
-		for(let n = 0; n < this.absoluteChildren.length; n++) {
+		for (let n = 0; n < this.absoluteChildren.length; n++) {
 			const child = this.absoluteChildren[n];
 			child.interactive = interactive;
-			
-			if(child instanceof FramedContainer) {
+
+			if (child instanceof FramedContainer) {
 				child.mainContainer.children.forEach((ctn) => {
-					ctn.interactive = interactive
-					ctn.children.forEach((graph) => graph.interactive = interactive);
+					ctn.interactive = interactive;
+					ctn.children.forEach((graph) => (graph.interactive = interactive));
 				});
 			} else {
 				child.children.forEach((graph) => {
 					graph.interactive = interactive;
-				})
+				});
 			}
 		}
-	}
+	};
 
 	protected updateAbsoluteBounds() {
 		let minX = Number.MAX_SAFE_INTEGER;
@@ -71,16 +70,16 @@ export class WrappedContainer extends BoundsContainer {
 		let maxX = Number.MIN_SAFE_INTEGER;
 		let maxY = Number.MIN_SAFE_INTEGER;
 
-		for(let n = 0; n < this.absoluteChildren.length; n++) {
+		for (let n = 0; n < this.absoluteChildren.length; n++) {
 			const geometry = this.absoluteChildren[n].getGeometry();
-			if(geometry === null) continue;
+			if (geometry === null) continue;
 
 			const { x, y, width, height } = geometry;
 
-			if(x < minX) minX = x;
-			if(y < minY) minY = y;
-			if(x + width > maxX) maxX = x + width;
-			if(y + height > maxY) maxY = y + height;
+			if (x < minX) minX = x;
+			if (y < minY) minY = y;
+			if (x + width > maxX) maxX = x + width;
+			if (y + height > maxY) maxY = y + height;
 		}
 
 		this.absMinX = minX;
@@ -96,17 +95,17 @@ export class WrappedContainer extends BoundsContainer {
 			y: this.absMinY,
 			width: this.absMaxX - this.absMinX,
 			height: this.absMaxY - this.absMinY,
-		}
+		};
 	}
 
 	public getGraphicChildren() {
 		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
-		for(let n = 0; n < this.absoluteChildren.length; n++) {
+		for (let n = 0; n < this.absoluteChildren.length; n++) {
 			graphics.push(this.absoluteChildren[n].getGraphicChildren());
 		}
 
-		if(this.wrappedBox) {
+		if (this.wrappedBox) {
 			graphics.push(this.wrappedBox);
 		}
 
@@ -120,16 +119,16 @@ export class WrappedContainer extends BoundsContainer {
 		const geometry = this.getGeometry();
 		this.wrappedBox = new Rectangle({
 			uuid: null,
-			typeId: "rectangle",
+			typeId: 'rectangle',
 			bounds: geometry,
 			properties: {
 				color: 0xff00ff,
-				cursor: "pointer",
+				cursor: 'pointer',
 				interactive: true,
 				alpha: 0,
-			}
+			},
 		});
-		this.wrappedBox.cursor = "pointer";
+		this.wrappedBox.cursor = 'pointer';
 		this.wrappedBox.interactive = true;
 		this.addChildAt(this.wrappedBox, 0);
 		this.toggleChildrenInteractive(false);
@@ -138,10 +137,10 @@ export class WrappedContainer extends BoundsContainer {
 	}
 
 	protected onPointerDown(e: FederatedPointerEvent) {
-		if(e.forced) return;
-		if(!this.awaitDblClick) {
-			if(this.timeout) clearTimeout(this.timeout);
-			
+		if (e.forced) return;
+		if (!this.awaitDblClick) {
+			if (this.timeout) clearTimeout(this.timeout);
+
 			this.toggleChildrenInteractive(true);
 			this.viewport.setChildIndex(this, 1);
 			this.timeout = null;

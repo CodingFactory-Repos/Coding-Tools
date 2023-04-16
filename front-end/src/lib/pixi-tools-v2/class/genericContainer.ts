@@ -10,12 +10,12 @@ export class GenericContainer extends PluginContainer {
 	public readonly children: Array<Graphics>;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
-	
+
 	public absMinX: number;
 	public absMinY: number;
 	public absMaxX: number;
 	public absMaxY: number;
-	
+
 	public cursor: CSSStyleProperty.Cursor;
 	public isAttachedToFrame: boolean;
 	public tabNumberContext = null;
@@ -25,7 +25,7 @@ export class GenericContainer extends PluginContainer {
 		viewport: ViewportUI,
 		attributes: Partial<SerializedContainer>,
 		children: Array<ModelGraphics>,
-		remote: boolean
+		remote: boolean,
 	) {
 		return new GenericContainer(viewport, attributes, children, remote);
 	}
@@ -34,7 +34,7 @@ export class GenericContainer extends PluginContainer {
 		viewport: ViewportUI,
 		attributes: Partial<SerializedContainer>,
 		children: Array<any>,
-		remote: boolean
+		remote: boolean,
 	) {
 		super();
 
@@ -52,26 +52,26 @@ export class GenericContainer extends PluginContainer {
 		this.absMaxX = anchors.absMaxX;
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
-		this.on("pointerdown", this.onSelected);
+		this.on('pointerdown', this.onSelected);
 
-		for(let n = 0; n < children.length; n++) {
+		for (let n = 0; n < children.length; n++) {
 			this.addChild(children[n]);
 		}
 
-		if(viewport.socketPlugin) {
-			viewport.socketPlugin.emit("ws-element-added", this, remote);
+		if (viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this, remote);
 		}
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
-		if(e.forced || !this.interactive) return;
+		if (e.forced || !this.interactive) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
 
 	protected onChildrenChange(_length?: number): void {
 		super.onChildrenChange(_length);
-		if(!this.destroyed) {
+		if (!this.destroyed) {
 			this.updateAbsoluteBounds();
 		}
 	}
@@ -86,14 +86,14 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	public getGeometry() {
-		if(!this.destroyed) {
+		if (!this.destroyed) {
 			this.updateAbsoluteBounds();
 			return {
 				x: this.absMinX,
 				y: this.absMinY,
 				width: this.width,
 				height: this.height,
-			}
+			};
 		} else {
 			return null;
 		}
@@ -108,7 +108,7 @@ export class GenericContainer extends PluginContainer {
 
 		this.children.forEach((child) => {
 			const clonedChild = child.clone();
-			clonedChild.position.copyFrom(child.position)
+			clonedChild.position.copyFrom(child.position);
 			cloned.addChild(clonedChild);
 		});
 
@@ -135,7 +135,7 @@ export class GenericContainer extends PluginContainer {
 				isAttachedToFrame: this.isAttachedToFrame,
 				frameNumber: this.frameNumber,
 			},
-			childs: [graphicSerialized]
-		}
+			childs: [graphicSerialized],
+		};
 	}
 }

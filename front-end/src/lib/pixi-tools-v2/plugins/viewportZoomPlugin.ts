@@ -1,7 +1,6 @@
-import { reactive } from "vue";
-import { ContainerManager } from "../class/containerManager";
-import { ViewportUI } from "../viewportUI";
-
+import { reactive } from 'vue';
+import { ContainerManager } from '../class/containerManager';
+import { ViewportUI } from '../viewportUI';
 
 export class ViewportZoomPlugin {
 	protected readonly viewport: ViewportUI;
@@ -22,14 +21,15 @@ export class ViewportZoomPlugin {
 		this.MAX_ZOOM = 50;
 		this.MIN_ZOOM = 0.01;
 		this.MAX_STEP = 14;
-		this.MULTIPLICATOR = Math.pow((this.MAX_ZOOM / this.MIN_ZOOM), (1 / this.MAX_STEP));
+		this.MULTIPLICATOR = Math.pow(this.MAX_ZOOM / this.MIN_ZOOM, 1 / this.MAX_STEP);
 		this._deduceZoomStep();
 		this._updateZoomPercentage();
 	}
 
 	private _deduceZoomStep() {
 		const offset = 0.1;
-		const percentage = Math.log(this.viewport.scaled / this.MIN_ZOOM) / Math.log(this.MULTIPLICATOR);
+		const percentage =
+			Math.log(this.viewport.scaled / this.MIN_ZOOM) / Math.log(this.MULTIPLICATOR);
 		const prevStep = Math.floor(percentage - offset);
 		const nextStep = Math.ceil(percentage + offset);
 		const curStep = Math.round(percentage);
@@ -40,7 +40,9 @@ export class ViewportZoomPlugin {
 
 	private _updateZoomPercentage() {
 		const { worldScreenWidth, worldScreenHeight, screenWidth, screenHeight } = this.viewport;
-		const zoomPercentage = Math.round(Math.min(screenWidth / worldScreenWidth, screenHeight / worldScreenHeight) * 100);
+		const zoomPercentage = Math.round(
+			Math.min(screenWidth / worldScreenWidth, screenHeight / worldScreenHeight) * 100,
+		);
 		const multiplier = Math.pow(10, 1);
 		this.ZOOM.value = Math.round(zoomPercentage * multiplier) / multiplier;
 	}
@@ -62,17 +64,17 @@ export class ViewportZoomPlugin {
 
 	public updateZoomStep(value: -1 | 1) {
 		const isInBounds = value + this.CURRENT_STEP <= this.MAX_STEP && value + this.CURRENT_STEP >= 0;
-		if(!isInBounds) return;
-		
+		if (!isInBounds) return;
+
 		const gotoStep = value > 0 ? this.NEXT_STEP : this.PREV_STEP;
 
 		let scale = this.MIN_ZOOM;
-		for(let n = 0; n < gotoStep; n++) {
+		for (let n = 0; n < gotoStep; n++) {
 			scale *= this.MULTIPLICATOR;
 		}
 
 		const point = this.manager.getSelectedCenter();
-		if(point) this.viewport.center = point;
+		if (point) this.viewport.center = point;
 
 		this.viewport.setZoom(scale, true);
 		this.viewport.emit('zoomed', null);
