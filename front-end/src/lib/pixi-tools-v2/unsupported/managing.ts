@@ -16,7 +16,7 @@ export class Managed implements ConfigBluePrint.Config, ConfigBluePrint.ListOfBl
 	numberOfChildren: number;
 
 	constructor(Width: number, Height: number, Name: string, Type: string, NumberOfChildren: number) {
-		let blueprint = new ConfigBluePrint.Config();
+		const blueprint = new ConfigBluePrint.Config();
 		blueprint.width = Width;
 		blueprint.height = Height;
 		blueprint.name = Name;

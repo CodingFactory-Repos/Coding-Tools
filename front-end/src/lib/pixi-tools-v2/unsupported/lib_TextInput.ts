@@ -170,7 +170,7 @@ export default class LibraryTextInput extends StaticGraphics {
 			this._dom_input.type = 'text';
 		}
 
-		for (let key in this._input_style) {
+		for (const key in this._input_style) {
 			this._dom_input.style[key] = this._input_style[key];
 		}
 	}
@@ -326,7 +326,7 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_needsNewBoxCache() {
-		let input_bounds = this._getDOMInputBounds();
+		const input_bounds = this._getDOMInputBounds();
 		return (
 			!this._previous.input_bounds ||
 			input_bounds.width != this._previous.input_bounds.width ||
@@ -357,8 +357,8 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_updateSurrogate() {
-		let padding = this._deriveSurrogatePadding();
-		let input_bounds = this._getDOMInputBounds();
+		const padding = this._deriveSurrogatePadding();
+		const input_bounds = this._getDOMInputBounds();
 
 		this._surrogate.style = this._deriveSurrogateStyle();
 		this._surrogate.style.padding = Math.max.apply(Math, padding);
@@ -430,9 +430,9 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_deriveSurrogateStyle() {
-		let style = new PIXI.TextStyle();
+		const style = new PIXI.TextStyle();
 
-		for (var key in this._input_style) {
+		for (const key in this._input_style) {
 			switch (key) {
 				case 'color':
 					style.fill = this._input_style.color;
@@ -468,20 +468,20 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_deriveSurrogatePadding() {
-		let indent = this._input_style.textIndent ? parseFloat(this._input_style.textIndent) : 0;
+		const indent = this._input_style.textIndent ? parseFloat(this._input_style.textIndent) : 0;
 
 		if (this._input_style.padding && this._input_style.padding.length > 0) {
-			let components = this._input_style.padding.trim().split(' ');
+			const components = this._input_style.padding.trim().split(' ');
 
 			if (components.length == 1) {
-				let padding = parseFloat(components[0]);
+				const padding = parseFloat(components[0]);
 				return [padding, padding, padding, padding + indent];
 			} else if (components.length == 2) {
-				let paddingV = parseFloat(components[0]);
-				let paddingH = parseFloat(components[1]);
+				const paddingV = parseFloat(components[0]);
+				const paddingH = parseFloat(components[1]);
 				return [paddingV, paddingH, paddingV, paddingH + indent];
 			} else if (components.length == 4) {
-				let padding = components.map((component) => {
+				const padding = components.map((component) => {
 					return parseFloat(component);
 				});
 				padding[3] += indent;
@@ -512,10 +512,10 @@ export default class LibraryTextInput extends StaticGraphics {
 	_buildBoxCache() {
 		this._destroyBoxCache();
 
-		let states = ['DEFAULT', 'FOCUSED', 'DISABLED'];
-		let input_bounds = this._getDOMInputBounds();
+		const states = ['DEFAULT', 'FOCUSED', 'DISABLED'];
+		const input_bounds = this._getDOMInputBounds();
 
-		for (let i in states) {
+		for (const i in states) {
 			this._box_cache[states[i]] = this._box_generator(
 				input_bounds.width,
 				input_bounds.height,
@@ -532,7 +532,7 @@ export default class LibraryTextInput extends StaticGraphics {
 			this._box = null;
 		}
 
-		for (let i in this._box_cache) {
+		for (const i in this._box_cache) {
 			this._box_cache[i].destroy();
 			this._box_cache[i] = null;
 			delete this._box_cache[i];
@@ -550,8 +550,8 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_getCanvasBounds() {
-		let rect = this._last_renderer.view.getBoundingClientRect();
-		let bounds = { top: rect.top, left: rect.left, width: rect.width, height: rect.height };
+		const rect = this._last_renderer.view.getBoundingClientRect();
+		const bounds = { top: rect.top, left: rect.left, width: rect.width, height: rect.height };
 		bounds.left += window.scrollX;
 		bounds.top += window.scrollY;
 		return bounds;
@@ -565,11 +565,11 @@ export default class LibraryTextInput extends StaticGraphics {
 			remove_after = true;
 		}
 
-		let org_transform = this._dom_input.style.transform;
-		let org_display = this._dom_input.style.display;
+		const org_transform = this._dom_input.style.transform;
+		const org_display = this._dom_input.style.display;
 		this._dom_input.style.transform = '';
 		this._dom_input.style.display = 'block';
-		let bounds = this._dom_input.getBoundingClientRect();
+		const bounds = this._dom_input.getBoundingClientRect();
 		this._dom_input.style.transform = org_transform;
 		this._dom_input.style.display = org_display;
 
@@ -579,8 +579,8 @@ export default class LibraryTextInput extends StaticGraphics {
 	}
 
 	_getDOMRelativeWorldTransform() {
-		let canvas_bounds = this._last_renderer.view.getBoundingClientRect();
-		let matrix = this.worldTransform.clone();
+		const canvas_bounds = this._last_renderer.view.getBoundingClientRect();
+		const matrix = this.worldTransform.clone();
 
 		matrix.scale(this._resolution, this._resolution);
 		matrix.scale(
@@ -619,14 +619,14 @@ function DefaultBoxGenerator(styles) {
 		styles.focused = styles.focused || styles.default;
 		styles.disabled = styles.disabled || styles.default;
 	} else {
-		let temp_styles = styles;
+		const temp_styles = styles;
 		styles = {};
 		styles.default = styles.focused = styles.disabled = temp_styles;
 	}
 
 	return function (w, h, state) {
-		let style = styles[state.toLowerCase()];
-		let box = new PIXI.Graphics();
+		const style = styles[state.toLowerCase()];
+		const box = new PIXI.Graphics();
 
 		if (style.fill) box.beginFill(style.fill);
 
