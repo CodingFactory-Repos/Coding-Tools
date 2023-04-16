@@ -74,7 +74,7 @@ export const useProjectStorev2 = defineStore('projectv2', {
 			const data: Partial<SerializedContainer> = {
 				typeId: "frame",
 				background: {
-					typeId: "rectangle",
+					typeId: "framebox",
 				},
 			}
 			const framedContainer = Normalizer.container(scene.viewport, data, false, point);

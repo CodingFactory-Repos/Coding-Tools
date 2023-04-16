@@ -11,7 +11,7 @@ export interface CanvasRoom {
 }
 
 export type ContainerTypeId = "generic" | "frame";
-export type GraphicTypeId = "rectangle" | "circle";
+export type GraphicTypeId = "rectangle" | "circle" | "framebox";
 
 export interface ElementBounds {
 	x: number;

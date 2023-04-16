@@ -7,6 +7,7 @@ export const GeometryTypes = {
 
 	"rectangle": Rectangle,
 	"circle": Circle,
+	"framebox": Rectangle,
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',

@@ -60,6 +60,7 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxX = anchors.absMaxX;
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
+		this.frameBox = background;
 		
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new Container();
@@ -104,6 +105,7 @@ export class FramedContainer extends PluginContainer {
 
 	protected onSelected(e: FederatedPointerEvent) {
 		if(e.forced || !this.interactive) return;
+		if(e.target === this.frameBox && this.listeners("pointerdown").length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
