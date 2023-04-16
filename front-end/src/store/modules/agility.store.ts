@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
-import { AgilityStore } from '@/store/interfaces/agility.interface';
-import { apiTryGetTemplatesMeta, apiTryGetProjectsMeta, apiTryCreateNewProject, apiTryGetRoomProject } from '@/api/agility-req';
+import { AgilityStore, ProjectMeta } from '@/store/interfaces/agility.interface';
+import { apiTryGetTemplatesMeta, apiTryGetProjectsMeta, apiTryCreateNewProject, apiTryGetRoomProject, apiTrySaveProjectMeta } from '@/api/agility-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 
 export const useAgilityStore = defineStore('agility', {
@@ -32,6 +32,20 @@ export const useAgilityStore = defineStore('agility', {
 			const res = await apiTryGetRoomProject(roomId);
 			if(res.data.status === 'ok') {
 				this.currentProject = res.data.project;
+				return true;
+			}
+			return false;
+		}),
+		trySaveProjectMeta: withErrorHandler(async function(this: AgilityStore, project: ProjectMeta) {
+			const res = await apiTrySaveProjectMeta(project.meta, project.roomId);
+			if(res.data.status === 'ok') {
+				for(let n = 0; n < this.projects.length; n++) {
+					if(this.projects[n].roomId === project.roomId) {
+						this.projects[n].meta = project.meta;
+						this.projects[n].lastUpdatedAt = res.data.updatedAt;
+						break;
+					}
+				}
 				return true;
 			}
 			return false;

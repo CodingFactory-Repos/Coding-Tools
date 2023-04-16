@@ -1,4 +1,4 @@
-import { ProjectMeta } from '../store/interfaces/agility.interface';
+import { ProjectMeta, ProjectMetaDetails } from '../store/interfaces/agility.interface';
 
 import { http } from '@/api/network/axios';
 import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
@@ -51,4 +51,8 @@ export const apiTryCreateNewProject = () => {
 
 export const apiTryGetRoomProject = (roomId: string) => {
 	return http.get<Status<{ project: any }>>(`/canvas-room/${roomId}`);
+}
+
+export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
+	return http.post<Status<{ updatedAt: string }>>(`/canvas-room/save-meta/${roomId}`, meta);
 }
