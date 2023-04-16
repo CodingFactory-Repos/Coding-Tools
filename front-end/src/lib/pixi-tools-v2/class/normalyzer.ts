@@ -12,6 +12,7 @@ import {
 import { generateUniqueId } from '../utils/uniqueId';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
+import { lowestNumberFinder } from '../utils/numberFinder';
 
 export class Normalizer {
 	static graphic(data: Partial<SerializedGraphic>, position?: ElementPosition) {
@@ -73,10 +74,7 @@ export class Normalizer {
 		if (!attributes.properties) {
 			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = [...new Set(frameNumbers)].reduce(
-				(acc, cur) => (cur === acc ? acc + 1 : cur > acc ? acc : cur),
-				1,
-			);
+			const frameNumber = lowestNumberFinder(frameNumbers);
 
 			attributes.properties = {
 				cursor: 'pointer',
@@ -87,20 +85,20 @@ export class Normalizer {
 			};
 		}
 
-		for (let n = 0; n < childs?.length; n++) {
-			const childTypeId = childs[n].typeId;
+		for (const element of childs) {
+			const childTypeId = element.typeId;
 
 			if (childTypeId === 'generic' || childTypeId === 'frame') {
 				const containerChildren = this.container(
 					viewport,
-					childs[n] as SerializedContainer,
+					element as SerializedContainer,
 					remote,
 					position,
 					tabContext,
 				);
 				children.push(containerChildren);
 			} else {
-				const graphicChildren = this.graphic(childs[n] as SerializedGraphic, position);
+				const graphicChildren = this.graphic(element as SerializedGraphic, position);
 				children.push(graphicChildren);
 			}
 		}
