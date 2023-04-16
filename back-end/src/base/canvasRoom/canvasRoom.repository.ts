@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, FindOptions } from 'mongodb';
 
 import { CanvasRoom } from '@/base/canvasRoom/interfaces/canvasRoom.interface';
 
@@ -37,5 +37,9 @@ export class CanvasRoomRepository {
 	async canvasRoomExist(query: Filter<CanvasRoom>) {
 		const options = { projection: { _id: 1 } };
 		return this.canvasRoom.findOne(query, options);
+	}
+
+	async findManyCanvasRoom(query: Filter<CanvasRoom>, options: FindOptions<Document> = undefined) {
+		return this.canvasRoom.find(query, options).toArray();
 	}
 }
