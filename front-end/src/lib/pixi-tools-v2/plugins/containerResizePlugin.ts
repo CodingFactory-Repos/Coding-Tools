@@ -336,10 +336,9 @@ export class ResizePlugin {
 			}
 
 			if (this.container instanceof WrappedContainer) {
-				for (let n = 0; n < this.container.absoluteChildren.length; n++) {
-					const ctn = this.container.absoluteChildren[n];
-					if (ctn instanceof FramedContainer) {
-						ctn.emit('moved', null);
+				for (const element of this.container.absoluteChildren) {
+					if (element instanceof FramedContainer) {
+						element.emit('moved', null);
 					}
 				}
 			}

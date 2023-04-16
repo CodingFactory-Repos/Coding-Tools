@@ -87,10 +87,9 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 	}
 
 	public pruneDestroyedElements() {
-		const keys = Object.keys(this.elements);
-		for (let n = 0; n < keys.length; n++) {
-			if (this.elements[keys[n]].destroyed) {
-				delete this.elements[keys[n]];
+		for(const key in this.elements) {
+			if(this.elements[key].destroyed) {
+				delete this.elements[key];
 			}
 		}
 	}

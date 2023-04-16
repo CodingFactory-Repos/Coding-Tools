@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, HttpStatus, ExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
 import { BaseWsExceptionFilter, WsException } from '@nestjs/websockets';
 
 const ERRORS = {

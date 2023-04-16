@@ -109,17 +109,16 @@ export class DragPlugin {
 			const dx = cursorPosition.x - this.initialCursorPosition.x;
 			const dy = cursorPosition.y - this.initialCursorPosition.y;
 
-			for (let n = 0; n < this.initialGraphicsState.length; n++) {
-				const { child, x, y } = this.initialGraphicsState[n];
-				const newX = x + dx,
-					nexY = y + dy;
-				child.position.set(newX, nexY);
+			for (const element of this.initialGraphicsState) {
+				const newX = element.x + dx;
+				const nexY = element.y + dy;
+				element.child.position.set(newX, nexY);
 				if (this.viewport.socketPlugin)
-					this.viewport.socketPlugin.emit('ws-element-dragged', child.uuid, { x: newX, y: nexY });
-				if (child.typeId !== 'rectangle' && child.typeId !== 'circle') continue;
+					this.viewport.socketPlugin.emit('ws-element-dragged', element.child.uuid, { x: newX, y: nexY });
+				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
 
-				const parent = child.parent as GenericContainer;
-				const childBounds = child.getBounds();
+				const parent = element.child.parent as GenericContainer;
+				const childBounds = element.child.getBounds();
 				const centerX = childBounds.x + childBounds.width / 2;
 				const centerY = childBounds.y + childBounds.height / 2;
 
@@ -165,10 +164,9 @@ export class DragPlugin {
 			}
 
 			if (this.container instanceof WrappedContainer) {
-				for (let n = 0; n < this.container.absoluteChildren.length; n++) {
-					const ctn = this.container.absoluteChildren[n];
-					if (ctn instanceof FramedContainer) {
-						ctn.emit('moved', null);
+				for (const element of this.container.absoluteChildren) {
+					if (element instanceof FramedContainer) {
+						element.emit('moved', null);
 					}
 				}
 			}
