@@ -1,6 +1,6 @@
 <template>
 	<div @click="$emit('open')" class="shadow-wall-card relative w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary rounded-lg gap-2 cursor-pointer select overflow-hidden">
-		<div class="absolute z-40 left-1 top-1 bg-white p-1 rounded shadow">
+		<div v-if="isOwner" class="absolute z-40 left-1 top-1 bg-white p-1 rounded shadow">
 			<SvgCrown width="28" height="28"/>
 		</div>
 		<div class="w-full h-full flex relative">

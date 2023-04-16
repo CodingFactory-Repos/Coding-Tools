@@ -45,7 +45,7 @@ export class CanvasRoomService {
 
 			metaList.push({
 				roomId: _id.toString(),
-				isOwner: owner === userId,
+				isOwner: owner.toString() === userId.toString(),
 				...rest
 			})
 		}
