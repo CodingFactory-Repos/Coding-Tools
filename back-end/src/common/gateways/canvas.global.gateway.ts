@@ -6,7 +6,7 @@ import { WebSocketGateway, WebSocketServer, OnGatewayInit, OnGatewayConnection, 
 import { WSServiceErrorCatcher } from '@/common/decorators/ws.catch.decorator';
 import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.middleware';
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
-import { ElementBounds, ElementPosition, SerializedContainer } from '@/base/canvasRoom/interfaces/canvasRoom.interface';
+import { ElementBounds, ElementPosition, SerializedContainer } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 

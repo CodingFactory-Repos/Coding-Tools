@@ -1,72 +1,25 @@
 import { ObjectId } from 'mongodb';
 
-export interface CanvasRoom {
+export interface CanvasRoom extends CanvasRoomProperties {
 	_id?: ObjectId;
-	title: string;
 	owner: ObjectId;
 	allowedPeers: Array<ObjectId>;
-	createdAt: Date;
-	lastUpdatedAt: Date;
-	canvas: any;
+	project?: any;
 }
 
-export type ContainerTypeId = "generic" | "frame";
-export type GraphicTypeId = "rectangle" | "circle" | "framebox";
-
-export interface ElementPosition {
-	x: number;
-	y: number;
+export interface CanvasRoomProperties {
+	meta: CanvasRoomMeta;
+	lastUpdatedAt: Date | string;
+	createdAt: Date | string;
 }
 
-export interface ElementSize {
-	width: number;
-	height: number;
+export interface CanvasRoomMeta {
+	title: string;
+	snapshot: string;
+	readonly: boolean;
 }
 
-export interface ElementRadius {
-	radius: number;
-}
-
-export interface ElementDimension extends ElementSize, ElementRadius {};
-export interface ElementBounds extends ElementPosition, Partial<ElementDimension> {};
-
-export interface SerializedElement {
-	uuid: string;
-	typeId: ContainerTypeId | GraphicTypeId;
-}
-
-export interface SerializedContainer extends SerializedElement {
-	anchors: SerializedContainerAnchors;
-	properties: SerializedContainerProperties;
-	background?: Partial<SerializedGraphic>;
-	childs: Array<Partial<SerializedContainer | SerializedGraphic>>;
-}
-
-export interface SerializedGraphic extends SerializedElement {
-	typeId: GraphicTypeId;
-	bounds: ElementBounds;
-	properties: SerializedGraphicProperties;
-}
-
-export interface SerializedContainerAnchors {
-	absMinX: number;
-	absMinY: number;
-	absMaxX: number;
-	absMaxY: number;
-}
-
-export interface SerializedProperties {
-	cursor: string;
-	interactive: boolean;
-}
-
-export interface SerializedContainerProperties extends SerializedProperties {
-	isAttachedToFrame: boolean;
-	tabNumberContext: number;
-	frameNumber: number;
-}
-
-export interface SerializedGraphicProperties extends SerializedProperties {
-	color: number;
-	alpha: number;
+export interface CanvasMetaDataList extends CanvasRoomProperties {
+	roomId: string;
+	isOwner: boolean;
 }
