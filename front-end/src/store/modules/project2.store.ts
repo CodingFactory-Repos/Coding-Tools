@@ -2,7 +2,6 @@ import { FederatedPointerEvent } from 'pixi.js';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
-import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';

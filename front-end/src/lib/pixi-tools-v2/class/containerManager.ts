@@ -150,7 +150,7 @@ export class ContainerManager {
 				this._selectedContainers.forEach(element => {
 					if(element !== ctn && element.frameNumber === ctn.frameNumber) {
 						// ensure context is kept, it won't add it if it already exist
-						ctn.mainContainer.addChild(ctn)
+						ctn.mainContainer.addChild(element)
 						found = true;
 					}
 				})
