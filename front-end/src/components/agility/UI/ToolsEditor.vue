@@ -56,6 +56,7 @@
 				class="h-9"
 				text-style="text-white hover:text-white"
 				background="gradiant"
+				@click="shareRoom"
 			>
 				<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
 			</DefaultButton>
@@ -80,6 +81,7 @@ import SvgProject from '@/components/common/svg/Project.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
+import Swal from 'sweetalert2';
 
 const projectStore = useProjectStore();
 
@@ -125,5 +127,11 @@ const onContextMenu = (e: MouseEvent) => {
 
 const download = (mime: string) => {
 	projectStore.canvasDownload(mime);
+}
+
+const shareRoom = () => {
+	Swal.fire({
+		text: "Kinda want a list of users there. So we can select them, and send an email. But we can also propsose a link to share. Both are valid"
+	})
 }
 </script>
