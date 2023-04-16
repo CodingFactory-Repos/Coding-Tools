@@ -110,7 +110,7 @@ export class GenericContainer extends PluginContainer {
 			const clonedChild = element.clone();
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
-		};
+		}
 
 		return cloned;
 	}
