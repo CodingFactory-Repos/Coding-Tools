@@ -69,6 +69,13 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		client.to(client.roomId).emit('element-deleted', uuid);
 	}
 
+	@SubscribeMessage('update-element-bounds')
+	handleElementUpdatedBounds(client: AuthSocket, data: { uuid: string, bounds: ElementBounds }) {
+		console.log(data.bounds)
+		client.to(client.roomId).emit('element-bounds-updated', data.uuid, data.bounds);
+		console.log("element resized");
+	}
+
 
 	// public updateElementPosition(id: string, position: ElementPosition): void {
 	// 	this.canvasSocket.emit('update-element-position', { id, position });
