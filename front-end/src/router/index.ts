@@ -59,10 +59,6 @@ const routes: Array<RouteRecordRaw> = [
 								path: '',
 								component: () => import('../views/app/AgilityDashboard.vue'),
 							},
-							{
-								path: 'documentation',
-								component: () => import('../components/agility/AgilityDocumentation.vue'),
-							},
 						],
 					},
 					{
