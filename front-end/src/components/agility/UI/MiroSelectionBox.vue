@@ -140,6 +140,18 @@ const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
 const drawerOpen = ref(false);
 
+const createRectangle = () => {
+	projectStore.deferredGeometry = "rectangle";
+	projectStore.setDeferredEvent("pointer", false);
+}
+
+const createFrame = () => {
+	projectStore.deferredGeometry = "framebox";
+	projectStore.setDeferredEvent("pointer", true);
+}
+
+const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
+
 const increaseZoom = () => {
 	projectStore.increaseZoom();
 }
@@ -153,18 +165,6 @@ const setDefaultMode = () => {
 	projectStore.deferredGeometry = null;
 	projectStore.removeGeometryEvent();
 }
-
-const createRectangle = () => {
-	projectStore.deferredGeometry = "rectangle";
-	projectStore.setDeferredEvent("pointer", false);
-}
-
-const createFrame = () => {
-	projectStore.deferredGeometry = "framebox";
-	projectStore.setDeferredEvent("pointer", true);
-}
-
-const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
 
 function toggleFullScreen() {
 	if (!document.fullscreenElement) {

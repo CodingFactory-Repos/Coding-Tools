@@ -57,14 +57,6 @@ const isFullScreen = computed(() => projectStore.onFullscreen);
 
 const drawerOpen = ref(false);
 
-const increaseZoom = () => {
-	projectStore.increaseZoom();
-}
-
-const decreaseZoom = () => {
-	projectStore.decreaseZoom();
-}
-
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
 
 function toggleFullScreen() {
@@ -73,5 +65,13 @@ function toggleFullScreen() {
 	} else if (document.exitFullscreen) {
 		document.exitFullscreen();
 	}
+}
+
+const increaseZoom = () => {
+	projectStore.increaseZoom();
+}
+
+const decreaseZoom = () => {
+	projectStore.decreaseZoom();
 }
 </script>
