@@ -5,20 +5,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { Scene } from '@/lib/pixi-tools-v2/scene';
-import AgilityCanvasUI from './AgilityCanvasUI.vue';
-import { useProjectStore } from '@/store/modules/project.store';
-import { onBeforeRouteLeave } from 'vue-router';
-import { CanvasSocketOptions } from '@/lib/pixi-tools-v2/plugins/viewportSocketPlugin';
+import { ref } from '@vue/reactivity';
+import { onMounted } from '@vue/runtime-core';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
+import { Scene } from '@/lib/pixi-tools-v2/scene';
+import { useProjectStore } from '@/store/modules/project.store';
+import { CanvasSocketOptions } from '@/lib/pixi-tools-v2/plugins/viewportSocketPlugin';
+import AgilityCanvasUI from './AgilityCanvasUI.vue';
+
+const route = useRoute();
 const projectStore = useProjectStore();
 const canvas = ref<HTMLCanvasElement>();
 
 onMounted(() => {
+	document.addEventListener('fullscreenchange', onFullscreenChange);
+
 	const socketOptions: CanvasSocketOptions = {
 		uri: "ws://localhost:8010",
-		roomId: "fiuofpaiefzufb",
+		roomId: route.path.match(/[^/]+$/)[0],
 		options: {
 			transports: ["websocket"],
 			withCredentials: true,
@@ -40,10 +45,6 @@ const onFullscreenChange = () => {
 		projectStore.onFullscreen = true;
 	}
 }
-
-onMounted(() => {
-	document.addEventListener('fullscreenchange', onFullscreenChange);
-})
 
 onBeforeRouteLeave(() => {
 	const vp = projectStore.scene.viewport;
