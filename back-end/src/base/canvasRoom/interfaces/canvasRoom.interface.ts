@@ -15,6 +15,7 @@ export interface CanvasRoomProperties {
 
 export interface CanvasRoomMeta {
 	title: string;
+	description: string;
 	snapshot: string;
 	readonly: boolean;
 }
