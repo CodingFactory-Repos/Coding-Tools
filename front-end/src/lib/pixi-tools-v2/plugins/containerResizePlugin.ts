@@ -426,7 +426,7 @@ export class ResizePlugin {
 		this.isResizing = false;
 	};
 
-	//TODO optimisation: This function does not handle well the decimal precision, it may break after a few iteratinos if the decimals is lower than 2
+	//! optimisation: This function does not handle well the decimal precision, it may break after a few iteratinos if the decimals is lower than 2
 	private _proportionalScale({
 		parentInitialWidth,
 		parentInitialHeight,

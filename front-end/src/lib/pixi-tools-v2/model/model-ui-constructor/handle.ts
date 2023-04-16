@@ -30,7 +30,6 @@ export class Handle extends ModelGraphics {
 		const rad = Math.max(0.25, (this.radius * 1) / scale);
 		this.position.set(x, y);
 
-		// TODO: need a secondary color in the options
 		this.clear();
 		this.lineStyle(lineWidth, 0x0c8ce9);
 		this.beginFill(this.color);

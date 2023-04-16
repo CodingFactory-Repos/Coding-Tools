@@ -19,8 +19,8 @@ export class Normalizer {
 		const attributes = data as SerializedGraphic;
 
 		if (!attributes.bounds && position) {
-			const width = 200; //TODO | Need to find a solution rather than hardcoded
-			const height = 200; //TODO | Need to find a solution rather than hardcoded
+			const width = 200; // Need to find a solution rather than hardcoded
+			const height = 200; // Need to find a solution rather than hardcoded
 
 			attributes.bounds = {
 				x: position.x - width / 2,

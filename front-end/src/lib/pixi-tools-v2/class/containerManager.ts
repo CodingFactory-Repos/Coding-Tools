@@ -141,28 +141,6 @@ export class ContainerManager {
 	}
 
 	public wrapWithTemporaryParent() {
-		//! TODO: Maybe there's a bug with the selection bug i can't find it.
-		//! It seems to work fine, but just in case i kept the context logic.
-		// const childs = [] as Array<CanvasContainer>;
-		// for(let n = 0; n < this._selectedContainers.length; n++) {
-		// 	const ctn = this._selectedContainers[n];
-
-		// 	if(ctn instanceof FramedContainer) {
-		// 		let found = false;
-		// 		this._selectedContainers.forEach(element => {
-		// 			if(element !== ctn && element.frameNumber === ctn.frameNumber) {
-		// 				// ensure context is kept, it won't add it if it already exist
-		// 				ctn.mainContainer.addChild(element)
-		// 				found = true;
-		// 			}
-		// 		})
-
-		// 		if(!found) childs.push(ctn);
-		// 	} else {
-		// 		childs.push(ctn);
-		// 	}
-		// }
-
 		this.wrappedContainer.createWrappedBox(this._selectedContainers);
 		const borderOptions = this.wrappedContainer.getGeometry();
 		this.viewport.createBorder({

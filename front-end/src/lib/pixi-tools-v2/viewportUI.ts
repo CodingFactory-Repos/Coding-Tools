@@ -7,8 +7,7 @@ import { Border, Handle, HitArea, Grid } from './model/template-ui';
 import { ResizeHandle } from './types/pixi-enums';
 
 import type { CanvasContainer, Stage } from './types/pixi-aliases';
-import type { GraphicUIProperties } from './types/pixi-ui';
-import type { HandleOptions, HitAreaOptions } from './types/pixi-ui';
+import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types/pixi-ui';
 import { reactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
