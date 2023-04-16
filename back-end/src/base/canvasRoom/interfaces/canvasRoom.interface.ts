@@ -13,12 +13,22 @@ export interface CanvasRoom {
 export type ContainerTypeId = "generic" | "frame";
 export type GraphicTypeId = "rectangle" | "circle" | "framebox";
 
-export interface ElementBounds {
+export interface ElementPosition {
 	x: number;
 	y: number;
+}
+
+export interface ElementSize {
 	width: number;
 	height: number;
 }
+
+export interface ElementRadius {
+	radius: number;
+}
+
+export interface ElementDimension extends ElementSize, ElementRadius {};
+export interface ElementBounds extends ElementPosition, Partial<ElementDimension> {};
 
 export interface SerializedElement {
 	uuid: string;
