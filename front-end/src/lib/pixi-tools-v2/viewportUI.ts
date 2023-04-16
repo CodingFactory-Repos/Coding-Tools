@@ -54,6 +54,10 @@ export class ViewportUI extends Viewport {
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
+
+			if(this.socketPlugin) {
+				this.socketPlugin.emit('ws-mouse-moved', this.mouse);
+			}
 		})
 
 		this.on('childAdded', (child: CanvasContainer) => {

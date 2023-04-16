@@ -15,6 +15,7 @@ interface CanvasSocketEvents {
 	"ws-element-dragged": (uuid: string, position: ElementPosition) => void;
 	"ws-element-resized": (uuid: string, bounds: ElementBounds) => void;
 	"ws-element-modified": () => void;
+	"ws-mouse-moved": (position: ElementPosition) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -51,6 +52,10 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 		this.on('ws-element-resized', (uuid, bounds) => {
 			this.socketManager.updateElementBounds(uuid, bounds);
+		})
+
+		this.on('ws-mouse-moved', (position) => {
+			this.socketManager.updateMouseMoved(position);
 		})
 	}
 
