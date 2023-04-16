@@ -35,14 +35,14 @@
 <script lang="ts" setup>
 import Swal from 'sweetalert2';
 import { computed, watch, toRaw } from 'vue';
-import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { useProjectStore } from '@/store/modules/project.store';
 
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
 import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
 
-const projectStore = useProjectStorev2();
+const projectStore = useProjectStore();
 const frames = computed(() => projectStore.getFrames);
 const viewport = computed(() => projectStore?.scene?.viewport);
 const selectedNumber = computed(() => projectStore.selectedFrameNumber);

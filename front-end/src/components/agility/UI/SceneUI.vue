@@ -21,13 +21,13 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 
 import CanvasTabulation from '@/components/agility/UI/CanvasTabulation.vue';
 import SvgBurger from '@/components/common/svg/Burger.vue';
 
-const projectStore = useProjectStorev2();
+const projectStore = useProjectStore();
 
 const contextMenuOptions = ref<MenuOptions>({
 	x: 10,

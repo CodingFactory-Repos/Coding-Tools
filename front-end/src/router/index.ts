@@ -69,10 +69,6 @@ const routes: Array<RouteRecordRaw> = [
 						path: 'project/:slug',
 						component: () => import('../views/app/AgilityProject.vue'),
 					},
-					{
-						path: 'new',
-						component: () => import('../components/agility/AgilityCanvas2.vue')
-					}
 				],
 			},
 		],

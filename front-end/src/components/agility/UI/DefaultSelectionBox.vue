@@ -45,9 +45,9 @@ import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
-import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { useProjectStore } from '@/store/modules/project.store';
 
-const projectStore = useProjectStorev2();
+const projectStore = useProjectStore();
 
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {

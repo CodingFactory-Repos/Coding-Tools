@@ -43,10 +43,10 @@
 					<SvgText width="22" height="22" class="!fill-gray-400" />
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createRectangle">
-					<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'RECTANGLE' }"/>
+					<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createFrame">
-					<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'FRAME' }"/>
+					<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
 				</IconButton>
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgShape width="22" height="22" class="!fill-gray-400"/>
@@ -110,7 +110,7 @@
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import { useProjectStorev2 } from '@/store/modules/project2.store';
+import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
@@ -135,7 +135,7 @@ import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 
-const projectStore = useProjectStorev2();
+const projectStore = useProjectStore();
 
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
@@ -165,12 +165,12 @@ const setDefaultMode = () => {
 }
 
 const createRectangle = () => {
-	projectStore.deferredGeometry = "RECTANGLE";
+	projectStore.deferredGeometry = "rectangle";
 	projectStore.setDeferredEvent("pointer", false);
 }
 
 const createFrame = () => {
-	projectStore.deferredGeometry = "FRAME";
+	projectStore.deferredGeometry = "framebox";
 	projectStore.setDeferredEvent("pointer", true);
 }
 
