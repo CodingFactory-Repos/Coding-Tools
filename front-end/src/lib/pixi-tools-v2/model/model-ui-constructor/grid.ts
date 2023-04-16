@@ -2,6 +2,7 @@ import { ModelGraphics } from '../../types/pixi-class';
 import { GraphicUIProperties } from '../../types/pixi-ui';
 import { InternalTypeId } from '../../types/pixi-serialize';
 import { generateUniqueId } from '../../utils/uniqueId';
+import { modelSerializer } from '../../utils/modelSerializer';
 
 export class Grid extends ModelGraphics {
 	protected readonly gridSpacing = 1; // 1 pixel
@@ -55,21 +56,6 @@ export class Grid extends ModelGraphics {
 	}
 
 	public serialized() {
-		return {
-			uuid: this.uuid,
-			typeId: this.typeId,
-			bounds: {
-				x: this.x,
-				y: this.y,
-				width: this.width,
-				height: this.height,
-			},
-			properties: {
-				cursor: this.cursor,
-				interactive: this.interactive,
-				color: this.color,
-				alpha: this.alpha,
-			},
-		};
+		return modelSerializer(this);
 	}
 }

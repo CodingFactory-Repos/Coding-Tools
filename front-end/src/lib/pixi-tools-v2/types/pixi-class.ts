@@ -1,7 +1,7 @@
 import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from '../class/containerManager';
 import { GenericContainer } from '../class/genericContainer';
-import { SerializedGraphic } from './pixi-serialize';
+import { GraphicTypeId, InternalTypeId, SerializedGraphic } from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
 
@@ -35,7 +35,7 @@ export abstract class PluginContainer extends BoundsContainer {
 
 export abstract class ModelGraphics extends Graphics implements WithId {
 	public readonly uuid: string;
-	public readonly typeId: string;
+	public readonly typeId: GraphicTypeId | InternalTypeId;
 	public color: number;
 	public cursor: CSSStyleProperty.Cursor;
 
