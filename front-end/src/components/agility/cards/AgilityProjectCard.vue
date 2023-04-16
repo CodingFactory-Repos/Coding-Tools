@@ -1,7 +1,21 @@
 <template>
-	<div class="w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary p-3 rounded-lg gap-2 cursor-pointer select">
-		<img ref="imageRef" class="w-full h-48 rounded" :src="url" :alt="`${title} snapshot`"/>
-		<span class="dark:text-dark-font text-sm font-bold">{{ title }}</span>
+	<div @click="$emit('open')" class="shadow-wall-card relative w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary rounded-lg gap-2 cursor-pointer select overflow-hidden">
+		<div class="absolute z-40 left-1 top-1 bg-white p-1 rounded shadow">
+			<SvgCrown width="28" height="28"/>
+		</div>
+		<div class="w-full h-full flex relative">
+			<div
+				@click.stop="$emit('openDetail', roomId)"
+				class="absolute z-40 right-1 top-1 bg-[#ffffff] p-1 rounded shadow"
+			>
+				<SvgThreeDot width="32" heigh="32" class="shadow-wall hidden"/>
+			</div>
+			<div class="shadow-wall hidden absolute w-full h-full z-20 bg-[#00000066]"></div>
+			<img ref="imageRef" class="w-full h-48 rounded p-3" :src="url" :alt="`project snapshot`"/>
+		</div>
+		<span class="dark:text-dark-font text-sm font-bold px-3 pb-3">
+			{{ title }}
+		</span>
 	</div>
 </template>
 
@@ -9,7 +23,12 @@
 import { onMounted } from '@vue/runtime-core';
 import { ref } from '@vue/reactivity';
 
+import SvgCrown from '@/components/common/svg/SvgCrown.vue';
+import SvgThreeDot from '@/components/common/svg/SvgThreeDot.vue';
+
 defineProps({
+	roomId: { type: String, required: true },
+	isOwner: { type: Boolean, required: true },
 	title: { type: String, required: true },
 	isNew: { type: Boolean, required: false },
 	url: { type: String, required: false },
@@ -31,8 +50,16 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
+.select {
+	box-shadow: 0 0 0 1px #3a4455;
+}
+
 .select:hover {
-	box-shadow: 0 0 0 1px #3b82f6;
+	box-shadow: 0 0 0 1px #737f93;
+}
+
+:hover.shadow-wall-card .shadow-wall {
+	display: flex !important;
 }
 </style>
