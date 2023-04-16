@@ -35,25 +35,22 @@ export class CanvasRoomService {
 		return room.insertedId;
 	}
 
-	async retrieveProjectList(userId: ObjectId) {
+	async retrieveProjectList(userId: ObjectId): Promise<Array<CanvasMetaDataList>> {
 		const query = { allowedPeers: { $in: [userId] } };
 		const rooms = await this.canvasRoomRepository.findManyCanvasRoom(
 			query,
 			PROJECTION_PROJECT_META_LIST,
 		);
-		const metaList: Array<CanvasMetaDataList> = [];
 
-		for (let n = 0; n < rooms.length; n++) {
-			const { _id, owner, ...rest } = rooms[n];
-
-			metaList.push({
+		if(rooms.length === 0) return [];
+		return rooms.map((room) => {
+			const { _id, owner, ...rest } = room;
+			return {
 				roomId: _id.toString(),
 				isOwner: owner.toString() === userId.toString(),
 				...rest,
-			});
-		}
-
-		return metaList;
+			}
+		})
 	}
 
 	async retrieveProject(roomId: string, userId: ObjectId) {

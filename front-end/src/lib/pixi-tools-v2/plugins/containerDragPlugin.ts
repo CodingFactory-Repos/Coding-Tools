@@ -59,14 +59,14 @@ export class DragPlugin {
 		if (this.container === null) return;
 
 		const graphics = this.container.getGraphicChildren();
-		for (let n = 0; n < graphics.length; n++) {
-			graphics[n].cursor = 'grabbing';
+		for (const element of graphics) {
+			element.cursor = 'grabbing';
 			this.initialGraphicsState.push({
-				child: graphics[n],
-				width: graphics[n].width,
-				height: graphics[n].height,
-				x: graphics[n].x,
-				y: graphics[n].y,
+				child: element,
+				width: element.width,
+				height: element.height,
+				x: element.x,
+				y: element.y,
 			});
 		}
 
@@ -85,8 +85,8 @@ export class DragPlugin {
 		if (this.contextRemoved) return;
 		this.contextRemoved = true;
 
-		for (let n = 0; n < this.initialGraphicsState.length; n++) {
-			const graphic = this.initialGraphicsState[n].child;
+		for (const element of this.initialGraphicsState) {
+			const graphic = element.child;
 			if (graphic.typeId === 'rectangle' || graphic.typeId === 'circle') {
 				this.viewport.addChildAt(graphic.parent, this.viewport.children.length - 9);
 			}

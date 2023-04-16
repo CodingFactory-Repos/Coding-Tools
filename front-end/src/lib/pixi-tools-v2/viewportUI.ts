@@ -251,8 +251,8 @@ export class ViewportUI extends Viewport {
 		// TEST: for testing the handles position
 		// const color = [0xd5d5d5, 0xff00ff, 0x00ffff, 0xffff00];
 
-		for (let n = 0; n < handlePositions.length; n++) {
-			const { handleId, ...attr } = handlePositions[n];
+		for (const element of handlePositions) {
+			const { handleId, ...attr } = element;
 
 			const handle = new Handle({
 				...attr,
@@ -312,8 +312,8 @@ export class ViewportUI extends Viewport {
 			},
 		];
 
-		for (let n = 0; n < hitAreaPosition.length; n++) {
-			const { handleId, ...attr } = hitAreaPosition[n];
+		for (const element of hitAreaPosition) {
+			const { handleId, ...attr } = element;
 
 			const line = new HitArea({
 				...attr,
@@ -381,12 +381,12 @@ export class ViewportUI extends Viewport {
 	}
 
 	public toggleUIVisibilty(visible: boolean) {
-		for (let n = 0; n < this.resizeHandles.length; n++) {
-			this.resizeHandles[n].visible = visible;
+		for (const element of this.resizeHandles) {
+			element.visible = visible;
 		}
 
-		for (let n = 0; n < this.resizeHitAreas.length; n++) {
-			this.resizeHitAreas[n].visible = visible;
+		for (const element of this.resizeHitAreas) {
+			element.visible = visible;
 		}
 	}
 }

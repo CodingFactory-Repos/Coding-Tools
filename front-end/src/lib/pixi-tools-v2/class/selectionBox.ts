@@ -76,19 +76,18 @@ export class SelectionBox extends Graphics {
 		const selectionBounds = this.getBounds();
 
 		const selectedChildren: Array<CanvasContainer> = [];
-		for (let n = 0; n < this.viewport.children.length; n++) {
-			const child = this.viewport.children[n];
-			if (!child.visible) continue;
+		for (const element of this.viewport.children) {
+			if (!element.visible) continue;
 
-			if (child instanceof GenericContainer || child instanceof FramedContainer) {
-				if (child.getBounds().intersects(selectionBounds)) {
-					selectedChildren.push(this.viewport.children[n]);
+			if (element instanceof GenericContainer || element instanceof FramedContainer) {
+				if (element.getBounds().intersects(selectionBounds)) {
+					selectedChildren.push(element);
 				}
 			}
 		}
 
-		for (let n = 0; n < selectedChildren.length; n++) {
-			this.viewport.manager.selectContainer(selectedChildren[n], true);
+		for (const element of selectedChildren) {
+			this.viewport.manager.selectContainer(element, true);
 		}
 
 		this.viewport.selectionBoxActive = false;

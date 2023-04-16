@@ -47,17 +47,16 @@ export class WrappedContainer extends BoundsContainer {
 	}
 
 	public toggleChildrenInteractive = (interactive: boolean) => {
-		for (let n = 0; n < this.absoluteChildren.length; n++) {
-			const child = this.absoluteChildren[n];
-			child.interactive = interactive;
+		for (const element of this.absoluteChildren) {
+			element.interactive = interactive;
 
-			if (child instanceof FramedContainer) {
-				child.mainContainer.children.forEach((ctn) => {
+			if (element instanceof FramedContainer) {
+				element.mainContainer.children.forEach((ctn) => {
 					ctn.interactive = interactive;
 					ctn.children.forEach((graph) => (graph.interactive = interactive));
 				});
 			} else {
-				child.children.forEach((graph) => {
+				element.children.forEach((graph) => {
 					graph.interactive = interactive;
 				});
 			}
@@ -70,8 +69,8 @@ export class WrappedContainer extends BoundsContainer {
 		let maxX = Number.MIN_SAFE_INTEGER;
 		let maxY = Number.MIN_SAFE_INTEGER;
 
-		for (let n = 0; n < this.absoluteChildren.length; n++) {
-			const geometry = this.absoluteChildren[n].getGeometry();
+		for (const element of this.absoluteChildren) {
+			const geometry = element.getGeometry();
 			if (geometry === null) continue;
 
 			const { x, y, width, height } = geometry;
@@ -101,8 +100,8 @@ export class WrappedContainer extends BoundsContainer {
 	public getGraphicChildren() {
 		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
-		for (let n = 0; n < this.absoluteChildren.length; n++) {
-			graphics.push(this.absoluteChildren[n].getGraphicChildren());
+		for (const element of this.absoluteChildren) {
+			graphics.push(element.getGraphicChildren());
 		}
 
 		if (this.wrappedBox) {

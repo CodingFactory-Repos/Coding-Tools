@@ -33,7 +33,7 @@ export class GenericContainer extends PluginContainer {
 	constructor(
 		viewport: ViewportUI,
 		attributes: Partial<SerializedContainer>,
-		children: Array<any>,
+		children: Array<ModelGraphics>,
 		remote: boolean,
 	) {
 		super();
@@ -54,8 +54,8 @@ export class GenericContainer extends PluginContainer {
 		this.manager = viewport.manager;
 		this.on('pointerdown', this.onSelected);
 
-		for (let n = 0; n < children.length; n++) {
-			this.addChild(children[n]);
+		for (const element of children) {
+			this.addChild(element);
 		}
 
 		if (viewport.socketPlugin) {
@@ -106,11 +106,11 @@ export class GenericContainer extends PluginContainer {
 	public cloneToContainer(): Container {
 		const cloned = new Container();
 
-		this.children.forEach((child) => {
-			const clonedChild = child.clone();
-			clonedChild.position.copyFrom(child.position);
+		for(const element of this.children) {
+			const clonedChild = element.clone();
+			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
-		});
+		};
 
 		return cloned;
 	}

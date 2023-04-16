@@ -4,7 +4,7 @@ export interface CanvasRoom extends CanvasRoomProperties {
 	_id?: ObjectId;
 	owner: ObjectId;
 	allowedPeers: Array<ObjectId>;
-	project?: any;
+	project?: unknown;
 }
 
 export interface CanvasRoomProperties {

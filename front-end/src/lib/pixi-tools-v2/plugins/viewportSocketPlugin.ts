@@ -67,15 +67,13 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		if (container instanceof FramedContainer) {
 			this.elements[container.uuid] = container;
 
-			for (let n = 0; n < container.mainContainer.children.length; n++) {
-				const subChild = container.mainContainer.children[n];
-
-				if (subChild instanceof GenericContainer) {
-					this.elements[subChild.uuid] = subChild;
-					const genericChild = subChild.getGraphicChildren()[0];
+			for (const element of container.mainContainer.children) {
+				if (element instanceof GenericContainer) {
+					this.elements[element.uuid] = element;
+					const genericChild = element.getGraphicChildren()[0];
 					this.elements[genericChild.uuid] = genericChild;
 				} else {
-					this.elements[subChild.uuid] = subChild;
+					this.elements[element.uuid] = element;
 				}
 			}
 			return;

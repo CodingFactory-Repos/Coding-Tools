@@ -79,13 +79,13 @@ export class ResizePlugin {
 		this.handleId = target.handleId;
 
 		const graphics = this.container.getGraphicChildren();
-		for (let n = 0; n < graphics.length; n++) {
+		for (const element of graphics) {
 			this.initialGraphicsState.push({
-				child: graphics[n],
-				width: graphics[n].width,
-				height: graphics[n].height,
-				x: graphics[n].x,
-				y: graphics[n].y,
+				child: element,
+				width: element.width,
+				height: element.height,
+				x: element.x,
+				y: element.y,
 			});
 		}
 
@@ -359,13 +359,13 @@ export class ResizePlugin {
 
 				this.initialGraphicsState.length = 0;
 				const graphics = this.container.getGraphicChildren();
-				for (let n = 0; n < graphics.length; n++) {
+				for (const element of graphics) {
 					this.initialGraphicsState.push({
-						child: graphics[n],
-						width: graphics[n].width,
-						height: graphics[n].height,
-						x: graphics[n].x,
-						y: graphics[n].y,
+						child: element,
+						width: element.width,
+						height: element.height,
+						x: element.x,
+						y: element.y,
 					});
 				}
 

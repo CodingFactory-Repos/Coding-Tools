@@ -50,7 +50,7 @@ export const apiTryCreateNewProject = () => {
 };
 
 export const apiTryGetRoomProject = (roomId: string) => {
-	return http.get<Status<{ project: any }>>(`/canvas-room/${roomId}`);
+	return http.get<Status<{ project: unknown }>>(`/canvas-room/${roomId}`);
 };
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {

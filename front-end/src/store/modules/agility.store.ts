@@ -45,10 +45,10 @@ export const useAgilityStore = defineStore('agility', {
 		trySaveProjectMeta: withErrorHandler(async function (this: AgilityStore, project: ProjectMeta) {
 			const res = await apiTrySaveProjectMeta(project.meta, project.roomId);
 			if (res.data.status === 'ok') {
-				for (let n = 0; n < this.projects.length; n++) {
-					if (this.projects[n].roomId === project.roomId) {
-						this.projects[n].meta = project.meta;
-						this.projects[n].lastUpdatedAt = res.data.updatedAt;
+				for (const prj of this.projects) {
+					if (prj.roomId === project.roomId) {
+						prj.meta = project.meta;
+						prj.lastUpdatedAt = res.data.updatedAt;
 						break;
 					}
 				}

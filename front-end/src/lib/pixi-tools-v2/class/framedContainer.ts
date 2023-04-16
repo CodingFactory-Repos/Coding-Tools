@@ -67,8 +67,8 @@ export class FramedContainer extends PluginContainer {
 		this.titleContainer.interactive = true;
 		this.mainContainer.interactive = true;
 
-		for (let n = 0; n < children.length; n++) {
-			this.mainContainer.addChild(children[n]);
+		for (const element of children) {
+			this.mainContainer.addChild(element);
 		}
 
 		this.addChild(this.mainContainer);
@@ -116,17 +116,15 @@ export class FramedContainer extends PluginContainer {
 		let maxX = Number.MIN_SAFE_INTEGER;
 		let maxY = Number.MIN_SAFE_INTEGER;
 
-		for (let n = 0; n < this.mainContainer.children.length; n++) {
-			const child = this.mainContainer.children[n];
-
-			if (child instanceof Rectangle) {
-				const { x, y, width, height } = child;
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				const { x, y, width, height } = element;
 				if (x < minX) minX = x;
 				if (y < minY) minY = y;
 				if (x + width > maxX) maxX = x + width;
 				if (y + height > maxY) maxY = y + height;
-			} else if (child instanceof GenericContainer) {
-				const geometry = child.getGeometry();
+			} else if (element instanceof GenericContainer) {
+				const geometry = element.getGeometry();
 				if (geometry === null) continue;
 
 				const { x, y, width, height } = geometry;
@@ -161,12 +159,11 @@ export class FramedContainer extends PluginContainer {
 	public getGraphicChildren() {
 		const graphics: Array<ModelGraphics | Array<ModelGraphics>> = [];
 
-		for (let n = 0; n < this.mainContainer.children.length; n++) {
-			const child = this.mainContainer.children[n];
-			if (child instanceof Rectangle) {
-				graphics.push(child);
-			} else if (child instanceof GenericContainer) {
-				graphics.push(child.getGraphicChildren());
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				graphics.push(element);
+			} else if (element instanceof GenericContainer) {
+				graphics.push(element.getGraphicChildren());
 			}
 		}
 
@@ -176,16 +173,16 @@ export class FramedContainer extends PluginContainer {
 	public cloneToContainer(): Container {
 		const cloned = new Container();
 
-		this.mainContainer.children.forEach((child) => {
-			if (child instanceof Rectangle) {
-				const clonedChild = child.clone();
-				clonedChild.position.copyFrom(child.position);
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				const clonedChild = element.clone();
+				clonedChild.position.copyFrom(element.position);
 				cloned.addChild(clonedChild);
-			} else if (child instanceof GenericContainer) {
-				const clonedContainer = child.cloneToContainer();
+			} else if (element instanceof GenericContainer) {
+				const clonedContainer = element.cloneToContainer();
 				cloned.addChild(clonedContainer);
 			}
-		});
+		}
 
 		return cloned;
 	}
@@ -194,12 +191,11 @@ export class FramedContainer extends PluginContainer {
 		const genericContainerSerialized: Array<SerializedContainer> = [];
 		let backgroundSerialized: SerializedGraphic;
 
-		for (let n = 0; n < this.mainContainer.children.length; n++) {
-			const child = this.mainContainer.children[n];
-			if (child instanceof Rectangle) {
-				backgroundSerialized = child.serialized();
-			} else if (child instanceof GenericContainer) {
-				genericContainerSerialized.push(child.serializeData());
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serialized();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerialized.push(element.serializeData());
 			}
 		}
 
