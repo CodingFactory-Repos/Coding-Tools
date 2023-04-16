@@ -16,26 +16,37 @@
 		<div v-else class="w-full flex grow gap-3 flex-wrap">
 			<AgilityProjectCard
 				v-for="project, key in projects"
+				:room-id="project.roomId"
+				:isOwner="project.isOwner"
 				:title="project.meta.title"
 				:url="project.meta.snapshot"
 				:key="project.meta.title + key"
-				@click="openExistingProject(project.roomId)"
-			></AgilityProjectCard>
+				@open="openExistingProject(project.roomId)"
+				@openDetail="onModalOpen"
+			/>
 		</div>
+		<ModalProject
+			v-if="active"
+			@close="onModalClose"
+			:roomId="modalRoomId"
+		/>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from '@vue/reactivity';
 import { useRouter } from 'vue-router';
 
 import { useAgilityStore } from '@/store/modules/agility.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import AgilityProjectCard from '@/components/agility/cards/AgilityProjectCard.vue';
+import ModalProject from '@/components/agility/modals/Project.vue';
 
 const router = useRouter();
 const agilityStore = useAgilityStore();
 const projects = computed(() => agilityStore.projects);
+const active = ref(false);
+const modalRoomId = ref<string>(null);
 
 const startNewProject = async () => {
 	const roomId = await agilityStore.tryCreateNewProject();
@@ -46,5 +57,15 @@ const startNewProject = async () => {
 
 const openExistingProject = (roomId: string) => {
 	router.push(`/app/agility/project/${roomId}`);
+}
+
+const onModalOpen = (roomId: string) => {
+	active.value = true;
+	modalRoomId.value = roomId;
+}
+
+const onModalClose = () => {
+	active.value = false;
+	modalRoomId.value = null;
 }
 </script>

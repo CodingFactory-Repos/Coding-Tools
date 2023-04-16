@@ -4,7 +4,7 @@
 			<div class="w-14 min-w-[3.5rem] h-full flex justify-center items-center" @click="onContextMenu">
 				<SvgBurger class="!fill-white hover:!fill-[#2e7bbe] cursor-pointer" width="28" height="28"/>
 			</div>
-			<CanvasTabulation/>
+			<CanvasTabulation :room-id="roomId"/>
 		</div>
 		<slot/>
 		<ContextMenu
@@ -14,7 +14,16 @@
 			<ContextMenuItem class="cursor-pointer" @click="switchUI">
 				<span class="text-sm text-center w-full">Switch UI</span>
 			</ContextMenuItem>
+			<ContextMenuItem class="cursor-pointer" @click="openModal">
+				<span class="text-sm text-center w-full">Edit project</span>
+			</ContextMenuItem>
 		</ContextMenu>
+
+		<ModalProject
+			v-if="active"
+			@close="onModalClose"
+			:roomId="roomId"
+		/>
 	</div>
 </template>
 
@@ -26,6 +35,11 @@ import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-co
 
 import CanvasTabulation from '@/components/agility/UI/CanvasTabulation.vue';
 import SvgBurger from '@/components/common/svg/Burger.vue';
+import ModalProject from '@/components/agility/modals/Project.vue';
+
+defineProps({
+	roomId: { type: String, required: true },
+})
 
 const projectStore = useProjectStore();
 
@@ -39,6 +53,8 @@ const contextMenuOptions = ref<MenuOptions>({
 })
 
 const showContextMenu = ref(false);
+const active = ref(false);
+
 const onContextMenu = (e: MouseEvent) => {
 	e.preventDefault();
 	showContextMenu.value = true;
@@ -48,6 +64,14 @@ const onContextMenu = (e: MouseEvent) => {
 
 const switchUI = () => {
 	projectStore.toggleImmersion();
+}
+
+const openModal = () => {
+	active.value = true;
+}
+
+const onModalClose = () => {
+	active.value = false;
 }
 </script>
 

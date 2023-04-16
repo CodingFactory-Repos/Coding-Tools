@@ -1,5 +1,5 @@
 <template>
-	<AgilityCanvasUI>
+	<AgilityCanvasUI :room-id="roomId">
 		<canvas ref="canvas"></canvas>
 	</AgilityCanvasUI>
 </template>
@@ -17,13 +17,14 @@ import AgilityCanvasUI from './AgilityCanvasUI.vue';
 const route = useRoute();
 const projectStore = useProjectStore();
 const canvas = ref<HTMLCanvasElement>();
+const roomId = ref(route.path.match(/[^/]+$/)[0]);
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
 	const socketOptions: CanvasSocketOptions = {
 		uri: "ws://localhost:8010",
-		roomId: route.path.match(/[^/]+$/)[0],
+		roomId: roomId.value,
 		options: {
 			transports: ["websocket"],
 			withCredentials: true,

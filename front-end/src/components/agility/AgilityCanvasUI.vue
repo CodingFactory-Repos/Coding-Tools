@@ -1,6 +1,6 @@
 <template>
 	<div class="w-full h-full flex flex-col gap-0">
-		<AgilitySceneUI>
+		<AgilitySceneUI :room-id="roomId">
 			<ToolsEditorUI v-if="!immersion"/>
 			<div class="flex w-full h-full relative">
 				<DefaultSelectionBoxUI v-if="!immersion"/>
@@ -22,4 +22,8 @@ import AgilitySceneUI from '@/components/agility/UI/SceneUI.vue';
 
 const projectStore = useProjectStore();
 const immersion = computed(() => projectStore.immersion);
+
+defineProps({
+	roomId: { type: String, required: true },
+})
 </script>

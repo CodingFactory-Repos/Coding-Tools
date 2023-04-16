@@ -29,8 +29,6 @@
 			</div>
 		</template>
 	</SelectionBox>
-
-	<ModalProject v-if="activate" @close="deactivateProjectModal"/>
 </template>
 
 <script lang="ts" setup>
@@ -38,7 +36,6 @@ import { computed, ref, watch } from 'vue';
 
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-import ModalProject from '@/components/agility/modals/Project.vue';
 
 import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
@@ -58,7 +55,6 @@ watch(isDefault, val => {
 const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
 
-const activate = ref(false);
 const drawerOpen = ref(false);
 
 const increaseZoom = () => {
@@ -69,7 +65,6 @@ const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
 
-const deactivateProjectModal = () => activate.value = false;
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
 
 function toggleFullScreen() {
@@ -80,9 +75,3 @@ function toggleFullScreen() {
 	}
 }
 </script>
-
-<style>
-.prevent-border:focus {
-	box-shadow: none !important;
-}
-</style>

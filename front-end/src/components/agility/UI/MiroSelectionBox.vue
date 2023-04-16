@@ -11,13 +11,6 @@
 				>
 					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
-				<!-- <hr class="h-full w-px bg-light-tertiary dark:bg-dark-tertiary border-none" /> -->
-				<!-- <DefaultButton
-					@click="activateProjectModal"
-					:text="meta.title"
-					type="button"
-					text-style="text-dark-font"
-				/> -->
 			</div>
 			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
@@ -104,8 +97,6 @@
 			</div>
 		</template>
 	</SelectionBox>
-
-	<ModalProject v-if="activate" @close="deactivateProjectModal"/>
 </template>
 
 <script lang="ts" setup>
@@ -117,7 +108,6 @@ import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-import ModalProject from '@/components/agility/modals/Project.vue';
 
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgGear from '@/components/common/svg/Gear.vue';
@@ -146,8 +136,6 @@ watch(isDefault, val => {
 
 const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
-
-const activate = ref(false);
 const drawerOpen = ref(false);
 
 const increaseZoom = () => {
@@ -174,7 +162,6 @@ const createFrame = () => {
 	projectStore.setDeferredEvent("pointer", true);
 }
 
-const deactivateProjectModal = () => activate.value = false;
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
 
 function toggleFullScreen() {
@@ -206,9 +193,3 @@ const download = (mime: string) => {
 	projectStore.canvasDownload(mime);
 }
 </script>
-
-<style>
-.prevent-border:focus {
-	box-shadow: none !important;
-}
-</style>

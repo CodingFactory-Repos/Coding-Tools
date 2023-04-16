@@ -7,7 +7,7 @@
 		>
 			<div class="flex gap-2">
 				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selectedNumber === null }"/>
-				<span class="text-xs text-light-tertiary font-bold">Projet name</span>
+				<span class="text-xs text-light-tertiary font-bold clamp-text">{{ project.meta.title }}</span>
 			</div>
 		</div>
 		<div
@@ -40,9 +40,16 @@ import { useProjectStore } from '@/store/modules/project.store';
 import SvgAbstract from '@/components/common/svg/Abstract.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
-import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
+import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
+import { useAgilityStore } from '@/store/modules/agility.store';
 
+const props = defineProps({
+	roomId: { type: String, required: true },
+})
+
+const agilityStore = useAgilityStore();
 const projectStore = useProjectStore();
+const project = computed(() => agilityStore.projects.find(el => el.roomId === props.roomId))
 const frames = computed(() => projectStore.getFrames);
 const viewport = computed(() => projectStore?.scene?.viewport);
 const selectedNumber = computed(() => projectStore.selectedFrameNumber);
@@ -105,3 +112,12 @@ const removeFrame = async (frameNumber: number) => {
 	}
 }
 </script>
+
+<style scoped>
+.clamp-text {
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	overflow: hidden;
+}
+</style>
