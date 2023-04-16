@@ -30,10 +30,10 @@ const router = useRouter();
 const agilityStore = useAgilityStore();
 const metaTemplates = computed(() => agilityStore.metaTemplates);
 
-const startNewProject = (key: string) => {
-	// key not used atm
+const startNewProject = async (key: string) => {
+	const roomId = await agilityStore.tryCreateNewProject();
+	if(!roomId) return;
 
-	const id = 'fiuofpaiefzufb';
-	router.push(`/app/agility/project/${id}`);
+	router.push(`/app/agility/project/${roomId}`);
 };
 </script>

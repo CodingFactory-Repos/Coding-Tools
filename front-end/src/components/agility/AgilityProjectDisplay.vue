@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full flex flex-col gap-4 h-full justify-start items-start">
 		<h1 class="text-2xl font-bold dark:text-dark-font">Your projects</h1>
-		<div v-if="metaProjects.length === 0" class="w-full flex grow relative items-center justify-center">
+		<div v-if="projects.length === 0" class="w-full flex grow relative items-center justify-center">
 			<div class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-light-primary dark:bg-dark-tertiary rounded-lg">
 				<h3 class="text-lg font-bold dark:text-dark-font text-center">Your saved projects will be shown here in the future.</h3>
 				<DefaultButton
@@ -9,17 +9,17 @@
 					text="Start my first project !"
 					background="bg-pink-600"
 					text-style="text-white"
-					@click="startNewProject('default')"
+					@click="startNewProject()"
 				/>
 			</div>
 		</div>
 		<div v-else class="w-full flex grow gap-3 flex-wrap">
 			<AgilityProjectCard
-				v-for="project, key in metaProjects"
-				:title="project.title"
-				:url="project.snapshot"
-				:key="project.title + key"
-				@click="openExistingProject(project.id)"
+				v-for="project, key in projects"
+				:title="project.meta.title"
+				:url="project.meta.snapshot"
+				:key="project.meta.title + key"
+				@click="openExistingProject(project.roomId)"
 			></AgilityProjectCard>
 		</div>
 	</div>
@@ -35,17 +35,16 @@ import AgilityProjectCard from '@/components/agility/cards/AgilityProjectCard.vu
 
 const router = useRouter();
 const agilityStore = useAgilityStore();
-const metaProjects = computed(() => agilityStore.metaProjects);
+const projects = computed(() => agilityStore.projects);
 
-const startNewProject = (key: string) => {
-	// key not used atm
+const startNewProject = async () => {
+	const roomId = await agilityStore.tryCreateNewProject();
+	if(!roomId) return;
 
-	const id = "fiuofpaiefzufb";
-	router.push(`/app/agility/project/${id}`);
+	router.push(`/app/agility/project/${roomId}`);
 }
 
-const openExistingProject = (id: string) => {
-	//id not used atm
-	router.push(`/app/agility/project/${id}`);
+const openExistingProject = (roomId: string) => {
+	router.push(`/app/agility/project/${roomId}`);
 }
 </script>
