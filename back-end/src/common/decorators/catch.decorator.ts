@@ -13,7 +13,7 @@ const ERRORS = {
 };
 
 export class ServiceError extends HttpException {
-	constructor(STATUS: string, error: string) {
+	constructor(STATUS: keyof typeof ERRORS, error: string) {
 		const { status, message } = ERRORS[STATUS];
 		super({ message: message, error: error }, status);
 	}

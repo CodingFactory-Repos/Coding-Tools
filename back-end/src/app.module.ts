@@ -9,7 +9,7 @@ import { DatabaseModule } from 'src/external-modules/database/mongo.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/base/users/users.module';
 import { AcademicYearModule } from 'src/base/academicYears/academicYears.module';
-import { AgileAnalysisModule } from 'src/base/agileAnalysis/agileAnalysis.module';
+import { CanvasRoomModule } from '@/base/canvasRoom/canvasRoom.module';
 import { ArticlesModule } from 'src/base/articles/articles.module';
 import { BoardsModule } from 'src/base/boards/boards.module';
 import { CallsModule } from 'src/base/calls/calls.module';
@@ -30,7 +30,7 @@ import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.mod
 		AuthModule,
 		UsersModule,
 		AcademicYearModule,
-		AgileAnalysisModule,
+		CanvasRoomModule,
 		ArticlesModule,
 		BoardsModule,
 		CallsModule,

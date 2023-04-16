@@ -1,5 +1,6 @@
-import { AgilityProjectMeta } from '../store/interfaces/agility.interface';
+import { ProjectMeta, ProjectMetaDetails } from '../store/interfaces/agility.interface';
 
+import { http } from '@/api/network/axios';
 import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
 import { Status } from '@/store/interfaces/axios.interface';
 import { AxiosResponse } from 'axios';
@@ -41,12 +42,17 @@ export const apiTryGetTemplatesMeta = () => {
 };
 
 export const apiTryGetProjectsMeta = () => {
-	// Call
+	return http.get<Status<{ projects: Array<ProjectMeta> }>>('/canvas-room/list');
+};
 
-	return Promise.resolve<Partial<AxiosResponse<Status<AgilityProjectMeta>, unknown>>>({
-		data: {
-			status: 'ok',
-			metaProjects: [],
-		},
-	});
+export const apiTryCreateNewProject = () => {
+	return http.post<Status<{ roomId: string }>>('/canvas-room/new');
+};
+
+export const apiTryGetRoomProject = (roomId: string) => {
+	return http.get<Status<{ project: unknown }>>(`/canvas-room/${roomId}`);
+};
+
+export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
+	return http.post<Status<{ updatedAt: string }>>(`/canvas-room/save-meta/${roomId}`, meta);
 };
