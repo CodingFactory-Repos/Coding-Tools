@@ -3,7 +3,7 @@ import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
-import { ElementPosition } from '../types/pixi-container';
+import { ElementBounds, ElementDimension, ElementPosition } from '../types/pixi-container';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -56,6 +56,22 @@ export class SocketManager extends Manager {
 			}
 		});
 
+		this.canvasSocket.on('element-bounds-updated', (uuid: string, bounds: ElementBounds) => {
+			try {
+				const element = this.viewport.socketPlugin.elements[uuid];
+				element.position.set(bounds.x, bounds.y);
+				element.width = bounds.width;
+				element.height = bounds.height;
+
+				if(element.parent.parent)
+					element.emit("moved", null);
+			} catch(err) {
+				if(err instanceof Error) {
+					console.error(err.message);
+				}
+			}
+		})
+
 		this.canvasSocket.on('peer-mouse-updated', (peerId: string, position: ElementPosition) => {
 			console.log(`Peer ${peerId} mouse mooved at position: ${position}`);
 		})
@@ -63,6 +79,10 @@ export class SocketManager extends Manager {
 
 	public updateElementPosition(uuid: string, position: ElementPosition) {
 		this.canvasSocket.emit('update-element-position', { uuid, position });
+	}
+
+	public updateElementBounds(uuid: string, bounds: ElementBounds) {
+		this.canvasSocket.emit('update-element-bounds', { uuid, bounds });
 	}
 
 	public addElement(container: SerializedContainer) {
