@@ -116,6 +116,7 @@ export class ResizePlugin {
 			const isPastRight = RightWall.includes(this.handleId) && cursorPosition.x > this.initialContainerSize.absMaxX;
 			const isPastTop = TopWall.includes(this.handleId) && cursorPosition.y < this.initialContainerSize.absMinY;
 			const isPastBottom = BottomWall.includes(this.handleId) && cursorPosition.y > this.initialContainerSize.absMaxY;
+			const isPastBounds = isPastLeft || isPastRight || isPastBottom || isPastTop;
 
 			const ratioA = this.initialContainerSize.height / this.initialContainerSize.width;
 			const ratioB = this.initialContainerSize.width / this.initialContainerSize.height;
@@ -130,36 +131,36 @@ export class ResizePlugin {
 						childCurrentSize: updates.child.width
 					})
 					this.initialGraphicsState[n].child.x = mirror;
-					continue;
-				}
-
-				if(isPastRight) {
+				} else if(isPastRight) {
 					const mirror = this._proportionalMirrorPosition({
 						anchor: this.initialContainerSize.absMaxX,
 						childCurrentPos: updates.child.x,
 						childCurrentSize: updates.child.width
 					})
 					this.initialGraphicsState[n].child.x = mirror;
-					continue;
-				}
-
-				if(isPastTop) {
+				} else if(isPastTop) {
 					const mirror = this._proportionalMirrorPosition({
 						anchor: this.initialContainerSize.absMinY,
 						childCurrentPos: updates.child.y,
 						childCurrentSize: updates.child.height
 					})
 					this.initialGraphicsState[n].child.y = mirror;
-					continue;
-				}
-
-				if(isPastBottom) {
+				} else if(isPastBottom) {
 					const mirror = this._proportionalMirrorPosition({
 						anchor: this.initialContainerSize.absMaxY,
 						childCurrentPos: updates.child.y,
 						childCurrentSize: updates.child.height
 					})
 					this.initialGraphicsState[n].child.y = mirror;
+				}
+
+				if(isPastBounds && this.viewport.socketPlugin) {
+					this.viewport.socketPlugin.emit("ws-element-resized", this.initialGraphicsState[n].child.uuid, { 
+						x: this.initialGraphicsState[n].child.x,
+						y: this.initialGraphicsState[n].child.y,
+						width: this.initialGraphicsState[n].child.width,
+						height: this.initialGraphicsState[n].child.height,
+					});
 					continue;
 				}
 
@@ -299,6 +300,15 @@ export class ResizePlugin {
 				this.initialGraphicsState[n].child.x = updates.x;
 				this.initialGraphicsState[n].child.height = updates.height;
 				this.initialGraphicsState[n].child.y = updates.y;
+
+				if(this.viewport.socketPlugin) {
+					this.viewport.socketPlugin.emit("ws-element-resized", this.initialGraphicsState[n].child.uuid, { 
+						x: this.initialGraphicsState[n].child.x,
+						y: this.initialGraphicsState[n].child.y,
+						width: this.initialGraphicsState[n].child.width,
+						height: this.initialGraphicsState[n].child.height,
+					});
+				}
 			}
 
 			if(this.container instanceof FramedContainer) {
@@ -320,7 +330,7 @@ export class ResizePlugin {
 			this.viewport.updateResizeHitAreas(geometry);
 			this.viewport.updateResizeHandles(geometry, false);
 
-			if(isPastLeft || isPastRight || isPastBottom || isPastTop) {
+			if(isPastBounds) {
 				const isXAxis = isPastLeft || isPastRight;
 				const newHandleId = isXAxis ? ResizeHandleOppositeOf[this.handleId].x : ResizeHandleOppositeOf[this.handleId].y;
 				this.handleId = newHandleId;
