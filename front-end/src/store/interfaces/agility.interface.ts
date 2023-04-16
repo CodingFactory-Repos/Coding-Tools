@@ -4,18 +4,21 @@ export interface AgilityStore {
 	currentProject: unknown;
 
 	tryCreateNewProject?: (this: AgilityStore) => Promise<boolean | string>;
+	tryGetProjectsMeta?: (this: AgilityStore) => Promise<boolean>;
 	tryGetRoomProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
+	trySaveProjectMeta?: (this: AgilityStore) => Promise<boolean>;
 }
 export interface ProjectMeta {
 	roomId: string;
 	isOwner: boolean;
 	meta: ProjectMetaDetails;
-	lastUpdatedat: Date | string;
-	createdat: Date | string;
+	lastUpdatedAt: Date | string;
+	createdAt: Date | string;
 }
 
 export interface ProjectMetaDetails {
 	title: string;
+	description: string;
 	snapshot: string;
 	readonly: boolean;
 }
