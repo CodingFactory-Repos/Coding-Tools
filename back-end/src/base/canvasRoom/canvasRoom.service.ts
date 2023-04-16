@@ -3,7 +3,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
-import { CanvasMetaDataList, CanvasRoom } from './interfaces/canvasRoom.interface';
+import { CanvasMetaDataList, CanvasRoom, CanvasRoomMeta } from './interfaces/canvasRoom.interface';
 import { PROJECTION_PROJECT_META_LIST, PROJECTION_PROJECT } from './utils/canvasRoom.projection';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 
@@ -21,6 +21,7 @@ export class CanvasRoomService {
 			owner: userId,
 			meta: {
 				title: "Untilted project",
+				description: null,
 				snapshot: null,
 				readonly: false,
 			},
@@ -62,5 +63,38 @@ export class CanvasRoomService {
 			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
 
 		return room.project;
+	}
+
+	async saveProjectMeta(meta: CanvasRoomMeta, roomId: string, userId: ObjectId) {
+		if(!roomId || roomId === 'null' || roomId === 'undefined')
+			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
+
+		let lastUpdatedAt = new Date();
+
+		if(meta.readonly) {
+			const query = { _id: new ObjectId(roomId), owner: userId };
+			const isOwner = await this.canvasRoomRepository.canvasRoomExist(query);
+			if(isOwner === null)
+				throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
+
+			const update = { $set: { meta: meta, lastUpdatedAt } };
+			const room = await this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+
+			if(room.modifiedCount === 0)
+				throw new ServiceError("BAD_REQUEST", "Invalid payload");
+		} else {
+			const query = { _id: new ObjectId(roomId), allowedPeers: { $in: [userId] } };
+			const hasAccess = await this.canvasRoomRepository.canvasRoomExist(query);
+			if(hasAccess === null)
+				throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
+
+			const update = { $set: { meta: meta, lastUpdatedAt } };
+			const room = await this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	
+			if(room.modifiedCount === 0)
+				throw new ServiceError("BAD_REQUEST", "Invalid payload");
+		}
+
+		return lastUpdatedAt;
 	}
 }
