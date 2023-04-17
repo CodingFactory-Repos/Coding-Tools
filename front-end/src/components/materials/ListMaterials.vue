@@ -69,9 +69,9 @@
 					<select
 						id="selectCategory"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-100 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						v-model="category"
+						v-model="type"
 					>
-						<option value="" selected>Category</option>
+						<option value="" selected>Type</option>
 						<option value="Mac">Mac</option>
 						<option value="Livre">Livre</option>
 						<option value="Hardware">Hardware</option>
@@ -104,13 +104,13 @@ const materials = computed(() => materialStore.filteredMaterial);
 const input = ref('');
 const state = ref('');
 const site = ref('');
-const category = ref('');
+const type = ref('');
 
 const filteredList = () => {
 	materialStore.input = input.value;
 	materialStore.filter.state = state.value;
 	materialStore.filter.site = site.value;
-	materialStore.filter.category = category.value;
+	materialStore.filter.type = type.value;
 };
 const getMaterials = withErrorHandler(async function () {
 	const res = await http.get('/materials');

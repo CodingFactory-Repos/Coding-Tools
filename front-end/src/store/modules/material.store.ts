@@ -4,7 +4,7 @@ import { isEmpty } from '@/utils/string.helper';
 
 export const useMaterialStore = defineStore('materialStore', {
 	state: (): {
-		filter: { input: string; site: string; category: string; state: string };
+		filter: { input: string; site: string; type: string; state: string };
 		input: string;
 		materials: any[];
 	} => {
@@ -14,7 +14,7 @@ export const useMaterialStore = defineStore('materialStore', {
 				input: '',
 				site: '',
 				state: '',
-				category: '',
+				type: '',
 			},
 			input: '',
 		};
@@ -40,8 +40,8 @@ export const useMaterialStore = defineStore('materialStore', {
 					validator.push(res);
 				}
 				// Si on a une catégorie, on check si le matériel possède cette catégorie.
-				if (!isEmpty(state.filter.category)) {
-					const res = material.state.toUpperCase().includes(state.filter.category.toUpperCase());
+				if (!isEmpty(state.filter.type)) {
+					const res = material.type.toUpperCase().includes(state.filter.type.toUpperCase());
 					validator.push(res);
 				}
 				return validator.every((el) => el === true);
