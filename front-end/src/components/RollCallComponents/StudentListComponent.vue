@@ -7,7 +7,7 @@
 			<thead :class="background" class="border-b-[6px] h-14 dark:border-[#1f2028] border-[#f3f4f6]">
 				<tr>
 					<th scope="col" :class="color">#</th>
-					<th scope="col" :class="color">Nom & Prénom</th>
+					<th scope="col" :class="color">Prénom & Nom</th>
 					<th scope="col" :class="color">Status de présence</th>
 				</tr>
 			</thead>
@@ -20,10 +20,19 @@
 				>
 					<th scope="col" :class="color">{{ index + 1 }}</th>
 					<td>
-						<p>{{ student.profile.firstName }} {{ student.profile.lastName }}</p>
+						<p :class="'text-white'">
+							{{ student.profile.firstName }} {{ student.profile.lastName }}
+						</p>
 					</td>
 					<td>
-						<p>{{ student.profile.status }}</p>
+						<p
+							:class="[
+								student.presence.present ? 'text-green-500' : 'text-red-500',
+								student.presence.late || student.presence.leftEarly ? 'text-yellow-500' : '',
+							]"
+						>
+							{{ student.presence.present ? 'Présent' : 'Absent' }}
+						</p>
 					</td>
 				</tr>
 			</tbody>
@@ -60,16 +69,16 @@ export default {
 				this.isThereCourse();
 			});
 		}),
-		isThereCourse() {
-			if (this.courseId) {
-				this.getStudentList();
-			}
-		},
 		getStudentList: withErrorHandler(async function () {
 			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
 				this.studentList = response.data.studentList;
 			});
 		}),
+		isThereCourse() {
+			if (this.courseId) {
+				this.getStudentList();
+			}
+		},
 	},
 };
 </script>

@@ -4,7 +4,7 @@ import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { JwtService } from '@nestjs/jwt';
-import { CourseIdObject } from '@/base/calls/interfaces/calls.interface';
+import {CourseIdObject, StudentIdObject} from '@/base/calls/interfaces/calls.interface';
 
 @Injectable()
 export class CallsService {
@@ -35,19 +35,20 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
-		return `https://df07-46-35-27-53.eu.ngrok.io/calls/presence/` + jwt;
+		return `https://ce88-2a01-cb00-e91-b600-33-cd57-e77e-fcd8.eu.ngrok.io/calls/presence/` + jwt;
 	}
 
 	async getActualCourse(userId: ObjectId) {
 		const actualCourse = await this.callsRepository.getActualCourse(userId);
 		return actualCourse;
 	}
-
-	getStudentIdList(courseId: CourseIdObject) {
-		return this.callsRepository.getStudentIdList(courseId.courseId);
+	async getStudentList(courseId: CourseIdObject) {
+		const studentIdList = await this.callsRepository.getStudentIdList(courseId.courseId);
+		return this.callsRepository.getStudentList(courseId.courseId, studentIdList);
 	}
-	getStudentList(studentIdList: Array<ObjectId>) {
-		return this.callsRepository.getStudentList(studentIdList);
+
+	getStudentPresence(courseId: CourseIdObject, studentId: StudentIdObject) {
+		return this.callsRepository.getStudentPresence(courseId.courseId, studentId.studentId);
 	}
 
 	async arrayGenerator(studentAmount: number, courseId: CourseIdObject) {
