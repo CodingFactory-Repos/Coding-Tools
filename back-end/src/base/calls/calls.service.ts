@@ -82,13 +82,10 @@ export class CallsService {
 		let groupsOf4 = 0;
 
 		while (studentAmount > 0) {
-			if (studentAmount % 4 === 0) {
-				groupsOf4 += 1;
-				studentAmount -= 4;
-			} else if (studentAmount % 3 === 0) {
+			if (studentAmount % 3 === 0) {
 				groupsOf3 += 1;
 				studentAmount -= 3;
-			} else {
+			} else { // includes studentAmount % 4 === 0 and any other results
 				groupsOf4 += 1;
 				studentAmount -= 4;
 			}

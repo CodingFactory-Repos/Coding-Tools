@@ -8,7 +8,6 @@ import { ObjectId } from 'mongodb';
 import {
 	CourseIdObject,
 	JwtQRCode,
-	StudentIdObject,
 } from '@/base/calls/interfaces/calls.interface';
 
 @Controller('calls')
