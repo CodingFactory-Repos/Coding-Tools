@@ -5,7 +5,10 @@ import { CallsService } from 'src/base/calls/calls.service';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
-import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
+import {
+	CourseIdObject,
+	JwtQRCode,
+} from '@/base/calls/interfaces/calls.interface';
 
 @Controller('calls')
 @UseFilters(ServiceErrorCatcher)
@@ -42,8 +45,17 @@ export class CallsController {
 	@Get('/student_list/:courseId')
 	@UseGuards(JwtAuthGuard)
 	async studentList(@Param() courseId: CourseIdObject, @Res() res: Response) {
-		const studentIdList = await this.callsService.getStudentIdList(courseId);
-		const studentList = await this.callsService.getStudentList(studentIdList);
+		const studentList = await this.callsService.getStudentList(courseId);
 		return res.status(201).json({ status: 'ok', studentList: studentList });
+	}
+
+	@Get('/array_generator/:studentAmount/:courseId')
+	async arrayGenerator(
+		@Param() studentAmount: { studentAmount: number },
+		@Param() courseId: CourseIdObject,
+		@Res() res: Response,
+	) {
+		const array = await this.callsService.arrayGenerator(studentAmount.studentAmount, courseId);
+		return res.status(201).json({ status: 'ok', array: array });
 	}
 }

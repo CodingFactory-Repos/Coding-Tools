@@ -16,3 +16,7 @@ export interface JwtQRCode {
 export interface CourseIdObject {
 	courseId: string;
 }
+
+export interface StudentIdObject {
+	studentId: string;
+}
