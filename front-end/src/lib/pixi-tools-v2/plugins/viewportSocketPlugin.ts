@@ -8,12 +8,13 @@ import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
+import { SerializedContainerBounds } from '../types/pixi-serialize';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string) => void;
 	'ws-element-added': (element: CanvasContainer, isRemote: boolean) => void;
-	'ws-element-dragged': (uuid: string, position: ElementPosition) => void;
-	'ws-element-resized': (uuid: string, bounds: ElementBounds) => void;
+	'ws-element-dragged': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
+	'ws-element-resized': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
 }
@@ -42,16 +43,16 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			}
 		});
 
-		this.on('ws-element-dragged', (uuid, position) => {
-			this.socketManager.updateElementPosition(uuid, position);
+		this.on('ws-element-dragged', (uuid, serializedBounds) => {
+			this.socketManager.updateElementPosition(uuid, serializedBounds);
 		});
 
 		this.on('ws-element-deleted', (uuid) => {
 			this.socketManager.deleteElement(uuid);
 		});
 
-		this.on('ws-element-resized', (uuid, bounds) => {
-			this.socketManager.updateElementBounds(uuid, bounds);
+		this.on('ws-element-resized', (uuid, serializedBounds) => {
+			this.socketManager.updateElementBounds(uuid, serializedBounds);
 		});
 
 		this.on('ws-mouse-moved', (position) => {

@@ -1,9 +1,12 @@
 import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
-import { SerializedContainer } from '../types/pixi-serialize';
+import { SerializedContainer, SerializedContainerBounds } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
-import { ElementBounds, ElementPosition } from '../types/pixi-container';
+import { ElementPosition } from '../types/pixi-container';
+import { GenericContainer } from './genericContainer';
+import { FramedContainer } from './framedContainer';
+
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -41,32 +44,8 @@ export class SocketManager extends Manager {
 			}
 		});
 
-		this.canvasSocket.on('element-position-updated', (uuid: string, position: ElementPosition) => {
-			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.position.set(position.x, position.y);
-
-				if (element.parent.parent) element.emit('moved', null);
-			} catch (err) {
-				if (err instanceof Error) {
-					console.error(err.message);
-				}
-			}
-		});
-
-		this.canvasSocket.on('element-bounds-updated', (uuid: string, bounds: ElementBounds) => {
-			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.position.set(bounds.x, bounds.y);
-				element.width = bounds.width;
-				element.height = bounds.height;
-
-				if (element.parent.parent) element.emit('moved', null);
-			} catch (err) {
-				if (err instanceof Error) {
-					console.error(err.message);
-				}
-			}
+		this.canvasSocket.on('element-bounds-updated', (uuid: string, serializedBounds: SerializedContainerBounds) => {
+			this._updateTreeBounds(uuid, serializedBounds)
 		});
 
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
@@ -74,12 +53,33 @@ export class SocketManager extends Manager {
 		});
 	}
 
-	public updateElementPosition(uuid: string, position: ElementPosition) {
-		this.canvasSocket.emit('update-element-position', { uuid, position });
+	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if(element instanceof FramedContainer) {
+				element.updateTreeBounds(serializedBounds);
+
+				for(const container of serializedBounds.childs) {
+					this._updateTreeBounds(container.uuid, container as SerializedContainerBounds);
+				}
+			} else if(element instanceof GenericContainer) {
+				element.updateTreeBounds(serializedBounds);
+			}
+
+			element.emit('moved', null);
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
 	}
 
-	public updateElementBounds(uuid: string, bounds: ElementBounds) {
-		this.canvasSocket.emit('update-element-bounds', { uuid, bounds });
+	public updateElementPosition(uuid: string, serializedBounds: SerializedContainerBounds) {
+		this.canvasSocket.emit('update-element-position', { uuid, serializedBounds });
+	}
+
+	public updateElementBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
+		this.canvasSocket.emit('update-element-bounds', { uuid, serializedBounds });
 	}
 
 	public addElement(container: SerializedContainer) {
