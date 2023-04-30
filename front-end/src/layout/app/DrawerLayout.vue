@@ -1,6 +1,6 @@
 <template>
 	<div class="flex grow justify-start items-start overflow-hidden bg-light-primary dark:bg-dark-primary w-full h-full">
-		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full transition-width bg-light-primary dark:bg-dark-primary" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
+		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full transition-width bg-light-primary dark:bg-dark-primary z-50" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
 			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 border-solid border-r boder-light-secondary dark:border-dark-tertiary"  :class="{ 'md:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
 					<div class="w-full flex-1 px-3 space-y-1 divide-y divide-white-tertiary dark:divide-dark-tertiary overflow-hidden">
