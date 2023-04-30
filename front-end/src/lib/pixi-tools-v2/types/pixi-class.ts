@@ -1,7 +1,7 @@
 import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from '../class/containerManager';
 import { GenericContainer } from '../class/genericContainer';
-import { GraphicTypeId, InternalTypeId, SerializedGraphic } from './pixi-serialize';
+import { GraphicTypeId, InternalTypeId, SerializedGraphic, SerializedGraphicBounds } from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
 
@@ -41,6 +41,7 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 
 	abstract draw(attr: Partial<GraphicUIProperties>): void;
 	abstract serialized(): SerializedGraphic;
+	abstract serializedBounds(): SerializedGraphicBounds;
 }
 
 export class FramedMainContainer extends Container {
