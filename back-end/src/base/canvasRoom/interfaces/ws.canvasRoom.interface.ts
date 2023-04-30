@@ -30,6 +30,17 @@ export interface SerializedContainer extends SerializedElement {
 	childs: Array<Partial<SerializedContainer | SerializedGraphic>>;
 }
 
+export interface SerializedContainerBounds extends Partial<SerializedElement> {
+	anchors: SerializedContainerAnchors;
+	background?: Partial<SerializedGraphicBounds>;
+	childs: Array<Partial<SerializedContainerBounds | SerializedGraphicBounds>>;
+}
+
+
+export interface SerializedGraphicBounds extends Partial<SerializedElement> {
+	bounds: ElementBounds;
+}
+
 export interface SerializedGraphic extends SerializedElement {
 	typeId: GraphicTypeId;
 	bounds: ElementBounds;
