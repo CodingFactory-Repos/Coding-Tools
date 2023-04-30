@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, Text } from 'pixi.js';
+import { Container, FederatedPointerEvent, IDestroyOptions, Text } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
@@ -95,6 +95,15 @@ export class FramedContainer extends PluginContainer {
 		if (viewport.socketPlugin) {
 			viewport.socketPlugin.emit('ws-element-added', this, remote);
 		}
+	}
+
+	public destroy(options?: boolean | IDestroyOptions): void {
+		this.boxTitle.destroy();
+		this.frameBox.destroy();
+		this.mainContainer.children.forEach((el) => el.destroy());
+		this.mainContainer.destroy();
+		this.titleContainer.destroy();
+		super.destroy(options);
 	}
 
 	protected onMoved() {

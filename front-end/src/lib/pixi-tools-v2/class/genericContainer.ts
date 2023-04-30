@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, Graphics } from 'pixi.js';
+import { Container, FederatedPointerEvent, Graphics, IDestroyOptions } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
@@ -63,6 +63,11 @@ export class GenericContainer extends PluginContainer {
 		}
 	}
 
+	public destroy(options?: boolean | IDestroyOptions): void {
+		this.children[0].destroy();
+		super.destroy(options);
+	}
+
 	protected onSelected(e: FederatedPointerEvent) {
 		if (e.forced || !this.interactive) return;
 		e.stopPropagation();
@@ -71,7 +76,7 @@ export class GenericContainer extends PluginContainer {
 
 	protected onChildrenChange(_length?: number): void {
 		super.onChildrenChange(_length);
-		if (!this.destroyed) {
+		if (!this.destroyed && this.children.length > 0) {
 			this.updateAbsoluteBounds();
 		}
 	}
