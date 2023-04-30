@@ -2,7 +2,7 @@ import { Container, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
-import { ContainerTypeId, SerializedContainer } from '../types/pixi-serialize';
+import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 
 export class GenericContainer extends PluginContainer {
@@ -137,5 +137,36 @@ export class GenericContainer extends PluginContainer {
 			},
 			childs: [graphicSerialized],
 		};
+	}
+
+	public serializeBounds(): SerializedContainerBounds {
+		const graphic = this.getGraphicChildren()[0];
+		const graphicSerialized = graphic.serializedBounds();
+
+		return {
+			uuid: this.uuid,
+			anchors: {
+				absMinX: this.absMinX,
+				absMinY: this.absMinY,
+				absMaxX: this.absMaxX,
+				absMaxY: this.absMaxY,
+			},
+			childs: [graphicSerialized],
+		};
+	}
+
+	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
+		const graphic = this.getGraphicChildren()[0];
+		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
+		const bounds = (serializedBounds.childs[0] as SerializedGraphic).bounds;
+		
+		this.absMinX = absMinX;
+		this.absMinY = absMinY;
+		this.absMaxX = absMaxX;
+		this.absMaxY = absMaxY;
+
+		graphic.position.set(bounds.x, bounds.y);
+		graphic.width = bounds.width;
+		graphic.height = bounds.height;
 	}
 }

@@ -4,7 +4,7 @@ import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { FramedMainContainer, ModelGraphics, PluginContainer } from '../types/pixi-class';
-import { ContainerTypeId, SerializedContainer, SerializedGraphic } from '../types/pixi-serialize';
+import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic, SerializedGraphicBounds } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 
 export class FramedContainer extends PluginContainer {
@@ -218,5 +218,46 @@ export class FramedContainer extends PluginContainer {
 			},
 			childs: genericContainerSerialized,
 		};
+	}
+
+	public serializeBounds(): SerializedContainerBounds {
+		const genericContainerSerializedBounds: Array<SerializedContainerBounds> = [];
+		let backgroundSerialized: SerializedGraphicBounds;
+
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serializedBounds();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerializedBounds.push(element.serializeBounds());
+			}
+		}
+
+		return {
+			uuid: this.uuid,
+			anchors: {
+				absMinX: this.absMinX,
+				absMinY: this.absMinY,
+				absMaxX: this.absMaxX,
+				absMaxY: this.absMaxY,
+			},
+			background: {
+				bounds: backgroundSerialized.bounds
+			},
+			childs: genericContainerSerializedBounds
+		}
+	}
+
+	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
+		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
+		const bounds = serializedBounds.background.bounds;
+		
+		this.absMinX = absMinX;
+		this.absMinY = absMinY;
+		this.absMaxX = absMaxX;
+		this.absMaxY = absMaxY;
+
+		this.frameBox.position.set(bounds.x, bounds.y);
+		this.frameBox.width = bounds.width;
+		this.frameBox.height = bounds.height;
 	}
 }
