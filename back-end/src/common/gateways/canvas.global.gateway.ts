@@ -14,12 +14,13 @@ import { WSServiceErrorCatcher } from '@/common/decorators/ws.catch.decorator';
 import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.middleware';
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import {
-	ElementBounds,
 	ElementPosition,
 	SerializedContainer,
+	SerializedContainerBounds,
 } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
+import { flatten } from 'mongo-dot-notation';
 
 @UseFilters(WSServiceErrorCatcher)
 @WebSocketGateway({
@@ -50,7 +51,6 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
 		client.join(client.roomId);
 		client.to(client.roomId).emit('peer-connected', user.profile.email);
-		console.log('connected');
 	}
 
 	async handleDisconnect(client: AuthSocket) {
@@ -59,36 +59,60 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const user = await this.usersRepository.findOne(query, projection);
 
 		client.to(client.roomId).emit('peer-disconnected', user.profile.email);
-		console.log('disconnected');
 	}
 
 	@SubscribeMessage('update-element-position')
-	handleElementUpdated(client: AuthSocket, data: { uuid: string; position: ElementPosition }) {
-		client.to(client.roomId).emit('element-position-updated', data.uuid, data.position);
-		console.log('element moved');
+	handleElementUpdated(client: AuthSocket, data: { uuid: string; serializedBounds: SerializedContainerBounds }) {
+		client.to(client.roomId).emit('element-bounds-updated', data.uuid, data.serializedBounds);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ "project.$": data.serializedBounds }, { array: true });
+
+		for (let key in update["$set"]) {
+			if (key.includes('uuid')) {
+				delete update["$set"][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
 	@SubscribeMessage('add-element')
 	handleElementAdded(client: AuthSocket, container: SerializedContainer) {
 		client.to(client.roomId).emit('element-added', container);
-		console.log('element added');
+
+		const query = { _id: new ObjectId(client.roomId) };
+		const update = { $push: { project: container } };
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
 	@SubscribeMessage('delete-element')
 	handleElementDeleted(client: AuthSocket, uuid: string) {
 		client.to(client.roomId).emit('element-deleted', uuid);
-		console.log('element deleted');
+
+		const query = { _id: new ObjectId(client.roomId) };
+		const update = { $pull: { project: { uuid: uuid } } }
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
 	@SubscribeMessage('update-element-bounds')
-	handleElementUpdatedBounds(client: AuthSocket, data: { uuid: string; bounds: ElementBounds }) {
-		client.to(client.roomId).emit('element-bounds-updated', data.uuid, data.bounds);
-		console.log('element resized');
+	handleElementUpdatedBounds(client: AuthSocket, data: { uuid: string; serializedBounds: SerializedContainerBounds }) {
+		client.to(client.roomId).emit('element-bounds-updated', data.uuid, data.serializedBounds);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ "project.$": data.serializedBounds }, { array: true });
+
+		for (let key in update["$set"]) {
+			if (key.includes('uuid')) {
+				delete update["$set"][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
 	@SubscribeMessage('update-mouse-moved')
 	handleMouseMoved(client: AuthSocket, position: ElementPosition) {
 		client.to(client.roomId).emit('peer-mouse-moved', client.id, position);
-		console.log('mouse moved');
 	}
 }
