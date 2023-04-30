@@ -35,8 +35,17 @@ export class SocketManager extends Manager {
 
 		this.canvasSocket.on('element-deleted', (uuid: string) => {
 			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.destroy();
+				this.viewport.socketPlugin.elements[uuid].destroy();
+				
+				const uuidDestroyed: Array<string> = [];
+				for(const key in this.viewport.socketPlugin.elements) {
+					const { uuid, destroyed } = this.viewport.socketPlugin.elements[key];
+					if(destroyed) uuidDestroyed.push(uuid);
+				}
+
+				for(let n = 0; n < uuidDestroyed.length; n++) {
+					delete this.viewport.socketPlugin.elements[uuidDestroyed[n]];
+				}
 			} catch (err) {
 				if (err instanceof Error) {
 					console.error(err.message);
