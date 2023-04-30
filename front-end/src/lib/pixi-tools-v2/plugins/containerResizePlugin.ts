@@ -166,19 +166,7 @@ export class ResizePlugin {
 					this.initialGraphicsState[n].child.y = mirror;
 				}
 
-				if (isPastBounds && this.viewport.socketPlugin) {
-					this.viewport.socketPlugin.emit(
-						'ws-element-resized',
-						this.initialGraphicsState[n].child.uuid,
-						{
-							x: this.initialGraphicsState[n].child.x,
-							y: this.initialGraphicsState[n].child.y,
-							width: this.initialGraphicsState[n].child.width,
-							height: this.initialGraphicsState[n].child.height,
-						},
-					);
-					continue;
-				}
+				if (isPastBounds) continue;
 
 				const sharedOptions = {
 					parentInitialWidth: this.initialContainerSize.width,
@@ -316,19 +304,6 @@ export class ResizePlugin {
 				this.initialGraphicsState[n].child.x = updates.x;
 				this.initialGraphicsState[n].child.height = updates.height;
 				this.initialGraphicsState[n].child.y = updates.y;
-
-				if (this.viewport.socketPlugin) {
-					this.viewport.socketPlugin.emit(
-						'ws-element-resized',
-						this.initialGraphicsState[n].child.uuid,
-						{
-							x: this.initialGraphicsState[n].child.x,
-							y: this.initialGraphicsState[n].child.y,
-							width: this.initialGraphicsState[n].child.width,
-							height: this.initialGraphicsState[n].child.height,
-						},
-					);
-				}
 			}
 
 			if (this.container instanceof FramedContainer) {
@@ -340,6 +315,21 @@ export class ResizePlugin {
 					if (element instanceof FramedContainer) {
 						element.emit('moved', null);
 					}
+				}
+			}
+
+			if (this.viewport.socketPlugin) {
+				const containers = this.container instanceof WrappedContainer
+					? this.container.absoluteChildren
+					: [this.container];
+
+				for(const container of containers) {
+					container.getGeometry();
+					this.viewport.socketPlugin.emit(
+						'ws-element-resized',
+						container.uuid,
+						container.serializeBounds(),
+					);
 				}
 			}
 

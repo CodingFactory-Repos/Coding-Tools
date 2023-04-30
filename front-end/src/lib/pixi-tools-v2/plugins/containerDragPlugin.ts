@@ -113,8 +113,8 @@ export class DragPlugin {
 				const newX = element.x + dx;
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
-				if (this.viewport.socketPlugin)
-					this.viewport.socketPlugin.emit('ws-element-dragged', element.child.uuid, { x: newX, y: nexY });
+				// if (this.viewport.socketPlugin)
+				// 	this.viewport.socketPlugin.emit('ws-element-dragged', element.child.uuid, { x: newX, y: nexY });
 				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
 
 				const parent = element.child.parent as GenericContainer;
@@ -168,6 +168,21 @@ export class DragPlugin {
 					if (element instanceof FramedContainer) {
 						element.emit('moved', null);
 					}
+				}
+			}
+
+			if (this.viewport.socketPlugin) {
+				const containers = this.container instanceof WrappedContainer
+					? this.container.absoluteChildren
+					: [this.container];
+
+				for(const container of containers) {
+					container.getGeometry();
+					this.viewport.socketPlugin.emit(
+						'ws-element-dragged',
+						container.uuid,
+						container.serializeBounds(),
+					);
 				}
 			}
 
