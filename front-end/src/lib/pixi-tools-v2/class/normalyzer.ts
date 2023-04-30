@@ -85,21 +85,23 @@ export class Normalizer {
 			};
 		}
 
-		for (const element of childs) {
-			const childTypeId = element.typeId;
-
-			if (childTypeId === 'generic' || childTypeId === 'frame') {
-				const containerChildren = this.container(
-					viewport,
-					element as SerializedContainer,
-					remote,
-					position,
-					tabContext,
-				);
-				children.push(containerChildren);
-			} else {
-				const graphicChildren = this.graphic(element as SerializedGraphic, position);
-				children.push(graphicChildren);
+		if(childs !== undefined) {
+			for (const element of childs) {
+				const childTypeId = element.typeId;
+	
+				if (childTypeId === 'generic' || childTypeId === 'frame') {
+					const containerChildren = this.container(
+						viewport,
+						element as SerializedContainer,
+						remote,
+						position,
+						tabContext,
+					);
+					children.push(containerChildren);
+				} else {
+					const graphicChildren = this.graphic(element as SerializedGraphic, position);
+					children.push(graphicChildren);
+				}
 			}
 		}
 
