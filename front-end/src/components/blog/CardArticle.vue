@@ -44,25 +44,15 @@
 					fill-rule="evenodd"
 					d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
 					clip-rule="evenodd"
-				></path>
+				/>
 			</svg>
 		</button>
 	</div>
 </template>
 
-<style scoped>
-.display {
-	display: block;
-}
-.display-none {
-	display: none;
-}
-</style>
-
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
-import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
 
 defineProps<{
@@ -71,19 +61,8 @@ defineProps<{
 
 // get store
 const articleStore = useArticleStore();
-const oneItems = computed(() => articleStore.oneItems);
-
-const authStore = useAuthStore();
-const user = computed(() => authStore.user);
 
 const router = useRouter();
-
-// get id from url
-const _id = computed(() => {
-	const url = window.location.href;
-	const id = url.substring(url.lastIndexOf('/') + 1);
-	return id;
-});
 
 // Fetch the articles
 const getArticles = async () => {
@@ -100,3 +79,12 @@ const openArticle = (id: string) => {
 	router.push(`/app/blog/${id}`);
 };
 </script>
+
+<style scoped>
+.display {
+	display: block;
+}
+.display-none {
+	display: none;
+}
+</style>
