@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, toRaw } from 'vue';
+import { computed, watch } from 'vue';
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';

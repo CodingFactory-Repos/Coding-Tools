@@ -1,4 +1,3 @@
-import { onMounted } from '@vue/runtime-core';
 <template>
 	<div class="absolute w-full h-full z-50 bg-darker-primary flex justify-center items-center" v-if="internLoading">
 		<div class="breeding-rhombus-spinner">
@@ -17,7 +16,7 @@ import { onMounted } from '@vue/runtime-core';
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const props = defineProps({
 	loading: { type: Boolean, required: true },
@@ -28,7 +27,6 @@ const internLoading = ref(isLoading.value);
 let timeout: NodeJS.Timeout = null;
 
 const showLoader = () => {
-	console.log(isLoading.value)
 	if(isLoading.value) {
 		timeout = setTimeout(showLoader, 1500);
 	} else {
@@ -114,11 +112,12 @@ $anim-dly: 100ms;
 		&.big {
 			height: calc($size / 3);
 			width: calc($size / 3);
-			animation-duration: $anim-dur;
 			top: calc($size / 3);
 			left: calc($size / 3);
 			background-color: $color;
-			animation: breeding-rhombus-spinner-animation-child-big 2s infinite;
+			animation-duration: $anim-dur;
+			animation-name: breeding-rhombus-spinner-animation-child-big;
+			animation-iteration-count: infinite;
 			animation-delay: 0.5s;
 		}
 	}
