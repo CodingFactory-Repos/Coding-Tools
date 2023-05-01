@@ -157,6 +157,9 @@
 <script>
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
+import { useMaterialStore } from '@/store/modules/material.store';
+
+const materialStore = useMaterialStore();
 
 export default {
 	data() {
@@ -175,28 +178,20 @@ export default {
 	},
 	methods: {
 		addMaterial() {
-			axios
-				.post('http://localhost:8000/materials/create', {
-					name: this.name,
-					type: this.type,
-					price: this.price,
-					acquisitionDate: Date.now(),
-					picture: this.picture,
-					state: this.state,
-					siteLocation: this.site,
-					storageCupboard: this.storageCupboard,
-					description: this.description,
-					borrowingHistory: [],
-					status: true,
-				})
-				.then((response) => {
-					console.log(response);
-					//Close the modal
-					this.showModal = false;
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			//Use the store to add the material
+			materialStore.addMaterial({
+				name: this.name,
+				type: this.type,
+				price: this.price,
+				picture: this.picture,
+				state: this.state,
+				site: this.site,
+				storageCupboard: this.storageCupboard,
+				description: this.description,
+				status: true,
+			});
+			//Close the modal
+			this.showModal = false;
 		},
 		// deleteMaterial() {
 		// 	axios

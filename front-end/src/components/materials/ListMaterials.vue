@@ -1,6 +1,5 @@
 <template>
 	<div class="w-300 flex flex-col gap-4 h-full">
-		<h1 class="text-2xl font-bold dark:text-dark-font">List of all materials</h1>
 		<div class="w-full">
 			<label
 				for="default-search"
@@ -112,12 +111,8 @@ const filteredList = () => {
 	materialStore.filter.site = site.value;
 	materialStore.filter.type = type.value;
 };
-const getMaterials = withErrorHandler(async function () {
-	const res = await http.get('/materials');
-	materialStore.materials = res.data;
-});
 onMounted(async () => {
-	await getMaterials();
+	await materialStore.getMaterials();
 });
 </script>
 
