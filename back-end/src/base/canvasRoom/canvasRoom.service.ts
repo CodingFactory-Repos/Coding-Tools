@@ -4,7 +4,7 @@ import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { CanvasMetaDataList, CanvasRoom, CanvasRoomMeta } from './interfaces/canvasRoom.interface';
-import { PROJECTION_PROJECT_META_LIST, PROJECTION_PROJECT } from './utils/canvasRoom.projection';
+import { PROJECTION_PROJECT_META_LIST, PROJECTION_PROJECT, PROJECTION_PROJECT_VERIFY } from './utils/canvasRoom.projection';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 
 @Injectable()
@@ -63,6 +63,24 @@ export class CanvasRoomService {
 			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
 
 		return room.project;
+	}
+
+	async verify(roomId: string, userId: ObjectId) {
+		if (!roomId || roomId === 'null' || roomId === 'undefined')
+			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+
+		//! Only use if you need to clear the room from any elements
+		//! It's temporary
+		// const query2 = { _id: new ObjectId(roomId) };
+		// const update = { $set: { project: [] } };
+		// await this.canvasRoomRepository.updateOneCanvasRoom(query2, update);
+
+		const query = { _id: new ObjectId(roomId), allowedPeers: { $in: [userId] } };
+		const room = await this.canvasRoomRepository.findOneCanvasRoom(query, PROJECTION_PROJECT_VERIFY);
+		if (room === null)
+			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+
+		return true;
 	}
 
 	async saveProjectMeta(meta: CanvasRoomMeta, roomId: string, userId: ObjectId) {

@@ -31,6 +31,17 @@ export class CanvasRoomController {
 		return res.status(201).json({ status: 'ok', project });
 	}
 
+	@Get(':roomId/verify')
+	@UseGuards(JwtAuthGuard)
+	async verifyProjectAccess(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
+		const project = await this.canvasRoomService.verify(roomId, userId);
+		return res.status(201).json({ status: 'ok', project });
+	}
+
 	@Post('new')
 	@UseGuards(JwtAuthGuard)
 	async createNewProject(@Jwt() userId: ObjectId, @Res() res: Response) {

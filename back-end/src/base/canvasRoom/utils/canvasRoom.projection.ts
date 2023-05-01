@@ -10,3 +10,9 @@ export const PROJECTION_PROJECT = {
 		allowedPeers: 1,
 	},
 };
+
+export const PROJECTION_PROJECT_VERIFY = {
+	projection: {
+		project: 0,
+	}
+}
