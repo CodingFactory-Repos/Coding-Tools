@@ -6,6 +6,7 @@ import { temporaryNotification } from '../utils/temporary.notification';
 import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
+import { CanvasContainer } from '../types/pixi-aliases';
 
 
 export class SocketManager extends Manager {
@@ -57,8 +58,34 @@ export class SocketManager extends Manager {
 			this._updateTreeBounds(uuid, serializedBounds)
 		});
 
+		this.canvasSocket.on('frame-children-added', (uuid: string, uuidChild: string, frameNumber: number) => {
+			try {
+				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
+				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
+
+				frame.addNestedChild(children, frameNumber, true);
+			} catch(err) {
+				if (err instanceof Error) {
+					console.error(err.message);
+				}
+			}
+		});
+
+		this.canvasSocket.on('frame-children-removed', (uuid: string, uuidChild: string) => {
+			try {
+				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
+				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
+
+				frame.removeNestedChild(children, true);
+			} catch(err) {
+				if (err instanceof Error) {
+					console.error(err.message);
+				}
+			}
+		});
+
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
+			// console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 	}
 
@@ -101,5 +128,13 @@ export class SocketManager extends Manager {
 
 	public updateMouseMoved(position: ElementPosition) {
 		this.canvasSocket.emit('update-mouse-moved', position);
+	}
+
+	public updateFrameOnChildAdded(uuid: string, uuidChild: string, serialized: SerializedContainer) {
+		this.canvasSocket.emit('add-frame-children', { uuid, uuidChild, serialized });
+	}
+
+	public updateFrameOnChildRemoved(uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) {
+		this.canvasSocket.emit('remove-frame-children', { uuid, serialized, serializedChild });
 	}
 }
