@@ -1,7 +1,8 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Db, Filter, FindOneAndUpdateOptions, ObjectId, UpdateFilter } from 'mongodb';
 import { Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
+import { ServiceError } from '@/common/decorators/catch.decorator';
 
 @Injectable()
 export class CallsRepository {
@@ -52,11 +53,11 @@ export class CallsRepository {
 			.findOne({ course: courseObjectId, period: period[periodIndex], date: this.getDate(date) });
 
 		if (!user) {
-			throw new NotFoundException('User not found');
+			throw new ServiceError('NOT_FOUND', 'User not found');
 		}
 
 		if (!course) {
-			throw new NotFoundException('Course not found');
+			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
 		if (!call) {
 			// Create a new call if one does not already exist
@@ -225,7 +226,7 @@ export class CallsRepository {
 			periodEnd: { $gte: actualDate },
 		});
 		if (!course) {
-			throw new NotFoundException('Course not found');
+			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
 		if (!course.groups) {
 			await this.db.collection('courses').updateOne(
@@ -251,7 +252,7 @@ export class CallsRepository {
 			periodEnd: { $gte: actualDate },
 		});
 		if (!course) {
-			throw new NotFoundException('Course not found');
+			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
 		// Transform the elements objectId in the group to the user object (to get name firstname etc)
 		for (let i = 0; i < course.groups.length; i++) {
@@ -275,17 +276,17 @@ export class CallsRepository {
 			periodEnd: { $gte: actualDate },
 		});
 		if (!course) {
-			throw new NotFoundException('Course not found');
+			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
 		const user = await this.db.collection('users').findOne({
 			_id: userObjectId,
 		});
 		if (!user) {
-			throw new NotFoundException('User not found');
+			throw new ServiceError('NOT_FOUND', 'User not found');
 		}
 		const group = course.groups[parseInt(groupId['groupId'])];
 		if (!group) {
-			throw new NotFoundException('Group not found');
+			throw new ServiceError('NOT_FOUND', 'Group not found');
 		}
 		// Search if he is already in the group
 		const userAlreadyInGroup = group.some((memberId) => {
@@ -295,7 +296,7 @@ export class CallsRepository {
 		});
 
 		if (userAlreadyInGroup) {
-			throw new BadRequestException('User already in this group');
+			throw new ServiceError('BAD_REQUEST', 'User already in this group');
 		}
 
 		let isReplaced = false;
@@ -308,7 +309,7 @@ export class CallsRepository {
 		});
 
 		if (!isReplaced) {
-			throw new BadRequestException('This group is already full');
+			throw new ServiceError('BAD_REQUEST', 'This group is already full');
 		}
 
 		let isPresent = false;
