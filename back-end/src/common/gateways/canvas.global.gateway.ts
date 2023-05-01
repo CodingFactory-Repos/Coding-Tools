@@ -91,7 +91,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		client.to(client.roomId).emit('element-deleted', uuid);
 
 		const query = { _id: new ObjectId(client.roomId) };
-		const update = { $pull: { project: { uuid: uuid } } }
+		const update = { $pull: { project: { uuid: uuid } } };
 		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
@@ -109,6 +109,34 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		}
 
 		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	}
+
+	@SubscribeMessage('add-frame-children')
+	handleChildrenFrameAdded(client: AuthSocket, data: { uuid: string, uuidChild: string, serialized: SerializedContainer }) {
+		client.to(client.roomId).emit('frame-children-added', data.uuid, data.uuidChild, data.serialized.properties.frameNumber);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = { $set: { "project.$": data.serialized } };
+
+		const delQuery = { _id: new ObjectId(client.roomId) };
+		const delUpdate = { $pull: { project: { uuid: data.uuidChild } } };
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+		this.canvasRoomRepository.updateOneCanvasRoom(delQuery, delUpdate)
+	}
+
+	@SubscribeMessage('remove-frame-children')
+	handleChildrenFrameRemoved(client: AuthSocket, data: { uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer }) {
+		client.to(client.roomId).emit('frame-children-removed', data.uuid, data.serializedChild.uuid);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = { $set: { "project.$": data.serialized } };
+
+		const updQuery = { _id: new ObjectId(client.roomId) };
+		const updUpdate = { $push: { project: data.serializedChild } };
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+		this.canvasRoomRepository.updateOneCanvasRoom(updQuery, updUpdate)
 	}
 
 	@SubscribeMessage('update-mouse-moved')
