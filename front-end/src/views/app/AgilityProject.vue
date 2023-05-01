@@ -17,8 +17,11 @@ export default defineComponent({
 		try {
 			const agilityStore = useAgilityStore();
 			const roomId = to.path.match(/[^/]+$/)[0];
-			const res = await agilityStore.tryGetRoomProject(roomId);
-			if(res) next();
+			const res = await agilityStore.tryGetRoomAccess(roomId);
+			if(res) {
+				agilityStore.tryGetRoomProject(roomId);
+				next();
+			}
 			else next('/app/agility/dashboard');
 		} catch(err) {
 			next('/app/agility/dashboard');
