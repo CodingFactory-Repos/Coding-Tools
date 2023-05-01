@@ -68,7 +68,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
 		const update = flatten({ "project.$": data.serializedBounds }, { array: true });
 
-		for (let key in update["$set"]) {
+		for (const key in update["$set"]) {
 			if (key.includes('uuid')) {
 				delete update["$set"][key];
 			}
@@ -108,7 +108,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
 		const update = flatten({ "project.$": data.serializedBounds }, { array: true });
 
-		for (let key in update["$set"]) {
+		for (const key in update["$set"]) {
 			if (key.includes('uuid')) {
 				delete update["$set"][key];
 			}
