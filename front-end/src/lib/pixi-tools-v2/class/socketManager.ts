@@ -85,7 +85,7 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			// console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
+			console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 	}
 
@@ -108,10 +108,6 @@ export class SocketManager extends Manager {
 				console.error(err.message);
 			}
 		}
-	}
-
-	public updateElementPosition(uuid: string, serializedBounds: SerializedContainerBounds) {
-		this.canvasSocket.emit('update-element-position', { uuid, serializedBounds });
 	}
 
 	public updateElementBounds(uuid: string, serializedBounds: SerializedContainerBounds) {

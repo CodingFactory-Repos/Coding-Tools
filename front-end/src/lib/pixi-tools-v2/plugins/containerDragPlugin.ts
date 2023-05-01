@@ -178,7 +178,7 @@ export class DragPlugin {
 				for(const container of containers) {
 					container.getGeometry();
 					this.viewport.socketPlugin.emit(
-						'ws-element-dragged',
+						'ws-element-updated',
 						container.uuid,
 						container.serializeBounds(),
 					);
