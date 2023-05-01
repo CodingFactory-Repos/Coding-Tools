@@ -6,11 +6,13 @@ import { ViewportUI } from '../viewportUI';
 import { FramedMainContainer, ModelGraphics, PluginContainer } from '../types/pixi-class';
 import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic, SerializedGraphicBounds } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
+import { CanvasContainer } from '../types/pixi-aliases';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
 	protected readonly frameBox: Rectangle;
 	protected readonly boxTitle: Text;
+	protected readonly viewport: ViewportUI;
 	public readonly children: Array<Container>;
 	public readonly mainContainer: FramedMainContainer;
 	public readonly titleContainer: Container;
@@ -60,6 +62,7 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxX = anchors.absMaxX;
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
+		this.viewport = viewport;
 		this.frameBox = background;
 
 		this.mainContainer = new FramedMainContainer();
@@ -117,6 +120,32 @@ export class FramedContainer extends PluginContainer {
 		if (e.target === this.frameBox && this.listeners('pointerdown').length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
+	}
+
+	public addNestedChild(container: CanvasContainer, frameNumber: number, remote = false) {
+		container.alpha = 1;
+		if(this.mainContainer.children.some((el) => el.uuid === container.uuid)) return;
+
+		container.isAttachedToFrame = true;
+		container.frameNumber = frameNumber;
+		this.mainContainer.addChild(container);
+
+		if(!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit("ws-frame-child-added", this.uuid, container.uuid, this.serializeData());
+		}
+	}
+
+	public removeNestedChild(container: CanvasContainer, remote = false) {
+		if(this.mainContainer.children.find(el => el.uuid === container.uuid) === undefined) return;
+
+		container.isAttachedToFrame = false;
+		container.frameNumber = -1;
+		this.mainContainer.removeChild(container);
+		this.viewport.addChild(container);
+
+		if(!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit("ws-frame-child-removed", this.uuid, this.serializeData(), container.serializeData());
+		}
 	}
 
 	public updateAbsoluteBounds() {
@@ -268,5 +297,9 @@ export class FramedContainer extends PluginContainer {
 		this.frameBox.position.set(bounds.x, bounds.y);
 		this.frameBox.width = bounds.width;
 		this.frameBox.height = bounds.height;
+	}
+
+	get frameBoxBounds() {
+		return this.frameBox.getBounds();
 	}
 }
