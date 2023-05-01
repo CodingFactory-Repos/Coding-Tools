@@ -95,6 +95,9 @@ export class FramedContainer extends PluginContainer {
 			viewport.removeChild(this.titleContainer);
 		});
 
+		this.mainContainer.on('childAdded', this.onMoved.bind(this));
+		this.mainContainer.on('childRemoved', this.onMoved.bind(this));
+
 		if (!remote && viewport.socketPlugin) {
 			viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 		}
@@ -135,13 +138,13 @@ export class FramedContainer extends PluginContainer {
 		}
 	}
 
-	public removeNestedChild(container: CanvasContainer, remote = false) {
+	public removeNestedChild(container: CanvasContainer, index: number, remote = false) {
 		if(this.mainContainer.children.find(el => el.uuid === container.uuid) === undefined) return;
 
 		container.isAttachedToFrame = false;
 		container.frameNumber = -1;
 		this.mainContainer.removeChild(container);
-		this.viewport.addChild(container);
+		this.viewport.addChildAt(container, index);
 
 		if(!remote && this.viewport.socketPlugin) {
 			this.viewport.socketPlugin.emit("ws-frame-child-removed", this.uuid, this.serializeData(), container.serializeData());
