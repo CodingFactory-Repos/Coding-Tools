@@ -87,12 +87,18 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 	}
 
 	@SubscribeMessage('delete-element')
-	handleElementDeleted(client: AuthSocket, uuid: string) {
-		client.to(client.roomId).emit('element-deleted', uuid);
+	handleElementDeleted(client: AuthSocket, data: { uuid: string, uuidFrame: string }) {
+		client.to(client.roomId).emit('element-deleted', data.uuid);
 
-		const query = { _id: new ObjectId(client.roomId) };
-		const update = { $pull: { project: { uuid: uuid } } };
-		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+		if(data.uuidFrame) {
+			const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuidFrame };
+			const update = { $pull: { "project.$.childs": { uuid: data.uuid } } };
+			this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+		} else {
+			const query = { _id: new ObjectId(client.roomId) };
+			const update = { $pull: { project: { uuid: data.uuid } } };
+			this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+		}
 	}
 
 	@SubscribeMessage('update-element-bounds')
