@@ -167,9 +167,14 @@
 </template>
 
 <script lang="ts">
-import { defineProps, onMounted, ref, toRefs } from 'vue';
+import { defineProps, onMounted, ref, toRefs, computed } from 'vue';
 import { http } from '@/api/network/axios';
 import BorrowHistoryMaterials from '@/components/materials/BorrowHistoryMaterials.vue';
+import { useMaterialStore } from '@/store/modules/material.store';
+import { Material, MaterialStore } from '@/store/interfaces/material.interface';
+
+const materialStore = useMaterialStore();
+// const userInfo = computed(() => materialStore.userInfo);
 
 export default {
 	components: {
@@ -187,20 +192,16 @@ export default {
 			}),
 		);
 
-		let material = ref({});
-		let userInfo = ref({});
+		let material = ref<Material>();
+		// let userInfo = ref(computed(() => materialStore.userInfo));
+		let userInfo = ref({})
 		let showLink = ref({});
 		let showHistory = ref(false);
 
 		const getUserInfo = () => {
-			http
-				.get(`materials/user/` + props.userId)
-				.then((res) => {
-					userInfo.value = res.data;
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			http.get(`materials/user/` + props.userId).then((res) => {
+				userInfo.value = res.data;
+			});
 		};
 
 		const getMaterialInfo = (id) => {
@@ -219,36 +220,26 @@ export default {
 		};
 
 		const editMaterial = () => {
-			http
-				.put(`materials/update/${props.id}`, {
-					...material.value,
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			// console.log(material.value);
+			materialStore.updateMaterial(material.value, props.id);
 		};
 
 		const deleteMaterial = () => {
-			http.delete(`materials/delete/` + props.id).catch((err) => {
-				console.log(err);
-			});
+			materialStore.deleteMaterial(props.id);
 		};
-
-		onMounted(() => {
+		onMounted(async () => {
+			// await materialStore.getUserInfo(props.userId);
 			getUserInfo();
 			getMaterialInfo(props.id);
 		});
-
 		return {
-			...props,
 			...data,
 			material,
-			userInfo,
 			showLink,
 			showHistory,
 			editMaterial,
 			deleteMaterial,
-			BorrowHistoryMaterials,
+			userInfo,
 		};
 	},
 };
