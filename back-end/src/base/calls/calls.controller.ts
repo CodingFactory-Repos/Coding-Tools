@@ -5,10 +5,7 @@ import { CallsService } from 'src/base/calls/calls.service';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
-import {
-	CourseIdObject,
-	JwtQRCode,
-} from '@/base/calls/interfaces/calls.interface';
+import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
 
 @Controller('calls')
 @UseFilters(ServiceErrorCatcher)

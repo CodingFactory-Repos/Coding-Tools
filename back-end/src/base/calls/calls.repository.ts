@@ -1,7 +1,7 @@
-import {BadRequestException, Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {Db, Filter, FindOneAndUpdateOptions, ObjectId, UpdateFilter} from 'mongodb';
-import {Call} from 'src/base/calls/interfaces/calls.interface';
-import {Course} from '@/base/courses/interfaces/courses.interface';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Db, Filter, FindOneAndUpdateOptions, ObjectId, UpdateFilter } from 'mongodb';
+import { Call } from 'src/base/calls/interfaces/calls.interface';
+import { Course } from '@/base/courses/interfaces/courses.interface';
 
 @Injectable()
 export class CallsRepository {
@@ -258,7 +258,7 @@ export class CallsRepository {
 			for (let j = 0; j < course.groups[i].length; j++) {
 				if (course.groups[i][j] != '') {
 					const userObjectId = new ObjectId(course.groups[i][j]);
-					course.groups[i][j] = await this.db.collection('users').findOne({_id: userObjectId});
+					course.groups[i][j] = await this.db.collection('users').findOne({ _id: userObjectId });
 				}
 			}
 		}
