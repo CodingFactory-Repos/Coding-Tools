@@ -61,22 +61,6 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		client.to(client.roomId).emit('peer-disconnected', user.profile.email);
 	}
 
-	@SubscribeMessage('update-element-position')
-	handleElementUpdated(client: AuthSocket, data: { uuid: string; serializedBounds: SerializedContainerBounds }) {
-		client.to(client.roomId).emit('element-bounds-updated', data.uuid, data.serializedBounds);
-
-		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
-		const update = flatten({ "project.$": data.serializedBounds }, { array: true });
-
-		for (const key in update["$set"]) {
-			if (key.includes('uuid')) {
-				delete update["$set"][key];
-			}
-		}
-
-		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
-	}
-
 	@SubscribeMessage('add-element')
 	handleElementAdded(client: AuthSocket, container: SerializedContainer) {
 		client.to(client.roomId).emit('element-added', container);
