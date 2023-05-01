@@ -7,6 +7,7 @@ import { ViewportUI } from '../viewportUI';
 
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
+import { GenericContainer } from './genericContainer';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -36,8 +37,14 @@ export class ContainerManager {
 			}
 
 			this._selectedContainers.forEach((ctn) => {
-				if (this.viewport.socketPlugin)
-					this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
+				if (this.viewport.socketPlugin) {
+					if(ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
+						const frame = ctn.parent.parent as FramedContainer;
+						this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid, frame.uuid);
+					} else {
+						this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
+					}
+				}
 				ctn.destroy();
 			});
 			this.viewport.destroyBorder();

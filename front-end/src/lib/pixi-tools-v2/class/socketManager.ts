@@ -122,8 +122,8 @@ export class SocketManager extends Manager {
 		this.canvasSocket.emit('add-element', container);
 	}
 
-	public deleteElement(uuid: string) {
-		this.canvasSocket.emit('delete-element', uuid);
+	public deleteElement(uuid: string, uuidFrame: string) {
+		this.canvasSocket.emit('delete-element', { uuid, uuidFrame });
 	}
 
 	public updateMouseMoved(position: ElementPosition) {

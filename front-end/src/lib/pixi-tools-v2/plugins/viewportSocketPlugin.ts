@@ -12,7 +12,7 @@ import { SerializedContainerBounds } from '../types/pixi-serialize';
 import { SerializedContainer } from '../types/pixi-serialize';
 
 interface CanvasSocketEvents {
-	'ws-element-deleted': (uuid: string) => void;
+	'ws-element-deleted': (uuid: string, uuidFrame?: string) => void;
 	'ws-element-added': (serialized: SerializedContainer) => void;
 	'ws-element-dragged': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-resized': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
@@ -47,8 +47,8 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			this.socketManager.updateElementPosition(uuid, serializedBounds);
 		});
 
-		this.on('ws-element-deleted', (uuid) => {
-			this.socketManager.deleteElement(uuid);
+		this.on('ws-element-deleted', (uuid, uuidFrame) => {
+			this.socketManager.deleteElement(uuid, uuidFrame);
 		});
 
 		this.on('ws-element-resized', (uuid, serializedBounds) => {
