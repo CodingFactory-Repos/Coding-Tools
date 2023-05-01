@@ -319,17 +319,11 @@ export class ResizePlugin {
 			}
 
 			if (this.viewport.socketPlugin) {
-				const containers = this.container instanceof WrappedContainer
-					? this.container.absoluteChildren
-					: [this.container];
+				const containers = this.container instanceof WrappedContainer ? this.container.absoluteChildren : [this.container];
 
 				for(const container of containers) {
 					container.getGeometry();
-					this.viewport.socketPlugin.emit(
-						'ws-element-updated',
-						container.uuid,
-						container.serializeBounds(),
-					);
+					this.viewport.socketPlugin.emit('ws-element-updated', container.uuid, container.serializeBounds());
 				}
 			}
 
