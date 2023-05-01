@@ -49,6 +49,13 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok', studentList: studentList });
 	}
 
+	@Get('/get_groups/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async updateGroupStudents(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const message = await this.callsService.getGroups(courseId);
+		return res.status(201).json({ array: message });
+	}
+
 	@Get('/array_generator/:studentAmount/:courseId')
 	async arrayGenerator(
 		@Param() studentAmount: { studentAmount: number },
@@ -57,5 +64,24 @@ export class CallsController {
 	) {
 		const array = await this.callsService.arrayGenerator(studentAmount.studentAmount, courseId);
 		return res.status(201).json({ status: 'ok', array: array });
+	}
+
+	@Get('/join_group/:courseId/:groupId')
+	@UseGuards(JwtAuthGuard)
+	async joinGroup(
+		@Jwt() userId: ObjectId,
+		@Param() courseId: CourseIdObject,
+		@Param() groupId: string,
+		@Res() res: Response,
+	) {
+		const message = await this.callsService.joinGroup(courseId, groupId, userId);
+		return res.status(201).json({ status: message });
+	}
+
+	@Get('/get_student_identity/:userId')
+	@UseGuards(JwtAuthGuard)
+	async identity(@Param() userId: { userId: ObjectId }, @Res() res: Response) {
+		const message = await this.callsService.getStudentIdentity(userId.userId);
+		return res.status(201).json({ identity: message });
 	}
 }

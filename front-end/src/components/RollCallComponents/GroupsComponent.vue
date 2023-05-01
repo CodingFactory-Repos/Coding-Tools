@@ -1,4 +1,31 @@
 <template>
+	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x h-100">
+		<div v-for="(group, index) in groups" :key="index" class="bg-white shadow rounded-lg">
+			<h2 class="bg-gray-100 p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
+			<div
+				v-for="(student, sIndex) in group"
+				:key="sIndex"
+				class="flex flex-row items-center p-2 border-b"
+			>
+				<div class="w-1/3">{{ sIndex + 1 }}</div>
+				<div class="w-2/3">
+					{{
+						student
+							? student.profile.firstName + ' ' + student.profile.lastName
+							: 'Rejoindre le groupe'
+					}}
+				</div>
+			</div>
+			<div class="flex justify-center items-center p-4">
+				<button
+					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bottom-0"
+					@click="joinGroup(index)"
+				>
+					Join Group {{ index + 1 }}
+				</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -6,16 +33,16 @@ import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
 
 let courseId = '';
-let groupList = [];
 let studentList = [];
+let groups = [];
 
 export default {
 	name: 'StudentList',
 	data() {
 		return {
 			courseId,
-      groupList,
-      studentList,
+			groups,
+			studentList,
 		};
 	},
 	mounted() {
@@ -31,6 +58,7 @@ export default {
 		isThereCourse() {
 			if (this.courseId) {
 				this.getStudentAmount();
+				this.getGroups();
 			}
 		},
 		getStudentAmount: withErrorHandler(async function () {
@@ -41,7 +69,22 @@ export default {
 		}),
 		setNumberArrays: withErrorHandler(async function () {
 			http.get(`/calls/array_generator/${this.studentList}/${this.courseId}`).then((response) => {
-				this.groupList = response.data.array;
+				this.getGroups();
+			});
+		}),
+		getGroups: withErrorHandler(async function () {
+			http.get(`/calls/get_groups/${this.courseId}`).then((response) => {
+				this.groups = response.data.array;
+			});
+		}),
+		joinGroup(index) {
+			http.get(`/calls/join_group/${this.courseId}/${index}`).then((response) => {
+				this.getGroups();
+			});
+		},
+		getStudentIdentity: withErrorHandler(async function (student, i) {
+			http.get(`/calls/get_student_identity/${student}`).then((response) => {
+				return response.data.identity;
 			});
 		}),
 	},
