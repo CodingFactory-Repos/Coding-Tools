@@ -77,11 +77,11 @@ export default {
 				this.groups = response.data.array;
 			});
 		}),
-		joinGroup(index) {
+		joinGroup: withErrorHandler(async function (index: number) {
 			http.get(`/calls/join_group/${this.courseId}/${index}`).then((response) => {
 				this.getGroups();
 			});
-		},
+		}),
 		getStudentIdentity: withErrorHandler(async function (student, i) {
 			http.get(`/calls/get_student_identity/${student}`).then((response) => {
 				return response.data.identity;
