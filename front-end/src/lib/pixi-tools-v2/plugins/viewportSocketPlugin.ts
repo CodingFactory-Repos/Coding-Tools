@@ -3,12 +3,13 @@ import { ManagerOptions } from 'socket.io-client';
 
 import { ViewportUI } from '../viewportUI';
 import { CanvasContainer } from '../types/pixi-aliases';
-import { ElementBounds, ElementPosition } from '../types/pixi-container';
+import { ElementPosition } from '../types/pixi-container';
 import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { SerializedContainerBounds } from '../types/pixi-serialize';
+import { SerializedContainer } from '../types/pixi-serialize';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string) => void;
@@ -17,6 +18,8 @@ interface CanvasSocketEvents {
 	'ws-element-resized': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
+	'ws-frame-child-added': (uuid: string, uuidChild: string, serialized: SerializedContainer) => void;
+	'ws-frame-child-removed': (uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -58,6 +61,14 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.on('ws-mouse-moved', (position) => {
 			this.socketManager.updateMouseMoved(position);
 		});
+
+		this.on('ws-frame-child-added', (uuid, uuidChild, serialized) => {
+			this.socketManager.updateFrameOnChildAdded(uuid, uuidChild, serialized);
+		})
+
+		this.on('ws-frame-child-removed', (uuid, serialized, serializedChild) => {
+			this.socketManager.updateFrameOnChildRemoved(uuid, serialized, serializedChild);
+		})
 	}
 
 	public disconnect() {
