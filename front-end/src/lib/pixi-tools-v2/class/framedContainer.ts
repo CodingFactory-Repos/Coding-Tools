@@ -95,8 +95,8 @@ export class FramedContainer extends PluginContainer {
 			viewport.removeChild(this.titleContainer);
 		});
 
-		if (viewport.socketPlugin) {
-			viewport.socketPlugin.emit('ws-element-added', this, remote);
+		if (!remote && viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 		}
 	}
 

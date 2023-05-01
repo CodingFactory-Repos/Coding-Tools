@@ -13,7 +13,7 @@ import { SerializedContainer } from '../types/pixi-serialize';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string) => void;
-	'ws-element-added': (element: CanvasContainer, isRemote: boolean) => void;
+	'ws-element-added': (serialized: SerializedContainer) => void;
 	'ws-element-dragged': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-resized': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-modified': () => void;
@@ -35,15 +35,12 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
 		if (!uri) throw Error('Socket.io uri is required');
-
 		super();
 
 		this.socketManager = new SocketManager(uri, roomId, options, viewport);
 
-		this.on('ws-element-added', (child, isRemote) => {
-			if (!isRemote) {
-				this.socketManager.addElement(child.serializeData());
-			}
+		this.on('ws-element-added', (serialized) => {
+			this.socketManager.addElement(serialized);
 		});
 
 		this.on('ws-element-dragged', (uuid, serializedBounds) => {

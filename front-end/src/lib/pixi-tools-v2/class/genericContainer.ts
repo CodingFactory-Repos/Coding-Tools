@@ -58,8 +58,8 @@ export class GenericContainer extends PluginContainer {
 			this.addChild(element);
 		}
 
-		if (viewport.socketPlugin) {
-			viewport.socketPlugin.emit('ws-element-added', this, remote);
+		if (!remote && viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 		}
 	}
 
