@@ -222,7 +222,7 @@ export class DragPlugin {
 			this.unconstraints.forEach((ctn) => {
 				if(ctn.isAttachedToFrame) {
 					const frame = ctn.parent.parent as FramedContainer;
-					frame.removeNestedChild(ctn, false);
+					frame.removeNestedChild(ctn, this.viewport.children.length - 9, false);
 				}
 			});
 

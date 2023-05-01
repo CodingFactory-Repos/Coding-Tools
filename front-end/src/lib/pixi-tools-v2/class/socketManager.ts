@@ -76,7 +76,7 @@ export class SocketManager extends Manager {
 				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
 				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
 
-				frame.removeNestedChild(children, true);
+				frame.removeNestedChild(children, this.viewport.children.length, true);
 			} catch(err) {
 				if (err instanceof Error) {
 					console.error(err.message);
