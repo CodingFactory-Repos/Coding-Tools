@@ -85,6 +85,7 @@
 /front-end/src/layout/app/AppLayout.vue @Maghwyn @Loule95450
 /front-end/src/layout/app/DrawerLayout.vue @Maghwyn
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools/docs/assets/js/index.js @AyakorK
 /front-end/src/lib/README.md @Loule95450
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Maghwyn @Loule95450
