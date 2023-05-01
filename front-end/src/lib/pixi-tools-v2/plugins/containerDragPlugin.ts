@@ -4,12 +4,11 @@ import { WrappedContainer } from '../class/wrappedContainer';
 import { ViewportUI } from '../viewportUI';
 
 import type { InitialGraphicState } from '../types/pixi-container';
-import type { PluginContainer } from '../types/pixi-aliases';
-import { GenericContainer } from '../class/genericContainer';
+import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 
 type FrameIntersect = {
 	frame: FramedContainer;
-	childs: Array<GenericContainer>;
+	childs: Array<CanvasContainer>;
 };
 
 export class DragPlugin {
@@ -20,7 +19,7 @@ export class DragPlugin {
 	protected initialCursorPosition: Point = null;
 	protected isDragging = false;
 	protected frameIntersect: Array<FrameIntersect> = [];
-	protected unconstraints: Array<GenericContainer> = [];
+	protected unconstraints: Array<CanvasContainer> = [];
 	protected contextRemoved = false;
 
 	constructor(viewport: ViewportUI) {
@@ -81,22 +80,9 @@ export class DragPlugin {
 		this.container.cursor = 'grabbing';
 	};
 
-	private _removeFromContext() {
-		if (this.contextRemoved) return;
-		this.contextRemoved = true;
-
-		for (const element of this.initialGraphicsState) {
-			const graphic = element.child;
-			if (graphic.typeId === 'rectangle' || graphic.typeId === 'circle') {
-				this.viewport.addChildAt(graphic.parent, this.viewport.children.length - 9);
-			}
-		}
-	}
-
 	private _updateDragging = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
-		this._removeFromContext();
 
 		const frames = this.viewport.children.filter(
 			(ctn) => ctn.visible && ctn instanceof FramedContainer,
@@ -113,19 +99,25 @@ export class DragPlugin {
 				const newX = element.x + dx;
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
-				// if (this.viewport.socketPlugin)
-				// 	this.viewport.socketPlugin.emit('ws-element-dragged', element.child.uuid, { x: newX, y: nexY });
-				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
 
-				const parent = element.child.parent as GenericContainer;
+				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle')
+					continue;
+
+				const parent = element.child.parent as CanvasContainer;
 				const childBounds = element.child.getBounds();
 				const centerX = childBounds.x + childBounds.width / 2;
 				const centerY = childBounds.y + childBounds.height / 2;
 
 				for (let i = 0; i < frames.length; i++) {
-					if (frames[i].getBounds().contains(centerX, centerY)) {
+					// Does the child intersect the frame
+					if (frames[i].frameBoxBounds.contains(centerX, centerY)) {
 						parent.alpha = 0.7;
 
+						// If the parent does exist in the unconstraints array, we remove it.
+						const genericIndex = this.unconstraints.indexOf(parent);
+						if (genericIndex !== -1) this.unconstraints.splice(genericIndex, 1);
+
+						// Try to find if the frame was already added in the intersect array.
 						const frameIndex = this.frameIntersect.findIndex((el) => el.frame === frames[i]);
 						if (frameIndex === -1) {
 							this.frameIntersect.push({
@@ -133,6 +125,7 @@ export class DragPlugin {
 								childs: [parent],
 							});
 						} else {
+							// If the frame was added, we check if the parent of the child was already added to the childs array
 							const exist = this.frameIntersect[frameIndex].childs.indexOf(parent);
 							if (exist === -1) {
 								this.frameIntersect[frameIndex].childs.push(parent);
@@ -142,14 +135,20 @@ export class DragPlugin {
 					} else {
 						parent.alpha = 1;
 
+						// If the parent does not exist in the unconstraints array, we push it.
 						const genericIndex = this.unconstraints.indexOf(parent);
 						if (genericIndex === -1) this.unconstraints.push(parent);
 
+						// Try to find if the frame was already added in the intersect array.
 						const frameIndex = this.frameIntersect.findIndex((el) => el.frame === frames[i]);
 						if (frameIndex !== -1) {
+
+							// If the frame was added, we check if the parent of the child was already added to the childs array
 							const exist = this.frameIntersect[frameIndex].childs.indexOf(parent);
 							if (exist !== -1) {
 								this.frameIntersect[frameIndex].childs.splice(exist, 1);
+
+								// If the frameIntersect index has no child, we remove it.
 								if (this.frameIntersect[frameIndex].childs.length === 0) {
 									this.frameIntersect.splice(frameIndex, 1);
 								}
@@ -215,17 +214,16 @@ export class DragPlugin {
 			});
 
 			this.frameIntersect.forEach((intersect) => {
-				intersect.childs.forEach((el) => {
-					el.isAttachedToFrame = true;
-					el.frameNumber = intersect.frame.frameNumber;
-					el.alpha = 1;
+				intersect.childs.forEach((child) => {
+					intersect.frame.addNestedChild(child, intersect.frame.frameNumber, false);
 				});
-				intersect.frame.mainContainer.addChild(...intersect.childs);
 			});
 
 			this.unconstraints.forEach((ctn) => {
-				ctn.isAttachedToFrame = false;
-				ctn.frameNumber = -1;
+				if(ctn.isAttachedToFrame) {
+					const frame = ctn.parent.parent as FramedContainer;
+					frame.removeNestedChild(ctn, false);
+				}
 			});
 
 			this.frameIntersect = [];
