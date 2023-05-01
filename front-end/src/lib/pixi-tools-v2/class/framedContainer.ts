@@ -1,16 +1,18 @@
-import { Container, FederatedPointerEvent, Text } from 'pixi.js';
+import { Container, FederatedPointerEvent, IDestroyOptions, Text } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { FramedMainContainer, ModelGraphics, PluginContainer } from '../types/pixi-class';
-import { ContainerTypeId, SerializedContainer, SerializedGraphic } from '../types/pixi-serialize';
+import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic, SerializedGraphicBounds } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
+import { CanvasContainer } from '../types/pixi-aliases';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
 	protected readonly frameBox: Rectangle;
 	protected readonly boxTitle: Text;
+	protected readonly viewport: ViewportUI;
 	public readonly children: Array<Container>;
 	public readonly mainContainer: FramedMainContainer;
 	public readonly titleContainer: Container;
@@ -60,6 +62,7 @@ export class FramedContainer extends PluginContainer {
 		this.absMaxX = anchors.absMaxX;
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
+		this.viewport = viewport;
 		this.frameBox = background;
 
 		this.mainContainer = new FramedMainContainer();
@@ -92,9 +95,19 @@ export class FramedContainer extends PluginContainer {
 			viewport.removeChild(this.titleContainer);
 		});
 
-		if (viewport.socketPlugin) {
-			viewport.socketPlugin.emit('ws-element-added', this, remote);
+		this.mainContainer.on('childAdded', this.onMoved.bind(this));
+		this.mainContainer.on('childRemoved', this.onMoved.bind(this));
+
+		if (!remote && viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 		}
+	}
+
+	public destroy(options?: boolean | IDestroyOptions): void {
+		this.boxTitle.destroy();
+		this.mainContainer.destroy();
+		this.titleContainer.destroy();
+		super.destroy(options);
 	}
 
 	protected onMoved() {
@@ -108,6 +121,32 @@ export class FramedContainer extends PluginContainer {
 		if (e.target === this.frameBox && this.listeners('pointerdown').length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
+	}
+
+	public addNestedChild(container: CanvasContainer, frameNumber: number, remote = false) {
+		container.alpha = 1;
+		if(this.mainContainer.children.some((el) => el.uuid === container.uuid)) return;
+
+		container.isAttachedToFrame = true;
+		container.frameNumber = frameNumber;
+		this.mainContainer.addChild(container);
+
+		if(!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit("ws-frame-child-added", this.uuid, container.uuid, this.serializeData());
+		}
+	}
+
+	public removeNestedChild(container: CanvasContainer, index: number, remote = false) {
+		if(this.mainContainer.children.find(el => el.uuid === container.uuid) === undefined) return;
+
+		container.isAttachedToFrame = false;
+		container.frameNumber = -1;
+		this.mainContainer.removeChild(container);
+		this.viewport.addChildAt(container, index);
+
+		if(!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit("ws-frame-child-removed", this.uuid, this.serializeData(), container.serializeData());
+		}
 	}
 
 	public updateAbsoluteBounds() {
@@ -218,5 +257,50 @@ export class FramedContainer extends PluginContainer {
 			},
 			childs: genericContainerSerialized,
 		};
+	}
+
+	public serializeBounds(): SerializedContainerBounds {
+		const genericContainerSerializedBounds: Array<SerializedContainerBounds> = [];
+		let backgroundSerialized: SerializedGraphicBounds;
+
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serializedBounds();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerializedBounds.push(element.serializeBounds());
+			}
+		}
+
+		return {
+			uuid: this.uuid,
+			anchors: {
+				absMinX: this.absMinX,
+				absMinY: this.absMinY,
+				absMaxX: this.absMaxX,
+				absMaxY: this.absMaxY,
+			},
+			background: {
+				bounds: backgroundSerialized.bounds
+			},
+			childs: genericContainerSerializedBounds
+		}
+	}
+
+	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
+		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
+		const bounds = serializedBounds.background.bounds;
+		
+		this.absMinX = absMinX;
+		this.absMinY = absMinY;
+		this.absMaxX = absMaxX;
+		this.absMaxY = absMaxY;
+
+		this.frameBox.position.set(bounds.x, bounds.y);
+		this.frameBox.width = bounds.width;
+		this.frameBox.height = bounds.height;
+	}
+
+	get frameBoxBounds() {
+		return this.frameBox.getBounds();
 	}
 }

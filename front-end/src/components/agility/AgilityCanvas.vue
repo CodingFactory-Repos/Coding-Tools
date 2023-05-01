@@ -1,23 +1,38 @@
 <template>
-	<AgilityCanvasUI :room-id="roomId">
-		<canvas ref="canvas"></canvas>
-	</AgilityCanvasUI>
+	<CanvasLoader :loading="loading">
+		<AgilityCanvasUI :room-id="roomId">
+			<canvas ref="canvas"></canvas>
+		</AgilityCanvasUI>
+	</CanvasLoader>
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue';
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
-import { Scene } from '@/lib/pixi-tools-v2/scene';
-import { useProjectStore } from '@/store/modules/project.store';
 import { CanvasSocketOptions } from '@/lib/pixi-tools-v2/plugins/viewportSocketPlugin';
-import AgilityCanvasUI from './AgilityCanvasUI.vue';
+import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
+import { Scene } from '@/lib/pixi-tools-v2/scene';
+
+import { useProjectStore } from '@/store/modules/project.store';
+import { useAgilityStore } from '@/store/modules/agility.store';
+import AgilityCanvasUI from '@/components/agility/AgilityCanvasUI.vue';
+import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
 
 const route = useRoute();
 const projectStore = useProjectStore();
+const agilityStore = useAgilityStore();
+
+const projectLoading = computed(() => agilityStore.projectLoading);
+const project = computed(() => agilityStore.currentProject);
+
 const canvas = ref<HTMLCanvasElement>();
 const roomId = ref(route.path.match(/[^/]+$/)[0]);
+const loading = ref(projectLoading.value || project.value.length > 0);
+let timeout: NodeJS.Timeout = null;
+let rawScene: Scene = null;
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
@@ -29,7 +44,7 @@ onMounted(() => {
 			transports: ["websocket"],
 			withCredentials: true,
 			path: '/socket.io'
-		}
+		},
 	}
 
 	// 84 represent the offset height due to tabs
@@ -37,7 +52,47 @@ onMounted(() => {
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
 	projectStore.enableSelectionBox();
+	rawScene = scene;
 })
+
+const autoFillProject = async () => {
+	if(rawScene === null) {
+		timeout = setTimeout(autoFillProject, 100);
+	} else {
+		clearTimeout(timeout);
+		timeout = null;
+
+		const delayMs = 100;
+		const batchSize = 50;
+		const viewport = rawScene.viewport;
+		const numBatches = Math.ceil(project.value.length / batchSize);
+
+		function processBatch(start: number, end: number) {
+			for (let n = start; n < end; n++) {
+				const container = Normalizer.container(viewport, project.value[n], true);
+				viewport.addChild(container);
+			}
+		}
+
+		async function processBatchesWithDelay() {
+			for (let i = 0; i < numBatches; i++) {
+				const batchStart = i * batchSize;
+				const batchEnd = Math.min(batchStart + batchSize, project.value.length);
+				processBatch(batchStart, batchEnd);
+				await new Promise(resolve => setTimeout(resolve, delayMs));
+			}
+		}
+
+		await processBatchesWithDelay();
+		loading.value = false;
+	}
+}
+
+watch(projectLoading, val => {
+	if(!val) {
+		autoFillProject();
+	}
+}, { immediate: true })
 
 const onFullscreenChange = () => {
 	if(projectStore.onFullscreen) {

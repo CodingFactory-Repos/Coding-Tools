@@ -1,9 +1,13 @@
 import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
-import { SerializedContainer } from '../types/pixi-serialize';
+import { SerializedContainer, SerializedContainerBounds } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
-import { ElementBounds, ElementPosition } from '../types/pixi-container';
+import { ElementPosition } from '../types/pixi-container';
+import { GenericContainer } from './genericContainer';
+import { FramedContainer } from './framedContainer';
+import { CanvasContainer } from '../types/pixi-aliases';
+
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -32,8 +36,17 @@ export class SocketManager extends Manager {
 
 		this.canvasSocket.on('element-deleted', (uuid: string) => {
 			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.destroy();
+				this.viewport.socketPlugin.elements[uuid].destroy();
+				
+				const uuidDestroyed: Array<string> = [];
+				for(const key in this.viewport.socketPlugin.elements) {
+					const { uuid, destroyed } = this.viewport.socketPlugin.elements[key];
+					if(destroyed) uuidDestroyed.push(uuid);
+				}
+
+				for(let n = 0; n < uuidDestroyed.length; n++) {
+					delete this.viewport.socketPlugin.elements[uuidDestroyed[n]];
+				}
 			} catch (err) {
 				if (err instanceof Error) {
 					console.error(err.message);
@@ -41,28 +54,30 @@ export class SocketManager extends Manager {
 			}
 		});
 
-		this.canvasSocket.on('element-position-updated', (uuid: string, position: ElementPosition) => {
-			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.position.set(position.x, position.y);
+		this.canvasSocket.on('element-bounds-updated', (uuid: string, serializedBounds: SerializedContainerBounds) => {
+			this._updateTreeBounds(uuid, serializedBounds)
+		});
 
-				if (element.parent.parent) element.emit('moved', null);
-			} catch (err) {
+		this.canvasSocket.on('frame-children-added', (uuid: string, uuidChild: string, frameNumber: number) => {
+			try {
+				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
+				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
+
+				frame.addNestedChild(children, frameNumber, true);
+			} catch(err) {
 				if (err instanceof Error) {
 					console.error(err.message);
 				}
 			}
 		});
 
-		this.canvasSocket.on('element-bounds-updated', (uuid: string, bounds: ElementBounds) => {
+		this.canvasSocket.on('frame-children-removed', (uuid: string, uuidChild: string) => {
 			try {
-				const element = this.viewport.socketPlugin.elements[uuid];
-				element.position.set(bounds.x, bounds.y);
-				element.width = bounds.width;
-				element.height = bounds.height;
+				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
+				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
 
-				if (element.parent.parent) element.emit('moved', null);
-			} catch (err) {
+				frame.removeNestedChild(children, this.viewport.children.length, true);
+			} catch(err) {
 				if (err instanceof Error) {
 					console.error(err.message);
 				}
@@ -74,23 +89,48 @@ export class SocketManager extends Manager {
 		});
 	}
 
-	public updateElementPosition(uuid: string, position: ElementPosition) {
-		this.canvasSocket.emit('update-element-position', { uuid, position });
+	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if(element instanceof FramedContainer) {
+				element.updateTreeBounds(serializedBounds);
+
+				for(const container of serializedBounds.childs) {
+					this._updateTreeBounds(container.uuid, container as SerializedContainerBounds);
+				}
+			} else if(element instanceof GenericContainer) {
+				element.updateTreeBounds(serializedBounds);
+			}
+
+			element.emit('moved', null);
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
 	}
 
-	public updateElementBounds(uuid: string, bounds: ElementBounds) {
-		this.canvasSocket.emit('update-element-bounds', { uuid, bounds });
+	public updateElementBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
+		this.canvasSocket.emit('update-element-bounds', { uuid, serializedBounds });
 	}
 
 	public addElement(container: SerializedContainer) {
 		this.canvasSocket.emit('add-element', container);
 	}
 
-	public deleteElement(uuid: string) {
-		this.canvasSocket.emit('delete-element', uuid);
+	public deleteElement(uuid: string, uuidFrame: string) {
+		this.canvasSocket.emit('delete-element', { uuid, uuidFrame });
 	}
 
 	public updateMouseMoved(position: ElementPosition) {
 		this.canvasSocket.emit('update-mouse-moved', position);
+	}
+
+	public updateFrameOnChildAdded(uuid: string, uuidChild: string, serialized: SerializedContainer) {
+		this.canvasSocket.emit('add-frame-children', { uuid, uuidChild, serialized });
+	}
+
+	public updateFrameOnChildRemoved(uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) {
+		this.canvasSocket.emit('remove-frame-children', { uuid, serialized, serializedChild });
 	}
 }

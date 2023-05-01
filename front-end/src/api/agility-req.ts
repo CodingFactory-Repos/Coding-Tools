@@ -1,3 +1,4 @@
+import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 import { ProjectMeta, ProjectMetaDetails } from '../store/interfaces/agility.interface';
 
 import { http } from '@/api/network/axios';
@@ -50,9 +51,13 @@ export const apiTryCreateNewProject = () => {
 };
 
 export const apiTryGetRoomProject = (roomId: string) => {
-	return http.get<Status<{ project: unknown }>>(`/canvas-room/${roomId}`);
+	return http.get<Status<{ project: Array<SerializedContainer> }>>(`/canvas-room/${roomId}`);
 };
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
 	return http.post<Status<{ updatedAt: string }>>(`/canvas-room/save-meta/${roomId}`, meta);
 };
+
+export const apiTryGetRoomAccess = (roomId: string) => {
+	return http.get<Status>(`/canvas-room/${roomId}/verify`);
+}

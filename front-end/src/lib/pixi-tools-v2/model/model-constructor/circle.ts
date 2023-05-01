@@ -1,6 +1,7 @@
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
+import { modelBounds } from '../../utils/modelBounds';
 import { modelSerializer } from '../../utils/modelSerializer';
 
 export class Circle extends ModelGraphics {
@@ -42,5 +43,9 @@ export class Circle extends ModelGraphics {
 
 	public serialized() {
 		return modelSerializer(this);
+	}
+
+	public serializedBounds() {
+		return modelBounds(this);
 	}
 }

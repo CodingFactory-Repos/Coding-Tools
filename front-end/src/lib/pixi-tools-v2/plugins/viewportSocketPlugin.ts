@@ -3,19 +3,21 @@ import { ManagerOptions } from 'socket.io-client';
 
 import { ViewportUI } from '../viewportUI';
 import { CanvasContainer } from '../types/pixi-aliases';
-import { ElementBounds, ElementPosition } from '../types/pixi-container';
+import { ElementPosition } from '../types/pixi-container';
 import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
+import { SerializedContainerBounds, SerializedContainer } from '../types/pixi-serialize';
 
 interface CanvasSocketEvents {
-	'ws-element-deleted': (uuid: string) => void;
-	'ws-element-added': (element: CanvasContainer, isRemote: boolean) => void;
-	'ws-element-dragged': (uuid: string, position: ElementPosition) => void;
-	'ws-element-resized': (uuid: string, bounds: ElementBounds) => void;
+	'ws-element-deleted': (uuid: string, uuidFrame?: string) => void;
+	'ws-element-added': (serialized: SerializedContainer) => void;
+	'ws-element-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
+	'ws-frame-child-added': (uuid: string, uuidChild: string, serialized: SerializedContainer) => void;
+	'ws-frame-child-removed': (uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -31,32 +33,33 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
 		if (!uri) throw Error('Socket.io uri is required');
-
 		super();
 
 		this.socketManager = new SocketManager(uri, roomId, options, viewport);
 
-		this.on('ws-element-added', (child, isRemote) => {
-			if (!isRemote) {
-				this.socketManager.addElement(child.serializeData());
-			}
+		this.on('ws-element-added', (serialized) => {
+			this.socketManager.addElement(serialized);
 		});
 
-		this.on('ws-element-dragged', (uuid, position) => {
-			this.socketManager.updateElementPosition(uuid, position);
+		this.on('ws-element-deleted', (uuid, uuidFrame) => {
+			this.socketManager.deleteElement(uuid, uuidFrame);
 		});
 
-		this.on('ws-element-deleted', (uuid) => {
-			this.socketManager.deleteElement(uuid);
-		});
-
-		this.on('ws-element-resized', (uuid, bounds) => {
-			this.socketManager.updateElementBounds(uuid, bounds);
+		this.on('ws-element-updated', (uuid, serializedBounds) => {
+			this.socketManager.updateElementBounds(uuid, serializedBounds);
 		});
 
 		this.on('ws-mouse-moved', (position) => {
 			this.socketManager.updateMouseMoved(position);
 		});
+
+		this.on('ws-frame-child-added', (uuid, uuidChild, serialized) => {
+			this.socketManager.updateFrameOnChildAdded(uuid, uuidChild, serialized);
+		})
+
+		this.on('ws-frame-child-removed', (uuid, serialized, serializedChild) => {
+			this.socketManager.updateFrameOnChildRemoved(uuid, serialized, serializedChild);
+		})
 	}
 
 	public disconnect() {

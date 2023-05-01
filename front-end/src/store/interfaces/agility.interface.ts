@@ -1,11 +1,15 @@
+import { SerializedContainer } from "@/lib/pixi-tools-v2/types/pixi-serialize";
+
 export interface AgilityStore {
 	projects: Array<ProjectMeta>;
 	metaTemplates: Array<AgilityTemplateMetaDetails>;
-	currentProject: unknown;
+	currentProject: Array<SerializedContainer>;
+	projectLoading: boolean;
 
 	tryCreateNewProject?: (this: AgilityStore) => Promise<boolean | string>;
 	tryGetProjectsMeta?: (this: AgilityStore) => Promise<boolean>;
 	tryGetRoomProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
+	tryGetRoomAccess?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 	trySaveProjectMeta?: (this: AgilityStore) => Promise<boolean>;
 }
 export interface ProjectMeta {

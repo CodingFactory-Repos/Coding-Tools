@@ -74,7 +74,7 @@ export class Normalizer {
 		if (!attributes.properties) {
 			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = lowestNumberFinder(frameNumbers);
+			const frameNumber = attr.typeId === "frame" ? lowestNumberFinder(frameNumbers) : -1;
 
 			attributes.properties = {
 				cursor: 'pointer',
@@ -85,21 +85,23 @@ export class Normalizer {
 			};
 		}
 
-		for (const element of childs) {
-			const childTypeId = element.typeId;
-
-			if (childTypeId === 'generic' || childTypeId === 'frame') {
-				const containerChildren = this.container(
-					viewport,
-					element as SerializedContainer,
-					remote,
-					position,
-					tabContext,
-				);
-				children.push(containerChildren);
-			} else {
-				const graphicChildren = this.graphic(element as SerializedGraphic, position);
-				children.push(graphicChildren);
+		if(childs !== undefined) {
+			for (const element of childs) {
+				const childTypeId = element.typeId;
+	
+				if (childTypeId === 'generic' || childTypeId === 'frame') {
+					const containerChildren = this.container(
+						viewport,
+						element as SerializedContainer,
+						remote,
+						position,
+						tabContext,
+					);
+					children.push(containerChildren);
+				} else {
+					const graphicChildren = this.graphic(element as SerializedGraphic, position);
+					children.push(graphicChildren);
+				}
 			}
 		}
 

@@ -7,6 +7,7 @@ import {
 	apiTryCreateNewProject,
 	apiTryGetRoomProject,
 	apiTrySaveProjectMeta,
+	apiTryGetRoomAccess,
 } from '@/api/agility-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 
@@ -16,6 +17,7 @@ export const useAgilityStore = defineStore('agility', {
 			projects: [],
 			metaTemplates: [],
 			currentProject: [],
+			projectLoading: false,
 		};
 	},
 	actions: {
@@ -34,12 +36,22 @@ export const useAgilityStore = defineStore('agility', {
 			}
 			return false;
 		}),
-		tryGetRoomProject: withErrorHandler(async function (this: AgilityStore, roomId: string) {
-			const res = await apiTryGetRoomProject(roomId);
-			if (res.data.status === 'ok') {
-				this.currentProject = res.data.project;
+		tryGetRoomAccess: withErrorHandler(async function (this: AgilityStore, roomId: string) {
+			const res = await apiTryGetRoomAccess(roomId);
+			if(res.data.status === 'ok') {
 				return true;
 			}
+			return false;
+		}),
+		tryGetRoomProject: withErrorHandler(async function (this: AgilityStore, roomId: string) {
+			this.projectLoading = true;
+			const res = await apiTryGetRoomProject(roomId);
+			if (res.data.status === 'ok') {
+				this.currentProject = res.data.project ?? [];
+				this.projectLoading = false;
+				return true;
+			}
+			this.projectLoading = false;
 			return false;
 		}),
 		trySaveProjectMeta: withErrorHandler(async function (this: AgilityStore, project: ProjectMeta) {

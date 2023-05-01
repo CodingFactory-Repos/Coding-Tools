@@ -2,6 +2,7 @@ import { ModelGraphics } from '../../types/pixi-class';
 import { GraphicUIProperties } from '../../types/pixi-ui';
 import { InternalTypeId } from '../../types/pixi-serialize';
 import { modelSerializer } from '../../utils/modelSerializer';
+import { modelBounds } from '../../utils/modelBounds';
 
 export class HitArea extends ModelGraphics {
 	public readonly uuid: string;
@@ -39,5 +40,9 @@ export class HitArea extends ModelGraphics {
 
 	public serialized() {
 		return modelSerializer(this);
+	}
+
+	public serializedBounds() {
+		return modelBounds(this);
 	}
 }
