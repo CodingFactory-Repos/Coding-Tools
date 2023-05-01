@@ -64,7 +64,6 @@
 /front-end/package.json @Loule95450 @Maghwyn
 /front-end/public/ @Loule95450 @Maghwyn
 /front-end/public/favicon.ico @Maghwyn
-/front-end/src/api/agility-req.ts @Maghwyn @Loule95450
 /front-end/src/App.vue @TheoLandemaine @Maghwyn
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/components/ @Loule95450 @Maghwyn
@@ -83,15 +82,15 @@
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/images/ @TheoLandemaine
 /front-end/src/interfaces/advanced-types.interface.ts @Maghwyn @Loule95450
-/front-end/src/layout/ @Loule95450 @Maghwyn
+/front-end/src/layout/app/AppLayout.vue @Maghwyn @Loule95450
+/front-end/src/layout/app/DrawerLayout.vue @Maghwyn
+/front-end/src/layout/home/ @Loule95450 @Maghwyn
 /front-end/src/lib/README.md @Loule95450
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Maghwyn @Loule95450
-/front-end/src/store/interfaces/agility.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/article.interface.ts @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @Kevw94
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
-/front-end/src/store/modules/agility.store.ts @Maghwyn @Loule95450
 /front-end/src/store/modules/article.store.ts @TheoLandemaine
 /front-end/src/store/modules/auth.store.ts @Maghwyn @Kevw94
 /front-end/src/store/modules/theme.store.ts @Maghwyn @Loule95450
@@ -104,6 +103,7 @@
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AgilityView.vue @AyakorK @Loule95450 @RuKaSuu
 /front-end/src/views/app/ @Loule95450 @Maghwyn
+/front-end/src/views/app/AgilityProject.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @RuKaSuu
