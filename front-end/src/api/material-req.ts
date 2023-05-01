@@ -10,14 +10,14 @@ export const createMaterial = async (material: Material) => {
 	return http.post<Status<Material>>('/materials/create', material);
 };
 
-export const updateMaterial = async (material: Material, id: String) => {
+export const updateMaterial = async (material: Material, id: string) => {
 	return http.put<Status<Material>>(`materials/update/${id}`, material);
 };
 
-export const deleteMaterial = async (id: String) => {
+export const deleteMaterial = async (id: string) => {
 	return http.delete<Status<Material>>(`materials/delete/${id}`);
 };
 
-export const getUserInfo = async (userId: String) => {
+export const getUserInfo = async (userId: string) => {
 	return http.get<Status<UserInfo>>(`materials/user/${userId}`);
 };
