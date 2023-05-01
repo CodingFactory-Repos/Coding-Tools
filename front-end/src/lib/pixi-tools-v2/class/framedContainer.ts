@@ -105,8 +105,6 @@ export class FramedContainer extends PluginContainer {
 
 	public destroy(options?: boolean | IDestroyOptions): void {
 		this.boxTitle.destroy();
-		this.frameBox.destroy();
-		this.mainContainer.children.forEach((el) => el.destroy());
 		this.mainContainer.destroy();
 		this.titleContainer.destroy();
 		super.destroy(options);
