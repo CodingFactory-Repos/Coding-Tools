@@ -4,7 +4,7 @@ import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { JwtService } from '@nestjs/jwt';
-import { CourseIdObject } from '@/base/calls/interfaces/calls.interface';
+import { CourseIdObject, StudentIdObject } from '@/base/calls/interfaces/calls.interface';
 
 @Injectable()
 export class CallsService {
@@ -35,18 +35,73 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
-		return `https://1f25-2a01-cb00-e91-b600-30f3-a390-1412-28a2.eu.ngrok.io/calls/presence/` + jwt;
+		return `https://1b68-2a01-cb00-e91-b600-2d60-c9db-21f5-24f.eu.ngrok.io/calls/presence/` + jwt;
 	}
 
 	async getActualCourse(userId: ObjectId) {
 		const actualCourse = await this.callsRepository.getActualCourse(userId);
 		return actualCourse;
 	}
-
-	getStudentIdList(courseId: CourseIdObject) {
-		return this.callsRepository.getStudentIdList(courseId.courseId);
+	async getStudentList(courseId: CourseIdObject) {
+		const studentIdList = await this.callsRepository.getStudentIdList(courseId.courseId);
+		return this.callsRepository.getStudentList(courseId.courseId, studentIdList);
 	}
-	getStudentList(studentIdList: Array<ObjectId>) {
-		return this.callsRepository.getStudentList(studentIdList);
+
+	async getStudentIdentity(userId: ObjectId) {
+		return await this.callsRepository.getStudentIdentity(userId);
+	}
+
+	getStudentPresence(courseId: CourseIdObject, studentId: StudentIdObject) {
+		return this.callsRepository.getStudentPresence(courseId.courseId, studentId.studentId);
+	}
+
+	async arrayGenerator(studentAmount: number, courseId: CourseIdObject) {
+		const amountOfHash = this.calculateGroups(studentAmount);
+
+		const finalHash = [];
+
+		for (let i = 1; i <= amountOfHash['groupsOf4']; i++) {
+			const hash = [];
+			for (let j = 0; j <= 3; j++) {
+				hash.push('');
+			}
+			finalHash.push(hash);
+		}
+
+		for (let i = 1; i <= amountOfHash['groupsOf3']; i++) {
+			const hash = [];
+			for (let j = 0; j <= 2; j++) {
+				hash.push('');
+			}
+			finalHash.push(hash);
+		}
+
+		await this.callsRepository.createGroups(finalHash, courseId.courseId);
+
+		return finalHash;
+	}
+
+	calculateGroups(studentAmount: number) {
+		let groupsOf3 = 0;
+		let groupsOf4 = 0;
+
+		while (studentAmount > 0) {
+			if (studentAmount % 3 === 0) {
+				groupsOf3 += 1;
+				studentAmount -= 3;
+			} else {
+				groupsOf4 += 1;
+				studentAmount -= 4;
+			}
+		}
+		return { groupsOf3: groupsOf3, groupsOf4: groupsOf4 };
+	}
+
+	getGroups(courseId: CourseIdObject) {
+		return this.callsRepository.getGroups(courseId.courseId);
+	}
+
+	async joinGroup(courseId: CourseIdObject, groupId: string, studentId: ObjectId) {
+		return this.callsRepository.joinGroup(courseId.courseId, groupId, studentId);
 	}
 }
