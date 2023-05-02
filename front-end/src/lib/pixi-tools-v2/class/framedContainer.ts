@@ -3,7 +3,7 @@ import { ContainerManager } from './containerManager';
 import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
-import { FramedMainContainer, ModelGraphics, PluginContainer } from '../types/pixi-class';
+import { FramedMainContainer, ModelGraphics, PluginContainer, TitleContainer } from '../types/pixi-class';
 import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic, SerializedGraphicBounds } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
@@ -15,7 +15,7 @@ export class FramedContainer extends PluginContainer {
 	protected readonly viewport: ViewportUI;
 	public readonly children: Array<Container>;
 	public readonly mainContainer: FramedMainContainer;
-	public readonly titleContainer: Container;
+	public readonly titleContainer: TitleContainer;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
 
@@ -66,7 +66,8 @@ export class FramedContainer extends PluginContainer {
 		this.frameBox = background;
 
 		this.mainContainer = new FramedMainContainer();
-		this.titleContainer = new Container();
+		this.titleContainer = new TitleContainer();
+		this.titleContainer.tabNumberContext = this.frameNumber;
 		this.titleContainer.interactive = true;
 		this.mainContainer.interactive = true;
 

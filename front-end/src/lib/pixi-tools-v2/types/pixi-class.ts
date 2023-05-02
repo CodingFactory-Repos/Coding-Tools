@@ -47,3 +47,7 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 export class FramedMainContainer extends Container {
 	public readonly children: Array<GenericContainer | Rectangle>;
 }
+
+export class TitleContainer extends Container {
+	public tabNumberContext: number;
+}

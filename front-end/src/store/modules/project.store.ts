@@ -90,6 +90,10 @@ export const useProjectStore = defineStore('project', {
 			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(genericContainer);
 
+			if(this.selectedFrameNumber) {
+				genericContainer.tabNumberContext = this.selectedFrameNumber;
+			}
+
 			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
