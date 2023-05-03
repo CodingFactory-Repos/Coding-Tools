@@ -1,0 +1,30 @@
+.temporary-notification {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all .3s, opacity .4s;
+	
+	opacity: 0;
+	padding: .50rem 1rem;
+	border-radius: 7.5px;
+	box-shadow: #080b0e39 0px 7px 5px;
+
+	&-container {
+		width: 350px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		position: fixed;
+		gap: 1rem;
+		top: 20px;
+		right: 40px;
+		z-index: 101;
+	}
+
+	p {
+		font-size: 12px;
+		font-weight: 600;
+	}
+}
