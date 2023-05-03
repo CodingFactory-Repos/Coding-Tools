@@ -200,6 +200,7 @@ export default {
 		let showHistory = ref(false);
 
 		const getUserInfo = () => {
+			//! TODO: Remove it, get the id from the auth/me instead
 			http.get(`materials/user/` + props.userId).then((res) => {
 				userInfo.value = res.data;
 			});

@@ -89,6 +89,7 @@ let detailsModal = ref(false);
 let cardId = ref('');
 let currentUserId = ref('');
 
+//! TODO: Remove it, get the id from the auth/me instead
 http.get('/materials/user').then((res) => {
 	console.log(res.data);
 	currentUserId.value = res.data;
