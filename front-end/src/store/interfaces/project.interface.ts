@@ -1,3 +1,4 @@
+import { StickyNote } from '@/lib/pixi-tools/models/stickyNote';
 import { Scene } from '@/lib/pixi-tools/scene';
 
 export interface ProjectStore {
@@ -7,6 +8,8 @@ export interface ProjectStore {
 	meta: Partial<ProjectMetaDetails>;
 	viewportBounds: ViewportBounds;
 
+	childList?: Array <StickyNote>;
+	getImages?: () => Array <ImageCanvasData>;
 	setScene?: (scene: Scene) => void;
 	setCanvas?: (canvas: HTMLCanvasElement) => void;
 	setAction?: (cursor: string, target: number) => void;
@@ -14,6 +17,14 @@ export interface ProjectStore {
 	activateFocusMode?: () => boolean;
 	deactivateFocusMode?: () => void;
 	_createCanvasElement?: () => void;
+}
+
+export interface ImageCanvasData {
+	base64: string;
+	dimension: {
+		width: number;
+		height: number;
+	}
 }
 
 export interface ProjectMetaDetails {
@@ -34,6 +45,7 @@ export enum Target {
 	TEXT = 1,
 	POSTIT = 2,
 	FRAME = 3,
+	ELEMENTLIST=4,
 }
 
 export interface ViewportBounds {

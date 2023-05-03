@@ -37,6 +37,7 @@ export class DownloadPlugin<T extends PixiObject> extends PixiEvents {
 	 * @warning //! Does not manage multiple child as of 25-12-2022 !\\\
 	 * @private
 	 */
+	//TODO clone pour afficher dans le canvas
 	private _save = (mimeType: string) => {
 		const { width, height } = this._element.figure;
 		const clone = this._element.figure.clone();

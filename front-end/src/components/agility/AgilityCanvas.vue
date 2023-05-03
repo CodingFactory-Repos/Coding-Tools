@@ -1,7 +1,8 @@
 <template>
 	<AgilityCanvasUI>
-		<canvas ref="canvas"></canvas>
+		<canvas id="canvas1" ref="canvas"></canvas>
 	</AgilityCanvasUI>
+
 </template>
 
 <script lang="ts" setup>
@@ -20,7 +21,6 @@ onMounted(() => {
 	projectStore.setScene(scene);
 	projectStore.setCanvas(canvas.value);
 	canvas.value.classList.toggle(projectStore.action.cursor);
-
 
 	document.addEventListener("keydown", (event: KeyboardEvent) => {
 		const key = event.key;

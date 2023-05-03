@@ -1,19 +1,28 @@
 import { defineStore } from 'pinia';
+import * as PIXI from 'pixi.js';
 
-import { ProjectStore, Target } from '@/store/interfaces/project.interface';
+import { ImageCanvasData, ProjectStore, Target } from '@/store/interfaces/project.interface';
 import { Scene } from '@/lib/pixi-tools/scene';
 import { StickyNote } from '@/lib/pixi-tools/models/stickyNote';
-import { toRaw } from 'vue';
+import { render, toRaw } from 'vue';
 import { PixiObject, PixiObjectPluggin } from '@/lib/pixi-tools/types';
+import { method } from 'lodash-es';
+import { text } from 'stream/consumers';
+import { Container,autoDetectRenderer, Renderer } from 'pixi.js';
+import { posix } from 'path';
 
 const DEFAULT_ACTION = {
 	cursor: 'inherit',
 	target: Target.DEFAULT,
 };
 
+
+
 export const useProjectStore = defineStore('project', {
+
 	state: (): ProjectStore => {
 		return {
+			childList: [],
 			scene: undefined,
 			canvas: undefined,
 			action: DEFAULT_ACTION,
@@ -32,10 +41,42 @@ export const useProjectStore = defineStore('project', {
 			},
 		};
 	},
+	getters:{
+		getImages(this: ProjectStore) {
+			const childBase64: Array<ImageCanvasData> = [];
+			for(let n = 0; n < this.childList.length; n++) {
+				const { width, height  } = this.childList[n];
+				//@ts-ignore
+				const clone = this.childList[n].children[0].clone();
+				
+				clone.width = width;
+				clone.height = height;
+
+				//const renderer = new Renderer({ width, height });
+				const renderer = autoDetectRenderer({ width, height });
+				const disposableStage = new Container();
+				disposableStage.addChild(clone);
+				renderer.render(disposableStage);
+
+				const canvas = renderer.view;
+				childBase64.push({
+					base64: canvas.toDataURL("image/png"),
+					dimension: {
+						width: width,
+						height: height,
+					}
+				});
+				renderer.destroy()
+			}
+			return childBase64;
+		}
+	},
+
 	actions: {
 		setScene(this: ProjectStore, scene: Scene) {
 			console.log(scene);
 			this.scene = scene;
+
 		},
 		setCanvas(this: ProjectStore, canvas: HTMLCanvasElement) {
 			this.canvas = canvas;
@@ -44,10 +85,12 @@ export const useProjectStore = defineStore('project', {
 			this.updateCursor(cursor);
 			this.action = { cursor, target };
 			this.canvas.addEventListener('pointerup', this._createCanvasElement);
+			
 		},
 		updateCursor(this: ProjectStore, cursor: string) {
 			this.canvas.classList.toggle(this.action.cursor);
 			this.canvas.classList.toggle(cursor);
+
 		},
 		activateFocusMode(this: ProjectStore) {
 			const focusedElement = this.scene.viewport.children.find(
@@ -103,6 +146,7 @@ export const useProjectStore = defineStore('project', {
 			return true;
 		},
 		deactivateFocusMode(this: ProjectStore) {
+
 			const focusedElement = this.scene.viewport.children.find(
 				(el: PixiObject & PixiObjectPluggin) => el.isFocused,
 			) as PixiObject & PixiObjectPluggin;
@@ -168,9 +212,9 @@ export const useProjectStore = defineStore('project', {
 					positionY: centerY,
 					color: 0xffffffff,
 				});
-
 				scene.viewport.addChild(sticky);
 				this.scene = scene;
+				this.childList.push(sticky);
 			}
 
 			if (this.action.target === Target.TEXT) {
@@ -181,14 +225,18 @@ export const useProjectStore = defineStore('project', {
 					positionY: centerY,
 					color: 0x00000000,
 				});
-
 				scene.viewport.addChild(textbox);
 				this.scene = scene;
-			}
+				this.childList.push(textbox);
 
+			}	
 			this.updateCursor(DEFAULT_ACTION.cursor);
 			this.action = DEFAULT_ACTION;
 			this.canvas.removeEventListener('pointerup', this._createCanvasElement);
+
+			const graphic = new PIXI.Graphics();
+			graphic
+				.beginFill
 		},
 	},
 });

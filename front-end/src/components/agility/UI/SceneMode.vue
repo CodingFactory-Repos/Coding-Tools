@@ -31,6 +31,7 @@
 					<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
 			</div>
+			
 		</template>
 		<template #left>
 			<div class="flex flex-col bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded w-12 shadow-md pointer-events-auto">
@@ -75,6 +76,7 @@
 				<IconButton type="button">
 					<SvgAdd/>
 				</IconButton>
+				<!--click-->
 			</div>
 			<div class="flex bg-light-secondary dark:bg-dark-primary gap-2 p-1 rounded h-12 shadow-md pointer-events-auto">
 				<IconButton type="button" @click="toggleDrawer">
@@ -82,9 +84,16 @@
 				</IconButton>
 			</div>
 		</template>
+
+		<!-- pdf view -->
 		<template #drawer-right>
-			<div class="h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
-				
+			<div class="h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto" :style=" drawerOpen ? 'width: 550px;' : 'width: 0;' ">
+				<draggable>
+				<div v-for="(meta, index) in childImage" :key="`image_${index}`">
+					<img :src="meta.base64">
+					<span>{{ meta.dimension.width }} x {{ meta.dimension.height }}</span>
+				</div>
+			</draggable>
 			</div>
 		</template>
 	</SelectionBox>
@@ -117,6 +126,7 @@ import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
+import { valueToNode } from '@babel/types';
 
 const emit = defineEmits(['update:focus-mode'])
 
@@ -127,6 +137,7 @@ const meta = computed(() => projectStore.meta);
 const activate = ref(false);
 const drawerOpen = ref(false);
 
+const childImage = computed (()=> projectStore.getImages);
 const activateProjectModal = () => activate.value = true;
 const deactivateProjectModal = () => activate.value = false;
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
@@ -135,15 +146,26 @@ const toggleCursor = () => projectStore.setAction("default", Target.DEFAULT);
 const toggleText = () => projectStore.setAction("text", Target.TEXT);
 const togglePostIt = () => projectStore.setAction("postit", Target.POSTIT);
 const toggleFrame = () => projectStore.setAction("frame", Target.FRAME);
+const toggleElement = () => projectStore.setAction("elementlist", Target.ELEMENTLIST);
+const canvas = ref<HTMLCanvasElement>();
+
 
 const startFocusMode = () => {
 	const res = projectStore.activateFocusMode();
 	if(res) emit("update:focus-mode", true);
-}
-</script>
 
+}
+
+
+
+</script>
 <style>
 .prevent-border:focus {
 	box-shadow: none !important;
+}
+
+img{
+	 aspect-ratio: 16/9; 
+
 }
 </style>
