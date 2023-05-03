@@ -85,7 +85,7 @@ export class AuthService {
 		return JSON.stringify({ token: token });
 	}
 
-	async generateToken(payload: Record<string, any>) {
+	async generateToken(payload: Record<string, unknown>) {
 		return this.jwtTokenService.signAsync(payload);
 	}
 

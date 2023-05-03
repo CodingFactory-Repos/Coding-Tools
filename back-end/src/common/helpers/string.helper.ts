@@ -50,3 +50,13 @@ export const isEmpty = (value: string | number | object): boolean => {
 		return false;
 	}
 };
+
+export const parseCookieString = (cookieData: string) => {
+	const cookies = cookieData.split('; ');
+	const cookieObj = {};
+	cookies.forEach((cookie) => {
+		const [name, value] = cookie.split('=');
+		cookieObj[decodeURIComponent(name)] = decodeURIComponent(value);
+	});
+	return cookieObj;
+};

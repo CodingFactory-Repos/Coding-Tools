@@ -12,5 +12,5 @@ import { useAgilityStore } from '@/store/modules/agility.store';
 
 const agilityStore = useAgilityStore();
 agilityStore.tryGetTemplatesMeta();
-agilityStore.tryGetProjectsMeta();
+await agilityStore.tryGetProjectsMeta();
 </script>
