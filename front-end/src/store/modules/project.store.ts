@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 
 import { ProjectStore, Target } from '@/store/interfaces/project.interface';
-import { Scene } from '@/lib/pixi-tools/scene';
 import { StickyNote } from '@/lib/pixi-tools/models/stickyNote';
 import { toRaw } from 'vue';
 import { PixiObject, PixiObjectPluggin } from '@/lib/pixi-tools/types';
@@ -11,9 +10,16 @@ const DEFAULT_ACTION = {
 	target: Target.DEFAULT,
 };
 
+function round(value: number, precision?: number) {
+	if(value === undefined) return 1;
+	const multiplier = Math.pow(10, precision || 0);
+	return Math.round(value * multiplier) / multiplier;
+}
+
 export const useProjectStore = defineStore('project', {
 	state: (): ProjectStore => {
 		return {
+			fullscreen: false,
 			scene: undefined,
 			canvas: undefined,
 			action: DEFAULT_ACTION,
@@ -32,13 +38,22 @@ export const useProjectStore = defineStore('project', {
 			},
 		};
 	},
-	actions: {
-		setScene(this: ProjectStore, scene: Scene) {
-			console.log(scene);
-			this.scene = scene;
+	getters: {
+		getZoom(this: ProjectStore) {
+			const zoom = this.scene?.zoom?.value;
+			if(zoom > 1) {
+				return round(zoom);
+			} else {
+				return round(zoom, 1);
+			}
 		},
-		setCanvas(this: ProjectStore, canvas: HTMLCanvasElement) {
-			this.canvas = canvas;
+	},
+	actions: {
+		increaseZoom(this: ProjectStore) {
+			this.scene.updateZoomStep(1);
+		},
+		decreaseZoom(this: ProjectStore) {
+			this.scene.updateZoomStep(0);
 		},
 		setAction(this: ProjectStore, cursor: string, target: number) {
 			this.updateCursor(cursor);

@@ -22,7 +22,7 @@
 
 					<!-- Modal body -->
 					<div :class="$slots.footer ? '!py-6' : ''">
-						<slot name="body" />
+						<slot name="body" id="body" />
 					</div>
 
 					<!-- Modal footer -->
