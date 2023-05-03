@@ -167,14 +167,13 @@
 </template>
 
 <script lang="ts">
-import { defineProps, onMounted, ref, toRefs, computed } from 'vue';
+import { defineProps, onMounted, ref, toRefs } from 'vue';
 import { http } from '@/api/network/axios';
 import BorrowHistoryMaterials from '@/components/materials/BorrowHistoryMaterials.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
-import { Material, MaterialStore } from '@/store/interfaces/material.interface';
+import { Material } from '@/store/interfaces/material.interface';
 
 const materialStore = useMaterialStore();
-// const userInfo = computed(() => materialStore.userInfo);
 
 export default {
 	components: {
@@ -185,6 +184,9 @@ export default {
 		userId: String,
 	},
 	setup(props) {
+		//! TODO: Vous avez déjà props.id et props.userId
+		//! Les props peuvent directement être utilisé dans le template
+		//! Pas besoin de return data
 		const data = toRefs(
 			defineProps({
 				id: String,
@@ -193,7 +195,6 @@ export default {
 		);
 
 		let material = ref<Material>();
-		// let userInfo = ref(computed(() => materialStore.userInfo));
 		let userInfo = ref({})
 		let showLink = ref({});
 		let showHistory = ref(false);
@@ -204,13 +205,14 @@ export default {
 			});
 		};
 
-		const getMaterialInfo = (id) => {
+		const getMaterialInfo = (id: string) => {
 			http
 				.get(`materials/get/` + id)
 				.then((res) => {
 					// Convert the date to string
 					res.data.acquisitionDate = new Date(res.data.acquisitionDate).toLocaleDateString();
-					//delete the _id
+					// delete the _id
+					//! Vous pouvez prevent l'envoie de l'id directement depuis le backend dans les options d'une query
 					delete res.data._id;
 					material.value = res.data;
 				})
@@ -220,7 +222,6 @@ export default {
 		};
 
 		const editMaterial = () => {
-			// console.log(material.value);
 			materialStore.updateMaterial(material.value, props.id);
 		};
 
@@ -228,7 +229,6 @@ export default {
 			materialStore.deleteMaterial(props.id);
 		};
 		onMounted(async () => {
-			// await materialStore.getUserInfo(props.userId);
 			getUserInfo();
 			getMaterialInfo(props.id);
 		});
@@ -244,5 +244,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped></style>

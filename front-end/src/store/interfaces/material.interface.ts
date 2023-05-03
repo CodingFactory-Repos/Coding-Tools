@@ -24,7 +24,7 @@ export interface Material {
 	name: string;
 	type: string;
 	price: number;
-	acquisitionDate: Date;
+	acquisitionDate: Date | string;
 	picture: string;
 	state: string;
 	siteLocation: string;

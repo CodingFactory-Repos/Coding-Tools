@@ -13,13 +13,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				<!-- /** TODO: Attention history = history */ -->
 				<tr
 					v-for="history in history"
 					:key="history.id"
 					class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
 				>
 					<td
-						scope="row"
 						class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
 					>
 						{{ userInfo.profile.email }}
@@ -49,6 +49,7 @@ export default {
 		},
 	},
 	setup(props) {
+		//! TODO: Pas besoin de renvoyer la props
 		const data = toRefs(
 			defineProps({
 				history: {
@@ -69,5 +70,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped></style>

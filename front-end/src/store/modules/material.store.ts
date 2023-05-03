@@ -11,13 +11,12 @@ import {
 } from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { Material, MaterialStore } from '../interfaces/material.interface';
-import { STATUS } from '@/store/interfaces/axios.interface';
 
 export const useMaterialStore = defineStore('materialStore', {
 	state: (): {
 		filter: { input: string; site: string; type: string; state: string };
 		input: string;
-		materials: any[];
+		materials: Array<Material>;
 		userInfos: any[];
 	} => {
 		return {

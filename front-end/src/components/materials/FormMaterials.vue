@@ -64,7 +64,7 @@ export default {
 			}),
 		);
 
-		let today = new Date().toISOString().substr(0, 10);
+		let today = new Date().toISOString().substring(0, 10);
 		let borrowingDate = '';
 		let borrowingUser = '';
 		let description = '';
@@ -94,5 +94,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped></style>

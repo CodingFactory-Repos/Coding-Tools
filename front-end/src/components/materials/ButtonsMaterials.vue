@@ -154,10 +154,11 @@
 	</div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
 import html2pdf from 'html2pdf.js';
 import { useMaterialStore } from '@/store/modules/material.store';
+import { Material } from '@/store/interfaces/material.interface';
+import { http } from '@/api/network/axios';
 
 const materialStore = useMaterialStore();
 
@@ -205,10 +206,10 @@ export default {
 		// 		});
 		// },
 		createPDF() {
-			axios.get('http://localhost:8000/materials').then((response) => {
+			http.get<Array<Material>>('/materials').then((response) => {
 				console.log(response);
-				const data = response.data;
-				//Convertir acquisitonDate en date
+				const data = response.data
+				// Convertir acquisitonDate en date
 				data.forEach((material) => {
 					material.acquisitionDate = new Date(material.acquisitionDate).toLocaleDateString();
 				});
@@ -216,10 +217,15 @@ export default {
 				const options = {
 					filename: 'materials.pdf',
 				};
+				console.log(data[0].borrowingHistory)
 				html2pdf().from(html).set(options).save();
 			});
 		},
-		generateHtml(data2) {
+		//! J'ai fix votre [Object object]
+		//! Mais honnêtement vous avez pris le chemin le plus compliqué, c'est pas du tout modulaire et vous allez avoir du mal avec la place et les tables.
+		//! Je vous conseille http://pdfmake.org/playground.html à la place, si vous avez le temps.
+		//! npm : https://www.npmjs.com/package/pdfmake
+		generateHtml(data2: Array<Material>) {
 			let html = `
 			<html>
 				<head>
@@ -285,7 +291,8 @@ export default {
 								<th>Site Location</th>
 								<th>Storage Cupboard</th>
 								<th>Description</th>
-								<th>Borrowing History</th>
+								<th>Borrowed at</th>
+								<th>Returned at</th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -302,7 +309,8 @@ export default {
 						<td>${material.siteLocation}</td>
 						<td>${material.storageCupboard}</td>
 						<td>${material.description}</td>
-						<td>${material.borrowingHistory}</td>
+						<td>${material.borrowingHistory.map(el => el.borrowingDate).join('</br>')}</td>
+						<td>${material.borrowingHistory.map(el => el.returnDate).join('</br>')}</td>
 						<td>${material.status}</td>
 					</tr>
 				`;

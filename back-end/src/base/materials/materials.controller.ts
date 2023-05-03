@@ -1,4 +1,5 @@
 import {
+	Body,
 	Controller,
 	Delete,
 	Get,
@@ -23,30 +24,39 @@ import { JwtAuthGuard } from '@/common/guards/auth.guard';
 export class MaterialsController {
 	constructor(private readonly materialsService: MaterialsService) {}
 
+	//! TODO: Ce n'est pas protégé
 	@Get('')
 	index(@Res() res: Response) {
 		this.materialsService.getAllMaterials().then((materials) => {
 			res.status(200).json(materials);
 		});
 	}
+
+	//! TODO: Ce n'est pas protégé
 	@Post('/create')
-	createMaterial(@Req() req, @Res() res: Response) {
-		this.materialsService.createNewMaterial(req.body).then((material) => {
+	createMaterial(@Body() body: Body, @Res() res: Response) {
+		this.materialsService.createNewMaterial(body).then((material) => {
 			res.status(200).json(material);
 		});
 	}
+
+	//! TODO: Hyper dangereux comme route, il n'y a pas de vérification du body
+	//! Je peux donc envoyer n'importe quoi dans la request et ce sera validé et modifié dans mongodb.
 	@Put('/update/:id')
-	updateMaterial(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
-		const update = { $set: req.body };
+	updateMaterial(@Param("id") id: string, @Body() body: Body, @Res() res: Response) {
+		const query = { _id: new ObjectId(id) };
+		const update = { $set: body };
 		this.materialsService.updateMaterial(query, update).then((material) => {
 			res.status(200).json(material);
 		});
 	}
+
+	//! TODO: Ce n'est pas protégé
 	@Put('reservation/:id')
-	addReservation(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
-		const update = { $push: { borrowingHistory: req.body.borrowingHistory } };
+	addReservation(@Param("id") id: string, @Body() body: Body, @Res() res: Response) {
+		const query = { _id: new ObjectId(id) };
+		//@ts-ignore //! borrowingHistory n'est pas typé ni vérifié
+		const update = { $push: { borrowingHistory: body.borrowingHistory } };
 		// Transform the borrowingUser in ObjectId
 		update.$push.borrowingHistory.borrowingUser = new ObjectId(
 			update.$push.borrowingHistory.borrowingUser,
@@ -56,13 +66,16 @@ export class MaterialsController {
 		});
 	}
 
+	//! TODO: Dangereux, un utilisateur non connecté peut tout supprimer.
 	@Delete('/delete/:id')
-	deleteMaterial(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
+	deleteMaterial(@Param("id") id: string, @Res() res: Response) {
+		const query = { _id: new ObjectId(id) };
 		this.materialsService.deleteMaterial(query).then((material) => {
 			res.status(200).json(material);
 		});
 	}
+
+	//! TODO: Cette route devra être remove.
 	@Get('/user')
 	@UseGuards(JwtAuthGuard)
 	async getCurrentUser(@Jwt() userId: ObjectId, @Res() res: Response) {
@@ -70,24 +83,24 @@ export class MaterialsController {
 		res.status(200).json(user);
 	}
 
+	//! TODO: Ce n'est pas protégé
 	@Get('get/:id')
-	async getMaterialById(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	async getMaterialById(@Param("id") id: string, @Res() res: Response) {
 		const material = await this.materialsService.getMaterialById(id);
 		res.status(200).json(material);
 	}
 
+	//! TODO: Ce n'est pas protégé
 	@Get('user/:id')
-	getUserInfo(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	getUserInfo(@Param("id") id: string, @Res() res: Response) {
 		this.materialsService.getUserInfo(id).then((response) => {
 			res.status(200).json(response);
 		});
 	}
 
+	//! TODO: Ce n'est pas protégé
 	@Get('user/role/:id')
-	getUserRole(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	getUserRole(@Param("id") id: string, @Res() res: Response) {
 		this.materialsService.getUserRole(id).then((response) => {
 			res.status(200).json(response.role);
 		});
