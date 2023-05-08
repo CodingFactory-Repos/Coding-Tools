@@ -292,11 +292,12 @@ export class CallsRepository {
 	}
 
 	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
-		const shuffledArray = array.sort(() => {
+		const getRandomNumber = () => {
 			const randomBytes = crypto.randomBytes(4);
-			const randomNumber = randomBytes.readUInt32LE(0) / 0xffffffff;
-			return randomNumber - 0.5;
-		});
+			return randomBytes.readUInt32LE(0) / 0xffffffff;
+		};
+
+		const shuffledArray = array.sort(() => getRandomNumber() - 0.5);
 
 		const groups = Array.from({ length: actualGroups.length }, () => []);
 
