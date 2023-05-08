@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
+import { RoleValidator, Roles } from '@/common/guards/role.guard';
 
 @Controller('calls')
 @UseFilters(ServiceErrorCatcher)
@@ -92,9 +93,8 @@ export class CallsController {
 	}
 
 	@Get('/is_product_owner')
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async isProductOwner(@Jwt() userId: ObjectId, @Res() res: Response) {
-		const message = await this.callsService.isProductOwner(userId);
-		return res.status(201).json({ isProductOwner: message });
+		return res.status(201).json({ isProductOwner: true });
 	}
 }

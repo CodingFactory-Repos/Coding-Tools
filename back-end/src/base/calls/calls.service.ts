@@ -108,8 +108,4 @@ export class CallsService {
 	async joinGroup(courseId: CourseIdObject, groupId: string, studentId: ObjectId) {
 		return this.callsRepository.joinGroup(courseId.courseId, groupId, studentId);
 	}
-
-	async isProductOwner(userId: ObjectId) {
-		return this.usersRepository.isProductOwner(userId);
-	}
 }
