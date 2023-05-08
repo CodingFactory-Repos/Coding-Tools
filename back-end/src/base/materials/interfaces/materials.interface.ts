@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { EquipmentsLoan } from 'src/base/equipmentsLoan/interfaces/equipmentsLoan.interface';
 
 export interface Material {
 	_id?: ObjectId;

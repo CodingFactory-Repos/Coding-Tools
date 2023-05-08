@@ -1,5 +1,5 @@
 import { http } from '@/api/network/axios';
-import { Material, UserInfo } from '@/store/interfaces/material.interface';
+import { Material } from '@/store/interfaces/material.interface';
 
 export const getMaterials = async () => {
 	return http.get<Array<Material>>('/materials');

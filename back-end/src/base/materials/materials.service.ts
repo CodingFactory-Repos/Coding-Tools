@@ -3,7 +3,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { MaterialsRepository } from 'src/base/materials/materials.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { JwtService } from '@nestjs/jwt';
-import { DTOCreateMaterials, DTOMaetrials } from './dto/materials.dto';
+import { DTOCreateMaterials } from './dto/materials.dto';
 import { Material } from './interfaces/materials.interface';
 
 @Injectable()

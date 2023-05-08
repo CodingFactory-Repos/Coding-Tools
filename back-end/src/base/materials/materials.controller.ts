@@ -6,7 +6,6 @@ import {
 	Param,
 	Post,
 	Put,
-	Req,
 	Res,
 	UseFilters,
 	UseGuards,
@@ -16,7 +15,6 @@ import { Response } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { MaterialsService } from 'src/base/materials/materials.service';
 import { ObjectId } from 'mongodb';
-import { Jwt } from '@/common/decorators/jwt.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/materials.dto';
 

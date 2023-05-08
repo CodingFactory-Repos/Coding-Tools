@@ -1,19 +1,14 @@
-import { Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
-	IsDate,
-	IsEmpty,
 	IsISO8601,
 	IsNotEmpty,
 	IsNumber,
-	IsObject,
 	IsOptional,
 	IsString,
 	Length,
 	Max,
 	Min,
-	isISO8601,
 } from 'class-validator';
 
 export class DTOCreateMaterials {
@@ -83,7 +78,7 @@ export class DTOMaetrials {
 	@Max(2000)
 	public price: number;
 
-	// @IsDate()
+	@IsISO8601()
 	public acquisitionDate: Date;
 
 	@IsNotEmpty()
@@ -113,7 +108,7 @@ export class DTOMaetrials {
 
 	@IsOptional()
 	@IsArray()
-	public borrowingHistory?: Array<any>;
+	public borrowingHistory?: Array<DTOBorrowingMaterial>;
 
 	@IsNotEmpty()
 	@IsBoolean()
