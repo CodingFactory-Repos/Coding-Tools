@@ -55,7 +55,7 @@ export class AuthService {
 
 		//! This will send a validation email to the admin.
 		//! The PO will be able to use the website as a student in the meantime.
-		if (user.role === Roles.productOwner) {
+		if (user.role === Roles.PRODUCT_OWNER) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupProductOwner(email);
 		}
