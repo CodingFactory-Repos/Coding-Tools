@@ -28,6 +28,7 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok', qrcode: qrcode });
 	}
 	@Get('/presence/:jwt')
+	@UseGuards(JwtAuthGuard)
 	async presence(@Param() param: JwtQRCode, @Res() res: Response) {
 		const message = await this.callsService.updateUserPresence(param.jwt, true);
 		return res.status(201).json({ status: message });
@@ -54,6 +55,7 @@ export class CallsController {
 	}
 
 	@Get('/array_generator/:studentAmount/:courseId')
+	@UseGuards(JwtAuthGuard)
 	async arrayGenerator(
 		@Param() studentAmount: { studentAmount: number },
 		@Param() courseId: CourseIdObject,
@@ -76,6 +78,7 @@ export class CallsController {
 	}
 
 	@Get('/create_random_groups/:courseId')
+	@UseGuards(JwtAuthGuard)
 	async createRandomGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {
 		const message = await this.callsService.createRandomGroups(courseId);
 		return res.status(201).json({ status: message });
