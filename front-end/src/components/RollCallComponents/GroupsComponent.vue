@@ -1,6 +1,10 @@
 <template>
 	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x h-100">
-		<div v-for="(group, index) in groups" :key="index" class="bg-white shadow rounded-lg">
+		<div
+			v-for="(group, index) in groups"
+			:key="index"
+			class="bg-white text-gray-500 shadow rounded-lg"
+		>
 			<h2 class="bg-gray-100 p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
 			<div
 				v-for="(student, sIndex) in group"
@@ -27,10 +31,16 @@
 		</div>
 	</div>
 	<div v-if="isPO" class="flex justify-center p-4 space-x-4">
-		<button class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+		<button
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			@click="createRandomGroups"
+		>
 			Create Random Groups
 		</button>
-		<button class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+		<button
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			@click="emptyGroups"
+		>
 			Empty Groups
 		</button>
 	</div>
