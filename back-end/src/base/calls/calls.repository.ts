@@ -291,13 +291,14 @@ export class CallsRepository {
 			const randomNumber = randomBytes.readUInt32LE(0) / 0xffffffff;
 			return randomNumber - 0.5;
 		});
-		const groups = [];
-		for (let i = 0; i < actualGroups.length; i++) {
-			groups.push([]);
-		}
-		for (let i = 0; i < shuffledArray.length; i++) {
-			groups[i % actualGroups.length].push(shuffledArray[i]);
-		}
+
+		const groups = Array.from({ length: actualGroups.length }, () => []);
+
+		shuffledArray.forEach((item, index) => {
+			const groupIndex = index % actualGroups.length;
+			groups[groupIndex].push(item);
+		});
+
 		return groups;
 	}
 
