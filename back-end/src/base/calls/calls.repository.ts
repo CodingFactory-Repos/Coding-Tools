@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Db, Filter, FindOneAndUpdateOptions, ObjectId, UpdateFilter } from 'mongodb';
+import { Db, Filter, FindOneAndUpdateOptions, ObjectId } from 'mongodb';
 import { Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 import crypto from 'crypto';
+import { Roles } from '@/base/users/interfaces/users.interface';
 
 @Injectable()
 export class CallsRepository {
@@ -16,28 +17,7 @@ export class CallsRepository {
 		return this.db.collection<Course>('courses');
 	}
 
-	async createCall(query: Call) {
-		return this.calls.insertOne(query);
-	}
-
-	async updateOneCall(query: Filter<Call>, update: Partial<Call> | UpdateFilter<Call>) {
-		return this.calls.updateOne(query, update);
-	}
-
-	async findOneAndUpdateCall(
-		query: Filter<Call>,
-		update: Partial<Call>,
-		options: FindOneAndUpdateOptions = undefined,
-	) {
-		return this.calls.findOneAndUpdate(query, update, options);
-	}
-
 	async findOne(query: Filter<Call>, options: FindOneAndUpdateOptions = undefined) {
-		return this.calls.findOne(query, options);
-	}
-
-	async callExist(query: Filter<Call>) {
-		const options = { projection: { _id: 1 } };
 		return this.calls.findOne(query, options);
 	}
 	async updateUserPresence(userId: ObjectId, courseId: string, presence: boolean) {
@@ -150,30 +130,33 @@ export class CallsRepository {
 		return false;
 	}
 
-	async getActualCourse(userId: ObjectId) {
+	async getActualCourse(userId: ObjectId): Promise<ObjectId | null> {
 		const actualDate = new Date();
 
-		// First of all check if the user is a student or a teacher (role 1 or 2)
 		const user = await this.db.collection('users').findOne({ _id: userId });
 		if (!user) {
 			throw new ServiceError('NOT_FOUND', 'User not found');
 		}
-		let actualCourse = null;
-		if (user.role == 1) {
-			const classId = await this.getStudentClassId(userId);
-			actualCourse = await this.db.collection('courses').findOne({
-				classId: classId,
-				periodStart: { $lte: actualDate },
-				periodEnd: { $gte: actualDate },
-			});
-		} else if (user.role == 2) {
-			actualCourse = await this.db.collection('courses').findOne({
-				teacherId: userId,
-				periodStart: { $lte: actualDate },
-				periodEnd: { $gte: actualDate },
-			});
+
+		const query = {
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		};
+
+		switch (user.role) {
+			case Roles.STUDENT:
+				const classId = await this.getStudentClassId(userId);
+				query['classId'] = classId;
+				break;
+			case Roles.PRODUCT_OWNER:
+				query['teacherId'] = userId;
+				break;
+			default:
+				throw new Error(`Unknown user role: ${user.role}`);
 		}
-		return actualCourse ? actualCourse._id : null;
+
+		const actualCourse = await this.db.collection('courses').findOne(query);
+		return actualCourse?._id ?? null;
 	}
 	async getStudentClassId(userId: ObjectId) {
 		const studentClass = await this.db.collection('classes').findOne({
@@ -293,8 +276,8 @@ export class CallsRepository {
 
 	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
 		const getRandomNumber = () => {
-			const randomBytes = crypto.randomBytes(4);
-			return randomBytes.readUInt32LE(0) / 0xffffffff;
+			const randomInt = crypto.randomInt(0, 0xffffffff);
+			return randomInt / 0xffffffff;
 		};
 
 		const shuffledArray = array.sort(() => getRandomNumber() - 0.5);
@@ -309,6 +292,31 @@ export class CallsRepository {
 		return groups;
 	}
 
+	async emptyGroups(courseId: string) {
+		// Keep the same structure as it was and replace the values by "''"
+		const courseObjectId = new ObjectId(courseId);
+		const actualDate = new Date();
+		const course = await this.db.collection('courses').findOne({
+			_id: courseObjectId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const actualGroups = course.groups;
+		const groups = actualGroups.map((group) => Array(group.length).fill(''));
+
+		await this.db.collection('courses').updateOne(
+			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
+			{
+				$set: {
+					groups: groups,
+				},
+			},
+		);
+	}
+
 	async getGroups(courseId: string) {
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
@@ -320,7 +328,7 @@ export class CallsRepository {
 		if (!course) {
 			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
-		// Transform the elements objectId in the group to the user object (to get name firstname etc)
+		// Transform the elements objectId in the group to the user object (to get name firstname etc...)
 		for (let i = 0; i < course.groups.length; i++) {
 			for (let j = 0; j < course.groups[i].length; j++) {
 				if (course.groups[i][j] != '') {

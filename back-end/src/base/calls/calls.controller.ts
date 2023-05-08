@@ -6,7 +6,8 @@ import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
-import { RoleValidator, Roles } from '@/common/guards/role.guard';
+import { RoleValidator } from '@/common/guards/role.guard';
+import { Roles } from '@/base/users/interfaces/users.interface';
 
 @Controller('calls')
 @UseFilters(ServiceErrorCatcher)
@@ -67,7 +68,7 @@ export class CallsController {
 	}
 
 	@Get('/join_group/:courseId/:groupId')
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.STUDENT))
 	async joinGroup(
 		@Jwt() userId: ObjectId,
 		@Param() courseId: CourseIdObject,
@@ -79,9 +80,16 @@ export class CallsController {
 	}
 
 	@Get('/create_random_groups/:courseId')
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async createRandomGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {
 		const message = await this.callsService.createRandomGroups(courseId);
+		return res.status(201).json({ status: message });
+	}
+
+	@Get('/empty_groups/:courseId')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
+	async emptyGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const message = await this.callsService.emptyGroups(courseId);
 		return res.status(201).json({ status: message });
 	}
 

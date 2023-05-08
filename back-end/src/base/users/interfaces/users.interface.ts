@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 export enum Roles {
 	PEDAGOGUE = 3,
 	PRODUCT_OWNER = 2,
-	USER = 1,
+	STUDENT = 1,
 	ADMIN = 0,
 }
 

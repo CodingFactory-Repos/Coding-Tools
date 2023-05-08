@@ -18,22 +18,21 @@
 			</div>
 			<div class="flex justify-center items-center p-4">
 				<button
-					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bottom-0"
+					class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
 					@click="joinGroup(index)"
 				>
 					Join Group {{ index + 1 }}
 				</button>
 			</div>
 		</div>
-		<div class="flex justify-center self-center p-4">
-			<button
-				v-if="isPO"
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bottom-0"
-				@click="createRandomGroups()"
-			>
-				Create Random Groups
-			</button>
-		</div>
+	</div>
+	<div v-if="isPO" class="flex justify-center p-4 space-x-4">
+		<button class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+			Create Random Groups
+		</button>
+		<button class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+			Empty Groups
+		</button>
 	</div>
 </template>
 
@@ -96,6 +95,11 @@ export default {
 		}),
 		createRandomGroups: withErrorHandler(async function () {
 			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
+				this.getGroups();
+			});
+		}),
+		emptyGroups: withErrorHandler(async function () {
+			http.get(`/calls/empty_groups/${this.courseId}`).then((response) => {
 				this.getGroups();
 			});
 		}),

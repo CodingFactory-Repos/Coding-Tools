@@ -1,12 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtPayload } from '@/auth/interfaces/jwt.interface';
-
-export enum Roles {
-	PEDAGOGUE = 3,
-	PRODUCT_OWNER = 2,
-	USER = 1,
-	ADMIN = 0,
-}
+import { Roles } from '@/base/users/interfaces/users.interface';
 
 @Injectable()
 export class RoleValidator implements CanActivate {
