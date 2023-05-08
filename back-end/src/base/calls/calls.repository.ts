@@ -243,6 +243,50 @@ export class CallsRepository {
 		};
 	}
 
+	async createRandomGroups(courseId: string) {
+		const courseObjectId = new ObjectId(courseId);
+		const actualDate = new Date();
+		const course = await this.db.collection('courses').findOne({
+			_id: courseObjectId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const actualGroups = course.groups;
+
+		// Respect size of groups and number of groups do not change
+		if (actualGroups.length == 0) {
+			throw new ServiceError('NOT_FOUND', 'Groups not found');
+		}
+		const students = await this.getStudentIdList(courseId);
+		const groups = this.shuffle(students, actualGroups);
+		await this.db.collection('courses').updateOne(
+			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
+			{
+				$set: {
+					groups: groups,
+				},
+			},
+		);
+		return {
+			message: 'Groups updated successfully',
+		};
+	}
+
+	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
+		const shuffledArray = array.sort(() => Math.random() - 0.5);
+		const groups = [];
+		for (let i = 0; i < actualGroups.length; i++) {
+			groups.push([]);
+		}
+		for (let i = 0; i < shuffledArray.length; i++) {
+			groups[i % actualGroups.length].push(shuffledArray[i]);
+		}
+		return groups;
+	}
+
 	async getGroups(courseId: string) {
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
