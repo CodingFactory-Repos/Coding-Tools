@@ -1,9 +1,10 @@
 import { ObjectId } from 'mongodb';
 
 export enum Roles {
-	student = 1,
-	productOwner = 2,
-	pedago = 3,
+	PEDAGOGUE = 3,
+	PRODUCT_OWNER = 2,
+	USER = 1,
+	ADMIN = 0,
 }
 
 export interface User {

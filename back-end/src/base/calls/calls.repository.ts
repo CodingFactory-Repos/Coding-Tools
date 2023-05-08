@@ -152,20 +152,26 @@ export class CallsRepository {
 
 	async getActualCourse(userId: ObjectId) {
 		const actualDate = new Date();
-		const classId = await this.getStudentClassId(userId);
-		const actualCourse = await this.db.collection('courses').findOne({
-			classId: classId,
-			periodStart: { $lte: actualDate },
-			periodEnd: { $gte: actualDate },
-		});
-		// If null check if the user is a teacher and is not related to a class
-		if (!actualCourse) {
-			const actualTeacherCourse = await this.db.collection('courses').findOne({
+
+		// First of all check if the user is a student or a teacher (role 1 or 2)
+		const user = await this.db.collection('users').findOne({ _id: userId });
+		if (!user) {
+			throw new ServiceError('NOT_FOUND', 'User not found');
+		}
+		let actualCourse = null;
+		if (user.role == 1) {
+			const classId = await this.getStudentClassId(userId);
+			actualCourse = await this.db.collection('courses').findOne({
+				classId: classId,
+				periodStart: { $lte: actualDate },
+				periodEnd: { $gte: actualDate },
+			});
+		} else if (user.role == 2) {
+			actualCourse = await this.db.collection('courses').findOne({
 				teacherId: userId,
 				periodStart: { $lte: actualDate },
 				periodEnd: { $gte: actualDate },
 			});
-			return actualTeacherCourse ? actualTeacherCourse._id : null;
 		}
 		return actualCourse ? actualCourse._id : null;
 	}

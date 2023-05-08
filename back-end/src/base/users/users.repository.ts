@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions, ObjectId } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions } from 'mongodb';
 import { User } from './interfaces/users.interface';
 import { Db } from 'mongodb';
-import { ServiceError } from '@/common/decorators/catch.decorator';
 
 @Injectable()
 export class UsersRepository {
@@ -35,16 +34,5 @@ export class UsersRepository {
 	async userExist(query: Filter<User>) {
 		const options = { projection: { _id: 1 } };
 		return this.users.findOne(query, options);
-	}
-
-	async isProductOwner(userId: ObjectId) {
-		const userObjectId = new ObjectId(userId);
-		const user = await this.db.collection('users').findOne({
-			_id: userObjectId,
-		});
-		if (!user) {
-			throw new ServiceError('NOT_FOUND', 'User not found');
-		}
-		return user.role === 2;
 	}
 }
