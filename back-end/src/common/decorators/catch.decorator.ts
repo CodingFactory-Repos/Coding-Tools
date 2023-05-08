@@ -10,6 +10,7 @@ const ERRORS = {
 	BAD_REQUEST: { status: HttpStatus.BAD_REQUEST, message: 'Bad request' },
 	UNAUTHORIZED: { status: HttpStatus.UNAUTHORIZED, message: 'Unauthorized' },
 	FORBIDDEN: { status: HttpStatus.FORBIDDEN, message: 'Forbidden' },
+	NOT_FOUND: { status: HttpStatus.NOT_FOUND, message: 'Not Found' },
 };
 
 export class ServiceError extends HttpException {
