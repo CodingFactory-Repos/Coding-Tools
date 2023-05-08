@@ -184,9 +184,6 @@ export default {
 		userId: String,
 	},
 	setup(props) {
-		//! TODO: Vous avez déjà props.id et props.userId
-		//! Les props peuvent directement être utilisé dans le template
-		//! Pas besoin de return data
 		const data = toRefs(
 			defineProps({
 				id: String,
@@ -230,7 +227,6 @@ export default {
 			getMaterialInfo(props.id);
 		});
 		return {
-			// ...data,
 			material,
 			showLink,
 			showHistory,
