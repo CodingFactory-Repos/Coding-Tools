@@ -3,6 +3,7 @@ import { Db, Filter, FindOneAndUpdateOptions, ObjectId, UpdateFilter } from 'mon
 import { Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 import { ServiceError } from '@/common/decorators/catch.decorator';
+import crypto from 'crypto';
 
 @Injectable()
 export class CallsRepository {
@@ -285,7 +286,11 @@ export class CallsRepository {
 	}
 
 	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
-		const shuffledArray = array.sort(() => Math.random() - 0.5);
+		const shuffledArray = array.sort(() => {
+			const randomBytes = crypto.randomBytes(4);
+			const randomNumber = randomBytes.readUInt32LE(0) / 0xffffffff;
+			return randomNumber - 0.5;
+		});
 		const groups = [];
 		for (let i = 0; i < actualGroups.length; i++) {
 			groups.push([]);
