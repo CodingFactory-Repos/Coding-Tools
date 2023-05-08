@@ -48,7 +48,7 @@ export default {
 			required: true,
 		},
 	},
-	setup(props) {
+	setup() {
 		//! TODO: Pas besoin de renvoyer la props
 		const data = toRefs(
 			defineProps({
@@ -64,7 +64,7 @@ export default {
 		);
 
 		return {
-			...props,
+			// ...props,
 			...data,
 		};
 	},

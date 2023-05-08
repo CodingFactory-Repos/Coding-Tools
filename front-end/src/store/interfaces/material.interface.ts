@@ -24,14 +24,13 @@ export interface Material {
 	name: string;
 	type: string;
 	price: number;
-	acquisitionDate: Date | string;
+	acquisitionDate?: Date;
 	picture: string;
 	state: string;
 	siteLocation: string;
 	storageCupboard: string;
 	description: string;
 	borrowingHistory: Array<BorrowingMaterial>;
-	//if status is not defined, put it true
 	status?: boolean;
 }
 

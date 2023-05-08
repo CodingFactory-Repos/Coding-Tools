@@ -90,7 +90,7 @@
 						>Site</label
 					>
 					<select
-						v-model="site"
+						v-model="siteLocation"
 						class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						required
 					>
@@ -172,7 +172,7 @@ export default {
 			price: '',
 			picture: '',
 			state: '',
-			site: '',
+			siteLocation: '',
 			storageCupboard: '',
 			description: '',
 		};
@@ -184,9 +184,10 @@ export default {
 				name: this.name,
 				type: this.type,
 				price: this.price,
+				acquisitionDate: new Date(Date.now()),
 				picture: this.picture,
 				state: this.state,
-				site: this.site,
+				siteLocation: this.siteLocation,
 				storageCupboard: this.storageCupboard,
 				description: this.description,
 				status: true,
@@ -208,7 +209,7 @@ export default {
 		createPDF() {
 			http.get<Array<Material>>('/materials').then((response) => {
 				console.log(response);
-				const data = response.data
+				const data = response.data;
 				// Convertir acquisitonDate en date
 				data.forEach((material) => {
 					material.acquisitionDate = new Date(material.acquisitionDate).toLocaleDateString();
@@ -217,7 +218,7 @@ export default {
 				const options = {
 					filename: 'materials.pdf',
 				};
-				console.log(data[0].borrowingHistory)
+				console.log(data[0].borrowingHistory);
 				html2pdf().from(html).set(options).save();
 			});
 		},
@@ -309,8 +310,8 @@ export default {
 						<td>${material.siteLocation}</td>
 						<td>${material.storageCupboard}</td>
 						<td>${material.description}</td>
-						<td>${material.borrowingHistory.map(el => el.borrowingDate).join('</br>')}</td>
-						<td>${material.borrowingHistory.map(el => el.returnDate).join('</br>')}</td>
+						<td>${material.borrowingHistory.map((el) => el.borrowingDate).join('</br>')}</td>
+						<td>${material.borrowingHistory.map((el) => el.returnDate).join('</br>')}</td>
 						<td>${material.status}</td>
 					</tr>
 				`;

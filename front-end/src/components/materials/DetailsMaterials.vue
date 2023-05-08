@@ -200,9 +200,8 @@ export default {
 		let showHistory = ref(false);
 
 		const getUserInfo = () => {
-			//! TODO: Remove it, get the id from the auth/me instead
-			http.get(`materials/user/` + props.userId).then((res) => {
-				userInfo.value = res.data;
+			http.get(`auth/me`).then((res) => {
+				userInfo.value = res.data.user;
 			});
 		};
 
@@ -212,9 +211,6 @@ export default {
 				.then((res) => {
 					// Convert the date to string
 					res.data.acquisitionDate = new Date(res.data.acquisitionDate).toLocaleDateString();
-					// delete the _id
-					//! Vous pouvez prevent l'envoie de l'id directement depuis le backend dans les options d'une query
-					delete res.data._id;
 					material.value = res.data;
 				})
 				.catch((err) => {
@@ -234,7 +230,7 @@ export default {
 			getMaterialInfo(props.id);
 		});
 		return {
-			...data,
+			// ...data,
 			material,
 			showLink,
 			showHistory,

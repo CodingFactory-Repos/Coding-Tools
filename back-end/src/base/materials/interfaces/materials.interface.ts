@@ -4,16 +4,23 @@ import { EquipmentsLoan } from 'src/base/equipmentsLoan/interfaces/equipmentsLoa
 export interface Material {
 	_id?: ObjectId;
 	name: string;
-	type: number;
+	type: string;
 	price: number;
-	acquisitionDate: Date;
+	acquisitionDate?: Date;
 	picture: string;
 	state: string;
 	siteLocation: string;
-	storageCupboard?: string;
+	storageCupboard: string;
 	description: string;
-	borrowingHistory: Array<EquipmentsLoan>;
+	borrowingHistory?: Array<BorrowingMaterial>;
 	status: boolean;
+}
+
+export interface BorrowingMaterial {
+	borrowingDate: Date;
+	borrowingUser: string;
+	description: string;
+	returnDate: Date;
 }
 
 export interface JWTUsers {

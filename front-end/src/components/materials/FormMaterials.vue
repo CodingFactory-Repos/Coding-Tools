@@ -71,13 +71,12 @@ export default {
 		let returnDate = '';
 
 		function borrorwingMaterial(identifiant) {
+			console.log(props.userId);
 			http.put('/materials/reservation/' + identifiant, {
-				borrowingHistory: {
-					borrowingDate: this.borrowingDate,
-					borrowingUser: props.userId,
-					description: this.description,
-					returnDate: this.returnDate,
-				},
+				borrowingDate: new Date(this.borrowingDate).toISOString(),
+				borrowingUser: props.userId,
+				description: this.description,
+				returnDate: new Date(this.returnDate).toISOString(),
 			});
 		}
 
