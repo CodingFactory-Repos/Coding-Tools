@@ -97,11 +97,19 @@ export class CallsService {
 		return { groupsOf3: groupsOf3, groupsOf4: groupsOf4 };
 	}
 
+	createRandomGroups(courseId: CourseIdObject) {
+		return this.callsRepository.createRandomGroups(courseId.courseId);
+	}
+
 	getGroups(courseId: CourseIdObject) {
 		return this.callsRepository.getGroups(courseId.courseId);
 	}
 
 	async joinGroup(courseId: CourseIdObject, groupId: string, studentId: ObjectId) {
 		return this.callsRepository.joinGroup(courseId.courseId, groupId, studentId);
+	}
+
+	async isProductOwner(userId: ObjectId) {
+		return this.usersRepository.isProductOwner(userId);
 	}
 }

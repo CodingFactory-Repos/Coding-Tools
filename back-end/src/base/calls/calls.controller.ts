@@ -75,10 +75,23 @@ export class CallsController {
 		return res.status(201).json({ status: message });
 	}
 
+	@Get('/create_random_groups/:courseId')
+	async createRandomGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const message = await this.callsService.createRandomGroups(courseId);
+		return res.status(201).json({ status: message });
+	}
+
 	@Get('/get_student_identity/:userId')
 	@UseGuards(JwtAuthGuard)
 	async identity(@Param() userId: { userId: ObjectId }, @Res() res: Response) {
 		const message = await this.callsService.getStudentIdentity(userId.userId);
 		return res.status(201).json({ identity: message });
+	}
+
+	@Get('/is_product_owner')
+	@UseGuards(JwtAuthGuard)
+	async isProductOwner(@Jwt() userId: ObjectId, @Res() res: Response) {
+		const message = await this.callsService.isProductOwner(userId);
+		return res.status(201).json({ isProductOwner: message });
 	}
 }
