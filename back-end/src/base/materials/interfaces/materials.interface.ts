@@ -15,3 +15,7 @@ export interface Material {
 	borrowingHistory: Array<EquipmentsLoan>;
 	status: boolean;
 }
+
+export interface JWTUsers {
+	jwt: string;
+}

@@ -1,9 +1,9 @@
 <template>
 	<button
 		@click="showModal = true"
-		class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+		class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none gap-2 gradiant"
 	>
-		Create a materials
+		<span class="text-white">Create materials</span>
 	</button>
 	<button @click="createPDF">Create PDF</button>
 	<div v-if="showModal" class="popup">
@@ -157,6 +157,9 @@
 <script>
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
+import { useMaterialStore } from '@/store/modules/material.store';
+
+const materialStore = useMaterialStore();
 
 export default {
 	data() {
@@ -175,28 +178,20 @@ export default {
 	},
 	methods: {
 		addMaterial() {
-			axios
-				.post('http://localhost:8000/materials/create', {
-					name: this.name,
-					type: this.type,
-					price: this.price,
-					acquisitionDate: Date.now(),
-					picture: this.picture,
-					state: this.state,
-					siteLocation: this.site,
-					storageCupboard: this.storageCupboard,
-					description: this.description,
-					borrowingHistory: [],
-					status: true,
-				})
-				.then((response) => {
-					console.log(response);
-					//Close the modal
-					this.showModal = false;
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			//Use the store to add the material
+			materialStore.addMaterial({
+				name: this.name,
+				type: this.type,
+				price: this.price,
+				picture: this.picture,
+				state: this.state,
+				site: this.site,
+				storageCupboard: this.storageCupboard,
+				description: this.description,
+				status: true,
+			});
+			//Close the modal
+			this.showModal = false;
 		},
 		// deleteMaterial() {
 		// 	axios
