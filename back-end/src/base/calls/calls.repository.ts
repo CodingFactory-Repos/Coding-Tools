@@ -157,6 +157,15 @@ export class CallsRepository {
 			periodStart: { $lte: actualDate },
 			periodEnd: { $gte: actualDate },
 		});
+		// If null check if the user is a teacher and is not related to a class
+		if (!actualCourse) {
+			const actualTeacherCourse = await this.db.collection('courses').findOne({
+				teacherId: userId,
+				periodStart: { $lte: actualDate },
+				periodEnd: { $gte: actualDate },
+			});
+			return actualTeacherCourse ? actualTeacherCourse._id : null;
+		}
 		return actualCourse ? actualCourse._id : null;
 	}
 	async getStudentClassId(userId: ObjectId) {
