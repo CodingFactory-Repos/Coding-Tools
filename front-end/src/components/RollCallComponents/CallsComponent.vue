@@ -10,6 +10,7 @@
 	</div>
 </template>
 
+
 <script lang="ts">
 import Qrcode from 'vue-qrcode';
 import { http } from '@/api/network/axios';
