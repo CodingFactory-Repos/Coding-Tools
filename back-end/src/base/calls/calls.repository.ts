@@ -145,8 +145,7 @@ export class CallsRepository {
 
 		switch (user.role) {
 			case Roles.STUDENT:
-				const classId = await this.getStudentClassId(userId);
-				query['classId'] = classId;
+				query['classId'] = await this.getStudentClassId(userId);
 				break;
 			case Roles.PRODUCT_OWNER:
 				query['teacherId'] = userId;
