@@ -64,4 +64,12 @@ export class UsersService {
 
 		return user?.profile?.githubProfile;
 	}
+
+	async updateUserProfile(userId: ObjectId, body: ProfileBodyDTO) {
+		//! if the user is a PO, he can't submit the disciplines taught
+
+		const update = flatten(body);
+		const query = { _id: userId };
+		await this.usersRepository.updateOneUser(query, update);
+	}
 }

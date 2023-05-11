@@ -31,4 +31,11 @@ export class UsersController {
 		res.setHeader('Content-Type', 'text/html');
 		return res.status(200).send(document);
 	}
+
+	@Patch("profile")
+	@UseGuards(JwtAuthGuard)
+	async patchUserProfile(@Jwt() userId: ObjectId, @Body() body: ProfileBodyDTO, @Res() res: Response) {
+		await this.usersService.updateUserProfile(userId, body);
+		return res.status(200).json({ status: "ok" });
+	}
 }
