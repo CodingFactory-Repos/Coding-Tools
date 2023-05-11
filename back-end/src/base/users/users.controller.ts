@@ -38,4 +38,11 @@ export class UsersController {
 		await this.usersService.updateUserProfile(userId, body);
 		return res.status(200).json({ status: "ok" });
 	}
+
+	@Get("profile/list")
+	@UseGuards(JwtAuthGuard)
+	async getUserProfileList(@Jwt() userId: ObjectId, @Res() res: Response) {
+		const usersListInfo = await this.usersService.getUserProfileList(userId);
+		return res.status(200).json({ status: "ok", users: usersListInfo })
+	}
 }

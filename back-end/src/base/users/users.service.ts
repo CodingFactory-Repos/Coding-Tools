@@ -72,4 +72,25 @@ export class UsersService {
 		const query = { _id: userId };
 		await this.usersRepository.updateOneUser(query, update);
 	}
+
+	async getUserProfileList(userId: ObjectId) {
+		const user = await this.usersRepository.findOne(
+			{ _id: userId },
+			USER_GROUPNAME_PROJECTION,
+		);
+
+		if(!user) {
+			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressources")
+		}
+
+		const usersListInfo = await this.usersRepository.findMany(
+			{
+				"schoolProfile.groupName": user.schoolProfile.groupName,
+				_id: { $ne: userId }
+			},
+			USER_PROFILE_LIST_PROJECTION,
+		);
+
+		return usersListInfo ?? [];
+	}
 }
