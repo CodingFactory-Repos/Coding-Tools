@@ -103,13 +103,6 @@ export default {
 	methods: {
 		//Create a POST with axios
 		addMaterial() {
-			//! This will crash the front in case of reject.
-			//! You're also using axios without the instance.
-			//! So with credentials is false and the the cookie token will not be attached to the request.
-			//! Consider using : http.post('/articles/add', { ... })
-			//! And for the catch : addArticle: withErrorHandler(async function() { ... } );
-
-			//! By the way : Date.now() won't work. You're missing the "new" identifier.
 			axios
 				.post('http://localhost:8000/materials/create', {
 					name: this.name,
