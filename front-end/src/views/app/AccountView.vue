@@ -1,28 +1,62 @@
 <template>
-	<main class="relative w-full h-full flex items-center justify-center">
+	<main class="grow relative w-full flex items-start justify-center mb-6">
 		<div class="absolute top-0 w-full h-80 z-0">
 			<div class="relative w-full h-full flex items-start justify-center overflow-hidden">
-				<img class="absolute object-fill w-full" :src="profileBackground" alt="user_background">
+				<img class="absolute object-fill w-full" :src="pictureUrl || tempPicture || profileBackground" alt="user_background">
+				<FileUploader
+					class="z-20"
+					v-if="editActive"
+					ref="fileUploaderREF"
+					@onFileChange="imageChanged"
+					@onFileUploaded="imageUploaded"
+				/>
 			</div>
 		</div>
-		<div class="flex items-start justify-center px-6 pt-56 h-full w-full z-10">
-			<div class="grow w-full flex flex-col items-center justify-start bg-light-tertiary dark:bg-dark-tertiary rounded-lg shadow gap-0">
+		<div class="sm:mx-6 mt-60 grow w-full calculated-height flex items-center justify-start z-10">
+			<div class="grow w-full h-full flex flex-col items-center justify-start bg-light-tertiary dark:bg-dark-tertiary rounded-lg shadow gap-0">
 				<AccountHeader
 					:profile="profile"
 					:schoolProfile="schoolProfile"
-					@edit="openAccountForm"
+					:edit="editActive"
+					@open="toggleAccountForm(true)"
+					@close="toggleAccountForm(false)"
 				/>
-				<AccountProfile
-					v-if="!editActive"
-					:profile="profile"
-					:businessProfile="businessProfile"
-				/>
+				<div class="w-full h-full p-4 flex flex-row gap-3 items-start justify-start flex-col sm:flex-row" v-if="!editActive">
+					<AccountProfile
+						:profile="profile"
+						:schoolProfile="schoolProfile"
+						:businessProfile="businessProfile"
+						:role="role"
+					/>
+
+					<div class="flex h-full flex-col gap-3 w-full sm:w-fit">
+						<!-- <div class="stat-svg grow" v-html="svgGithubLanguages"/> -->
+						<div class="h-full flex flex-col rounded-lg bg-light-primary dark:bg-dark-highlight min-w-[350px] overflow-y-scroll p-2 w-full">
+							<span class="w-full flex justify-center text-sm pb-2">{{ schoolProfile.groupName }}</span>
+							<template v-if="relatedProfile.length > 0">
+								<div
+									v-for="(user, index) in relatedProfile"
+									:key="`related_user_${index}`"
+									@click="() => {}"
+									class="px-2 py-2 w-full flex gap-5 items-center bg-dark-tertiary rounded-lg cursor-pointer hover:scale-[1.02] transition-all"
+								>
+									<img class="w-12 h-12 rounded-full" :src="user.profile.picture || '/template-no-image.png'"/>
+									<span class="bold text-sm">{{ user.profile.firstName + " " + user.profile.lastName }}</span>
+								</div>
+							</template>
+							<div v-else class="w-full h-full flex justify-center items-center">
+								No related profile found..
+							</div>
+						</div>
+					</div>
+				</div>
 				<AccountForm
 					v-else
 					:profile="profile"
 					:schoolProfile="schoolProfile"
 					:businessProfile="businessProfile"
-					@edit="closeAccountForm"
+					:role="role"
+					@close="toggleAccountForm(false)"
 				/>
 			</div>
 		</div>
@@ -30,32 +64,78 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
 import AccountProfile from '@/components/account/AccountProfile.vue';
 import AccountForm from '@/components/account/AccountForm.vue';
 import AccountHeader from '@/components/account/AccountHeader.vue';
+import FileUploader from '@/components/common/FileUploader.vue';
+import { UserProfile, UserSchoolProfile, UserBusinessProfile } from '@/store/interfaces/auth.interfaces';
+import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
+import { http } from '@/api/network/axios';
+import { AxiosError } from 'axios';
+import { useUserStore } from '@/store/modules/user.store';
 
+const {
+	fileUploaderREF, tempPicture, pictureUrl,
+	resetTempPicture, imageChanged, imageUploaded, addTo,
+} = useAccountImageUpload();
+addTo("profile", "background");
 const authStore = useAuthStore();
-
-const user = computed(() => authStore.user);
-const profile = computed(() => user.value.profile);
-const schoolProfile = computed(() => user.value.schoolProfile);
-const businessProfile = computed(() => user.value.businessProfile);
-const profileBackground = computed(() => profile.value?.profileBackground || "https://weraveyou.com/wp-content/uploads/2022/08/Underground-Party-Rave.jpg");
+const userStore = useUserStore();
 
 const editActive = ref(false);
-const openAccountForm = () => {
-	editActive.value = true;
+const user = computed(() => authStore.user);
+const role = computed(() => user.value.role);
+const profile = computed(() => user.value.profile ?? {} as Partial<UserProfile>);
+const schoolProfile = computed(() => user.value.schoolProfile ?? {} as Partial<UserSchoolProfile>);
+const businessProfile = computed(() => user.value.businessProfile ?? {} as Partial<UserBusinessProfile>);
+const profileBackground = computed(() => profile.value?.background ?? "/template-no-image.png");
+const relatedProfile = computed(() => userStore.relatedProfile);
+
+const toggleAccountForm = (value: boolean) => {
+	editActive.value = value;
 }
-const closeAccountForm = () => {
-	editActive.value = false;
-}
+
+watch(editActive, () => {
+	resetTempPicture();
+})
+
+const svgGithubLanguages = ref<string>();
+onMounted(() => {
+	// http.get("users/github/languages")
+	// .then(response => svgGithubLanguages.value = response.data)
+	// .catch((err: AxiosError) => { console.error(err.message) });
+
+	if(userStore.relatedProfile.length === 0) {
+		userStore.relatedGroupProfile();
+	}
+})
 </script>
 
-<style>
+<style lang="scss">
 .h-64 {
 	height: 16rem;
+}
+
+.calculated-height {
+	height: calc(100% - 15rem);
+}
+
+.stat-svg > svg {
+	border-radius: 0.5rem;
+	& * .lang-name {
+		fill: #9ca3af;
+	}
+
+	& * .header {
+		fill: #b54593;
+	}
+
+	& > rect {
+		fill: #434556;
+		stroke: none;
+	}
 }
 </style>
