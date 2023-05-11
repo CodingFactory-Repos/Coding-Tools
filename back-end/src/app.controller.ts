@@ -1,9 +1,8 @@
 import { cwd } from 'process';
 import { Response } from 'express';
 import { join, resolve } from 'path';
-import { Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Res, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, Res, Post, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Post } from '@nestjs/common';
 import { AppService } from '@/app.service';
 import { ServiceError, ServiceErrorCatcher } from '@/common/decorators/catch.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';

@@ -238,7 +238,7 @@
 
 <script lang="ts" setup>
 import { reactive, computed, watch, ref } from 'vue';
-import { User, UserBusinessProfile, UserProfile, UserSchoolProfile } from '@/store/interfaces/auth.interfaces';
+import { User, UserBusinessProfile, UserProfile, UserSchoolProfile, Roles } from '@/store/interfaces/auth.interfaces';
 import AccountFormField from '@/components/account/AccountFormField.vue';
 import FileUploader from '@/components/common/FileUploader.vue';
 import SimpleSelect from '@/components/common/SimpleSelect.vue';
@@ -249,7 +249,6 @@ import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
 import { useUserStore } from '@/store/modules/user.store';
 import { filterInvalidProperties } from '@/utils/filterInvalidProperties';
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
-import { Roles } from '@/store/interfaces/auth.interfaces';
 
 // <AccountFormField
 // 	label="Enable 2FA"
