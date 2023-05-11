@@ -40,7 +40,11 @@
 									@click="() => {}"
 									class="px-2 py-2 w-full flex gap-5 items-center bg-dark-tertiary rounded-lg cursor-pointer hover:scale-[1.02] transition-all"
 								>
-									<img class="w-12 h-12 rounded-full" :src="user.profile.picture || '/template-no-image.png'"/>
+									<img
+										:src="user.profile.picture || '/template-no-image.png'"
+										class="w-12 h-12 rounded-full"
+										alt="profile_picture"
+									/>
 									<span class="bold text-sm">{{ user.profile.firstName + " " + user.profile.lastName }}</span>
 								</div>
 							</template>

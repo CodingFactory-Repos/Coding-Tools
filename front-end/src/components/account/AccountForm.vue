@@ -184,7 +184,11 @@
 								@onFileChange="imageChanged"
 								@onFileUploaded="imageUploaded"
 							/>
-							<img :src="pictureUrl || tempPicture || profileForm.businessProfile.companyLogo" class="w-full h-full object-cover"/>
+							<img
+								:src="pictureUrl || tempPicture || profileForm.businessProfile.companyLogo"
+								class="w-full h-full object-cover"
+								alt="company_logo"
+							/>
 						</div>
 					</AccountFormField>
 				</div>
