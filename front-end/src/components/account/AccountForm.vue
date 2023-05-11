@@ -353,21 +353,6 @@ const numberFormat = (e: InputEvent) => {
 	}
 }
 
-// const discordFormat = (e: InputEvent) => {
-// 	const trimed = discordTagFormat.value.replace(/[^0-9]/g, "");
-// 	if(isEmpty(trimed)) {
-// 		discordTagFormat.value = "";
-// 		return;
-// 	} else {
-// 		let sanitized = parseInt(trimed).toString();
-// 		if(sanitized.length > 4)
-// 			sanitized = sanitized.slice(0, 4);
-
-// 		(e.target as HTMLInputElement).value = sanitized;
-// 		discordTagFormat.value = sanitized;
-// 	}
-// }
-
 const campusSelected = (value: string) => {
 	profileForm.schoolProfile.campus = value;
 }
