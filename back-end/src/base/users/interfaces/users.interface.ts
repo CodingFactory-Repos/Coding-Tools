@@ -24,19 +24,22 @@ export interface UserProfile {
 	firstName?: string;
 	lastName?: string;
 	email?: string;
+	resume?: string;
 	phone?: string;
 	birthDate?: Date;
-	location?: string;
 	linkedinProfile?: string;
 	githubProfile?: string;
-	discordId?: string;
-	profilePicture?: string;
-	profileBackground?: string;
-	profileResume?: string;
+	discordTag?: string;
+	picture?: string;
+	background?: string;
+	showGithubStat?: boolean;
+	disciplinesLiked?: Array<string>;
+	portfolio?: string;
 }
 
 export interface UserSchoolProfile {
-	groupeName: string;
+	groupName: string;
+	campus?: string;
 }
 
 export interface UserBusinessProfile {
