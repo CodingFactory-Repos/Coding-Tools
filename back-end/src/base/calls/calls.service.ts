@@ -1,8 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { randomBytes } from 'crypto';
 
 import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { ObjectId } from 'mongodb';
+import { JwtService } from '@nestjs/jwt';
+import { CourseIdObject } from '@/base/calls/interfaces/calls.interface';
 
 @Injectable()
 export class CallsService {
@@ -11,16 +13,40 @@ export class CallsService {
 		@Inject(forwardRef(() => CallsRepository))
 		private usersRepository: UsersRepository,
 		private callsRepository: CallsRepository,
+		private jwtTokenService: JwtService,
 	) {}
-	public generateQrCode() {
-		const qr = randomBytes(16)
-			.toString('base64')
-			.replace(/[^a-zA-Z0-9]/g, '');
-		return qr;
+
+	async generateTempToken(payload: Record<string, unknown>) {
+		const jwt = await this.jwtTokenService.signAsync(payload, { expiresIn: '3min' });
+		return jwt;
 	}
-	public generateQrLink() {
-		const qr = this.generateQrCode();
-		const link = `http://localhost:3000/calls/presence?qr=${qr}`;
-		return link;
+
+	async updateUserPresence(jwt: string, presence: boolean) {
+		const jwt_decode = this.jwtTokenService.decode(jwt);
+		const userId = await jwt_decode['id'];
+		const courseId = await jwt_decode['courseId'];
+		return this.callsRepository.updateUserPresence(userId, courseId, presence);
+	}
+
+	async generator(userId: ObjectId, courseId: CourseIdObject) {
+		const jwt = await this.generateTempToken({ id: userId, courseId: courseId.courseId });
+		const url = await this.generateUrl(jwt);
+		return url;
+	}
+
+	async generateUrl(jwt: string) {
+		return `https://1f25-2a01-cb00-e91-b600-30f3-a390-1412-28a2.eu.ngrok.io/calls/presence/` + jwt;
+	}
+
+	async getActualCourse(userId: ObjectId) {
+		const actualCourse = await this.callsRepository.getActualCourse(userId);
+		return actualCourse;
+	}
+
+	getStudentIdList(courseId: CourseIdObject) {
+		return this.callsRepository.getStudentIdList(courseId.courseId);
+	}
+	getStudentList(studentIdList: Array<ObjectId>) {
+		return this.callsRepository.getStudentList(studentIdList);
 	}
 }

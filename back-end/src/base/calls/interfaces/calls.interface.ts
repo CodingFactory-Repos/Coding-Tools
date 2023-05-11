@@ -8,3 +8,11 @@ export interface Call {
 	createdAt: Date;
 	listUsers: Array<User>;
 }
+
+export interface JwtQRCode {
+	jwt: string;
+}
+
+export interface CourseIdObject {
+	courseId: string;
+}

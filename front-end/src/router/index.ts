@@ -49,6 +49,17 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
+				path: 'scrum', 
+				children: [
+					{ 
+						path: '',
+						component: () => import('../views/OrganisationView.vue') },
+					{ 
+						path: 'sprint',
+						component: () => import('../views/SprintsView.vue') }
+				]
+			},
+			{
 				path: 'retrospective',
 				children: [
 					{
