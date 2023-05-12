@@ -10,7 +10,7 @@
 				>
 					<textarea
 						v-model.trim="profileForm.profile.resume"
-						class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded"
+						class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
 						rows="5"
 						maxlength="300"
 					></textarea>
@@ -47,7 +47,7 @@
 					:char-number="profileForm.profile.phone.length"
 				>
 					<!--  maz-ui and libphonenumber if you wish to scale this input -->
-					<div class="w-full relative flex items-center">
+					<div class="w-full relative flex items-center text-black dark:text-white">
 						<input
 							v-model="phoneFormat"
 							@input="numberFormat"
@@ -62,7 +62,7 @@
 					:char-limit="62"
 					:char-number="discordTagFormat.length + discordUsername.length"
 				>
-					<div class="w-full relative flex items-center">
+					<div class="w-full relative flex items-center text-black dark:text-white">
 						<input
 							v-model="discordUsername"
 							class="bg-transparent w-full outline-none border border-[#6B7280] discord-border py-1.5 pr-[45.5%] pl-[3rem] rounded"
@@ -92,7 +92,7 @@
 					<input
 						v-model="profileForm.profile.githubProfile"
 						maxlength="75"
-						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
 				</AccountFormField>
 				<AccountFormField
@@ -104,14 +104,14 @@
 					<input
 						v-model="profileForm.profile.linkedinProfile"
 						maxlength="75"
-						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
 				</AccountFormField>
 				<AccountFormField
 					label="Show github stats (github profile required)"
 					:limit="false"
 				>
-					<div class="toggle color cursor-pointer">
+					<div class="toggle color cursor-pointer text-black dark:text-white">
 						<input id="github-stat-switch" v-model="profileForm.profile.showGithubStat" class="toggle-checkbox hidden" type="checkbox">
 						<label for="github-stat-switch" class="toggle-label relative before:absolute before:block before:bg-white block w-12 h-6 rounded-full transition-color duration-150 ease-out cursor-pointer"></label>
 					</div>
@@ -129,7 +129,7 @@
 					>
 						<input
 							v-model="profileForm.businessProfile.companyName"
-							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 							maxlength="50"
 						/>
 					</AccountFormField>
@@ -142,7 +142,7 @@
 						<input
 							v-model="profileForm.businessProfile.companyJob"
 							maxlength="75"
-							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 						/>
 					</AccountFormField>
 					<AccountFormField
@@ -154,7 +154,7 @@
 						<input
 							v-model="profileForm.businessProfile.companyLink"
 							maxlength="75"
-							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 						/>
 					</AccountFormField>
 				</div>
@@ -178,7 +178,7 @@
 						label="Company logo"
 						:limit="false"
 					>
-						<div class="w-full h-full rounded-lg overflow-hidden max-h-[10rem] relative">
+						<div class="w-full h-full rounded-lg overflow-hidden max-h-[10rem] relative text-black dark:text-white">
 							<FileUploader
 								ref="fileUploaderREF"
 								@onFileChange="imageChanged"
@@ -228,7 +228,7 @@
 					<input
 						v-model="profileForm.profile.portfolio"
 						maxlength="75"
-						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded"
+						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
 				</AccountFormField>
 			</div>
