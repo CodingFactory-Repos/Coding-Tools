@@ -6,16 +6,23 @@ export interface UserStore {
 	temporaryProfileUser: DeepPartial<User>;
 	saveActionTriggered: boolean;
 	uploadWaitingList: Array<boolean>;
-	relatedProfile: Array<UserProfileList>;
+	relatedProfiles: Array<UserProfileList>;
+	relatedUserProfile: IRelatedUserProfile;
 
+	saveProfile?: (this: UserStore) => Promise<boolean | undefined>;
 	uploadFinished?: (this: UserStore) => boolean;
 	relatedGroupProfile?: (this: UserStore) => Promise<boolean | undefined>;
+	getRelatedUserProfile?: (this: UserStore, id: string) => Promise<boolean | undefined>;
+}
+
+export interface IRelatedUserProfile {
+	user?: DeepPartial<User>;
+	related?: Array<UserProfileList>;
 }
 
 export interface UserProfileList {
-	profile: {
-		picture: string;
-		firstName: string;
-		lastName: string;
-	}
+	picture: string;
+	firstName: string;
+	lastName: string;
+	id: string;
 }
