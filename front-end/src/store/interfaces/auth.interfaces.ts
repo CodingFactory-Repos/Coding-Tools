@@ -37,6 +37,8 @@ export enum Roles {
 }
 
 export interface User {
+	_id?: string;
+	id?: string;
 	role?: Roles;
 	profile?: UserProfile;
 	schoolProfile?: UserSchoolProfile;
