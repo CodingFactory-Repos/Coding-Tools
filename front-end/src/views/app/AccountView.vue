@@ -17,15 +17,17 @@
 				<AccountHeader
 					:profile="profile"
 					:schoolProfile="schoolProfile"
+					:canEdit="true"
 					:edit="editActive"
 					@open="toggleAccountForm(true)"
 					@close="toggleAccountForm(false)"
 				/>
-				<div class="w-full h-full p-4 flex flex-row gap-3 items-start justify-start flex-col sm:flex-row" v-if="!editActive">
+				<div class="w-full h-full p-4 flex flex-row gap-3 items-start justify-start flex-col sm:flex-row min-h-[420px]" v-if="!editActive">
 					<AccountProfile
 						:profile="profile"
 						:schoolProfile="schoolProfile"
 						:businessProfile="businessProfile"
+						:id="userId"
 						:role="role"
 					/>
 
@@ -35,17 +37,17 @@
 							<span class="w-full flex justify-center text-sm pb-2">{{ schoolProfile.groupName }}</span>
 							<template v-if="relatedProfile.length > 0">
 								<div
-									v-for="(user, index) in relatedProfile"
+									v-for="(relatedUser, index) in relatedProfile"
 									:key="`related_user_${index}`"
-									@click="() => {}"
+									@click="viewRelatedUserProfile(relatedUser.id)"
 									class="px-2 py-2 w-full flex gap-5 items-center bg-dark-tertiary rounded-lg cursor-pointer hover:scale-[1.02] transition-all"
 								>
 									<img
-										:src="user.profile.picture || '/template-no-image.png'"
+										:src="relatedUser.picture || '/template-no-image.png'"
 										class="w-12 h-12 rounded-full"
 										alt="profile_picture"
 									/>
-									<span class="bold text-sm">{{ user.profile.firstName + " " + user.profile.lastName }}</span>
+									<span class="bold text-sm">{{ relatedUser.firstName + " " + relatedUser.lastName }}</span>
 								</div>
 							</template>
 							<div v-else class="w-full h-full flex justify-center items-center">
@@ -77,26 +79,28 @@ import AccountHeader from '@/components/account/AccountHeader.vue';
 import FileUploader from '@/components/common/FileUploader.vue';
 import { UserProfile, UserSchoolProfile, UserBusinessProfile } from '@/store/interfaces/auth.interfaces';
 import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
-import { http } from '@/api/network/axios';
-import { AxiosError } from 'axios';
 import { useUserStore } from '@/store/modules/user.store';
+import { useRouter } from 'vue-router';
 
 const {
 	fileUploaderREF, tempPicture, pictureUrl,
 	resetTempPicture, imageChanged, imageUploaded, addTo,
 } = useAccountImageUpload();
 addTo("profile", "background");
+
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const router = useRouter();
 
 const editActive = ref(false);
 const user = computed(() => authStore.user);
 const role = computed(() => user.value.role);
+const userId = computed(() => user.value._id);
 const profile = computed(() => user.value.profile ?? {} as Partial<UserProfile>);
 const schoolProfile = computed(() => user.value.schoolProfile ?? {} as Partial<UserSchoolProfile>);
 const businessProfile = computed(() => user.value.businessProfile ?? {} as Partial<UserBusinessProfile>);
 const profileBackground = computed(() => profile.value?.background ?? "/template-no-image.png");
-const relatedProfile = computed(() => userStore.relatedProfile);
+const relatedProfile = computed(() => userStore.relatedProfiles);
 
 const toggleAccountForm = (value: boolean) => {
 	editActive.value = value;
@@ -106,13 +110,17 @@ watch(editActive, () => {
 	resetTempPicture();
 })
 
+const viewRelatedUserProfile = (id: string) => {
+	router.push(`/app/account/${id}`);
+}
+
 const svgGithubLanguages = ref<string>();
 onMounted(() => {
 	// http.get("users/github/languages")
 	// .then(response => svgGithubLanguages.value = response.data)
 	// .catch((err: AxiosError) => { console.error(err.message) });
 
-	if(userStore.relatedProfile.length === 0) {
+	if(userStore.relatedProfiles.length === 0) {
 		userStore.relatedGroupProfile();
 	}
 })
