@@ -22,7 +22,10 @@
 					@open="toggleAccountForm(true)"
 					@close="toggleAccountForm(false)"
 				/>
-				<div class="w-full h-full p-4 flex flex-row gap-3 items-start justify-start flex-col sm:flex-row min-h-[420px]" v-if="!editActive">
+				<div
+					v-if="!editActive"
+					class="w-full h-full p-4 flex flex-row gap-3 items-start justify-start flex-col sm:flex-row min-h-[420px]"
+				>
 					<AccountProfile
 						:profile="profile"
 						:schoolProfile="schoolProfile"
@@ -31,30 +34,10 @@
 						:role="role"
 					/>
 
-					<div class="flex h-full flex-col gap-3 w-full sm:w-fit ">
-						<!-- <div class="stat-svg grow" v-html="svgGithubLanguages"/> -->
-						<div class="h-full flex flex-col rounded-lg bg-light-primary dark:bg-dark-highlight min-w-[300px] min-h-[388px] overflow-y-scroll p-2 w-full">
-							<span class="w-full flex justify-center text-sm pb-2">{{ schoolProfile.groupName }}</span>
-							<template v-if="relatedProfile.length > 0">
-								<div
-									v-for="(relatedUser, index) in relatedProfile"
-									:key="`related_user_${index}`"
-									@click="viewRelatedUserProfile(relatedUser.id)"
-									class="px-2 py-2 w-full flex gap-5 items-center bg-dark-tertiary rounded-lg cursor-pointer hover:scale-[1.02] transition-all"
-								>
-									<img
-										:src="relatedUser.picture || '/template-no-image.png'"
-										class="w-12 h-12 rounded-full"
-										alt="profile_picture"
-									/>
-									<span class="bold text-sm">{{ relatedUser.firstName + " " + relatedUser.lastName }}</span>
-								</div>
-							</template>
-							<div v-else class="w-full h-full flex justify-center items-center">
-								No related profile found..
-							</div>
-						</div>
-					</div>
+					<AcccountRelatedProfile
+						:groupName="schoolProfile.groupName"
+						:relatedProfiles="relatedProfiles"
+					/>
 				</div>
 				<AccountForm
 					v-else
@@ -77,10 +60,10 @@ import AccountProfile from '@/components/account/AccountProfile.vue';
 import AccountForm from '@/components/account/AccountForm.vue';
 import AccountHeader from '@/components/account/AccountHeader.vue';
 import FileUploader from '@/components/common/FileUploader.vue';
+import AcccountRelatedProfile from '@/components/account/AccountRelatedProfile.vue';
 import { UserProfile, UserSchoolProfile, UserBusinessProfile } from '@/store/interfaces/auth.interfaces';
 import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
 import { useUserStore } from '@/store/modules/user.store';
-import { useRouter } from 'vue-router';
 
 const {
 	fileUploaderREF, tempPicture, pictureUrl,
@@ -90,7 +73,6 @@ addTo("profile", "background");
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
-const router = useRouter();
 
 const editActive = ref(false);
 const user = computed(() => authStore.user);
@@ -100,7 +82,7 @@ const profile = computed(() => user.value.profile ?? {} as Partial<UserProfile>)
 const schoolProfile = computed(() => user.value.schoolProfile ?? {} as Partial<UserSchoolProfile>);
 const businessProfile = computed(() => user.value.businessProfile ?? {} as Partial<UserBusinessProfile>);
 const profileBackground = computed(() => profile.value?.background ?? "/template-no-image.png");
-const relatedProfile = computed(() => userStore.relatedProfiles);
+const relatedProfiles = computed(() => userStore.relatedProfiles);
 
 const toggleAccountForm = (value: boolean) => {
 	editActive.value = value;
@@ -110,16 +92,7 @@ watch(editActive, () => {
 	resetTempPicture();
 })
 
-const viewRelatedUserProfile = (id: string) => {
-	router.push(`/app/account/${id}`);
-}
-
-const svgGithubLanguages = ref<string>();
 onMounted(() => {
-	// http.get("users/github/languages")
-	// .then(response => svgGithubLanguages.value = response.data)
-	// .catch((err: AxiosError) => { console.error(err.message) });
-
 	if(userStore.relatedProfiles.length === 0) {
 		userStore.relatedGroupProfile();
 	}
