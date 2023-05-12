@@ -22,6 +22,7 @@
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/calls/ @AyakorK @Maghwyn
 /back-end/src/base/calls/calls.module.ts @Maghwyn @Loule95450
+/back-end/src/base/calls/calls.repository.ts @Maghwyn
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @Loule95450
@@ -33,7 +34,7 @@
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/materials.repository.ts @Maghwyn @RuKaSuu @Loule95450
-/back-end/src/base/materials/materials.service.ts @RuKaSuu @AyakorK
+/back-end/src/base/materials/materials.service.ts @Maghwyn @RuKaSuu
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
