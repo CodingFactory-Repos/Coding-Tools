@@ -63,7 +63,7 @@
 				class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3"
 				v-if="disciplinesLiked.length > 0"
 			>
-				<span class="text-ligh-font dark:text-dark-font pb-2 text-sm font-bold">Disciplines Liked</span>
+				<span class="text-black dark:text-dark-font pb-2 text-sm font-bold">Disciplines Liked</span>
 				<ul class="w-full flex flex-wrap gap-2 justify-center items-center">
 					<li v-for="(value, index) in disciplinesLiked" :key="`${value}_${index}`">
 						<span class="flex items-center justify-center gap-1.5 bg-[#b54593] px-[5px] py-[1px] rounded">{{ value }}</span>
@@ -74,14 +74,13 @@
 				class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3"
 				v-if="role !== Roles.PRODUCT_OWNER && disciplinesTaught.length > 0"
 			>
-				<span class="text-ligh-font dark:text-dark-font pb-2 text-sm font-bold">Disciplines Taught</span>
+				<span class="text-black dark:text-dark-font pb-2 text-sm font-bold">Disciplines Taught</span>
 				<ul class="w-full flex flex-wrap gap-2 justify-center items-center">
 					<li v-for="(value, index) in disciplinesTaught" :key="`${value}_${index}`">
 						<span class="flex items-center justify-center gap-1.5 bg-[#79518e] px-[5px] py-[1px] rounded">{{ value }}</span>
 					</li>
 				</ul>
 			</div>
-			<!-- <div class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight"></div> -->
 		</div>
 	</div>
 </template>
@@ -159,7 +158,7 @@ onMounted(() => {
 	}
 
 	& * .stat, & * .rank-text {
-		fill: #9ca3af;
+		fill: #000000;
 	}
 
 	& * .header {
@@ -171,7 +170,17 @@ onMounted(() => {
 	}
 
 	& > rect {
-		fill: #21222b;
+		fill: #f3f4f6;
+	}
+}
+
+html.dark .stat-svg-dark > svg {
+	& * .stat, & * .rank-text {
+		fill: #9ca3af !important;
+	}
+
+	& > rect {
+		fill: #21222b !important;
 	}
 }
 </style>
