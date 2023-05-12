@@ -2,6 +2,7 @@
 	<div class="w-full flex relative shadow bg-light-primary dark:bg-dark-secondary rounded-lg flex-col md:flex-row gap-0">
 		<div class="relative min-w-[15rem] w-full md:max-w-[19rem] h-[4rem] sm:h-[6.5rem] flex justify-center items-center z-0">
 			<ButtonIcon
+				v-if="canEdit"
 				@click="() => !edit ? $emit('open') : $emit('close')"
 				class="absolute gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow"
 			>
@@ -89,6 +90,7 @@ import { mergeObjects } from '@/utils/mergeObjects';
 const props = defineProps<{
 	profile: Partial<UserProfile>,
 	schoolProfile: Partial<UserSchoolProfile>,
+	canEdit: boolean,
 	edit: boolean,
 }>();
 
