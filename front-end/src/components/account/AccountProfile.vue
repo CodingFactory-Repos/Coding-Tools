@@ -86,7 +86,8 @@ const props = defineProps<{
 	profile: Partial<UserProfile>,
 	schoolProfile: Partial<UserSchoolProfile>,
 	businessProfile: Partial<UserBusinessProfile>,
-	role: Roles;
+	id: string,
+	role: Roles,
 }>();
 
 const profile = computed(() => props?.profile);
@@ -120,9 +121,11 @@ const season = computed(() => {
 
 const svgGithubStat = ref<string>();
 onMounted(() => {
-	http.get("users/github/stats")
-	.then(response => svgGithubStat.value = response.data)
-	.catch((err: AxiosError) => { console.error(err.message) });
+	if(profile.value.githubProfile) {
+		http.get(`users/github/stats/${props.id}`)
+			.then(response => svgGithubStat.value = response.data)
+			.catch((err: AxiosError) => { console.error(err.message) });
+	}
 })
 </script>
 
