@@ -115,5 +115,3 @@ onMounted(async () => {
 	await materialStore.getMaterials();
 });
 </script>
-
-<style scoped></style>

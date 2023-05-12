@@ -146,7 +146,10 @@ export class CallsRepository {
 		return classroom.students;
 	}
 	async getStudentList(studentIdList: Array<ObjectId>) {
-		const studentList = await this.db.collection('users').find({ _id: { $in: studentIdList } }).toArray();
+		const studentList = await this.db
+			.collection('users')
+			.find({ _id: { $in: studentIdList } })
+			.toArray();
 		return studentList;
 	}
 }

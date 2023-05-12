@@ -1,11 +1,11 @@
 import {
+	Body,
 	Controller,
 	Delete,
 	Get,
 	Param,
 	Post,
 	Put,
-	Req,
 	Res,
 	UseFilters,
 	UseGuards,
@@ -15,11 +15,12 @@ import { Response } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { MaterialsService } from 'src/base/materials/materials.service';
 import { ObjectId } from 'mongodb';
-import { Jwt } from '@/common/decorators/jwt.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
+import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/materials.dto';
 
 @Controller('materials')
 @UseFilters(ServiceErrorCatcher)
+@UseGuards(JwtAuthGuard)
 export class MaterialsController {
 	constructor(private readonly materialsService: MaterialsService) {}
 
@@ -29,65 +30,66 @@ export class MaterialsController {
 			res.status(200).json(materials);
 		});
 	}
+
 	@Post('/create')
-	createMaterial(@Req() req, @Res() res: Response) {
-		this.materialsService.createNewMaterial(req.body).then((material) => {
+	async createMaterial(@Body() body: DTOCreateMaterials, @Res() res: Response) {
+		await this.materialsService.createNewMaterial(body).then((material) => {
 			res.status(200).json(material);
 		});
 	}
+
 	@Put('/update/:id')
-	updateMaterial(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
-		const update = { $set: req.body };
+	updateMaterial(@Param('id') id: string, @Body() body: DTOMaetrials, @Res() res: Response) {
+		const query = { _id: new ObjectId(id) };
+		const update = { $set: body };
 		this.materialsService.updateMaterial(query, update).then((material) => {
 			res.status(200).json(material);
 		});
 	}
+
 	@Put('reservation/:id')
-	addReservation(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
-		const update = { $push: { borrowingHistory: req.body.borrowingHistory } };
+	addReservation(
+		@Param('id') id: string,
+		@Body() body: DTOBorrowingMaterial,
+		@Res() res: Response,
+	) {
+		const query = { _id: new ObjectId(id) };
+
 		// Transform the borrowingUser in ObjectId
-		update.$push.borrowingHistory.borrowingUser = new ObjectId(
-			update.$push.borrowingHistory.borrowingUser,
-		);
+		const update = {
+			$push: { borrowingHistory: { ...body, borrowingUser: new ObjectId(body.borrowingUser) } },
+		};
+
+		console.log(update);
 		this.materialsService.addReservation(query, update).then((material) => {
 			res.status(200).json(material);
 		});
 	}
 
 	@Delete('/delete/:id')
-	deleteMaterial(@Req() req, @Res() res: Response) {
-		const query = { _id: new ObjectId(req.params.id) };
+	deleteMaterial(@Param('id') id: string, @Res() res: Response) {
+		const query = { _id: new ObjectId(id) };
 		this.materialsService.deleteMaterial(query).then((material) => {
 			res.status(200).json(material);
 		});
 	}
-	@Get('/user')
-	@UseGuards(JwtAuthGuard)
-	async getCurrentUser(@Jwt() userId: ObjectId, @Res() res: Response) {
-		const user = userId;
-		res.status(200).json(user);
-	}
 
 	@Get('get/:id')
-	async getMaterialById(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	async getMaterialById(@Param('id') id: string, @Res() res: Response) {
 		const material = await this.materialsService.getMaterialById(id);
+		delete material._id;
 		res.status(200).json(material);
 	}
 
 	@Get('user/:id')
-	getUserInfo(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	getUserInfo(@Param('id') id: string, @Res() res: Response) {
 		this.materialsService.getUserInfo(id).then((response) => {
 			res.status(200).json(response);
 		});
 	}
 
 	@Get('user/role/:id')
-	getUserRole(@Req() req, @Res() res: Response) {
-		const id = req.params.id;
+	getUserRole(@Param('id') id: string, @Res() res: Response) {
 		this.materialsService.getUserRole(id).then((response) => {
 			res.status(200).json(response.role);
 		});

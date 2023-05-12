@@ -14,19 +14,16 @@
 			</thead>
 			<tbody>
 				<tr
-					v-for="history in history"
-					:key="history.id"
+					v-for="histoire in history"
+					:key="histoire.id"
 					class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
 				>
-					<td
-						scope="row"
-						class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-					>
+					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 						{{ userInfo.profile.email }}
 					</td>
-					<td class="px-6 py-4">{{ history.borrowingDate }}</td>
-					<td class="px-6 py-4">{{ history.returnDate }}</td>
-					<td class="px-6 py-4">{{ history.description }}</td>
+					<td class="px-6 py-4">{{ histoire.borrowingDate }}</td>
+					<td class="px-6 py-4">{{ histoire.returnDate }}</td>
+					<td class="px-6 py-4">{{ histoire.description }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -48,7 +45,7 @@ export default {
 			required: true,
 		},
 	},
-	setup(props) {
+	setup() {
 		const data = toRefs(
 			defineProps({
 				history: {
@@ -63,11 +60,8 @@ export default {
 		);
 
 		return {
-			...props,
 			...data,
 		};
 	},
 };
 </script>
-
-<style scoped></style>

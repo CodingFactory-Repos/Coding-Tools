@@ -84,8 +84,6 @@
 	</div>
 </template>
 
-<script></script>
-
 <style>
 .groups {
 	display: flex;
