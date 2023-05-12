@@ -34,7 +34,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
+				<div class="relative hidden absolute bottom-0 left-0 justify-center gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
 					<ButtonIcon @click="openLogoutModal">
 						<SvgLogout/>
 					</ButtonIcon>
