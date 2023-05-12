@@ -62,6 +62,13 @@ export interface Notifications {
 	// À définir
 }
 
+export interface UserProfileList {
+	picture: string;
+	firstName: string;
+	lastName: string;
+	id: string;
+}
+
 //! What's the point of this ?
 export interface AcademicYear {
 	title: string;
