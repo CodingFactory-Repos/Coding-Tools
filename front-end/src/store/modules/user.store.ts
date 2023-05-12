@@ -5,13 +5,14 @@ import { withErrorHandler } from '@/utils/storeHandler';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { UserStore } from '@/store/interfaces/user.interface';
 import { STATUS } from '@/store/interfaces/axios.interface';
-import { tryGetClassProfileList, trySaveUserProfile } from '@/api/user-req';
+import { tryGetClassProfileList, trySaveUserProfile, tryGetRelatedUserProfile } from '@/api/user-req';
 
 const userStoreDefaultState = (): UserStore => ({
 	temporaryProfileUser: {},
 	saveActionTriggered: false,
 	uploadWaitingList: [],
-	relatedProfile: [],
+	relatedProfiles: [],
+	relatedUserProfile: {},
 });
 
 export const useUserStore = defineStore('user', {
@@ -37,7 +38,15 @@ export const useUserStore = defineStore('user', {
 			if (res.data.status !== STATUS.OK)
 				throw new Error('The returned status was not expected');
 			
-			this.relatedProfile = res.data.users;
+			this.relatedProfiles = res.data.users;
+			return true;
+		}),
+		getRelatedUserProfile: withErrorHandler(async function(this: UserStore, id: string) {
+			const res = await tryGetRelatedUserProfile(id);
+			if (res.data.status !== STATUS.OK)
+				throw new Error('The returned status was not expected');
+
+			this.relatedUserProfile = res.data;
 			return true;
 		}),
 		reset(this: UserStore, keys?: Array<KeysRequired<UserStore>>) {
