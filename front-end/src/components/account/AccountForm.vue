@@ -35,9 +35,11 @@
 						v-model="profileForm.profile.birthDate"
 						:is-24="false"
 						class="dp_input__theme_custom"
+						:class="{ 'dp_input__light_theme_custom': !isDark, 'dp_input__dark_theme_custom': isDark }"
 						:max-date="thirteenYearsAgo"
 						:min-date="ninetyYearAgo"
 						:start-date="thirteenYearsAgo"
+						:dark="isDark"
 					/>
 				</AccountFormField>
 				<AccountFormField
@@ -166,12 +168,14 @@
 						<VueDatePicker
 							v-model="profileForm.businessProfile.workingDuration"
 							class="dp_input__theme_custom"
+							:class="{ 'dp_input__light_theme_custom': !isDark, 'dp_input__dark_theme_custom': isDark }"
 							:enable-time-picker="false"
 							:partial-range="true"
 							range
 							:max-date="fiveYearLater"
 							:min-date="seventySevenYearAgo"
 							:start-date="today"
+							:dark="isDark"
 						/>
 					</AccountFormField>
 					<AccountFormField
@@ -249,6 +253,7 @@ import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
 import { useUserStore } from '@/store/modules/user.store';
 import { filterInvalidProperties } from '@/utils/filterInvalidProperties';
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
+import { useThemeStore } from '../../store/modules/theme.store';
 
 // <AccountFormField
 // 	label="Enable 2FA"
@@ -266,6 +271,9 @@ const props = defineProps<{
 	businessProfile: Partial<UserBusinessProfile>,
 	role: Roles;
 }>();
+
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.theme);
 
 const profileForm = reactive({
 	profile: {
@@ -412,12 +420,48 @@ const disciplinesLikedUnselected = (value: string) => {
 		outline: none !important;
 	}
 	--dp-background-color: transparent !important;
-	--dp-text-color: #ffffff !important;
-	--dp-icon-color: #ffffff !important;
 	--dp-border-color-hover: #1C64F2 !important;
 }
 
+.dp_input__dark_theme_custom {
+	--dp-text-color: #ffffff !important;
+	--dp-icon-color: #ffffff !important;
+}
+
+.dp_input__light_theme_custom {
+	--dp-text-color: #000000 !important;
+	--dp-icon-color: #000000 !important;
+}
+
+html:not(.dark) {
+	& .dp__active_date, & .dp__action_select:hover, & .dp__overlay_cell_active, & .dp__range_end, & .dp__range_start {
+		color: #ffffff !important;
+	}
+}
+
 .dp__theme_light {
+	--dp-background-color: #f3f4f6;
+	--dp-text-color: #383838;
+	--dp-hover-color: #dedede !important;
+	--dp-hover-text-color: #1e1e1e !important;
+	--dp-hover-icon-color: #959595 !important;
+	--dp-primary-color: #ad438f !important;
+	--dp-primary-text-color: #000000 !important;
+	--dp-secondary-color: #a9a9a9 !important;
+	--dp-border-color: #6B7280 !important;
+	--dp-menu-border-color: #6B7280 !important;
+	--dp-border-color-hover: #aaaeb7;
+	--dp-disabled-color: #737373 !important;
+	--dp-scroll-bar-background: #cccccc !important;
+	--dp-scroll-bar-color: #484848 !important;
+	--dp-success-color: #00701a !important;
+	--dp-success-color-disabled: #428f59 !important;
+	--dp-icon-color: #6B7280;
+	--dp-danger-color: #e53935 !important;
+	--dp-highlight-color: rgba(0, 92, 178, 1) !important;
+}
+
+.dp__theme_dark {
 	--dp-background-color: #2c2e3a;
 	--dp-text-color: #9ca3af;
 	--dp-hover-color: #434556 !important;
