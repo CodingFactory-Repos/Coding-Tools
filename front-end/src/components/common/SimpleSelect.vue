@@ -14,7 +14,7 @@
 					class="cursor-pointer relative w-full min-h-[36px] rounded-md border border-[#6B7280] py-1.5 px-2 pr-6 text-left focus:outline-none focus:border-[#1C64F2] transition ease-in-out duration-150 sm:text-sm sm:leading-5"
 				>
 					<div class="flex items-center gap-2 flex-wrap">
-						<span class="block truncate" v-if="!multy">
+						<span class="block truncate text-black dark:text-white" v-if="!multy">
 							{{ value }}
 						</span>
 						<span 
@@ -28,7 +28,7 @@
 						</span>
 					</div>
 					<span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-						<SvgExpandArrow width="17" height="17"/>
+						<SvgExpandArrow width="17" height="17" class="fill-black dark:fill-white"/>
 					</span>
 				</button>
 			</div>
@@ -52,16 +52,12 @@
 					>
 						<div class="flex items-center space-x-3">
 							<span
-								class="block truncate text-ligh-font dark:text-dark-font hover:!text-white"
+								class="block truncate text-black dark:text-dark-font hover:!text-white"
 								:class="{ 'font-normal' : !isSelected(option) , 'font-semibold' : isSelected(option)}"
 							>
 								{{ option }}
 							</span>
 						</div>
-
-						<span v-show="isSelected(option)" class="absolute inset-y-0 right-0 flex items-center pr-4">
-							<SvgRoundCheck class="!fill-[#b54593]"/>
-						</span>
 					</li>
 				</ul>
 			</div>
@@ -71,7 +67,6 @@
 
 <script lang="ts" setup>
 import SvgExpandArrow from '@/components/common/svg/ExpandArrow.vue';
-import SvgRoundCheck from '@/components/common/svg/RoundCheck.vue';
 import { useSelect } from '@/composables/useSelect';
 import { computed } from 'vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
