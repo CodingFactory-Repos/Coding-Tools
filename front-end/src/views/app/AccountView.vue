@@ -31,9 +31,9 @@
 						:role="role"
 					/>
 
-					<div class="flex h-full flex-col gap-3 w-full sm:w-fit">
+					<div class="flex h-full flex-col gap-3 w-full sm:w-fit ">
 						<!-- <div class="stat-svg grow" v-html="svgGithubLanguages"/> -->
-						<div class="h-full flex flex-col rounded-lg bg-light-primary dark:bg-dark-highlight min-w-[350px] overflow-y-scroll p-2 w-full">
+						<div class="h-full flex flex-col rounded-lg bg-light-primary dark:bg-dark-highlight min-w-[300px] min-h-[388px] overflow-y-scroll p-2 w-full">
 							<span class="w-full flex justify-center text-sm pb-2">{{ schoolProfile.groupName }}</span>
 							<template v-if="relatedProfile.length > 0">
 								<div
