@@ -72,7 +72,7 @@
 			</div>
 			<div
 				class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3"
-				v-if="role !== Roles.PRODUCT_OWNER && disciplinesTaught.length > 0"
+				v-if="role === Roles.PRODUCT_OWNER && disciplinesTaught.length > 0"
 			>
 				<span class="text-black dark:text-dark-font pb-2 text-sm font-bold">Disciplines Taught</span>
 				<ul class="w-full flex flex-wrap gap-2 justify-center items-center">
