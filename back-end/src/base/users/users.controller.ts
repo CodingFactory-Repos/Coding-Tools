@@ -1,6 +1,6 @@
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { Body, Controller, Get, Patch, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { UsersService } from '@/base/users/users.service';
@@ -10,10 +10,10 @@ import { ProfileBodyDTO } from '@/base/users/dto/users.dto';
 export class UsersController {
 	constructor(private readonly usersService: UsersService) {}
 	
-	@Get("github/stats")
+	@Get("github/stats/:id")
 	@UseGuards(JwtAuthGuard)
-	async getGithubStat(@Jwt() userId: ObjectId, @Res() res: Response) {
-		const document = await this.usersService.getGithubStat(userId);
+	async getGithubStat(@Param('id') id: string, @Res() res: Response) {
+		const document = await this.usersService.getGithubStat(id);
 		if(document === null)
 			return res.status(200).send(null);
 
@@ -44,5 +44,12 @@ export class UsersController {
 	async getUserProfileList(@Jwt() userId: ObjectId, @Res() res: Response) {
 		const usersListInfo = await this.usersService.getUserProfileList(userId);
 		return res.status(200).json({ status: "ok", users: usersListInfo })
+	}
+
+	@Get("profile/:id")
+	@UseGuards(JwtAuthGuard)
+	async getRelatedUserProfile(@Param('id') id: string, @Res() res: Response) {
+		const { user, related } = await this.usersService.getRelatedUserProfile(id);
+		return res.status(200).json({ status: "ok", user, related });
 	}
 }
