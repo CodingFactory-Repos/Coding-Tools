@@ -106,4 +106,18 @@ export class UsersService {
 		return userListInfo;
 	}
 
+	async getRelatedUserProfile(id: string) {
+		try {
+			if(!id && id === "null") throw new Error();
+			const userId = new ObjectId(id)
+			const query = { _id: userId };
+			const user = await this.usersRepository.findOne(query, USER_RELATED_PROFILE);
+			if(!user)  throw new Error();
+			
+			const userListInfo = await this.getUserProfileList(userId);
+			return { user, related: userListInfo };
+		} catch(err) {
+			throw new ServiceError("BAD_REQUEST", "Invalid payload")
+		}
+	}
 }
