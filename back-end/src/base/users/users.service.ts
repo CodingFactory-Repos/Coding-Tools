@@ -2,10 +2,11 @@ import { ObjectId } from 'mongodb';
 import { Inject, Injectable, forwardRef, Logger as NestLogger } from '@nestjs/common';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ServiceError } from '@/common/decorators/catch.decorator';
-import { USER_GITHUB_PROJECTION, USER_GROUPNAME_PROJECTION, USER_PROFILE_LIST_PROJECTION } from '@/base/users/utils/users.projection';
+import { USER_GITHUB_PROJECTION, USER_GROUPNAME_PROJECTION, USER_PROFILE_LIST_PROJECTION, USER_RELATED_PROFILE } from '@/base/users/utils/users.projection';
 import axios, { AxiosResponse } from 'axios';
 import { ProfileBodyDTO } from '@/base/users/dto/users.dto';
 import { flatten } from 'mongo-dot-notation';
+import { UserProfileList } from './interfaces/users.interface';
 
 @Injectable()
 export class UsersService {
@@ -18,11 +19,12 @@ export class UsersService {
 	private readonly githubStatLinkTemplate = "https://github-readme-stats-sigma-five.vercel.app/api?username=$USERNAME$&theme=jolly&hide_border=false&include_all_commits=true&count_private=true";
 	private readonly githubLanguagesLinkTemplate = "https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=$USERNAME$&theme=jolly&hide_border=false&include_all_commits=true&count_private=true&layout=compact";
 
-	async getGithubStat(userId: ObjectId) {
-		const githubProfile = await this._getGithubProfile(userId);
-		if(!githubProfile && githubProfile !== "") return null;
-
+	async getGithubStat(id: string) {
 		try {
+			const userId = new ObjectId(id);
+			const githubProfile = await this._getGithubProfile(userId);
+			if(!githubProfile && githubProfile !== "") return null;
+
 			const githubUsername = "Maghwyn" ?? githubProfile.match(this.githubUserRegex)[0];
 			const document = await axios.get(this.githubStatLinkTemplate.replace("$USERNAME$", githubUsername))
 				.then((response: AxiosResponse) => response.data as string);
@@ -83,7 +85,7 @@ export class UsersService {
 			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressources")
 		}
 
-		const usersListInfo = await this.usersRepository.findMany(
+		const usersList = await this.usersRepository.findMany(
 			{
 				"schoolProfile.groupName": user.schoolProfile.groupName,
 				_id: { $ne: userId }
@@ -91,6 +93,17 @@ export class UsersService {
 			USER_PROFILE_LIST_PROJECTION,
 		);
 
-		return usersListInfo ?? [];
+		const userListInfo: Array<UserProfileList> = [];
+		for(let n = 0; n < usersList.length; n++) {
+			userListInfo.push({
+				picture: usersList[n].profile.picture,
+				firstName: usersList[n].profile.firstName,
+				lastName: usersList[n].profile.lastName,
+				id: usersList[n]._id.toString(),
+			})
+		}
+
+		return userListInfo;
 	}
+
 }
