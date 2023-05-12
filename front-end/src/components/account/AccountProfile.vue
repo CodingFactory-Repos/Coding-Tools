@@ -7,24 +7,25 @@
 				</p>
 			</div>
 		</div>
-		<div class="w-full flex gap-3 flex-wrap flex-row grow">
+		<div
+			class="w-full flex gap-3 flex-wrap flex-row grow"
+			v-if="phone || location || !isNaN(+birthDate)"
+		>
 			<div class="grow basis-60 w-full flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
-				<template v-if="phone || location || !isNaN(+birthDate)">
-					<div class="grow w-full flex flex-col justify-start items-start gap-2">
-						<div class="flex gap-2 justify-center items-center" v-if="phone">
-							<SvgPhone width="30" height="30" class="dark:fill-lighter-icon"/>
-							<span class="text-sm text-black dark:text-dark-font">+33 {{ phone.replace(/^(.)(..?)?(..?)?(..?)?(..?)?$/g, "$1 $2 $3 $4 $5")?.trim() }}</span>
-						</div>
-						<div class="flex gap-2 justify-center items-center" v-if="!isNaN(+birthDate)">
-							<SvgCalendar width="30" height="30" class="dark:fill-lighter-icon"/>
-							<span class="text-sm text-black dark:text-dark-font">{{ birthDate.toLocaleDateString() }}</span>
-						</div>
-						<div class="flex gap-2 justify-center items-center" v-if="location">
-							<SvgMarker width="30" height="30" class="dark:fill-lighter-icon"/>
-							<span class="text-sm text-black dark:text-dark-font">{{ location }}</span>
-						</div>
+				<div class="grow w-full flex flex-col justify-start items-start gap-2">
+					<div class="flex gap-2 justify-center items-center" v-if="phone">
+						<SvgPhone width="30" height="30" class="dark:fill-lighter-icon"/>
+						<span class="text-sm text-black dark:text-dark-font">+33 {{ phone.replace(/^(.)(..?)?(..?)?(..?)?(..?)?$/g, "$1 $2 $3 $4 $5")?.trim() }}</span>
 					</div>
-				</template>
+					<div class="flex gap-2 justify-center items-center" v-if="!isNaN(+birthDate)">
+						<SvgCalendar width="30" height="30" class="dark:fill-lighter-icon"/>
+						<span class="text-sm text-black dark:text-dark-font">{{ birthDate.toLocaleDateString() }}</span>
+					</div>
+					<div class="flex gap-2 justify-center items-center" v-if="location">
+						<SvgMarker width="30" height="30" class="dark:fill-lighter-icon"/>
+						<span class="text-sm text-black dark:text-dark-font">{{ location }}</span>
+					</div>
+				</div>
 			</div>
 			<div
 				v-if="companyJob || companyName || season || companyLink || companyLogo"
@@ -49,8 +50,19 @@
 				</div>
 			</div>
 		</div>
-		<div class="w-full flex gap-3 flex-wrap flex-row grow">
-			<div class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3">
+		<div
+			class="stat-svg-dark absolute mt-3.5 mr-3.5 sm:mt-0 sm:mr-2 md:mt-10 md:mr-6 top-0 right-0"
+			v-if="svgGithubStat !== undefined"
+			v-html="svgGithubStat"
+		/>
+		<div
+			class="w-full flex gap-3 flex-wrap flex-row grow"
+			v-if="disciplinesLiked.length > 0 || disciplinesTaught.length > 0"
+		>
+			<div
+				class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3"
+				v-if="disciplinesLiked.length > 0"
+			>
 				<span class="text-ligh-font dark:text-dark-font pb-2 text-sm font-bold">Disciplines Liked</span>
 				<ul class="w-full flex flex-wrap gap-2 justify-center items-center">
 					<li v-for="(value, index) in disciplinesLiked" :key="`${value}_${index}`">
@@ -58,7 +70,10 @@
 					</li>
 				</ul>
 			</div>
-			<div class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3" v-if="role !== Roles.PRODUCT_OWNER">
+			<div
+				class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3"
+				v-if="role !== Roles.PRODUCT_OWNER && disciplinesTaught.length > 0"
+			>
 				<span class="text-ligh-font dark:text-dark-font pb-2 text-sm font-bold">Disciplines Taught</span>
 				<ul class="w-full flex flex-wrap gap-2 justify-center items-center">
 					<li v-for="(value, index) in disciplinesTaught" :key="`${value}_${index}`">
@@ -66,8 +81,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="stat-svg-dark absolute mt-3.5 mr-3.5 sm:mt-0 sm:mr-2 md:mt-10 md:mr-6 top-0 right-0" v-html="svgGithubStat"/>
-			<div class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight"></div>
+			<!-- <div class="grow basis-60 flex flex-col rounded-lg p-4 bg-light-primary dark:bg-dark-highlight"></div> -->
 		</div>
 	</div>
 </template>
