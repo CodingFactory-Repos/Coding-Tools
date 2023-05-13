@@ -19,18 +19,24 @@ import {
 	verifyPassword,
 	generateRandomToken,
 	generateCodeToken,
+	capitalizeString,
 } from '@/common/helpers/string.helper';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 import { PROJECTION_CURRENT_USER } from '@/auth/utils/auth.projection';
+import { AllowedStudentsRepository } from '@/base/users/allowed.students.repository';
 
 @Injectable()
 export class AuthService {
 	constructor(
 		@Inject(forwardRef(() => UsersRepository))
+		@Inject(forwardRef(() => AllowedStudentsRepository))
 		private usersRepository: UsersRepository,
+		private allowedStudentsRepository: AllowedStudentsRepository,
 		private authEventEmitter: AuthEventEmitter,
 		private jwtTokenService: JwtService,
 	) {}
+
+	private readonly allowedEmailDomain = /@edu.itescia.fr|@edu.esiee-it.fr|@edu.cfi-formations.fr/i;
 
 	async signup(payload: DTOAuthSignup) {
 		const user = payload as AuthSignup;
@@ -38,6 +44,9 @@ export class AuthService {
 		if (userExist) throw new ServiceError('BAD_REQUEST', 'Error 400');
 
 		const { email, password, role } = user;
+		//! WARNING : Enable this line for production
+		// if(!this.allowedEmailDomain.test(email)) throw new ServiceError('BAD_REQUEST', 'Error 400');
+
 		const hashedPassword = await credentialsPassword(password);
 		const activationToken = generateCodeToken();
 		const profile = { email };
@@ -53,11 +62,31 @@ export class AuthService {
 			activationToken,
 		};
 
+		const allowedUser = await this.allowedStudentsRepository.findOne({ email: email });
+		if(allowedUser !== null) {
+			newUser.profile.firstName = allowedUser.firstName;
+			newUser.profile.lastName = allowedUser.lastName;
+			newUser.schoolProfile = { groupName: allowedUser.group };
+		} else if(this.allowedEmailDomain.test(email)) {
+			const [lfn, lln] = email
+				.replace(this.allowedEmailDomain, "")
+				.replace("-", " ")
+				.split(".");
+			const firstName = capitalizeString(lfn.toLowerCase());
+			const lastName = lln.toUpperCase();
+
+			newUser.profile.firstName = firstName;
+			newUser.profile.lastName = lastName;
+			newUser.schoolProfile = { groupName: "unknown" };
+		}
+
 		//! This will send a validation email to the admin.
 		//! The PO will be able to use the website as a student in the meantime.
 		if (user.role === Roles.productOwner) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupProductOwner(email);
+		} else if(user.role === Roles.student && allowedUser === null) {
+			
 		}
 
 		this.usersRepository.createUser(newUser);
