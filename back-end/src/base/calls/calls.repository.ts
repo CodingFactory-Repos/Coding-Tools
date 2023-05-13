@@ -172,6 +172,7 @@ export class CallsRepository {
 
 		return classroom.students;
 	}
+
 	async getStudentList(courseId: string, studentIdList: Array<ObjectId>) {
 		const studentList = await this.db
 			.collection('users')
@@ -185,6 +186,7 @@ export class CallsRepository {
 			const presence = await this.getStudentPresence(courseId, studentId);
 			studentList[i] = { ...student, presence: presence };
 		}
+
 		return studentList;
 	}
 	async getStudentIdentity(userId: ObjectId) {

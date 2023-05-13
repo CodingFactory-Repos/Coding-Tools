@@ -89,9 +89,8 @@ let detailsModal = ref(false);
 let cardId = ref('');
 let currentUserId = ref('');
 
-http.get('/materials/user').then((res) => {
-	console.log(res.data);
-	currentUserId.value = res.data;
+http.get('auth/me').then((res) => {
+	currentUserId.value = res.data.user._id;
 });
 
 function openModalByRef(ref, identifiant) {
