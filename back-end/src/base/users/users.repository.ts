@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions } from 'mongodb';
-import { User } from './interfaces/users.interface';
-import { Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions, Db } from 'mongodb';
+import { User } from '@/base/users/interfaces/users.interface';
 
 @Injectable()
 export class UsersRepository {
