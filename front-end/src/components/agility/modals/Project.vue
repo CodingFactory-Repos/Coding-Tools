@@ -19,9 +19,9 @@
 						</div>
 						<div class="flex gap-4 w-full">
 							<div class="h-full flex flex-col justify-start items-start gap-4">
-								<span class="text-sm">Owner</span>
-								<span class="text-sm">Created</span>
-								<span class="text-sm">Updated</span>
+								<span class="text-sm text-black dark:text-white">Owner</span>
+								<span class="text-sm text-black dark:text-white">Created</span>
+								<span class="text-sm text-black dark:text-white">Updated</span>
 							</div>
 							<div class="h-full flex flex-col justify-start items-start gap-4">
 								<span class="text-sm text-black dark:text-white">Owner Name (todo)</span>
@@ -57,13 +57,13 @@
 	</ModalOverlay>
 	<ModalOverlay v-if="showWarningModal" @close="exitProjectMeta" size="lg">
 		<template #body>
-			<div class="flex flex-col gap-4">
-				<SvgInfo width="40" height="40"/>
+			<div class="flex flex-col gap-4 justify-center items-center">
+				<SvgInfo width="40" height="40" class="fill-yellow-400"/>
 				<div class="flex w-full gap-4 justify-center items-center">
-					<span class="mt-1">You have unsaved changes</span>
+					<span class="mt-1 text-black dark:text-white">You have unsaved changes</span>
 				</div>
 				<div class="flex w-full justify-center items-center">
-					<span class="tex-">Are you sure you want to proceed without saving ?</span>
+					<span class="text-black dark:text-white">Are you sure you want to proceed without saving ?</span>
 				</div>
 			</div>
 		</template>
@@ -74,7 +74,7 @@
 					type="button"
 					text="Yes"
 					text-style="text-white hover:text-white"
-					background="bg-[#763131] hover:bg-[#763131cc]"
+					background="bg-[#c61717cc] hover:bg-[#a01e1ecc]"
 					:disabled="!isFormValid"
 				/>
 
@@ -83,7 +83,8 @@
 					type="button"
 					text="No, save the change"
 					color="text-white hover:text-white"
-					background="bg-[#2e4573] hover:bg-[#2e4573cc]"
+					text-style="text-white hover:text-white"
+					background="bg-[#013aaacc] hover:bg-[#173f8ecc]"
 					:disabled="!isFormValid"
 				/>
 			</div>
