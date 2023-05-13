@@ -20,7 +20,6 @@
 	margin: 0;
 
 	font-family: Inter, sans-serif;
-	color: #666;
 	-moz-osx-font-smoothing: grayscale;
 }
 
@@ -53,7 +52,7 @@ h1 {
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	background-color: #e8e8e8;
 	cursor: pointer;
 	transition: border-color 0.25s;
 }

@@ -1,44 +1,35 @@
-import { Scene } from '@/lib/pixi-tools/scene';
+import { Scene } from '@/lib/pixi-tools-v2/scene';
+import { LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 
 export interface ProjectStore {
 	scene: Scene;
 	canvas: HTMLCanvasElement;
-	action: ProjectAction;
-	meta: Partial<ProjectMetaDetails>;
-	viewportBounds: ViewportBounds;
+	deferredGeometry: LiteralGeometryTypes;
+	default: boolean;
+	selectionBox: SelectionBox;
+	onFullscreen: boolean;
+	immersion: boolean;
+	viewportDefaultPos: ViewportDefaultPosition;
+	selectedFrameNumber: number;
 
-	setScene?: (scene: Scene) => void;
-	setCanvas?: (canvas: HTMLCanvasElement) => void;
-	setAction?: (cursor: string, target: number) => void;
-	updateCursor?: (cursor: string) => void;
-	activateFocusMode?: () => boolean;
-	deactivateFocusMode?: () => void;
-	_createCanvasElement?: () => void;
+	getZoom?: () => number;
+	getFrames?: () => Array<number>;
+
+	toggleImmersion?: () => void;
+	removeGeometryEvent?: () => void;
+	enableSelectionBox?: (destroy?: boolean) => void;
+	setDeferredEvent?: (cursor: CSSStyleProperty.Cursor, framed: boolean) => void;
+	createGeometry?: () => void;
+	createFramedGeometry?: () => void;
+	increaseZoom?: () => void;
+	decreaseZoom?: () => void;
+	setFrameCanvas?: (frameNumber: number) => void;
+	setDefaultCanvas?: () => void;
+	canvasDownload?: (mime: string) => void;
 }
 
-export interface ProjectMetaDetails {
-	title: string;
-	owner: string;
-	description: string;
-	createdAt: string | Date;
-	updatedAt: string | Date;
-}
-
-export interface ProjectAction {
-	cursor: string;
-	target: number;
-}
-
-export enum Target {
-	DEFAULT = 0,
-	TEXT = 1,
-	POSTIT = 2,
-	FRAME = 3,
-}
-
-export interface ViewportBounds {
-	posX: number;
-	posY: number;
-	scaleX: number;
-	scaleY: number;
+export interface ViewportDefaultPosition {
+	scale?: { x: number; y: number };
+	pos?: { x: number; y: number };
 }
