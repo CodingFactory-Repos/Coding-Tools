@@ -348,7 +348,6 @@ const numberFormat = (e: InputEvent) => {
 	if(isEmpty(trimed)) {
 		phoneFormat.value = "";
 		profileForm.profile.phone = "";
-		return;
 	} else {
 		let sanitized = parseInt(trimed).toString();
 		if(sanitized.length > 9)
