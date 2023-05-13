@@ -1,6 +1,6 @@
 <template>
 	<div class="w-full h-full flex flex-col gap-3 items-start justify-start">
-		<div class="h-full w-full flex-col flex-wrap gap-3 items-start">
+		<div class="h-fit w-full flex-col flex-wrap gap-3 items-start">
 			<div class="h-fit flex w-full justify-center rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-5">
 				<p class="text-sm italic text-black dark:text-dark-font">
 					{{ profileResume }}

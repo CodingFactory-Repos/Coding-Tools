@@ -26,7 +26,7 @@
 				<span v-if="age" class="text-black dark:text-dark-font text-sm">{{ age }} ans</span>
 			</div>
 			<div class="flex h-full grow gap-3 justify-end items-center">
-				<div class="flex flex-col h-full gap-2 justify-between items-end">
+				<div class="flex flex-col h-full gap-2 justify-end items-end">
 					<template v-if="!edit">
 						<div class="flex gap-3 justify-end">
 							<ButtonIcon
