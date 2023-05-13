@@ -15,7 +15,7 @@ export class UsersService {
 		private usersRepository: UsersRepository,
 	) {}
 
-	private readonly githubUserRegex = /^https:\/\/github\.com\/([^\/?&]+)/i;
+	private readonly githubUserRegex = /^https:\/\/github\.com\/([^/?&]+)/i;
 	private readonly githubStatLinkTemplate = "https://github-readme-stats-sigma-five.vercel.app/api?username=$USERNAME$&theme=jolly&hide_border=false&include_all_commits=true&count_private=true";
 	private readonly githubLanguagesLinkTemplate = "https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=$USERNAME$&theme=jolly&hide_border=false&include_all_commits=true&count_private=true&layout=compact";
 
