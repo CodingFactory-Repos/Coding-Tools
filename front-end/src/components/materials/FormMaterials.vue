@@ -64,20 +64,19 @@ export default {
 			}),
 		);
 
-		let today = new Date().toISOString().substr(0, 10);
+		let today = new Date().toISOString().substring(0, 10);
 		let borrowingDate = '';
 		let borrowingUser = '';
 		let description = '';
 		let returnDate = '';
 
 		function borrorwingMaterial(identifiant) {
+			console.log(props.userId);
 			http.put('/materials/reservation/' + identifiant, {
-				borrowingHistory: {
-					borrowingDate: this.borrowingDate,
-					borrowingUser: props.userId,
-					description: this.description,
-					returnDate: this.returnDate,
-				},
+				borrowingDate: new Date(this.borrowingDate).toISOString(),
+				borrowingUser: props.userId,
+				description: this.description,
+				returnDate: new Date(this.returnDate).toISOString(),
 			});
 		}
 
@@ -94,5 +93,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped></style>
