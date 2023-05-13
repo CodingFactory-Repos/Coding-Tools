@@ -1,8 +1,8 @@
 <template>
 	<ModalOverlay  v-if="showLogoutModal" @close="beforeModalClose" size="sm">
 		<template #body>
-			<div class="flex flex-col items-center justify-center pt-3">
-				<h2 class="font-bold">Confirm that you want to logout</h2>
+			<div class="flex flex-col gap-4 items-center justify-center pt-3">
+				<h2 class="font-bold text-black dark:text-light-font">Confirm that you want to logout</h2>
 				<div class="flex gap-5">
 					<ButtonDefault
 						@click="beforeModalClose"
