@@ -58,7 +58,7 @@
 	<ModalOverlay v-if="showWarningModal" @close="exitProjectMeta" size="lg">
 		<template #body>
 			<div class="flex flex-col gap-4 justify-center items-center">
-				<SvgInfo width="40" height="40" class="fill-yellow-400"/>
+				<SvgInfo width="40" height="40" class="!fill-yellow-400"/>
 				<div class="flex w-full gap-4 justify-center items-center">
 					<span class="mt-1 text-black dark:text-white">You have unsaved changes</span>
 				</div>
