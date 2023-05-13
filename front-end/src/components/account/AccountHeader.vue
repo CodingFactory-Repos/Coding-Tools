@@ -49,6 +49,16 @@
 							>
 								<SvgLinkedin class="dark:fill-white-icon"/>
 							</ButtonIcon>
+							<ButtonIcon
+								v-if="portfolio"
+								:url="portfolio"
+								:foreign-link="true"
+								rel="noreferrer"
+								target="_blank"
+								class="bg-light-tertiary dark:bg-dark-highlight"
+							>
+								<SvgHome class="dark:fill-white-icon"/>
+							</ButtonIcon>
 						</div>
 						<div class="flex gap-1 justify-center items-center" v-if="discordTag">
 							<span class="dark:text-dark-font text-black text-sm">{{ discordTag }}</span>
@@ -81,6 +91,7 @@ import SvgDiscord from '@/components/common/svg/Discord.vue';
 import FileUploader from '@/components/common/FileUploader.vue';
 import ButtonDefault from '@/components/common/buttons/Default.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
+import SvgHome from '@/components/common/svg/Home.vue';
 import { useUserStore } from '@/store/modules/user.store';
 import { useAccountImageUpload } from '@/composables/useAccountImageUpload';
 import Swal from 'sweetalert2';
@@ -108,10 +119,11 @@ const editable = computed(() => props.edit);
 const profile = computed(() => props?.profile);
 const schoolProfile = computed(() => props?.schoolProfile);
 
-const firstName = computed(() => profile.value?.firstName ?? "Required Signup");
-const lastName = computed(() => profile.value?.lastName ?? "Required Signup");
+const firstName = computed(() => profile.value?.firstName ?? "unknown");
+const lastName = computed(() => profile.value?.lastName ?? "unknown");
 const linkedinProfile = computed(() => profile.value?.linkedinProfile);
 const githubProfile = computed(() => profile.value?.githubProfile);
+const portfolio = computed(() => profile.value?.portfolio);
 const discordTag = computed(() => profile.value?.discordTag);
 const profilePicture = computed(() => profile.value?.picture ?? "/template-no-image.png");
 const birthDate = computed(() => new Date(profile.value?.birthDate));
