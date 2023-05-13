@@ -15,7 +15,7 @@ class UserProfileDTO {
 	@IsOptional()
 	@IsString({ message: "Invalid type format" })
 	@Validate(IsValidStringLength, [[0,9]])
-	@Matches(/^(\d?)+$/, { message: "Your phone number must contains only characters from 0 to 9" })
+	@Matches(/^(\d+)?$/, { message: "Your phone number must contains only characters from 0 to 9" })
 	phone: string;
 
 	@IsOptional()
