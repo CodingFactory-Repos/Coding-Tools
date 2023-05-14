@@ -10,16 +10,18 @@ import {
 	apiTryGetRoomAccess,
 } from '@/api/agility-req';
 import { withErrorHandler } from '@/utils/storeHandler';
+import { KeysRequired } from '@/interfaces/advanced-types.interface';
+import { pick } from '@/utils/object.helper';
+
+const agilityStoreDefaultState = (): AgilityStore => ({
+	projects: [],
+	metaTemplates: [],
+	currentProject: [],
+	projectLoading: false,
+});
 
 export const useAgilityStore = defineStore('agility', {
-	state: (): AgilityStore => {
-		return {
-			projects: [],
-			metaTemplates: [],
-			currentProject: [],
-			projectLoading: false,
-		};
-	},
+	state: (): AgilityStore => agilityStoreDefaultState(),
 	actions: {
 		tryCreateNewProject: withErrorHandler(async function (this: AgilityStore) {
 			const res = await apiTryCreateNewProject();
@@ -68,7 +70,6 @@ export const useAgilityStore = defineStore('agility', {
 			}
 			return false;
 		}),
-
 		async tryGetTemplatesMeta(this: AgilityStore) {
 			try {
 				const res = await apiTryGetTemplatesMeta().then((res) => res.data);
@@ -78,6 +79,12 @@ export const useAgilityStore = defineStore('agility', {
 			} catch {
 				this.metaTemplates = [];
 			}
+		},
+		reset(this: AgilityStore, keys?: Array<KeysRequired<AgilityStore>>) {
+			Object.assign(
+				this,
+				keys?.length ? pick(agilityStoreDefaultState(), keys) : agilityStoreDefaultState(), // if no keys provided, reset all
+			);
 		},
 	},
 });

@@ -26,18 +26,25 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { UserProfileList } from '@/store/interfaces/user.interface';
+import { useAuthStore } from '@/store/modules/auth.store';
 
-defineProps<{
+const props = defineProps<{
 	groupName: string;
 	relatedProfiles: Array<UserProfileList>;
 }>();
 
+const authStore = useAuthStore();
+const userId = computed(() => authStore.user?._id);
 const router = useRouter();
-const viewRelatedUserProfile = (id: string) => {
-	router.push(`/app/account/${id}`);
-}
 
+const viewRelatedUserProfile = (id: string) => {
+	if(id !== userId.value) {
+		router.push(`/app/account/${id}`);
+	} else {
+		router.push("/app/account");
+	}
+}
 </script>

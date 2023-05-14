@@ -85,7 +85,7 @@ export class AuthService {
 		if (user.role === Roles.PRODUCT_OWNER) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupProductOwner(email);
-		} else if(user.role === Roles.student && allowedUser === null) {
+		} else if(user.role === Roles.STUDENT && allowedUser === null) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupUnallowedUser(email);
 		}
