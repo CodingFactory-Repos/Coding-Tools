@@ -82,12 +82,19 @@ export class UsersService {
 		);
 
 		if(!user) {
-			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressources")
+			throw new ServiceError(
+				"UNAUTHORIZED",
+				"You do not have the rights to access this ressources"
+			);
+		}
+
+		if(!user?.schoolProfile?.groupName) {
+			return [];
 		}
 
 		const usersList = await this.usersRepository.findMany(
 			{
-				"schoolProfile.groupName": user.schoolProfile.groupName,
+				"schoolProfile.groupName": user.schoolProfile?.groupName,
 				_id: { $ne: userId }
 			},
 			USER_PROFILE_LIST_PROJECTION,

@@ -40,12 +40,9 @@ import AccountHeader from '@/components/account/AccountHeader.vue';
 import AcccountRelatedProfile from '@/components/account/AccountRelatedProfile.vue';
 import { UserProfile, UserSchoolProfile, UserBusinessProfile } from '@/store/interfaces/auth.interfaces';
 import { useUserStore } from '@/store/modules/user.store';
-import { useRoute, useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/modules/auth.store';
+import { useRoute } from 'vue-router';
 
-const authStore = useAuthStore();
 const userStore = useUserStore();
-const router = useRouter();
 
 const userProfileData = computed(() => userStore.relatedUserProfile);
 const relatedProfiles = computed(() => userProfileData.value.related ?? []);
@@ -57,14 +54,6 @@ const profile = computed(() => user.value.profile ?? {} as Partial<UserProfile>)
 const schoolProfile = computed(() => user.value.schoolProfile ?? {} as Partial<UserSchoolProfile>);
 const businessProfile = computed(() => user.value.businessProfile ?? {} as Partial<UserBusinessProfile>);
 const profileBackground = computed(() => profile.value?.background ?? "/template-no-image.png");
-
-const viewRelatedUserProfile = (id: string) => {
-	if(id !== authStore.user._id) {
-		router.push(`/app/account/${id}`);
-	} else {
-		router.push("/app/account")
-	}
-}
 
 onMounted(async () => {
 	try {
