@@ -2,6 +2,8 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { MaterialsRepository } from 'src/base/materials/materials.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { DTOCreateMaterials } from './dto/materials.dto';
+import { Material } from './interfaces/materials.interface';
 
 @Injectable()
 export class MaterialsService {
@@ -16,7 +18,8 @@ export class MaterialsService {
 		return await this.materialsRepository.getAllMaterials();
 	}
 
-	async createNewMaterial(query) {
+	async createNewMaterial(payload: DTOCreateMaterials) {
+		const query = payload as Material;
 		return await this.materialsRepository.createMaterial(query);
 	}
 	async updateMaterial(query, update) {
@@ -26,6 +29,11 @@ export class MaterialsService {
 	async deleteMaterial(query) {
 		return await this.materialsRepository.deleteOneMaterial(query);
 	}
-	// Business logic methods goes there...
-	// Define your own methods
+
+	async addReservation(query, update) {
+		return await this.materialsRepository.addOneReservation(query, update);
+	}
+	async getMaterialById(id) {
+		return await this.materialsRepository.getMaterialById(id);
+	}
 }
