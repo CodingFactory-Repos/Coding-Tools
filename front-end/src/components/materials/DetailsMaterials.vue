@@ -207,6 +207,6 @@ const deleteMaterial = () => {
 };
 
 onMounted(async () => {
-	getMaterialInfo(props.id);
+	await getMaterialInfo(props.id);
 });
 </script>
