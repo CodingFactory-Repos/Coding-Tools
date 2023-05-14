@@ -7,23 +7,6 @@
 	}
 }
 
-@mixin flex($dir, $gap) {
-	display: flex;
-	align-items: center;
-	flex-direction: $dir;
-	height: fit-content;
-	gap: $gap;
-}
-
-.flex-col {
-	--s: 1.5rem;
-	@include flex('column', var(--s));
-}
-
-.flex-row {
-	@include flex('row', 1rem);
-}
-
 html > body.swal2-height-auto { //! Nope, i refuse to use auto !important.
 	height: 100% !important;
 }

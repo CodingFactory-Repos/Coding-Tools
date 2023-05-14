@@ -80,8 +80,8 @@
 		</div>
 		<div class="w-full flex flex-wrap flex-row">
 			<MaterialCard
-				v-for="material in materials"
-				:key="material.id"
+				v-for="(material, index) in materials"
+				:key="`material_${material.name}_${index}`"
 				:id="material._id"
 				:name="material.name"
 				:url="material.picture"
@@ -92,11 +92,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useMaterialStore } from '@/store/modules/material.store';
-import { http } from '@/api/network/axios';
 import { computed, ref, onMounted } from 'vue';
+import { useMaterialStore } from '@/store/modules/material.store';
 import MaterialCard from '@/components/materials/MaterialCard.vue';
-import { withErrorHandler } from '@/utils/storeHandler';
 
 const materialStore = useMaterialStore();
 const materials = computed(() => materialStore.filteredMaterial);
@@ -111,9 +109,8 @@ const filteredList = () => {
 	materialStore.filter.site = site.value;
 	materialStore.filter.type = type.value;
 };
+
 onMounted(async () => {
 	await materialStore.getMaterials();
 });
 </script>
-
-<style scoped></style>

@@ -60,4 +60,4 @@ export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) 
 
 export const apiTryGetRoomAccess = (roomId: string) => {
 	return http.get<Status>(`/canvas-room/${roomId}/verify`);
-}
+};

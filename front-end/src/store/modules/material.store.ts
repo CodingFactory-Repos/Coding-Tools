@@ -2,27 +2,18 @@ import { defineStore } from 'pinia';
 
 import { isEmpty } from '@/utils/string.helper';
 
-import {
-	getMaterials,
-	createMaterial,
-	updateMaterial,
-	deleteMaterial,
-	getUserInfo,
-} from '@/api/material-req';
+import { getMaterials, createMaterial, updateMaterial, deleteMaterial } from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
-import { Material, MaterialStore } from '../interfaces/material.interface';
-import { STATUS } from '@/store/interfaces/axios.interface';
+import { Material, MaterialStore } from '@/store/interfaces/material.interface';
 
 export const useMaterialStore = defineStore('materialStore', {
 	state: (): {
 		filter: { input: string; site: string; type: string; state: string };
 		input: string;
-		materials: any[];
-		userInfos: any[];
+		materials: Array<Material>;
 	} => {
 		return {
 			materials: [],
-			userInfos: [],
 			filter: {
 				input: '',
 				site: '',
@@ -40,7 +31,10 @@ export const useMaterialStore = defineStore('materialStore', {
 			this.materials = res.data;
 			return true;
 		}),
-		addMaterial: withErrorHandler(async function (this: MaterialStore, material: Material) {
+		addMaterial: withErrorHandler(async function (
+			this: MaterialStore,
+			material: Partial<Material>,
+		) {
 			const res = await createMaterial(material);
 			if (res.status !== 200) throw new Error('The returned status was not expected');
 			this.materials.push(res.data);
@@ -62,12 +56,6 @@ export const useMaterialStore = defineStore('materialStore', {
 			if (res.status !== 200) throw new Error('The returned status was not expected');
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials.splice(index, 1);
-			return true;
-		}),
-		getUserInfo: withErrorHandler(async function (this: MaterialStore, userId: string) {
-			const res = await getUserInfo(userId);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
-			this.userInfos = res.data;
 			return true;
 		}),
 	},
@@ -98,8 +86,5 @@ export const useMaterialStore = defineStore('materialStore', {
 				return validator.every((el) => el === true);
 			});
 		},
-		userInfo: (state) => {
-			return state.userInfos;
-		}
 	},
 });

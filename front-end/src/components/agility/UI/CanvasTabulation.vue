@@ -1,25 +1,25 @@
 <template>
-	<div class="grow h-full flex justify-start items-end bg-darker-primary overflow-x-scroll px-1 gap-1" style="scrollbar-width: none;">
+	<div class="grow h-full flex justify-start items-end bg-light-tertiary dark:bg-darker-primary overflow-x-scroll px-1 gap-1" style="scrollbar-width: none;">
 		<div
-			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === null }"
+			class="bg-light-secondary dark:bg-dark-tertiary border-x border-t border-gray-300 dark:border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
+			:class="{ '!bg-light-primary dark:!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === null }"
 			@click="selectDefault"
 		>
 			<div class="flex gap-2">
-				<SvgAbstract width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selectedNumber === null }"/>
-				<span class="text-xs text-light-tertiary font-bold clamp-text">{{ project.meta.title }}</span>
+				<SvgAbstract width="14" height="14" :class="{ 'dark:fill-white-icon': selectedNumber === null }"/>
+				<span class="text-xs text-dark-primary dark:text-light-tertiary font-bold clamp-text">{{ project.meta.title }}</span>
 			</div>
 		</div>
 		<div
 			v-for="(frameNumber, i) in frames"
 			@click="selectTab(frameNumber)"
-			class="bg-dark-tertiary border-x border-t border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
-			:class="{ '!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === frameNumber }"
+			class="bg-light-secondary dark:bg-dark-tertiary border-x border-t border-gray-300 dark:border-dark-highlight w-40 min-w-[10rem] h-[80%] rounded-t-xl pl-4 pr-2 flex justify-between items-center cursor-pointer"
+			:class="{ '!bg-light-primary dark:!bg-dark-secondary !border-[#2e7bbe]': selectedNumber === frameNumber }"
 			:key="`tab_${i}`"
 		>
 			<div class="flex gap-2">
-				<SvgFrame width="14" height="14" :class="{ 'fill-white-icon dark:fill-white-icon': selectedNumber === frameNumber }"/>
-				<span class="text-xs text-light-tertiary font-bold">Frame {{ frameNumber }}</span>
+				<SvgFrame width="14" height="14" :class="{ 'dark:fill-white-icon': selectedNumber === frameNumber }"/>
+				<span class="text-xs text-dark-primary dark:text-light-tertiary font-bold">Frame {{ frameNumber }}</span>
 			</div>
 			<button
 				class="w-4 h-4 flex justify-center items-center hover:bg-dark-highlight rounded-lg"
