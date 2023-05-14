@@ -34,11 +34,12 @@ export type TempAuthUSer = Partial<UserCreds>;
 export enum Roles {
 	USER = 1,
 	PRODUCT_OWNER = 2,
+  PEDAGOGUE = 3,
 }
 
 export interface User {
-	_id?: string;
 	id?: string;
+	_id?: string;
 	role?: Roles;
 	profile?: UserProfile;
 	schoolProfile?: UserSchoolProfile;

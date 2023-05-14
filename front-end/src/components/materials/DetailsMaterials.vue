@@ -1,5 +1,5 @@
 <template>
-	<div v-if="userInfo.role === 1">
+	<div v-if="userRole === Roles.USER">
 		<a href="#">
 			<img
 				v-if="material.picture"
@@ -35,7 +35,7 @@
 			<span class="text-2xl font-bold text-gray-900 dark:text-white">{{ material.price }} €</span>
 		</div>
 	</div>
-	<div v-if="userInfo.role === 2 || userInfo.role === 3">
+	<div v-if="userRole === Roles.PRODUCT_OWNER || userRole === Roles.PEDAGOGUE">
 		<div class="mb-5"></div>
 		<form @submit.prevent="editMaterial">
 			<!-- Show the image and make it fit the screen -->
@@ -140,7 +140,7 @@
 			<div class="mb-5"></div>
 			<!-- Create a div that show all the borrowingHistory -->
 			<div v-if="showHistory">
-				<BorrowHistoryMaterials :history="material.borrowingHistory" :userInfo="userInfo" />
+				<BorrowHistoryMaterials :history="material.borrowingHistory" :userEmail="userEmail" />
 			</div>
 			<div class="mb-5"></div>
 			<div class="flex items-center justify-between">
@@ -166,83 +166,47 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineProps, onMounted, ref, toRefs, computed } from 'vue';
+<script lang="ts" setup>
+import { onMounted, ref, computed } from 'vue';
 import { http } from '@/api/network/axios';
 import BorrowHistoryMaterials from '@/components/materials/BorrowHistoryMaterials.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
-import { Material, MaterialStore } from '@/store/interfaces/material.interface';
+import { Material } from '@/store/interfaces/material.interface';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { Roles } from '@/store/interfaces/auth.interfaces';
+import { withErrorHandler } from '@/utils/storeHandler';
 
+const props = defineProps<{
+	id: string,
+}>()
+
+const authStore = useAuthStore();
 const materialStore = useMaterialStore();
-// const userInfo = computed(() => materialStore.userInfo);
+const user = computed(() => authStore.user);
+const userEmail = computed(() => user.value?.profile?.email)
+const userRole = computed(() => user.value?.role);
 
-export default {
-	components: {
-		BorrowHistoryMaterials,
-	},
-	props: {
-		id: String,
-		userId: String,
-	},
-	setup(props) {
-		const data = toRefs(
-			defineProps({
-				id: String,
-				userId: String,
-			}),
-		);
+const material = ref<Material>();
+const showLink = ref({});
+const showHistory = ref(false);
 
-		let material = ref<Material>();
-		// let userInfo = ref(computed(() => materialStore.userInfo));
-		let userInfo = ref({})
-		let showLink = ref({});
-		let showHistory = ref(false);
+const getMaterialInfo = withErrorHandler(async function(id: string) {
+	http.get(`materials/get/` + id).then((res) => {
+		// Convert the date to string
+		res.data.acquisitionDate = new Date(res.data.acquisitionDate).toLocaleDateString();
+		material.value = res.data;
+	})
+});
 
-		const getUserInfo = () => {
-			http.get(`materials/user/` + props.userId).then((res) => {
-				userInfo.value = res.data;
-			});
-		};
-
-		const getMaterialInfo = (id) => {
-			http
-				.get(`materials/get/` + id)
-				.then((res) => {
-					// Convert the date to string
-					res.data.acquisitionDate = new Date(res.data.acquisitionDate).toLocaleDateString();
-					//delete the _id
-					delete res.data._id;
-					material.value = res.data;
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		};
-
-		const editMaterial = () => {
-			// console.log(material.value);
-			materialStore.updateMaterial(material.value, props.id);
-		};
-
-		const deleteMaterial = () => {
-			materialStore.deleteMaterial(props.id);
-		};
-		onMounted(async () => {
-			// await materialStore.getUserInfo(props.userId);
-			getUserInfo();
-			getMaterialInfo(props.id);
-		});
-		return {
-			...data,
-			material,
-			showLink,
-			showHistory,
-			editMaterial,
-			deleteMaterial,
-			userInfo,
-		};
-	},
+const editMaterial = () => {
+	materialStore.updateMaterial(material.value, props.id);
 };
-</script>
 
-<style scoped></style>
+const deleteMaterial = () => {
+	materialStore.deleteMaterial(props.id);
+};
+
+onMounted(async () => {
+	await getMaterialInfo(props.id);
+});
+</script>

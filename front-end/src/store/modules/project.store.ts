@@ -90,7 +90,7 @@ export const useProjectStore = defineStore('project', {
 			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(genericContainer);
 
-			if(this.selectedFrameNumber) {
+			if (this.selectedFrameNumber) {
 				genericContainer.tabNumberContext = this.selectedFrameNumber;
 			}
 

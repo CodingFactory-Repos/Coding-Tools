@@ -42,10 +42,22 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: ':id',
 						component: () => import('../views/app/RelatedProfileView.vue')
-					}
-				]
+					},
+				],
 			},
-			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
+			{
+				path: 'rollcall',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/calls/RollCallView.vue'),
+					},
+					{
+						path: 'groups',
+						component: () => import('../views/calls/GroupsView.vue'),
+					},
+				],
+			},
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{
 				path: 'blog',
@@ -61,15 +73,17 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
-				path: 'scrum', 
+				path: 'scrum',
 				children: [
-					{ 
+					{
 						path: '',
-						component: () => import('../views/OrganisationView.vue') },
-					{ 
+						component: () => import('../views/OrganisationView.vue'),
+					},
+					{
 						path: 'sprint',
-						component: () => import('../views/SprintsView.vue') }
-				]
+						component: () => import('../views/SprintsView.vue'),
+					},
+				],
 			},
 			{
 				path: 'retrospective',

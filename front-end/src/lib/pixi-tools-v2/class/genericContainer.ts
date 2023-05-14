@@ -2,7 +2,12 @@ import { Container, FederatedPointerEvent, Graphics, IDestroyOptions } from 'pix
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
-import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic } from '../types/pixi-serialize';
+import {
+	ContainerTypeId,
+	SerializedContainer,
+	SerializedContainerBounds,
+	SerializedGraphic,
+} from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 
 export class GenericContainer extends PluginContainer {
@@ -111,7 +116,7 @@ export class GenericContainer extends PluginContainer {
 	public cloneToContainer(): Container {
 		const cloned = new Container();
 
-		for(const element of this.children) {
+		for (const element of this.children) {
 			const clonedChild = element.clone();
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
@@ -164,7 +169,7 @@ export class GenericContainer extends PluginContainer {
 		const graphic = this.getGraphicChildren()[0];
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = (serializedBounds.childs[0] as SerializedGraphic).bounds;
-		
+
 		this.absMinX = absMinX;
 		this.absMinY = absMinY;
 		this.absMaxX = absMaxX;

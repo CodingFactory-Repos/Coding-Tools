@@ -1,14 +1,12 @@
 <template>
-	<div>
+	<div class="flex flex-col items-center mt-10">
 		<qrcode v-if="url" :value="url" />
 		<div v-else>
 			<p>{{ message }}</p>
 		</div>
-		<div v-if="studentList">
-			<div v-for="student in studentList" :key="student.id">
-				<p>{{ student.profile.firstName }} {{ student.profile.lastName }}</p>
-			</div>
-		</div>
+		<a :href="url" v-if="url" target="_blank">
+			<button class="bg-gray-500 text-black py-0.5 px-5 rounded mt-2 mb-4">Ouvrir le lien</button>
+		</a>
 	</div>
 </template>
 
@@ -21,10 +19,11 @@ import { withErrorHandler } from '@/utils/storeHandler';
 let url = '';
 let courseId = '';
 let message = '';
+let groupUrl = '';
 let studentList = [];
 
 export default {
-	name: 'QrCode',
+	name: 'CallsComponent',
 	components: {
 		Qrcode,
 	},
@@ -34,6 +33,7 @@ export default {
 			courseId,
 			message,
 			studentList,
+			groupUrl,
 			QrGen: '',
 		};
 	},
@@ -63,18 +63,11 @@ export default {
 		isThereCourse() {
 			if (this.courseId) {
 				this.getQrCode();
-				this.getStudentList();
 				this.message = '';
 			} else {
 				this.message = "Vous n'avez pas de cours aujourd'hui";
 			}
 		},
-
-		getStudentList: withErrorHandler(async function () {
-			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
-				this.studentList = response.data.studentList;
-			});
-		}),
 	},
 };
 </script>

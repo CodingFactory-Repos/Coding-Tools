@@ -14,5 +14,5 @@ export const PROJECTION_PROJECT = {
 export const PROJECTION_PROJECT_VERIFY = {
 	projection: {
 		project: 0,
-	}
-}
+	},
+};
