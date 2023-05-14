@@ -12,7 +12,7 @@
 					<slot name="right"/>
 				</div>
 			</div>
-			<div class="w-full h-12 flex gap-10 justify-between">
+			<div class="w-full h-12 flex gap-10 justify-between items-end">
 				<slot name="bottom"/>
 			</div>
 		</div>
