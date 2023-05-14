@@ -1,9 +1,9 @@
 <template>
 	<div class="w-full flex flex-col gap-4 h-full justify-start items-start">
-		<h1 class="text-2xl font-bold dark:text-dark-font">Your projects</h1>
+		<h1 class="text-2xl font-bold text-[#5c5f73] dark:text-dark-font">Your projects</h1>
 		<div v-if="projects.length === 0" class="w-full flex grow relative items-center justify-center">
 			<div class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-light-primary dark:bg-dark-tertiary rounded-lg">
-				<h3 class="text-lg font-bold dark:text-dark-font text-center">Your saved projects will be shown here in the future.</h3>
+				<h3 class="text-lg font-bold text-[#5c5f73] dark:text-dark-font text-center">Your saved projects will be shown here in the future.</h3>
 				<DefaultButton
 					type="button"
 					text="Start my first project !"

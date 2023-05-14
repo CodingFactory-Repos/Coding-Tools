@@ -9,7 +9,7 @@
 					<form class="space-y-4 md:space-y-6" @submit.prevent="submitNewPassword">
 						<div class="relative mb-8">
 							<label for="password" class="block mb-2 text-sm font-medium text-white">
-								Your Email <span class="text-sm text-red-500 required-dot">*</span>
+								Your password <span class="text-sm text-red-500 required-dot">*</span>
 							</label>
 							<input
 								v-model="password"
@@ -17,7 +17,7 @@
 								name="password"
 								id="password"
 								class="bg-light-secondary border text-black sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
-								placeholder="jhon.doe@edu.esiee-it.fr"
+								placeholder="••••••••"
 								@focus="onNewFocus"
 							/>
 							<template v-if="passwordError">
