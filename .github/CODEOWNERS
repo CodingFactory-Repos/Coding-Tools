@@ -4,11 +4,9 @@
 /.github/workflows/ @Loule95450
 /.gitignore @Loule95450
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
-/back-end/src/auth/ @Kevw94 @Maghwyn
-/back-end/src/auth/auth.module.ts @Maghwyn
-/back-end/src/auth/auth.service.ts @Maghwyn @AyakorK
+/back-end/src/auth/auth.controller.ts @Maghwyn @Kevw94
 /back-end/src/auth/dto/auth.dto.ts @Maghwyn @Kevw94
-/back-end/src/auth/events/ @Maghwyn
+/back-end/src/auth/interfaces/ @Kevw94 @Maghwyn
 /back-end/src/auth/strategy/jwt.strategy.ts @Maghwyn @Kevw94
 /back-end/src/auth/utils/ @Loule95450 @Maghwyn
 /back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
@@ -33,6 +31,8 @@
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/materials/materials.controller.ts @Maghwyn @AyakorK
+/back-end/src/base/materials/materials.module.ts @Maghwyn
 /back-end/src/base/materials/materials.repository.ts @Maghwyn @RuKaSuu @AyakorK
 /back-end/src/base/materials/materials.service.ts @Maghwyn @RuKaSuu
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
@@ -92,7 +92,6 @@
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @Kevw94
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/modules/article.store.ts @TheoLandemaine
-/front-end/src/store/modules/auth.store.ts @Maghwyn @Kevw94
 /front-end/src/store/modules/theme.store.ts @Maghwyn @Loule95450
 /front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @RuKaSuu
 /front-end/src/styles/layout.css @Maghwyn @TheoLandemaine
