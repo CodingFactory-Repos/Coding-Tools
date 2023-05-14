@@ -1,7 +1,12 @@
 import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
 import { ContainerManager } from '../class/containerManager';
 import { GenericContainer } from '../class/genericContainer';
-import { GraphicTypeId, InternalTypeId, SerializedGraphic, SerializedGraphicBounds } from './pixi-serialize';
+import {
+	GraphicTypeId,
+	InternalTypeId,
+	SerializedGraphic,
+	SerializedGraphicBounds,
+} from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
 

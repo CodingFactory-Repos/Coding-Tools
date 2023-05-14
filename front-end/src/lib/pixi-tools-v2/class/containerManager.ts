@@ -38,7 +38,7 @@ export class ContainerManager {
 
 			this._selectedContainers.forEach((ctn) => {
 				if (this.viewport.socketPlugin) {
-					if(ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
+					if (ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
 						const frame = ctn.parent.parent as FramedContainer;
 						this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid, frame.uuid);
 					} else {

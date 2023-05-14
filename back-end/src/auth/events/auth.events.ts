@@ -12,6 +12,10 @@ export class AuthEventEmitter {
 		this.eventEmitter.emit(Events.alertPedago, new MailjetEmail(email));
 	}
 
+	async signupUnallowedUser(email: string) {
+		this.eventEmitter.emit(Events.alertUnallowed, new MailjetEmail(email));
+	}
+
 	async accountValidated(email: string) {
 		this.eventEmitter.emit(Events.accountValidated, new MailjetEmail(email));
 	}
