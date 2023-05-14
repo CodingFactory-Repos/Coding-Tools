@@ -1,9 +1,10 @@
 import { ObjectId } from 'mongodb';
 
 export enum Roles {
-	student = 1,
-	productOwner = 2,
-	pedago = 3,
+	PEDAGOGUE = 3,
+	PRODUCT_OWNER = 2,
+	STUDENT = 1,
+	ADMIN = 0,
 }
 
 export interface User {
@@ -24,19 +25,22 @@ export interface UserProfile {
 	firstName?: string;
 	lastName?: string;
 	email?: string;
+	resume?: string;
 	phone?: string;
 	birthDate?: Date;
-	location?: string;
 	linkedinProfile?: string;
 	githubProfile?: string;
-	discordId?: string;
-	profilePicture?: string;
-	profileBackground?: string;
-	profileResume?: string;
+	discordTag?: string;
+	picture?: string;
+	background?: string;
+	showGithubStat?: boolean;
+	disciplinesLiked?: Array<string>;
+	portfolio?: string;
 }
 
 export interface UserSchoolProfile {
-	groupeName: string;
+	groupName: string;
+	campus?: string;
 }
 
 export interface UserBusinessProfile {
@@ -57,6 +61,13 @@ export interface PedagoProfile {
 export interface Notifications {
 	example: string;
 	// À définir
+}
+
+export interface UserProfileList {
+	picture: string;
+	firstName: string;
+	lastName: string;
+	id: string;
 }
 
 //! What's the point of this ?

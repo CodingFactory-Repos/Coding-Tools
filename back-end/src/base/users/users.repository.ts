@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions } from 'mongodb';
-import { User } from './interfaces/users.interface';
-import { Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions, Db } from 'mongodb';
+import { User } from '@/base/users/interfaces/users.interface';
 
 @Injectable()
 export class UsersRepository {
@@ -27,12 +26,16 @@ export class UsersRepository {
 		return this.users.findOneAndUpdate(query, update, options);
 	}
 
-	async findOne(query: Filter<User>, options: FindOptions<Document> = undefined) {
+	async findOne(query: Filter<User>, options: FindOptions<User> = undefined) {
 		return this.users.findOne(query, options);
 	}
 
 	async userExist(query: Filter<User>) {
 		const options = { projection: { _id: 1 } };
 		return this.users.findOne(query, options);
+	}
+
+	async findMany(query: Filter<User>, options: FindOptions<User> = undefined) {
+		return this.users.find(query, options).toArray();
 	}
 }

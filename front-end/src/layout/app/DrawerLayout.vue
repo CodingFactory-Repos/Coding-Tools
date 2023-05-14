@@ -1,6 +1,6 @@
 <template>
 	<div class="flex grow justify-start items-start overflow-hidden bg-light-primary dark:bg-dark-primary w-full h-full">
-		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full transition-width bg-light-primary dark:bg-dark-primary" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
+		<aside v-if="!isBlacklist" id="sidebar" class="flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 h-full transition-width bg-light-primary dark:bg-dark-primary z-50" :class="{ 'w-64': active, 'md:w-16 w-0': !active }" aria-label="Sidebar">
 			<div class="flex w-full relative flex-col flex-1 pt-0 min-h-0 border-solid border-r boder-light-secondary dark:border-dark-tertiary"  :class="{ 'md:border-solid border-none': !active }">
 				<div class="flex overflow-y-auto flex-col flex-1 pt-5 pb-4 w-full">
 					<div class="w-full flex-1 px-3 space-y-1 divide-y divide-white-tertiary dark:divide-dark-tertiary overflow-hidden">
@@ -34,7 +34,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="relative hidden absolute bottom-0 left-0 justify-center p-4 gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
+				<div class="relative hidden absolute bottom-0 left-0 justify-center gap-3 w-full md:flex" :class="{ '!flex p-4': active, 'flex-col p-3 flex-col-reverse': !active}" sidebar-bottom-menu="">
 					<ButtonIcon @click="openLogoutModal">
 						<SvgLogout/>
 					</ButtonIcon>
@@ -46,7 +46,7 @@
 			</div>
 		</aside>
 		<div id="main-content" class="flex flex-col overflow-y-auto gap-0 relative w-full h-full overflow-hidden gap-12 bg-light-secondary dark:bg-dark-primary" :class="{ 'ml-0': isBlacklist, 'md:ml-16': !isBlacklist }">
-			<button v-if="!isBlacklist" @click.stop="drawerAction" class="absolute top-4 flex justify-center items-center z-20 bg-light-primary dark:bg-dark-tertiary p-1 rounded-lg" :class="{ 'left-[17rem] md:left-52': active, 'left-4': !active }">
+			<button v-if="!isBlacklist" @click.stop="drawerAction" class="fixed top-4 flex justify-center items-center z-20 bg-light-primary dark:bg-dark-tertiary p-1 rounded-lg" :class="{ 'left-[17rem] md:left-68': active, 'left-4 md:left-20': !active }">
 				<SvgBurger width="30" height="30" fill="black"/>
 			</button>
 
@@ -82,7 +82,7 @@ const route = useRoute();
 const themeStore = useThemeStore();
 
 // BlackList is an array of regex where the drawer is hidden;
-const blacklist = [/^\/app\/agility\/project\/([a-z])+/];
+const blacklist = [/^\/app\/agility\/project\/([a-z-0-9])+/];
 
 const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path)));
 const theme = computed(() => themeStore.theme);
