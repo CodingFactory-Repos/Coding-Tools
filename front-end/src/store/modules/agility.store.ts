@@ -38,7 +38,7 @@ export const useAgilityStore = defineStore('agility', {
 		}),
 		tryGetRoomAccess: withErrorHandler(async function (this: AgilityStore, roomId: string) {
 			const res = await apiTryGetRoomAccess(roomId);
-			if(res.data.status === 'ok') {
+			if (res.data.status === 'ok') {
 				return true;
 			}
 			return false;

@@ -2,12 +2,7 @@ import { defineStore } from 'pinia';
 
 import { isEmpty } from '@/utils/string.helper';
 
-import {
-	getMaterials,
-	createMaterial,
-	updateMaterial,
-	deleteMaterial,
-} from '@/api/material-req';
+import { getMaterials, createMaterial, updateMaterial, deleteMaterial } from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { Material, MaterialStore } from '@/store/interfaces/material.interface';
 
@@ -36,7 +31,10 @@ export const useMaterialStore = defineStore('materialStore', {
 			this.materials = res.data;
 			return true;
 		}),
-		addMaterial: withErrorHandler(async function (this: MaterialStore, material: Partial<Material>) {
+		addMaterial: withErrorHandler(async function (
+			this: MaterialStore,
+			material: Partial<Material>,
+		) {
 			const res = await createMaterial(material);
 			if (res.status !== 200) throw new Error('The returned status was not expected');
 			this.materials.push(res.data);
