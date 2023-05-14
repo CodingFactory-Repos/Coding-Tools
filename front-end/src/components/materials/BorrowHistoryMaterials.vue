@@ -19,7 +19,7 @@
 					class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
 				>
 					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						{{ userInfo.profile.email }}
+						{{ userEmail }}
 					</td>
 					<td class="px-6 py-4">{{ histoire.borrowingDate }}</td>
 					<td class="px-6 py-4">{{ histoire.returnDate }}</td>
@@ -30,38 +30,12 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { toRefs, defineProps } from 'vue';
+<script lang="ts" setup>
+import { defineProps } from 'vue';
+import { BorrowingMaterial } from '@/store/interfaces/material.interface';
 
-export default {
-	name: 'BorrowHistoryMaterials',
-	props: {
-		history: {
-			type: Array,
-			required: true,
-		},
-		userInfo: {
-			type: Object,
-			required: true,
-		},
-	},
-	setup() {
-		const data = toRefs(
-			defineProps({
-				history: {
-					type: Array,
-					required: true,
-				},
-				userInfo: {
-					type: Object,
-					required: true,
-				},
-			}),
-		);
-
-		return {
-			...data,
-		};
-	},
-};
+defineProps<{
+	history: Array<BorrowingMaterial>;
+	userEmail: string;
+}>()
 </script>

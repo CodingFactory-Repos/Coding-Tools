@@ -46,50 +46,27 @@
 	</form>
 </template>
 
-<script lang="ts">
-//Import datepicker from flowbite from node_modules
-import { defineProps, toRefs } from 'vue';
+<script lang="ts" setup>
+import { defineProps } from 'vue';
 import { http } from '@/api/network/axios';
+import { withErrorHandler } from '../../utils/storeHandler';
 
-export default {
-	props: {
-		id: String,
-		userId: String,
-	},
-	setup(props) {
-		const data = toRefs(
-			defineProps({
-				id: { type: String, required: true },
-				userId: { type: String, required: true },
-			}),
-		);
+const props = defineProps<{
+	id: string;
+	userId: string;
+}>()
 
-		let today = new Date().toISOString().substring(0, 10);
-		let borrowingDate = '';
-		let borrowingUser = '';
-		let description = '';
-		let returnDate = '';
+const today = new Date().toISOString().substring(0, 10);
+const borrowingDate = '';
+const description = '';
+const returnDate = '';
 
-		function borrorwingMaterial(identifiant) {
-			console.log(props.userId);
-			http.put('/materials/reservation/' + identifiant, {
-				borrowingDate: new Date(this.borrowingDate).toISOString(),
-				borrowingUser: props.userId,
-				description: this.description,
-				returnDate: new Date(this.returnDate).toISOString(),
-			});
-		}
-
-		return {
-			...data,
-			...props,
-			today,
-			borrowingDate,
-			borrowingUser,
-			description,
-			returnDate,
-			borrorwingMaterial,
-		};
-	},
-};
+const borrorwingMaterial = withErrorHandler(async function (identifiant: string) {
+	http.put('/materials/reservation/' + identifiant, {
+		borrowingDate: new Date(this.borrowingDate).toISOString(),
+		borrowingUser: props.userId,
+		description: this.description,
+		returnDate: new Date(this.returnDate).toISOString(),
+	});
+});
 </script>
