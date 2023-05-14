@@ -53,10 +53,4 @@ export class MaterialsRepository {
 	async getMaterialById(id: string) {
 		return this.materials.findOne({ _id: new ObjectId(id) });
 	}
-	async getUserRole(userId: string) {
-		return this.db.collection('users').findOne({ _id: new ObjectId(userId) });
-	}
-	async getUserInfo(userId: string) {
-		return this.db.collection('users').findOne({ _id: new ObjectId(userId) });
-	}
 }
