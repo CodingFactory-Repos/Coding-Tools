@@ -74,7 +74,7 @@ export class Normalizer {
 		if (!attributes.properties) {
 			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = attr.typeId === "frame" ? lowestNumberFinder(frameNumbers) : -1;
+			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1;
 
 			attributes.properties = {
 				cursor: 'pointer',
@@ -85,10 +85,10 @@ export class Normalizer {
 			};
 		}
 
-		if(childs !== undefined) {
+		if (childs !== undefined) {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
-	
+
 				if (childTypeId === 'generic' || childTypeId === 'frame') {
 					const containerChildren = this.container(
 						viewport,

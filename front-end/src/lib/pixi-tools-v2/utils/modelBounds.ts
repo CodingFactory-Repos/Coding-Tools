@@ -1,4 +1,4 @@
-import { ModelGraphics } from "../types/pixi-class";
+import { ModelGraphics } from '../types/pixi-class';
 
 export const modelBounds = (model: ModelGraphics) => ({
 	uuid: model.uuid,
@@ -8,4 +8,4 @@ export const modelBounds = (model: ModelGraphics) => ({
 		width: model.width,
 		height: model.height,
 	},
-})
+});

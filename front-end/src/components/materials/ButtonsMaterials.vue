@@ -262,6 +262,9 @@ export default {
 							background-color: #4caf50;
 							color: white;
 						}
+						td {
+							color: black;
+						}
 						@media print {
 							@page {
 								size: A4;

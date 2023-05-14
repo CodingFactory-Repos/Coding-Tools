@@ -36,7 +36,6 @@ export interface SerializedContainerBounds extends Partial<SerializedElement> {
 	childs: Array<Partial<SerializedContainerBounds | SerializedGraphicBounds>>;
 }
 
-
 export interface SerializedGraphicBounds extends Partial<SerializedElement> {
 	bounds: ElementBounds;
 }

@@ -1,4 +1,4 @@
-import { SerializedContainer } from "@/lib/pixi-tools-v2/types/pixi-serialize";
+import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface AgilityStore {
 	projects: Array<ProjectMeta>;

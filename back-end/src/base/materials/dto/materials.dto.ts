@@ -115,7 +115,6 @@ export class DTOMaetrials {
 	public status: boolean;
 }
 
-
 export class DTOBorrowingMaterial {
 	@IsNotEmpty()
 	@IsISO8601()

@@ -100,8 +100,7 @@ export class DragPlugin {
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
 
-				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle')
-					continue;
+				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
 
 				const parent = element.child.parent as CanvasContainer;
 				const childBounds = element.child.getBounds();
@@ -142,7 +141,6 @@ export class DragPlugin {
 						// Try to find if the frame was already added in the intersect array.
 						const frameIndex = this.frameIntersect.findIndex((el) => el.frame === frames[i]);
 						if (frameIndex !== -1) {
-
 							// If the frame was added, we check if the parent of the child was already added to the childs array
 							const exist = this.frameIntersect[frameIndex].childs.indexOf(parent);
 							if (exist !== -1) {
@@ -171,10 +169,17 @@ export class DragPlugin {
 			}
 
 			if (this.viewport.socketPlugin) {
-				const containers = this.container instanceof WrappedContainer ? this.container.absoluteChildren : [this.container];
-				for(const container of containers) {
+				const containers =
+					this.container instanceof WrappedContainer
+						? this.container.absoluteChildren
+						: [this.container];
+				for (const container of containers) {
 					container.getGeometry();
-					this.viewport.socketPlugin.emit('ws-element-updated', container.uuid, container.serializeBounds());
+					this.viewport.socketPlugin.emit(
+						'ws-element-updated',
+						container.uuid,
+						container.serializeBounds(),
+					);
 				}
 			}
 
@@ -213,7 +218,7 @@ export class DragPlugin {
 			});
 
 			this.unconstraints.forEach((ctn) => {
-				if(ctn.isAttachedToFrame) {
+				if (ctn.isAttachedToFrame) {
 					const frame = ctn.parent.parent as FramedContainer;
 					frame.removeNestedChild(ctn, this.viewport.children.length - 9, false);
 				}

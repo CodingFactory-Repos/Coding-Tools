@@ -7,7 +7,7 @@
 			<SvgAdd class="fill-white-icon dark:fill-white-icon"/>
 		</div>
 
-		<span class="dark:text-dark-font text-xs font-bold">{{ name }}</span>
+		<span class="text-[#5c5f73] dark:text-dark-font text-xs font-bold">{{ name }}</span>
 	</div>
 </template>
 

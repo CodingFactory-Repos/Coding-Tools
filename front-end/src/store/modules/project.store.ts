@@ -7,21 +7,23 @@ import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 import type { ProjectStore } from '@/store/interfaces/project.interface';
+import { KeysRequired } from '@/interfaces/advanced-types.interface';
+import { pick } from '@/utils/object.helper';
+
+const projectStoreDefaultState = (): ProjectStore => ({
+	scene: null,
+	canvas: null,
+	default: true,
+	deferredGeometry: null,
+	selectionBox: null,
+	onFullscreen: false,
+	immersion: false,
+	viewportDefaultPos: {},
+	selectedFrameNumber: null,
+});
 
 export const useProjectStore = defineStore('project', {
-	state: (): ProjectStore => {
-		return {
-			scene: null,
-			canvas: null,
-			default: true,
-			deferredGeometry: null,
-			selectionBox: null,
-			onFullscreen: false,
-			immersion: false,
-			viewportDefaultPos: {},
-			selectedFrameNumber: null,
-		};
-	},
+	state: (): ProjectStore => projectStoreDefaultState(),
 	getters: {
 		getZoom(this: ProjectStore) {
 			return this.scene?.viewport?.zoomPlugin?.ZOOM?.value;
@@ -90,7 +92,7 @@ export const useProjectStore = defineStore('project', {
 			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
 			scene.viewport.addChild(genericContainer);
 
-			if(this.selectedFrameNumber) {
+			if (this.selectedFrameNumber) {
 				genericContainer.tabNumberContext = this.selectedFrameNumber;
 			}
 
@@ -132,6 +134,12 @@ export const useProjectStore = defineStore('project', {
 		canvasDownload(this: ProjectStore, mime: string) {
 			const scene = toRaw(this.scene);
 			scene.viewport.manager.downloadSelected(mime);
+		},
+		reset(this: ProjectStore, keys?: Array<KeysRequired<ProjectStore>>) {
+			Object.assign(
+				this,
+				keys?.length ? pick(projectStoreDefaultState(), keys) : projectStoreDefaultState(), // if no keys provided, reset all
+			);
 		},
 	},
 });

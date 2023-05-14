@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full flex dark:bg-dark-secondary h-12 border-b border-darker-primary gap-4 py-1 px-3 items-center justify-between">
+	<div class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]">
 		<div class="flex h-full gap-1 items-center">
 			<DefaultButton
 				to="/app/agility/dashboard"
