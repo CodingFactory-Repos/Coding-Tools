@@ -1,4 +1,4 @@
-import { ModelGraphics } from "../types/pixi-class";
+import { ModelGraphics } from '../types/pixi-class';
 
 export const modelSerializer = (model: ModelGraphics) => ({
 	uuid: model.uuid,
@@ -15,4 +15,4 @@ export const modelSerializer = (model: ModelGraphics) => ({
 		color: model.color,
 		alpha: model.alpha,
 	},
-})
+});

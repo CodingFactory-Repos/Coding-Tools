@@ -3,8 +3,19 @@ import { ContainerManager } from './containerManager';
 import { Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
-import { FramedMainContainer, ModelGraphics, PluginContainer, TitleContainer } from '../types/pixi-class';
-import { ContainerTypeId, SerializedContainer, SerializedContainerBounds, SerializedGraphic, SerializedGraphicBounds } from '../types/pixi-serialize';
+import {
+	FramedMainContainer,
+	ModelGraphics,
+	PluginContainer,
+	TitleContainer,
+} from '../types/pixi-class';
+import {
+	ContainerTypeId,
+	SerializedContainer,
+	SerializedContainerBounds,
+	SerializedGraphic,
+	SerializedGraphicBounds,
+} from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 
@@ -126,27 +137,37 @@ export class FramedContainer extends PluginContainer {
 
 	public addNestedChild(container: CanvasContainer, frameNumber: number, remote = false) {
 		container.alpha = 1;
-		if(this.mainContainer.children.some((el) => el.uuid === container.uuid)) return;
+		if (this.mainContainer.children.some((el) => el.uuid === container.uuid)) return;
 
 		container.isAttachedToFrame = true;
 		container.frameNumber = frameNumber;
 		this.mainContainer.addChild(container);
 
-		if(!remote && this.viewport.socketPlugin) {
-			this.viewport.socketPlugin.emit("ws-frame-child-added", this.uuid, container.uuid, this.serializeData());
+		if (!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit(
+				'ws-frame-child-added',
+				this.uuid,
+				container.uuid,
+				this.serializeData(),
+			);
 		}
 	}
 
 	public removeNestedChild(container: CanvasContainer, index: number, remote = false) {
-		if(this.mainContainer.children.find(el => el.uuid === container.uuid) === undefined) return;
+		if (this.mainContainer.children.find((el) => el.uuid === container.uuid) === undefined) return;
 
 		container.isAttachedToFrame = false;
 		container.frameNumber = -1;
 		this.mainContainer.removeChild(container);
 		this.viewport.addChildAt(container, index);
 
-		if(!remote && this.viewport.socketPlugin) {
-			this.viewport.socketPlugin.emit("ws-frame-child-removed", this.uuid, this.serializeData(), container.serializeData());
+		if (!remote && this.viewport.socketPlugin) {
+			this.viewport.socketPlugin.emit(
+				'ws-frame-child-removed',
+				this.uuid,
+				this.serializeData(),
+				container.serializeData(),
+			);
 		}
 	}
 
@@ -281,16 +302,16 @@ export class FramedContainer extends PluginContainer {
 				absMaxY: this.absMaxY,
 			},
 			background: {
-				bounds: backgroundSerialized.bounds
+				bounds: backgroundSerialized.bounds,
 			},
-			childs: genericContainerSerializedBounds
-		}
+			childs: genericContainerSerializedBounds,
+		};
 	}
 
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = serializedBounds.background.bounds;
-		
+
 		this.absMinX = absMinX;
 		this.absMinY = absMinY;
 		this.absMaxX = absMaxX;

@@ -80,18 +80,4 @@ export class MaterialsController {
 		delete material._id;
 		res.status(200).json(material);
 	}
-
-	@Get('user/:id')
-	getUserInfo(@Param('id') id: string, @Res() res: Response) {
-		this.materialsService.getUserInfo(id).then((response) => {
-			res.status(200).json(response);
-		});
-	}
-
-	@Get('user/role/:id')
-	getUserRole(@Param('id') id: string, @Res() res: Response) {
-		this.materialsService.getUserRole(id).then((response) => {
-			res.status(200).json(response.role);
-		});
-	}
 }

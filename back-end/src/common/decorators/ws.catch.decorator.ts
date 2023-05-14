@@ -16,13 +16,13 @@ export class WSServiceError extends WsException {
 
 @Catch(WSServiceError)
 export class WSServiceErrorCatcher implements BaseWsExceptionFilter {
-	handleError<TClient extends { emit: Function }>(client: TClient, exception: unknown): void {
+	//eslint-disable-next-line @typescript-eslint/ban-types
+	handleError<TClient extends { emit: Function }>(_: TClient, exception: unknown): void {
 		throw exception;
 	}
-	handleUnknownError<TClient extends { emit: Function }>(
-		exception: unknown,
-		client: TClient,
-	): void {
+
+	//eslint-disable-next-line @typescript-eslint/ban-types
+	handleUnknownError<TClient extends { emit: Function }>(exception: unknown, _: TClient): void {
 		throw exception;
 	}
 	isExceptionObject(err: unknown): err is Error {
