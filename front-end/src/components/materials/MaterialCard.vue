@@ -94,11 +94,11 @@ const cardId = ref('');
 
 function openModalByRef(ref: string, identifiant: string) {
 	if (ref === 'reservationModal') {
-		this.cardId = identifiant;
-		this.reservationModal = true;
+		cardId.value = identifiant;
+		reservationModal.value = true;
 	} else if (ref === 'detailsModal') {
-		this.cardId = identifiant;
-		this.detailsModal = true;
+		cardId.value = identifiant;
+		detailsModal.value = true;
 	}
 }
 </script>

@@ -47,9 +47,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 import { http } from '@/api/network/axios';
-import { withErrorHandler } from '../../utils/storeHandler';
+import { withErrorHandler } from '@/utils/storeHandler';
+import { ref } from 'vue';
 
 const props = defineProps<{
 	id: string;
@@ -57,16 +57,16 @@ const props = defineProps<{
 }>()
 
 const today = new Date().toISOString().substring(0, 10);
-const borrowingDate = '';
-const description = '';
-const returnDate = '';
+const borrowingDate = ref('');
+const description = ref('');
+const returnDate = ref('');
 
 const borrorwingMaterial = withErrorHandler(async function (identifiant: string) {
 	http.put('/materials/reservation/' + identifiant, {
-		borrowingDate: new Date(this.borrowingDate).toISOString(),
+		borrowingDate: new Date(borrowingDate.value).toISOString(),
 		borrowingUser: props.userId,
-		description: this.description,
-		returnDate: new Date(this.returnDate).toISOString(),
+		description: description.value,
+		returnDate: new Date(returnDate.value).toISOString(),
 	});
 });
 </script>
