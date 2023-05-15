@@ -20,15 +20,25 @@ export class Normalizer {
 		const attributes = data as SerializedGraphic;
 
 		if (!attributes.bounds && position) {
-			const width = 200; // Need to find a solution rather than hardcoded
-			const height = 200; // Need to find a solution rather than hardcoded
+			if(Graphic instanceof Rectangle) {
+				const width = 200; // Need to find a solution rather than hardcoded
+				const height = 200; // Need to find a solution rather than hardcoded
 
-			attributes.bounds = {
-				x: position.x - width / 2,
-				y: position.y - height / 2,
-				width,
-				height,
-			};
+				attributes.bounds = {
+					x: position.x - width / 2,
+					y: position.y - height / 2,
+					width,
+					height,
+				};
+			} else {
+				const radius = 100;
+
+				attributes.bounds = {
+					x: position.x - radius,
+					y: position.y - radius,
+					radius,
+				};
+			}
 		}
 
 		if (!attributes.properties) {
