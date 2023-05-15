@@ -37,7 +37,7 @@ export class Circle extends ModelGraphics {
 
 		this.clear();
 		this.beginFill(this.color);
-		this.drawCircle(x, y, this.radius);
+		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();
 	}
 
