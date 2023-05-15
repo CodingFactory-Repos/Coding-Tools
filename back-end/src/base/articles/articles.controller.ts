@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseFilters, Post, Req } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Post, Req, Put } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -10,13 +10,45 @@ export class ArticlesController {
 	constructor(private readonly articlesService: ArticlesService) {}
 
 	@Get('')
-	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
+	getArticle(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.getArticle().then((article) => {
+			return res.status(201).json(article);
+		});
 	}
 
 	@Post('/add')
-	addArticle(@Req() req: Request, @Res() res: Response) {
-		this.articlesService.addArticle(req.body).then((article) => {
+	async addArticle(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.addArticle(req.body);
+		return res.status(201).json({ article, id: article.insertedId });
+	}
+
+	@Get('/:id')
+	getArticleById(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.getArticleById(req.params.id).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	// add participant to the array of participants in article in the database
+	@Put('/participant/:id')
+	addParticipant(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.addParticipant(req.params.id, req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	// remove participant from the array of participants in article in the database
+	@Put('/removeParticipant/:id')
+	removeParticipant(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.removeParticipant(req.params.id, req.body).then((article) => {
+			return res.status(201).json(article);
+		});
+	}
+
+	// add comment
+	@Put('/comment/:id')
+	addComment(@Req() req: Request, @Res() res: Response) {
+		this.articlesService.addComment(req.params.id, req.body).then((article) => {
 			return res.status(201).json(article);
 		});
 	}

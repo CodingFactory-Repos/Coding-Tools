@@ -2,10 +2,14 @@
     <div class="popupcontainer">
         <div class="fond"></div>
         <form class="newSprintForm">
-            <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png"></button>
+            <button class="iconBig" type="button" @click="$emit('close')"><img src="https://cdn-icons-png.flaticon.com/512/2976/2976286.png" alt="Close"></button>
             <div class="formInput">
                 <label for="titre">Titre du sprint</label><br/>
                 <input type="text" name="titre"><br/>
+            </div>
+            <div class="formInput">
+                <label for="classe">Classe</label><br/>
+                <select type="text" name="classe"><option></option></select><br/>
             </div>
             <div class="formInput">
                 <label for="matiere">Matière</label><br/>
@@ -21,7 +25,7 @@
             </div>
             <div class="formInput">
                 <label for="PO">PO</label><br/>
-                <input type="text" name="PO"><br/>
+                <select type="text" name="PO"><option></option></select><br/>
             </div>
             <button>Créer un nouveau sprint</button>
         </form>
@@ -53,7 +57,7 @@
     border-radius: 10px;
     padding: 10px;
     z-index: 2;
-    box-shadow: 0px 5px 5px #bfbfbf;
+    border: solid 0.5px black;
 
     display: flex;
     flex-direction: column;
