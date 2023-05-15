@@ -1,6 +1,6 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { Circle, Rectangle } from '../model/template';
+import { Circle, Rectangle, Triangle } from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
@@ -8,6 +8,7 @@ export const GeometryTypes = {
 	rectangle: Rectangle,
 	circle: Circle,
 	framebox: Rectangle,
+	triangle: Triangle,
 	// "ELLIPSE": 'ellipse',
 	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',
