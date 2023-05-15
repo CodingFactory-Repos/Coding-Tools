@@ -1,4 +1,4 @@
-import { Rectangle } from '../model/template';
+import { Circle, Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { ContainerType, GeometryTypes } from '../types/pixi-enums';
@@ -20,7 +20,15 @@ export class Normalizer {
 		const attributes = data as SerializedGraphic;
 
 		if (!attributes.bounds && position) {
-			if(Graphic === Rectangle) {
+			if(Graphic === Circle) {
+				const radius = 100;
+
+				attributes.bounds = {
+					x: position.x - radius,
+					y: position.y - radius,
+					radius,
+				};
+			} else {
 				const width = 200; // Need to find a solution rather than hardcoded
 				const height = 200; // Need to find a solution rather than hardcoded
 
@@ -29,14 +37,6 @@ export class Normalizer {
 					y: position.y - height / 2,
 					width,
 					height,
-				};
-			} else {
-				const radius = 100;
-
-				attributes.bounds = {
-					x: position.x - radius,
-					y: position.y - radius,
-					radius,
 				};
 			}
 		}
