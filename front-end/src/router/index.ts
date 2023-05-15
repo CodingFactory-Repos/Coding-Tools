@@ -83,6 +83,10 @@ const routes: Array<RouteRecordRaw> = [
 						path: 'sprint',
 						component: () => import('../views/SprintsView.vue'),
 					},
+					{
+						path: 'board',
+						component: () => import('../views/BoardView.vue'),
+					},
 				],
 			},
 			{
