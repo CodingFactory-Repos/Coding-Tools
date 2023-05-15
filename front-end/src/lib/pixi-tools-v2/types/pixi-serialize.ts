@@ -1,7 +1,7 @@
 import { ElementBounds, ElementColorimetry, ElementCursor } from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame';
-export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox';
+export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle';
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
