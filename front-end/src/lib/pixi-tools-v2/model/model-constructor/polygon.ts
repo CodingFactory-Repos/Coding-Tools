@@ -70,8 +70,8 @@ export class Polygon extends ModelGraphics {
 
 		for (let i = 0; i < this.faces; i++) {
 			const angle = (i * angleStep) + startAngleOffset + Math.PI / 2;
-			let x = parseFloat((centerX + (Math.cos(angle) * (sideLength / 2))).toFixed(2));
-			let y = parseFloat((centerY + (Math.sin(angle) * (sideLength / 2))).toFixed(2));
+			const x = parseFloat((centerX + (Math.cos(angle) * (sideLength / 2))).toFixed(2));
+			const y = parseFloat((centerY + (Math.sin(angle) * (sideLength / 2))).toFixed(2));
 
 			console.log(x, width / 6)
 		
@@ -82,17 +82,17 @@ export class Polygon extends ModelGraphics {
 	}
 
 	private findPolygonCenter(vertices: Array<number>) {
-		var numVertices = vertices.length;
-		var sumX = 0;
-		var sumY = 0;
+		const numVertices = vertices.length;
+		let sumX = 0;
+		let sumY = 0;
 	  
-		for (var i = 0; i < numVertices; i = i + 2) {
+		for (let i = 0; i < numVertices; i = i + 2) {
 		  sumX += vertices[i];
 		  sumY += vertices[i + 1];
 		}
 	  
-		var centerX = sumX / numVertices;
-		var centerY = sumY / numVertices;
+		const centerX = sumX / numVertices;
+		const centerY = sumY / numVertices;
 	  
 		return [centerX, centerY];
 	}
