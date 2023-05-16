@@ -56,6 +56,7 @@ export class DragPlugin {
 	private _initDragging = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
+		if (e.global === undefined) return;
 
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
