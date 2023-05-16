@@ -1,6 +1,10 @@
 <template>
 	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x h-100">
-		<div v-for="(group, index) in groups" :key="index" class="bg-white shadow rounded-lg">
+		<div
+			v-for="(group, index) in groups"
+			:key="index"
+			class="bg-white text-gray-500 shadow rounded-lg"
+		>
 			<h2 class="bg-gray-100 p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
 			<div
 				v-for="(student, sIndex) in group"
@@ -18,13 +22,27 @@
 			</div>
 			<div class="flex justify-center items-center p-4">
 				<button
-					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bottom-0"
+					class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
 					@click="joinGroup(index)"
 				>
 					Join Group {{ index + 1 }}
 				</button>
 			</div>
 		</div>
+	</div>
+	<div v-if="isPO" class="flex justify-center p-4 space-x-4">
+		<button
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			@click="createRandomGroups"
+		>
+			Create Random Groups
+		</button>
+		<button
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			@click="emptyGroups"
+		>
+			Empty Groups
+		</button>
 	</div>
 </template>
 
@@ -43,10 +61,13 @@ export default {
 			courseId,
 			groups,
 			studentList,
+			isPO: false,
 		};
 	},
+
 	mounted() {
 		this.getCourseId();
+		this.isProductOwner();
 	},
 	methods: {
 		getCourseId: withErrorHandler(async function () {
@@ -82,9 +103,24 @@ export default {
 				this.getGroups();
 			});
 		}),
-		getStudentIdentity: withErrorHandler(async function (student, i) {
+		createRandomGroups: withErrorHandler(async function () {
+			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
+				this.getGroups();
+			});
+		}),
+		emptyGroups: withErrorHandler(async function () {
+			http.get(`/calls/empty_groups/${this.courseId}`).then((response) => {
+				this.getGroups();
+			});
+		}),
+		getStudentIdentity: withErrorHandler(async function (student) {
 			http.get(`/calls/get_student_identity/${student}`).then((response) => {
 				return response.data.identity;
+			});
+		}),
+		isProductOwner: withErrorHandler(async function () {
+			http.get(`/calls/is_product_owner/`).then((response) => {
+				this.isPO = response.data.isProductOwner;
 			});
 		}),
 	},

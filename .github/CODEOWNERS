@@ -13,8 +13,8 @@
 /back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/agileAnalysis/agileAnalysis.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/agileAnalysis/interfaces/agileAnalysis.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/CanvasRoom/CanvasRoom.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/CanvasRoom/interfaces/CanvasRoom.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
 /back-end/src/base/articles/articles.module.ts @Maghwyn
 /back-end/src/base/articles/articles.repository.ts @Maghwyn @Loule95450
