@@ -36,6 +36,13 @@ export enum ResizeHandle {
 	L = 7, // Left
 }
 
+export enum BezierHandle {
+	T = 0,
+	R = 1,
+	B = 2,
+	L = 3,
+}
+
 export const ResizeHandleOppositeOf = {
 	[ResizeHandle.LT]: { x: ResizeHandle.RT, y: ResizeHandle.LB },
 	[ResizeHandle.RT]: { x: ResizeHandle.LT, y: ResizeHandle.RB },
