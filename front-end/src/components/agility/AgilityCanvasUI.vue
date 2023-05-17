@@ -1,20 +1,29 @@
 <template>
-	<AgilityFocusUI v-if="focusMode" @update:focus-mode="updateFocusMode"/>
-	<div class="w-full h-full relative">
-		<div class="w-full h-full absolute pointer-events-none flex align-center items-center justify-center text-red-500">+</div>
-		<AgilitySceneUI v-if="!focusMode" @update:focus-mode="updateFocusMode"/>
-		<slot></slot>
+	<div class="w-full h-full flex flex-col gap-0">
+		<AgilitySceneUI :room-id="roomId">
+			<ToolsEditorUI v-if="!immersion"/>
+			<div class="flex w-full h-full relative">
+				<DefaultSelectionBoxUI v-if="!immersion"/>
+				<MiroSelectionBox v-else/>
+				<slot></slot>
+			</div>
+		</AgilitySceneUI>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import AgilitySceneUI from '@/components/agility/UI/SceneMode.vue';
-import AgilityFocusUI from '@/components/agility/UI/FocusMode.vue';
+import { computed } from 'vue';
+import { useProjectStore } from '@/store/modules/project.store';
 
-const focusMode = ref(false);
+import MiroSelectionBox from '@/components/agility/UI/MiroSelectionBox.vue';
+import ToolsEditorUI from '@/components/agility/UI/ToolsEditor.vue';
+import DefaultSelectionBoxUI from '@/components/agility/UI/DefaultSelectionBox.vue';
+import AgilitySceneUI from '@/components/agility/UI/SceneUI.vue';
 
-const updateFocusMode = (val: boolean) => {
-	focusMode.value = val;
-}
+const projectStore = useProjectStore();
+const immersion = computed(() => projectStore.immersion);
+
+defineProps({
+	roomId: { type: String, required: true },
+})
 </script>
