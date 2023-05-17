@@ -49,6 +49,7 @@ export class ContainerManager {
 			});
 			this.viewport.destroyBorder();
 			this.viewport.destroyResizeHandles();
+			this.viewport.destroyBezierHandles();
 			this.viewport.destroyResizeHitArea();
 			this._selectedContainers = [];
 		}

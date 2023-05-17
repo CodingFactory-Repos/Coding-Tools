@@ -23,7 +23,6 @@
 				</div>
 			</div>
 
-			
 			<div class="bg-gray-100 p-3 flex justify-end">
 				<button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue" @click="closeModal">Fermer</button>
 			</div>
