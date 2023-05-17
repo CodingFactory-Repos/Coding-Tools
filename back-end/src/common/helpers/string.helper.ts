@@ -50,3 +50,21 @@ export const isEmpty = (value: string | number | object): boolean => {
 		return false;
 	}
 };
+
+export const parseCookieString = (cookieData: string) => {
+	const cookies = cookieData.split('; ');
+	const cookieObj = {};
+	cookies.forEach((cookie) => {
+		const [name, value] = cookie.split('=');
+		cookieObj[decodeURIComponent(name)] = decodeURIComponent(value);
+	});
+	return cookieObj;
+};
+
+export const capitalizeString = (str: string) => {
+	const words = str.split(" ");
+	for (let i = 0; i < words.length; i++) {
+	  words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+	}
+	return words.join(" ");
+}

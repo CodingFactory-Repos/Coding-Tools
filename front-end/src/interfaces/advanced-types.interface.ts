@@ -15,3 +15,10 @@ export type KeysOptional<T extends object> = Exclude<
 	{ [K in keyof T]: T extends Record<K, T[K]> ? never : K }[keyof T],
 	undefined
 >;
+export type DeepPartial<T> = {
+	[P in keyof T]?: T[P] extends Array<infer U>
+		? Array<DeepPartial<U>>
+		: T[P] extends object
+		? DeepPartial<T[P]>
+		: T[P]
+};
