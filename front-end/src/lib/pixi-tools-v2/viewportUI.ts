@@ -21,6 +21,7 @@ export class ViewportUI extends Viewport {
 	public readonly manager: ContainerManager;
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
+	public readonly bezierHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
 	public readonly parent: Stage;
 	public readonly grid: Grid;
@@ -143,6 +144,17 @@ export class ViewportUI extends Viewport {
 					);
 				}
 
+				if (this.bezierHandles?.length > 0) {
+					this.updateBezierHandles(
+						{
+							...size,
+							x: this.border.x,
+							y: this.border.y,
+						},
+						true,
+					);
+				}
+
 				if (this.resizeHitAreas?.length > 0) {
 					this.updateResizeHitAreas({
 						...size,
@@ -205,6 +217,15 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
+	public destroyBezierHandles() {
+		if (this.bezierHandles.length) {
+			this.bezierHandles.forEach((handle) => {
+				handle.destroy();
+			});
+			this.bezierHandles.length = 0;
+		}
+	}
+
 	public destroyLineHandles() {
 		if (this.lineHandles.length) {
 			this.lineHandles.forEach((handle) => {
@@ -263,6 +284,43 @@ export class ViewportUI extends Viewport {
 			handle.zIndex = 100;
 			handle.handleId = handleId;
 			this.resizeHandles.push(handle);
+			this.addChildAt(handle, this.children.length);
+			if (this._isHiddenUI) handle.visible = false;
+		}
+	}
+
+	public createBezierHandles(x: number, y: number, width: number, height: number) {
+		const size = 5;
+		const float = 15;
+		const offset = float / this.scaled;
+		
+		const top = { x: (x + width / 2), y: y - offset };
+		const right = { x: (x + width + offset), y: (y + height / 2) };
+		const left = { x: x - offset, y: (y + height / 2) };
+		const bottom = { x: (x + width / 2), y: (y + height + offset) };
+
+		const handlePositions: Array<HandleOptions> = [
+			{ ...top, cursor: 'pointer', handleId: ResizeHandle.T },
+			{ ...right, cursor: 'pointer', handleId: ResizeHandle.R },
+			{ ...left, cursor: 'pointer', handleId: ResizeHandle.L },
+			{ ...bottom, cursor: 'pointer', handleId: ResizeHandle.B },
+		];
+
+		// TEST: for testing the handles position
+		// const color = [0xd5d5d5, 0xff00ff, 0x00ffff, 0xffff00];
+
+		for (const element of handlePositions) {
+			const { handleId, ...attr } = element;
+
+			const handle = new Handle({
+				...attr,
+				radius: size,
+				scale: this.scaled,
+				alpha: 0.5,
+			});
+			handle.zIndex = 100;
+			handle.handleId = handleId;
+			this.bezierHandles.push(handle);
 			this.addChildAt(handle, this.children.length);
 			if (this._isHiddenUI) handle.visible = false;
 		}
@@ -353,6 +411,31 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
+	public updateBezierHandles(attr: Partial<GraphicUIProperties>, redraw: boolean) {
+		const scale = this.scaled;
+		const float = 15;
+		const offset = Math.max(1, float / scale);
+
+		const { x, y, width, height } = attr;
+		
+		const top = { x: (x + width / 2), y: y - offset };
+		const right = { x: (x + width + offset), y: (y + height / 2) };
+		const left = { x: x - offset, y: (y + height / 2) };
+		const bottom = { x: (x + width / 2), y: (y + height + offset) };
+
+		const positions = [
+			{ ...top },
+			{ ...right },
+			{ ...left },
+			{ ...bottom },
+		]
+
+		for (let n = 0; n < this.bezierHandles.length; n++) {
+			if (redraw) this.bezierHandles[n].draw({ ...positions[n], scale: scale });
+			else this.bezierHandles[n].position.set(positions[n].x, positions[n].y);
+		}
+	}
+
 	public updateResizeHitAreas(attr: Partial<GraphicUIProperties>) {
 		const scale = this.scaled;
 		const size = 5 / scale;
@@ -382,6 +465,10 @@ export class ViewportUI extends Viewport {
 
 	public toggleUIVisibilty(visible: boolean) {
 		for (const element of this.resizeHandles) {
+			element.visible = visible;
+		}
+
+		for (const element of this.bezierHandles) {
 			element.visible = visible;
 		}
 
