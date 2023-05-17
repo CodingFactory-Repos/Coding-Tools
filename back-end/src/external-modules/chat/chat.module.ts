@@ -1,9 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { ChatGateway } from '@/common/gateways/chat.global.gateway';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { AuthModule } from '@/auth/auth.module';
 
 @Module({
-	imports: [],
+	imports: [forwardRef(() => AuthModule)],
 	providers: [JwtService, ChatGateway],
 	controllers: [],
 	exports: [],
