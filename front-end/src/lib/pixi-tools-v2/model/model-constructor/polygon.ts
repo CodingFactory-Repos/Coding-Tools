@@ -70,11 +70,8 @@ export class Polygon extends ModelGraphics {
 
 		for (let i = 0; i < this.faces; i++) {
 			const angle = (i * angleStep) + startAngleOffset + Math.PI / 2;
-			const x = parseFloat((centerX + (Math.cos(angle) * (sideLength / 2))).toFixed(2));
-			const y = parseFloat((centerY + (Math.sin(angle) * (sideLength / 2))).toFixed(2));
-
-			console.log(x, width / 6)
-		
+			let x = parseFloat((centerX + (Math.cos(angle) * (sideLength / 2))).toFixed(2));
+			let y = parseFloat((centerY + (Math.sin(angle) * (sideLength / 2))).toFixed(2));
 			vertices.push(x, y);
 		}
 
