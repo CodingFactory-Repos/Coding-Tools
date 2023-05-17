@@ -188,6 +188,7 @@ export class DragPlugin {
 			this.viewport.destroyBorder();
 			this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
 			this.viewport.updateResizeHitAreas(geometry);
+			this.viewport.updateBezierHandles(geometry, false);
 			this.viewport.updateResizeHandles(geometry, false);
 		} catch (err) {
 			if (err instanceof Error) {
@@ -221,7 +222,7 @@ export class DragPlugin {
 			this.unconstraints.forEach((ctn) => {
 				if (ctn.isAttachedToFrame) {
 					const frame = ctn.parent.parent as FramedContainer;
-					frame.removeNestedChild(ctn, this.viewport.children.length - 9, false);
+					frame.removeNestedChild(ctn, this.viewport.children.length - 13, false);
 				}
 			});
 

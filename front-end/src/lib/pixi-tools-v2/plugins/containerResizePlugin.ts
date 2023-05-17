@@ -49,6 +49,7 @@ export class ResizePlugin {
 		const { x, y, width, height } = this.container.getGeometry();
 		this.viewport.createResizeHitAreas(x, y, width, height);
 		this.viewport.createResizeHandles(x, y, width, height);
+		this.viewport.createBezierHandles(x, y, width, height);
 
 		this.viewport.resizeHitAreas.forEach((hit) => {
 			hit.on('pointerdown', this._initResizeTransform.bind(this));
@@ -69,6 +70,7 @@ export class ResizePlugin {
 
 		this.viewport.destroyResizeHitArea();
 		this.viewport.destroyResizeHandles();
+		this.viewport.destroyBezierHandles();
 	}
 
 	private _initResizeTransform = (e: FederatedPointerEvent) => {
@@ -339,6 +341,7 @@ export class ResizePlugin {
 			this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
 			this.viewport.updateResizeHitAreas(geometry);
 			this.viewport.updateResizeHandles(geometry, false);
+			this.viewport.updateBezierHandles(geometry, false);
 
 			if (isPastBounds) {
 				const isXAxis = isPastLeft || isPastRight;
