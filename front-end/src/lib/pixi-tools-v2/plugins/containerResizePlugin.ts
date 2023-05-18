@@ -49,7 +49,6 @@ export class ResizePlugin {
 		const { x, y, width, height } = this.container.getGeometry();
 		this.viewport.createResizeHitAreas(x, y, width, height);
 		this.viewport.createResizeHandles(x, y, width, height);
-		this.viewport.createBezierHandles(x, y, width, height);
 
 		this.viewport.resizeHitAreas.forEach((hit) => {
 			hit.on('pointerdown', this._initResizeTransform.bind(this));
@@ -70,7 +69,6 @@ export class ResizePlugin {
 
 		this.viewport.destroyResizeHitArea();
 		this.viewport.destroyResizeHandles();
-		this.viewport.destroyBezierHandles();
 	}
 
 	private _initResizeTransform = (e: FederatedPointerEvent) => {
