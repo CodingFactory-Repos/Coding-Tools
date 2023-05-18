@@ -1,11 +1,10 @@
 <template>
-	<div class="container">
+	<div class="container mx-5">
 		<div class="ButtonsContainer">
-			<h1>Materials</h1>
 			<ButtonsMaterials />
 		</div>
 		<h2 class="text-2xl font-bold dark:text-dark-font">List of all materials</h2>
-		<div class="cards">
+		<div class="cards mt-5">
 			<ListMaterials />
 		</div>
 	</div>
@@ -24,6 +23,7 @@ export default {
 .ButtonsContainer {
 	width: 100%;
 	text-align: center;
+	margin-top: 55px;
 }
 .cards {
 	display: flex;
