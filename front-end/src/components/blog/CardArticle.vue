@@ -20,13 +20,12 @@
 				{{ item.title ? item.title : 'Pas de titre spécifié' }}
 			</h5>
 		</a>
-		<p class="mb-3 p-3 font-normal text-gray-700 dark:text-gray-400">
-			{{
-				item.descriptions[0].value.length > 100
-					? item.descriptions[0].value.substring(0, 100) + '...'
-					: item.descriptions[0].value
-			}}
-		</p>
+		<p
+			v-html="renderMarkdown()"
+			class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
+		></p>
+	</div>
+	<div class="pt-2 pb-5">
 		<button
 			type="button"
 			@click="openArticle(item._id)"
@@ -51,13 +50,27 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useRouter } from 'vue-router';
 
-defineProps<{
+// defineProps<{
+// 	item: any;
+// }>();
+
+const props = defineProps<{
 	item: any;
 }>();
+
+import MarkdownIt from 'markdown-it';
+
+let markdown = ref('');
+
+// create renderMarkdown method
+const renderMarkdown = () => {
+	const md = new MarkdownIt();
+	return md.render(markdown.value);
+};
 
 // get store
 const articleStore = useArticleStore();
@@ -67,6 +80,12 @@ const router = useRouter();
 // Fetch the articles
 const getArticles = async () => {
 	await articleStore.getArticle();
+	if (props.item.descriptions.length > 60) {
+		markdown.value = props.item.descriptions.substring(0, 60);
+		markdown.value += '...';
+	} else {
+		markdown.value = props.item.descriptions;
+	}
 };
 
 // Call the getArticles method when the component is created

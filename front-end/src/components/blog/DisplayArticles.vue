@@ -1,24 +1,18 @@
 <template>
 	<div class="text-center">
 		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">Blog</h1>
+			<h1 class="text-4xl mb-2 font-bold tracking-tight text-gray-900 dark:text-white">Blog</h1>
 			<button
 				type="submit"
-				@click="openMetaModal"
+				@click="redirectNewArticle"
 				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
 				<span class="text-white">Create article</span>
 			</button>
 		</div>
 
-		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="3xl">
-			<template #body>
-				<AddArticles />
-			</template>
-		</ModalOverlay>
-
 		<div class="text-center max-w-full h-full">
-			<h2 class="text-3xl font-bold pt-5">All Articles</h2>
+			<h2 class="text-3xl font-bold pt-5 text-gray-900 dark:text-white">All Articles</h2>
 
 			<!-- <div class="w-full pl-32 pr-32">
 				<ul
@@ -50,7 +44,7 @@
 					<div
 						v-for="item in items"
 						:key="item._id"
-						class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+						class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 					>
 						<CardArticle :item="item" />
 					</div>
@@ -61,11 +55,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
-import AddArticles from './AddArticles.vue';
-import ModalOverlay from '@/components/common/Modal.vue';
+import { computed, onMounted } from 'vue';
 import CardArticle from './CardArticle.vue';
 import { useArticleStore } from '@/store/modules/article.store';
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 // Use the article store
 const articleStore = useArticleStore();
@@ -78,12 +73,9 @@ const items = computed(() => {
 	});
 });
 
-// Display the modal
-const showModal = ref(false);
-
-// Function to open and close the modal
-const openMetaModal = () => (showModal.value = true);
-const closeMetaModal = () => (showModal.value = false);
+const redirectNewArticle = () => {
+	router.push('/app/blog/new');
+};
 
 // Fetch the articles
 const getArticles = async () => {

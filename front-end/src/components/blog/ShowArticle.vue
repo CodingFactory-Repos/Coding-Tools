@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<ModalOverlay v-if="showCommentModal" @close="closeCommentModal" size="2xl">
 		<template #body>
@@ -114,17 +115,7 @@
 		</div>
 
 		<div class="pt-2 pb-5 text-center">
-			<div v-for="(description, index) in oneItems.descriptions" :key="description.value">
-				<img
-					v-if="description.type == 'image'"
-					:src="description.value"
-					:alt="oneItems.title + ' ' + index"
-					class="h-auto max-w-lg mx-auto"
-				/>
-				<p v-else class="mb-3 p-3 font-normal text-gray-700 dark:text-gray-400">
-					{{ description.value }}
-				</p>
-			</div>
+			<div v-html="renderMarkdown()"></div>
 
 			<button
 				v-if="oneItems.type !== 'Evenement'"
@@ -244,6 +235,16 @@ import ModalOverlay from '@/components/common/Modal.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
 
+import MarkdownIt from 'markdown-it';
+
+let markdown = ref('');
+
+// create renderMarkdown method
+const renderMarkdown = () => {
+	const md = new MarkdownIt();
+	return md.render(markdown.value);
+};
+
 // get store
 const articleStore = useArticleStore();
 const oneItems = computed(() => articleStore.oneItems);
@@ -273,6 +274,7 @@ const _id = computed(() => {
 // get article by id
 const getArticleById = async (_id: string) => {
 	await articleStore.getArticleById(_id);
+	markdown.value = oneItems.value.descriptions;
 };
 
 const formatDate = (date: Date) => {
@@ -286,6 +288,7 @@ const formatDate = (date: Date) => {
 // get article by id on mounted
 onMounted(() => {
 	getArticleById(_id.value);
+	markdown.value = oneItems.value.descriptions;
 });
 
 // function to throw a sweet alert to confirm the participation or to unsubscribe from the event
