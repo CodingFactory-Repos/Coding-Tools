@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="container-head">
-			<h1>Nouvelle rétrospective</h1>
+			<h1 class="text-2xl font-bold text-[#5c5f73]">Nouvelle rétrospective</h1>
 		</div>
 		<div class="container-titleRetro">
 			<label for="Ajouter un titre">Ajouter un titre</label>
