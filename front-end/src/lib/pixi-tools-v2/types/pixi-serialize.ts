@@ -1,4 +1,4 @@
-import { ElementBounds, ElementColorimetry, ElementCursor } from './pixi-container';
+import { ElementBounds, ElementColorimetry, ElementCursor, LineBounds } from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier';
@@ -24,7 +24,7 @@ export interface SerializedContainerBounds extends Partial<SerializedElement> {
 
 export interface SerializedGraphic extends SerializedElement {
 	typeId: GraphicTypeId | InternalTypeId;
-	bounds: ElementBounds;
+	bounds: Partial<ElementBounds> & Partial<LineBounds>;
 	properties: SerializedGraphicProperties;
 }
 

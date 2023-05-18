@@ -31,3 +31,11 @@ export interface ContainerSize extends ElementSize, SerializedContainerAnchors {
 export interface InitialGraphicState extends ElementBounds {
 	child: ModelGraphics;
 }
+
+export interface LineBounds extends ElementBounds {
+	start: ElementPosition,
+	end: ElementPosition,
+	control: ElementPosition,
+	startControl: ElementPosition,
+	endControl: ElementPosition,
+}
