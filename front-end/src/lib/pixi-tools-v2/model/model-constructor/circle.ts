@@ -30,7 +30,7 @@ export class Circle extends ModelGraphics {
 		this.draw(bounds);
 	}
 
-	public draw(bounds: ElementBounds) {
+	public draw(bounds: Partial<ElementBounds>) {
 		const { x, y, radius } = bounds;
 		this.radius = radius;
 		this.position.set(x, y);

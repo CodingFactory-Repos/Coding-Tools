@@ -26,12 +26,12 @@ export class Polygon extends ModelGraphics {
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
-		this.faces = 6; 
+		this.faces = 6;
 
 		this.draw(bounds);
 	}
 
-	public draw(bounds: ElementBounds) {
+	public draw(bounds: Partial<ElementBounds>) {
 		const { width, height, x, y } = bounds;
 		this.position.set(x, y);
 	

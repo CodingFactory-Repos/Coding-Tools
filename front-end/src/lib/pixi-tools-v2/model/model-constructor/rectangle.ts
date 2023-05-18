@@ -29,7 +29,7 @@ export class Rectangle extends ModelGraphics {
 		this.draw(bounds);
 	}
 
-	public draw(bounds: ElementBounds) {
+	public draw(bounds: Partial<ElementBounds>) {
 		const { width, height, x, y } = bounds;
 		this.position.set(x, y);
 		this.height = height;
