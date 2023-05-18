@@ -59,7 +59,7 @@ export default defineComponent({
 			chooseTemplate,
 			displayTemplate,
 			active,
-			isPO: true
+			isPO: true,
 		};
 	},
 	mounted() {
