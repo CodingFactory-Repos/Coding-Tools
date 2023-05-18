@@ -1,11 +1,19 @@
 <template>
-	<button
-		@click="showModal = true"
-		class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none gap-2 gradiant"
+	<div
+		class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
 	>
-		<span class="text-white">Create materials</span>
-	</button>
-	<button @click="createPDF">Create PDF</button>
+		<div class="grow flex h-full gap-1 items-center">
+			<button
+				@click="showModal = true"
+				class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none gap-2 gradiant"
+			>
+				<span class="text-white">Create materials</span>
+			</button>
+			<IconButton class="h-fit" type="button" @click="createPDF">
+				<SvgDownload width="22" height="22" class="!fill-gray-400" />
+			</IconButton>
+		</div>
+	</div>
 	<div v-if="showModal" class="popup">
 		<div class="popup-content">
 			<form @submit.prevent="addMaterial">
@@ -154,181 +162,140 @@
 	</div>
 </template>
 
-<script lang="ts">
-import html2pdf from 'html2pdf.js';
+<script lang="ts" setup>
+import { ref } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 import { Material } from '@/store/interfaces/material.interface';
 import { http } from '@/api/network/axios';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+import SvgDownload from '@/components/common/svg/Download.vue';
+import IconButton from '@/components/common/buttons/Icon.vue';
+import CodingToolsLogo from '@/images/CodingToolsLogo.png';
 
 const materialStore = useMaterialStore();
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+let base64Image = null;
+const showModal = ref(false);
+const name = ref('');
+const type = ref('');
+const price = ref(0);
+const picture = ref('');
+const state = ref('');
+const siteLocation = ref('');
+const storageCupboard = ref('');
+const description = ref('');
 
-export default {
-	data() {
-		return {
-			materials: [],
-			showModal: false,
-			name: '',
-			type: '',
-			price: '',
-			picture: '',
-			state: '',
-			siteLocation: '',
-			storageCupboard: '',
-			description: '',
+fetch(CodingToolsLogo)
+	.then((response) => response.blob())
+	.then((blob) => {
+		const reader = new FileReader();
+		reader.onloadend = () => {
+			base64Image = reader.result;
 		};
-	},
-	methods: {
-		addMaterial() {
-			//Use the store to add the material
-			materialStore.addMaterial({
-				name: this.name,
-				type: this.type,
-				price: this.price,
-				acquisitionDate: new Date(Date.now()),
-				picture: this.picture,
-				state: this.state,
-				siteLocation: this.siteLocation,
-				storageCupboard: this.storageCupboard,
-				description: this.description,
-				status: true,
-			});
-			//Close the modal
-			this.showModal = false;
-		},
-		// deleteMaterial() {
-		// 	axios
-		// 		.delete('http://localhost:8000/materials/delete/' + this.id)
-		// 		.then((response) => {
-		// 			console.log(response);
-		// 		})
-		// 		.catch((error) => {
-		// 			console.log(id);
-		// 			console.log(error);
-		// 		});
-		// },
-		createPDF() {
-			http.get<Array<Material>>('/materials').then((response) => {
-				console.log(response);
-				const data = response.data;
-				// Convertir acquisitonDate en date
-				data.forEach((material) => {
-					material.acquisitionDate = new Date(material.acquisitionDate).toLocaleDateString();
-				});
-				const html = this.generateHtml(data);
-				const options = {
-					filename: 'materials.pdf',
-				};
-				console.log(data[0].borrowingHistory);
-				html2pdf().from(html).set(options).save();
-			});
-		},
-		//! J'ai fix votre [Object object]
-		//! Mais honnêtement vous avez pris le chemin le plus compliqué, c'est pas du tout modulaire et vous allez avoir du mal avec la place et les tables.
-		//! Je vous conseille http://pdfmake.org/playground.html à la place, si vous avez le temps.
-		//! npm : https://www.npmjs.com/package/pdfmake
-		generateHtml(data2: Array<Material>) {
-			let html = `
-			<html>
-				<head>
-					<style>
-						@page {
-							size: A4;
-							margin: 0;
-						}
-						* {
-							box-sizing: border-box;
-							-moz-box-sizing: border-box;
-						}
-						body {
-							font-family: sans-serif;
-							margin: 0;
-							padding: 0;
-							width: 100%;
-							height: 100%;
-						}
-						table {
-							border-collapse: collapse;
-							width: 100%;
-						}
-						th,
-						td {
-							text-align: left;
-							padding: 8px;
-						}
-						tr:nth-child(even) {
-							background-color: #f2f2f2;
-						}
-						th {
-							background-color: #4caf50;
-							color: white;
-						}
-						td {
-							color: black;
-						}
-						@media print {
-							@page {
-								size: A4;
-								margin: 0;
-							}
-							body {
-								width: 210mm;
-								height: 297mm;
-							}
-						}
-						h1 {
-							color: black;
-							text-align: center;
-							padding-bottom: 30px;
-						}
-					</style>
-				</head>
-				<body>
-					<h1>Materials</h1>
-					<table>
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Type</th>
-								<th>Price</th>
-								<th>Acquisition Date</th>
-								<th>State</th>
-								<th>Site Location</th>
-								<th>Storage Cupboard</th>
-								<th>Description</th>
-								<th>Borrowed at</th>
-								<th>Returned at</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody>
-			`;
-			data2.forEach((material) => {
-				html += `
-					<tr>
-						<td>${material.name}</td>
-						<td>${material.type}</td>
-						<td>${material.price}</td>
-						<td>${material.acquisitionDate}</td>
-						<td>${material.state}</td>
-						<td>${material.siteLocation}</td>
-						<td>${material.storageCupboard}</td>
-						<td>${material.description}</td>
-						<td>${material.borrowingHistory.map((el) => el.borrowingDate).join('</br>')}</td>
-						<td>${material.borrowingHistory.map((el) => el.returnDate).join('</br>')}</td>
-						<td>${material.status}</td>
-					</tr>
-				`;
-			});
-			html += `
-						</tbody>
-					</table>
-				</body>
-			</html>
-			`;
-			return html;
-		},
-	},
-};
+		reader.readAsDataURL(blob);
+	})
+	.catch((error) => {
+		console.error("Erreur lors du chargement de l'image :", error);
+	});
+
+function addMaterial() {
+	console.log('addMaterial');
+	//Use the store to add the material
+	materialStore.addMaterial({
+		name: name.value,
+		type: type.value,
+		price: price.value,
+		acquisitionDate: new Date(Date.now()),
+		picture: picture.value,
+		state: state.value,
+		siteLocation: siteLocation.value,
+		storageCupboard: storageCupboard.value,
+		description: description.value,
+		status: true,
+	});
+	//Close the modal
+	showModal.value = false;
+}
+function createPDF() {
+	http.get<Array<Material>>('/materials').then((response) => {
+		const data = response.data;
+		data.forEach((material) => {
+			material.acquisitionDate = new Date(material.acquisitionDate).toLocaleDateString();
+		});
+
+		const docDefinition = {
+			info: {
+				title: 'Materials',
+			},
+			content: [
+				{
+					image: base64Image,
+					width: 200,
+					height: 150,
+					alignment: 'left',
+				},
+				{
+					text: 'Summary',
+					style: 'header',
+				},
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Confectum ponit legam, perferendis nomine miserum, animi. Moveat nesciunt triari naturam posset, eveniunt specie deorsus efficiat sermone instituendarum fuisse veniat, eademque mutat debeo. Delectet plerique protervi diogenem dixerit logikh levius probabo adipiscuntur afficitur, factis magistra inprobitatem aliquo andriam obiecta, religionis, imitarentur studiis quam, clamat intereant vulgo admonitionem operis iudex stabilitas vacillare scriptum nixam, reperiri inveniri maestitiam istius eaque dissentias idcirco gravis, refert suscipiet recte sapiens oportet ipsam terentianus, perpauca sedatio aliena video.',
+				{
+					text: 'Materials List',
+					style: 'subheader',
+					pageBreak: 'before',
+				},
+				{
+					style: 'tableExample',
+					table: {
+						width: 'auto',
+						body: [
+							[
+								'Name',
+								'Type',
+								'Price',
+								'Acquisition Date',
+								'State',
+								'Site Location',
+								'Storage Cupboard',
+								'Description',
+							],
+							...data.map((material) => [
+								material.name,
+								material.type,
+								material.price + '€',
+								material.acquisitionDate,
+								material.state,
+								material.siteLocation,
+								material.storageCupboard,
+								material.description,
+							]),
+						],
+					},
+				},
+			],
+			images: {
+				CodingTools: './images/CodingToolsLogo.png',
+			},
+			styles: {
+				subheader: {
+					fontSize: 15,
+					bold: true,
+				},
+				header: {
+					fontSize: 18,
+					bold: true,
+					margin: [0, 0, 0, 10],
+				},
+				tableExample: {
+					margin: [0, 5, 0, 15],
+				},
+			},
+		};
+		pdfMake.createPdf(docDefinition).open();
+	});
+}
 </script>
 
 <style scoped>
