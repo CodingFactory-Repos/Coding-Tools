@@ -4,7 +4,7 @@ import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
 import { Border, Handle, HitArea, Grid } from './model/template-ui';
-import { ResizeHandle } from './types/pixi-enums';
+import { BezierHandle, ResizeHandle } from './types/pixi-enums';
 
 import type { CanvasContainer, Stage } from './types/pixi-aliases';
 import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types/pixi-ui';
@@ -296,14 +296,14 @@ export class ViewportUI extends Viewport {
 		
 		const top = { x: (x + width / 2), y: y - offset };
 		const right = { x: (x + width + offset), y: (y + height / 2) };
-		const left = { x: x - offset, y: (y + height / 2) };
 		const bottom = { x: (x + width / 2), y: (y + height + offset) };
+		const left = { x: x - offset, y: (y + height / 2) };
 
 		const handlePositions: Array<HandleOptions> = [
-			{ ...top, cursor: 'pointer', handleId: ResizeHandle.T },
-			{ ...right, cursor: 'pointer', handleId: ResizeHandle.R },
-			{ ...left, cursor: 'pointer', handleId: ResizeHandle.L },
-			{ ...bottom, cursor: 'pointer', handleId: ResizeHandle.B },
+			{ ...top, cursor: 'pointer', handleId: BezierHandle.T },
+			{ ...right, cursor: 'pointer', handleId: BezierHandle.R },
+			{ ...bottom, cursor: 'pointer', handleId: BezierHandle.B },
+			{ ...left, cursor: 'pointer', handleId: BezierHandle.L },
 		];
 
 		// TEST: for testing the handles position
@@ -420,14 +420,14 @@ export class ViewportUI extends Viewport {
 		
 		const top = { x: (x + width / 2), y: y - offset };
 		const right = { x: (x + width + offset), y: (y + height / 2) };
-		const left = { x: x - offset, y: (y + height / 2) };
 		const bottom = { x: (x + width / 2), y: (y + height + offset) };
+		const left = { x: x - offset, y: (y + height / 2) };
 
 		const positions = [
 			{ ...top },
 			{ ...right },
-			{ ...left },
 			{ ...bottom },
+			{ ...left },
 		]
 
 		for (let n = 0; n < this.bezierHandles.length; n++) {
