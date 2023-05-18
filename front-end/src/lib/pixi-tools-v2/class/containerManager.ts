@@ -8,11 +8,13 @@ import { ViewportUI } from '../viewportUI';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
 import { GenericContainer } from './genericContainer';
+import { BezierPlugin } from '../plugins/bezierLinkPlugin';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
 	protected readonly resizePlugin: ResizePlugin;
 	protected readonly dragPlugin: DragPlugin;
+	protected readonly bezierPlugin: BezierPlugin;
 	public readonly wrappedContainer: WrappedContainer;
 	public readonly downloadPlugin: DownloadPlugin;
 	private _selectedContainers: Array<CanvasContainer>;
@@ -22,6 +24,7 @@ export class ContainerManager {
 		this.wrappedContainer = new WrappedContainer(this, this.viewport);
 		this.resizePlugin = new ResizePlugin(this.viewport);
 		this.dragPlugin = new DragPlugin(this.viewport);
+		this.bezierPlugin = new BezierPlugin(this.viewport);
 		this.downloadPlugin = new DownloadPlugin(this.viewport);
 		this._selectedContainers = [];
 
@@ -162,11 +165,13 @@ export class ContainerManager {
 	public attachPlugins(container: PluginContainer) {
 		this.resizePlugin.attach(container);
 		this.dragPlugin.attach(container);
+		this.bezierPlugin.attach(container);
 	}
 
 	public detachPlugins() {
 		this.resizePlugin.detach();
 		this.dragPlugin.detach();
+		this.bezierPlugin.detach();
 	}
 
 	public getSelectedCenter() {
