@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: ':id',
-						component: () => import('../views/app/RelatedProfileView.vue')
+						component: () => import('../views/app/RelatedProfileView.vue'),
 					},
 				],
 			},
@@ -65,6 +65,10 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: '',
 						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: 'new',
+						component: () => import('../views/AddArticleView.vue'),
 					},
 					{
 						path: ':id',
