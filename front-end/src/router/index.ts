@@ -32,10 +32,59 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/app',
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
-			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
-			{ path: 'rollcall', component: () => import('../views/RollCall.vue') },
+			{
+				path: 'account',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/app/AccountView.vue'),
+					},
+					{
+						path: ':id',
+						component: () => import('../views/app/RelatedProfileView.vue')
+					},
+				],
+			},
+			{
+				path: 'rollcall',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/calls/RollCallView.vue'),
+					},
+					{
+						path: 'groups',
+						component: () => import('../views/calls/GroupsView.vue'),
+					},
+				],
+			},
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
-			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+			{
+				path: 'blog',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: ':id',
+						component: () => import('../views/ShowArticleView.vue'),
+					},
+				],
+			},
+			{
+				path: 'scrum',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/OrganisationView.vue'),
+					},
+					{
+						path: 'sprint',
+						component: () => import('../views/SprintsView.vue'),
+					},
+				],
+			},
 			{
 				path: 'retrospective',
 				children: [
@@ -58,10 +107,6 @@ const routes: Array<RouteRecordRaw> = [
 							{
 								path: '',
 								component: () => import('../views/app/AgilityDashboard.vue'),
-							},
-							{
-								path: 'documentation',
-								component: () => import('../components/agility/AgilityDocumentation.vue'),
 							},
 						],
 					},

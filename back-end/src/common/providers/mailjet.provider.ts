@@ -14,11 +14,22 @@ export class MailjetListeners {
 	) {}
 
 	@OnEvent(Events.alertPedago)
-	async handleSingupPo(payload: MailjetEmail) {
+	async handleSignupPo(payload: MailjetEmail) {
 		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MaijetTemplate.alertPedago,
+			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
+			args: { email },
+		});
+	}
+
+	@OnEvent(Events.alertUnallowed)
+	async handleSignupUnallowed(payload: MailjetEmail) {
+		const { email } = payload;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MaijetTemplate.alertUnallowed,
 			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
 			args: { email },
 		});
