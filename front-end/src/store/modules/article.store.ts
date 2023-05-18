@@ -11,12 +11,7 @@ export const useArticleStore = defineStore('article', {
 					_id: '',
 					date: '',
 					title: '',
-					descriptions: [
-						{
-							type: '',
-							value: '',
-						},
-					],
+					descriptions: '',
 					picture: '',
 					tags: '',
 					type: '',
@@ -26,12 +21,7 @@ export const useArticleStore = defineStore('article', {
 				_id: '',
 				title: '',
 				date: '',
-				descriptions: [
-					{
-						type: '',
-						value: '',
-					},
-				],
+				descriptions: '',
 				picture: '',
 				tags: '',
 				type: '',

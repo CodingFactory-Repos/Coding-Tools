@@ -8,10 +8,7 @@ export interface Article {
 	_id?: string;
 	date: string;
 	title: string;
-	descriptions: {
-		type: string;
-		value: string;
-	}[];
+	descriptions: string;
 	picture: string;
 	tags: string;
 	type: string;
