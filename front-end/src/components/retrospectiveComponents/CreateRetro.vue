@@ -5,14 +5,18 @@
 			<div
 				class="flex flex-col items-center justify-center gap-5 p-4 z-10 bg-light-primary dark:bg-dark-tertiary rounded-lg"
 			>
-				<h3 class="text-lg font-bold text-[#5c5f73] dark:text-dark-font text-center">Your saved retros will be shown here in the future.</h3>
+				<h3 class="text-lg font-bold text-[#5c5f73] dark:text-dark-font text-center">
+					Your saved retros will be shown here in the future.
+				</h3>
 				<DefaultButton
+					v-if="isPO"
 					type="button"
-					text="Start your first retro here !"
+					text="Start your first retro here!"
 					background="bg-pink-600"
 					text-style="text-white"
 					@click="chooseTemplate"
 				/>
+				<div v-else class="text-red-500 font-bold">You are not a product owner.</div>
 			</div>
 		</div>
 		<div class="w-full flex grow gap-3 flex-wrap">
@@ -27,7 +31,9 @@
 import { defineComponent, ref } from 'vue';
 import Overlay from '@/components/retrospectiveComponents/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
-import DefaultButton from "@/components/common/buttons/Default.vue";
+import DefaultButton from '@/components/common/buttons/Default.vue';
+import { withErrorHandler } from '@/utils/storeHandler';
+import { http } from '@/api/network/axios';
 
 export default defineComponent({
 	components: {
@@ -38,6 +44,7 @@ export default defineComponent({
 	setup() {
 		const active = ref(false);
 		const displayTemplate = ref(false);
+		const isPO = ref(false); // Ajout de la variable isPO
 
 		const chooseTemplate = () => {
 			active.value = true;
@@ -52,7 +59,26 @@ export default defineComponent({
 			chooseTemplate,
 			displayTemplate,
 			active,
+			isPO: true
 		};
+	},
+	mounted() {
+		this.isProductOwner(); // Utiliser la méthode isPO pour définir la valeur de isPO
+	},
+	methods: {
+		isProductOwner: withErrorHandler(async () => {
+			// Utiliser une fonction fléchée
+			try {
+				const response = await http.get(`/calls/is_product_owner/`);
+				// TODO: Ici, il faut définir la valeur de isPO
+				// this.isPO = response.data.isPO;
+				this.isPO = true;
+			} catch (error) {
+				console.error(error);
+				// this.isPO = false;
+				this.isPO = true;
+			}
+		}),
 	},
 });
 </script>
