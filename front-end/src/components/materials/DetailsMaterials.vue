@@ -32,7 +32,9 @@
 					>Armoire : {{ props.material.storageCupboard }}</span
 				>
 			</div>
-			<span class="text-2xl font-bold text-gray-900 dark:text-white">{{ props.material.price }} €</span>
+			<span class="text-2xl font-bold text-gray-900 dark:text-white"
+				>{{ props.material.price }} €</span
+			>
 		</div>
 	</div>
 	<div v-if="userRole === Roles.PRODUCT_OWNER || userRole === Roles.PEDAGOGUE">
@@ -49,13 +51,11 @@
 				/>
 			</div>
 			<div v-if="showLink === true">
-				<label class="text-white dark:text-gray-200" for="username">Image Link</label>
-				<input
-					id="name"
-					v-model="props.material.picture"
-					type="text"
-					class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-				/>
+				<Modal v-if="showLink" @close="showLink = false">
+					<template #body>
+						<ImagePicker @selectImage="onImageSelected" />
+					</template>
+				</Modal>
 			</div>
 			<div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
 				<div>
@@ -175,29 +175,34 @@ import { Material } from '@/store/interfaces/material.interface';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { withErrorHandler } from '@/utils/storeHandler';
+import Modal from '@/components/common/Modal.vue';
+import ImagePicker from '@/components/materials/ImagePicker.vue';
 
 const props = defineProps<{
-	id: string,
-	material: Object,
-}>()
+	id: string;
+	material: Object;
+}>();
 
 const authStore = useAuthStore();
 const materialStore = useMaterialStore();
 const user = computed(() => authStore.user);
-const userEmail = computed(() => user.value?.profile?.email)
+const userEmail = computed(() => user.value?.profile?.email);
 const userRole = computed(() => user.value?.role);
 
 const showLink = ref({});
 const showHistory = ref(false);
 
-
 const editMaterial = () => {
+	console.log(props.material)
 	materialStore.updateMaterial(props.material, props.id);
 };
+
+function onImageSelected(image) {
+	props.material.picture = image;
+	showLink.value = false;
+}
 
 const deleteMaterial = () => {
 	materialStore.deleteMaterial(props.id);
 };
-
-
 </script>
