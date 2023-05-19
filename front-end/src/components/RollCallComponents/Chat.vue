@@ -38,41 +38,55 @@
 import ChatMultiMessage from './ChatMultiMessage.vue';
 import { useAuthStore } from '../../store/modules/auth.store';
 import { io } from 'socket.io-client';
+import { reactive } from 'vue';
 
+let messagesTab = reactive([]);
 const authStore = useAuthStore();
 const currentUser = authStore.user;
-let socket = io('http://localhost:8000/');
+const socket = io('ws://localhost:8010/chat', {
+	transports: ['websocket'],
+	withCredentials: true,
+	path: '/socket.io',
+});
 
 export default {
 	components: {
 		ChatMultiMessage,
 	},
+	props: {
+		roomId: {
+			type: String,
+			required: true,
+		},
+	},
 	data() {
 		return {
-			messages: [],
-			gifmessages: [],
+			messages: reactive([]),
 			newMessageText: '',
 			searchTerm: '',
 			gifs: [],
 		};
 	},
-	created() {
+  created(){},
+	mounted() {
+		socket.auth = { roomId: this.roomId };
 		socket.connect();
-		socket.on('connect', () => {
+		socket.on('peer-connected', () => {
+			// not always on time
 			console.log('connected');
 		});
-		socket.emit('message', 'Hello Server!');
-		socket.on('message', (message) => {
-			console.log(`Nouveau message: ${message}`);
-		});
-		socket.emit('connection');
-		socket.on('chatMessage', (data) => {
-			console.log('chatMessage');
-			console.log(data);
-			this.messages.unshift(data[0]);
+		socket.on('peer-chat-message', (data) => {
+			console.log('test', data);
+			let msg = data[0];
+			console.log(msg);
+			this.addMessageToArray(msg);
+			console.log(77, this.messages);
 		});
 	},
 	methods: {
+		addMessageToArray(msg) {
+			this.messages.unshift(msg);
+		},
 		getDate() {
 			const current = new Date();
 			const date = `${current.getHours()}:${current.getMinutes()} -
@@ -84,32 +98,35 @@ export default {
 				url: url,
 				type: 'gif',
 				sender_id: 1 /* user.id */,
-				sender_name: currentUser.profile.firstName /* user.name */,
+				sender_name: 'Phi' /* currentUser.profile.firstName user.name */,
 				date: this.getDate(),
 			};
 			this.gifs = [];
 			this.searchTerm = '';
-			socket.emit('newMessage', newGifMessage);
+			socket.emit('message', newGifMessage);
 		},
 		buildGifs(json) {
-			this.gifs = json.data
+			this.gifs = json.data // ok
 				.map((gif) => gif.id)
 				.map((gifId) => {
 					return `https://media.giphy.com/media/${gifId}/giphy.gif`;
 				});
 		},
-		getGifs() {
+		async getGifs() {
+			// not working on keydown fetching on keyup
+			console.log(112, 'getGifs');
+			this.gifs = [];
 			// gets the gifs preview ( limit is the number fo choices available )
 			let apiKey = '12ujTlV1hDN8v0xzjdlyDq2u48DCR1qy';
 			let searchEndPoint = 'https://api.giphy.com/v1/gifs/search?';
 			let limit = 20;
 
 			let url = `${searchEndPoint}&api_key=${apiKey}&q=${this.searchTerm}&limit=${limit}`;
-			console.log(this.searchTerm);
-
 			fetch(url)
-				.then((response) => {
-					return response.json();
+				.then(async (response) => {
+					let json = await response.json();
+					console.log(json);
+					return json;
 				})
 				.then((json) => {
 					this.buildGifs(json);
@@ -119,16 +136,18 @@ export default {
 				});
 		},
 		async sendMessage() {
+			console.log(138, 'sendMessage');
+
 			if (!this.newMessageText) return;
 			const newMessage = {
 				type: 'msg',
 				text: this.newMessageText,
 				sender_id: 1 /* user.id */,
-				sender_name: currentUser.profile.firstName,
+				sender_name: 'Phi' /*currentUser.profile.firstName,*/,
 				date: this.getDate(),
 			};
-			socket.emit('message', 'feur de pute');
-			socket.emit('newMessage', newMessage);
+			socket.emit('message', newMessage);
+			console.log(this.messages);
 			this.newMessageText = ''; /* reset the message state */
 		},
 	},

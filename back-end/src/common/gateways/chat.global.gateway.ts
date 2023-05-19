@@ -26,19 +26,20 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		server.use(ChatAuthMiddleware(this.jwtService));
 	}
 	@SubscribeMessage('message')
-	async handleMessage(client: AuthSocket, ...args) {
-		console.log(...args);
-		this.messages.push(args);
-		client.to(client.roomId).emit('chat-message', { uid: client.id, message: this.messages });
+	async handleMessage(client: AuthSocket, args) {
+		console.log(30, args);
+		this.messages.unshift(args);
+		console.log(32, this.messages[0]);
+		client.to(client.roomId).emit('peer-chat-message', this.messages[0]);
 	}
 
 	async handleConnection(client: AuthSocket) {
+		console.log('am i connected ?'); // does log
 		client.join(client.roomId);
 		client.to(client.roomId).emit('peer-connected', client.id);
 	}
 
 	handleDisconnect(client: AuthSocket): any {
 		client.to(client.roomId).emit('peer-disconnected', client.id);
-		console.log('disconnect');
 	}
 }

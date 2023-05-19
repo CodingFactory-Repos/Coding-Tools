@@ -21,6 +21,7 @@ import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
+import { ChatModule } from '@/external-modules/chat/chat.module';
 
 @Module({
 	imports: [
@@ -42,6 +43,7 @@ import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.mod
 		OpenHousesModule,
 		ProjectsModule,
 		RetrospectivesModule,
+		ChatModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

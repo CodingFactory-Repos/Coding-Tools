@@ -2,16 +2,6 @@ import argon2 from 'argon2';
 import { v4 as uuidv4 } from 'uuid';
 import { randomBytes, randomInt } from 'crypto';
 
-export const parseCookieString = (cookieData: string) => {
-	const cookies = cookieData.split('; ');
-	const cookieObj = {};
-	cookies.forEach((cookie) => {
-		const [name, value] = cookie.split('=');
-		cookieObj[decodeURIComponent(name)] = decodeURIComponent(value);
-	});
-	return cookieObj;
-};
-
 export const generateRandomBuffer = (size: number) => {
 	return randomBytes(size);
 };
