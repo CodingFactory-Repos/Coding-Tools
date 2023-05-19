@@ -14,8 +14,9 @@
 			</IconButton>
 		</div>
 	</div>
-	<div v-if="showModal" class="popup">
-		<div class="popup-content">
+	<Modal v-if="showModal" @close="showModal = false">
+		<template #body>
+			<div class="mb-5"></div>
 			<form @submit.prevent="addMaterial">
 				<div class="form-group relative z-0 w-full mb-6">
 					<label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -26,7 +27,7 @@
 						id="name"
 						v-model="name"
 						name="name"
-						class="form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						placeholder="Enter name"
 						required
 					/>
@@ -39,7 +40,7 @@
 					<select
 						id="type"
 						v-model="type"
-						class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						required
 					>
 						<option value="" disabled selected>Select the Type</option>
@@ -47,6 +48,24 @@
 						<option value="Mac">Mac</option>
 						<option value="Livre">Livres</option>
 					</select>
+					<!-- Put the button in center -->
+					<button
+						@click="showImageModal = true"
+						class="block w-full px-4 py-2 mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+					>
+						Choisir une image
+					</button>
+					<Modal v-if="showImageModal" @close="showImageModal = false">
+						<template #body>
+							<ImagePicker @selectImage="onImageSelected" />
+						</template>
+					</Modal>
+					<div class="form-group">
+						<!-- Img centered in the middle -->
+						<div class="flex justify-center">
+							<img :src="picture" alt="Selected Image" class="mt-4 w-28 h-28" />
+						</div>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -55,24 +74,10 @@
 					>
 					<input
 						type="number"
-						class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						id="price"
 						v-model="price"
 						placeholder="Enter price"
-						required
-					/>
-				</div>
-
-				<div class="form-group">
-					<label for="picture" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-						>Picture</label
-					>
-					<input
-						type="url"
-						class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-						id="picture"
-						v-model="picture"
-						placeholder="Enter picture"
 						required
 					/>
 				</div>
@@ -83,7 +88,7 @@
 					>
 					<select
 						v-model="state"
-						class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						required
 					>
 						<option value="" disabled selected>Select the State</option>
@@ -99,7 +104,7 @@
 					>
 					<select
 						v-model="siteLocation"
-						class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						required
 					>
 						<option value="" disabled selected>Select the Site</option>
@@ -116,7 +121,7 @@
 					>
 					<select
 						v-model="storageCupboard"
-						class="form-control form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						required
 					>
 						<option value="" disabled selected>Select the Storage</option>
@@ -136,18 +141,18 @@
 					>
 					<input
 						type="text"
-						class="form-control block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none"
+						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 						id="description"
 						v-model="description"
 						placeholder="Enter description"
 						required
 					/>
 				</div>
-				<!-- Add a litte space between the 2 -->
 				<div class="mb-5"></div>
+				<!-- Put the button in the center -->
 				<button
 					type="submit"
-					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+					class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none gap-2 gradiant"
 				>
 					Submit
 				</button>
@@ -158,8 +163,8 @@
 					Fermer
 				</button>
 			</form>
-		</div>
-	</div>
+		</template>
+	</Modal>
 </template>
 
 <script lang="ts" setup>
@@ -169,6 +174,8 @@ import { Material } from '@/store/interfaces/material.interface';
 import { http } from '@/api/network/axios';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import ImagePicker from '@/components/materials/ImagePicker.vue';
+import Modal from '@/components/common/Modal.vue';
 
 import SvgDownload from '@/components/common/svg/Download.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
@@ -178,6 +185,7 @@ const materialStore = useMaterialStore();
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 let base64Image = null;
 const showModal = ref(false);
+const showImageModal = ref(false);
 const name = ref('');
 const type = ref('');
 const price = ref(0);
@@ -186,6 +194,11 @@ const state = ref('');
 const siteLocation = ref('');
 const storageCupboard = ref('');
 const description = ref('');
+
+function onImageSelected(image) {
+	picture.value = image;
+	showImageModal.value = false;
+}
 
 fetch(CodingToolsLogo)
 	.then((response) => response.blob())
@@ -297,24 +310,3 @@ function createPDF() {
 	});
 }
 </script>
-
-<style scoped>
-.popup {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 9999;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.popup-content {
-	background-color: white;
-	padding: 20px;
-	border-radius: 10px;
-	width: 35%;
-}
-</style>
