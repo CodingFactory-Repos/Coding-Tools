@@ -49,6 +49,7 @@
 				<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 					<div
 						v-for="item in items"
+						:key="item._id"
 						class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 					>
 						<CardArticle :item="item" />
@@ -59,46 +60,26 @@
 	</div>
 </template>
 
-<style scoped>
-.margin {
-	width: fit-content;
-}
-</style>
-
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import AddArticles from './AddArticles.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import CardArticle from './CardArticle.vue';
 import { useArticleStore } from '@/store/modules/article.store';
-import { useAuthStore } from '@/store/modules/auth.store';
-import { useRouter } from 'vue-router';
 
 // Use the article store
 const articleStore = useArticleStore();
-const authStore = useAuthStore();
 
-// Create a reactive variable to store the articles
-const items = computed(() => articleStore.items);
-const user = computed(() => authStore.user);
+// Create a reactive variable to store the articles && sort them by date
+const items = computed(() => {
+	// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+	return articleStore.items.sort((a, b) => {
+		return new Date(a.date).getTime() - new Date(b.date).getTime();
+	});
+});
 
 // Display the modal
 const showModal = ref(false);
-
-// Get the router
-const router = useRouter();
-
-const types = ref([
-	{
-		value: 'Infos',
-	},
-	{
-		value: 'Evenement',
-	},
-	{
-		value: 'Tuto',
-	},
-]);
 
 // Function to open and close the modal
 const openMetaModal = () => (showModal.value = true);
@@ -114,3 +95,9 @@ onMounted(() => {
 	getArticles();
 });
 </script>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>

@@ -5,7 +5,7 @@
 		</div>
 		<RouterLink :to="to" class="flex items-center p-2 text-base font-normal rounded-lg group hover:bg-light-secondary dark:hover:bg-dark-tertiary min-w-max">
 			<slot></slot>
-			<span class="ml-3 font-bold text-sm mt-1 dark:text-dark-font" :class="{ 'hidden': fold }" sidebar-toggle-item="">{{ name }}</span>
+			<span class="ml-3 font-bold text-sm mt-1 text-[#5c5f73] dark:text-dark-font" :class="{ 'hidden': fold }" sidebar-toggle-item="">{{ name }}</span>
 		</RouterLink>
 	</div>
 </template>

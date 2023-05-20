@@ -8,7 +8,6 @@ import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 
-
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
 	public readonly peersId: Array<string>;
@@ -37,14 +36,14 @@ export class SocketManager extends Manager {
 		this.canvasSocket.on('element-deleted', (uuid: string) => {
 			try {
 				this.viewport.socketPlugin.elements[uuid].destroy();
-				
+
 				const uuidDestroyed: Array<string> = [];
-				for(const key in this.viewport.socketPlugin.elements) {
+				for (const key in this.viewport.socketPlugin.elements) {
 					const { uuid, destroyed } = this.viewport.socketPlugin.elements[key];
-					if(destroyed) uuidDestroyed.push(uuid);
+					if (destroyed) uuidDestroyed.push(uuid);
 				}
 
-				for(let n = 0; n < uuidDestroyed.length; n++) {
+				for (let n = 0; n < uuidDestroyed.length; n++) {
 					delete this.viewport.socketPlugin.elements[uuidDestroyed[n]];
 				}
 			} catch (err) {
@@ -54,22 +53,28 @@ export class SocketManager extends Manager {
 			}
 		});
 
-		this.canvasSocket.on('element-bounds-updated', (uuid: string, serializedBounds: SerializedContainerBounds) => {
-			this._updateTreeBounds(uuid, serializedBounds)
-		});
+		this.canvasSocket.on(
+			'element-bounds-updated',
+			(uuid: string, serializedBounds: SerializedContainerBounds) => {
+				this._updateTreeBounds(uuid, serializedBounds);
+			},
+		);
 
-		this.canvasSocket.on('frame-children-added', (uuid: string, uuidChild: string, frameNumber: number) => {
-			try {
-				const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
-				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
+		this.canvasSocket.on(
+			'frame-children-added',
+			(uuid: string, uuidChild: string, frameNumber: number) => {
+				try {
+					const frame = this.viewport.socketPlugin.elements[uuid] as FramedContainer;
+					const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
 
-				frame.addNestedChild(children, frameNumber, true);
-			} catch(err) {
-				if (err instanceof Error) {
-					console.error(err.message);
+					frame.addNestedChild(children, frameNumber, true);
+				} catch (err) {
+					if (err instanceof Error) {
+						console.error(err.message);
+					}
 				}
-			}
-		});
+			},
+		);
 
 		this.canvasSocket.on('frame-children-removed', (uuid: string, uuidChild: string) => {
 			try {
@@ -77,7 +82,7 @@ export class SocketManager extends Manager {
 				const children = this.viewport.socketPlugin.elements[uuidChild] as CanvasContainer;
 
 				frame.removeNestedChild(children, this.viewport.children.length, true);
-			} catch(err) {
+			} catch (err) {
 				if (err instanceof Error) {
 					console.error(err.message);
 				}
@@ -92,13 +97,13 @@ export class SocketManager extends Manager {
 	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
 		try {
 			const element = this.viewport.socketPlugin.elements[uuid];
-			if(element instanceof FramedContainer) {
+			if (element instanceof FramedContainer) {
 				element.updateTreeBounds(serializedBounds);
 
-				for(const container of serializedBounds.childs) {
+				for (const container of serializedBounds.childs) {
 					this._updateTreeBounds(container.uuid, container as SerializedContainerBounds);
 				}
-			} else if(element instanceof GenericContainer) {
+			} else if (element instanceof GenericContainer) {
 				element.updateTreeBounds(serializedBounds);
 			}
 
@@ -130,7 +135,11 @@ export class SocketManager extends Manager {
 		this.canvasSocket.emit('add-frame-children', { uuid, uuidChild, serialized });
 	}
 
-	public updateFrameOnChildRemoved(uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) {
+	public updateFrameOnChildRemoved(
+		uuid: string,
+		serialized: SerializedContainer,
+		serializedChild: SerializedContainer,
+	) {
 		this.canvasSocket.emit('remove-frame-children', { uuid, serialized, serializedChild });
 	}
 }

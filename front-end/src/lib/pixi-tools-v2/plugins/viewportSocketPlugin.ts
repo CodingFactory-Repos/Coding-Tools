@@ -16,8 +16,16 @@ interface CanvasSocketEvents {
 	'ws-element-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
-	'ws-frame-child-added': (uuid: string, uuidChild: string, serialized: SerializedContainer) => void;
-	'ws-frame-child-removed': (uuid: string, serialized: SerializedContainer, serializedChild: SerializedContainer) => void;
+	'ws-frame-child-added': (
+		uuid: string,
+		uuidChild: string,
+		serialized: SerializedContainer,
+	) => void;
+	'ws-frame-child-removed': (
+		uuid: string,
+		serialized: SerializedContainer,
+		serializedChild: SerializedContainer,
+	) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -55,11 +63,11 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 		this.on('ws-frame-child-added', (uuid, uuidChild, serialized) => {
 			this.socketManager.updateFrameOnChildAdded(uuid, uuidChild, serialized);
-		})
+		});
 
 		this.on('ws-frame-child-removed', (uuid, serialized, serializedChild) => {
 			this.socketManager.updateFrameOnChildRemoved(uuid, serialized, serializedChild);
-		})
+		});
 	}
 
 	public disconnect() {
@@ -90,8 +98,8 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 	}
 
 	public pruneDestroyedElements() {
-		for(const key in this.elements) {
-			if(this.elements[key].destroyed) {
+		for (const key in this.elements) {
+			if (this.elements[key].destroyed) {
 				delete this.elements[key];
 			}
 		}

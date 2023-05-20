@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute w-full h-full z-50 bg-darker-primary flex justify-center items-center" v-if="internLoading">
+	<div class="absolute w-full h-full z-50 bg-light-tertiary dark:bg-darker-primary flex justify-center items-center" v-if="internLoading">
 		<div class="breeding-rhombus-spinner">
 			<div class="rhombus child-1"></div>
 			<div class="rhombus child-2"></div>

@@ -2,9 +2,13 @@ import { AxiosError } from 'axios';
 
 type AsyncFunction = (...args: unknown[]) => Promise<unknown>;
 
-export function withErrorHandler<T extends AsyncFunction>(
+export function withErrorHandler<T extends AsyncFunction, R extends boolean>(
 	action: T,
-): (...args: Parameters<T>) => ReturnType<T> | Promise<undefined> {
+	errors?: R
+): (...args: Parameters<T>) => R extends true
+	? ReturnType<T> | Promise<string>
+	: ReturnType<T> | Promise<undefined>
+{
 	return async function (this: unknown, ...args: Parameters<T>) {
 		try {
 			const bindedAction = action.bind(this);
@@ -12,7 +16,7 @@ export function withErrorHandler<T extends AsyncFunction>(
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				console.error(error.message);
-				return undefined;
+				return errors ? error?.response.data?.message : undefined;
 			}
 			console.error(error);
 			return undefined;

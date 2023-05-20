@@ -32,7 +32,19 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/app',
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
-			{ path: 'account', component: () => import('../views/app/AccountView.vue') },
+			{
+				path: 'account',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/app/AccountView.vue'),
+					},
+					{
+						path: ':id',
+						component: () => import('../views/app/RelatedProfileView.vue')
+					},
+				],
+			},
 			{
 				path: 'rollcall',
 				children: [

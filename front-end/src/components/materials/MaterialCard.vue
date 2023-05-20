@@ -16,7 +16,7 @@
 	</div>
 	<Modal v-if="detailsModal" @close="detailsModal = false">
 		<template #body>
-			<DetailsMaterials v-if="detailsModal" :id="cardId" :userId="currentUserId" />
+			<DetailsMaterials v-if="detailsModal" :id="cardId" />
 		</template>
 	</Modal>
 	<div
@@ -72,11 +72,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import FormMaterial from '@/components/materials/FormMaterials.vue';
-import Modal from '../common/Modal.vue';
+import Modal from '@/components/common/Modal.vue';
 import DetailsMaterials from './DetailsMaterials.vue';
-import { http } from '@/api/network/axios';
+import { useAuthStore } from '@/store/modules/auth.store';
 
 defineProps({
 	id: { type: String, required: true },
@@ -84,23 +84,21 @@ defineProps({
 	url: { type: String, required: true },
 	status: { type: Boolean, required: true },
 });
-let reservationModal = ref(false);
-let detailsModal = ref(false);
-let cardId = ref('');
-let currentUserId = ref('');
 
-http.get('/materials/user').then((res) => {
-	console.log(res.data);
-	currentUserId.value = res.data;
-});
+const authStore = useAuthStore();
+const currentUserId = computed(() => authStore.user._id);
 
-function openModalByRef(ref, identifiant) {
+const reservationModal = ref(false);
+const detailsModal = ref(false);
+const cardId = ref('');
+
+function openModalByRef(ref: string, identifiant: string) {
 	if (ref === 'reservationModal') {
-		this.cardId = identifiant;
-		this.reservationModal = true;
+		cardId.value = identifiant;
+		reservationModal.value = true;
 	} else if (ref === 'detailsModal') {
-		this.cardId = identifiant;
-		this.detailsModal = true;
+		cardId.value = identifiant;
+		detailsModal.value = true;
 	}
 }
 </script>

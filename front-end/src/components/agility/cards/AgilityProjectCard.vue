@@ -1,5 +1,9 @@
 <template>
-	<div @click="$emit('open')" class="shadow-wall-card relative w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary rounded-lg gap-2 cursor-pointer select overflow-hidden">
+	<div
+		@click="$emit('open')"
+		class="shadow-wall-card relative w-52 h-fit flex flex-col justify-between bg-light-primary dark:bg-dark-tertiary rounded-lg gap-2 cursor-pointer overflow-hidden"
+		:class="{ 'd-select': isDark, 'l-select': !isDark }"
+	>
 		<div v-if="isOwner" class="absolute z-40 left-1 top-1 bg-white p-1 rounded shadow">
 			<SvgCrown width="28" height="28"/>
 		</div>
@@ -13,7 +17,7 @@
 			<div class="shadow-wall hidden absolute w-full h-full z-20 bg-[#00000066]"></div>
 			<img ref="imageRef" class="w-full h-48 rounded p-3" :src="url" :alt="`project snapshot`"/>
 		</div>
-		<span class="dark:text-dark-font text-sm font-bold px-3 pb-3">
+		<span class="text-[#5c5f73] dark:text-dark-font text-sm font-bold px-3 pb-3">
 			{{ title }}
 		</span>
 	</div>
@@ -22,9 +26,11 @@
 <script lang="ts" setup>
 import { onMounted } from '@vue/runtime-core';
 import { ref } from '@vue/reactivity';
+import { computed } from 'vue';
 
 import SvgCrown from '@/components/common/svg/SvgCrown.vue';
 import SvgThreeDot from '@/components/common/svg/SvgThreeDot.vue';
+import { useThemeStore } from '@/store/modules/theme.store';
 
 defineProps({
 	roomId: { type: String, required: true },
@@ -35,6 +41,8 @@ defineProps({
 })
 
 const imageRef = ref<HTMLImageElement>();
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.theme);
 
 const replaceGenericImage = () => {
 	if(imageRef.value) {
@@ -50,13 +58,21 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-.select {
+<style scoped lang="scss">
+.d-select {
 	box-shadow: 0 0 0 1px #3a4455;
+
+	&:hover {
+		box-shadow: 0 0 0 1px #737f93;
+	}
 }
 
-.select:hover {
-	box-shadow: 0 0 0 1px #737f93;
+.l-select {
+	box-shadow: 0 0 0 1px #a8abb2;
+
+	&:hover {
+		box-shadow: 0 0 0 1px #3b82f6;
+	}
 }
 
 :hover.shadow-wall-card .shadow-wall {

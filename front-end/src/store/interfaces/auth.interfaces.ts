@@ -1,8 +1,10 @@
+import { DeepPartial } from "@/interfaces/advanced-types.interface";
+
 export interface AuthStore {
 	isAuth: boolean;
 	tempAuthUser: TempAuthUSer;
 	tempEmailUser: string;
-	user: User;
+	user: DeepPartial<User>;
 
 	signup?: (this: AuthStore, data: UserCreds) => Promise<boolean> | Promise<undefined>;
 	signin?: (this: AuthStore, data: UserCreds) => Promise<boolean> | Promise<undefined>;
@@ -29,8 +31,16 @@ export interface UserCreds {
 
 export type TempAuthUSer = Partial<UserCreds>;
 
+export enum Roles {
+	USER = 1,
+	PRODUCT_OWNER = 2,
+  PEDAGOGUE = 3,
+}
+
 export interface User {
-	role?: string;
+	id?: string;
+	_id?: string;
+	role?: Roles;
 	profile?: UserProfile;
 	schoolProfile?: UserSchoolProfile;
 	businessProfile?: UserBusinessProfile;
@@ -48,19 +58,22 @@ export interface UserProfile {
 	firstName?: string;
 	lastName?: string;
 	email?: string;
+	resume?: string;
 	phone?: string;
-	birthDate?: Date | string;
-	location?: string;
+	birthDate?: Date;
 	linkedinProfile?: string;
 	githubProfile?: string;
-	discordId?: string;
-	profilePicture?: string;
-	profileBackground?: string;
-	profileResume?: string;
+	discordTag?: string;
+	picture?: string;
+	background?: string;
+	showGithubStat?: boolean;
+	disciplinesLiked?: Array<string>;
+	portfolio: string;
 }
 
 export interface UserSchoolProfile {
-	groupeName: string;
+	groupName: string;
+	campus?: string;
 }
 
 export interface UserBusinessProfile {
@@ -70,6 +83,6 @@ export interface UserBusinessProfile {
 	companyName: string;
 	companyLink: string;
 	companyLogo: string;
-	workingFrom: Date | string;
-	workingTo: Date | string;
+	workingFrom: Date;
+	workingTo: Date;
 }
