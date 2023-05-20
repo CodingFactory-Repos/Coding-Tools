@@ -1,5 +1,5 @@
 <template>
-	<Chat :room-id="1" />
+	<Chat room-id="ertyui" />
 </template>
 <script lang="ts">
 import Chat from '@/components/RollCallComponents/Chat.vue';

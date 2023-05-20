@@ -41,17 +41,17 @@ async function bootstrap() {
 	// });
 	await app.listen(PORT);
 
-	const chatApp = express();
+	// const chatApp = express();
 
 	// http server for chatrooms
-	const httpServer = createServer(chatApp);
-	httpServer.listen(8000);
-	const io = new Server(httpServer, {
-		cors: {
-			origin: 'http://localhost:5173',
-		},
-	});
-	initializeChat(io); // functions for chat server client communication
+	// const httpServer = createServer(chatApp);
+	// httpServer.listen(8000);
+	// const io = new Server(httpServer, {
+	// 	cors: {
+	// 		origin: 'http://localhost:5173',
+	// 	},
+	// });
+	// initializeChat(io); // functions for chat server client communication
 
 	return app.getUrl();
 }
