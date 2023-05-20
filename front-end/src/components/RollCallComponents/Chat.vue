@@ -65,7 +65,7 @@ socket.on('peer-connected', (id: string) => {
 
 socket.on('peer-chat-message', (data: Object) => {
 	console.log('test', data);
-	let msg = data[0];
+	let msg = data;
 	console.log(72, msg);
 	addMessage(msg);
 	console.log(77, messages.value);
@@ -102,6 +102,7 @@ const sendGifMessage = (url: string) => {
 	};
 	gifs.value = [];
 	searchTerm.value = '';
+	addMessage(newGifMessage);
 	socket.emit('message', newGifMessage);
 };
 
@@ -144,6 +145,7 @@ const sendMessage = async () => {
 		sender_name: 'Phi' /*currentUser.profile.firstName,*/,
 		date: getDate(),
 	};
+	addMessage(newMessage);
 	socket.emit('message', newMessage);
 	console.log(151, messages.value);
 	newMessageText.value = ''; /* reset the message state */
