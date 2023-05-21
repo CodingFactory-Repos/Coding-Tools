@@ -15,6 +15,7 @@ export class GenericContainer extends PluginContainer {
 	public readonly children: Array<Graphics>;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
+	public linkedLinesUUID: Array<string> = [];
 
 	public absMinX: number;
 	public absMinY: number;
@@ -178,5 +179,15 @@ export class GenericContainer extends PluginContainer {
 		graphic.position.set(bounds.x, bounds.y);
 		graphic.width = bounds.width;
 		graphic.height = bounds.height;
+	}
+
+	public attachLine(lineUUID: string) {
+		this.linkedLinesUUID.push(lineUUID);
+	}
+
+	public detachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if(index === -1) return;
+		this.linkedLinesUUID.splice(index, 1);
 	}
 }

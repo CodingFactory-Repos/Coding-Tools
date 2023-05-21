@@ -29,6 +29,7 @@ export class FramedContainer extends PluginContainer {
 	public readonly titleContainer: TitleContainer;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
+	public linkedLinesUUID: Array<string> = [];
 
 	public absMinX: number;
 	public absMinY: number;
@@ -320,6 +321,16 @@ export class FramedContainer extends PluginContainer {
 		this.frameBox.position.set(bounds.x, bounds.y);
 		this.frameBox.width = bounds.width;
 		this.frameBox.height = bounds.height;
+	}
+
+	public attachLine(lineUUID: string) {
+		this.linkedLinesUUID.push(lineUUID);
+	}
+
+	public detachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if(index === -1) return;
+		this.linkedLinesUUID.splice(index, 1);
 	}
 
 	get frameBoxBounds() {
