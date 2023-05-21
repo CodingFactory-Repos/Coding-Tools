@@ -18,6 +18,7 @@ export class LineBezier extends ModelGraphics {
 	public end: ElementPosition;
 	public startControl: ElementPosition;
 	public endControl: ElementPosition;
+	public angleControl: ElementPosition;
 	public hitArea: Polygon;
 
 	static registerGraphic(attributes: SerializedGraphic) {
@@ -35,10 +36,10 @@ export class LineBezier extends ModelGraphics {
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
-		this.start = bounds.start;
-		this.end = bounds.end;
-		this.startControl = bounds.startControl;
-		this.endControl = bounds.endControl;
+		this.start = bounds.start ?? { x: 200, y: 200 };
+		this.end = bounds.end ?? { x: 300, y: 300}
+		this.startControl = bounds.startControl ?? { x: 250, y: 200};
+		this.endControl = bounds.endControl ?? { x: 300, y: 300}
 
 		this.draw();
 	}
@@ -57,15 +58,23 @@ export class LineBezier extends ModelGraphics {
 			this.endControl.x, this.endControl.y,
 			this.end.x, this.end.y
 		);
+		//! Used to check the position of the controls
+		// this.drawCircle(this.startControl.x, this.startControl.y, 10);
+		// this.drawCircle(this.endControl.x, this.endControl.y, 10);
 		this.drawArrowHead(arrowSize, angleOffset);
 
-		// generate geometry.points
 		this.getBounds();
 		this.perfectPolygonLine();
 	}
 
 	private drawArrowHead(arrowSize: number, angleOffset: number) {
-		const angle = Math.atan2(this.end.y - this.startControl.y, this.end.x - this.startControl.x);
+		let angle: number;
+
+		if(this.angleControl === undefined) {
+			angle = Math.atan2(this.end.y - this.startControl.y, this.end.x - this.startControl.x);
+		} else {
+			angle = Math.atan2(this.angleControl.y, this.angleControl.x);
+		}
 
 		const arrowX = this.end.x;
 		const arrowY = this.end.y;
