@@ -9,6 +9,7 @@ import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { SerializedContainerBounds, SerializedContainer } from '../types/pixi-serialize';
+import { LineContainer } from '../class/lineContainer';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string, uuidFrame?: string) => void;
@@ -36,7 +37,7 @@ export interface CanvasSocketOptions {
 
 export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents> {
 	protected readonly socketManager: SocketManager;
-	public readonly elements: Record<string, CanvasContainer> | Record<string, ModelGraphics> = {};
+	public readonly elements: Record<string, CanvasContainer> | Record<string, ModelGraphics> | Record<string, LineContainer> = {};
 
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
@@ -74,7 +75,7 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.socketManager._close();
 	}
 
-	public trackElementByUUID(container: GenericContainer | FramedContainer) {
+	public trackElementByUUID(container: GenericContainer | FramedContainer | LineContainer) {
 		if (container instanceof FramedContainer) {
 			this.elements[container.uuid] = container;
 
@@ -94,6 +95,12 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			this.elements[container.uuid] = container;
 			const genericChild = container.getGraphicChildren()[0];
 			this.elements[genericChild.uuid] = genericChild;
+		}
+
+		if (container instanceof LineContainer) {
+			this.elements[container.uuid] = container;
+			const child = container.children[0];
+			this.elements[child.uuid] = child;
 		}
 	}
 
