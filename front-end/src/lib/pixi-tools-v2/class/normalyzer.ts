@@ -13,6 +13,7 @@ import { generateUniqueId } from '../utils/uniqueId';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
+import { LineContainer } from './lineContainer';
 
 export class Normalizer {
 	static graphic(data: Partial<SerializedGraphic>, position?: ElementPosition) {
@@ -116,9 +117,9 @@ export class Normalizer {
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
-		if (Container === GenericContainer)
+		if (Container === GenericContainer || Container === LineContainer)
 			return Container.registerContainer(viewport, attributes, children, remote);
-		if (Container === FramedContainer)
+		else if (Container === FramedContainer)
 			return Container.registerContainer(
 				viewport,
 				attributes,
