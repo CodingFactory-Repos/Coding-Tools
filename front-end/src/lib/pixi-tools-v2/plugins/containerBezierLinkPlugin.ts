@@ -50,7 +50,7 @@ export class BezierPlugin {
 		const offset = float / this.viewport.scaled;
 
 		const endControl = { x: handle.x, y: handle.y };
-		let startControl = { x: handle.x, y: handle.y };
+		const startControl = { x: handle.x, y: handle.y };
 		if(this.handleId === BezierHandle.T) startControl.y += offset;
 		else if(this.handleId === BezierHandle.R) startControl.x -= offset;
 		else if(this.handleId === BezierHandle.L) startControl.x += offset;
