@@ -3,8 +3,12 @@ import { FramedContainer } from '../class/framedContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
 import { ViewportUI } from '../viewportUI';
 
-import type { InitialGraphicState } from '../types/pixi-container';
+import type { ElementPosition, InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
+import { GenericContainer } from '../class/genericContainer';
+import { LineContainer } from '../class/lineContainer';
+import { getLengthFromPoints } from '../utils/lengthFromPoints';
+import { BezierHandle } from '../types/pixi-enums';
 
 type FrameIntersect = {
 	frame: FramedContainer;
@@ -97,13 +101,28 @@ export class DragPlugin {
 			const dy = cursorPosition.y - this.initialCursorPosition.y;
 
 			for (const element of this.initialGraphicsState) {
+				if(element === null) continue;
+
 				const newX = element.x + dx;
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
 
-				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
+				if (element.child.typeId === "framebox") {
+					const frame = element.child.parent?.parent;
+					if(frame instanceof FramedContainer) {
+						this._dragAttachedLines(frame);
+						continue;
+					}
+				}
+
+				if (element.child.typeId !== 'rectangle'
+					&& element.child.typeId !== 'circle'
+				) continue;
 
 				const parent = element.child.parent as CanvasContainer;
+				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
+				if(parent.typeId === "wrap") continue;
+
 				const childBounds = element.child.getBounds();
 				const centerX = childBounds.x + childBounds.width / 2;
 				const centerY = childBounds.y + childBounds.height / 2;
@@ -155,10 +174,8 @@ export class DragPlugin {
 						}
 					}
 				}
-			}
 
-			if (this.container instanceof FramedContainer) {
-				this.container.emit('moved', null);
+				this._dragAttachedLines(parent);
 			}
 
 			if (this.container instanceof WrappedContainer) {
@@ -167,6 +184,12 @@ export class DragPlugin {
 						element.emit('moved', null);
 					}
 				}
+			} else {
+				if (this.container instanceof FramedContainer) {
+					this.container.emit('moved', null);
+				}
+
+				this._dragAttachedLines(this.container);
 			}
 
 			if (this.viewport.socketPlugin) {
@@ -246,4 +269,105 @@ export class DragPlugin {
 		this.viewport.cursor = 'default';
 		this.isDragging = false;
 	};
+
+	private _dragAttachedLines = (container: GenericContainer | FramedContainer) => {
+		if(container?.linkedLinesUUID?.length > 0) {
+			// console.log(container.typeId, container.linkedLinesUUID)
+			const containerUUID = container.uuid;
+			const uuids = container.linkedLinesUUID;
+			const { x, y, width, height } = container.getGeometry();
+
+			for(let n = 0; n < uuids.length; n++) {
+				//! This break the whole purpose of the plugin, but fuck it.
+				const lineContainer = this.viewport.socketPlugin.elements[uuids[n]] as LineContainer;
+				if(!lineContainer) continue;
+
+				const line = lineContainer.children[0];
+				const isStart = containerUUID === lineContainer?.startContainer?.containerUUID;
+				const isEnd = containerUUID === lineContainer?.endContainer?.containerUUID;
+
+				if(isStart) {
+					const handleId = lineContainer.startContainer.handleId;
+					let point: ElementPosition;
+
+					if(handleId === BezierHandle.T) point = { x: x + width / 2, y: y }
+					else if(handleId === BezierHandle.R) point = { x: x + width, y: y + height / 2 }
+					else if(handleId === BezierHandle.L) point = { x: x, y: y + height / 2 }
+					else if(handleId === BezierHandle.B) point = { x: x + width / 2, y: y + height }
+
+					line.start = point;
+					const lineLength = getLengthFromPoints(line.start, line.end);
+					const startControl = { ...line.start };
+					const endControl = { ...line.end };
+					const angleControl = { ...line.end };
+
+					if(handleId === BezierHandle.T) startControl.y -= lineLength;
+					if(handleId === BezierHandle.R) startControl.x += lineLength;
+					if(handleId === BezierHandle.L) startControl.x -= lineLength;
+					if(handleId === BezierHandle.B) startControl.y += lineLength;
+
+					if(lineContainer.endContainer.containerUUID !== undefined) {
+						const handle = lineContainer.endContainer.handleId;
+	
+						if(handle === BezierHandle.T) endControl.y -= lineLength;
+						else if(handle === BezierHandle.R) endControl.x += lineLength;
+						else if(handle === BezierHandle.L) endControl.x -= lineLength;
+						else if(handle === BezierHandle.B) endControl.y += lineLength;
+						angleControl.x = line.end.x - endControl.x;
+						angleControl.y = line.end.y - endControl.y;
+	
+					} else {
+						angleControl.x = line.end.x - startControl.x;
+						angleControl.y = line.end.y - startControl.y;
+					}
+
+					line.startControl = startControl;
+					line.endControl = endControl;
+					line.angleControl = angleControl;
+					line.draw();
+				}
+
+				if(isEnd) {
+					const handleId = lineContainer.endContainer.handleId;
+					let point: ElementPosition;
+
+					if(handleId === BezierHandle.T) point = { x: x + width / 2, y: y }
+					else if(handleId === BezierHandle.R) point = { x: x + width, y: y + height / 2 }
+					else if(handleId === BezierHandle.L) point = { x: x, y: y + height / 2 }
+					else if(handleId === BezierHandle.B) point = { x: x + width / 2, y: y + height }
+
+					line.end = point;
+					const lineLength = getLengthFromPoints(line.start, line.end);
+					const startControl = { ...line.start };
+					const endControl = { ...line.end };
+					const angleControl = { ...line.end };
+
+					if(handleId === BezierHandle.T) endControl.y -= lineLength;
+					if(handleId === BezierHandle.R) endControl.x += lineLength;
+					if(handleId === BezierHandle.L) endControl.x -= lineLength;
+					if(handleId === BezierHandle.B) endControl.y += lineLength;
+
+					if(lineContainer.startContainer.containerUUID !== undefined) {
+						const handle = lineContainer.startContainer.handleId;
+	
+						if(handle === BezierHandle.T) startControl.y -= lineLength;
+						else if(handle === BezierHandle.R) startControl.x += lineLength;
+						else if(handle === BezierHandle.L) startControl.x -= lineLength;
+						else if(handle === BezierHandle.B) startControl.y += lineLength;
+						angleControl.x = line.end.x - endControl.x;
+						angleControl.y = line.end.y - endControl.y;
+	
+					} else {
+						angleControl.x = line.end.x - endControl.x;
+						angleControl.y = line.end.y - endControl.y;
+					}
+
+					line.startControl = startControl;
+					line.endControl = endControl;
+					line.angleControl = angleControl;
+					line.draw();
+				}
+			}
+		}
+	}
 }
