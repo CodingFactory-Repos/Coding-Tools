@@ -4,13 +4,15 @@ import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
 import { Border, Handle, HitArea, Grid } from './model/template-ui';
-import { BezierHandle, ResizeHandle } from './types/pixi-enums';
+import { BezierCurveHandle, BezierHandle, ResizeHandle } from './types/pixi-enums';
 
 import type { CanvasContainer, Stage } from './types/pixi-aliases';
 import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types/pixi-ui';
 import { reactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
+import { ElementPosition } from './types/pixi-container';
+import { GenericContainer } from './class/genericContainer';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -19,10 +21,12 @@ export class ViewportUI extends Viewport {
 	public readonly zoomPlugin: ViewportZoomPlugin;
 	public readonly socketPlugin: ViewportSocketPlugin;
 	public readonly manager: ContainerManager;
+	public readonly bezierCurveHandles: Array<Handle> = [];
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
 	public readonly bezierHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
+	public readonly onScreenChildren: Array<CanvasContainer> = [];
 	public readonly parent: Stage;
 	public readonly grid: Grid;
 	public border: Border = null;
@@ -51,6 +55,7 @@ export class ViewportUI extends Viewport {
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
 		this.on('zoomed', this._onViewportZoomed);
+		this.on('zoomed-end', this.getVisibleChildren);
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
@@ -155,12 +160,35 @@ export class ViewportUI extends Viewport {
 					);
 				}
 
+				if(this.bezierCurveHandles?.length > 0) {
+					this.updateBezierCurveHandle(
+						{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
+						{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
+						true,
+					)
+				}
+
 				if (this.resizeHitAreas?.length > 0) {
 					this.updateResizeHitAreas({
 						...size,
 						x: this.border.x,
 						y: this.border.y,
 					});
+				}
+			}
+		}
+	}
+
+	public getVisibleChildren() {
+		if (this.manager.isActive) {
+			this.onScreenChildren.length = 0;
+			const visibleBounds = this.getVisibleBounds();
+
+			for (const element of this.children) {
+				if(element instanceof GenericContainer || element instanceof FramedContainer) {
+					if (element.getLocalBounds().intersects(visibleBounds)) {
+						this.onScreenChildren.push(element);
+					}
 				}
 			}
 		}
@@ -223,6 +251,15 @@ export class ViewportUI extends Viewport {
 				handle.destroy();
 			});
 			this.bezierHandles.length = 0;
+		}
+	}
+
+	public destroyBezierCurveHandle() {
+		if (this.bezierCurveHandles.length) {
+			this.bezierCurveHandles.forEach((handle) => {
+				handle.destroy();
+			});
+			this.bezierCurveHandles.length = 0;
 		}
 	}
 
@@ -321,6 +358,31 @@ export class ViewportUI extends Viewport {
 			handle.zIndex = 100;
 			handle.handleId = handleId;
 			this.bezierHandles.push(handle);
+			this.addChildAt(handle, this.children.length);
+			if (this._isHiddenUI) handle.visible = false;
+		}
+	}
+
+	public createBezierCurveHandle(start: ElementPosition, end: ElementPosition) {
+		const size = 5;
+
+		const handlePositions: Array<HandleOptions> = [
+			{ ...start, cursor: 'pointer', handleId: BezierCurveHandle.P1 },
+			{ ...end, cursor: 'pointer', handleId: BezierCurveHandle.P2 },
+		];
+
+		for (const element of handlePositions) {
+			const { handleId, ...attr } = element;
+
+			const handle = new Handle({
+				...attr,
+				radius: size,
+				scale: this.scaled,
+				alpha: 1,
+			});
+			handle.zIndex = 100;
+			handle.handleId = handleId;
+			this.bezierCurveHandles.push(handle);
 			this.addChildAt(handle, this.children.length);
 			if (this._isHiddenUI) handle.visible = false;
 		}
@@ -436,6 +498,20 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
+	public updateBezierCurveHandle(start: ElementPosition, end: ElementPosition, redraw: boolean) {
+		const scale = Math.min(3, this.scaled);
+
+		const positions = [
+			{ ...start },
+			{ ...end },
+		];
+
+		for (let n = 0; n < this.bezierCurveHandles.length; n++) {
+			if (redraw) this.bezierCurveHandles[n].draw({ ...positions[n], scale: scale });
+			else this.bezierCurveHandles[n].position.set(positions[n].x, positions[n].y);
+		}
+	}
+
 	public updateResizeHitAreas(attr: Partial<GraphicUIProperties>) {
 		const scale = this.scaled;
 		const size = 5 / scale;
@@ -473,6 +549,10 @@ export class ViewportUI extends Viewport {
 		}
 
 		for (const element of this.resizeHitAreas) {
+			element.visible = visible;
+		}
+
+		for (const element of this.bezierCurveHandles) {
 			element.visible = visible;
 		}
 	}
