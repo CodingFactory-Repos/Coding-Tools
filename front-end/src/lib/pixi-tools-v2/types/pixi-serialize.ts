@@ -1,6 +1,6 @@
 import { ElementBounds, ElementColorimetry, ElementCursor, LineBounds } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame';
+export type ContainerTypeId = 'generic' | 'frame' | 'line';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier';
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 

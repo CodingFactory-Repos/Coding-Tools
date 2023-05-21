@@ -1,6 +1,7 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { Circle, Polygon, Rectangle, Triangle, LineBezier } from '../model/template';
+import { LineContainer } from '../class/lineContainer';
+import { Circle, Rectangle, Triangle, LineBezier } from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
@@ -23,6 +24,7 @@ export const GeometryTypes = {
 export const ContainerType = {
 	generic: GenericContainer,
 	frame: FramedContainer,
+	line: LineContainer,
 } as const;
 
 export enum ResizeHandle {
@@ -41,6 +43,11 @@ export enum BezierHandle {
 	R = 1,
 	B = 2,
 	L = 3,
+}
+
+export enum BezierCurveHandle {
+	P1 = 0,
+	P2 = 1,
 }
 
 export const ResizeHandleOppositeOf = {
