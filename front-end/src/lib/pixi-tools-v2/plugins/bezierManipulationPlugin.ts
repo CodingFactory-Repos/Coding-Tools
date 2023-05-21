@@ -104,8 +104,8 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.B) endControl.y += lineLength;
 				}
 
-				angleControl.x = this.lineBezier.end.x - endControl.x,
-				angleControl.y = this.lineBezier.end.y - endControl.y,
+				angleControl.x = this.lineBezier.end.x - startControl.x,
+				angleControl.y = this.lineBezier.end.y - startControl.y,
 
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
