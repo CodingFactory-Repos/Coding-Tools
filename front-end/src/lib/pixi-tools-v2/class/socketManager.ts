@@ -90,7 +90,7 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
+			// console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 	}
 
