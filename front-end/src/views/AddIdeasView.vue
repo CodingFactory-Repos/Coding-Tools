@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import AddIdeas from '@/components/AddIdeas.vue';
+import AddIdeas from '@/views/material-ideas/AddIdeas.vue';
 </script>

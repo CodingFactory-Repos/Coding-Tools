@@ -42,4 +42,8 @@ export class IdeasEquipmentsRepository {
 		const options = { projection: { _id: 1 } };
 		return this.ideasEquipments.findOne(query, options);
 	}
+
+	async deleteOneideaEquipment(query: Filter<IdeaEquipment>) {
+		return this.ideasEquipments.deleteOne(query);
+	}
 }
