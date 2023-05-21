@@ -8,13 +8,16 @@ import { ViewportUI } from '../viewportUI';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
 import { GenericContainer } from './genericContainer';
-import { BezierPlugin } from '../plugins/bezierLinkPlugin';
+import { BezierPlugin } from '../plugins/containerBezierLinkPlugin';
+import { LineContainer } from './lineContainer';
+import { BezierManipulationPlugin } from '../plugins/bezierManipulationPlugin';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
 	protected readonly resizePlugin: ResizePlugin;
 	protected readonly dragPlugin: DragPlugin;
 	protected readonly bezierPlugin: BezierPlugin;
+	protected readonly bezierManipulationPlugin: BezierManipulationPlugin;
 	public readonly wrappedContainer: WrappedContainer;
 	public readonly downloadPlugin: DownloadPlugin;
 	private _selectedContainers: Array<CanvasContainer>;
@@ -26,6 +29,7 @@ export class ContainerManager {
 		this.dragPlugin = new DragPlugin(this.viewport);
 		this.bezierPlugin = new BezierPlugin(this.viewport);
 		this.downloadPlugin = new DownloadPlugin(this.viewport);
+		this.bezierManipulationPlugin = new BezierManipulationPlugin(this.viewport);
 		this._selectedContainers = [];
 
 		window.onkeydown = this._destroySelected.bind(this);
@@ -54,6 +58,7 @@ export class ContainerManager {
 			this.viewport.destroyResizeHandles();
 			this.viewport.destroyBezierHandles();
 			this.viewport.destroyResizeHitArea();
+			this.viewport.destroyBezierCurveHandle();
 			this._selectedContainers = [];
 		}
 	}
@@ -143,6 +148,7 @@ export class ContainerManager {
 	}
 
 	public drawBorder(container: PluginContainer) {
+		if(container instanceof LineContainer) return;
 		const borderOptions = container.getGeometry();
 
 		this.viewport.createBorder({
@@ -163,15 +169,26 @@ export class ContainerManager {
 	}
 
 	public attachPlugins(container: PluginContainer) {
-		this.resizePlugin.attach(container);
-		this.dragPlugin.attach(container);
-		this.bezierPlugin.attach(container);
+		this.viewport.getVisibleChildren();
+
+		if(container instanceof LineContainer) {
+			this.bezierManipulationPlugin.attach(container);
+		} else {
+			this.resizePlugin.attach(container);
+			this.dragPlugin.attach(container);
+
+			if(container instanceof FramedContainer || container instanceof GenericContainer) {
+				this.bezierPlugin.attach(container);
+			}
+		}
 	}
 
 	public detachPlugins() {
 		this.resizePlugin.detach();
 		this.dragPlugin.detach();
 		this.bezierPlugin.detach();
+		this.bezierManipulationPlugin.detach();
+		this.viewport.onScreenChildren.length = 0;
 	}
 
 	public getSelectedCenter() {
