@@ -188,7 +188,11 @@ export class BezierPlugin {
 		try {
 			this.container.off('pointerdown', this._cancelBezierCurve);
 			this._removeViewportBezierEvent();
-			this.lineContainer.interactive = true;
+			if(this.lineContainer) {
+				this.lineContainer.interactive = true;
+			}
+			this.lineContainer = null;
+			this.lineBezier = null;
 			this.handleId = null;
 			this.container = null;
 		} catch (err) {
