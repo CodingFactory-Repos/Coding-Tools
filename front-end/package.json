@@ -14,7 +14,7 @@
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.2.6",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "@vuepic/vue-datepicker": "^5.0.1",
+    "@vuepic/vue-datepicker": "^5.1.2",
     "@vueuse/core": "^10.1.2",
     "axios": "^1.4.0",
     "flowbite": "^1.6.5",
