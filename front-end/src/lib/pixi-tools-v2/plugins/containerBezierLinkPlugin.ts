@@ -24,6 +24,11 @@ export class BezierPlugin {
 	}
 
 	public attach(container: CanvasContainer) {
+		//! This is a shit fix.
+		if(this.container !== null) {
+			this._cancelBezierCurve();
+		}
+
 		this.container = container;
 
 		const { x, y, width, height } = this.container.getGeometry();
@@ -176,7 +181,7 @@ export class BezierPlugin {
 		}
 	};
 
-	private _cancelBezierCurve = (e: FederatedPointerEvent) => {
+	private _cancelBezierCurve = (e?: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
 
@@ -185,6 +190,7 @@ export class BezierPlugin {
 			this._removeViewportBezierEvent();
 			this.lineContainer.interactive = true;
 			this.handleId = null;
+			this.container = null;
 		} catch (err) {
 			if (err instanceof Error) {
 				console.error('Unexpected error during end resize :', err.message);
