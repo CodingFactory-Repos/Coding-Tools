@@ -104,8 +104,8 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.B) endControl.y += lineLength;
 				}
 
-				angleControl.x = this.lineBezier.end.x - startControl.x,
-				angleControl.y = this.lineBezier.end.y - startControl.y,
+				angleControl.x = this.lineBezier.end.x - endControl.x,
+				angleControl.y = this.lineBezier.end.y - endControl.y,
 
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
@@ -171,6 +171,9 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.R) endControl.x += lineLength;
 					else if(handle === BezierHandle.L) endControl.x -= lineLength;
 					else if(handle === BezierHandle.B) endControl.y += lineLength;
+
+					angleControl.x = this.lineBezier.end.x - endControl.x;
+					angleControl.y = this.lineBezier.end.y - endControl.y;
 				} else {
 					const deltaX = this.lineBezier.end.x - this.lineBezier.start.x;
 					const deltaY = this.lineBezier.end.y - this.lineBezier.start.y;
@@ -193,10 +196,10 @@ export class BezierManipulationPlugin {
 							endControl.y = this.lineBezier.end.y + (Math.sign(deltaX) * offset * deltaX);
 						}
 					}
-				}
 
-				angleControl.x = this.lineBezier.end.x - endControl.x;
-				angleControl.y = this.lineBezier.end.y - endControl.y;
+					angleControl.x = this.lineBezier.end.x - endControl.x;
+					angleControl.y = this.lineBezier.end.y - endControl.y;
+				}
 
 				if(this.container.startContainer.containerUUID !== undefined) {
 					//! This breaks the purpose of the plugin but fuck it
