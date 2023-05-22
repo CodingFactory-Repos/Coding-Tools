@@ -145,10 +145,10 @@ export class BezierPlugin {
 				this.lineBezier.endControl = endControl;
 				this.lineBezier.draw();
 
-				if(!closestElement.container.linkedLinesUUID.includes(this.lineContainer.uuid)) {
+				// if(!closestElement.container.linkedLinesUUID.includes(this.lineContainer.uuid)) {
 					closestElement.container.attachLine(this.lineContainer.uuid);
 					this.lineContainer.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
-				}
+				// }
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;

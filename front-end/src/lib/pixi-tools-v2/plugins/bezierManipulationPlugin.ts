@@ -112,10 +112,12 @@ export class BezierManipulationPlugin {
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.draw();
 
-				if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
+				console.log("hey")
+
+				// if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
 					closestElement.container.attachLine(this.container.uuid);
 					this.container.attachContainer(closestElement.container.uuid, "start", closestPoint.id);
-				}
+				// }
 			}
 			else if(this.handleId === BezierCurveHandle.P2 && !isPointsOverlap(this.lineBezier.end, closestPoint)) {
 				this.lineBezier.end = closestPoint;
@@ -146,10 +148,10 @@ export class BezierManipulationPlugin {
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.draw();
 
-				if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
+				// if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
 					closestElement.container.attachLine(this.container.uuid);
 					this.container.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
-				}
+				// }
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;

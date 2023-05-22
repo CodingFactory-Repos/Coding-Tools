@@ -285,6 +285,7 @@ export class DragPlugin {
 				const line = lineContainer.children[0];
 				const isStart = containerUUID === lineContainer?.startContainer?.containerUUID;
 				const isEnd = containerUUID === lineContainer?.endContainer?.containerUUID;
+				console.log(isStart, isEnd)
 
 				if(isStart) {
 					const handleId = lineContainer.startContainer.handleId;

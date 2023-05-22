@@ -182,7 +182,10 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	public attachLine(lineUUID: string) {
-		this.linkedLinesUUID.push(lineUUID);
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if(index === -1) {
+			this.linkedLinesUUID.push(lineUUID);
+		}
 	}
 
 	public detachLine(lineUUID: string) {
