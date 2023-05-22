@@ -97,9 +97,10 @@ export class LineBezier extends ModelGraphics {
 	private perfectPolygonLine() {
 		const points = this.geometry.points;
 
-		const od: Array<XYZ> = []
-		const even: Array<XYZ> = []
+		const od: Array<XYZ> = [];
+		const even: Array<XYZ> = [];
 		// based of this logic : https://www.cnblogs.com/3body/p/14981937.html
+		// source code from oushu1liangqi1 : https://github.com/pixijs/pixijs/issues/7058
 		for (let index = 0; index * 2 < points.length; index++) {
 			const x = points[index * 2];
 			const y = points[index * 2 + 1];
