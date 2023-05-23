@@ -6,16 +6,30 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 	state: () => ({
 		titleNewRetro: '',
 		optionTemplate: 0,
-		privatePostit: [{
-			user: "user",
-			value: "Value"
-		}]
+		privatePostit: [],
+		tempMovingPostit: {},
+		currentRetro: {
+			1: [],
+			2: [],
+			3: []
+		}
 	}),
 	actions: {
 		async createPrivatePostit(privatePostit) {
 			this.privatePostit.push(privatePostit);
 			// TODO: See if necessary to update DB
 			return true;
+		},
+		async addPostitToBoard(type: number, postit) {
+			// TODO: Request To BDD
+			// TODO: Implement socket io
+			this.currentRetro[type].push(postit);
+			this.tempMovingPostit = {};
+			this.privatePostit.splice(postit.index, 1);
+		},
+		async updatePositionPostit(postit) {
+
+
 		}
 	},
 });

@@ -1,6 +1,7 @@
 <template>
-	<div v-for="privatePostit in privatePostits">
-		<UpdatePostit :privatePostit="privatePostit"/>
+
+	<div v-for="(privatePostit, index) in privatePostits" :key="index">
+			<UpdatePostit :privatePostit="privatePostit" :index="index"/>
 	</div>
 	<CreatePostit />
 </template>
