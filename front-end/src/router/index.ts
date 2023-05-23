@@ -48,6 +48,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			{ path: 'test', component: () => import('../views/test.vue') },
 			{
 				path: 'retrospective',
 				children: [
