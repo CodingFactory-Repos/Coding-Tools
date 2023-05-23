@@ -1,14 +1,15 @@
 <template>
+	<!-- TODO: Put for the dark theme fields -->
 	<div class="container">
 		<div class="container-head">
 			<h1 class="text-2xl font-bold text-[#5c5f73]">Nouvelle rétrospective</h1>
 		</div>
 		<div class="container-titleRetro">
-			<label for="Ajouter un titre">Ajouter un titre</label>
-			<input type="text" name="title" v-model="titleRetro" />
+			<label for="Ajouter un titre" class="text-[#5c5f73]" >Ajouter un titre</label>
+			<input class="text-[#5c5f73]" type="text" name="title" v-model="titleRetro" />
 		</div>
 		<div class="container-desc">
-			<h2>Choisissez un template</h2>
+			<h2 class="text-[#5c5f73]">Choisissez un template</h2>
 		</div>
 		<div class="container-templates">
 			<button @click="newRetro(1)" class="container-templates-card">
@@ -18,7 +19,7 @@
 						alt="Illustation"
 					/>
 				</div>
-				<div class="container-templates-card-title">Mad | Sad | Glad</div>
+				<div class="container-templates-card-title text-[#5c5f73]">Mad | Sad | Glad</div>
 			</button>
 			<button @click="newRetro(2)" class="container-templates-card">
 				<div class="container-templates-card-img">
@@ -27,7 +28,7 @@
 						alt="Illustation"
 					/>
 				</div>
-				<div class="container-templates-card-title">Liked | Learned | Lacked</div>
+				<div class="container-templates-card-title text-[#5c5f73]">Liked | Learned | Lacked</div>
 			</button>
 		</div>
 	</div>
@@ -44,7 +45,7 @@ export default defineComponent({
 		const titleRetro = ref('');
 		const router = useRouter();
 		const newRetro = (option: number) => {
-			//TODO add prevent from null data
+			//TODO: add prevent from null data
 			retrospectiveStore.titleNewRetro = titleRetro.value;
 			retrospectiveStore.optionTemplate = option;
 
