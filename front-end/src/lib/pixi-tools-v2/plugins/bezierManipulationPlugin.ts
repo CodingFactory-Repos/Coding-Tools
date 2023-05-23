@@ -112,8 +112,6 @@ export class BezierManipulationPlugin {
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.draw();
 
-				console.log("hey")
-
 				// if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
 					closestElement.container.attachLine(this.container.uuid);
 					this.container.attachContainer(closestElement.container.uuid, "start", closestPoint.id);

@@ -272,7 +272,6 @@ export class DragPlugin {
 
 	private _dragAttachedLines = (container: GenericContainer | FramedContainer) => {
 		if(container?.linkedLinesUUID?.length > 0) {
-			// console.log(container.typeId, container.linkedLinesUUID)
 			const containerUUID = container.uuid;
 			const uuids = container.linkedLinesUUID;
 			const { x, y, width, height } = container.getGeometry();
@@ -285,7 +284,6 @@ export class DragPlugin {
 				const line = lineContainer.children[0];
 				const isStart = containerUUID === lineContainer?.startContainer?.containerUUID;
 				const isEnd = containerUUID === lineContainer?.endContainer?.containerUUID;
-				console.log(isStart, isEnd)
 
 				if(isStart) {
 					const handleId = lineContainer.startContainer.handleId;

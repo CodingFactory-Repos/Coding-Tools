@@ -74,7 +74,7 @@ export class BezierPlugin {
 					}
 				},
 			],
-		}) as LineContainer;
+		}, false, undefined, this.viewport.activeFrameNumber) as LineContainer;
 
 		this.lineContainer = lineContainer;
 		this.lineContainer.interactive = false;
