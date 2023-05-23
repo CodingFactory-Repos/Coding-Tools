@@ -33,6 +33,7 @@ export class ViewportUI extends Viewport {
 	public cursor: CSSStyleProperty.Cursor;
 	public mouse: Point;
 	public selectionBoxActive = false;
+	public activeFrameNumber = null;
 
 	public readonly activeFrames: Array<number> = reactive([]);
 
