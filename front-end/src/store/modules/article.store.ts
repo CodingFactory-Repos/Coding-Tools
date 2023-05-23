@@ -9,6 +9,7 @@ export const useArticleStore = defineStore('article', {
 			items: [
 				{
 					_id: '',
+					date: '',
 					title: '',
 					descriptions: [
 						{
@@ -24,6 +25,7 @@ export const useArticleStore = defineStore('article', {
 			oneItems: {
 				_id: '',
 				title: '',
+				date: '',
 				descriptions: [
 					{
 						type: '',
@@ -55,14 +57,15 @@ export const useArticleStore = defineStore('article', {
 					},
 				],
 			},
+			idArticle: '',
 		};
 	},
 	actions: {
 		//add article to store and to the database
 		addArticle: withErrorHandler(async function (this: ArticleStore, article: Article) {
-			this.items.push(article);
-
-			await http.post('/articles/add', article);
+			const res = await http.post('/articles/add', article);
+			const idArticle = res.data.id;
+			this.idArticle = idArticle;
 		}),
 
 		//get article from the database
@@ -82,7 +85,7 @@ export const useArticleStore = defineStore('article', {
 		}),
 
 		// add participant to the array of participants in article in the database
-		addParticipant: withErrorHandler(async function (id: string, participant: any) {
+		addParticipant: withErrorHandler(async function (id: string, participant) {
 			const response = await http.put(`/articles/participant/${id}`, participant);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
@@ -90,14 +93,14 @@ export const useArticleStore = defineStore('article', {
 		}),
 
 		// remove participant from the array of participants in article in the database
-		removeParticipant: withErrorHandler(async function (id: string, participant: any) {
+		removeParticipant: withErrorHandler(async function (id: string, participant) {
 			const response = await http.put(`/articles/removeParticipant/${id}`, participant);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;
 		}),
 
-		addComment: withErrorHandler(async function (id: string, comment: any) {
+		addComment: withErrorHandler(async function (id: string, comment) {
 			const response = await http.put(`/articles/comment/${id}`, comment);
 			const oneItems = response.data;
 			this.oneItems = oneItems;

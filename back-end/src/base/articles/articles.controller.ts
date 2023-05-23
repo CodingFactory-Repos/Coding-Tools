@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseFilters, Post, Req, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Post, Req, Put } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -17,10 +17,9 @@ export class ArticlesController {
 	}
 
 	@Post('/add')
-	addArticle(@Req() req: Request, @Res() res: Response) {
-		this.articlesService.addArticle(req.body).then((article) => {
-			return res.status(201).json(article);
-		});
+	async addArticle(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.addArticle(req.body);
+		return res.status(201).json({ article, id: article.insertedId });
 	}
 
 	@Get('/:id')

@@ -94,6 +94,8 @@ export const useAuthStore = defineStore('auth', {
 				keys?.length ? pick(authStoreDefaultState(), keys) : authStoreDefaultState(), // if no keys provided, reset all
 			);
 		},
+
+		//! TODO: What are these, and why is it inside the authentification store ?
 		addEventToUser: async function (this: AuthStore, eventId: string) {
 			const response = await tryAddEvents(eventId);
 

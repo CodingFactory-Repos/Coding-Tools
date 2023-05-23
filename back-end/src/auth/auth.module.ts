@@ -11,6 +11,7 @@ import { AuthEventEmitter } from '@/auth/events/auth.events';
 import { UsersRepository } from '@/base/users/users.repository';
 import { MailjetListeners } from '@/common/providers/mailjet.provider';
 import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
+import { AllowedStudentsRepository } from '@/base/users/allowed.students.repository';
 
 @Module({
 	imports: [
@@ -22,7 +23,7 @@ import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
 		}),
 		forwardRef(() => UsersModule),
 	],
-	providers: [AuthService, JwtStrategy, AuthEventEmitter, UsersRepository, MailjetListeners],
+	providers: [AuthService, JwtStrategy, AuthEventEmitter, UsersRepository, AllowedStudentsRepository, MailjetListeners],
 	controllers: [AuthController],
 	exports: [AuthService],
 })

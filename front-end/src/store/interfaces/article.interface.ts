@@ -1,10 +1,12 @@
 export interface ArticleStore {
 	items: Article[];
 	oneItems: Article;
+	idArticle: string;
 }
 
 export interface Article {
 	_id?: string;
+	date: string;
 	title: string;
 	descriptions: {
 		type: string;

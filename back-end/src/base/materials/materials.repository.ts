@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { Material } from 'src/base/materials/interfaces/materials.interface';
 
@@ -15,14 +15,17 @@ export class MaterialsRepository {
 		return this.materials.find().toArray();
 	}
 	async createMaterial(query: Material) {
-		return this.materials.insertOne(query);
+		this.materials.insertOne(query);
+		//Return the new material
+		return this.materials.findOne(query);
 	}
 
 	async updateOneMaterial(
 		query: Filter<Material>,
 		update: Partial<Material> | UpdateFilter<Material>,
 	) {
-		return this.materials.updateOne(query, update);
+		this.materials.updateOne(query, update);
+		return this.materials.findOne(query);
 	}
 
 	async findOneAndUpdateMaterial(
@@ -43,5 +46,11 @@ export class MaterialsRepository {
 	}
 	async deleteOneMaterial(query: Filter<Material>) {
 		return this.materials.deleteOne(query);
+	}
+	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
+		return this.materials.updateOne(query, update);
+	}
+	async getMaterialById(id: string) {
+		return this.materials.findOne({ _id: new ObjectId(id) });
 	}
 }

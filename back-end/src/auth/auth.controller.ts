@@ -104,7 +104,7 @@ export class AuthController {
 	}
 
 	// tryAddArticles
-	@Post('addArticles')
+	@Post('addArticle')
 	@UseGuards(JwtAuthGuard)
 	async addArticles(
 		@Jwt() userId: ObjectId,

@@ -28,6 +28,7 @@
 							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							v-model="type"
 						>
+							<option value="" selected disabled>Select type</option>
 							<option value="Infos">Infos</option>
 							<option value="Tuto">Tuto</option>
 							<option value="Evenement">Evenement</option>
@@ -35,6 +36,16 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="h-10 mb-6">
+				<datepicker
+					v-model="date"
+					:full-month-name="true"
+					placeholder="YYYY-MM-DD"
+					:typeable="true"
+				/>
+			</div>
+
 			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
 				>Description</label
 			>
@@ -47,7 +58,7 @@
 							rows="1"
 							class="p-2.5 w-4/5 text-sm text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							placeholder="Enter text or image url"
-						/>
+						></textarea>
 
 						<select
 							v-model="description.type"
@@ -56,6 +67,14 @@
 							<option value="text">Text</option>
 							<option value="image">Image</option>
 						</select>
+						<button
+							v-if="descriptions.length > 1"
+							type="button"
+							@click="removeDescription(index)"
+							class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+						>
+							X
+						</button>
 					</div>
 				</div>
 			</div>
@@ -110,24 +129,19 @@
 	</div>
 </template>
 
-<style scoped>
-.margin {
-	width: fit-content;
-}
-</style>
-
 <script lang="ts" setup>
 // Post the data to the API
 import { ref, computed } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
+import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
 
 // use the store
 const articleStore = useArticleStore();
+const idArticle = computed(() => articleStore.idArticle);
 
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
 
 // form data
 const title = ref('');
@@ -135,10 +149,16 @@ const descriptions = ref([{ type: 'text', value: '' }]);
 const picture = ref('');
 const tags = ref('');
 const type = ref('');
+const date = ref(new Date());
 
 // Function to add description object to the array
 const addDescription = () => {
 	descriptions.value.push({ type: 'text', value: '' });
+};
+
+// Function to remove description object from the array
+const removeDescription = (index: number) => {
+	descriptions.value.splice(index, 1);
 };
 
 // Function to post the data to the API
@@ -168,16 +188,10 @@ const addArticle = async () => {
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
+		date: date.value.toString(),
 	};
 
-	//reset the form
-	title.value = '';
-	descriptions.value = [{ type: 'text', value: '' }];
-	picture.value = '';
-	tags.value = '';
-	type.value = '';
-
-	// reload the page
+	console.log(data);
 
 	Swal.fire({
 		title: 'Your article has been created',
@@ -189,13 +203,27 @@ const addArticle = async () => {
 		if (result.isConfirmed) {
 			// post the data
 			await articleStore.addArticle(data);
-			// add article in user database
-			console.log(data);
-			// await authStore.addArticleToUser(user.value._id);
 
-			// location.reload();
+			// add article in user database
+			await authStore.addArticleToUser(idArticle.value);
+
+			// reload the page
 			location.reload();
 		}
 	});
+
+	//reset the form
+	title.value = '';
+	descriptions.value = [{ type: 'text', value: '' }];
+	picture.value = '';
+	tags.value = '';
+	type.value = '';
+	date.value = new Date();
 };
 </script>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>

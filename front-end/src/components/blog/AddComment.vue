@@ -27,7 +27,15 @@
 							rows="1"
 							class="p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							placeholder="Enter text or image url"
-						/>
+						></textarea>
+						<button
+							v-if="descriptions.length > 1"
+							type="button"
+							@click="removeDescription(index)"
+							class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+						>
+							X
+						</button>
 					</div>
 				</div>
 			</div>
@@ -51,12 +59,6 @@
 	</div>
 </template>
 
-<style scoped>
-.margin {
-	width: fit-content;
-}
-</style>
-
 <script lang="ts" setup>
 // Post the data to the API
 import { ref, computed } from 'vue';
@@ -78,6 +80,11 @@ const descriptions = ref([{ value: '' }]);
 // Function to add description object to the array
 const addDescription = () => {
 	descriptions.value.push({ value: '' });
+};
+
+// Function to remove description object from the array
+const removeDescription = (index: number) => {
+	descriptions.value.splice(index, 1);
 };
 
 // Function to post the data to the API
@@ -125,3 +132,9 @@ const addComment = async (id) => {
 	});
 };
 </script>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>
