@@ -89,12 +89,8 @@ export const useProjectStore = defineStore('project', {
 					},
 				],
 			};
-			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
+			const genericContainer = Normalizer.container(scene.viewport, data, false, point, this.selectedFrameNumber);
 			scene.viewport.addChild(genericContainer);
-
-			if (this.selectedFrameNumber) {
-				genericContainer.tabNumberContext = this.selectedFrameNumber;
-			}
 
 			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle('default');
@@ -123,12 +119,14 @@ export const useProjectStore = defineStore('project', {
 			this.scene.viewport.worldHeight = newHeight;
 		},
 		setFrameCanvas(this: ProjectStore, frameNumber: number) {
+			this.scene.viewport.activeFrameNumber = frameNumber;
 			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
 			this.scene.viewport.children.find(
 				(ctn) => ctn instanceof FramedContainer && ctn.frameNumber === frameNumber,
 			).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStore) {
+			this.scene.viewport.activeFrameNumber = null;
 			this.scene.viewport.toggleHidding(true);
 		},
 		canvasDownload(this: ProjectStore, mime: string) {
