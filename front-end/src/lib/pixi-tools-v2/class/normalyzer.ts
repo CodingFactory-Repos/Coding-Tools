@@ -92,7 +92,7 @@ export class Normalizer {
 				frameNumber,
 				interactive: true,
 				isAttachedToFrame: false,
-				tabNumberContext: tabContext,
+				tabNumberContext: tabContext ?? -1,
 			};
 		}
 

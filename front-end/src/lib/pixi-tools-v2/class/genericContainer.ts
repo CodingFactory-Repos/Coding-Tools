@@ -24,7 +24,7 @@ export class GenericContainer extends PluginContainer {
 
 	public cursor: CSSStyleProperty.Cursor;
 	public isAttachedToFrame: boolean;
-	public tabNumberContext = null;
+	public tabNumberContext: number;
 	public frameNumber: number;
 
 	static registerContainer(
