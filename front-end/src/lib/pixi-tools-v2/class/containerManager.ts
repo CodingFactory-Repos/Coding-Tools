@@ -48,17 +48,18 @@ export class ContainerManager {
 					const uuid = [...ctn.linkedLinesUUID];
 					uuid.forEach((lineIdentifier) => {
 						const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
-						if (line.startContainer) {
+						if (line.startContainer?.containerUUID !== undefined) {
 							const container = this.viewport.socketPlugin.elements[line.startContainer.containerUUID] as CanvasContainer;
 							container.detachLine(lineIdentifier);
 						}
 
-						if (line.endContainer) {
+						if (line.endContainer?.containerUUID !== undefined) {
 							const container = this.viewport.socketPlugin.elements[line.endContainer.containerUUID] as CanvasContainer;
 							container.detachLine(lineIdentifier);
 						}
 
 						line.destroy();
+						this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
 					})
 				}
 
