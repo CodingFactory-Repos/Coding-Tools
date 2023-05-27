@@ -104,6 +104,26 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
+	@SubscribeMessage('update-line-controls')
+	handleLineUpdatedControls(
+		client: AuthSocket,
+		data: { uuid: string; serializedBounds: SerializedContainerBounds },
+	) {
+		client.to(client.roomId).emit('line-controls-updated', data.uuid, data.serializedBounds);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ 'project.$': data.serializedBounds }, { array: true });
+		console.log(update)
+
+		for (const key in update['$set']) {
+			if (key.includes('uuid')) {
+				delete update['$set'][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	}
+
 	@SubscribeMessage('add-frame-children')
 	handleChildrenFrameAdded(
 		client: AuthSocket,
