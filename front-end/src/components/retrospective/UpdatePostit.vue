@@ -20,12 +20,10 @@
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 const props = defineProps({
 	privatePostit: { type: Object, required: true},
-	index: { type: Number, required: true},
 })
 const retroStore = useRetrospectiveStore();
 
 const dragStart = () => {
-	props.privatePostit.index = props.index;
 	retroStore.tempMovingPostit = props.privatePostit
 };
 

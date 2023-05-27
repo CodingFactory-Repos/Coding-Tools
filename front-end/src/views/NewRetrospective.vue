@@ -16,7 +16,12 @@
 		<div class="h-full">
 			<Board :optionTemplate="optionTemplate" />
 		</div>
-		<div class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-4 p-4">
+		<div
+			class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-4 p-4"
+			@dragenter.prevent
+			@dragover.prevent
+			@drop="dropPostit(4)"
+		>
 			<PrivateSection />
 		</div>
 	</div>
@@ -32,5 +37,11 @@ import PrivateSection from '@/components/retrospective/PrivateSection.vue'
 const retrospectiveStore = useRetrospectiveStore();
 const title = computed(() => retrospectiveStore.titleNewRetro);
 const optionTemplate = computed(() => retrospectiveStore.optionTemplate);
+const tempPostit = computed(() => retrospectiveStore.tempMovingPostit)
 
+
+const dropPostit = () => {
+	retrospectiveStore.setPostitToPriv(tempPostit.value);
+
+}
 </script>

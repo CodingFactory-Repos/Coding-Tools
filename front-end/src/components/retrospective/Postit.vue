@@ -20,9 +20,9 @@ const props = defineProps({
 const retroStore = useRetrospectiveStore();
 
 const dragStart = () => {
-	console.log("bonjour");
-	console.log("props", props.postit);
-	retroStore.updatePositionPostit(props.postit);
+	// console.log("bonjour");
+	// console.log("props", props.postit);
+	retroStore.tempMovingPostit = props.postit;
 
 }
 
