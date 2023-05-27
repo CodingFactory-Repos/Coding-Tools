@@ -20,3 +20,11 @@ export interface CourseIdObject {
 export interface StudentIdObject {
 	studentId: string;
 }
+
+export interface MessageObject {
+	type: string;
+	text: string;
+	sender_id: number;
+	sender_name: string;
+	date: Date;
+}

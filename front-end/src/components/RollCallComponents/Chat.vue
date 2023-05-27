@@ -41,6 +41,8 @@ import { io } from 'socket.io-client';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import { manager } from '@/api/network/socket.io';
+import { http } from '@/api/network/axios';
+import { withErrorHandler } from '@/utils/storeHandler';
 
 const props = defineProps<{
 	roomId: string;
@@ -50,10 +52,11 @@ const messages = ref<Array<Object>>([]);
 
 const authStore = useAuthStore();
 const currentUser = computed(() => authStore.user);
-const roomId = computed(() => props.roomId);
+const roomId = computed(() => props.roomId); // roomId = CourseId
 const searchTerm = ref('');
 const gifs = ref([]);
 const newMessageText = ref('');
+const courseId = ref();
 
 /* SOCKET */
 
@@ -71,7 +74,9 @@ socket.on('peer-chat-message', (data: Object) => {
 	console.log(77, messages.value);
 });
 
-onMounted(() => {
+onMounted(async () => {
+	courseId.value = await getCourseId();
+	console.log(79, courseId.value);
 	socket.auth = { roomId: roomId.value.toString() };
 	socket.connect();
 });
@@ -82,9 +87,29 @@ onUnmounted(() => {
 
 /* METHODS */
 
-const addMessage = (msg: Object) => {
+const addMessage = async (msg: Object) => {
 	messages.value.unshift(msg);
+	let courseId = await getCourseId();
+	console.log(89, courseId);
+	await http
+		.post(`/calls/save_message/${courseId}`, { newMessage: msg })
+		.then((response) => console.log(92, response))
+		.catch((error) => console.error(error));
 };
+
+const getCourseId = withErrorHandler(async () => {
+	http.get(`/calls/actual_course/`).then((response) => {
+		console.log(98, response);
+		return response.data.actualCourse;
+	});
+});
+
+// const getMessages = withErrorHandler(async () => {
+// 	if (!courseId) {
+// 		await getCourseId();
+// 	}
+// 	await http.get(`/calls/get_messages/${courseId}`);
+// });
 const getDate = () => {
 	const current = new Date();
 	const date = `${current.getHours()}:${current.getMinutes()} -

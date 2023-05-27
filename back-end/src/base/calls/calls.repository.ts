@@ -341,6 +341,58 @@ export class CallsRepository {
 		return course.groups;
 	}
 
+	async saveMessage(userId: ObjectId, courseId: string, message: any) {
+		const courseObjectId = new ObjectId(courseId);
+		const userObjectId = new ObjectId(userId);
+		const actualDate = new Date();
+		const course = await this.db.collection('courses').findOne({
+			_id: courseObjectId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const user = await this.db.collection('users').findOne({
+			_id: userObjectId,
+		});
+		if (!user) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+
+		await this.db.collection('courses').updateOne(
+			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
+			{
+				$push: {
+					messages: {
+						$each: [
+							{
+								userId: userObjectId,
+								message: message,
+								date: new Date(),
+							},
+						],
+					},
+				},
+			},
+		);
+		return {
+			message: 'Message saved successfully',
+		};
+	}
+	async getMessages(courseId: string) {
+		const courseObjectId = new ObjectId(courseId);
+		const actualDate = new Date();
+		const course = await this.db.collection('courses').findOne({
+			_id: courseObjectId,
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		});
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		return course.messages;
+	}
 	async joinGroup(courseId: string, groupId: string, userId: ObjectId) {
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);

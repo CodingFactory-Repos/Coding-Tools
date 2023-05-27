@@ -4,7 +4,12 @@ import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { JwtService } from '@nestjs/jwt';
-import { CourseIdObject, StudentIdObject } from '@/base/calls/interfaces/calls.interface';
+import {
+	CourseIdObject,
+	MessageObject,
+	StudentIdObject,
+} from '@/base/calls/interfaces/calls.interface';
+// import { Course } from '@base/courses/interfaces/courses.interface';
 
 @Injectable()
 export class CallsService {
@@ -109,7 +114,15 @@ export class CallsService {
 		return this.callsRepository.getGroups(courseId.courseId);
 	}
 
+	getMessages(courseId: CourseIdObject) {
+		return this.callsRepository.getMessages(courseId.courseId);
+	}
+
 	async joinGroup(courseId: CourseIdObject, groupId: string, studentId: ObjectId) {
 		return this.callsRepository.joinGroup(courseId.courseId, groupId, studentId);
+	}
+
+	async saveMessage(userId: ObjectId, courseId: CourseIdObject, message: MessageObject) {
+		return this.callsRepository.saveMessage(userId, courseId.courseId, message);
 	}
 }
