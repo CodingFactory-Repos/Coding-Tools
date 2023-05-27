@@ -66,7 +66,7 @@ export class BezierPlugin {
 			childs: [
 				{
 					typeId: "bezier",
-					bounds: {
+					lineControl: {
 						start: startControl,
 						end: endControl,
 						startControl: startControl,
@@ -179,6 +179,12 @@ export class BezierPlugin {
 				this.lineContainer.detachContainer("end");
 			}
 		}
+
+		this.viewport.socketPlugin.emit(
+			'ws-line-updated',
+			this.lineContainer.uuid,
+			this.lineContainer.serializeBounds(),
+		);
 	};
 
 	private _cancelBezierCurve = (e?: FederatedPointerEvent) => {
