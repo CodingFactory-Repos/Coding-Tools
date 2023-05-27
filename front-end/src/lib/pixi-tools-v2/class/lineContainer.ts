@@ -83,9 +83,9 @@ export class LineContainer extends PluginContainer {
 			this.addChild(element);
 		}
 
-		// if (!remote && viewport.socketPlugin) {
-		// 	viewport.socketPlugin.emit('ws-element-added', this.serializeData());
-		// }
+		if (!remote && viewport.socketPlugin) {
+			viewport.socketPlugin.emit('ws-element-added', this.serializeData());
+		}
 	}
 
 	public destroy(options?: boolean | IDestroyOptions): void {
@@ -205,6 +205,24 @@ export class LineContainer extends PluginContainer {
 		graphic.position.set(bounds.x, bounds.y);
 		graphic.width = bounds.width;
 		graphic.height = bounds.height;
+	}
+
+	public updateLineTree(serializedBounds: SerializedContainerBounds) {
+		const graphic = this.getGraphicChildren()[0] as LineBezier;
+		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
+		const line = (serializedBounds.childs[0] as SerializedGraphic).lineControl;
+
+		this.absMinX = absMinX;
+		this.absMinY = absMinY;
+		this.absMaxX = absMaxX;
+		this.absMaxY = absMaxY;
+
+		graphic.start = line.start;
+		graphic.end = line.end;
+		graphic.startControl = line.startControl;
+		graphic.endControl = line.endControl;
+		graphic.angleControl = line.angleControl;
+		graphic.draw();
 	}
 
 	public attachContainer(containerUUID: string, ctx: "start" | "end", handleId: BezierHandle) {
