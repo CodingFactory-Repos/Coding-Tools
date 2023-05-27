@@ -104,8 +104,8 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.B) endControl.y += lineLength;
 				}
 
-				angleControl.x = this.lineBezier.end.x - endControl.x,
-				angleControl.y = this.lineBezier.end.y - endControl.y,
+				angleControl.x = this.lineBezier.end.x - startControl.x,
+				angleControl.y = this.lineBezier.end.y - startControl.y,
 
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
@@ -174,13 +174,16 @@ export class BezierManipulationPlugin {
 
 					angleControl.x = this.lineBezier.end.x - endControl.x;
 					angleControl.y = this.lineBezier.end.y - endControl.y;
+					this.lineBezier.angleControl = angleControl;
 				} else {
 					const deltaX = this.lineBezier.end.x - this.lineBezier.start.x;
 					const deltaY = this.lineBezier.end.y - this.lineBezier.start.y;
 					const offset = 0.8;
+					let angleOrigin = false;
 
 					if (Math.abs(deltaX) > Math.abs(deltaY)) {
 						if(this.lineBezier.end.x > this.lineBezier.start.x) {
+							angleOrigin = true;
 							startControl.x = this.lineBezier.start.x + (Math.sign(deltaY) * offset * deltaY);
 							endControl.x = this.lineBezier.end.x - (Math.sign(deltaY) * offset * deltaY);
 						} else {
@@ -197,8 +200,17 @@ export class BezierManipulationPlugin {
 						}
 					}
 
-					angleControl.x = this.lineBezier.end.x - endControl.x;
-					angleControl.y = this.lineBezier.end.y - endControl.y;
+					if(this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
+						if(angleOrigin) {
+							angleControl.x = this.lineBezier.end.x - endControl.x;
+							angleControl.y = this.lineBezier.end.y - endControl.y;
+							this.lineBezier.angleControl = angleControl;
+						}
+					} else {
+						angleControl.x = this.lineBezier.end.x - endControl.x;
+						angleControl.y = this.lineBezier.end.y - endControl.y;
+						this.lineBezier.angleControl = angleControl;
+					}
 				}
 
 				if(this.container.startContainer.containerUUID !== undefined) {
@@ -229,9 +241,11 @@ export class BezierManipulationPlugin {
 					const deltaX = this.lineBezier.end.x - this.lineBezier.start.x;
 					const deltaY = this.lineBezier.end.y - this.lineBezier.start.y;
 					const offset = 0.8;
+					let angleOrigin = false;
 
 					if (Math.abs(deltaX) > Math.abs(deltaY)) {
 						if(this.lineBezier.end.x > this.lineBezier.start.x) {
+							angleOrigin = true;
 							startControl.x = this.lineBezier.start.x + (Math.sign(deltaY) * offset * deltaY);
 							endControl.x = this.lineBezier.end.x - (Math.sign(deltaY) * offset * deltaY);
 						} else {
@@ -248,8 +262,17 @@ export class BezierManipulationPlugin {
 						}
 					}
 
-					angleControl.x = this.lineBezier.end.x - endControl.x;
-					angleControl.y = this.lineBezier.end.y - endControl.y;
+					if(this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
+						if(angleOrigin) {
+							angleControl.x = this.lineBezier.end.x - endControl.x;
+							angleControl.y = this.lineBezier.end.y - endControl.y;
+							this.lineBezier.angleControl = angleControl;
+						}
+					} else {
+						angleControl.x = this.lineBezier.end.x - endControl.x;
+						angleControl.y = this.lineBezier.end.y - endControl.y;
+						this.lineBezier.angleControl = angleControl;
+					}
 				}
 
 				if(this.container.endContainer.containerUUID !== undefined) {
@@ -260,15 +283,17 @@ export class BezierManipulationPlugin {
 				}
 			}
 
-			// console.log(this.lineBezier.start, this.lineBezier.end)
-
 			this.lineBezier.startControl = startControl;
 			this.lineBezier.endControl = endControl;
-			this.lineBezier.angleControl = angleControl;
 			this.lineBezier.draw();
 		}
 
 		this.viewport.updateBezierCurveHandle(this.lineBezier.start, this.lineBezier.end, true);
+		this.viewport.socketPlugin.emit(
+			'ws-line-updated',
+			this.container.uuid,
+			this.container.serializeBounds(),
+		);
 	};
 
 	private _stopBezierCurveManipulation = (e: FederatedPointerEvent) => {
