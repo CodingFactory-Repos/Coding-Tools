@@ -28,7 +28,7 @@ export class LineBezier extends ModelGraphics {
 	constructor(attributes: SerializedGraphic) {
 		super();
 
-		const { uuid, typeId, bounds, properties } = attributes;
+		const { uuid, typeId, properties, lineControl } = attributes;
 
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
@@ -36,10 +36,11 @@ export class LineBezier extends ModelGraphics {
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
-		this.start = bounds.start ?? { x: 200, y: 200 };
-		this.end = bounds.end ?? { x: 300, y: 300}
-		this.startControl = bounds.startControl ?? { x: 250, y: 200};
-		this.endControl = bounds.endControl ?? { x: 300, y: 300}
+		this.start = lineControl.start;
+		this.end = lineControl.end;
+		this.startControl = lineControl.startControl;
+		this.endControl = lineControl.endControl;
+		this.angleControl = lineControl?.angleControl;
 
 		this.draw();
 	}
