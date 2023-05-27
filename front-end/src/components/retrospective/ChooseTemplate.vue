@@ -44,12 +44,22 @@ export default defineComponent({
 		const retrospectiveStore = useRetrospectiveStore();
 		const titleRetro = ref('');
 		const router = useRouter();
-		const newRetro = (option: number) => {
+		const newRetro = async (option: number) => {
 			//TODO: add prevent from null data
-			retrospectiveStore.titleNewRetro = titleRetro.value;
-			retrospectiveStore.optionTemplate = option;
-
-			router.push('/app/retrospective/new');
+			const retro = {
+				title: titleRetro.value,
+				optionTemplate: option,
+				participants: [],
+				postits: {
+					1: [],
+					2: [],
+					3: []
+				}
+			}
+			const createdRetro = await retrospectiveStore.createNewRetro(retro)
+			if (createdRetro) {
+				router.push(`/app/retrospective/${createdRetro.slug}`);
+			}
 		};
 
 		return {

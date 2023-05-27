@@ -3,12 +3,13 @@ import { User } from 'src/base/users/interfaces/users.interface';
 
 export interface Retrospective {
 	_id?: ObjectId;
+	slug?: string;
 	title: string;
-	creatorName: string;
-	createdAt: Date;
+	creatorName?: string;
+	createdAt?: Date;
 	participants: Array<User>;
 	postits: Array<Postit>;
-	endedAt: Date;
+	endedAt?: Date;
 }
 
 interface Postit {

@@ -20,7 +20,7 @@
 			class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-4 p-4"
 			@dragenter.prevent
 			@dragover.prevent
-			@drop="dropPostit(4)"
+			@drop="dropPostit()"
 		>
 			<PrivateSection />
 		</div>
@@ -29,14 +29,17 @@
 
 <script lang="ts" setup>
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { computed, defineComponent } from 'vue';
+import { computed } from 'vue';
 import Board from '@/components/retrospective/Board.vue';
 import Timer from '@/components/retrospective/Timer.vue';
 import PrivateSection from '@/components/retrospective/PrivateSection.vue'
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const retrospectiveStore = useRetrospectiveStore();
-const title = computed(() => retrospectiveStore.titleNewRetro);
-const optionTemplate = computed(() => retrospectiveStore.optionTemplate);
+const title = computed(() => retrospectiveStore.currentRetro.title);
+const optionTemplate = computed(() => retrospectiveStore.currentRetro.optionTemplate);
 const tempPostit = computed(() => retrospectiveStore.tempMovingPostit)
 
 
@@ -44,4 +47,9 @@ const dropPostit = () => {
 	retrospectiveStore.setPostitToPriv(tempPostit.value);
 
 }
+
+onMounted(() => {
+	if (route.params.id)
+		retrospectiveStore.getCurrentRetro(route.params.id as string);
+})
 </script>

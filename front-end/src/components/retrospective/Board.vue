@@ -2,6 +2,7 @@
 	<!-- TODO: Rework the board creation -->
 		<div
 			class="border-solid border-2 border-sky-300 flex min-h-[36rem] max-h-[38rem] "
+			v-if="postitsInCurrentRetro"
 		>
 			<div
 				class="border-solid border-2 border-sky-500 flex flex-col flex-1 gap-2 "
@@ -17,7 +18,7 @@
 				</div>
 				<div
 					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in currentRetro[1]"
+					v-for="postit in postitsInCurrentRetro[1]"
 				>
 					<Postit :postit="postit"/>
 				</div>
@@ -36,7 +37,7 @@
 				</div>
 				<div
 					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in currentRetro[2]"
+					v-for="postit in postitsInCurrentRetro[2]"
 				>
 					<Postit :postit="postit" />
 				</div>
@@ -55,7 +56,7 @@
 				</div>
 				<div
 					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in currentRetro[3]"
+					v-for="postit in postitsInCurrentRetro[3]"
 				>
 					<Postit :postit="postit" />
 				</div>
@@ -74,7 +75,8 @@ const props = defineProps({
 })
 const retroStore = useRetrospectiveStore();
 const landPostit = computed(() => retroStore.tempMovingPostit);
-const currentRetro = computed(() => retroStore.currentRetro);
+const postitsInCurrentRetro = computed(() => retroStore.currentRetro.postits);
+
 
 const dropPostit = (typedBoard: number) => {
 	// TODO: ENUM
