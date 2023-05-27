@@ -576,6 +576,12 @@ export class ResizePlugin {
 					line.angleControl = angleControl;
 					line.draw();
 				}
+
+				this.viewport.socketPlugin.emit(
+					'ws-line-updated',
+					lineContainer.uuid,
+					lineContainer.serializeBounds(),
+				);
 			}
 		}
 	}
