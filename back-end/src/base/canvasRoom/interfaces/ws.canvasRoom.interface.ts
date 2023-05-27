@@ -31,6 +31,7 @@ export interface SerializedContainer extends SerializedElement {
 }
 
 export interface SerializedContainerBounds extends Partial<SerializedElement> {
+	lineControl?: SerializedLineGraphic;
 	anchors: SerializedContainerAnchors;
 	background?: Partial<SerializedGraphicBounds>;
 	childs: Array<Partial<SerializedContainerBounds | SerializedGraphicBounds>>;
@@ -67,4 +68,12 @@ export interface SerializedContainerProperties extends SerializedProperties {
 export interface SerializedGraphicProperties extends SerializedProperties {
 	color: number;
 	alpha: number;
+}
+
+export interface SerializedLineGraphic {
+	angleControl?: ElementPosition;
+	startControl: ElementPosition;
+	endControl: ElementPosition;
+	start: ElementPosition;
+	end: ElementPosition;
 }

@@ -1,4 +1,4 @@
-import { ElementBounds, ElementColorimetry, ElementCursor, LineBounds } from './pixi-container';
+import { ElementBounds, ElementColorimetry, ElementCursor, ElementPosition } from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame' | 'line';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier';
@@ -23,8 +23,9 @@ export interface SerializedContainerBounds extends Partial<SerializedElement> {
 }
 
 export interface SerializedGraphic extends SerializedElement {
+	lineControl?: SerializedLineGraphic;
 	typeId: GraphicTypeId | InternalTypeId;
-	bounds: Partial<ElementBounds> & Partial<LineBounds>;
+	bounds: Partial<ElementBounds>;
 	properties: SerializedGraphicProperties;
 }
 
@@ -51,4 +52,12 @@ export interface SerializedContainerProperties extends SerializedProperties {
 
 export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
 	rotation?: number;
+}
+
+export interface SerializedLineGraphic {
+	angleControl?: ElementPosition;
+	startControl: ElementPosition;
+	endControl: ElementPosition;
+	start: ElementPosition;
+	end: ElementPosition;
 }
