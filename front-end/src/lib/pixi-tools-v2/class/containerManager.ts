@@ -44,6 +44,24 @@ export class ContainerManager {
 			}
 
 			this._selectedContainers.forEach((ctn) => {
+				if (!(ctn instanceof LineContainer)) {
+					const uuid = [...ctn.linkedLinesUUID];
+					uuid.forEach((lineIdentifier) => {
+						const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
+						if (line.startContainer) {
+							const container = this.viewport.socketPlugin.elements[line.startContainer.containerUUID] as CanvasContainer;
+							container.detachLine(lineIdentifier);
+						}
+
+						if (line.endContainer) {
+							const container = this.viewport.socketPlugin.elements[line.endContainer.containerUUID] as CanvasContainer;
+							container.detachLine(lineIdentifier);
+						}
+
+						line.destroy();
+					})
+				}
+
 				if (this.viewport.socketPlugin) {
 					if (ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
 						const frame = ctn.parent.parent as FramedContainer;
