@@ -7,6 +7,8 @@ import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
+import { LineBezier } from '../model/template';
+import { LineContainer } from './lineContainer';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -59,6 +61,13 @@ export class SocketManager extends Manager {
 				this._updateTreeBounds(uuid, serializedBounds);
 			},
 		);
+
+		this.canvasSocket.on(
+			'line-controls-updated',
+			(uuid: string, serializedBounds: SerializedContainerBounds) => {
+				this._updateLineTree(uuid, serializedBounds);
+			},
+		)
 
 		this.canvasSocket.on(
 			'frame-children-added',
@@ -115,6 +124,21 @@ export class SocketManager extends Manager {
 		}
 	}
 
+	private _updateLineTree(uuid: string, serializedBounds: SerializedContainerBounds) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if (element instanceof LineContainer) {
+				element.updateLineTree(serializedBounds);
+			}
+
+			element.emit('moved', null);
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
+	}
+
 	public updateElementBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
 		this.canvasSocket.emit('update-element-bounds', { uuid, serializedBounds });
 	}
@@ -141,5 +165,9 @@ export class SocketManager extends Manager {
 		serializedChild: SerializedContainer,
 	) {
 		this.canvasSocket.emit('remove-frame-children', { uuid, serialized, serializedChild });
+	}
+
+	public updateLineControls(uuid: string, serializedBounds: SerializedContainerBounds) {
+		this.canvasSocket.emit('update-line-controls', { uuid, serializedBounds });
 	}
 }
