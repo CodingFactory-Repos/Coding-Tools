@@ -1,4 +1,4 @@
-import { Circle, Rectangle } from '../model/template';
+import { Circle, LineBezier, Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { ContainerType, GeometryTypes } from '../types/pixi-enums';
@@ -39,6 +39,16 @@ export class Normalizer {
 					width,
 					height,
 				};
+			}
+		}
+
+		if (Graphic === LineBezier && !attributes.lineControl) {
+			const unset = { x: 0, y: 0 };
+			attributes.lineControl = {
+				start: unset,
+				end: unset,
+				startControl: unset,
+				endControl: unset,
 			}
 		}
 
