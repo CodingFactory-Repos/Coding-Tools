@@ -1,4 +1,5 @@
 <template>
+
   <div class="codeLab">
     <input type="file" accept=".md" @change="handleFileChange" />
     <!-- <div v-if="fileContent !== ''" v-html="renderedMarkdown"></div> -->
@@ -8,6 +9,12 @@
       </div>
     </div>
   </div>
+
+  <div>
+    <button v-if="step>0" @click="step = step -= 1" class="backBtn py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white ">Back</button>
+    <button v-if="step<resultArray.length-1" @click="step=step=step+=1" class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">Next</button>
+  </div>
+  
 </template>
 
 <script>
@@ -23,6 +30,7 @@ export default {
       resultArray: [],
       index: 0,
       headers: [],
+      step: 0,
     };
   },
   methods: {
@@ -107,5 +115,39 @@ export default {
     line-height: 2em;
 
     font-size: 40px;
+  }
+
+  // .controls {
+  //   position: relative;
+  //   bottom: 10%;
+  //   display: flex;
+  //   justify-content: space-around;
+  // }
+
+  // .controls {
+  //   position: fixed;
+  //     width: 60%;
+  //     bottom: 10%;
+
+  //     padding: 10px;
+  //     display: flex;
+  //     justify-content: space-between;
+  // }
+
+  // .controls button {
+  //   padding: 5px 10px;
+  //   font-size: 14px;
+  // }
+
+  .backBtn {
+    position: fixed;
+    bottom: 10%;
+    left: 16%;
+  }
+
+  .nextBtn {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
   }
 </style>
