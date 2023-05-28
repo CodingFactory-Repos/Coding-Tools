@@ -580,7 +580,7 @@ export class ResizePlugin {
 				this.viewport.socketPlugin.emit(
 					'ws-line-updated',
 					lineContainer.uuid,
-					lineContainer.serializeBounds(),
+					lineContainer.serializeControl(),
 				);
 			}
 		}

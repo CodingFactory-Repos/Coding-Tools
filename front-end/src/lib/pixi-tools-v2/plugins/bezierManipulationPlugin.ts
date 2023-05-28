@@ -292,7 +292,7 @@ export class BezierManipulationPlugin {
 		this.viewport.socketPlugin.emit(
 			'ws-line-updated',
 			this.container.uuid,
-			this.container.serializeBounds(),
+			this.container.serializeControl(),
 		);
 	};
 
