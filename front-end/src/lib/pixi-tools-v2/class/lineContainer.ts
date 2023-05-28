@@ -6,16 +6,13 @@ import {
 	ContainerTypeId,
 	SerializedContainer,
 	SerializedContainerBounds,
+	SerializedControl,
 	SerializedGraphic,
 } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 import { LineBezier } from '../model/template';
 import { BezierHandle } from '../types/pixi-enums';
-
-interface AttachedContainer {
-	containerUUID: string;
-	handleId: BezierHandle;
-}
+import { AttachedContainer } from '../types/pixi-container';
 
 export class LineContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -60,19 +57,18 @@ export class LineContainer extends PluginContainer {
 		this.interactive = properties.interactive;
 		this.tabNumberContext = properties.tabNumberContext;
 		this.isAttachedToFrame = properties.isAttachedToFrame;
-		this.frameNumber = properties.frameNumber;
 		this.absMinX = anchors.absMinX;
 		this.absMinY = anchors.absMinY;
 		this.absMaxX = anchors.absMaxX;
 		this.absMaxY = anchors.absMaxY;
 		this.manager = viewport.manager;
 
-		this.startContainer = {
+		this.startContainer = properties?.startContainer ?? {
 			containerUUID: undefined,
 			handleId: undefined,
 		}
 
-		this.endContainer = {
+		this.endContainer = properties?.endContainer ?? {
 			containerUUID: undefined,
 			handleId: undefined,
 		}
@@ -171,12 +167,14 @@ export class LineContainer extends PluginContainer {
 				tabNumberContext: this.tabNumberContext,
 				isAttachedToFrame: this.isAttachedToFrame,
 				frameNumber: this.frameNumber,
+				startContainer: this.startContainer,
+				endContainer: this.endContainer,
 			},
 			childs: [graphicSerialized],
 		};
 	}
 
-	public serializeBounds(): SerializedContainerBounds {
+	public serializeControl(): SerializedControl {
 		const graphic = this.getGraphicChildren()[0];
 		const graphicSerialized = graphic.serializedBounds();
 
@@ -187,6 +185,10 @@ export class LineContainer extends PluginContainer {
 				absMinY: this.absMinY,
 				absMaxX: this.absMaxX,
 				absMaxY: this.absMaxY,
+			},
+			properties: {
+				startContainer: this.startContainer,
+				endContainer: this.endContainer,
 			},
 			childs: [graphicSerialized],
 		};
@@ -207,16 +209,19 @@ export class LineContainer extends PluginContainer {
 		graphic.height = bounds.height;
 	}
 
-	public updateLineTree(serializedBounds: SerializedContainerBounds) {
+	public updateLineTree(serializedControl: SerializedControl) {
 		const graphic = this.getGraphicChildren()[0] as LineBezier;
-		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
-		const line = (serializedBounds.childs[0] as SerializedGraphic).lineControl;
+		const { startContainer, endContainer } = serializedControl.properties;
+		const { absMinX, absMinY, absMaxX, absMaxY } = serializedControl.anchors;
+		const line = (serializedControl.childs[0] as SerializedGraphic).lineControl;
 
 		this.absMinX = absMinX;
 		this.absMinY = absMinY;
 		this.absMaxX = absMaxX;
 		this.absMaxY = absMaxY;
 
+		this.startContainer = startContainer;
+		this.endContainer = endContainer;
 		graphic.start = line.start;
 		graphic.end = line.end;
 		graphic.startControl = line.startControl;
