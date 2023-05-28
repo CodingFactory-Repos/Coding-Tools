@@ -26,6 +26,9 @@ import { ColorPicker } from 'vue-color-kit';
 
 import IconButton from '@/components/common/buttons/Icon.vue';
 import { useProjectStore } from '@/store/modules/project.store';
+import { GenericContainer } from '../../../lib/pixi-tools-v2/class/genericContainer';
+import { LineContainer } from '../../../lib/pixi-tools-v2/class/lineContainer';
+import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
 
 interface ColorPickerUpdate {
 	hex: string;
@@ -78,6 +81,24 @@ const changeColor = (col: ColorPickerUpdate) => {
 			width: graphic.width,
 			height: graphic.height
 		})
+
+		if(projectStore.scene.viewport.socketPlugin) {
+			const parent = graphic.parent;
+			if(parent instanceof GenericContainer || parent instanceof LineContainer) {
+				projectStore.scene.viewport.socketPlugin.emit(
+					'ws-element-colorized',
+					parent.uuid,
+					parent.serializedColorimetry(),
+				)
+			} else {
+				const frame = parent.parent as FramedContainer;
+				projectStore.scene.viewport.socketPlugin.emit(
+					'ws-element-colorized',
+					frame.uuid,
+					frame.serializedColorimetry(),
+				)
+			}
+		}
 	}
 }
 
