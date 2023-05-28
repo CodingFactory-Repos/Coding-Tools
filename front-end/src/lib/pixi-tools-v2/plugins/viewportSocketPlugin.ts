@@ -8,14 +8,14 @@ import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { SerializedContainerBounds, SerializedContainer } from '../types/pixi-serialize';
+import { SerializedContainerBounds, SerializedContainer, SerializedControl } from '../types/pixi-serialize';
 import { LineContainer } from '../class/lineContainer';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string, uuidFrame?: string) => void;
 	'ws-element-added': (serialized: SerializedContainer) => void;
 	'ws-element-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
-	'ws-line-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
+	'ws-line-updated': (uuid: string, serializedBounds: SerializedControl) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
 	'ws-frame-child-added': (
@@ -71,8 +71,8 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			this.socketManager.updateFrameOnChildRemoved(uuid, serialized, serializedChild);
 		});
 
-		this.on('ws-line-updated', (uuid, serializedBounds) => {
-			this.socketManager.updateLineControls(uuid, serializedBounds);
+		this.on('ws-line-updated', (uuid, serializedControl) => {
+			this.socketManager.updateLineControls(uuid, serializedControl);
 		});
 	}
 
