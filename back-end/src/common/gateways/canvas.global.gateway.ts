@@ -114,7 +114,6 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
 		const update = flatten({ 'project.$': data.serializedControl }, { array: true });
-		console.log(data.serializedControl)
 
 		for (const key in update['$set']) {
 			if (key.includes('uuid')) {
