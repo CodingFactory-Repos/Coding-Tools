@@ -31,6 +31,9 @@ export const useProjectStore = defineStore('project', {
 		getFrames(this: ProjectStore) {
 			return this.scene?.viewport?.activeFrames || [];
 		},
+		getSelected(this: ProjectStore) {
+			return this.scene?.viewport?.manager?.selectedContainers || [];
+		}
 	},
 	actions: {
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
