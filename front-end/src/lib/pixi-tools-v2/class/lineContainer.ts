@@ -4,6 +4,7 @@ import { ContainerManager } from './containerManager';
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
 import {
 	ContainerTypeId,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedControl,
@@ -190,6 +191,16 @@ export class LineContainer extends PluginContainer {
 				startContainer: this.startContainer,
 				endContainer: this.endContainer,
 			},
+			childs: [graphicSerialized],
+		};
+	}
+
+	public serializedColorimetry(): SerializedColorimetry {
+		const graphic = this.getGraphicChildren()[0];
+		const graphicSerialized = graphic.serializedColorimetry();
+
+		return {
+			uuid: this.uuid,
 			childs: [graphicSerialized],
 		};
 	}

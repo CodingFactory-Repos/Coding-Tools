@@ -11,10 +11,12 @@ import {
 } from '../types/pixi-class';
 import {
 	ContainerTypeId,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedGraphic,
 	SerializedGraphicBounds,
+	SerializedGraphicColorimetry,
 } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
@@ -306,6 +308,25 @@ export class FramedContainer extends PluginContainer {
 				bounds: backgroundSerialized.bounds,
 			},
 			childs: genericContainerSerializedBounds,
+		};
+	}
+
+	public serializedColorimetry(): SerializedColorimetry {
+		const genericContainerSerialized: Array<SerializedColorimetry | SerializedGraphicColorimetry> = [];
+		let backgroundSerialized: SerializedGraphicColorimetry;
+
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serializedColorimetry();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerialized.push(element.serializedColorimetry());
+			}
+		}
+
+		return {
+			uuid: this.uuid,
+			background: backgroundSerialized,
+			childs: genericContainerSerialized,
 		};
 	}
 
