@@ -1,14 +1,14 @@
 import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
-import { SerializedContainer, SerializedContainerBounds, SerializedControl } from '../types/pixi-serialize';
+import { SerializedContainer, SerializedContainerBounds, SerializedControl, SerializedColorimetry, SerializedGraphicColorimetry } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
 import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
-import { LineBezier } from '../model/template';
 import { LineContainer } from './lineContainer';
+import { Rectangle } from '../model/template';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -106,6 +106,10 @@ export class SocketManager extends Manager {
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
 			// console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
+
+		this.canvasSocket.on('element-colorimetry-updated', (uuid: string, serializedColorimetry: SerializedColorimetry) => {
+			this._updateColorimetry(uuid, serializedColorimetry);
+		});
 	}
 
 	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
@@ -123,6 +127,40 @@ export class SocketManager extends Manager {
 
 			element.emit('moved', null);
 		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
+	}
+
+	private _updateColorimetry(uuid: string, serializedColorimetry: SerializedColorimetry) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if(element instanceof FramedContainer) {
+				const background = element.children[0] as Rectangle;
+				background.color = serializedColorimetry.background.properties.color;
+				background.alpha = serializedColorimetry.background.properties.alpha;
+				background.draw({
+					x: background.x,
+					y: background.y,
+					width: background.width,
+					height: background.height,
+				});
+			} else if(element instanceof GenericContainer || element instanceof LineContainer) {
+				const childData = serializedColorimetry.childs[0] as SerializedGraphicColorimetry;
+				const child = element.getGraphicChildren()[0];
+				child.color = childData.properties.color;
+				child.alpha = childData.properties.alpha;
+				child.draw({
+					x: child.x,
+					y: child.y,
+					width: child.width,
+					height: child.height,
+					//@ts-ignore
+					radius: child.radius,
+				});
+			}
+		} catch(err) {
 			if (err instanceof Error) {
 				console.error(err.message);
 			}
@@ -189,5 +227,9 @@ export class SocketManager extends Manager {
 
 	public updateLineControls(uuid: string, serializedControl: SerializedControl) {
 		this.canvasSocket.emit('update-line-controls', { uuid, serializedControl });
+	}
+
+	public updateColorimetry(uuid: string, serializedColorimetry: SerializedColorimetry) {
+		this.canvasSocket.emit('update-element-colorimetry', { uuid, serializedColorimetry });
 	}
 }

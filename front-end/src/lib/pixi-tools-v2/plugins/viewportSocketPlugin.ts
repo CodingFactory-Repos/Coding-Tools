@@ -8,7 +8,7 @@ import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { SerializedContainerBounds, SerializedContainer, SerializedControl } from '../types/pixi-serialize';
+import { SerializedContainerBounds, SerializedContainer, SerializedControl, SerializedColorimetry } from '../types/pixi-serialize';
 import { LineContainer } from '../class/lineContainer';
 
 interface CanvasSocketEvents {
@@ -28,6 +28,7 @@ interface CanvasSocketEvents {
 		serialized: SerializedContainer,
 		serializedChild: SerializedContainer,
 	) => void;
+	'ws-element-colorized': (uuid: string, serializedColor: SerializedColorimetry) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -74,6 +75,10 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.on('ws-line-updated', (uuid, serializedControl) => {
 			this.socketManager.updateLineControls(uuid, serializedControl);
 		});
+
+		this.on('ws-element-colorized', (uuid, serializedColorimetry) => {
+			this.socketManager.updateColorimetry(uuid, serializedColorimetry);
+		})
 	}
 
 	public disconnect() {
