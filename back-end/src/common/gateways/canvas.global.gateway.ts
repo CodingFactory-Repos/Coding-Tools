@@ -17,6 +17,7 @@ import {
 	ElementPosition,
 	SerializedContainer,
 	SerializedContainerBounds,
+	SerializedControl,
 } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
@@ -107,13 +108,13 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 	@SubscribeMessage('update-line-controls')
 	handleLineUpdatedControls(
 		client: AuthSocket,
-		data: { uuid: string; serializedBounds: SerializedContainerBounds },
+		data: { uuid: string; serializedControl: SerializedControl },
 	) {
-		client.to(client.roomId).emit('line-controls-updated', data.uuid, data.serializedBounds);
+		client.to(client.roomId).emit('line-controls-updated', data.uuid, data.serializedControl);
 
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
-		const update = flatten({ 'project.$': data.serializedBounds }, { array: true });
-		console.log(update)
+		const update = flatten({ 'project.$': data.serializedControl }, { array: true });
+		console.log(data.serializedControl)
 
 		for (const key in update['$set']) {
 			if (key.includes('uuid')) {
