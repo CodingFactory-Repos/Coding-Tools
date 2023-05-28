@@ -1,4 +1,4 @@
-import { ElementBounds, ElementColorimetry, ElementCursor, ElementPosition } from './pixi-container';
+import { AttachedContainer, ElementBounds, ElementColorimetry, ElementCursor, ElementPosition } from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame' | 'line';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier';
@@ -14,6 +14,13 @@ export interface SerializedContainer extends SerializedElement {
 	properties: SerializedContainerProperties;
 	background?: Partial<SerializedGraphic>;
 	childs: Array<Partial<SerializedContainer | SerializedGraphic>>;
+}
+
+export interface SerializedControl extends Partial<SerializedElement> {
+	anchors: SerializedContainerAnchors;
+	background?: SerializedGraphicBounds;
+	properties: SerializedLineProperties;
+	childs: Array<SerializedContainerBounds | SerializedGraphicBounds>;
 }
 
 export interface SerializedContainerBounds extends Partial<SerializedElement> {
@@ -44,7 +51,12 @@ export interface SerializedProperties extends ElementCursor {
 	interactive: boolean;
 }
 
-export interface SerializedContainerProperties extends SerializedProperties {
+export interface SerializedLineProperties {
+	startContainer: AttachedContainer;
+	endContainer: AttachedContainer;
+}
+
+export interface SerializedContainerProperties extends SerializedProperties, Partial<SerializedLineProperties> {
 	isAttachedToFrame: boolean;
 	tabNumberContext: number;
 	frameNumber: number;

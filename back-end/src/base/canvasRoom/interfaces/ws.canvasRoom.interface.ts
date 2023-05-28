@@ -1,6 +1,13 @@
 export type ContainerTypeId = 'generic' | 'frame';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox';
 
+export enum BezierHandle {
+	T = 0,
+	R = 1,
+	B = 2,
+	L = 3,
+}
+
 export interface ElementPosition {
 	x: number;
 	y: number;
@@ -47,6 +54,13 @@ export interface SerializedGraphic extends SerializedElement {
 	properties: SerializedGraphicProperties;
 }
 
+export interface SerializedControl extends Partial<SerializedElement> {
+	anchors: SerializedContainerAnchors;
+	background?: SerializedGraphicBounds;
+	properties: SerializedLineProperties;
+	childs: Array<SerializedContainerBounds | SerializedGraphicBounds>;
+}
+
 export interface SerializedContainerAnchors {
 	absMinX: number;
 	absMinY: number;
@@ -57,6 +71,16 @@ export interface SerializedContainerAnchors {
 export interface SerializedProperties {
 	cursor: string;
 	interactive: boolean;
+}
+
+export interface SerializedLineProperties {
+	startContainer: AttachedContainer;
+	endContainer: AttachedContainer;
+}
+
+export interface AttachedContainer {
+	containerUUID: string;
+	handleId: BezierHandle;
 }
 
 export interface SerializedContainerProperties extends SerializedProperties {
