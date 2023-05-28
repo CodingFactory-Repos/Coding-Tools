@@ -48,6 +48,7 @@
 			<IconButton class="h-fit" type="button">
 				<SvgProject width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
+			<ColorPickerOption/>
 		</div>
 		<div class="flex h-full gap-1 items-center">
 			<DefaultButton
@@ -70,6 +71,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
 import SvgText from '@/components/common/svg/Text.vue';
