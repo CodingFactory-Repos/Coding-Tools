@@ -15,6 +15,7 @@ import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.m
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import {
 	ElementPosition,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedControl,
@@ -114,6 +115,25 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
 		const update = flatten({ 'project.$': data.serializedControl }, { array: true });
+
+		for (const key in update['$set']) {
+			if (key.includes('uuid')) {
+				delete update['$set'][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	}
+
+	@SubscribeMessage('update-element-colorimetry')
+	handleColorimetryUpdate(
+		client: AuthSocket,
+		data: { uuid: string; serializedColorimetry: SerializedColorimetry },
+	) {
+		client.to(client.roomId).emit('element-colorimetry-updated', data.uuid, data.serializedColorimetry);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ 'project.$': data.serializedColorimetry }, { array: true });
 
 		for (const key in update['$set']) {
 			if (key.includes('uuid')) {

@@ -101,3 +101,12 @@ export interface SerializedLineGraphic {
 	start: ElementPosition;
 	end: ElementPosition;
 }
+
+export interface SerializedColorimetry extends Partial<SerializedElement> {
+	background?: SerializedGraphicColorimetry;
+	childs?: Array<SerializedColorimetry | SerializedGraphicColorimetry>;
+}
+
+export interface SerializedGraphicColorimetry extends SerializedElement {
+	properties: Partial<SerializedGraphicProperties>;
+}
