@@ -11,6 +11,7 @@ import { GenericContainer } from './genericContainer';
 import { BezierPlugin } from '../plugins/containerBezierLinkPlugin';
 import { LineContainer } from './lineContainer';
 import { BezierManipulationPlugin } from '../plugins/bezierManipulationPlugin';
+import { reactive } from 'vue';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -20,7 +21,8 @@ export class ContainerManager {
 	protected readonly bezierManipulationPlugin: BezierManipulationPlugin;
 	public readonly wrappedContainer: WrappedContainer;
 	public readonly downloadPlugin: DownloadPlugin;
-	private _selectedContainers: Array<CanvasContainer>;
+	public selectedContainers: Array<CanvasContainer> = reactive([]);
+	public isEditingContainerProperties: boolean = false;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
@@ -30,12 +32,13 @@ export class ContainerManager {
 		this.bezierPlugin = new BezierPlugin(this.viewport);
 		this.downloadPlugin = new DownloadPlugin(this.viewport);
 		this.bezierManipulationPlugin = new BezierManipulationPlugin(this.viewport);
-		this._selectedContainers = [];
 
 		window.onkeydown = this._destroySelected.bind(this);
 	}
 
 	private _destroySelected(e: KeyboardEvent) {
+		if(this.isEditingContainerProperties) return;
+
 		const key = e.key;
 
 		if (key === 'Backspace') {
@@ -43,7 +46,7 @@ export class ContainerManager {
 				this.wrappedContainer.restoreStateContext();
 			}
 
-			this._selectedContainers.forEach((ctn) => {
+			this.selectedContainers.forEach((ctn) => {
 				if (!(ctn instanceof LineContainer)) {
 					const uuid = [...ctn.linkedLinesUUID];
 					uuid.forEach((lineIdentifier) => {
@@ -78,7 +81,7 @@ export class ContainerManager {
 			this.viewport.destroyBezierHandles();
 			this.viewport.destroyResizeHitArea();
 			this.viewport.destroyBezierCurveHandle();
-			this._selectedContainers = [];
+			this.selectedContainers.length = 0;
 		}
 	}
 
@@ -89,9 +92,9 @@ export class ContainerManager {
 	 * @returns void
 	 */
 	public selectContainer(container: CanvasContainer, isShift: boolean) {
-		if (!this._selectedContainers.includes(container)) {
+		if (!this.selectedContainers.includes(container)) {
 			// Select the container and retrieve the position index
-			const len = this._selectedContainers.push(container);
+			const len = this.selectedContainers.push(container);
 			const index = len - 1;
 
 			// If the shift key is not pressed and there is more than one children of the wrappedContainer,
@@ -116,28 +119,28 @@ export class ContainerManager {
 				this.detachPlugins();
 				this.deselectAllExceptThisContainer(index);
 				this.viewport.destroyBorder();
-				this.drawBorder(this._selectedContainers[0]);
-				this.attachPlugins(this._selectedContainers[0]);
+				this.drawBorder(this.selectedContainers[0]);
+				this.attachPlugins(this.selectedContainers[0]);
 				return;
 			}
 
 			// Draw the border of the currently selected element.
 			this.detachPlugins();
-			this.drawBorder(this._selectedContainers[index]);
-			this.attachPlugins(this._selectedContainers[index]);
+			this.drawBorder(this.selectedContainers[index]);
+			this.attachPlugins(this.selectedContainers[index]);
 
 			// If there is more than one children of the wrappedContainer,
 			//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
 		} else if (this.wrappedContainer.children.length > 0) {
-			const index = this._selectedContainers.findIndex((el) => el === container);
+			const index = this.selectedContainers.findIndex((el) => el === container);
 			if (index === -1) return;
 
 			this.detachPlugins();
 			this.wrappedContainer.restoreStateContext();
 			this.viewport.destroyBorder();
 			this.deselectAllExceptThisContainer(index);
-			this.drawBorder(this._selectedContainers[0]);
-			this.attachPlugins(this._selectedContainers[0]);
+			this.drawBorder(this.selectedContainers[0]);
+			this.attachPlugins(this.selectedContainers[0]);
 		}
 	}
 
@@ -147,22 +150,19 @@ export class ContainerManager {
 		}
 
 		this.viewport.destroyBorder();
-		this._selectedContainers = [];
+		this.selectedContainers.length = 0;
 	}
 
 	public deselectAllExceptThisContainer(index: number) {
-		const selected: Array<CanvasContainer> = [];
 		const unselected: Array<CanvasContainer> = [];
 
-		for (let n = 0; n < this._selectedContainers.length; n++) {
-			if (index === n) {
-				selected.push(this._selectedContainers[n]);
-			} else {
-				unselected.push(this._selectedContainers[n]);
+		for (let n = 0; n < this.selectedContainers.length; n++) {
+			if (index !== n) {
+				unselected.push(this.selectedContainers[n]);
+				this.selectedContainers.splice(n, 1)
 			}
 		}
 
-		this._selectedContainers = selected;
 		return unselected;
 	}
 
@@ -177,7 +177,7 @@ export class ContainerManager {
 	}
 
 	public wrapWithTemporaryParent() {
-		this.wrappedContainer.createWrappedBox(this._selectedContainers);
+		this.wrappedContainer.createWrappedBox(this.selectedContainers);
 		const borderOptions = this.wrappedContainer.getGeometry();
 		this.viewport.createBorder({
 			...borderOptions,
@@ -211,7 +211,7 @@ export class ContainerManager {
 	}
 
 	public getSelectedCenter() {
-		const len = this._selectedContainers.length;
+		const len = this.selectedContainers.length;
 		if (len === 0) return null;
 
 		let minX = Number.MAX_SAFE_INTEGER;
@@ -220,7 +220,7 @@ export class ContainerManager {
 		let maxY = Number.MIN_SAFE_INTEGER;
 
 		for (let n = 0; n < len; n++) {
-			const { x, y, width, height } = this._selectedContainers[n].getGeometry();
+			const { x, y, width, height } = this.selectedContainers[n].getGeometry();
 
 			if (x < minX) minX = x;
 			if (y < minY) minY = y;
@@ -232,23 +232,23 @@ export class ContainerManager {
 	}
 
 	public getSelectedSize() {
-		if (this._selectedContainers.length === 0) return null;
+		if (this.selectedContainers.length === 0) return null;
 
-		if (this._selectedContainers.length > 1) {
+		if (this.selectedContainers.length > 1) {
 			return {
 				width: this.wrappedContainer.width,
 				height: this.wrappedContainer.height,
 			};
 		} else {
-			if (this._selectedContainers[0] instanceof FramedContainer) {
+			if (this.selectedContainers[0] instanceof FramedContainer) {
 				return {
-					width: this._selectedContainers[0].mainContainer.width,
-					height: this._selectedContainers[0].mainContainer.height,
+					width: this.selectedContainers[0].mainContainer.width,
+					height: this.selectedContainers[0].mainContainer.height,
 				};
 			} else {
 				return {
-					width: this._selectedContainers[0].width,
-					height: this._selectedContainers[0].height,
+					width: this.selectedContainers[0].width,
+					height: this.selectedContainers[0].height,
 				};
 			}
 		}
@@ -257,14 +257,14 @@ export class ContainerManager {
 	public downloadSelected(mime: string) {
 		if (!this.isActive) return;
 
-		if (this._selectedContainers.length > 1) {
-			this.downloadPlugin.downloadMany(this._selectedContainers, mime);
+		if (this.selectedContainers.length > 1) {
+			this.downloadPlugin.downloadMany(this.selectedContainers, mime);
 		} else {
-			this.downloadPlugin.downloadOne(this._selectedContainers[0], mime);
+			this.downloadPlugin.downloadOne(this.selectedContainers[0], mime);
 		}
 	}
 
 	get isActive() {
-		return this._selectedContainers.length > 0;
+		return this.selectedContainers.length > 0;
 	}
 }
