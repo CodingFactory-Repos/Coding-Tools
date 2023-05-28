@@ -72,6 +72,7 @@ export class Normalizer {
 		position?: ElementPosition,
 		tabContext?: number,
 	) {
+		if (data === null) return;
 		const { childs, background, ...attr } = data;
 		const Container = ContainerType[attr.typeId as ContainerTypeId];
 
