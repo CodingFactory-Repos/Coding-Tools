@@ -44,6 +44,8 @@ export class BezierPlugin {
 	}
 
 	private _initBezierCurve = (e: FederatedPointerEvent) => {
+		console.log(this.container)
+
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
 
@@ -200,7 +202,6 @@ export class BezierPlugin {
 			this.lineContainer = null;
 			this.lineBezier = null;
 			this.handleId = null;
-			this.container = null;
 		} catch (err) {
 			if (err instanceof Error) {
 				console.error('Unexpected error during end resize :', err.message);
