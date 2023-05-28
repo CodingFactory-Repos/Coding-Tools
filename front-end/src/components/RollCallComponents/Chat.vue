@@ -1,5 +1,5 @@
 <template>
-	<div class="chatbox flex-col w-4/12 max-h-[750px] relative">
+	<div class="chatbox flex-col w-full max-h-[750px] relative">
 		<div
 			class="chatbox_messages h-[750px] max-h-[750px] overflow-y-hidden flex flex-col-reverse z-0"
 		>
@@ -8,7 +8,7 @@
 		<div class="chatbox_input flex-col w-full">
 			<div class="w-full">
 				<div
-					class="gif-container max-h-[200px] flex mt-30 items-center z-10 w-full overflow-x-scroll absolute fixed bottom-10"
+					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute fixed bottom-0"
 				>
 					<img
 						v-for="gif in gifs"
@@ -87,7 +87,19 @@ onUnmounted(() => {
 
 /* METHODS */
 
+const getRandomPosition = () => {
+	const randomPos = `bottom-${Math.floor(Math.random() * 6 + 6)}`;
+	return `absolute ${randomPos} left-1/2 transform -translate-x-1/2`;
+};
+
+const getRandomRotation = () => {
+	const randomRot = Math.floor(Math.random() * 29 + 2);
+	return `rotate-${randomRot}`;
+};
+
 const addMessage = async (msg: Object) => {
+	// const randomPosition = Math.random() * (window.innerHeight / 2) + 'px';
+	// const randomRotation = Math.random() * (30 - 2) + 2 + 'deg';
 	messages.value.unshift(msg);
 	let courseId = await getCourseId();
 	console.log(89, courseId);
