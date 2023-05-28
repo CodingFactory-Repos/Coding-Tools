@@ -27,6 +27,21 @@ import { ColorPicker } from 'vue-color-kit';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 
+interface ColorPickerUpdate {
+	hex: string;
+	hsv: {
+		h: number;
+		s: number;
+		v: number;
+	};
+	rgba: {
+		a: number;
+		b: number;
+		g: number;
+		r: number;
+	}
+}
+
 const projectStore = useProjectStore();
 
 const selectedContainers = computed(() => projectStore.getSelected);
@@ -44,13 +59,19 @@ const hexToDecim = (color: string) => {
 	return parseInt(color.replace("#", ""), 16);
 }
 
-const changeColor = (col: { hex: string }) => {
+const addOpacityToHex = (hex: string, opacity: number) => {
+	const alpha = Math.round(opacity * 255).toString(16);
+	return hex + alpha;
+}
+
+const changeColor = (col: ColorPickerUpdate) => {
 	color.value = col.hex;
 
 	const len = selectedContainers.value.length;
 	for(let n = 0; n < len; n++) {
 		const graphic = selectedContainers.value[n].getGraphicChildren()[0];
 		graphic.color = hexToDecim(col.hex);
+		graphic.alpha = col?.rgba?.a ?? 1;
 		graphic.draw({
 			x: graphic.x,
 			y: graphic.y,
@@ -75,7 +96,9 @@ watch(selectedUUID, () => {
 		color.value = undefined;
 	} else {
 		const graphic = selectedContainers.value[0].getGraphicChildren()[0];
-		color.value = decimToHex(graphic.color);
+
+		// TODO: The librarby doesn't seem to convert hex with opacity, it's a bit.. unfortunate.
+		color.value = addOpacityToHex(decimToHex(graphic.color), graphic.alpha);
 	}
 })
 </script>
