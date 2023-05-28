@@ -95,6 +95,9 @@ export class BezierManipulationPlugin {
 				if(closestPoint.id === BezierHandle.L) startControl.x -= lineLength;
 				if(closestPoint.id === BezierHandle.B) startControl.y += lineLength;
 
+				angleControl.x = this.lineBezier.end.x - startControl.x;
+				angleControl.y = this.lineBezier.end.y - startControl.y;
+
 				if(this.container.endContainer.containerUUID !== undefined) {
 					const handle = this.container.endContainer.handleId;
 
@@ -102,10 +105,10 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.R) endControl.x += lineLength;
 					else if(handle === BezierHandle.L) endControl.x -= lineLength;
 					else if(handle === BezierHandle.B) endControl.y += lineLength;
-				}
 
-				angleControl.x = this.lineBezier.end.x - startControl.x,
-				angleControl.y = this.lineBezier.end.y - startControl.y,
+					angleControl.x = this.lineBezier.end.x - endControl.x;
+					angleControl.y = this.lineBezier.end.y - endControl.y;
+				}
 
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
@@ -237,6 +240,7 @@ export class BezierManipulationPlugin {
 		
 					angleControl.x = this.lineBezier.end.x - startControl.x;
 					angleControl.y = this.lineBezier.end.y - startControl.y;
+					this.lineBezier.angleControl = angleControl;
 				} else {
 					const deltaX = this.lineBezier.end.x - this.lineBezier.start.x;
 					const deltaY = this.lineBezier.end.y - this.lineBezier.start.y;
