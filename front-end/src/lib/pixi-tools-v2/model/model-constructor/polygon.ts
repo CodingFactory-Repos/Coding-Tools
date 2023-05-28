@@ -2,6 +2,7 @@ import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
 import { modelBounds } from '../../utils/modelBounds';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
 export class Polygon extends ModelGraphics {
@@ -81,15 +82,15 @@ export class Polygon extends ModelGraphics {
 		const numVertices = vertices.length;
 		let sumX = 0;
 		let sumY = 0;
-	  
+
 		for (let i = 0; i < numVertices; i = i + 2) {
-		  sumX += vertices[i];
-		  sumY += vertices[i + 1];
+			sumX += vertices[i];
+			sumY += vertices[i + 1];
 		}
-	  
+
 		const centerX = sumX / numVertices;
 		const centerY = sumY / numVertices;
-	  
+
 		return [centerX, centerY];
 	}
 
@@ -99,5 +100,9 @@ export class Polygon extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }

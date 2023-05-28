@@ -2,6 +2,7 @@ import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
 import { modelBounds } from '../../utils/modelBounds';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
 export class Rectangle extends ModelGraphics {
@@ -47,5 +48,9 @@ export class Rectangle extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }

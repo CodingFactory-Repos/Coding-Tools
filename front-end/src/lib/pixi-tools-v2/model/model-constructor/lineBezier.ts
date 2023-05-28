@@ -4,6 +4,7 @@ import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
 import { modelBounds } from '../../utils/modelBounds';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { ElementPosition } from '../../types/pixi-container';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 
 interface XYZ extends ElementPosition {
 	z: number;
@@ -119,5 +120,9 @@ export class LineBezier extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }
