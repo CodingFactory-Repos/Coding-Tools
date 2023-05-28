@@ -29,6 +29,15 @@ export interface SerializedContainerBounds extends Partial<SerializedElement> {
 	childs: Array<SerializedContainerBounds | SerializedGraphicBounds>;
 }
 
+export interface SerializedColorimetry extends Partial<SerializedElement> {
+	background?: SerializedGraphicColorimetry;
+	childs?: Array<SerializedColorimetry | SerializedGraphicColorimetry>;
+}
+
+export interface SerializedGraphicColorimetry extends SerializedElement {
+	properties: Partial<SerializedGraphicProperties>;
+}
+
 export interface SerializedGraphic extends SerializedElement {
 	lineControl?: SerializedLineGraphic;
 	typeId: GraphicTypeId | InternalTypeId;
