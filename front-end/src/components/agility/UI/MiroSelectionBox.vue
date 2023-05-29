@@ -12,7 +12,7 @@
 					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
 			</div>
-			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
+			<div class="flex bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgGear width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
@@ -29,7 +29,7 @@
 			</div>
 		</template>
 		<template #left>
-			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
+			<div class="flex flex-col bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="setDefaultMode">
 					<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 				</IconButton>
@@ -46,7 +46,7 @@
 					<SvgShape width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
 			</div>
-			<div class="flex flex-col items-center justify-center bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
+			<div class="flex flex-col items-center justify-center bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="onContextMenu">
 					<SvgDownload width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"/>
 					<ContextMenu
@@ -71,7 +71,7 @@
 			</div>
 		</template>
 		<template #bottom>
-			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
+			<div class="flex bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="toggleFullScreen" v-if="!isFullScreen">
 					<SvgExpand width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
@@ -94,7 +94,7 @@
 			</div>
 		</template>
 		<template #drawer-right>
-			<div class="h-full bg-light-secondary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
+			<div class="h-full bg-light-primary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
 				
 			</div>
 		</template>
