@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<img
 		class="object-cover h-48 w-96 rounded-t-lg"
@@ -50,19 +51,14 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineProps } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useRouter } from 'vue-router';
-
-// defineProps<{
-// 	item: any;
-// }>();
+import MarkdownIt from 'markdown-it';
 
 const props = defineProps<{
 	item: any;
 }>();
-
-import MarkdownIt from 'markdown-it';
 
 let markdown = ref('');
 

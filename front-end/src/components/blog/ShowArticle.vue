@@ -234,7 +234,6 @@ import { useAuthStore } from '@/store/modules/auth.store';
 import ModalOverlay from '@/components/common/Modal.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
-
 import MarkdownIt from 'markdown-it';
 
 let markdown = ref('');
@@ -309,7 +308,6 @@ const participationEvent = (id) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				articleStore.removeParticipant(id, user.value.profile);
-				authStore.removeEventToUser(id);
 				window.location.reload();
 			}
 		});
@@ -331,10 +329,12 @@ const participationEvent = (id) => {
 					return;
 				}
 
-				articleStore.addParticipant(id, user.value.profile);
+				const profile = {
+					...user.value.profile,
+					_id: id,
+				};
 
-				// add event to user
-				authStore.addEventToUser(id);
+				articleStore.addParticipant(id, profile);
 
 				window.location.reload();
 			}

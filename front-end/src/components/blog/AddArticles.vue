@@ -105,11 +105,12 @@
 
 <script lang="ts" setup>
 // Post the data to the API
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
+import { ObjectId } from 'mongodb';
 
 // use router
 import { useRouter } from 'vue-router';
@@ -117,8 +118,6 @@ const router = useRouter();
 
 // use the store
 const articleStore = useArticleStore();
-const idArticle = computed(() => articleStore.idArticle);
-
 const authStore = useAuthStore();
 
 // form data
@@ -145,6 +144,7 @@ const addArticle = async () => {
 	}
 
 	let data = {
+		owner: ObjectId(authStore.user._id),
 		title: title.value,
 		descriptions: descriptions.value,
 		picture: picture.value,
@@ -163,10 +163,6 @@ const addArticle = async () => {
 		if (result.isConfirmed) {
 			// post the data
 			await articleStore.addArticle(data);
-
-			// add article in user database
-			await authStore.addArticleToUser(idArticle.value);
-
 			// redirect to the article page
 			router.push('/app/blog');
 		}
