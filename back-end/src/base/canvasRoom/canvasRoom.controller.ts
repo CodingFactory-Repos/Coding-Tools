@@ -6,7 +6,7 @@ import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { ProjectMetaDTO } from './dto/canvasRoom.dto';
+import { ProjectInvitationDTO, ProjectMetaDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
 
 @Controller('canvas-room')
 @UseFilters(ServiceErrorCatcher)
@@ -70,5 +70,17 @@ export class CanvasRoomController {
 	) {
 		const updatedAt = await this.canvasRoomService.saveProjectMeta(body, roomId, userId);
 		return res.status(201).json({ status: 'ok', updatedAt });
+	}
+
+	@Post('/invitation/:roomId')
+	@UseGuards(JwtAuthGuard)
+	async sendProjectInvitation(
+		@Jwt() userId: ObjectId,
+		@Body() body: ProjectInvitationDTO,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
+		await this.canvasRoomService.sendProjectInvitation(body.userId, roomId, userId);
+		return res.status(201).json({ status: 'ok' });
 	}
 }
