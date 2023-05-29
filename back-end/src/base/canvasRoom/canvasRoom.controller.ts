@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -29,6 +29,17 @@ export class CanvasRoomController {
 	) {
 		const project = await this.canvasRoomService.retrieveProject(roomId, userId);
 		return res.status(201).json({ status: 'ok', project });
+	}
+
+	@Delete(':roomId')
+	@UseGuards(JwtAuthGuard)
+	async deleteProject(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
+		await this.canvasRoomService.deleteProject(roomId, userId);
+		return res.status(201).json({ status: 'ok' });
 	}
 
 	@Get(':roomId/verify')
