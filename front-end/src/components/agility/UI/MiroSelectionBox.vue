@@ -22,7 +22,7 @@
 					text-style="text-white hover:text-white"
 					background="gradiant"
 					class="h-9"
-					@click="shareRoom"
+					@click="openShareModal"
 				>
 					<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
 				</DefaultButton>
@@ -99,6 +99,10 @@
 			</div>
 		</template>
 	</SelectionBox>
+	<ShareProject
+		v-if="openUserListModal"
+		@close="closeShareModal"
+	/>
 </template>
 
 <script lang="ts" setup>
@@ -107,6 +111,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import ShareProject from '@/components/agility/UI/ShareProject.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
@@ -127,7 +132,6 @@ import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
-import Swal from 'sweetalert2';
 
 const projectStore = useProjectStore();
 
@@ -197,9 +201,7 @@ const download = (mime: string) => {
 	projectStore.canvasDownload(mime);
 }
 
-const shareRoom = () => {
-	Swal.fire({
-		text: "Kinda want a list of users there. So we can select them, and send an email. But we can also propsose a link to share. Both are valid"
-	})
-}
+const openUserListModal = ref(false);
+const openShareModal = () => { openUserListModal.value = true }
+const closeShareModal = () => { openUserListModal.value = false }
 </script>
