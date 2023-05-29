@@ -70,9 +70,14 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		async updatePositionPostit(this: RetrospectiveStore, postit: Postit) {
 			// const indexBefore = this.
 			console.log("here", postit);
-
-
-
+		},
+		removePrivatePostit(this: RetrospectiveStore, postit: Postit) {
+			const index = this.privatePostit.findIndex(el => el.id === postit.id)
+			this.privatePostit.splice(index, 1);
+		},
+		updatePrivatePostit(this: RetrospectiveStore, postit: Postit) {
+			const index = this.privatePostit.findIndex(el => el.id === postit.id)
+			this.privatePostit[index].value = postit.value;
 		}
 	},
 });

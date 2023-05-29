@@ -17,7 +17,7 @@
 			<Board :optionTemplate="optionTemplate" />
 		</div>
 		<div
-			class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-4 p-4"
+			class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
 			@dragenter.prevent
 			@dragover.prevent
 			@drop="dropPostit()"
