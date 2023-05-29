@@ -71,9 +71,8 @@ export class MailjetListeners {
 
 	@OnEvent(Events.canvasInvitationRequest)
 	async handleCanvasInvitationRequest(payload: MailjetCanvasInvitationRequest) {
-		console.log("sent")
 		const { email, senderFirstName, senderLastName, projectTitle, token } = payload;
-		const url = `${config.app.redirect}/agility/accept-invitation?token=${token}`;
+		const url = `${config.app.redirect}/app/agility/accept-invitation?token=${token}`;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MailjetTemplate.canvasInvitationRequest,
