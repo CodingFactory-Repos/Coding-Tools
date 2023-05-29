@@ -9,6 +9,7 @@ export const useArticleStore = defineStore('article', {
 			items: [
 				{
 					_id: '',
+					owner: '',
 					date: '',
 					title: '',
 					descriptions: '',
@@ -19,6 +20,7 @@ export const useArticleStore = defineStore('article', {
 			],
 			oneItems: {
 				_id: '',
+				owner: '',
 				title: '',
 				date: '',
 				descriptions: '',
@@ -27,6 +29,7 @@ export const useArticleStore = defineStore('article', {
 				type: '',
 				participants: [
 					{
+						id: '',
 						firstName: '',
 						lastName: '',
 						email: '',
@@ -77,6 +80,7 @@ export const useArticleStore = defineStore('article', {
 		// add participant to the array of participants in article in the database
 		addParticipant: withErrorHandler(async function (id: string, participant) {
 			const response = await http.put(`/articles/participant/${id}`, participant);
+			console.log(response.data);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;
