@@ -69,3 +69,7 @@ export const apiTryDeleteProject = (roomId: string) => {
 export const apiTrySendProjectInvitation = (userId: string, roomId: string) => {
 	return http.post<Status>(`/canvas-room/invitation/${roomId}`, { userId });
 };
+
+export const apiTryVerifyInvitationToken = (token: string) => {
+	return http.post<Status<{ roomId: string }>>('/canvas-room/verify-invitation', { token });
+}
