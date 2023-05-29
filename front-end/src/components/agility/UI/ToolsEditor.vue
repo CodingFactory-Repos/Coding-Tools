@@ -48,7 +48,7 @@
 			<IconButton class="h-fit" type="button">
 				<SvgProject width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
-			<ColorPickerOption/>
+			<ColorPickerOption position="bottom-[-330px] left-[30px]"/>
 		</div>
 		<div class="flex h-full gap-1 items-center">
 			<DefaultButton

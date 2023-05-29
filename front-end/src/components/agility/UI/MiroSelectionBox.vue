@@ -29,7 +29,7 @@
 			</div>
 		</template>
 		<template #left>
-			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-10 shadow-md pointer-events-auto">
+			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="setDefaultMode">
 					<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 				</IconButton>
@@ -46,7 +46,7 @@
 					<SvgShape width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
 			</div>
-			<div class="flex flex-col bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-10 shadow-md pointer-events-auto">
+			<div class="flex flex-col items-center justify-center bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="onContextMenu">
 					<SvgDownload width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"/>
 					<ContextMenu
@@ -67,6 +67,7 @@
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgProject width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
+				<ColorPickerOption position="bottom-[-212px] left-[45px]" btnStyle="!p-1.5 dark:hover:!bg-dark-secondary"/>
 			</div>
 		</template>
 		<template #bottom>
@@ -86,7 +87,7 @@
 					<SvgAdd width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
 			</div>
-			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 shadow-md pointer-events-auto">
+			<div class="flex items-center justify-center bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 w-10 shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="toggleDrawer">
 					<SvgSideBar width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
@@ -106,6 +107,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';

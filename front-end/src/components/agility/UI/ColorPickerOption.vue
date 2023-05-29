@@ -1,6 +1,6 @@
 <template>
 	<div class="relative" v-if="selectedUUID.length > 0">
-		<IconButton class="h-fit" type="button" @click="toggleColorPicker">
+		<IconButton class="h-fit" :class="btnStyle" type="button" @click="toggleColorPicker">
 			<div
 				class="w-[22px] h-[22px] rounded-full border border-[#9ca3af]"
 				:class="{ 'multicolor': color === undefined }"
@@ -8,7 +8,8 @@
 			></div>
 		</IconButton>
 		<div
-			class="absolute bottom-[-330px] left-[30px] z-10"
+			class="absolute z-10"
+			:class="position"
 			v-if="colorPickerOpen"
 		>
 			<ColorPicker
@@ -44,6 +45,11 @@ interface ColorPickerUpdate {
 		r: number;
 	}
 }
+
+defineProps<{
+	position: string;
+	btnStyle?: string;
+}>()
 
 const projectStore = useProjectStore();
 
