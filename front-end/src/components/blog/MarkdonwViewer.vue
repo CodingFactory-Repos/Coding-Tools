@@ -117,28 +117,6 @@ export default {
     font-size: 40px;
   }
 
-  // .controls {
-  //   position: relative;
-  //   bottom: 10%;
-  //   display: flex;
-  //   justify-content: space-around;
-  // }
-
-  // .controls {
-  //   position: fixed;
-  //     width: 60%;
-  //     bottom: 10%;
-
-  //     padding: 10px;
-  //     display: flex;
-  //     justify-content: space-between;
-  // }
-
-  // .controls button {
-  //   padding: 5px 10px;
-  //   font-size: 14px;
-  // }
-
   .backBtn {
     position: fixed;
     bottom: 10%;
