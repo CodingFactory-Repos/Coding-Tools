@@ -84,6 +84,8 @@ export const useAgilityStore = defineStore('agility', {
 		tryDeleteProject: withErrorHandler(async function (this: AgilityStore, roomId: string) {
 			const res = await apiTryDeleteProject(roomId);
 			if (res.data.status === 'ok') {
+				const index = this.projects.findIndex((project) => project.roomId === roomId);
+				this.projects.splice(index, 1);
 				return true;
 			}
 			return false;

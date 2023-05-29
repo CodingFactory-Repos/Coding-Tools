@@ -221,8 +221,6 @@ const deleteProject = async () => {
 			text: "The project could not be deleted"
 		})
 	} else {
-		const index = agilityStore.projects.findIndex((project) => project.roomId === props.roomId);
-		agilityStore.projects.splice(index, 1);
 		closeDeleteModal();
 		closeMetaModal();
 		emit('close');
