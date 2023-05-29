@@ -75,6 +75,18 @@ export class CanvasRoomService {
 		return room.project;
 	}
 
+	async deleteProject(roomId: string, userId: ObjectId) {
+		if (!roomId || roomId === 'null' || roomId === 'undefined')
+			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+
+		const query = { _id: new ObjectId(roomId), owner: userId };
+		const ownerOfProject = await this.canvasRoomRepository.canvasRoomExist(query);
+		if(!ownerOfProject) 
+			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+
+		await this.canvasRoomRepository.deleteOneCanvasRoom(query);
+	}
+
 	async verify(roomId: string, userId: ObjectId) {
 		if (!roomId || roomId === 'null' || roomId === 'undefined')
 			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
