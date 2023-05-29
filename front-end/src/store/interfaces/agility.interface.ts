@@ -25,6 +25,8 @@ export interface ProjectMetaDetails {
 	description: string;
 	snapshot: string;
 	readonly: boolean;
+	ownerFirstName: string;
+	ownerLastName: string;
 }
 
 export interface AgilityTemplateMeta {
