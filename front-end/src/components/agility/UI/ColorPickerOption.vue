@@ -13,7 +13,7 @@
 			v-if="colorPickerOpen"
 		>
 			<ColorPicker
-				theme="dark"
+				:theme="isDark ? 'dark' : 'light'"
 				:color="color"
 				@changeColor="changeColor"
 			/>
@@ -30,6 +30,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { GenericContainer } from '../../../lib/pixi-tools-v2/class/genericContainer';
 import { LineContainer } from '../../../lib/pixi-tools-v2/class/lineContainer';
 import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
+import { useThemeStore } from '@/store/modules/theme.store';
 
 interface ColorPickerUpdate {
 	hex: string;
@@ -52,7 +53,10 @@ defineProps<{
 }>()
 
 const projectStore = useProjectStore();
+const themeStore = useThemeStore();
+const isDark = computed(() => themeStore.theme);
 
+//! It's hard to watch an array of object without using deep, but deep is too exaustive there.
 const selectedContainers = computed(() => projectStore.getSelected);
 //! This is used to trigger the watch, that's its sole purpose.
 const selectedUUID = computed(() => selectedContainers.value.map((ctn) => ctn.uuid));
