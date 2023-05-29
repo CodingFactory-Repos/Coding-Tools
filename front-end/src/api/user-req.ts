@@ -15,3 +15,7 @@ export const tryGetClassProfileList = () => {
 export const tryGetRelatedUserProfile = (id: string) => {
 	return http.get<Status<IRelatedUserProfile>>(`/users/profile/${id}`);
 }
+
+export const apiTryFetchUserListByRoom = (roomId: string, user: string) => {
+	return http.get<Status<{users: Array<UserProfileList>}>>(`/users/room?id=${roomId}&user=${user}`);
+}
