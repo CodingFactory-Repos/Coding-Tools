@@ -24,7 +24,7 @@ export class CanvasRoomRepository {
 
 	async findOneAndUpdateCanvasRoom(
 		query: Filter<CanvasRoom>,
-		update: Partial<CanvasRoom>,
+		update: UpdateFilter<CanvasRoom>,
 		options: FindOneAndUpdateOptions = undefined,
 	) {
 		return this.canvasRoom.findOneAndUpdate(query, update, options);

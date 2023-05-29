@@ -19,3 +19,9 @@ export class ProjectMetaDTO {
 	@IsBoolean()
 	readonly: boolean;
 }
+
+export class ProjectInvitationDTO {
+	@IsString()
+	@Length(24)
+	userId: string;
+}
