@@ -110,7 +110,6 @@ import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
-import { ObjectId } from 'mongodb';
 
 // use router
 import { useRouter } from 'vue-router';
@@ -144,7 +143,7 @@ const addArticle = async () => {
 	}
 
 	let data = {
-		owner: ObjectId(authStore.user._id),
+		owner: authStore.user._id,
 		title: title.value,
 		descriptions: descriptions.value,
 		picture: picture.value,
