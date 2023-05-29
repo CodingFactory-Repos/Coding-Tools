@@ -19,6 +19,12 @@ export interface Article {
 		lastName: string;
 		email: string;
 	}[];
+	likes?: {
+		id: string;
+	}[];
+	dislikes?: {
+		id: string;
+	}[];
 	comments?: Comments[];
 }
 

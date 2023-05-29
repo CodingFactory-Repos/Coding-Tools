@@ -79,16 +79,49 @@ export const useArticleStore = defineStore('article', {
 
 		// add participant to the array of participants in article in the database
 		addParticipant: withErrorHandler(async function (id: string, participant) {
-			const response = await http.put(`/articles/participant/${id}`, participant);
-			console.log(response.data);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
-			return true;
+			console.log('id', id);
+			console.log('participant', participant);
+			// const response = await http.put(`/articles/participant/${id}`, participant);
+			// const oneItems = response.data;
+			// this.oneItems = oneItems;
+			// return true;
 		}),
 
 		// remove participant from the array of participants in article in the database
 		removeParticipant: withErrorHandler(async function (id: string, participant) {
 			const response = await http.put(`/articles/removeParticipant/${id}`, participant);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// add like to the array of likes in article in the database
+		addLike: withErrorHandler(async function (id: string, like) {
+			const response = await http.put(`/articles/like/${id}`, like);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// remove like from the array of likes in article in the database
+		removeLike: withErrorHandler(async function (id: string, like) {
+			const response = await http.put(`/articles/removeLike/${id}`, like);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// add Dislike to the array of Dislikes in article in the database
+		addDislike: withErrorHandler(async function (id: string, dislike) {
+			const response = await http.put(`/articles/dislike/${id}`, dislike);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		// remove Dislike from the array of Dislikes in article in the database
+		removeDislike: withErrorHandler(async function (id: string, dislike) {
+			const response = await http.put(`/articles/removeDislike/${id}`, dislike);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;
