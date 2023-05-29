@@ -93,7 +93,7 @@ const filteredItems = (tabId) => {
 		case 'tutos':
 			return items.value.filter((item) => item.type === 'Tuto');
 		case 'events':
-			return items.value.filter((item) => item.type === 'Événements');
+			return items.value.filter((item) => item.type === 'Evenement');
 		default:
 			return [];
 	}
