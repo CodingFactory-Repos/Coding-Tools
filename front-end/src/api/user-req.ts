@@ -2,7 +2,7 @@ import { http } from '@/api/network/axios';
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
 import { User } from '@/store/interfaces/auth.interfaces';
 import { Status } from '@/store/interfaces/axios.interface';
-import { IRelatedUserProfile, UserProfileList } from '@/store/interfaces/user.interface';
+import { IRelatedUserProfile, UserCanvasList, UserProfileList } from '@/store/interfaces/user.interface';
 
 export const trySaveUserProfile = (userProfile: DeepPartial<User>) => {
 	return http.patch<Status>('/users/profile', userProfile);
@@ -17,5 +17,5 @@ export const tryGetRelatedUserProfile = (id: string) => {
 }
 
 export const apiTryFetchUserListByRoom = (roomId: string, user: string) => {
-	return http.get<Status<{users: Array<UserProfileList>}>>(`/users/room?id=${roomId}&user=${user}`);
+	return http.get<Status<{users: Array<UserCanvasList>}>>(`/users/room?id=${roomId}&user=${user}`);
 }

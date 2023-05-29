@@ -65,3 +65,7 @@ export const apiTryGetRoomAccess = (roomId: string) => {
 export const apiTryDeleteProject = (roomId: string) => {
 	return http.delete<Status>(`/canvas-room/${roomId}`);
 };
+
+export const apiTrySendProjectInvitation = (userId: string, roomId: string) => {
+	return http.post<Status>(`/canvas-room/invitation/${roomId}`, { userId });
+};
