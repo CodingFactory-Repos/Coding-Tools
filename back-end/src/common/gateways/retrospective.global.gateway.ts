@@ -22,7 +22,7 @@ import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { flatten } from 'mongo-dot-notation';
 import { RetrospectivesRepository } from '@/base/retrospectives/retrospectives.repository';
-import { Retrospective } from '@/base/retrospectives/interfaces/retrospectives.interface';
+import { Postit, Retrospective } from '@/base/retrospectives/interfaces/retrospectives.interface';
 
 @UseFilters(WSServiceErrorCatcher)
 @WebSocketGateway({
@@ -68,7 +68,7 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 		client.to(client.roomId).emit('peer-disconnected', user.profile.email);
 	}
 	@SubscribeMessage('add-postit')
-	handleElementAdded(client: AuthSocket, currentRetro: Retrospective) {
+	handlePostitAdded(client: AuthSocket, currentRetro: Retrospective) {
 		client.to(client.roomId).emit('postit-added', currentRetro.postits);
 
 		const postits = currentRetro.postits;
@@ -79,20 +79,22 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 	}
 
 	@SubscribeMessage('delete-postit')
-	handleElementDeleted(client: AuthSocket, data: { uuid: string; uuidFrame: string }) {
-		client.to(client.roomId).emit('element-deleted', data.uuid);
-		console.log("delete");
+	handlePostitDeleted(client: AuthSocket, postit: Postit) {
+		client.to(client.roomId).emit('postit-deleted', postit);
 
+		const query = { slug: client.roomId };
+		const update = { $pull: { [`postits.${postit.type}`] : {id:  postit.id}} } ;
+
+		this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('update-postit')
-	handleElementUpdatedBounds(
-		client: AuthSocket,
-		data: { uuid: string; serializedBounds: SerializedContainerBounds },
-	) {
-		client.to(client.roomId).emit('element-updated', data.uuid, data.serializedBounds);
-		console.log("update");
+	handlePostitUpdated(client: AuthSocket, postit: Postit) {
+		client.to(client.roomId).emit('postit-updated', postit);
 
+		const query = { slug: client.roomId,  [`postits.${postit.type}.id`] : postit.id };
+		const update = { $set: { [`postits.${postit.type}.$.value`]: postit.value }};
+		this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('update-mouse-moved')

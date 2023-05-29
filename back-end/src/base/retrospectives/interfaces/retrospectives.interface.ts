@@ -12,7 +12,9 @@ export interface Retrospective {
 	endedAt?: Date;
 }
 
-interface Postit {
-	example: string;
-	// À définir;
+export interface Postit {
+	id?: string
+	user?: string // to see
+	value?: string
+	type?: number
 }

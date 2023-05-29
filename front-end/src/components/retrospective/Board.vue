@@ -1,11 +1,11 @@
 <template>
 	<!-- TODO: Rework the board creation -->
 		<div
-			class="border-solid border-2 border-sky-300 flex min-h-[36rem] max-h-[38rem] "
+			class="border-solid border-2 border-sky-300 flex min-h-[36rem] max-h-[38rem]"
 			v-if="postitsInCurrentRetro"
 		>
 			<div
-				class="border-solid border-2 border-sky-500 flex flex-col flex-1 gap-2 "
+				class="border-solid border-2 border-sky-500 flex flex-col flex-1"
 				@dragenter.prevent
 				@dragover.prevent
 				@drop="dropPostit(1)"
@@ -17,14 +17,13 @@
 					<h3>Liked</h3>
 				</div>
 				<div
-					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in postitsInCurrentRetro[1]"
+					class="text-black bg-slate-300 flex flex-wrap gap-6 items-start justify-center content-start overflow-y-scroll pt-6 pb-6"
 				>
-					<Postit :postit="postit"/>
+					<Postit v-for="postit in postitsInCurrentRetro[1]" :postit="postit" />
 				</div>
 			</div>
 			<div
-				class="border-solid border-2 border-sky-500 flex flex-col flex-1 gap-2 "
+				class="border-solid border-2 border-sky-500 flex flex-col flex-1"
 				@dragenter.prevent
 				@dragover.prevent
 				@drop="dropPostit(2)"
@@ -36,14 +35,13 @@
 					<h3>Learned</h3>
 				</div>
 				<div
-					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in postitsInCurrentRetro[2]"
+					class="text-black bg-slate-300 flex flex-wrap gap-6 items-start justify-center content-start overflow-y-scroll pt-6 pb-6"
 				>
-					<Postit :postit="postit" />
+					<Postit v-for="postit in postitsInCurrentRetro[2]" :postit="postit" />
 				</div>
 			</div>
 			<div
-				class="border-solid border-2 border-sky-500 flex flex-col flex-1 gap-2 "
+				class="border-solid border-2 border-sky-500 flex flex-col flex-1"
 				@dragenter.prevent
 				@dragover.prevent
 				@drop="dropPostit(3)"
@@ -55,10 +53,9 @@
 					<h3>Lacked</h3>
 				</div>
 				<div
-					class="text-black bg-slate-300 flex flex-wrap  gap-2 items-start justify-center content-start overflow-y-scroll"
-					v-for="postit in postitsInCurrentRetro[3]"
+					class="text-black bg-slate-300 flex flex-wrap gap-6 items-start justify-center content-start overflow-visible pt-6 pb-6"
 				>
-					<Postit :postit="postit" />
+					<Postit :postit="postit" v-for="postit in postitsInCurrentRetro[3]"/>
 				</div>
 			</div>
 

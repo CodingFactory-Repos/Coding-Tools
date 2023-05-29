@@ -67,10 +67,6 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 				this.tempMovingPostit = {};
 			}
 		},
-		async updatePositionPostit(this: RetrospectiveStore, postit: Postit) {
-			// const indexBefore = this.
-			console.log("here", postit);
-		},
 		removePrivatePostit(this: RetrospectiveStore, postit: Postit) {
 			const index = this.privatePostit.findIndex(el => el.id === postit.id)
 			this.privatePostit.splice(index, 1);
@@ -78,6 +74,24 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		updatePrivatePostit(this: RetrospectiveStore, postit: Postit) {
 			const index = this.privatePostit.findIndex(el => el.id === postit.id)
 			this.privatePostit[index].value = postit.value;
+		},
+		async removeRetroPostit(this: RetrospectiveStore, postit: Postit) {
+			const index = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id)
+			this.currentRetro.postits[postit.type].splice(index, 1);
+			socketRetro.socket.emit("delete-postit", postit)
+		},
+		async updateRetroPostit(this: RetrospectiveStore, postit: Postit) {
+			const index = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id)
+			this.currentRetro.postits[postit.type][index].value = postit.value
+			socketRetro.socket.emit("update-postit", postit)
+		},
+		async removeFromSocket(this: RetrospectiveStore, postit: Postit) {
+			const index = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id)
+			this.currentRetro.postits[postit.type].splice(index, 1);
+		},
+		async updateFromSocket(this: RetrospectiveStore, postit: Postit) {
+			const index = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id)
+			this.currentRetro.postits[postit.type][index].value = postit.value
 		}
 	},
 });

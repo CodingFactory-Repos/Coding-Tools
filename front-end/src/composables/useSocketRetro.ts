@@ -1,7 +1,7 @@
 import { manager } from '@/api/network/socket.io';
-import { Postits } from '@/store/interfaces/retrospective.interface';
+import { Postit, Postits } from '@/store/interfaces/retrospective.interface';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { Manager, Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 
 function handleSocketEvents(socket: Socket) {
 	const retrospectiveStore = useRetrospectiveStore();
@@ -13,6 +13,15 @@ function handleSocketEvents(socket: Socket) {
 	socket.on("postit-added", (postits: Postits) => {
 		retrospectiveStore.currentRetro.postits = postits
 	})
+
+	socket.on("postit-deleted", (postit: Postit) => {
+		retrospectiveStore.removeFromSocket(postit)
+	})
+
+	socket.on("postit-updated", (postit: Postit) => {
+		retrospectiveStore.updateFromSocket(postit)
+	})
+
 }
 
 
