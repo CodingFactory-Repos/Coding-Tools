@@ -24,7 +24,7 @@
 								<span class="text-sm text-black dark:text-white">Updated</span>
 							</div>
 							<div class="h-full flex flex-col justify-start items-start gap-4">
-								<span class="text-sm text-black dark:text-white">Owner Name (todo)</span>
+								<span class="text-sm text-black dark:text-white">{{ ownerName }}</span>
 								<span class="text-sm text-black dark:text-white">{{ new Date(project.createdAt).toLocaleString() }}</span>
 								<span class="text-sm text-black dark:text-white">{{ new Date(project.lastUpdatedAt).toLocaleString() }}</span>
 							</div>
@@ -119,6 +119,7 @@ const imageRef = ref<HTMLImageElement>();
 const url = ref(project.value.meta.snapshot);
 const previousMetaTitle = ref<string>(project.value.meta.title);
 const previousMetaDesc = ref<string>(project.value.meta.description);
+const ownerName = ref<string>(project.value.meta.ownerFirstName + " " + project.value.meta.ownerLastName);
 const formTitle = ref<HTMLInputElement>();
 const formDesc = ref<HTMLTextAreaElement>();
 
