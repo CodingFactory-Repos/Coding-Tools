@@ -11,42 +11,26 @@
 			</button>
 		</div>
 
-		<div class="text-center max-w-full h-full">
-			<h2 class="text-3xl font-bold pt-5 text-gray-900 dark:text-white">All Articles</h2>
+		<div class="mt-10">
+			<div class="flex justify-center space-x-4">
+				<button v-for="tab in tabs" :key="tab.id" :class="tabClass(tab)" @click="changeTab(tab.id)">
+					{{ tab.label }}
+				</button>
+			</div>
 
-			<!-- <div class="w-full pl-32 pr-32">
-				<ul
-					class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-				>
-					<li
-						v-for="type in types"
-						class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
-					>
-						<div class="flex items-center pl-3">
-							<input
-								id="vue-checkbox-list"
-								type="checkbox"
-								:value="type.value"
-								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-							/>
-							<label
-								for="vue-checkbox-list"
-								class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-								>{{ type.value }}</label
-							>
+			<div v-for="tab in tabs" :key="tab.id">
+				<div v-if="activeTab === tab.id">
+					<h2 class="text-3xl font-bold pt-5 text-gray-900 dark:text-white">{{ tab.label }}</h2>
+					<div class="flex items-center justify-center p-5">
+						<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+							<div v-for="item in filteredItems(tab.id)" :key="item._id">
+								<div
+									class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+								>
+									<CardArticle :item="item" />
+								</div>
+							</div>
 						</div>
-					</li>
-				</ul>
-			</div> -->
-
-			<div class="flex items-center justify-center p-5">
-				<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-					<div
-						v-for="item in items"
-						:key="item._id"
-						class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-					>
-						<CardArticle :item="item" />
 					</div>
 				</div>
 			</div>
@@ -55,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import CardArticle from './CardArticle.vue';
 import { useArticleStore } from '@/store/modules/article.store';
 
@@ -80,6 +64,39 @@ const redirectNewArticle = () => {
 // Fetch the articles
 const getArticles = async () => {
 	await articleStore.getArticle();
+};
+
+const tabs = ref([
+	{ id: 'infos', label: 'Infos' },
+	{ id: 'tutos', label: 'Tutorials' },
+	{ id: 'events', label: 'Events' },
+]);
+
+const activeTab = ref('infos');
+
+const tabClass = (tab) => {
+	return {
+		'text-blue-500': activeTab.value === tab.id,
+		'text-gray-500': activeTab.value !== tab.id,
+	};
+};
+
+const changeTab = (tabId) => {
+	activeTab.value = tabId;
+};
+
+// Filter items based on the active tab
+const filteredItems = (tabId) => {
+	switch (tabId) {
+		case 'infos':
+			return items.value.filter((item) => item.type === 'Infos');
+		case 'tutos':
+			return items.value.filter((item) => item.type === 'Tuto');
+		case 'events':
+			return items.value.filter((item) => item.type === 'Événements');
+		default:
+			return [];
+	}
 };
 
 // Call the getArticles method when the component is created
