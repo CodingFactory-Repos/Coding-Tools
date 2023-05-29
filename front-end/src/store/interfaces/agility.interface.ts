@@ -11,7 +11,9 @@ export interface AgilityStore {
 	tryGetRoomProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 	tryGetRoomAccess?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 	trySaveProjectMeta?: (this: AgilityStore) => Promise<boolean>;
+	tryDeleteProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 }
+
 export interface ProjectMeta {
 	roomId: string;
 	isOwner: boolean;

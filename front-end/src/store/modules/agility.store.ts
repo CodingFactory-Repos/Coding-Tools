@@ -8,6 +8,7 @@ import {
 	apiTryGetRoomProject,
 	apiTrySaveProjectMeta,
 	apiTryGetRoomAccess,
+	apiTryDeleteProject,
 } from '@/api/agility-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
@@ -80,6 +81,13 @@ export const useAgilityStore = defineStore('agility', {
 				this.metaTemplates = [];
 			}
 		},
+		tryDeleteProject: withErrorHandler(async function (this: AgilityStore, roomId: string) {
+			const res = await apiTryDeleteProject(roomId);
+			if (res.data.status === 'ok') {
+				return true;
+			}
+			return false;
+		}),
 		reset(this: AgilityStore, keys?: Array<KeysRequired<AgilityStore>>) {
 			Object.assign(
 				this,
