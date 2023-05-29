@@ -78,6 +78,7 @@ const addOpacityToHex = (hex: string, opacity: number) => {
 }
 
 const changeColor = (col: ColorPickerUpdate) => {
+	if(col.hex === '' || col.hex === '#') return;
 	color.value = col.hex;
 
 	const len = selectedContainers.value.length;
