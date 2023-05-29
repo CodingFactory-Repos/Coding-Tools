@@ -16,3 +16,12 @@ export const PROJECTION_PROJECT_VERIFY = {
 		project: 0,
 	},
 };
+
+export const PROJECTION_OWNER_NAME = {
+	projection: {
+		profile: {
+			firstName: 1,
+			lastName: 1,
+		}
+	}
+}

@@ -1,14 +1,15 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
-import { UsersRepository } from 'src/base/users/users.repository';
+import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
-import { CanvasMetaDataList, CanvasRoom, CanvasRoomMeta } from './interfaces/canvasRoom.interface';
+import { CanvasMetaDataList, CanvasRoom, CanvasRoomMeta } from '@/base/CanvasRoom/interfaces/canvasRoom.interface';
 import {
 	PROJECTION_PROJECT_META_LIST,
 	PROJECTION_PROJECT,
 	PROJECTION_PROJECT_VERIFY,
-} from './utils/canvasRoom.projection';
+	PROJECTION_OWNER_NAME,
+} from '@/base/canvasRoom/utils/canvasRoom.projection';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 
 @Injectable()
@@ -21,6 +22,9 @@ export class CanvasRoomService {
 	) {}
 
 	async initNewProject(userId: ObjectId) {
+		const user = await this.usersRepository.findOne({ _id: userId }, PROJECTION_OWNER_NAME);
+		if(!user) throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+
 		const projectDocument: CanvasRoom = {
 			owner: userId,
 			meta: {
@@ -28,6 +32,8 @@ export class CanvasRoomService {
 				description: null,
 				snapshot: null,
 				readonly: false,
+				ownerFirstName: user.profile.firstName,
+				ownerLastName: user.profile.lastName,
 			},
 			allowedPeers: [userId],
 			lastUpdatedAt: new Date(),
