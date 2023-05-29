@@ -22,11 +22,14 @@ import AgilityCanvasUI from '@/components/agility/AgilityCanvasUI.vue';
 import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
 import { LineContainer } from '../../lib/pixi-tools-v2/class/lineContainer';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
+import { useThemeStore } from '@/store/modules/theme.store';
 
 const route = useRoute();
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
+const themeStore = useThemeStore();
 
+const isDark = computed(() => themeStore.theme);
 const scene = computed(() => projectStore.scene);
 const projectLoading = computed(() => agilityStore.projectLoading);
 const project = computed(() => agilityStore.currentProject);
@@ -36,6 +39,12 @@ const roomId = ref(route.path.match(/[^/]+$/)[0]);
 const loading = ref(projectLoading.value || project.value.length > 0);
 let timeout: NodeJS.Timeout = null;
 let rawScene: Scene = null;
+
+watch(isDark, val => {
+	if(scene.value) {
+		scene.value.changeTheme(val);
+	}
+})
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
@@ -51,7 +60,7 @@ onMounted(() => {
 	}
 
 	// 84 represent the offset height due to tabs
-	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, socketOptions);
+	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, isDark.value, socketOptions);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
 	projectStore.enableSelectionBox();

@@ -37,7 +37,7 @@ export class ViewportUI extends Viewport {
 
 	public readonly activeFrames: Array<number> = reactive([]);
 
-	constructor(scene: Scene, options: IViewportOptions, socketOptions?: CanvasSocketOptions) {
+	constructor(scene: Scene, options: IViewportOptions, isDark: boolean, socketOptions?: CanvasSocketOptions) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
@@ -50,7 +50,7 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
-		this.grid = new Grid({ color: 0x27282d });
+		this.grid = new Grid({ color: isDark ? 0x27282d : 0xD9D9D9 });
 		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
@@ -88,6 +88,11 @@ export class ViewportUI extends Viewport {
 				this.socketPlugin.pruneDestroyedElements();
 			}
 		});
+	}
+
+	public changeGridTheme(isDark: boolean) {
+		this.grid.color = isDark ? 0x27282d : 0xD9D9D9;
+		this.drawGrid();
 	}
 
 	public offWindowResized() {
