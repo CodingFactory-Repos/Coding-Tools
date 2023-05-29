@@ -2,7 +2,7 @@
 	<div class="w-full h-full p-4 flex flex-col gap-3 items-start">
 		<div class="w-full flex gap-3 flex-wrap items-start justify-start">
 			<div class="grow flex flex-col w-full sm:w-[18rem] min-h-[315px] rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3 justify-start items-start">
-				<AccountFormField
+				<FormField
 					label="Resume"
 					:limit="true"
 					:char-limit="300"
@@ -14,8 +14,8 @@
 						rows="5"
 						maxlength="300"
 					></textarea>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Campus location"
 					:limit="false"
 				>
@@ -24,10 +24,10 @@
 						v-model:value="profileForm.schoolProfile.campus"
 						@selected="campusSelected"
 					/>
-				</AccountFormField>
+				</FormField>
 			</div>
 			<div class="grow flex flex-col w-full sm:w-[18rem] min-h-[315px] rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3 justify-start items-start">
-				<AccountFormField
+				<FormField
 					label="Anniversary"
 					:limit="false"
 				>
@@ -41,8 +41,8 @@
 						:start-date="thirteenYearsAgo"
 						:dark="isDark"
 					/>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Phone number"
 					:limit="true"
 					:char-limit="9"
@@ -57,8 +57,8 @@
 						/>
 						<span class="h-full absolute border-r border-r-[#6B7280] flex items-center px-2">+33</span>
 					</div>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Discord tag"
 					:limit="true"
 					:char-limit="62"
@@ -82,10 +82,10 @@
 							<SvgDiscord/>
 						</div>
 					</div>
-				</AccountFormField>
+				</FormField>
 			</div>
 			<div class="grow flex flex-col w-full sm:w-[18rem] min-h-[315px] rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3 justify-start items-start">
-				<AccountFormField
+				<FormField
 					label="Profile Github"
 					:limit="true"
 					:char-limit="75"
@@ -96,8 +96,8 @@
 						maxlength="75"
 						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Profile Linkedin"
 					:limit="true"
 					:char-limit="75"
@@ -108,8 +108,8 @@
 						maxlength="75"
 						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Show github stats (github profile required)"
 					:limit="false"
 				>
@@ -117,13 +117,13 @@
 						<input id="github-stat-switch" v-model="profileForm.profile.showGithubStat" class="toggle-checkbox hidden" type="checkbox">
 						<label for="github-stat-switch" class="toggle-label relative before:absolute before:block before:bg-white block w-12 h-6 rounded-full transition-color duration-150 ease-out cursor-pointer"></label>
 					</div>
-				</AccountFormField>
+				</FormField>
 			</div>
 		</div>
 		<div class="w-full flex gap-3 flex-wrap items-start justify-start">
 			<div class="grow flex flex-wrap sm:flex-row sm:flex-nowrap w-full sm:w-[25rem] min-h-[315px] rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-6 justify-start items-start">
 				<div class="flex flex-col gap-1 w-full h-full min-w-[8rem]">
-					<AccountFormField
+					<FormField
 						label="Company name"
 						:limit="true"
 						:char-limit="50"
@@ -134,8 +134,8 @@
 							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 							maxlength="50"
 						/>
-					</AccountFormField>
-					<AccountFormField
+					</FormField>
+					<FormField
 						label="Position in the company"
 						:limit="true"
 						:char-limit="75"
@@ -146,8 +146,8 @@
 							maxlength="75"
 							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 						/>
-					</AccountFormField>
-					<AccountFormField
+					</FormField>
+					<FormField
 						label="Company website"
 						:limit="true"
 						:char-limit="75"
@@ -158,10 +158,10 @@
 							maxlength="75"
 							class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 						/>
-					</AccountFormField>
+					</FormField>
 				</div>
 				<div class="flex flex-col gap-3 w-full h-full min-w-[8rem]">
-					<AccountFormField
+					<FormField
 						label="Job period"
 						:limit="false"
 					>
@@ -177,8 +177,8 @@
 							:start-date="today"
 							:dark="isDark"
 						/>
-					</AccountFormField>
-					<AccountFormField
+					</FormField>
+					<FormField
 						label="Company logo"
 						:limit="false"
 					>
@@ -194,11 +194,11 @@
 								alt="company_logo"
 							/>
 						</div>
-					</AccountFormField>
+					</FormField>
 				</div>
 			</div>
 			<div class="grow flex flex-col w-full sm:w-[25rem] min-h-[315px] rounded-lg p-4 bg-light-primary dark:bg-dark-highlight gap-3 justify-start items-start">
-				<AccountFormField
+				<FormField
 					label="Liked subjects"
 					:limit="false"
 				>
@@ -209,8 +209,8 @@
 						@selected="disciplinesLikedSelected"
 						@unselect="disciplinesLikedUnselected"
 					/>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="Subjects taught (PO)"
 					:limit="false"
 					v-if="role === Roles.PRODUCT_OWNER"
@@ -222,8 +222,8 @@
 						@selected="disciplinesTaughtSelected"
 						@unselect="disciplinesTaughtUnselected"
 					/>
-				</AccountFormField>
-				<AccountFormField
+				</FormField>
+				<FormField
 					label="My portfolio"
 					:limit="true"
 					:char-limit="75"
@@ -234,7 +234,7 @@
 						maxlength="75"
 						class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
 					/>
-				</AccountFormField>
+				</FormField>
 			</div>
 		</div>
 	</div>
@@ -243,7 +243,7 @@
 <script lang="ts" setup>
 import { reactive, computed, watch, ref } from 'vue';
 import { User, UserBusinessProfile, UserProfile, UserSchoolProfile, Roles } from '@/store/interfaces/auth.interfaces';
-import AccountFormField from '@/components/account/AccountFormField.vue';
+import FormField from '@/components/common/FormField.vue';
 import FileUploader from '@/components/common/FileUploader.vue';
 import SimpleSelect from '@/components/common/SimpleSelect.vue';
 import SvgDiscord from '@/components/common/svg/Discord.vue';
@@ -255,7 +255,7 @@ import { filterInvalidProperties } from '@/utils/filterInvalidProperties';
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
 import { useThemeStore } from '../../store/modules/theme.store';
 
-// <AccountFormField
+// <FormField
 // 	label="Enable 2FA"
 // 	:limit="false"
 // >
@@ -263,7 +263,7 @@ import { useThemeStore } from '../../store/modules/theme.store';
 // 		<input id="2fa-switch" v-model="profileForm.enable2FA" class="toggle-checkbox hidden" type="checkbox">
 // 		<label for="2fa-switch" class="toggle-label relative before:absolute before:block before:bg-white block w-12 h-6 rounded-full transition-color duration-150 ease-out cursor-pointer"></label>
 // 	</div>
-// </AccountFormField>
+// </FormField>
 
 const props = defineProps<{
 	profile: Partial<UserProfile>,
