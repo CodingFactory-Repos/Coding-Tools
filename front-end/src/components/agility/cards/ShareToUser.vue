@@ -45,7 +45,6 @@ import { ref } from 'vue';
 const props = defineProps<{
 	roomId: string,
 	user: UserCanvasList,
-	index: number,
 }>();
 
 enum Success {

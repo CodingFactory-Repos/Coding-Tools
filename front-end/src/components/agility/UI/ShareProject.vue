@@ -1,4 +1,4 @@
-te<template>
+<template>
 	<ModalOverlay  v-if="showLogoutModal" @close="beforeModalClose" size="lg">
 		<template #header>
 			<FormField
@@ -19,31 +19,12 @@ te<template>
 		<template #body>
 			<div class="flex flex-col w-full h-[400px] overflow-y-scroll gap-2 pt-2 ">
 				<template v-if="filteredUser.length > 0">
-					<div
+					<ShareToUserCard
 						v-for="(user, index) in filteredUser"
 						:key="`user_${index}`"
-						class="px-2 py-2 w-full flex gap-2 items-center justify-between bg-light-secondary dark:bg-dark-secondary rounded-lg"
-					>
-						<div class="flex items-center gap-5">
-							<img
-								:src="user.picture || '/template-no-image.png'"
-								class="w-12 h-12 rounded-full border border-dark-secondary"
-								alt="profile_picture"
-							/>
-							<div class="flex flex-col gap-1">
-								<span class="bold text-sm text-black dark:text-white font-bold">{{ user.firstName + " " + user.lastName }}</span>
-								<span class="bold text-sm text-black dark:text-white text-[10px]">{{ user.groupName }}</span>
-							</div>
-						</div>
-						<DefaultButton
-							@click="sendInvitation(user.id)"
-							type="button"
-							text="Send invitation"
-							color="text-white hover:text-white"
-							text-style="text-white hover:text-white"
-							background="bg-[#783676] hover:bg-[#a4418b]"
-						/>
-					</div>
+						:user="user"
+						:room-id="roomId"
+					/>
 				</template>
 				<div v-else class="h-full w-full flex justify-center pt-5">
 					<span>No user found...</span>
@@ -57,16 +38,16 @@ te<template>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import DefaultButton from '@/components/common/buttons/Default.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import FormField from '@/components/common/FormField.vue';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { apiTryFetchUserListByRoom } from '@/api/user-req';
-import { UserProfileList } from '@/store/interfaces/user.interface';
+import { UserCanvasList } from '@/store/interfaces/user.interface';
+import ShareToUserCard from '@/components/agility/cards/ShareToUser.vue';
 
 const route = useRoute();
 const userInput = ref<string>("");
-const filteredUser = ref<Array<UserProfileList>>([]);
+const filteredUser = ref<Array<UserCanvasList>>([]);
 const roomId = ref(route.path.match(/[^/]+$/)[0]);
 let timer: NodeJS.Timeout;
 
@@ -80,10 +61,6 @@ const closeUserListModal = () => showLogoutModal.value = false;
 const beforeModalClose = () => {
 	closeUserListModal();
 	emit("close");
-}
-
-const sendInvitation = (userId: string) => {
-
 }
 
 const fetchQueryUser =  withErrorHandler(async function(user: string) {
