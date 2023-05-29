@@ -27,3 +27,7 @@ export interface UserProfileList {
 	lastName: string;
 	id: string;
 }
+
+export interface UserCanvasList extends UserProfileList {
+	pending?: boolean;
+}
