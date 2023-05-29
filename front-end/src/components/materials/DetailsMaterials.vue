@@ -2,37 +2,39 @@
 	<div v-if="userRole === Roles.USER">
 		<a href="#">
 			<img
-				v-if="material.picture"
+				v-if="props.material.picture"
 				class="w-full h-96 rounded-lg shadow-md"
-				:src="material.picture"
+				:src="props.material.picture"
 				alt="product image"
 			/>
 		</a>
 		<div class="px-5 pb-5 text-center flex flex-col">
 			<a href="#">
 				<h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-					{{ material.name }}
+					{{ props.material.name }}
 				</h5>
 			</a>
 			<div class="flex items-center mt-2.5">
 				<span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{
-					material.acquisitionDate
+					props.material.acquisitionDate
 				}}</span>
 				<span class="mx-2 text-gray-400 dark:text-gray-300">•</span>
 				<span class="text-sm font-medium text-gray-500 dark:text-gray-400"
-					>Etats : {{ material.state }}</span
+					>Etats : {{ props.material.state }}</span
 				>
 			</div>
 			<div class="flex items-center mt-2.5">
 				<span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{
-					material.siteLocation
+					props.material.siteLocation
 				}}</span>
 				<span class="mx-2 text-gray-400 dark:text-gray-300">•</span>
 				<span class="text-sm font-medium text-gray-500 dark:text-gray-400"
-					>Armoire : {{ material.storageCupboard }}</span
+					>Armoire : {{ props.material.storageCupboard }}</span
 				>
 			</div>
-			<span class="text-2xl font-bold text-gray-900 dark:text-white">{{ material.price }} €</span>
+			<span class="text-2xl font-bold text-gray-900 dark:text-white"
+				>{{ props.material.price }} €</span
+			>
 		</div>
 	</div>
 	<div v-if="userRole === Roles.PRODUCT_OWNER || userRole === Roles.PEDAGOGUE">
@@ -42,27 +44,25 @@
 			<div class="flex flex-col items-center justify-center w-full h-full">
 				<img
 					@click="showLink = !showLink"
-					v-if="material.picture"
+					v-if="props.material.picture"
 					class="w-24 h-24 rounded-lg shadow-md"
-					:src="material.picture"
+					:src="props.material.picture"
 					alt="product image"
 				/>
 			</div>
 			<div v-if="showLink === true">
-				<label class="text-white dark:text-gray-200" for="username">Image Link</label>
-				<input
-					id="name"
-					v-model="material.picture"
-					type="text"
-					class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-				/>
+				<Modal v-if="showLink" @close="showLink = false">
+					<template #body>
+						<ImagePicker @selectImage="onImageSelected" />
+					</template>
+				</Modal>
 			</div>
 			<div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
 				<div>
 					<label class="text-white dark:text-gray-200" for="username">Name</label>
 					<input
 						id="name"
-						v-model="material.name"
+						v-model="props.material.name"
 						type="text"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					/>
@@ -71,7 +71,7 @@
 				<div>
 					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Type</label>
 					<select
-						v-model="material.type"
+						v-model="props.material.type"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					>
 						<option value="Hardware">Hardware</option>
@@ -85,7 +85,7 @@
 					<input
 						id="password"
 						type="number"
-						v-model="material.price"
+						v-model="props.material.price"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					/>
 				</div>
@@ -93,7 +93,7 @@
 				<div>
 					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Type</label>
 					<select
-						v-model="material.state"
+						v-model="props.material.state"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					>
 						<option value="Excellent">Etat Excellent</option>
@@ -104,7 +104,7 @@
 				<div>
 					<label class="text-white dark:text-gray-200" for="passwordConfirmation">Site</label>
 					<select
-						v-model="material.siteLocation"
+						v-model="props.material.siteLocation"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					>
 						<option value="Cergy">Cergy</option>
@@ -116,7 +116,7 @@
 						>Storage Cupboard</label
 					>
 					<select
-						v-model="material.storageCupboard"
+						v-model="props.material.storageCupboard"
 						class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 					>
 						<option value="1">1</option>
@@ -133,14 +133,14 @@
 				<textarea
 					id="textarea"
 					type="textarea"
-					v-model="material.description"
+					v-model="props.material.description"
 					class="max-h-48 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
 				></textarea>
 			</div>
 			<div class="mb-5"></div>
 			<!-- Create a div that show all the borrowingHistory -->
 			<div v-if="showHistory">
-				<BorrowHistoryMaterials :history="material.borrowingHistory" :userEmail="userEmail" />
+				<BorrowHistoryMaterials :history="props.material.borrowingHistory" :userEmail="userEmail" />
 			</div>
 			<div class="mb-5"></div>
 			<div class="flex items-center justify-between">
@@ -175,38 +175,34 @@ import { Material } from '@/store/interfaces/material.interface';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { withErrorHandler } from '@/utils/storeHandler';
+import Modal from '@/components/common/Modal.vue';
+import ImagePicker from '@/components/materials/ImagePicker.vue';
 
 const props = defineProps<{
-	id: string,
-}>()
+	id: string;
+	material: Object;
+}>();
 
 const authStore = useAuthStore();
 const materialStore = useMaterialStore();
 const user = computed(() => authStore.user);
-const userEmail = computed(() => user.value?.profile?.email)
+const userEmail = computed(() => user.value?.profile?.email);
 const userRole = computed(() => user.value?.role);
 
-const material = ref<Material>();
 const showLink = ref({});
 const showHistory = ref(false);
 
-const getMaterialInfo = withErrorHandler(async function(id: string) {
-	http.get(`materials/get/` + id).then((res) => {
-		// Convert the date to string
-		res.data.acquisitionDate = new Date(res.data.acquisitionDate).toLocaleDateString();
-		material.value = res.data;
-	})
-});
-
 const editMaterial = () => {
-	materialStore.updateMaterial(material.value, props.id);
+	console.log(props.material)
+	materialStore.updateMaterial(props.material, props.id);
 };
+
+function onImageSelected(image) {
+	props.material.picture = image;
+	showLink.value = false;
+}
 
 const deleteMaterial = () => {
 	materialStore.deleteMaterial(props.id);
 };
-
-onMounted(async () => {
-	await getMaterialInfo(props.id);
-});
 </script>
