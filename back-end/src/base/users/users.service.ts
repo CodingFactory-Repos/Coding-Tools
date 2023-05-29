@@ -6,7 +6,7 @@ import { USER_GITHUB_PROJECTION, USER_GROUPNAME_PROJECTION, USER_PROFILE_LIST_PR
 import axios, { AxiosResponse } from 'axios';
 import { ProfileBodyDTO } from '@/base/users/dto/users.dto';
 import { flatten } from 'mongo-dot-notation';
-import { UserProfileList } from './interfaces/users.interface';
+import { UserProfileList } from '@/base/users/interfaces/users.interface';
 
 @Injectable()
 export class UsersService {
@@ -157,6 +157,33 @@ export class UsersService {
 				}
 			},
 			{
+				$lookup: {
+					from: "canvas-room-invitation",
+					let: {
+						roomId: "$matchedDocuments._id",
+						userId: "$_id"
+					},
+					pipeline: [
+						{
+							$match: {
+								$expr: {
+									$and: [
+										{ $eq: ["$canvasId", { $arrayElemAt: ["$$roomId", 0] }] },
+										{ $eq: ["$userId", "$$userId"] }
+									]
+								}
+							}
+						},
+						{
+						$project: {
+							_id: 1
+							}
+						}
+					],
+					as: "pendingInvitations"
+				}
+			},
+			{
 				$match: {
 					$and: [
 						{
@@ -185,6 +212,13 @@ export class UsersService {
 					firstName: "$profile.firstName",
 					lastName: "$profile.lastName",
 					groupName: "$schoolProfile.groupName",
+					pending: {
+						$cond: {
+							if: { $gt: [{ $size: "$pendingInvitations" }, 0] },
+							then: true,
+							else: false
+						}
+					}
 				}
 			},
 			{
