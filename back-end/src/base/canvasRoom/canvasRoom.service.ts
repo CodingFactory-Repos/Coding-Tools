@@ -94,18 +94,28 @@ export class CanvasRoomService {
 	}
 
 	async verify(roomId: string, userId: ObjectId) {
-		if (!roomId || roomId === 'null' || roomId === 'undefined')
-			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
-
-		const query = { _id: new ObjectId(roomId), allowedPeers: { $in: [userId] } };
-		const room = await this.canvasRoomRepository.findOneCanvasRoom(
-			query,
-			PROJECTION_PROJECT_VERIFY,
-		);
-		if (room === null)
-			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
-
-		return true;
+		try {
+			if (!roomId || roomId === 'null' || roomId === 'undefined')
+				throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+	
+			const query = { _id: new ObjectId(roomId), allowedPeers: { $in: [userId] } };
+			const room = await this.canvasRoomRepository.findOneCanvasRoom(
+				query,
+				PROJECTION_PROJECT_VERIFY,
+			);
+			if (room === null)
+				throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
+	
+			return true;
+		} catch(err) {
+			if(err instanceof ServiceError) {
+				//@ts-ignore
+				NestLogger.error(err.response.message, err.response.error);
+			} else {
+				NestLogger.error(err);
+			}
+			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to acces this ressource");
+		}
 	}
 
 	async saveProjectMeta(meta: CanvasRoomMeta, roomId: string, userId: ObjectId) {
@@ -155,7 +165,7 @@ export class CanvasRoomService {
 
 			const userQuery = { _id: userId };
 			const user = await this.usersRepository.findOne(userQuery, { projection: { "profile.firstName": 1, "profile.lastName": 1 }});
-			if(!user) throw new ServiceError("FORBIDDEN", "You do not have the rights to access this ressource");
+			if(!user) throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
 
 			const targetObjectId = new ObjectId(targetId);
 			const targetQuery = { _id: targetObjectId };
@@ -189,7 +199,19 @@ export class CanvasRoomService {
 			)
 		} catch(err) {
 			NestLogger.error(err.response.message, err.response.error);
-			throw new ServiceError("FORBIDDEN", "You do not have the rights to acces this ressource");
+			throw new ServiceError("UNAUTHORIZED", "You do not have the rights to acces this ressource");
 		}
+	}
+
+	async verifyProjectInvitation(token: string, userId: ObjectId) {
+		const query = { userId, token };
+		const update = { $set: { expireAt: new Date() } };
+		const invitation = await this.canvasRoomInvitationRepository.findOneAndUpdateCanvasRoomInvitation(
+			query, update, { projection: { canvasId: 1 } }
+		);
+		if(!invitation.value) throw new ServiceError("UNAUTHORIZED", "You do not have the rights to access this ressource");
+
+		await this.canvasRoomRepository.updateOneCanvasRoom({ _id: invitation.value.canvasId }, { $push: { allowedPeers: userId }});
+		return invitation.value.canvasId;
 	}
 }

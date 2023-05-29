@@ -6,7 +6,7 @@ import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { ProjectInvitationDTO, ProjectMetaDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
+import { ProjectInvitationDTO, ProjectInvitationVerificationDTO, ProjectMetaDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
 
 @Controller('canvas-room')
 @UseFilters(ServiceErrorCatcher)
@@ -72,7 +72,7 @@ export class CanvasRoomController {
 		return res.status(201).json({ status: 'ok', updatedAt });
 	}
 
-	@Post('/invitation/:roomId')
+	@Post('invitation/:roomId')
 	@UseGuards(JwtAuthGuard)
 	async sendProjectInvitation(
 		@Jwt() userId: ObjectId,
@@ -82,5 +82,16 @@ export class CanvasRoomController {
 	) {
 		await this.canvasRoomService.sendProjectInvitation(body.userId, roomId, userId);
 		return res.status(201).json({ status: 'ok' });
+	}
+
+	@Post('verify-invitation')
+	@UseGuards(JwtAuthGuard)
+	async verifyProjectInvitation(
+		@Jwt() userId: ObjectId,
+		@Body() body: ProjectInvitationVerificationDTO,
+		@Res() res: Response,
+	) {
+		const roomId = await this.canvasRoomService.verifyProjectInvitation(body.token, userId);
+		return res.status(201).json({ status: 'ok', roomId });
 	}
 }
