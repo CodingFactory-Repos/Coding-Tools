@@ -119,12 +119,83 @@ export class UsersService {
 			const userId = new ObjectId(id)
 			const query = { _id: userId };
 			const user = await this.usersRepository.findOne(query, USER_RELATED_PROFILE);
-			if(!user)  throw new Error();
+			if(!user) throw new Error();
 			
 			const userListInfo = await this.getUserProfileList(userId);
 			return { user, related: userListInfo };
 		} catch(err) {
-			throw new ServiceError("BAD_REQUEST", "Invalid payload")
+			throw new ServiceError("BAD_REQUEST", "Invalid payload");
 		}
+	}
+
+	async getUserListOnRoom(roomId: string, user: string) {
+		if(!roomId || roomId === '' || roomId === 'null' || roomId === 'undefined' || !user || user === '' || user === 'null' || user === 'undefined') {
+			throw new ServiceError("BAD_REQUEST", "Invalid queries");
+		}
+
+		const users = await this.usersRepository.users.aggregate([
+			{
+				$match: {
+					$or: [
+						{ "profile.firstName": { $regex: user, $options: "i" } },
+						{ "profile.lastName": { $regex: user, $options: "i" } }
+					],
+					role: { $in: [1, 2] }
+				}
+			},
+			{
+				$lookup: {
+					from: "canvas-room",
+					pipeline: [
+						{
+							$match: {
+								_id: new ObjectId(roomId)
+							}
+						}
+					],
+					as: "matchedDocuments"
+				}
+			},
+			{
+				$match: {
+					$and: [
+						{
+							$expr: {
+								$not: {
+									$in: ["$_id", "$matchedDocuments.allowedPeers"]
+								},
+							}
+						},
+						{
+							$expr: {
+								$not: {
+									// We know matchedDocuments is single, but it's inside an array
+									$in: ["$_id", "$matchedDocuments.owner"]
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				$project: {
+					_id: 0,
+					id: "$_id",
+					picture: "$profile.picture",
+					firstName: "$profile.firstName",
+					lastName: "$profile.lastName",
+					groupName: "$schoolProfile.groupName",
+				}
+			},
+			{
+				$sort: { "firstName": 1 }
+			},
+			{
+				$limit: 10
+			},
+		]).toArray();
+
+		console.log(users);
+		return users ?? [];
 	}
 }

@@ -1,6 +1,6 @@
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { Body, Controller, Get, Param, Patch, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { UsersService } from '@/base/users/users.service';
@@ -51,5 +51,12 @@ export class UsersController {
 	async getRelatedUserProfile(@Param('id') id: string, @Res() res: Response) {
 		const { user, related } = await this.usersService.getRelatedUserProfile(id);
 		return res.status(200).json({ status: "ok", user, related });
+	}
+
+	@Get('room')
+	@UseGuards(JwtAuthGuard)
+	async getUsersListOnRoom(@Query('id') roomId: string, @Query('user') user: string, @Res() res: Response) {
+		const users = await this.usersService.getUserListOnRoom(roomId, user);
+		return res.status(200).json({ status: 'ok', users });
 	}
 }
