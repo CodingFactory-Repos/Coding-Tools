@@ -42,12 +42,18 @@
 import { computed, onMounted, ref } from 'vue';
 import CardArticle from './CardArticle.vue';
 import { useArticleStore } from '@/store/modules/article.store';
-
+import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
+
+// Use the router
 const router = useRouter();
 
-// Use the article store
+// Use the article store and the auth store
 const articleStore = useArticleStore();
+const authStore = useAuthStore();
+
+// Create a reactive variable to store the user
+const user = computed(() => authStore.user);
 
 // Create a reactive variable to store the articles && sort them by date
 const items = computed(() => {
@@ -57,6 +63,7 @@ const items = computed(() => {
 	});
 });
 
+// Redirect the user to the article's creation page
 const redirectNewArticle = () => {
 	router.push('/app/blog/new');
 };
@@ -70,6 +77,7 @@ const tabs = ref([
 	{ id: 'infos', label: 'Infos' },
 	{ id: 'tutos', label: 'Tutorials' },
 	{ id: 'events', label: 'Events' },
+	{ id: 'liked', label: 'Likes' },
 ]);
 
 const activeTab = ref('infos');
@@ -94,6 +102,10 @@ const filteredItems = (tabId) => {
 			return items.value.filter((item) => item.type === 'Tuto');
 		case 'events':
 			return items.value.filter((item) => item.type === 'Evenement');
+		case 'liked':
+			return items.value.filter(
+				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+			);
 		default:
 			return [];
 	}
