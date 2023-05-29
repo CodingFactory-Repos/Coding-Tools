@@ -4,7 +4,7 @@
 			<div class="flex flex-col gap-6 items-center justify-center">
 				<div class="flex gap-8 items-start">
 					<div class="w-52 min-w-[13rem]">
-						<img ref="imageRef" class="w-full h-44 rounded" :src="url" alt="project_image"/>
+						<img ref="imageRef" class="w-full h-44 rounded" :src="url ?? 'https://'" alt="project_image"/>
 					</div>
 					<div class="flex flex-col gap-8 w-full items-start">
 						<div class="w-5/6">
