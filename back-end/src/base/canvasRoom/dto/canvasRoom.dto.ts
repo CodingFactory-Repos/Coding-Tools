@@ -25,3 +25,9 @@ export class ProjectInvitationDTO {
 	@Length(24)
 	userId: string;
 }
+
+export class ProjectInvitationVerificationDTO {
+	@IsString()
+	@Length(32)
+	token: string;
+}

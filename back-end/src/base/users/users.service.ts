@@ -229,7 +229,6 @@ export class UsersService {
 			},
 		]).toArray();
 
-		console.log(users);
 		return users ?? [];
 	}
 }
