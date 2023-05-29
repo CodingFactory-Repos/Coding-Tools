@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger as NestLogger } from '@nestjs/common';
 
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import { UsersRepository } from '@/base/users/users.repository';
@@ -11,14 +11,20 @@ import {
 	PROJECTION_OWNER_NAME,
 } from '@/base/canvasRoom/utils/canvasRoom.projection';
 import { ServiceError } from '@/common/decorators/catch.decorator';
+import { CanvasRoomEventEmitter } from '@/base/canvasRoom/events/canvasRoom.events';
+import { generateRandomToken } from '@/common/helpers/string.helper';
+import { CanvasRoomInvitationRepository } from '@/base/canvasRoom/canvasRoomInvitation.repository';
 
 @Injectable()
 export class CanvasRoomService {
 	constructor(
 		@Inject(forwardRef(() => UsersRepository))
 		@Inject(forwardRef(() => CanvasRoomRepository))
+		@Inject(forwardRef(() => CanvasRoomInvitationRepository))
 		private usersRepository: UsersRepository,
 		private canvasRoomRepository: CanvasRoomRepository,
+		private canvasRoomInvitationRepository: CanvasRoomInvitationRepository,
+		private canvasRoomEventEmitter: CanvasRoomEventEmitter,
 	) {}
 
 	async initNewProject(userId: ObjectId) {
@@ -91,12 +97,6 @@ export class CanvasRoomService {
 		if (!roomId || roomId === 'null' || roomId === 'undefined')
 			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
 
-		//! Only use if you need to clear the room from any elements
-		//! It's temporary
-		// const query2 = { _id: new ObjectId(roomId) };
-		// const update = { $set: { project: [] } };
-		// await this.canvasRoomRepository.updateOneCanvasRoom(query2, update);
-
 		const query = { _id: new ObjectId(roomId), allowedPeers: { $in: [userId] } };
 		const room = await this.canvasRoomRepository.findOneCanvasRoom(
 			query,
@@ -143,5 +143,53 @@ export class CanvasRoomService {
 		}
 
 		return lastUpdatedAt;
+	}
+
+	async sendProjectInvitation(targetId: string, roomId: string, userId: ObjectId) {
+		try {
+			if(!roomId || roomId === 'null' || roomId === 'undefined') {
+				throw new ServiceError("BAD_REQUEST", "Invalid room");
+			}
+
+			//! WARNING: Yeah there are a lot of queries there, there's a better way, but no time.
+
+			const userQuery = { _id: userId };
+			const user = await this.usersRepository.findOne(userQuery, { projection: { "profile.firstName": 1, "profile.lastName": 1 }});
+			if(!user) throw new ServiceError("FORBIDDEN", "You do not have the rights to access this ressource");
+
+			const targetObjectId = new ObjectId(targetId);
+			const targetQuery = { _id: targetObjectId };
+			const targetUser = await this.usersRepository.findOne(targetQuery, { projection: { "profile.email": 1 }});
+			if(!targetUser) throw new ServiceError("BAD_REQUEST", "Invalid payload");
+
+			const roomObjectId = new ObjectId(roomId);
+			const invitationQuery = { canvasId: roomObjectId, userId: targetObjectId };
+			const invitationExist = await this.canvasRoomInvitationRepository.canvasRoomInvitationExist(invitationQuery);
+			if(invitationExist !== null) throw new ServiceError("BAD_REQUEST", "User invitation was already sent");
+
+			const canvasQuery = { _id: roomObjectId, allowedPeers: { $in: [userId] } };
+			const project = await this.canvasRoomRepository.findOneCanvasRoom(canvasQuery, { projection: { "meta.title": 1 }});
+			if(!project) throw new ServiceError("BAD_REQUEST", "Invalid payload");
+
+			const token = generateRandomToken();
+			const expireIn = Date.now() + 24 * 60 * 60 * 1000;
+			await this.canvasRoomInvitationRepository.createCanvasRoomInvitation({
+				expireAt: new Date(expireIn),
+				canvasId: roomObjectId,
+				userId: targetObjectId,
+				token,
+			})
+
+			await this.canvasRoomEventEmitter.invitationRequest(
+				targetUser.profile.email,
+				user.profile.firstName,
+				user.profile.lastName,
+				project.meta.title,
+				token,
+			)
+		} catch(err) {
+			NestLogger.error(err.response.message, err.response.error);
+			throw new ServiceError("FORBIDDEN", "You do not have the rights to acces this ressource");
+		}
 	}
 }
