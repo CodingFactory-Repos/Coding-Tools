@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="h-48 w-48 flex justify-center items-center bg-gray-50 "
-		:draggable="true"
+		:draggable="isOwner"
         @dragstart="dragStart()"
         @dragend="dragEnd"
 	>
@@ -12,12 +12,16 @@
 </template>
 
 <script lang="ts" setup>
+import { useAuthStore } from '@/store/modules/auth.store';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
+import { computed } from 'vue';
 
 const props = defineProps({
 	postit: { type: Object, required: true}
 })
 const retroStore = useRetrospectiveStore();
+const authStore = useAuthStore();
+const isOwner = computed(() => authStore.user.profile.email === props.postit.user ? true : false)
 
 const dragStart = () => {
 	// console.log("bonjour");

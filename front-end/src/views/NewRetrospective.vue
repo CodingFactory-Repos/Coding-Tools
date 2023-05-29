@@ -29,12 +29,13 @@
 
 <script lang="ts" setup>
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import Board from '@/components/retrospective/Board.vue';
 import Timer from '@/components/retrospective/Timer.vue';
 import PrivateSection from '@/components/retrospective/PrivateSection.vue'
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { socketRetro, useSocket } from '@/composables/useSocketRetro';
 
 const route = useRoute();
 const retrospectiveStore = useRetrospectiveStore();
@@ -48,8 +49,17 @@ const dropPostit = () => {
 
 }
 
-onMounted(() => {
+onMounted(async () => {
 	if (route.params.id)
 		retrospectiveStore.getCurrentRetro(route.params.id as string);
+
+	useSocket(route.params.id);
 })
+
+onUnmounted(() => {
+	socketRetro.socket.disconnect();
+});
+
+
+
 </script>

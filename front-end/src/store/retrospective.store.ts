@@ -1,6 +1,7 @@
 import { createRetro, newPostit, tryGetCurrentRetro } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import { Postit, Retrospective, RetrospectiveStore } from './interfaces/retrospective.interface';
+import { socketRetro } from '@/composables/useSocketRetro';
 
 
 const retrospectiveDefaultState = (): RetrospectiveStore => ({
@@ -38,13 +39,19 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			if (postit.type) {
 				const lastIndex = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id);
 				this.currentRetro.postits[postit.type].splice(lastIndex, 1);
+				postit.type = type;
+				this.currentRetro.postits[type].push(postit);
+				socketRetro.socket.emit("add-postit", this.currentRetro)
+
 			} else {
 				// This section is for the private space of the user where he creates his postits
 				const privateIndex = this.privatePostit.findIndex(el => el.id === postit.id);
 				this.privatePostit.splice(privateIndex, 1);
+
+				postit.type = type;
+				this.currentRetro.postits[type].push(postit);
+				socketRetro.socket.emit("add-postit", this.currentRetro)
 			}
-			postit.type = type;
-			this.currentRetro.postits[type].push(postit);
 			this.tempMovingPostit = {};
 		},
 		async setPostitToPriv(this: RetrospectiveStore, postit: Postit) {
@@ -53,6 +60,7 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 				if (postit.type) {
 					const lastIndex = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id);
 					this.currentRetro.postits[postit.type].splice(lastIndex, 1);
+					socketRetro.socket.emit("add-postit", this.currentRetro)
 				}
 				delete postit.type;
 				this.privatePostit.push(postit);
