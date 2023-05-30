@@ -18,6 +18,19 @@
 						<!-- Put the color in blue when graphComponent is true-->
 						<Chart width="22" height="22" :isActive="graphComponent" />
 					</IconButton>
+					<IconButton
+						type="button"
+						class="relative inline-flex items-center text-sm font-medium text-center text-white rounded-lg"
+						@click="showNotificationCenter"
+					>
+						<Bell width="22" height="22" />
+						<span class="sr-only">Notifications</span>
+						<div
+							class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900"
+						>
+							20
+						</div>
+					</IconButton>
 				</div>
 			</div>
 			<Modal v-if="showModal" @close="showModal = false">
@@ -25,6 +38,9 @@
 					<ButtonsMaterials />
 				</template>
 			</Modal>
+			<div v-if="notificationCenter">
+				<ApprouvalCenter />
+			</div>
 			<!-- <h2 class="text-2xl font-bold dark:text-dark-font">List of all materials</h2> -->
 			<div class="cards mt-5" v-if="materialsComponent">
 				<ListMaterials />
@@ -53,8 +69,11 @@ import { Material } from '@/store/interfaces/material.interface';
 import ChartMaterials from '@/components/materials/ChartMaterials.vue';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { useAuthStore } from '@/store/modules/auth.store';
+import Bell from '@/components/common/svg/Bell.vue';
+import ApprouvalCenter from '@/components/materials/ApprouvalCenter.vue';
 
 const showModal = ref(false);
+const notificationCenter = ref(false);
 const graphComponent = ref(false);
 const materialsComponent = ref(true);
 const authStore = useAuthStore();
@@ -80,6 +99,10 @@ fetch(CodingToolsLogo)
 const showGraph = () => {
 	graphComponent.value = !graphComponent.value;
 	materialsComponent.value = !materialsComponent.value;
+};
+
+const showNotificationCenter = () => {
+	notificationCenter.value = !notificationCenter.value;
 };
 
 function createPDF() {
