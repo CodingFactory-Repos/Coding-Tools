@@ -139,18 +139,16 @@ export class BezierPlugin {
 				else if(this.handleId === BezierHandle.L) startControl.x -= lineLength;
 				else if(this.handleId === BezierHandle.B) startControl.y += lineLength;
 
-				angleControl.x = this.lineBezier.end.x - endControl.x,
-				angleControl.y = this.lineBezier.end.y - endControl.y,
+				angleControl.x = this.lineBezier.end.x - endControl.x;
+				angleControl.y = this.lineBezier.end.y - endControl.y;
 
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
 				this.lineBezier.draw();
 
-				// if(!closestElement.container.linkedLinesUUID.includes(this.lineContainer.uuid)) {
-					closestElement.container.attachLine(this.lineContainer.uuid);
-					this.lineContainer.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
-				// }
+				closestElement.container.attachLine(this.lineContainer.uuid);
+				this.lineContainer.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;

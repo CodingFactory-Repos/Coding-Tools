@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import { useRouter, useRoute } from 'vue-router';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
 import SvgWarning from '@/components/common/svg/Warning.vue';
@@ -46,7 +46,7 @@ import SvgRoundCheck from '@/components/common/svg/RoundCheck.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { apiTryVerifyInvitationToken } from '@/api/agility-req';
-import { STATUS } from '../../store/interfaces/axios.interface';
+import { STATUS } from '@/store/interfaces/axios.interface';
 
 const route = useRoute();
 const router = useRouter();

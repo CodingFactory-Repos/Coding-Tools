@@ -9,7 +9,6 @@ import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { LineContainer } from './lineContainer';
 import { Rectangle } from '../model/template';
-import { useRouter } from 'vue-router';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -115,7 +114,7 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			// console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
+			console.info(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 
 		this.canvasSocket.on('element-colorimetry-updated', (uuid: string, serializedColorimetry: SerializedColorimetry) => {

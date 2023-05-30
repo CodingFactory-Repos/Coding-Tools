@@ -115,10 +115,8 @@ export class BezierManipulationPlugin {
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.draw();
 
-				// if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
-					closestElement.container.attachLine(this.container.uuid);
-					this.container.attachContainer(closestElement.container.uuid, "start", closestPoint.id);
-				// }
+				closestElement.container.attachLine(this.container.uuid);
+				this.container.attachContainer(closestElement.container.uuid, "start", closestPoint.id);
 			}
 			else if(this.handleId === BezierCurveHandle.P2 && !isPointsOverlap(this.lineBezier.end, closestPoint)) {
 				this.lineBezier.end = closestPoint;
@@ -141,18 +139,16 @@ export class BezierManipulationPlugin {
 					else if(handle === BezierHandle.B) startControl.y += lineLength;
 				}
 
-				angleControl.x = this.lineBezier.end.x - endControl.x,
-				angleControl.y = this.lineBezier.end.y - endControl.y,
+				angleControl.x = this.lineBezier.end.x - endControl.x;
+				angleControl.y = this.lineBezier.end.y - endControl.y;
 
 				this.lineBezier.startControl = startControl;
 				this.lineBezier.endControl = endControl;
 				this.lineBezier.angleControl = angleControl;
 				this.lineBezier.draw();
 
-				// if(!closestElement.container.linkedLinesUUID.includes(this.container.uuid)) {
-					closestElement.container.attachLine(this.container.uuid);
-					this.container.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
-				// }
+				closestElement.container.attachLine(this.container.uuid);
+				this.container.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;
