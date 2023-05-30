@@ -12,15 +12,11 @@ import {
 
 import { WSServiceErrorCatcher } from '@/common/decorators/ws.catch.decorator';
 import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.middleware';
-import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import {
 	ElementPosition,
-	SerializedContainer,
-	SerializedContainerBounds,
 } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
-import { flatten } from 'mongo-dot-notation';
 import { RetrospectivesRepository } from '@/base/retrospectives/retrospectives.repository';
 import { Postit, Retrospective } from '@/base/retrospectives/interfaces/retrospectives.interface';
 
