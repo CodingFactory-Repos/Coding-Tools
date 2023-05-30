@@ -1,10 +1,11 @@
 import { User } from './auth.interfaces';
 
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>;
-	tempMovingPostit: Postit;
-	currentRetro: Retrospective;
-	userCursors: Array<UserCursor>;
+	privatePostit: Array<Postit>,
+	tempMovingPostit: Postit,
+	currentRetro: Retrospective
+	userCursors: Array<UserCursor>
+	allRetros: Array<Retrospective>
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;

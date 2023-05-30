@@ -9,5 +9,9 @@ export const tryGetCurrentRetro = async (slug: string) => {
 };
 
 export const newPostit = async (postit) => {
-	return await http.post('/retrospectives/newPostit', postit);
-};
+	return await http.post('/retrospectives/newPostit', postit)
+}
+
+export const tryGetAllRetro = async () => {
+	return await http.get('/retrospectives/allRetros')
+}

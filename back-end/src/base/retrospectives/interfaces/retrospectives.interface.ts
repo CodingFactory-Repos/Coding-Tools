@@ -5,9 +5,9 @@ export interface Retrospective {
 	_id?: ObjectId;
 	slug?: string;
 	title: string;
-	creatorName?: string;
+	creator?: string;
 	createdAt?: Date;
-	participants: Array<User>;
+	participants?: Array<string>;
 	postits: Array<Postit>;
 	endedAt?: Date;
 }

@@ -1,4 +1,4 @@
-import { createRetro, newPostit, tryGetCurrentRetro } from '@/api/retrospective-req';
+import { createRetro, newPostit, tryGetAllRetro, tryGetCurrentRetro } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
 	Postit,
@@ -14,6 +14,7 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	tempMovingPostit: {},
 	currentRetro: {},
 	userCursors: [],
+	allRetros: []
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -121,5 +122,10 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
 			this.userCursors.splice(findCursor, 1);
 		},
+		// Last from store
+		async getAllRetros(this: RetrospectiveStore) {
+			const resp = await tryGetAllRetro();
+			this.allRetros = resp.data.retrospectives;
+		}
 	},
 });
