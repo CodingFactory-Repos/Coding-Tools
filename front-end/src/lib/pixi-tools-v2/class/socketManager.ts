@@ -9,6 +9,7 @@ import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { LineContainer } from './lineContainer';
 import { Rectangle } from '../model/template';
+import { useRouter } from 'vue-router';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -29,6 +30,16 @@ export class SocketManager extends Manager {
 		this.canvasSocket.on('peer-disconnected', (peerEmail: string) => {
 			temporaryNotification('#9e0000', '#ffffff', `${peerEmail} disconnected`);
 		});
+
+		this.canvasSocket.on('access-lost', () => {
+			temporaryNotification('#9e0000', '#ffffff', `The owner of the project removed your access, you will be redirected in 10 seconds`, 10000);
+			this.canvasSocket.disconnect();
+			this._close();
+			const timer = setTimeout(() => {
+				window.location.pathname = '/app/agility/dashboard';
+				clearTimeout(timer);
+			}, 10000);
+		})
 
 		this.canvasSocket.on('element-added', (container: SerializedContainer) => {
 			const ctn = Normalizer.container(this.viewport, container, true);
