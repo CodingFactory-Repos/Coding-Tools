@@ -14,6 +14,7 @@ import { ServiceError } from '@/common/decorators/catch.decorator';
 import { CanvasRoomEventEmitter } from '@/base/canvasRoom/events/canvasRoom.events';
 import { generateRandomToken } from '@/common/helpers/string.helper';
 import { CanvasRoomInvitationRepository } from '@/base/canvasRoom/canvasRoomInvitation.repository';
+import { CanvasGateway } from '@/common/gateways/canvas.global.gateway';
 
 @Injectable()
 export class CanvasRoomService {
@@ -21,9 +22,11 @@ export class CanvasRoomService {
 		@Inject(forwardRef(() => UsersRepository))
 		@Inject(forwardRef(() => CanvasRoomRepository))
 		@Inject(forwardRef(() => CanvasRoomInvitationRepository))
+		@Inject(forwardRef(() => CanvasGateway))
 		private usersRepository: UsersRepository,
 		private canvasRoomRepository: CanvasRoomRepository,
 		private canvasRoomInvitationRepository: CanvasRoomInvitationRepository,
+		private canvasGateway: CanvasGateway,
 		private canvasRoomEventEmitter: CanvasRoomEventEmitter,
 	) {}
 
@@ -323,6 +326,8 @@ export class CanvasRoomService {
 
 			const inviteQuery = { userId: targetObjectId, canvasId: roomObjectId };
 			await this.canvasRoomInvitationRepository.deleteOneCanvasRoomInvitation(inviteQuery);
+
+			this.canvasGateway.server.to(targetId.toString()).emit("access-lost");
 		} catch(err) {
 			if (err instanceof Error) {
 				NestLogger.error(err);

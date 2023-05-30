@@ -52,6 +52,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const user = await this.usersRepository.findOne(query, projection);
 
 		client.join(client.roomId);
+		client.join(client.user.id.toString())
 		client.to(client.roomId).emit('peer-connected', user.profile.email);
 	}
 
