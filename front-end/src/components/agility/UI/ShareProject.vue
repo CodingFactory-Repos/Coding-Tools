@@ -27,7 +27,7 @@
 					/>
 				</template>
 				<div v-else class="h-full w-full flex justify-center pt-5">
-					<span>No user found...</span>
+					<span class="text-black dark:text-white">No user found...</span>
 				</div>
 			</div>
 		</template>

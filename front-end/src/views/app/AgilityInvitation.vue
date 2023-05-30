@@ -1,8 +1,8 @@
 <template>
 	<div class="flex w-full h-full justify-center items-center">
-		<div class="flex flex-col justify-center items-center bg-dark-tertiary rounded-lg w-1/3 h-1/3 p-5">
+		<div class="flex flex-col justify-center items-center bg-light-primary dark:bg-dark-tertiary rounded-lg w-1/3 h-1/3 p-5">
 			<span
-				class="text-xl font-bold"
+				class="text-xl font-bold text-black dark:text-white"
 				v-if="isLoading"
 			>
 				Loading...
@@ -12,14 +12,14 @@
 				v-else-if="success"
 			>
 				<SvgRoundCheck width="60" height="60" class="!fill-green-500 dakr:!fill-green-500"/>
-				<span class="text-xl font-bold text-center">You are now able to access the canvas project</span>
+				<span class="text-xl font-bold text-center text-black dark:text-white">You are now able to access the canvas project</span>
 				<DefaultButton
 					@click="gotoProject"
 					class="mt-5"
 					type="button"
 					text="Join the project"
-					color="text-white hover:text-white"
-					text-style="text-white hover:text-white"
+					color="text-black dark:text-white"
+					text-style="text-black dark:text-white"
 					background="bg-green-500 hover:bg-green-500"
 				/>
 			</div>
@@ -28,9 +28,9 @@
 				v-else-if="!success"
 			>
 				<SvgWarning width="60" height="60" class="!fill-red-500 dakr:!fill-red-500"/>
-				<span class="text-xl font-bold">An error occured</span>
-				<span class="text-center">Please verify that the link you received is correct.</span>
-				<span class="text-center">If the problem persist, do not hesitate to contact the user that sent you the invitation.</span>
+				<span class="text-xl font-bold text-black dark:text-white">An error occured</span>
+				<span class="text-center text-black dark:text-white">Please verify that the link you received is correct.</span>
+				<span class="text-center text-black dark:text-white">If the problem persist, do not hesitate to contact the user that sent you the invitation.</span>
 			</div>
 		</div>
 	</div>

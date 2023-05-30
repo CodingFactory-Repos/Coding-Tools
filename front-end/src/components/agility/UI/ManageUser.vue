@@ -1,7 +1,7 @@
 <template>
 	<ModalOverlay  v-if="showLogoutModal" @close="beforeModalClose" size="lg">
 		<template #header>
-			<span class="text-lg font-bold pb-2">Manage the users access</span>
+			<span class="text-lg font-bold pb-2 text-black dark:text-white">Manage the users access</span>
 		</template>
 		<template #body>
 			<div class="flex flex-col w-full h-[400px] overflow-y-scroll gap-2 pt-2 ">
@@ -14,7 +14,7 @@
 					/>
 				</template>
 				<div v-else class="h-full w-full flex justify-center pt-5">
-					<span>No user found...</span>
+					<span class="text-black dark:text-white">No user found...</span>
 				</div>
 			</div>
 		</template>
