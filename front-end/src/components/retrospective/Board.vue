@@ -58,7 +58,7 @@
 					<Postit :postit="postit" v-for="postit in postitsInCurrentRetro[3]"/>
 				</div>
 			</div>
-
+			<UserCursors />
 		</div>
 </template>
 
@@ -66,6 +66,7 @@
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import Postit from './Postit.vue';
 import { computed } from 'vue';
+import UserCursors from './utils/UserCursors.vue';
 
 const props = defineProps({
 	optionTemplate: { type: Number, required: true}

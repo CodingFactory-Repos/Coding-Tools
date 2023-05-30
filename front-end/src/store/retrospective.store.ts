@@ -1,13 +1,14 @@
 import { createRetro, newPostit, tryGetCurrentRetro } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
-import { Postit, Retrospective, RetrospectiveStore } from './interfaces/retrospective.interface';
+import { Postit, Retrospective, RetrospectiveStore, UserCursor, UserDisconnect } from './interfaces/retrospective.interface';
 import { socketRetro } from '@/composables/useSocketRetro';
 
 
 const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	privatePostit: [],
 	tempMovingPostit: {},
-	currentRetro: {}
+	currentRetro: {},
+	userCursors: []
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -34,8 +35,6 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			return true;
 		},
 		async addPostitToBoard(this: RetrospectiveStore, type: number, postit: Postit) {
-			// TODO: Request To BDD
-			// TODO: Implement socket io
 			if (postit.type) {
 				const lastIndex = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id);
 				this.currentRetro.postits[postit.type].splice(lastIndex, 1);
@@ -92,6 +91,22 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		async updateFromSocket(this: RetrospectiveStore, postit: Postit) {
 			const index = this.currentRetro.postits[postit.type].findIndex((el: Postit) => el.id === postit.id)
 			this.currentRetro.postits[postit.type][index].value = postit.value
+		},
+		async updateUserCursor(this: RetrospectiveStore, userCursor: UserCursor) {
+
+			const existingCursorIndex = this.userCursors.findIndex(
+				(cursor) => cursor.clientId === userCursor.clientId
+			);
+
+			if (existingCursorIndex !== -1) {
+				this.userCursors.splice(existingCursorIndex, 1, userCursor);
+			} else {
+				this.userCursors.push(userCursor);
+			}
+		},
+		async removeCursor(this: RetrospectiveStore, user: UserDisconnect) {
+			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
+			this.userCursors.splice(findCursor, 1);
 		}
 	},
 });

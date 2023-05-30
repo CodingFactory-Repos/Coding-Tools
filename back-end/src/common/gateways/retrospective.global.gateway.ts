@@ -50,11 +50,6 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 		const query = { _id: client.user.id as ObjectId };
 		const projection = { projection: { profile: { email: 1 } } };
 		const user = await this.usersRepository.findOne(query, projection);
-		console.log("bonjour");
-		console.log("client", client.roomId);
-
-
-
 
 		client.join(client.roomId);
 		client.to(client.roomId).emit('peer-connected', user.profile.email);
@@ -65,7 +60,12 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 		const projection = { projection: { profile: { email: 1 } } };
 		const user = await this.usersRepository.findOne(query, projection);
 
-		client.to(client.roomId).emit('peer-disconnected', user.profile.email);
+		const userDisconnected = {
+			email: user.profile.email,
+			id: client.id
+		}
+
+		client.to(client.roomId).emit('peer-disconnected', userDisconnected);
 	}
 	@SubscribeMessage('add-postit')
 	handlePostitAdded(client: AuthSocket, currentRetro: Retrospective) {
@@ -99,6 +99,10 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 
 	@SubscribeMessage('update-mouse-moved')
 	handleMouseMoved(client: AuthSocket, position: ElementPosition) {
-		client.to(client.roomId).emit('peer-mouse-moved', client.id, position);
+		const returnData = {
+			position,
+			clientId: client.id
+		}
+		client.to(client.roomId).emit('peer-mouse-moved', returnData);
 	}
 }

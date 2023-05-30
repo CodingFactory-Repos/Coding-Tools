@@ -17,7 +17,7 @@
 			<Board :optionTemplate="optionTemplate" />
 		</div>
 		<div
-			class="h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
+			class="privateSection h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
 			@dragenter.prevent
 			@dragover.prevent
 			@drop="dropPostit()"
@@ -53,13 +53,18 @@ onMounted(async () => {
 	if (route.params.id)
 		retrospectiveStore.getCurrentRetro(route.params.id as string);
 
-	useSocket(route.params.id);
+	useSocket(route.params.id as string);
 })
 
 onUnmounted(() => {
 	socketRetro.socket.disconnect();
 });
 
-
-
 </script>
+
+<style lang="scss">
+
+.privateSection {
+	z-index: 1000;
+}
+</style>

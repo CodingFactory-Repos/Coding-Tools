@@ -22,6 +22,14 @@ function handleSocketEvents(socket: Socket) {
 		retrospectiveStore.updateFromSocket(postit)
 	})
 
+	socket.on("peer-mouse-moved", (userCursor) => {
+		retrospectiveStore.updateUserCursor(userCursor);
+	});
+
+	socket.on("peer-disconnected", (user) => {
+		retrospectiveStore.removeCursor(user);
+	});
+
 }
 
 
@@ -34,7 +42,7 @@ socket: {} as Socket
 
 
 
-export function useSocket(roomId) {
+export function useSocket(roomId: string) {
 	socketRetro.socket =  manager.socket("/retrospective");
 	socketRetro.socket.auth = { roomId: roomId };
 	socketRetro.socket.connect();
