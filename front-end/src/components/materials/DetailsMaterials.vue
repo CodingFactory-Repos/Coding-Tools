@@ -167,7 +167,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { http } from '@/api/network/axios';
 import BorrowHistoryMaterials from '@/components/materials/BorrowHistoryMaterials.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
