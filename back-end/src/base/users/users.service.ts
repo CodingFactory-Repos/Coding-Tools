@@ -189,7 +189,7 @@ export class UsersService {
 						{
 							$expr: {
 								$not: {
-									$in: ["$_id", "$matchedDocuments.allowedPeers"]
+									$in: ["$_id", { $arrayElemAt: ["$matchedDocuments.allowedPeers", 0] }],
 								},
 							}
 						},
