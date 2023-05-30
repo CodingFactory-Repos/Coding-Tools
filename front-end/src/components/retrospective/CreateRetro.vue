@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import Overlay from '@/components/retrospectiveComponents/utils/Overlay.vue';
+import Overlay from '@/components/retrospective/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import { withErrorHandler } from '@/utils/storeHandler';
