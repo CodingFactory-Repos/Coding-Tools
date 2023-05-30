@@ -11,13 +11,9 @@ import {
 	LeftWall,
 	TopWall,
 	BottomWall,
-	BezierHandle,
 } from '../types/pixi-enums';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
-import type { ContainerSize, ElementPosition, InitialGraphicState } from '../types/pixi-container';
-import { GenericContainer } from '../class/genericContainer';
-import { LineContainer } from '../class/lineContainer';
-import { getLengthFromPoints } from '../utils/lengthFromPoints';
+import type { ContainerSize, InitialGraphicState } from '../types/pixi-container';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 export interface ProportionScaleOptions {

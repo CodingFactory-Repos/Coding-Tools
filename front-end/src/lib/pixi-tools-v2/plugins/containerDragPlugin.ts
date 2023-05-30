@@ -3,12 +3,8 @@ import { FramedContainer } from '../class/framedContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
 import { ViewportUI } from '../viewportUI';
 
-import type { ElementPosition, InitialGraphicState } from '../types/pixi-container';
+import type { InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
-import { GenericContainer } from '../class/genericContainer';
-import { LineContainer } from '../class/lineContainer';
-import { getLengthFromPoints } from '../utils/lengthFromPoints';
-import { BezierHandle } from '../types/pixi-enums';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 type FrameIntersect = {
