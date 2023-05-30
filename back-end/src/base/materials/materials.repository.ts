@@ -48,9 +48,17 @@ export class MaterialsRepository {
 		return this.materials.deleteOne(query);
 	}
 	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
-		return this.materials.updateOne(query, update);
+		this.materials.updateOne(query, update);
+		return this.materials.findOne(query);
 	}
 	async getMaterialById(id: string) {
 		return this.materials.findOne({ _id: new ObjectId(id) });
+	}
+	async getPendingReservation() {
+		return this.materials
+			.find({
+				$or: [{ 'borrowingHistory.status': 'PENDING' }],
+			})
+			.toArray();
 	}
 }

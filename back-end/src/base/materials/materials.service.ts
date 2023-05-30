@@ -36,4 +36,7 @@ export class MaterialsService {
 	async getMaterialById(id) {
 		return await this.materialsRepository.getMaterialById(id);
 	}
+	async getPendingReservation() {
+		return await this.materialsRepository.getPendingReservation();
+	}
 }

@@ -60,7 +60,6 @@ export class MaterialsController {
 			$push: { borrowingHistory: { ...body, borrowingUser: new ObjectId(body.borrowingUser) } },
 		};
 
-		console.log(update);
 		this.materialsService.addReservation(query, update).then((material) => {
 			res.status(200).json(material);
 		});
@@ -79,5 +78,11 @@ export class MaterialsController {
 		const material = await this.materialsService.getMaterialById(id);
 		delete material._id;
 		res.status(200).json(material);
+	}
+
+	@Get('pendingReservation')
+	async getPendingReservation(@Res() res: Response) {
+		const materials = await this.materialsService.getPendingReservation();
+		res.status(200).json(materials);
 	}
 }
