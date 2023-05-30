@@ -90,7 +90,9 @@ const changeColor = (col: ColorPickerUpdate) => {
 			x: graphic.x,
 			y: graphic.y,
 			width: graphic.width,
-			height: graphic.height
+			height: graphic.height,
+			//@ts-ignore
+			radius: graphic.radius,
 		})
 
 		if(projectStore.scene.viewport.socketPlugin) {
