@@ -36,9 +36,6 @@
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgText width="22" height="22" class="!fill-gray-400" />
 				</IconButton>
-				<!-- <IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createRectangle">
-					<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
-				</IconButton> -->
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createFrame">
 					<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
 				</IconButton>
@@ -143,7 +140,6 @@ import SvgGear from '@/components/common/svg/Gear.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
 import SvgText from '@/components/common/svg/Text.vue';
-// import SvgPostIt from '@/components/common/svg/PostIt.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgShape from '@/components/common/svg/Shape.vue';
 import SvgDownload from '@/components/common/svg/Download.vue';

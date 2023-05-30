@@ -18,9 +18,6 @@
 			<IconButton class="h-fit" type="button">
 				<SvgText width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
-			<!-- <IconButton class="h-fit" type="button" @click="createRectangle">
-				<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
-			</IconButton> -->
 			<IconButton class="h-fit" type="button" @click="createFrame">
 				<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
 			</IconButton>
@@ -103,7 +100,6 @@ import ShareProject from '@/components/agility/UI/ShareProject.vue';
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
 import SvgText from '@/components/common/svg/Text.vue';
-// import SvgPostIt from '@/components/common/svg/PostIt.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgShape from '@/components/common/svg/Shape.vue';
 import SvgDownload from '@/components/common/svg/Download.vue';
