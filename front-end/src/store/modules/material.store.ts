@@ -2,9 +2,15 @@ import { defineStore } from 'pinia';
 
 import { isEmpty } from '@/utils/string.helper';
 
-import { getMaterials, createMaterial, updateMaterial, deleteMaterial } from '@/api/material-req';
+import {
+	getMaterials,
+	createMaterial,
+	updateMaterial,
+	deleteMaterial,
+	borrowMaterial,
+} from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
-import { Material, MaterialStore } from '@/store/interfaces/material.interface';
+import { Material, MaterialStore, BorrowingMaterial } from '@/store/interfaces/material.interface';
 
 export const useMaterialStore = defineStore('materialStore', {
 	state: (): {
@@ -56,6 +62,13 @@ export const useMaterialStore = defineStore('materialStore', {
 			if (res.status !== 200) throw new Error('The returned status was not expected');
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials.splice(index, 1);
+			return true;
+		}),
+		borrowMaterial: withErrorHandler(async function (id: string, payload: BorrowingMaterial) {
+			const res = await borrowMaterial(id, payload);
+			if (res.status !== 200) throw new Error('The returned status was not expected');
+			const index = this.materials.findIndex((el) => el._id === id);
+			this.materials[index] = res.data;
 			return true;
 		}),
 	},

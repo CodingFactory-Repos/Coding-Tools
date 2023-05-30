@@ -47,26 +47,29 @@
 </template>
 
 <script lang="ts" setup>
-import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { ref } from 'vue';
+import { useMaterialStore } from '@/store/modules/material.store';
 
 const props = defineProps<{
 	id: string;
 	userId: string;
-}>()
+}>();
 
+const materialStore = useMaterialStore();
 const today = new Date().toISOString().substring(0, 10);
 const borrowingDate = ref('');
 const description = ref('');
 const returnDate = ref('');
 
 const borrorwingMaterial = withErrorHandler(async function (identifiant: string) {
-	http.put('/materials/reservation/' + identifiant, {
-		borrowingDate: new Date(borrowingDate.value).toISOString(),
+	materialStore.borrowMaterial(identifiant, {
+		borrowingDate: new Date(borrowingDate.value),
 		borrowingUser: props.userId,
 		description: description.value,
-		returnDate: new Date(returnDate.value).toISOString(),
+		returnDate: new Date(returnDate.value),
+		status: 'PENDING',
 	});
+
 });
 </script>
