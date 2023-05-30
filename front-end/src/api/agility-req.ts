@@ -52,7 +52,7 @@ export const apiTryCreateNewProject = () => {
 };
 
 export const apiTryGetRoomProject = (roomId: string) => {
-	return http.get<Status<{ project: Array<SerializedContainer> }>>(`/canvas-room/${roomId}`);
+	return http.get<Status<{ project: Array<SerializedContainer>, isOwner: boolean }>>(`/canvas-room/${roomId}`);
 };
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {

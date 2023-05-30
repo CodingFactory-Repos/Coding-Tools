@@ -5,6 +5,7 @@ export interface AgilityStore {
 	metaTemplates: Array<AgilityTemplateMetaDetails>;
 	currentProject: Array<SerializedContainer>;
 	projectLoading: boolean;
+	isOwner: boolean;
 
 	tryCreateNewProject?: (this: AgilityStore) => Promise<boolean | string>;
 	tryGetProjectsMeta?: (this: AgilityStore) => Promise<boolean>;

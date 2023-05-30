@@ -19,6 +19,7 @@ const agilityStoreDefaultState = (): AgilityStore => ({
 	metaTemplates: [],
 	currentProject: [],
 	projectLoading: false,
+	isOwner: false,
 });
 
 export const useAgilityStore = defineStore('agility', {
@@ -51,6 +52,7 @@ export const useAgilityStore = defineStore('agility', {
 			const res = await apiTryGetRoomProject(roomId);
 			if (res.data.status === 'ok') {
 				this.currentProject = res.data.project ?? [];
+				this.isOwner = res.data.isOwner;
 				this.projectLoading = false;
 				return true;
 			}
