@@ -6,7 +6,7 @@ import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { ProjectInvitationDTO, ProjectInvitationVerificationDTO, ProjectMetaDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
+import { ProjectInvitationVerificationDTO, ProjectMetaDTO, ProjectUserIdDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
 
 @Controller('canvas-room')
 @UseFilters(ServiceErrorCatcher)
@@ -53,6 +53,29 @@ export class CanvasRoomController {
 		return res.status(201).json({ status: 'ok', project });
 	}
 
+	@Get(':roomId/users-access')
+	@UseGuards(JwtAuthGuard)
+	async getAccessUsers(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
+		const users = await this.canvasRoomService.getAccessUsers(roomId, userId);
+		return res.status(201).json({ status: 'ok', users });
+	}
+
+	@Post(':roomId/remove-access')
+	@UseGuards(JwtAuthGuard)
+	async removeUserAccessToProject(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Body() body: ProjectUserIdDTO,
+		@Res() res: Response,
+	) {
+		await this.canvasRoomService.removeUserAccessToProject(body.userId, roomId, userId);
+		return res.status(201).json({ status: 'ok' });
+	}
+
 	@Post('new')
 	@UseGuards(JwtAuthGuard)
 	async createNewProject(@Jwt() userId: ObjectId, @Res() res: Response) {
@@ -76,7 +99,7 @@ export class CanvasRoomController {
 	@UseGuards(JwtAuthGuard)
 	async sendProjectInvitation(
 		@Jwt() userId: ObjectId,
-		@Body() body: ProjectInvitationDTO,
+		@Body() body: ProjectUserIdDTO,
 		@Param('roomId') roomId: string,
 		@Res() res: Response,
 	) {

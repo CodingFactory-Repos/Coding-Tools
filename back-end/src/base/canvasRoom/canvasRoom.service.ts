@@ -214,4 +214,122 @@ export class CanvasRoomService {
 		await this.canvasRoomRepository.updateOneCanvasRoom({ _id: invitation.value.canvasId }, { $push: { allowedPeers: userId }});
 		return invitation.value.canvasId;
 	}
+
+	async getAccessUsers(roomId: string, userId: ObjectId) {
+		if(roomId.length !== 24)
+			throw new ServiceError("BAD_REQUEST", "Invalid parameter");
+
+		const users = await this.usersRepository.users.aggregate([
+			{
+				$match: {
+					role: { $in: [1, 2] }
+				}
+			},
+			{
+				$lookup: {
+					from: "canvas-room",
+					pipeline: [
+						{
+							$match: {
+								_id: new ObjectId(roomId),
+								owner: userId,
+							}
+						}
+					],
+					as: "matchedDocuments"
+				}
+			},
+			{
+				$lookup: {
+					from: "canvas-room-invitation",
+					let: {
+						roomId: "$matchedDocuments._id",
+						userId: "$_id"
+					},
+					pipeline: [
+						{
+							$match: {
+								$expr: {
+									$and: [
+										{ $eq: ["$canvasId", { $arrayElemAt: ["$$roomId", 0] }] },
+										{ $eq: ["$userId", "$$userId"] }
+									]
+								}
+							}
+						},
+					],
+					as: "pendingInvitations"
+				}
+			},
+			{
+				$match: {
+					$expr: {
+						$or: [
+							{ $in: ["$_id", { $arrayElemAt: ["$matchedDocuments.allowedPeers", 0] }] },
+							{ $gt: [{ $size: "$pendingInvitations" }, 0] }
+						]
+					}
+				}
+			},
+			{
+			  $match: {
+				$and: [
+				  {
+					$expr: {
+					  $not: {
+						$in: ["$_id", "$matchedDocuments.owner"]
+					  }
+					}
+				  }
+				]
+			  }
+			},
+			{
+				$project: {
+					_id: 0,
+					id: "$_id",
+					picture: "$profile.picture",
+					firstName: "$profile.firstName",
+					lastName: "$profile.lastName",
+					groupName: "$schoolProfile.groupName",
+					pending: {
+					$cond: {
+						if: { $gt: [{ $size: "$pendingInvitations" }, 0] },
+							then: true,
+							else: false
+						}
+					}
+				}
+			},
+			{
+				$sort: { "firstName": 1 }
+			},
+		]).toArray();
+		
+		return users ?? [];
+	}
+
+	async removeUserAccessToProject(targetId: string, roomId: string, userId: ObjectId) {
+		if(roomId.length !== 24 || targetId.length !== 24)
+			throw new ServiceError("BAD_REQUEST", "Invalid parameter");
+
+		try {
+			const targetObjectId = new ObjectId(targetId);
+			const roomObjectId = new ObjectId(roomId);
+
+			const query = { _id: roomObjectId, owner: userId };
+			const update = { $pull: { allowedPeers: targetObjectId }};
+			await this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+
+			const inviteQuery = { userId: targetObjectId, canvasId: roomObjectId };
+			const inviteUpdate = { $set: { expireAt: new Date() } };
+			await this.canvasRoomInvitationRepository.findOneAndUpdateCanvasRoomInvitation(inviteQuery, inviteUpdate);
+		} catch(err) {
+			if (err instanceof Error) {
+				NestLogger.error(err);
+			}
+
+			throw new ServiceError("BAD_REQUEST", "Invalid payload");
+		}
+	}
 }
