@@ -64,33 +64,33 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 		client.to(client.roomId).emit('peer-disconnected', userDisconnected);
 	}
 	@SubscribeMessage('add-postit')
-	handlePostitAdded(client: AuthSocket, currentRetro: Retrospective) {
+	async handlePostitAdded(client: AuthSocket, currentRetro: Retrospective) {
 		client.to(client.roomId).emit('postit-added', currentRetro.postits);
 
 		const postits = currentRetro.postits;
 		const query = { slug: client.roomId };
 		const update = { $set: { postits: postits } };
 
-		this.retrospectivesRepository.updateOneRetrospective(query, update);
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('delete-postit')
-	handlePostitDeleted(client: AuthSocket, postit: Postit) {
+	async handlePostitDeleted(client: AuthSocket, postit: Postit) {
 		client.to(client.roomId).emit('postit-deleted', postit);
 
 		const query = { slug: client.roomId };
 		const update = { $pull: { [`postits.${postit.type}`] : {id:  postit.id}} } ;
 
-		this.retrospectivesRepository.updateOneRetrospective(query, update);
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('update-postit')
-	handlePostitUpdated(client: AuthSocket, postit: Postit) {
+	async handlePostitUpdated(client: AuthSocket, postit: Postit) {
 		client.to(client.roomId).emit('postit-updated', postit);
 
 		const query = { slug: client.roomId,  [`postits.${postit.type}.id`] : postit.id };
 		const update = { $set: { [`postits.${postit.type}.$.value`]: postit.value }};
-		this.retrospectivesRepository.updateOneRetrospective(query, update);
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('update-mouse-moved')
