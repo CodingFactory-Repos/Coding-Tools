@@ -36,15 +36,31 @@
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
 					<SvgText width="22" height="22" class="!fill-gray-400" />
 				</IconButton>
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createRectangle">
+				<!-- <IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createRectangle">
 					<SvgPostIt width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
-				</IconButton>
+				</IconButton> -->
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createFrame">
 					<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
 				</IconButton>
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
-					<SvgShape width="22" height="22" class="!fill-gray-400"/>
-				</IconButton>
+				<div class="relative flex items-center justify-center z-10">
+					<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="toggleGeometryPopUp">
+						<SvgShape width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showGeometryPopUp}"/>
+					</IconButton>
+					<div
+						v-if="showGeometryPopUp"
+						class="absolute right-[-60px] w-[42px] h-fit p-1 bg-light-primary dark:bg-dark-tertiary rounded flex flex-col items-center justify-center"
+					>
+						<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createGeometry('rectangle')">
+							<SvgRectangle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
+						</IconButton>
+						<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createGeometry('circle')">
+							<SvgCircle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'circle' }"/>
+						</IconButton>
+						<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="createGeometry('triangle')">
+							<SvgTriangle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'triangle' }"/>
+						</IconButton>
+					</div>
+				</div>
 			</div>
 			<div class="flex flex-col items-center justify-center bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded w-[42px] shadow-md pointer-events-auto">
 				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="onContextMenu">
@@ -113,7 +129,7 @@
 import { computed, watch, ref } from 'vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
-import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { DownloadType, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import ShareProject from '@/components/agility/UI/ShareProject.vue';
@@ -127,7 +143,7 @@ import SvgGear from '@/components/common/svg/Gear.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
 import SvgCursor from '@/components/common/svg/Cursor.vue';
 import SvgText from '@/components/common/svg/Text.vue';
-import SvgPostIt from '@/components/common/svg/PostIt.vue';
+// import SvgPostIt from '@/components/common/svg/PostIt.vue';
 import SvgFrame from '@/components/common/svg/Frame.vue';
 import SvgShape from '@/components/common/svg/Shape.vue';
 import SvgDownload from '@/components/common/svg/Download.vue';
@@ -135,6 +151,9 @@ import SvgProject from '@/components/common/svg/Project.vue';
 import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
+import SvgCircle from '@/components/common/svg/Circle.vue';
+import SvgRectangle from '@/components/common/svg/Rectangle.vue';
+import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
@@ -146,7 +165,10 @@ const isOwner = computed(() => agilityStore.isOwner);
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {
-	if(val) projectStore.enableSelectionBox()
+	if(val) {
+		projectStore.enableSelectionBox();
+		closeGeometryPopUp();
+	}
 	else projectStore.enableSelectionBox(true);
 });
 
@@ -154,12 +176,13 @@ const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
 const drawerOpen = ref(false);
 
-const createRectangle = () => {
-	projectStore.deferredGeometry = "rectangle";
+const createGeometry = (geometry: LiteralGeometryTypes) => {
+	projectStore.deferredGeometry = geometry;
 	projectStore.setDeferredEvent("pointer", false);
 }
 
 const createFrame = () => {
+	closeGeometryPopUp();
 	projectStore.deferredGeometry = "framebox";
 	projectStore.setDeferredEvent("pointer", true);
 }
@@ -216,4 +239,12 @@ const closeShareModal = () => { openUserListModal.value = false }
 const isManagerModalOpen = ref(false);
 const openManagerModal = () => { isManagerModalOpen.value = true }
 const closeManagerModal = () => { isManagerModalOpen.value = false }
+
+const showGeometryPopUp = ref(false);
+const toggleGeometryPopUp = () => { showGeometryPopUp.value = !showGeometryPopUp.value }
+const closeGeometryPopUp = () => {
+	if(showGeometryPopUp.value) {
+		showGeometryPopUp.value = false
+	}
+}
 </script>
