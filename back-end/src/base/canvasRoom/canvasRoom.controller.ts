@@ -27,8 +27,8 @@ export class CanvasRoomController {
 		@Param('roomId') roomId: string,
 		@Res() res: Response,
 	) {
-		const project = await this.canvasRoomService.retrieveProject(roomId, userId);
-		return res.status(201).json({ status: 'ok', project });
+		const { project, isOwner } = await this.canvasRoomService.retrieveProject(roomId, userId);
+		return res.status(201).json({ status: 'ok', project, isOwner });
 	}
 
 	@Delete(':roomId')

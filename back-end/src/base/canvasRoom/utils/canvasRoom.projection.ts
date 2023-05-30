@@ -8,6 +8,7 @@ export const PROJECTION_PROJECT = {
 	projection: {
 		project: 1,
 		allowedPeers: 1,
+		owner: 1,
 	},
 };
 

@@ -78,7 +78,7 @@ export class CanvasRoomService {
 		if (room === null)
 			throw new ServiceError('UNAUTHORIZED', 'You do not have the rights to access this ressource');
 
-		return room.project;
+		return { project: room.project, isOwner: room.owner.toString() === userId.toString() };
 	}
 
 	async deleteProject(roomId: string, userId: ObjectId) {
