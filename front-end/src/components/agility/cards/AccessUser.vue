@@ -28,7 +28,7 @@
 			<SvgCross width="22" height="22" class="!fill-gray-400 hover:dark:!fill-red-600"/>
 		</IconButton>
 	</div>
-	<ModalOverlay  v-if="showConfirmModal" @close="closeConfirmModal" size="sm">
+	<ModalOverlay v-if="showConfirmModal" @close="closeConfirmModal" size="sm">
 		<template #body>
 			<div class="flex flex-col gap-4 items-center justify-center pt-3">
 				<h2 class="font-bold text-black dark:text-light-font text-center pt-3">This action is not reversible, are you sure you want to remove the project access of this user ?</h2>
@@ -69,6 +69,10 @@ const props = defineProps<{
 	user: UserCanvasList,
 }>();
 
+const emits = defineEmits<{
+	(e: 'remove-access', user: UserCanvasList)
+}>();
+
 const userCanvas = ref(props.user);
 const showConfirmModal = ref(false);
 const openConfirmModal = () => { showConfirmModal.value = true };
@@ -78,7 +82,7 @@ const removeAccess = async (userId: string) => {
 	try {
 		const res = await apiTryRemoveUserAccess(userId, props.roomId);
 		if (res.data.status === STATUS.OK) {
-
+			emits("remove-access", userCanvas.value);
 		}
 	} catch(err) {
 		if (err instanceof AxiosError) {

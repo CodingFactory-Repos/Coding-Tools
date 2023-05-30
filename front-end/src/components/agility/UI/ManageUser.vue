@@ -11,6 +11,7 @@
 						:key="`user_${index}`"
 						:user="user"
 						:room-id="roomId"
+						@remove-access="removeLocalUserAccess"
 					/>
 				</template>
 				<div v-else class="h-full w-full flex justify-center pt-5">
@@ -53,6 +54,12 @@ const fetchAccessUsers = withErrorHandler(async function() {
 		accessUsers.value = res.data.users;
 	}
 })
+
+const removeLocalUserAccess = (user: UserCanvasList) => {
+	const index = accessUsers.value.findIndex((usr) => usr.id === user.id);
+	if(index === -1) return;
+	accessUsers.value.splice(index, 1);
+}
 
 fetchAccessUsers();
 openUserListModal();
