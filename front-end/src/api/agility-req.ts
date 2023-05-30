@@ -5,6 +5,7 @@ import { http } from '@/api/network/axios';
 import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
 import { Status } from '@/store/interfaces/axios.interface';
 import { AxiosResponse } from 'axios';
+import { UserCanvasList } from '@/store/interfaces/user.interface';
 
 export const apiTryGetTemplatesMeta = () => {
 	// Call
@@ -72,4 +73,12 @@ export const apiTrySendProjectInvitation = (userId: string, roomId: string) => {
 
 export const apiTryVerifyInvitationToken = (token: string) => {
 	return http.post<Status<{ roomId: string }>>('/canvas-room/verify-invitation', { token });
+}
+
+export const apiTryGetAccessUsers = (roomId: string) => {
+	return http.get<Status<{ users: Array<UserCanvasList>}>>(`/canvas-room/${roomId}/users-access`);
+}
+
+export const apiTryRemoveUserAccess = (userId: string, roomId: string) => {
+	return http.post<Status>(`/canvas-room/${roomId}/remove-access`, { userId });
 }
