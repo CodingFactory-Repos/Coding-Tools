@@ -9,8 +9,8 @@
 				alt="profile_picture"
 			/>
 			<div class="flex flex-col gap-1">
-				<span class="bold text-sm text-black dark:text-white font-bold">{{ userCanvas.firstName + " " + userCanvas.lastName }}</span>
-				<span class="bold text-sm text-black dark:text-white text-[10px]">{{ userCanvas.groupName }}</span>
+				<span class="text-sm text-black dark:text-white font-bold">{{ userCanvas.firstName + " " + userCanvas.lastName }}</span>
+				<span class="text-black dark:text-white text-[10px]">{{ userCanvas.groupName }}</span>
 			</div>
 		</div>
 		<DefaultButton
