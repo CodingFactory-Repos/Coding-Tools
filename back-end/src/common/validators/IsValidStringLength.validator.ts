@@ -1,4 +1,8 @@
-import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from 'class-validator';
+import {
+	ValidatorConstraint,
+	ValidatorConstraintInterface,
+	ValidationArguments,
+} from 'class-validator';
 
 @ValidatorConstraint({ name: 'isValidStringLength', async: false })
 export class IsValidStringLength implements ValidatorConstraintInterface {

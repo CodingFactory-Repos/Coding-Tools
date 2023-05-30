@@ -6,6 +6,7 @@ import {
 	InternalTypeId,
 	SerializedGraphic,
 	SerializedGraphicBounds,
+	SerializedGraphicColorimetry,
 } from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
@@ -47,6 +48,7 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 	abstract draw(attr: Partial<GraphicUIProperties>): void;
 	abstract serialized(): SerializedGraphic;
 	abstract serializedBounds(): SerializedGraphicBounds;
+	abstract serializedColorimetry(): SerializedGraphicColorimetry;
 }
 
 export class FramedMainContainer extends Container {

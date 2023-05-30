@@ -11,9 +11,9 @@ export const PASSWORD_FORMAT = new RegExp(
 	`^${AT_LEAST_ONE_LETTER}${AT_LEAST_ONE_DIGIT}${AT_LEAST_ONE_SPECIAL_CHAR}${ALLOWED_CHAR}$`,
 );
 
-
 export const STRICT_URL = /^(https?:\/\/[a-zA-Z-]+\.[a-zA-Z0-9-]+(:[0-9]+)?\/?[a-zA-Z0-9-./]*)?$/;
 //! TODO : Will need to be upaded with the config api base url, replace [a-zA-Z\-]+\.[a-zA-Z0-9\-]+(:[0-9]+)?\/?
-export const STRICT_API_URL = /^(https?:\/\/[a-zA-Z-]+\.?[a-zA-Z0-9-]+(:[0-9]+)?\/?[a-zA-Z0-9-./]*)?$/;
+export const STRICT_API_URL =
+	/^(https?:\/\/[a-zA-Z-]+\.?[a-zA-Z0-9-]+(:[0-9]+)?\/?[a-zA-Z0-9-./]*)?$/;
 export const STRICT_GITHUB_URL = /^(https:\/\/github.com\/[a-zA-Z0-9-./]*)?$/;
 export const STRICT_LINKEDIN_URL = /^(https:\/\/www.linkedin.com\/[a-zA-Z0-9-./]*)?$/;

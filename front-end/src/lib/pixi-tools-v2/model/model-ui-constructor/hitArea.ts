@@ -3,6 +3,7 @@ import { GraphicUIProperties } from '../../types/pixi-ui';
 import { InternalTypeId } from '../../types/pixi-serialize';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { modelBounds } from '../../utils/modelBounds';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 
 export class HitArea extends ModelGraphics {
 	public readonly uuid: string;
@@ -44,5 +45,9 @@ export class HitArea extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }

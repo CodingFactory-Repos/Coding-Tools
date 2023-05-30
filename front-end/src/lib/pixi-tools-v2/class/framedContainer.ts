@@ -11,10 +11,12 @@ import {
 } from '../types/pixi-class';
 import {
 	ContainerTypeId,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedGraphic,
 	SerializedGraphicBounds,
+	SerializedGraphicColorimetry,
 } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
@@ -29,6 +31,7 @@ export class FramedContainer extends PluginContainer {
 	public readonly titleContainer: TitleContainer;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
+	public linkedLinesUUID: Array<string> = [];
 
 	public absMinX: number;
 	public absMinY: number;
@@ -308,6 +311,26 @@ export class FramedContainer extends PluginContainer {
 		};
 	}
 
+	public serializedColorimetry(): SerializedColorimetry {
+		const genericContainerSerialized: Array<SerializedColorimetry | SerializedGraphicColorimetry> =
+			[];
+		let backgroundSerialized: SerializedGraphicColorimetry;
+
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serializedColorimetry();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerialized.push(element.serializedColorimetry());
+			}
+		}
+
+		return {
+			uuid: this.uuid,
+			background: backgroundSerialized,
+			childs: genericContainerSerialized,
+		};
+	}
+
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = serializedBounds.background.bounds;
@@ -320,6 +343,16 @@ export class FramedContainer extends PluginContainer {
 		this.frameBox.position.set(bounds.x, bounds.y);
 		this.frameBox.width = bounds.width;
 		this.frameBox.height = bounds.height;
+	}
+
+	public attachLine(lineUUID: string) {
+		this.linkedLinesUUID.push(lineUUID);
+	}
+
+	public detachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if (index === -1) return;
+		this.linkedLinesUUID.splice(index, 1);
 	}
 
 	get frameBoxBounds() {
