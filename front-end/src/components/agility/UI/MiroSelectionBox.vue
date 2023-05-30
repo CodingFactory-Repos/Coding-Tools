@@ -103,6 +103,10 @@
 		v-if="openUserListModal"
 		@close="closeShareModal"
 	/>
+	<ManageUser
+		v-if="isManagerModalOpen"
+		@close="closeManagerModal"
+	/>
 </template>
 
 <script lang="ts" setup>
@@ -204,4 +208,8 @@ const download = (mime: string) => {
 const openUserListModal = ref(false);
 const openShareModal = () => { openUserListModal.value = true }
 const closeShareModal = () => { openUserListModal.value = false }
+
+const isManagerModalOpen = ref(false);
+const openManagerModal = () => { isManagerModalOpen.value = true }
+const closeManagerModal = () => { isManagerModalOpen.value = false }
 </script>

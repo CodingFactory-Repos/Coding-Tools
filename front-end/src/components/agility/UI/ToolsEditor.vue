@@ -54,7 +54,14 @@
 			v-if="openUserListModal"
 			@close="closeShareModal"
 		/>
+		<ManageUser
+			v-if="isManagerModalOpen"
+			@close="closeManagerModal"
+		/>
 		<div class="flex h-full gap-1 items-center">
+			<IconButton class="h-fit" type="button" @click="openManagerModal">
+				<SvgGear width="22" height="22" class="!fill-gray-400"/>
+			</IconButton>
 			<DefaultButton
 				type="button"
 				text="Share"
@@ -88,6 +95,8 @@ import SvgProject from '@/components/common/svg/Project.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
+import SvgGear from '@/components/common/svg/Gear.vue';
+import ManageUser from './ManageUser.vue';
 
 const projectStore = useProjectStore();
 
@@ -138,4 +147,8 @@ const download = (mime: string) => {
 const openUserListModal = ref(false);
 const openShareModal = () => { openUserListModal.value = true }
 const closeShareModal = () => { openUserListModal.value = false }
+
+const isManagerModalOpen = ref(false);
+const openManagerModal = () => { isManagerModalOpen.value = true }
+const closeManagerModal = () => { isManagerModalOpen.value = false }
 </script>
