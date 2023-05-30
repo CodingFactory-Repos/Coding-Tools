@@ -20,7 +20,7 @@ export class ProjectMetaDTO {
 	readonly: boolean;
 }
 
-export class ProjectInvitationDTO {
+export class ProjectUserIdDTO {
 	@IsString()
 	@Length(24)
 	userId: string;
