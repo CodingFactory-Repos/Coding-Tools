@@ -1,4 +1,4 @@
-export const temporaryNotification = (bg: string, color: string, text: string): void => {
+export const temporaryNotification = (bg: string, color: string, text: string, timeoutMs: number = 2500): void => {
 	const existingContainer = document.querySelector('.temporary-notification-container');
 	const root = document.querySelector('#main-content');
 	if (!root) return;
@@ -33,5 +33,5 @@ export const temporaryNotification = (bg: string, color: string, text: string): 
 		setTimeout(() => {
 			div.remove();
 		}, 500);
-	}, 2500);
+	}, timeoutMs);
 };
