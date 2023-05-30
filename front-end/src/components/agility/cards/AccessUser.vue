@@ -24,21 +24,45 @@
 				</span>
 			</div>
 		</div>
-		<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="removeAccess(userCanvas.id)">
+		<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="openConfirmModal">
 			<SvgCross width="22" height="22" class="!fill-gray-400 hover:dark:!fill-red-600"/>
 		</IconButton>
 	</div>
+	<ModalOverlay  v-if="showConfirmModal" @close="closeConfirmModal" size="sm">
+		<template #body>
+			<div class="flex flex-col gap-4 items-center justify-center pt-3">
+				<h2 class="font-bold text-black dark:text-light-font text-center pt-3">This action is not reversible, are you sure you want to remove the project access of this user ?</h2>
+				<div class="flex gap-5">
+					<DefaultButton
+						@click="closeConfirmModal"
+						text="Cancel"
+						text-style="text-black dark:text-black font-bold text-sm"
+						background="bg-light-secondary hover:bg-light-tertiary"
+					/>
+					<DefaultButton
+						@click="removeAccess(userCanvas.id)"
+						text="Yes"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="bg-red-500 hover:bg-red-600"
+					/>
+				</div>
+			</div>
+		</template>
+	</ModalOverlay>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { AxiosError } from 'axios';
+import Swal from 'sweetalert2';
+
 import { UserCanvasList } from '@/store/interfaces/user.interface';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import SvgCross from '@/components/common/svg/Cross.vue';
-import { AxiosError } from 'axios';
 import { STATUS } from '@/store/interfaces/axios.interface';
 import { apiTryRemoveUserAccess } from '@/api/agility-req';
-import Swal from 'sweetalert2';
+import DefaultButton from '@/components/common/buttons/Default.vue';
+import ModalOverlay from '@/components/common/Modal.vue';
 
 const props = defineProps<{
 	roomId: string,
@@ -46,6 +70,9 @@ const props = defineProps<{
 }>();
 
 const userCanvas = ref(props.user);
+const showConfirmModal = ref(false);
+const openConfirmModal = () => { showConfirmModal.value = true };
+const closeConfirmModal = () => { showConfirmModal.value = false };
 
 const removeAccess = async (userId: string) => {
 	try {
