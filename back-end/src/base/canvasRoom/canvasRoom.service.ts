@@ -322,8 +322,7 @@ export class CanvasRoomService {
 			await this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 
 			const inviteQuery = { userId: targetObjectId, canvasId: roomObjectId };
-			const inviteUpdate = { $set: { expireAt: new Date() } };
-			await this.canvasRoomInvitationRepository.findOneAndUpdateCanvasRoomInvitation(inviteQuery, inviteUpdate);
+			await this.canvasRoomInvitationRepository.deleteOneCanvasRoomInvitation(inviteQuery);
 		} catch(err) {
 			if (err instanceof Error) {
 				NestLogger.error(err);
