@@ -43,8 +43,6 @@ export class BezierPlugin {
 	}
 
 	private _initBezierCurve = (e: FederatedPointerEvent) => {
-		console.log(this.container);
-
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
 
