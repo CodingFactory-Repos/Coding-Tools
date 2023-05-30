@@ -1,5 +1,5 @@
 import { http } from '@/api/network/axios';
-import { Material } from '@/store/interfaces/material.interface';
+import { Material, BorrowingMaterial } from '@/store/interfaces/material.interface';
 
 export const getMaterials = async () => {
 	return http.get<Array<Material>>('/materials');
@@ -15,4 +15,8 @@ export const updateMaterial = async (material: Material, id: string) => {
 
 export const deleteMaterial = async (id: string) => {
 	return http.delete<Material>(`materials/delete/${id}`);
+};
+
+export const borrowMaterial = async (id: string, payload: any) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/${id}`, payload);
 };
