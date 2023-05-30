@@ -312,7 +312,8 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public serializedColorimetry(): SerializedColorimetry {
-		const genericContainerSerialized: Array<SerializedColorimetry | SerializedGraphicColorimetry> = [];
+		const genericContainerSerialized: Array<SerializedColorimetry | SerializedGraphicColorimetry> =
+			[];
 		let backgroundSerialized: SerializedGraphicColorimetry;
 
 		for (const element of this.mainContainer.children) {
@@ -350,7 +351,7 @@ export class FramedContainer extends PluginContainer {
 
 	public detachLine(lineUUID: string) {
 		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
-		if(index === -1) return;
+		if (index === -1) return;
 		this.linkedLinesUUID.splice(index, 1);
 	}
 

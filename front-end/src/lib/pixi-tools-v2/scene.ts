@@ -14,12 +14,12 @@ export class Scene extends Application {
 		isDark: boolean,
 		socketOptions?: CanvasSocketOptions,
 	) {
-		super({ 
+		super({
 			view: canvas,
 			width: window.innerWidth,
 			height: window.innerHeight - heightOffset,
 			autoDensity: true,
-			backgroundColor: isDark ? 0x202126 : 0xE5E5E5,
+			backgroundColor: isDark ? 0x202126 : 0xe5e5e5,
 			resolution: devicePixelRatio + 1,
 		});
 
@@ -43,7 +43,7 @@ export class Scene extends Application {
 
 	public changeTheme(isDark: boolean) {
 		//@ts-ignore
-		this.renderer.background._backgroundColor = isDark ? 0x202126 : 0xE5E5E5;
+		this.renderer.background._backgroundColor = isDark ? 0x202126 : 0xe5e5e5;
 		this.viewport.changeGridTheme(isDark);
 	}
 }

@@ -1,6 +1,6 @@
-import { Point } from "pixi.js";
-import { CanvasContainer } from "../types/pixi-aliases";
-import { ElementBounds } from "../types/pixi-container";
+import { Point } from 'pixi.js';
+import { CanvasContainer } from '../types/pixi-aliases';
+import { ElementBounds } from '../types/pixi-container';
 
 interface ClosestElement {
 	container: CanvasContainer;
@@ -8,11 +8,15 @@ interface ClosestElement {
 	distance: number;
 }
 
-export const getClosestElementByPoints = (container: Array<CanvasContainer>, scale: number, point: Point) => {
+export const getClosestElementByPoints = (
+	container: Array<CanvasContainer>,
+	scale: number,
+	point: Point,
+) => {
 	let retrieved = false;
 	const closestElement: Partial<ClosestElement> = {};
 
-	for(let n = 0; n < container.length; n++) {
+	for (let n = 0; n < container.length; n++) {
 		const bounds = container[n].getGeometry();
 
 		const distanceX = Math.max(bounds.x - point.x, 0, point.x - (bounds.x + bounds.width));
@@ -20,9 +24,8 @@ export const getClosestElementByPoints = (container: Array<CanvasContainer>, sca
 		const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 		const threshold = 10 * scale;
 
-		if(distance < threshold) {
-			if(closestElement.distance !== undefined && distance > closestElement.distance)
-				continue;
+		if (distance < threshold) {
+			if (closestElement.distance !== undefined && distance > closestElement.distance) continue;
 
 			closestElement.container = container[n];
 			closestElement.distance = distance;
@@ -34,5 +37,5 @@ export const getClosestElementByPoints = (container: Array<CanvasContainer>, sca
 	return {
 		retrieved,
 		closestElement,
-	}
-}
+	};
+};

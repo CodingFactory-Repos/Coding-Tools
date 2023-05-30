@@ -33,7 +33,7 @@ export const useProjectStore = defineStore('project', {
 		},
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
-		}
+		},
 	},
 	actions: {
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
@@ -92,7 +92,13 @@ export const useProjectStore = defineStore('project', {
 					},
 				],
 			};
-			const genericContainer = Normalizer.container(scene.viewport, data, false, point, this.selectedFrameNumber);
+			const genericContainer = Normalizer.container(
+				scene.viewport,
+				data,
+				false,
+				point,
+				this.selectedFrameNumber,
+			);
 			scene.viewport.addChild(genericContainer);
 
 			scene.viewport.off('pointerup', this.createGeometry);

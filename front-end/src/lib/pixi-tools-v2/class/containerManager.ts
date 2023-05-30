@@ -25,7 +25,7 @@ export class ContainerManager {
 	// But at the same time, we need the reactivity, it's very annoying.
 	public selectedContainers: Array<CanvasContainer> = reactive([]);
 	private _selectedContainers: Array<CanvasContainer> = [];
-	public isEditingContainerProperties: boolean = false;
+	public isEditingContainerProperties = false;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
@@ -40,7 +40,7 @@ export class ContainerManager {
 	}
 
 	private _destroySelected(e: KeyboardEvent) {
-		if(this.isEditingContainerProperties) return;
+		if (this.isEditingContainerProperties) return;
 
 		const key = e.key;
 
@@ -55,18 +55,22 @@ export class ContainerManager {
 					uuid.forEach((lineIdentifier) => {
 						const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
 						if (line.startContainer?.containerUUID !== undefined) {
-							const container = this.viewport.socketPlugin.elements[line.startContainer.containerUUID] as CanvasContainer;
+							const container = this.viewport.socketPlugin.elements[
+								line.startContainer.containerUUID
+							] as CanvasContainer;
 							container.detachLine(lineIdentifier);
 						}
 
 						if (line.endContainer?.containerUUID !== undefined) {
-							const container = this.viewport.socketPlugin.elements[line.endContainer.containerUUID] as CanvasContainer;
+							const container = this.viewport.socketPlugin.elements[
+								line.endContainer.containerUUID
+							] as CanvasContainer;
 							container.detachLine(lineIdentifier);
 						}
 
 						line.destroy();
 						this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
-					})
+					});
 				}
 
 				if (this.viewport.socketPlugin) {
@@ -174,7 +178,7 @@ export class ContainerManager {
 	}
 
 	public drawBorder(container: PluginContainer) {
-		if(container instanceof LineContainer) return;
+		if (container instanceof LineContainer) return;
 		const borderOptions = container.getGeometry();
 
 		this.viewport.createBorder({
@@ -197,13 +201,13 @@ export class ContainerManager {
 	public attachPlugins(container: PluginContainer) {
 		this.viewport.getVisibleChildren();
 
-		if(container instanceof LineContainer) {
+		if (container instanceof LineContainer) {
 			this.bezierManipulationPlugin.attach(container);
 		} else {
 			this.resizePlugin.attach(container);
 			this.dragPlugin.attach(container);
 
-			if(container instanceof FramedContainer || container instanceof GenericContainer) {
+			if (container instanceof FramedContainer || container instanceof GenericContainer) {
 				this.bezierPlugin.attach(container);
 			}
 		}

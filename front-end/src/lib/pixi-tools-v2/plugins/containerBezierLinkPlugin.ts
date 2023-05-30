@@ -11,7 +11,6 @@ import { getClosestPointByPoints } from '../utils/closestPointByPoints';
 import { getLengthFromPoints } from '../utils/lengthFromPoints';
 import { isPointsOverlap } from '../utils/pointsOverlap';
 
-
 export class BezierPlugin {
 	protected readonly viewport: ViewportUI;
 	protected container: CanvasContainer = null;
@@ -25,7 +24,7 @@ export class BezierPlugin {
 
 	public attach(container: CanvasContainer) {
 		//! This is a shit fix.
-		if(this.container !== null) {
+		if (this.container !== null) {
 			this._cancelBezierCurve();
 		}
 
@@ -44,7 +43,7 @@ export class BezierPlugin {
 	}
 
 	private _initBezierCurve = (e: FederatedPointerEvent) => {
-		console.log(this.container)
+		console.log(this.container);
 
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
@@ -58,25 +57,31 @@ export class BezierPlugin {
 
 		const endControl = { x: handle.x, y: handle.y };
 		const startControl = { x: handle.x, y: handle.y };
-		if(this.handleId === BezierHandle.T) startControl.y += offset;
-		else if(this.handleId === BezierHandle.R) startControl.x -= offset;
-		else if(this.handleId === BezierHandle.L) startControl.x += offset;
-		else if(this.handleId === BezierHandle.B) startControl.y -= offset;
+		if (this.handleId === BezierHandle.T) startControl.y += offset;
+		else if (this.handleId === BezierHandle.R) startControl.x -= offset;
+		else if (this.handleId === BezierHandle.L) startControl.x += offset;
+		else if (this.handleId === BezierHandle.B) startControl.y -= offset;
 
-		const lineContainer = Normalizer.container(this.viewport, {
-			typeId: "line",
-			childs: [
-				{
-					typeId: "bezier",
-					lineControl: {
-						start: startControl,
-						end: endControl,
-						startControl: startControl,
-						endControl: endControl,
-					}
-				},
-			],
-		}, false, undefined, this.viewport.activeFrameNumber) as LineContainer;
+		const lineContainer = Normalizer.container(
+			this.viewport,
+			{
+				typeId: 'line',
+				childs: [
+					{
+						typeId: 'bezier',
+						lineControl: {
+							start: startControl,
+							end: endControl,
+							startControl: startControl,
+							endControl: endControl,
+						},
+					},
+				],
+			},
+			false,
+			undefined,
+			this.viewport.activeFrameNumber,
+		) as LineContainer;
 
 		this.lineContainer = lineContainer;
 		this.lineContainer.interactive = false;
@@ -84,8 +89,8 @@ export class BezierPlugin {
 		this.viewport.addChildAt(this.lineContainer, this.viewport.children.length - 13);
 
 		this.container.attachLine(this.lineContainer.uuid);
-		this.lineContainer.attachContainer(this.container.uuid, "start", this.handleId);
-		
+		this.lineContainer.attachContainer(this.container.uuid, 'start', this.handleId);
+
 		// need to be last
 		this.container.on('pointerdown', this._cancelBezierCurve);
 		this.viewport.on('pointerup', this._overrideViewportPointerUp);
@@ -103,25 +108,25 @@ export class BezierPlugin {
 			this.viewport.onScreenChildren,
 			this.viewport.scaled,
 			point,
-		)
+		);
 
-		if(retrieved) {
+		if (retrieved) {
 			this.lineBezier.color = 0xff00ff;
 			const { x, y, width, height } = closestElement.bounds;
 			const rectangleEdgePoints = [
 				{ x: x + width / 2, y: y, id: BezierHandle.T },
-				{ x: x + width, y: y + height / 2 , id: BezierHandle.R},
+				{ x: x + width, y: y + height / 2, id: BezierHandle.R },
 				{ x: x, y: y + height / 2, id: BezierHandle.L },
-				{ x: x + width / 2, y: y + height, id: BezierHandle.B }
+				{ x: x + width / 2, y: y + height, id: BezierHandle.B },
 			];
 
 			const closestPoint = getClosestPointByPoints(
 				rectangleEdgePoints,
 				point,
-				this.lineBezier.start
-			)
+				this.lineBezier.start,
+			);
 
-			if(!isPointsOverlap(this.lineBezier.end, closestPoint)) {
+			if (!isPointsOverlap(this.lineBezier.end, closestPoint)) {
 				this.lineBezier.end = { x: closestPoint.x, y: closestPoint.y };
 
 				const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
@@ -129,15 +134,15 @@ export class BezierPlugin {
 				const angleControl = { ...this.lineBezier.end };
 				const endControl = { ...this.lineBezier.end };
 
-				if(closestPoint.id === BezierHandle.T) endControl.y -= lineLength;
-				else if(closestPoint.id === BezierHandle.R) endControl.x += lineLength;
-				else if(closestPoint.id === BezierHandle.L) endControl.x -= lineLength;
-				else if(closestPoint.id === BezierHandle.B) endControl.y += lineLength;
+				if (closestPoint.id === BezierHandle.T) endControl.y -= lineLength;
+				else if (closestPoint.id === BezierHandle.R) endControl.x += lineLength;
+				else if (closestPoint.id === BezierHandle.L) endControl.x -= lineLength;
+				else if (closestPoint.id === BezierHandle.B) endControl.y += lineLength;
 
-				if(this.handleId === BezierHandle.T) startControl.y -= lineLength;
-				else if(this.handleId === BezierHandle.R) startControl.x += lineLength;
-				else if(this.handleId === BezierHandle.L) startControl.x -= lineLength;
-				else if(this.handleId === BezierHandle.B) startControl.y += lineLength;
+				if (this.handleId === BezierHandle.T) startControl.y -= lineLength;
+				else if (this.handleId === BezierHandle.R) startControl.x += lineLength;
+				else if (this.handleId === BezierHandle.L) startControl.x -= lineLength;
+				else if (this.handleId === BezierHandle.B) startControl.y += lineLength;
 
 				angleControl.x = this.lineBezier.end.x - endControl.x;
 				angleControl.y = this.lineBezier.end.y - endControl.y;
@@ -148,7 +153,7 @@ export class BezierPlugin {
 				this.lineBezier.draw();
 
 				closestElement.container.attachLine(this.lineContainer.uuid);
-				this.lineContainer.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
+				this.lineContainer.attachContainer(closestElement.container.uuid, 'end', closestPoint.id);
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;
@@ -159,10 +164,10 @@ export class BezierPlugin {
 			const angleControl = { ...this.lineBezier.end };
 			const endControl = { ...this.lineBezier.end };
 
-			if(this.handleId === BezierHandle.T) startControl.y -= lineLength;
-			else if(this.handleId === BezierHandle.R) startControl.x += lineLength;
-			else if(this.handleId === BezierHandle.L) startControl.x -= lineLength;
-			else if(this.handleId === BezierHandle.B) startControl.y += lineLength;
+			if (this.handleId === BezierHandle.T) startControl.y -= lineLength;
+			else if (this.handleId === BezierHandle.R) startControl.x += lineLength;
+			else if (this.handleId === BezierHandle.L) startControl.x -= lineLength;
+			else if (this.handleId === BezierHandle.B) startControl.y += lineLength;
 
 			angleControl.x = this.lineBezier.end.x - startControl.x;
 			angleControl.y = this.lineBezier.end.y - startControl.y;
@@ -172,11 +177,13 @@ export class BezierPlugin {
 			this.lineBezier.angleControl = angleControl;
 			this.lineBezier.draw();
 
-			if(this.lineContainer.endContainer.containerUUID !== undefined) {
+			if (this.lineContainer.endContainer.containerUUID !== undefined) {
 				//! This breaks the purpose of the plugin but fuck it
-				const container = this.viewport.socketPlugin.elements[this.lineContainer.endContainer.containerUUID] as CanvasContainer;
+				const container = this.viewport.socketPlugin.elements[
+					this.lineContainer.endContainer.containerUUID
+				] as CanvasContainer;
 				container.detachLine(this.lineContainer.uuid);
-				this.lineContainer.detachContainer("end");
+				this.lineContainer.detachContainer('end');
 			}
 		}
 
@@ -194,7 +201,7 @@ export class BezierPlugin {
 		try {
 			this.container.off('pointerdown', this._cancelBezierCurve);
 			this._removeViewportBezierEvent();
-			if(this.lineContainer) {
+			if (this.lineContainer) {
 				this.lineContainer.interactive = true;
 			}
 			this.lineContainer = null;
@@ -212,9 +219,9 @@ export class BezierPlugin {
 		this.viewport.off('mouseleave', this._cancelBezierCurve);
 		this.viewport.off('pointermove', this._updateBezierCurve);
 		this.viewport.off('pointerdown', this._cancelBezierCurve);
-	}
+	};
 
 	private _overrideViewportPointerUp = (e: FederatedPointerEvent) => {
-		if(e) e.stopPropagation();
-	}
+		if (e) e.stopPropagation();
+	};
 }

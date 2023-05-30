@@ -21,7 +21,7 @@ export class Normalizer {
 		const attributes = data as SerializedGraphic;
 
 		if (!attributes.bounds && position) {
-			if(Graphic === Circle) {
+			if (Graphic === Circle) {
 				const radius = 100;
 
 				attributes.bounds = {
@@ -49,7 +49,7 @@ export class Normalizer {
 				end: unset,
 				startControl: unset,
 				endControl: unset,
-			}
+			};
 		}
 
 		if (!attributes.properties) {

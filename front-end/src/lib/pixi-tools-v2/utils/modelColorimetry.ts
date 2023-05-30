@@ -9,5 +9,5 @@ export const modelColorimetry = (model: ModelGraphics): SerializedGraphicColorim
 			color: model.color,
 			alpha: model.alpha,
 		},
-	}
+	};
 };

@@ -2,7 +2,7 @@ import { Circle, LineBezier } from '../model/template';
 import { ModelGraphics } from '../types/pixi-class';
 
 export const modelSerializer = (model: ModelGraphics) => {
-	if(model instanceof Circle) {
+	if (model instanceof Circle) {
 		return {
 			uuid: model.uuid,
 			typeId: model.typeId,
@@ -19,7 +19,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 				color: model.color,
 				alpha: model.alpha,
 			},
-		}
+		};
 	} else if (model instanceof LineBezier) {
 		return {
 			uuid: model.uuid,
@@ -43,7 +43,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 				color: model.color,
 				alpha: model.alpha,
 			},
-		}
+		};
 	} else {
 		return {
 			uuid: model.uuid,
@@ -60,6 +60,6 @@ export const modelSerializer = (model: ModelGraphics) => {
 				color: model.color,
 				alpha: model.alpha,
 			},
-		}
+		};
 	}
 };

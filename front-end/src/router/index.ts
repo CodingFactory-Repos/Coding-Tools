@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: ':id',
-						component: () => import('../views/app/RelatedProfileView.vue')
+						component: () => import('../views/app/RelatedProfileView.vue'),
 					},
 				],
 			},
@@ -117,7 +117,7 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: 'accept-invitation',
 						component: () => import('../views/app/AgilityInvitation.vue'),
-					}
+					},
 				],
 			},
 		],

@@ -46,7 +46,7 @@ export class BezierManipulationPlugin {
 		const target = e.target as Handle;
 		this.handleId = target.handleId;
 		this.lineBezier = this.container.getGraphicChildren()[0] as LineBezier;
-		
+
 		// need to be last
 		this.viewport.on('pointerup', this._stopBezierCurveManipulation);
 		this.viewport.on('mouseleave', this._stopBezierCurveManipulation);
@@ -63,48 +63,49 @@ export class BezierManipulationPlugin {
 			this.viewport.onScreenChildren,
 			this.viewport.scaled,
 			point,
-		)
+		);
 
-		if(retrieved) {
+		if (retrieved) {
 			this.lineBezier.color = 0xff00ff;
 			const { x, y, width, height } = closestElement.bounds;
 			const rectangleEdgePoints = [
 				{ x: x + width / 2, y: y, id: BezierHandle.T },
-				{ x: x + width, y: y + height / 2 , id: BezierHandle.R},
+				{ x: x + width, y: y + height / 2, id: BezierHandle.R },
 				{ x: x, y: y + height / 2, id: BezierHandle.L },
-				{ x: x + width / 2, y: y + height, id: BezierHandle.B }
+				{ x: x + width / 2, y: y + height, id: BezierHandle.B },
 			];
 
 			const closestPoint = getClosestPointByPoints(
 				rectangleEdgePoints,
 				point,
-				this.handleId === BezierCurveHandle.P1
-					? this.lineBezier.end
-					: this.lineBezier.start
-			)
+				this.handleId === BezierCurveHandle.P1 ? this.lineBezier.end : this.lineBezier.start,
+			);
 
-			if(this.handleId === BezierCurveHandle.P1 && !isPointsOverlap(this.lineBezier.start, closestPoint)) {
+			if (
+				this.handleId === BezierCurveHandle.P1 &&
+				!isPointsOverlap(this.lineBezier.start, closestPoint)
+			) {
 				this.lineBezier.start = closestPoint;
 				const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
 				const startControl = { ...this.lineBezier.start };
 				const endControl = { ...this.lineBezier.end };
 				const angleControl = { ...this.lineBezier.end };
 
-				if(closestPoint.id === BezierHandle.T) startControl.y -= lineLength;
-				if(closestPoint.id === BezierHandle.R) startControl.x += lineLength;
-				if(closestPoint.id === BezierHandle.L) startControl.x -= lineLength;
-				if(closestPoint.id === BezierHandle.B) startControl.y += lineLength;
+				if (closestPoint.id === BezierHandle.T) startControl.y -= lineLength;
+				if (closestPoint.id === BezierHandle.R) startControl.x += lineLength;
+				if (closestPoint.id === BezierHandle.L) startControl.x -= lineLength;
+				if (closestPoint.id === BezierHandle.B) startControl.y += lineLength;
 
 				angleControl.x = this.lineBezier.end.x - startControl.x;
 				angleControl.y = this.lineBezier.end.y - startControl.y;
 
-				if(this.container.endContainer.containerUUID !== undefined) {
+				if (this.container.endContainer.containerUUID !== undefined) {
 					const handle = this.container.endContainer.handleId;
 
-					if(handle === BezierHandle.T) endControl.y -= lineLength;
-					else if(handle === BezierHandle.R) endControl.x += lineLength;
-					else if(handle === BezierHandle.L) endControl.x -= lineLength;
-					else if(handle === BezierHandle.B) endControl.y += lineLength;
+					if (handle === BezierHandle.T) endControl.y -= lineLength;
+					else if (handle === BezierHandle.R) endControl.x += lineLength;
+					else if (handle === BezierHandle.L) endControl.x -= lineLength;
+					else if (handle === BezierHandle.B) endControl.y += lineLength;
 
 					angleControl.x = this.lineBezier.end.x - endControl.x;
 					angleControl.y = this.lineBezier.end.y - endControl.y;
@@ -116,27 +117,29 @@ export class BezierManipulationPlugin {
 				this.lineBezier.draw();
 
 				closestElement.container.attachLine(this.container.uuid);
-				this.container.attachContainer(closestElement.container.uuid, "start", closestPoint.id);
-			}
-			else if(this.handleId === BezierCurveHandle.P2 && !isPointsOverlap(this.lineBezier.end, closestPoint)) {
+				this.container.attachContainer(closestElement.container.uuid, 'start', closestPoint.id);
+			} else if (
+				this.handleId === BezierCurveHandle.P2 &&
+				!isPointsOverlap(this.lineBezier.end, closestPoint)
+			) {
 				this.lineBezier.end = closestPoint;
 				const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
 				const startControl = { ...this.lineBezier.start };
 				const endControl = { ...this.lineBezier.end };
 				const angleControl = { ...this.lineBezier.end };
 
-				if(closestPoint.id === BezierHandle.T) endControl.y -= lineLength;
-				else if(closestPoint.id === BezierHandle.R) endControl.x += lineLength;
-				else if(closestPoint.id === BezierHandle.L) endControl.x -= lineLength;
-				else if(closestPoint.id === BezierHandle.B) endControl.y += lineLength;
+				if (closestPoint.id === BezierHandle.T) endControl.y -= lineLength;
+				else if (closestPoint.id === BezierHandle.R) endControl.x += lineLength;
+				else if (closestPoint.id === BezierHandle.L) endControl.x -= lineLength;
+				else if (closestPoint.id === BezierHandle.B) endControl.y += lineLength;
 
-				if(this.container.startContainer.containerUUID !== undefined) {
+				if (this.container.startContainer.containerUUID !== undefined) {
 					const handle = this.container.startContainer.handleId;
 
-					if(handle === BezierHandle.T) startControl.y -= lineLength;
-					else if(handle === BezierHandle.R) startControl.x += lineLength;
-					else if(handle === BezierHandle.L) startControl.x -= lineLength;
-					else if(handle === BezierHandle.B) startControl.y += lineLength;
+					if (handle === BezierHandle.T) startControl.y -= lineLength;
+					else if (handle === BezierHandle.R) startControl.x += lineLength;
+					else if (handle === BezierHandle.L) startControl.x -= lineLength;
+					else if (handle === BezierHandle.B) startControl.y += lineLength;
 				}
 
 				angleControl.x = this.lineBezier.end.x - endControl.x;
@@ -148,7 +151,7 @@ export class BezierManipulationPlugin {
 				this.lineBezier.draw();
 
 				closestElement.container.attachLine(this.container.uuid);
-				this.container.attachContainer(closestElement.container.uuid, "end", closestPoint.id);
+				this.container.attachContainer(closestElement.container.uuid, 'end', closestPoint.id);
 			}
 		} else {
 			this.lineBezier.color = 0xffffff;
@@ -157,19 +160,19 @@ export class BezierManipulationPlugin {
 			let angleControl = { ...this.lineBezier.end };
 			let endControl = { ...this.lineBezier.end };
 
-			if(this.handleId === BezierCurveHandle.P1) {
+			if (this.handleId === BezierCurveHandle.P1) {
 				this.lineBezier.start = point;
 				startControl = { ...this.lineBezier.start };
 
 				// if end point attached to a container
-				if(this.container.endContainer.containerUUID !== undefined) {
+				if (this.container.endContainer.containerUUID !== undefined) {
 					const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
 					const handle = this.container.endContainer.handleId;
 
-					if(handle === BezierHandle.T) endControl.y -= lineLength;
-					else if(handle === BezierHandle.R) endControl.x += lineLength;
-					else if(handle === BezierHandle.L) endControl.x -= lineLength;
-					else if(handle === BezierHandle.B) endControl.y += lineLength;
+					if (handle === BezierHandle.T) endControl.y -= lineLength;
+					else if (handle === BezierHandle.R) endControl.x += lineLength;
+					else if (handle === BezierHandle.L) endControl.x -= lineLength;
+					else if (handle === BezierHandle.B) endControl.y += lineLength;
 
 					angleControl.x = this.lineBezier.end.x - endControl.x;
 					angleControl.y = this.lineBezier.end.y - endControl.y;
@@ -181,26 +184,26 @@ export class BezierManipulationPlugin {
 					let angleOrigin = false;
 
 					if (Math.abs(deltaX) > Math.abs(deltaY)) {
-						if(this.lineBezier.end.x > this.lineBezier.start.x) {
+						if (this.lineBezier.end.x > this.lineBezier.start.x) {
 							angleOrigin = true;
-							startControl.x = this.lineBezier.start.x + (Math.sign(deltaY) * offset * deltaY);
-							endControl.x = this.lineBezier.end.x - (Math.sign(deltaY) * offset * deltaY);
+							startControl.x = this.lineBezier.start.x + Math.sign(deltaY) * offset * deltaY;
+							endControl.x = this.lineBezier.end.x - Math.sign(deltaY) * offset * deltaY;
 						} else {
-							startControl.x = this.lineBezier.start.x - (Math.sign(deltaY) * offset * deltaY);
-							endControl.x = this.lineBezier.end.x + (Math.sign(deltaY) * offset * deltaY);
+							startControl.x = this.lineBezier.start.x - Math.sign(deltaY) * offset * deltaY;
+							endControl.x = this.lineBezier.end.x + Math.sign(deltaY) * offset * deltaY;
 						}
 					} else {
-						if(this.lineBezier.end.y > this.lineBezier.start.y) {
-							startControl.y = this.lineBezier.start.y + (Math.sign(deltaX) * offset * deltaX);
-							endControl.y = this.lineBezier.end.y - (Math.sign(deltaX) * offset * deltaX);
+						if (this.lineBezier.end.y > this.lineBezier.start.y) {
+							startControl.y = this.lineBezier.start.y + Math.sign(deltaX) * offset * deltaX;
+							endControl.y = this.lineBezier.end.y - Math.sign(deltaX) * offset * deltaX;
 						} else {
-							startControl.y = this.lineBezier.start.y - (Math.sign(deltaX) * offset * deltaX);
-							endControl.y = this.lineBezier.end.y + (Math.sign(deltaX) * offset * deltaX);
+							startControl.y = this.lineBezier.start.y - Math.sign(deltaX) * offset * deltaX;
+							endControl.y = this.lineBezier.end.y + Math.sign(deltaX) * offset * deltaX;
 						}
 					}
 
-					if(this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
-						if(angleOrigin) {
+					if (this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
+						if (angleOrigin) {
 							angleControl.x = this.lineBezier.end.x - endControl.x;
 							angleControl.y = this.lineBezier.end.y - endControl.y;
 							this.lineBezier.angleControl = angleControl;
@@ -212,28 +215,30 @@ export class BezierManipulationPlugin {
 					}
 				}
 
-				if(this.container.startContainer.containerUUID !== undefined) {
+				if (this.container.startContainer.containerUUID !== undefined) {
 					//! This breaks the purpose of the plugin but fuck it
-					const container = this.viewport.socketPlugin.elements[this.container.startContainer.containerUUID] as CanvasContainer;
+					const container = this.viewport.socketPlugin.elements[
+						this.container.startContainer.containerUUID
+					] as CanvasContainer;
 					container.detachLine(this.container.uuid);
-					this.container.detachContainer("start");
+					this.container.detachContainer('start');
 				}
 			}
-			if(this.handleId === BezierCurveHandle.P2) {
+			if (this.handleId === BezierCurveHandle.P2) {
 				this.lineBezier.end = point;
 				endControl = { ...this.lineBezier.end };
 				angleControl = { ...this.lineBezier.end };
 
 				// if start point attached to a container
-				if(this.container.startContainer.containerUUID !== undefined) {
+				if (this.container.startContainer.containerUUID !== undefined) {
 					const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
 					const handle = this.container.startContainer.handleId;
 
-					if(handle === BezierHandle.T) startControl.y -= lineLength;
-					else if(handle === BezierHandle.R) startControl.x += lineLength;
-					else if(handle === BezierHandle.L) startControl.x -= lineLength;
-					else if(handle === BezierHandle.B) startControl.y += lineLength;
-		
+					if (handle === BezierHandle.T) startControl.y -= lineLength;
+					else if (handle === BezierHandle.R) startControl.x += lineLength;
+					else if (handle === BezierHandle.L) startControl.x -= lineLength;
+					else if (handle === BezierHandle.B) startControl.y += lineLength;
+
 					angleControl.x = this.lineBezier.end.x - startControl.x;
 					angleControl.y = this.lineBezier.end.y - startControl.y;
 					this.lineBezier.angleControl = angleControl;
@@ -244,26 +249,26 @@ export class BezierManipulationPlugin {
 					let angleOrigin = false;
 
 					if (Math.abs(deltaX) > Math.abs(deltaY)) {
-						if(this.lineBezier.end.x > this.lineBezier.start.x) {
+						if (this.lineBezier.end.x > this.lineBezier.start.x) {
 							angleOrigin = true;
-							startControl.x = this.lineBezier.start.x + (Math.sign(deltaY) * offset * deltaY);
-							endControl.x = this.lineBezier.end.x - (Math.sign(deltaY) * offset * deltaY);
+							startControl.x = this.lineBezier.start.x + Math.sign(deltaY) * offset * deltaY;
+							endControl.x = this.lineBezier.end.x - Math.sign(deltaY) * offset * deltaY;
 						} else {
-							startControl.x = this.lineBezier.start.x - (Math.sign(deltaY) * offset * deltaY);
-							endControl.x = this.lineBezier.end.x + (Math.sign(deltaY) * offset * deltaY);
+							startControl.x = this.lineBezier.start.x - Math.sign(deltaY) * offset * deltaY;
+							endControl.x = this.lineBezier.end.x + Math.sign(deltaY) * offset * deltaY;
 						}
 					} else {
-						if(this.lineBezier.end.y > this.lineBezier.start.y) {
-							startControl.y = this.lineBezier.start.y + (Math.sign(deltaX) * offset * deltaX);
-							endControl.y = this.lineBezier.end.y - (Math.sign(deltaX) * offset * deltaX);
+						if (this.lineBezier.end.y > this.lineBezier.start.y) {
+							startControl.y = this.lineBezier.start.y + Math.sign(deltaX) * offset * deltaX;
+							endControl.y = this.lineBezier.end.y - Math.sign(deltaX) * offset * deltaX;
 						} else {
-							startControl.y = this.lineBezier.start.y - (Math.sign(deltaX) * offset * deltaX);
-							endControl.y = this.lineBezier.end.y + (Math.sign(deltaX) * offset * deltaX);
+							startControl.y = this.lineBezier.start.y - Math.sign(deltaX) * offset * deltaX;
+							endControl.y = this.lineBezier.end.y + Math.sign(deltaX) * offset * deltaX;
 						}
 					}
 
-					if(this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
-						if(angleOrigin) {
+					if (this.lineBezier.end.x - endControl.x === this.lineBezier.end.y - endControl.y) {
+						if (angleOrigin) {
 							angleControl.x = this.lineBezier.end.x - endControl.x;
 							angleControl.y = this.lineBezier.end.y - endControl.y;
 							this.lineBezier.angleControl = angleControl;
@@ -275,11 +280,13 @@ export class BezierManipulationPlugin {
 					}
 				}
 
-				if(this.container.endContainer.containerUUID !== undefined) {
+				if (this.container.endContainer.containerUUID !== undefined) {
 					//! This breaks the purpose of the plugin but fuck it
-					const container = this.viewport.socketPlugin.elements[this.container.endContainer.containerUUID] as CanvasContainer;
+					const container = this.viewport.socketPlugin.elements[
+						this.container.endContainer.containerUUID
+					] as CanvasContainer;
 					container.detachLine(this.container.uuid);
-					this.container.detachContainer("end");
+					this.container.detachContainer('end');
 				}
 			}
 
@@ -316,5 +323,5 @@ export class BezierManipulationPlugin {
 		this.viewport.off('pointerup', this._stopBezierCurveManipulation);
 		this.viewport.off('mouseleave', this._stopBezierCurveManipulation);
 		this.viewport.off('pointermove', this._updateBezierCurve);
-	}
+	};
 }

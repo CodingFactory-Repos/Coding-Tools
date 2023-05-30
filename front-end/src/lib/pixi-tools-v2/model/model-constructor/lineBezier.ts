@@ -56,9 +56,12 @@ export class LineBezier extends ModelGraphics {
 
 		this.moveTo(this.start.x, this.start.y);
 		this.bezierCurveTo(
-			this.startControl.x, this.startControl.y,
-			this.endControl.x, this.endControl.y,
-			this.end.x, this.end.y
+			this.startControl.x,
+			this.startControl.y,
+			this.endControl.x,
+			this.endControl.y,
+			this.end.x,
+			this.end.y,
 		);
 		//! Used to check the position of the controls
 		// this.drawCircle(this.startControl.x, this.startControl.y, 10);
@@ -72,7 +75,7 @@ export class LineBezier extends ModelGraphics {
 	private drawArrowHead(arrowSize: number, angleOffset: number) {
 		let angle: number;
 
-		if(this.angleControl === undefined) {
+		if (this.angleControl === undefined) {
 			angle = Math.atan2(this.end.y - this.startControl.y, this.end.x - this.startControl.x);
 		} else {
 			angle = Math.atan2(this.angleControl.y, this.angleControl.x);

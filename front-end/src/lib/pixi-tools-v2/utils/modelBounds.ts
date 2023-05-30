@@ -2,7 +2,7 @@ import { Circle, LineBezier } from '../model/template';
 import { ModelGraphics } from '../types/pixi-class';
 
 export const modelBounds = (model: ModelGraphics) => {
-	if(model instanceof Circle) {
+	if (model instanceof Circle) {
 		return {
 			uuid: model.uuid,
 			bounds: {
@@ -10,10 +10,10 @@ export const modelBounds = (model: ModelGraphics) => {
 				y: model.y,
 				width: model.width,
 				height: model.height,
-				radius: model.radius
+				radius: model.radius,
 			},
-		}
-	} else if(model instanceof LineBezier) {
+		};
+	} else if (model instanceof LineBezier) {
 		return {
 			uuid: model.uuid,
 			lineControl: {
@@ -28,8 +28,8 @@ export const modelBounds = (model: ModelGraphics) => {
 				y: model.y,
 				width: model.width,
 				height: model.height,
-			}
-		}
+			},
+		};
 	} else {
 		return {
 			uuid: model.uuid,
@@ -39,6 +39,6 @@ export const modelBounds = (model: ModelGraphics) => {
 				width: model.width,
 				height: model.height,
 			},
-		}
+		};
 	}
 };

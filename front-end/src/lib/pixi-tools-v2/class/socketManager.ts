@@ -1,6 +1,12 @@
 import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
-import { SerializedContainer, SerializedContainerBounds, SerializedControl, SerializedColorimetry, SerializedGraphicColorimetry } from '../types/pixi-serialize';
+import {
+	SerializedContainer,
+	SerializedContainerBounds,
+	SerializedControl,
+	SerializedColorimetry,
+	SerializedGraphicColorimetry,
+} from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
 import { ElementPosition } from '../types/pixi-container';
@@ -31,21 +37,26 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('access-lost', () => {
-			temporaryNotification('#9e0000', '#ffffff', `The owner of the project removed your access, you will be redirected in 10 seconds`, 10000);
+			temporaryNotification(
+				'#9e0000',
+				'#ffffff',
+				`The owner of the project removed your access, you will be redirected in 10 seconds`,
+				10000,
+			);
 			this.canvasSocket.disconnect();
 			this._close();
 			const timer = setTimeout(() => {
 				window.location.pathname = '/app/agility/dashboard';
 				clearTimeout(timer);
 			}, 10000);
-		})
+		});
 
 		this.canvasSocket.on('element-added', (container: SerializedContainer) => {
 			const ctn = Normalizer.container(this.viewport, container, true);
-			if(ctn === undefined) return;
+			if (ctn === undefined) return;
 			this.viewport.addChild(ctn);
 
-			if(ctn instanceof LineContainer) {
+			if (ctn instanceof LineContainer) {
 				this._tryAttachLineToContainer(ctn);
 			}
 		});
@@ -82,7 +93,7 @@ export class SocketManager extends Manager {
 			(uuid: string, serializedControl: SerializedControl) => {
 				this._updateLineTree(uuid, serializedControl);
 			},
-		)
+		);
 
 		this.canvasSocket.on(
 			'frame-children-added',
@@ -117,9 +128,12 @@ export class SocketManager extends Manager {
 			console.info(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 
-		this.canvasSocket.on('element-colorimetry-updated', (uuid: string, serializedColorimetry: SerializedColorimetry) => {
-			this._updateColorimetry(uuid, serializedColorimetry);
-		});
+		this.canvasSocket.on(
+			'element-colorimetry-updated',
+			(uuid: string, serializedColorimetry: SerializedColorimetry) => {
+				this._updateColorimetry(uuid, serializedColorimetry);
+			},
+		);
 	}
 
 	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
@@ -146,7 +160,7 @@ export class SocketManager extends Manager {
 	private _updateColorimetry(uuid: string, serializedColorimetry: SerializedColorimetry) {
 		try {
 			const element = this.viewport.socketPlugin.elements[uuid];
-			if(element instanceof FramedContainer) {
+			if (element instanceof FramedContainer) {
 				const background = element.children[0] as Rectangle;
 				background.color = serializedColorimetry.background.properties.color;
 				background.alpha = serializedColorimetry.background.properties.alpha;
@@ -156,7 +170,7 @@ export class SocketManager extends Manager {
 					width: background.width,
 					height: background.height,
 				});
-			} else if(element instanceof GenericContainer || element instanceof LineContainer) {
+			} else if (element instanceof GenericContainer || element instanceof LineContainer) {
 				const childData = serializedColorimetry.childs[0] as SerializedGraphicColorimetry;
 				const child = element.getGraphicChildren()[0];
 				child.color = childData.properties.color;
@@ -170,7 +184,7 @@ export class SocketManager extends Manager {
 					radius: child.radius,
 				});
 			}
-		} catch(err) {
+		} catch (err) {
 			if (err instanceof Error) {
 				console.error(err.message);
 			}
@@ -192,16 +206,20 @@ export class SocketManager extends Manager {
 	}
 
 	private _tryAttachLineToContainer(ctn: LineContainer) {
-		if(ctn.startContainer?.containerUUID !== undefined) {
-			const container = this.viewport.socketPlugin.elements[ctn.startContainer.containerUUID] as CanvasContainer;
-			if(!container.linkedLinesUUID.includes(ctn.uuid)) {
+		if (ctn.startContainer?.containerUUID !== undefined) {
+			const container = this.viewport.socketPlugin.elements[
+				ctn.startContainer.containerUUID
+			] as CanvasContainer;
+			if (!container.linkedLinesUUID.includes(ctn.uuid)) {
 				container.attachLine(ctn.uuid);
 			}
 		}
 
-		if(ctn.endContainer?.containerUUID !== undefined) {
-			const container = this.viewport.socketPlugin.elements[ctn.endContainer.containerUUID] as CanvasContainer;
-			if(!container.linkedLinesUUID.includes(ctn.uuid)) {
+		if (ctn.endContainer?.containerUUID !== undefined) {
+			const container = this.viewport.socketPlugin.elements[
+				ctn.endContainer.containerUUID
+			] as CanvasContainer;
+			if (!container.linkedLinesUUID.includes(ctn.uuid)) {
 				container.attachLine(ctn.uuid);
 			}
 		}

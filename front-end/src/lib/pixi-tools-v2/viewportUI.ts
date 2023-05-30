@@ -37,7 +37,12 @@ export class ViewportUI extends Viewport {
 
 	public readonly activeFrames: Array<number> = reactive([]);
 
-	constructor(scene: Scene, options: IViewportOptions, isDark: boolean, socketOptions?: CanvasSocketOptions) {
+	constructor(
+		scene: Scene,
+		options: IViewportOptions,
+		isDark: boolean,
+		socketOptions?: CanvasSocketOptions,
+	) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
@@ -50,7 +55,7 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
-		this.grid = new Grid({ color: isDark ? 0x27282d : 0xD9D9D9 });
+		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
@@ -91,7 +96,7 @@ export class ViewportUI extends Viewport {
 	}
 
 	public changeGridTheme(isDark: boolean) {
-		this.grid.color = isDark ? 0x27282d : 0xD9D9D9;
+		this.grid.color = isDark ? 0x27282d : 0xd9d9d9;
 		this.drawGrid();
 	}
 
@@ -166,12 +171,12 @@ export class ViewportUI extends Viewport {
 					);
 				}
 
-				if(this.bezierCurveHandles?.length > 0) {
+				if (this.bezierCurveHandles?.length > 0) {
 					this.updateBezierCurveHandle(
 						{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
 						{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
 						true,
-					)
+					);
 				}
 
 				if (this.resizeHitAreas?.length > 0) {
@@ -191,7 +196,7 @@ export class ViewportUI extends Viewport {
 			const visibleBounds = this.getVisibleBounds();
 
 			for (const element of this.children) {
-				if(element instanceof GenericContainer || element instanceof FramedContainer) {
+				if (element instanceof GenericContainer || element instanceof FramedContainer) {
 					if (element.getLocalBounds().intersects(visibleBounds)) {
 						this.onScreenChildren.push(element);
 					}
@@ -336,11 +341,11 @@ export class ViewportUI extends Viewport {
 		const size = 5;
 		const float = 15;
 		const offset = float / this.scaled;
-		
-		const top = { x: (x + width / 2), y: y - offset };
-		const right = { x: (x + width + offset), y: (y + height / 2) };
-		const bottom = { x: (x + width / 2), y: (y + height + offset) };
-		const left = { x: x - offset, y: (y + height / 2) };
+
+		const top = { x: x + width / 2, y: y - offset };
+		const right = { x: x + width + offset, y: y + height / 2 };
+		const bottom = { x: x + width / 2, y: y + height + offset };
+		const left = { x: x - offset, y: y + height / 2 };
 
 		const handlePositions: Array<HandleOptions> = [
 			{ ...top, cursor: 'pointer', handleId: BezierHandle.T },
@@ -485,18 +490,13 @@ export class ViewportUI extends Viewport {
 		const offset = Math.max(1, float / scale);
 
 		const { x, y, width, height } = attr;
-		
-		const top = { x: (x + width / 2), y: y - offset };
-		const right = { x: (x + width + offset), y: (y + height / 2) };
-		const bottom = { x: (x + width / 2), y: (y + height + offset) };
-		const left = { x: x - offset, y: (y + height / 2) };
 
-		const positions = [
-			{ ...top },
-			{ ...right },
-			{ ...bottom },
-			{ ...left },
-		]
+		const top = { x: x + width / 2, y: y - offset };
+		const right = { x: x + width + offset, y: y + height / 2 };
+		const bottom = { x: x + width / 2, y: y + height + offset };
+		const left = { x: x - offset, y: y + height / 2 };
+
+		const positions = [{ ...top }, { ...right }, { ...bottom }, { ...left }];
 
 		for (let n = 0; n < this.bezierHandles.length; n++) {
 			if (redraw) this.bezierHandles[n].draw({ ...positions[n], scale: scale });
@@ -507,10 +507,7 @@ export class ViewportUI extends Viewport {
 	public updateBezierCurveHandle(start: ElementPosition, end: ElementPosition, redraw: boolean) {
 		const scale = Math.min(3, this.scaled);
 
-		const positions = [
-			{ ...start },
-			{ ...end },
-		];
+		const positions = [{ ...start }, { ...end }];
 
 		for (let n = 0; n < this.bezierCurveHandles.length; n++) {
 			if (redraw) this.bezierCurveHandles[n].draw({ ...positions[n], scale: scale });

@@ -15,7 +15,6 @@ export const GeometryTypes = {
 	//! BROKEN DON'T USE
 	//polygon: Polygon, // Bugged
 
-
 	// "ELLIPSE": 'ellipse',
 	// "POLYLINE": 'polyline',
 	// "MULTIPOINT": 'multipoint',

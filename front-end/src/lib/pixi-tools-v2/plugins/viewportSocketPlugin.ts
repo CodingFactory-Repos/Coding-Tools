@@ -8,7 +8,12 @@ import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { SerializedContainerBounds, SerializedContainer, SerializedControl, SerializedColorimetry } from '../types/pixi-serialize';
+import {
+	SerializedContainerBounds,
+	SerializedContainer,
+	SerializedControl,
+	SerializedColorimetry,
+} from '../types/pixi-serialize';
 import { LineContainer } from '../class/lineContainer';
 
 interface CanvasSocketEvents {
@@ -39,7 +44,10 @@ export interface CanvasSocketOptions {
 
 export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents> {
 	protected readonly socketManager: SocketManager;
-	public readonly elements: Record<string, CanvasContainer> | Record<string, ModelGraphics> | Record<string, LineContainer> = {};
+	public readonly elements:
+		| Record<string, CanvasContainer>
+		| Record<string, ModelGraphics>
+		| Record<string, LineContainer> = {};
 
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
@@ -78,7 +86,7 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 		this.on('ws-element-colorized', (uuid, serializedColorimetry) => {
 			this.socketManager.updateColorimetry(uuid, serializedColorimetry);
-		})
+		});
 	}
 
 	public disconnect() {

@@ -1,6 +1,5 @@
-import { DeepPartial } from "@/interfaces/advanced-types.interface";
-import { User } from "@/store/interfaces/auth.interfaces";
-
+import { DeepPartial } from '@/interfaces/advanced-types.interface';
+import { User } from '@/store/interfaces/auth.interfaces';
 
 export interface UserStore {
 	temporaryProfileUser: DeepPartial<User>;

@@ -1,4 +1,10 @@
-import { AttachedContainer, ElementBounds, ElementColorimetry, ElementCursor, ElementPosition } from './pixi-container';
+import {
+	AttachedContainer,
+	ElementBounds,
+	ElementColorimetry,
+	ElementCursor,
+	ElementPosition,
+} from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame' | 'line';
 export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier';
@@ -65,7 +71,9 @@ export interface SerializedLineProperties {
 	endContainer: AttachedContainer;
 }
 
-export interface SerializedContainerProperties extends SerializedProperties, Partial<SerializedLineProperties> {
+export interface SerializedContainerProperties
+	extends SerializedProperties,
+		Partial<SerializedLineProperties> {
 	isAttachedToFrame: boolean;
 	tabNumberContext: number;
 	frameNumber: number;

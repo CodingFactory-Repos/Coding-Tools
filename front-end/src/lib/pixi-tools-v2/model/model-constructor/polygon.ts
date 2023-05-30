@@ -35,7 +35,7 @@ export class Polygon extends ModelGraphics {
 	public draw(bounds: Partial<ElementBounds>) {
 		const { width, height, x, y } = bounds;
 		this.position.set(x, y);
-	
+
 		const sideLength = Math.min(width, height);
 		const vertices = this.calculatePolygonVertices(sideLength, width, height);
 		// console.log(this.findPolygonCenter(vertices))
@@ -69,9 +69,9 @@ export class Polygon extends ModelGraphics {
 		const centerY = height / 2;
 
 		for (let i = 0; i < this.faces; i++) {
-			const angle = (i * angleStep) + startAngleOffset + Math.PI / 2;
-			const x = parseFloat((centerX + (Math.cos(angle) * (sideLength / 2))).toFixed(2));
-			const y = parseFloat((centerY + (Math.sin(angle) * (sideLength / 2))).toFixed(2));
+			const angle = i * angleStep + startAngleOffset + Math.PI / 2;
+			const x = parseFloat((centerX + Math.cos(angle) * (sideLength / 2)).toFixed(2));
+			const y = parseFloat((centerY + Math.sin(angle) * (sideLength / 2)).toFixed(2));
 			vertices.push(x, y);
 		}
 

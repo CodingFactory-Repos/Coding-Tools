@@ -67,12 +67,12 @@ export class LineContainer extends PluginContainer {
 		this.startContainer = properties?.startContainer ?? {
 			containerUUID: undefined,
 			handleId: undefined,
-		}
+		};
 
 		this.endContainer = properties?.endContainer ?? {
 			containerUUID: undefined,
 			handleId: undefined,
-		}
+		};
 
 		this.on('pointerdown', this.onSelected);
 
@@ -115,7 +115,7 @@ export class LineContainer extends PluginContainer {
 	public getVertex() {
 		if (!this.destroyed) {
 			const { start, end } = this.children[0];
-			return { start, end }
+			return { start, end };
 		}
 	}
 
@@ -241,33 +241,33 @@ export class LineContainer extends PluginContainer {
 		graphic.draw();
 	}
 
-	public attachContainer(containerUUID: string, ctx: "start" | "end", handleId: BezierHandle) {
-		if(ctx === "start") {
+	public attachContainer(containerUUID: string, ctx: 'start' | 'end', handleId: BezierHandle) {
+		if (ctx === 'start') {
 			this.startContainer.containerUUID = containerUUID;
 			this.startContainer.handleId = handleId;
 			return;
 		}
 
-		if(ctx === "end") {
+		if (ctx === 'end') {
 			this.endContainer.containerUUID = containerUUID;
 			this.endContainer.handleId = handleId;
 		}
 	}
 
-	public detachContainer(ctx: "start" | "end") {
-		if(ctx === "start") {
+	public detachContainer(ctx: 'start' | 'end') {
+		if (ctx === 'start') {
 			this.startContainer = {
 				containerUUID: undefined,
 				handleId: undefined,
-			}
+			};
 			return;
 		}
 
-		if(ctx === "end") {
+		if (ctx === 'end') {
 			this.endContainer = {
 				containerUUID: undefined,
 				handleId: undefined,
-			}
+			};
 		}
 	}
 }

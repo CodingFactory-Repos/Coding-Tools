@@ -52,7 +52,9 @@ export const apiTryCreateNewProject = () => {
 };
 
 export const apiTryGetRoomProject = (roomId: string) => {
-	return http.get<Status<{ project: Array<SerializedContainer>, isOwner: boolean }>>(`/canvas-room/${roomId}`);
+	return http.get<Status<{ project: Array<SerializedContainer>; isOwner: boolean }>>(
+		`/canvas-room/${roomId}`,
+	);
 };
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
@@ -73,12 +75,12 @@ export const apiTrySendProjectInvitation = (userId: string, roomId: string) => {
 
 export const apiTryVerifyInvitationToken = (token: string) => {
 	return http.post<Status<{ roomId: string }>>('/canvas-room/verify-invitation', { token });
-}
+};
 
 export const apiTryGetAccessUsers = (roomId: string) => {
-	return http.get<Status<{ users: Array<UserCanvasList>}>>(`/canvas-room/${roomId}/users-access`);
-}
+	return http.get<Status<{ users: Array<UserCanvasList> }>>(`/canvas-room/${roomId}/users-access`);
+};
 
 export const apiTryRemoveUserAccess = (userId: string, roomId: string) => {
 	return http.post<Status>(`/canvas-room/${roomId}/remove-access`, { userId });
-}
+};
