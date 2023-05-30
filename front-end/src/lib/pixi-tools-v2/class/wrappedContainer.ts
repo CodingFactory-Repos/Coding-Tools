@@ -147,7 +147,7 @@ export class WrappedContainer extends BoundsContainer {
 
 			this.timeout = setTimeout(() => {
 				this.toggleChildrenInteractive(false);
-				this.viewport.setChildIndex(this, this.viewport.children.length - 9);
+				this.viewport.setChildIndex(this, this.viewport.children.length - 13);
 				this.awaitDblClick = false;
 				this.timeout = null;
 			}, 300);

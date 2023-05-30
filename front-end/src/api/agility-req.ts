@@ -5,6 +5,7 @@ import { http } from '@/api/network/axios';
 import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
 import { Status } from '@/store/interfaces/axios.interface';
 import { AxiosResponse } from 'axios';
+import { UserCanvasList } from '@/store/interfaces/user.interface';
 
 export const apiTryGetTemplatesMeta = () => {
 	// Call
@@ -51,7 +52,9 @@ export const apiTryCreateNewProject = () => {
 };
 
 export const apiTryGetRoomProject = (roomId: string) => {
-	return http.get<Status<{ project: Array<SerializedContainer> }>>(`/canvas-room/${roomId}`);
+	return http.get<Status<{ project: Array<SerializedContainer>; isOwner: boolean }>>(
+		`/canvas-room/${roomId}`,
+	);
 };
 
 export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) => {
@@ -60,4 +63,24 @@ export const apiTrySaveProjectMeta = (meta: ProjectMetaDetails, roomId: string) 
 
 export const apiTryGetRoomAccess = (roomId: string) => {
 	return http.get<Status>(`/canvas-room/${roomId}/verify`);
+};
+
+export const apiTryDeleteProject = (roomId: string) => {
+	return http.delete<Status>(`/canvas-room/${roomId}`);
+};
+
+export const apiTrySendProjectInvitation = (userId: string, roomId: string) => {
+	return http.post<Status>(`/canvas-room/invitation/${roomId}`, { userId });
+};
+
+export const apiTryVerifyInvitationToken = (token: string) => {
+	return http.post<Status<{ roomId: string }>>('/canvas-room/verify-invitation', { token });
+};
+
+export const apiTryGetAccessUsers = (roomId: string) => {
+	return http.get<Status<{ users: Array<UserCanvasList> }>>(`/canvas-room/${roomId}/users-access`);
+};
+
+export const apiTryRemoveUserAccess = (userId: string, roomId: string) => {
+	return http.post<Status>(`/canvas-room/${roomId}/remove-access`, { userId });
 };
