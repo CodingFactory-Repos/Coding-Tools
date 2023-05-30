@@ -133,4 +133,9 @@ export class DTOBorrowingMaterial {
 	@IsNotEmpty()
 	@IsISO8601()
 	public returnDate: Date;
+
+	@IsNotEmpty()
+	@IsString()
+	@Length(3, 125)
+	public status: string;
 }
