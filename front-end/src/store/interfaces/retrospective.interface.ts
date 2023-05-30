@@ -1,3 +1,4 @@
+import { User } from './auth.interfaces';
 
 
 export interface RetrospectiveStore {
@@ -27,7 +28,7 @@ export interface Retrospective {
 	slug?: string
 	title?: string
 	optionTemplate?: number
-	participants?: Array<any>
+	participants?: Array<User>
 	postits?: Postits
 	createdAt?: Date
 	endedAt?: Date

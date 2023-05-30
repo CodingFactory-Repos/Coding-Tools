@@ -3,8 +3,8 @@ import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.service';
-import { generateCodeToken, generateRandomToken } from '@/common/helpers/string.helper';
-import { Retrospective } from './interfaces/retrospectives.interface';
+import { generateCodeToken } from '@/common/helpers/string.helper';
+import { Postit, Retrospective } from './interfaces/retrospectives.interface';
 
 @Controller('retrospectives')
 @UseFilters(ServiceErrorCatcher)
@@ -33,7 +33,7 @@ export class RetrospectivesController {
 	@Post('/newPostit')
 	newPostit(@Res() res: Response, @Body() body: Body) {
 		// TODO: AFTER
-		const postit = body as any;
+		const postit = body as Postit;
 		const randomId = generateCodeToken()
 		postit.id = randomId
 		return res.status(201).json({ newPostit: postit });
