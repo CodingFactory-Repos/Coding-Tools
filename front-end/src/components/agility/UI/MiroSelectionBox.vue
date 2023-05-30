@@ -13,7 +13,7 @@
 				</DefaultButton>
 			</div>
 			<div class="flex bg-light-primary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button">
+				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="openManagerModal" v-if="isOwner">
 					<SvgGear width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
 				<DefaultButton
@@ -104,7 +104,7 @@
 		@close="closeShareModal"
 	/>
 	<ManageUser
-		v-if="isManagerModalOpen"
+		v-if="isOwner && isManagerModalOpen"
 		@close="closeManagerModal"
 	/>
 </template>
@@ -115,6 +115,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import ShareProject from '@/components/agility/UI/ShareProject.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
@@ -136,9 +137,12 @@ import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
+import { useAgilityStore } from '@/store/modules/agility.store';
 
 const projectStore = useProjectStore();
+const agilityStore = useAgilityStore();
 
+const isOwner = computed(() => agilityStore.isOwner);
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {

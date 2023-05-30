@@ -55,11 +55,11 @@
 			@close="closeShareModal"
 		/>
 		<ManageUser
-			v-if="isManagerModalOpen"
+			v-if="isOwner && isManagerModalOpen"
 			@close="closeManagerModal"
 		/>
 		<div class="flex h-full gap-1 items-center">
-			<IconButton class="h-fit" type="button" @click="openManagerModal">
+			<IconButton class="h-fit" type="button" @click="openManagerModal" v-if="isOwner">
 				<SvgGear width="22" height="22" class="!fill-gray-400"/>
 			</IconButton>
 			<DefaultButton
@@ -96,10 +96,13 @@ import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
 import SvgGear from '@/components/common/svg/Gear.vue';
-import ManageUser from './ManageUser.vue';
+import ManageUser from '@/components/agility/UI/ManageUser.vue';
+import { useAgilityStore } from '@/store/modules/agility.store';
 
 const projectStore = useProjectStore();
+const agilityStore = useAgilityStore();
 
+const isOwner = computed(() => agilityStore.isOwner);
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, val => {

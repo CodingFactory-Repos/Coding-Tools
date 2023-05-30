@@ -47,7 +47,7 @@ const beforeModalClose = () => {
 	emit("close");
 }
 
-const fetchAccessUsers =  withErrorHandler(async function() {
+const fetchAccessUsers = withErrorHandler(async function() {
 	const res = await apiTryGetAccessUsers(roomId.value);
 	if(res.data.status === 'ok') {
 		accessUsers.value = res.data.users;
