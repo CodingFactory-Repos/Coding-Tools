@@ -1,5 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, FindOptions, DeleteOptions } from 'mongodb';
+import {
+	Filter,
+	UpdateFilter,
+	FindOneAndUpdateOptions,
+	Db,
+	FindOptions,
+	DeleteOptions,
+} from 'mongodb';
 
 import { CanvasRoom } from '@/base/canvasRoom/interfaces/canvasRoom.interface';
 

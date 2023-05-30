@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Res, UseFilters, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Res,
+	UseFilters,
+	UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -6,7 +16,11 @@ import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { ProjectInvitationVerificationDTO, ProjectMetaDTO, ProjectUserIdDTO } from '@/base/canvasRoom/dto/canvasRoom.dto';
+import {
+	ProjectInvitationVerificationDTO,
+	ProjectMetaDTO,
+	ProjectUserIdDTO,
+} from '@/base/canvasRoom/dto/canvasRoom.dto';
 
 @Controller('canvas-room')
 @UseFilters(ServiceErrorCatcher)

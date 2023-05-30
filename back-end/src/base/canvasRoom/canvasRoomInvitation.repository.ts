@@ -7,7 +7,7 @@ import { CanvasRoomInvitation } from '@/base/canvasRoom/interfaces/canvasRoomInv
 export class CanvasRoomInvitationRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {
 		const collection = this.db.collection<CanvasRoomInvitation>('canvas-room-invitation');
-		collection.createIndex({ "expireAt": 1 }, { expireAfterSeconds: 0 });
+		collection.createIndex({ expireAt: 1 }, { expireAfterSeconds: 0 });
 	}
 
 	get canvasRoomInvitation() {
@@ -31,7 +31,10 @@ export class CanvasRoomInvitationRepository {
 		return this.canvasRoomInvitation.findOneAndUpdate(query, update, options);
 	}
 
-	async deleteOneCanvasRoomInvitation(query: Filter<CanvasRoomInvitation>, options: DeleteOptions = undefined) {
+	async deleteOneCanvasRoomInvitation(
+		query: Filter<CanvasRoomInvitation>,
+		options: DeleteOptions = undefined,
+	) {
 		return this.canvasRoomInvitation.deleteOne(query, options);
 	}
 }

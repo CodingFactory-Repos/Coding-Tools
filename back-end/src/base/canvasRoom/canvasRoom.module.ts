@@ -15,7 +15,15 @@ import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
 
 @Module({
 	imports: [DatabaseModule, MailjetModule, forwardRef(() => AuthModule)],
-	providers: [JwtService, CanvasRoomEventEmitter, CanvasRoomService, CanvasRoomRepository, CanvasRoomInvitationRepository, UsersRepository, CanvasGateway],
+	providers: [
+		JwtService,
+		CanvasRoomEventEmitter,
+		CanvasRoomService,
+		CanvasRoomRepository,
+		CanvasRoomInvitationRepository,
+		UsersRepository,
+		CanvasGateway,
+	],
 	controllers: [CanvasRoomController],
 	exports: [CanvasRoomService, CanvasRoomRepository],
 })

@@ -52,7 +52,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const user = await this.usersRepository.findOne(query, projection);
 
 		client.join(client.roomId);
-		client.join(client.user.id.toString())
+		client.join(client.user.id.toString());
 		client.to(client.roomId).emit('peer-connected', user.profile.email);
 	}
 
@@ -131,7 +131,9 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		client: AuthSocket,
 		data: { uuid: string; serializedColorimetry: SerializedColorimetry },
 	) {
-		client.to(client.roomId).emit('element-colorimetry-updated', data.uuid, data.serializedColorimetry);
+		client
+			.to(client.roomId)
+			.emit('element-colorimetry-updated', data.uuid, data.serializedColorimetry);
 
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
 		const update = flatten({ 'project.$': data.serializedColorimetry }, { array: true });

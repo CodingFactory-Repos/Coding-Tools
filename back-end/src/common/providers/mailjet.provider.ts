@@ -78,6 +78,6 @@ export class MailjetListeners {
 			templateId: MailjetTemplate.canvasInvitationRequest,
 			recipients: [{ Email: email }],
 			args: { senderFirstName, senderLastName, projectTitle, url },
-		})
+		});
 	}
 }

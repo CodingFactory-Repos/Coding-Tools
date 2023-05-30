@@ -23,6 +23,6 @@ export const PROJECTION_OWNER_NAME = {
 		profile: {
 			firstName: 1,
 			lastName: 1,
-		}
-	}
-}
+		},
+	},
+};
