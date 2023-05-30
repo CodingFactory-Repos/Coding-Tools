@@ -18,6 +18,7 @@ export interface BorrowingMaterial {
 	borrowingUser: string;
 	description: string;
 	returnDate: Date;
+	status: string;
 }
 
 export interface Material {
