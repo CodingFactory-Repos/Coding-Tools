@@ -44,14 +44,6 @@ export interface User {
 	profile?: UserProfile;
 	schoolProfile?: UserSchoolProfile;
 	businessProfile?: UserBusinessProfile;
-	events?: {
-		id: string;
-		title: string;
-	}[];
-	myArticles?: {
-		id: string;
-		title: string;
-	}[];
 }
 
 export interface UserProfile {

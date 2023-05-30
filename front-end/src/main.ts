@@ -21,6 +21,9 @@ import '@/router/guard';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { withErrorHandler } from '@/utils/storeHandler';
 
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
+
 const authStore = useAuthStore(store);
 
 withErrorHandler(async function () {
@@ -35,5 +38,6 @@ function bootVueApp() {
 	app.use(ContextMenu);
 	app.use(router);
 	app.use(store);
+	app.use(mavonEditor);
 	app.mount('#app');
 }
