@@ -1,4 +1,4 @@
-import { createRetro, newPostit, tryGetAllRetro, tryGetCurrentRetro } from '@/api/retrospective-req';
+import { createRetro, newPostit, tryGetAllRetro, tryGetCurrentRetro, tryUpdateParticipants } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
 	Postit,
@@ -126,6 +126,17 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		async getAllRetros(this: RetrospectiveStore) {
 			const resp = await tryGetAllRetro();
 			this.allRetros = resp.data.retrospectives;
+		},
+		async participantJoin(this: RetrospectiveStore, email: string) {
+			const isUserHere = this.currentRetro.participants.findIndex(el => el === email)
+			if (isUserHere === -1)
+				this.currentRetro.participants.push(email);
+			await tryUpdateParticipants(this.currentRetro);
+		},
+		async participantLeave(this: RetrospectiveStore, user: UserDisconnect) {
+			const findUser = this.currentRetro.participants.findIndex(el => el === user.email);
+			if (findUser !== -1)
+				this.currentRetro.participants.splice(findUser, 1);
 		}
 	},
 });

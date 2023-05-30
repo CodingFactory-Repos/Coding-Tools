@@ -54,4 +54,17 @@ export class RetrospectivesController {
 		postit.id = randomId;
 		return res.status(201).json({ newPostit: postit });
 	}
+
+	@Post('/participants')
+	@UseGuards(JwtAuthGuard)
+	async updateParticipants(
+		@Res() res: Response,
+		@Body() body: Body,
+		@Jwt() userId: ObjectId
+		) {
+		const retro = body as unknown as Retrospective
+		await this.retrospectivesService.tryUpdateParticipants(retro)
+
+		return res.status(201).json({ status: 'ok' });
+	}
 }

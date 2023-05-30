@@ -6,9 +6,9 @@ import { Socket } from 'socket.io-client';
 function handleSocketEvents(socket: Socket) {
 	const retrospectiveStore = useRetrospectiveStore();
 
-	socket.on('peer-connected', (socket) => {
-		console.log('ele', socket);
-	});
+	socket.on("peer-connected", (email) => {
+		retrospectiveStore.participantJoin(email);
+	})
 
 	socket.on('postit-added', (postits: Postits) => {
 		retrospectiveStore.currentRetro.postits = postits;
@@ -28,6 +28,7 @@ function handleSocketEvents(socket: Socket) {
 
 	socket.on('peer-disconnected', (user) => {
 		retrospectiveStore.removeCursor(user);
+		retrospectiveStore.participantLeave(user);
 	});
 }
 

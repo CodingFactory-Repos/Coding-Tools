@@ -23,14 +23,14 @@ export interface RetrospectiveStore {
 }
 
 export interface Retrospective {
-	_id?: string;
-	slug?: string;
-	title?: string;
-	optionTemplate?: number;
-	participants?: Array<User>;
-	postits?: Postits;
-	createdAt?: Date;
-	endedAt?: Date;
+	_id?: string
+	slug?: string
+	title?: string
+	optionTemplate?: number
+	participants?: Array<string>
+	postits?: Postits
+	createdAt?: Date
+	endedAt?: Date
 }
 
 export interface Postits {

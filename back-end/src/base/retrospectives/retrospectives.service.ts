@@ -23,6 +23,7 @@ export class RetrospectivesService {
 
 		retrospective.createdAt = date;
 		retrospective.creator = user.profile.email
+		retrospective.participants.push(user.profile.email)
 		const slug = generateCodeToken()
 		retrospective.slug = slug
 
@@ -49,5 +50,12 @@ export class RetrospectivesService {
 		}
 		const allRetro = await this.retrospectivesRepository.findAll(query);
 		return allRetro;
+	}
+
+	async tryUpdateParticipants(retro: Retrospective) {
+		const query = { slug: retro.slug }
+		const update = { $set: { participants: retro.participants } };
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 }
