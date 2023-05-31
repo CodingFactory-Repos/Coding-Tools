@@ -23,7 +23,7 @@ export class Polygon extends ModelGraphics {
 
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;

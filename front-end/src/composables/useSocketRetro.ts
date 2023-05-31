@@ -6,51 +6,43 @@ import { Socket } from 'socket.io-client';
 function handleSocketEvents(socket: Socket) {
 	const retrospectiveStore = useRetrospectiveStore();
 
-	socket.on("peer-connected", (socket) => {
-		console.log("ele", socket);
-	})
+	socket.on('peer-connected', (socket) => {
+		console.log('ele', socket);
+	});
 
-	socket.on("postit-added", (postits: Postits) => {
-		retrospectiveStore.currentRetro.postits = postits
-	})
+	socket.on('postit-added', (postits: Postits) => {
+		retrospectiveStore.currentRetro.postits = postits;
+	});
 
-	socket.on("postit-deleted", (postit: Postit) => {
-		retrospectiveStore.removeFromSocket(postit)
-	})
+	socket.on('postit-deleted', (postit: Postit) => {
+		retrospectiveStore.removeFromSocket(postit);
+	});
 
-	socket.on("postit-updated", (postit: Postit) => {
-		retrospectiveStore.updateFromSocket(postit)
-	})
+	socket.on('postit-updated', (postit: Postit) => {
+		retrospectiveStore.updateFromSocket(postit);
+	});
 
-	socket.on("peer-mouse-moved", (userCursor) => {
+	socket.on('peer-mouse-moved', (userCursor) => {
 		retrospectiveStore.updateUserCursor(userCursor);
 	});
 
-	socket.on("peer-disconnected", (user) => {
+	socket.on('peer-disconnected', (user) => {
 		retrospectiveStore.removeCursor(user);
 	});
-
 }
-
 
 export const socketRetro: { socket: Socket } = {
-socket: {} as Socket
-}
-
-
-
-
-
+	socket: {} as Socket,
+};
 
 export function useSocket(roomId: string) {
-	socketRetro.socket =  manager.socket("/retrospective");
+	socketRetro.socket = manager.socket('/retrospective');
 	socketRetro.socket.auth = { roomId: roomId };
 	socketRetro.socket.connect();
 
-	handleSocketEvents(socketRetro.socket)
-
+	handleSocketEvents(socketRetro.socket);
 
 	return {
 		socket: socketRetro.socket,
-	}
+	};
 }

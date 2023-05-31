@@ -1,7 +1,7 @@
 import { Circle, LineBezier, Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
-import { ContainerType, GeometryTypes } from '../types/pixi-enums';
+import { ContainerType, GeometryTypes, PixiEventMode } from '../types/pixi-enums';
 import type { ElementPosition } from '../types/pixi-container';
 import {
 	ContainerTypeId,
@@ -56,8 +56,10 @@ export class Normalizer {
 			attributes.properties = {
 				color: 0xffffff,
 				cursor: 'pointer',
-				interactive: true,
+				eventMode: PixiEventMode.STATIC,
 				alpha: 1,
+				borderWidth: 0,
+				borderColor: 0x000000,
 			};
 		}
 
@@ -101,9 +103,10 @@ export class Normalizer {
 			attributes.properties = {
 				cursor: 'pointer',
 				frameNumber,
-				interactive: true,
+				eventMode: PixiEventMode.STATIC,
 				isAttachedToFrame: false,
 				tabNumberContext: tabContext ?? -1,
+				disabled: false,
 			};
 		}
 

@@ -9,6 +9,8 @@ export class Circle extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
+	public borderWidth: number;
+	public borderColor: number;
 	public radius: number;
 	public color: number;
 
@@ -23,7 +25,9 @@ export class Circle extends ModelGraphics {
 
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
+		this.borderWidth = properties.borderWidth;
+		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
@@ -37,6 +41,7 @@ export class Circle extends ModelGraphics {
 		this.position.set(x, y);
 
 		this.clear();
+		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
 		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();
