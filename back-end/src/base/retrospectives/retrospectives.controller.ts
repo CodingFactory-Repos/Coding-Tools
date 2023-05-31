@@ -19,7 +19,7 @@ export class RetrospectivesController {
 	// TODO: DTO
 	@Post('/newRetro')
 	async newRetro(@Res() res: Response, @Body() body: Body) {
-		const retro = body as unknown as Retrospective
+		const retro = body as unknown as Retrospective;
 		const retrospective = await this.retrospectivesService.newRetrospective(retro);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
@@ -34,8 +34,8 @@ export class RetrospectivesController {
 	newPostit(@Res() res: Response, @Body() body: Body) {
 		// TODO: AFTER
 		const postit = body as Postit;
-		const randomId = generateCodeToken()
-		postit.id = randomId
+		const randomId = generateCodeToken();
+		postit.id = randomId;
 		return res.status(201).json({ newPostit: postit });
 	}
 }

@@ -13,8 +13,8 @@ export interface Retrospective {
 }
 
 export interface Postit {
-	id?: string
-	user?: string // to see
-	value?: string
-	type?: number
+	id?: string;
+	user?: string; // to see
+	value?: string;
+	type?: number;
 }
