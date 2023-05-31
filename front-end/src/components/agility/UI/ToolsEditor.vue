@@ -58,18 +58,22 @@
 					</ContextMenuItem>
 				</ContextMenu>
 			</IconButton>
-			<IconButton class="h-fit" type="button">
-				<SvgProject width="22" height="22" class="!fill-gray-400"/>
+			<IconButton class="h-fit" type="button" @click="openBlueprintModal">
+				<SvgProject width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isBlueprintModalOpen }"/>
 			</IconButton>
 			<ColorPickerOption position="bottom-[-330px] left-[30px]"/>
 		</div>
 		<ShareProject
-			v-if="openUserListModal"
+			v-if="isShareModalOpen"
 			@close="closeShareModal"
 		/>
 		<ManageUser
 			v-if="isOwner && isManagerModalOpen"
 			@close="closeManagerModal"
+		/>
+		<BlueprintModal
+			v-if="isBlueprintModalOpen"
+			@close="closeBlueprintModal"
 		/>
 		<div class="flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button" @click="openManagerModal" v-if="isOwner">
@@ -95,6 +99,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import BlueprintModal from '@/components/agility/modals/Blueprint.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import ShareProject from '@/components/agility/UI/ShareProject.vue';
 import SvgArrows from '@/components/common/svg/Arrows.vue';
@@ -131,6 +136,7 @@ watch(isDefault, val => {
 const setDefaultMode = () => {
 	projectStore.default = true;
 	projectStore.deferredGeometry = null;
+	projectStore.deferredBlueprint = null;
 	projectStore.removeGeometryEvent();
 }
 
@@ -166,13 +172,17 @@ const download = (mime: string) => {
 	projectStore.canvasDownload(mime);
 }
 
-const openUserListModal = ref(false);
-const openShareModal = () => { openUserListModal.value = true }
-const closeShareModal = () => { openUserListModal.value = false }
+const isShareModalOpen = ref(false);
+const openShareModal = () => { isShareModalOpen.value = true }
+const closeShareModal = () => { isShareModalOpen.value = false }
 
 const isManagerModalOpen = ref(false);
 const openManagerModal = () => { isManagerModalOpen.value = true }
 const closeManagerModal = () => { isManagerModalOpen.value = false }
+
+const isBlueprintModalOpen = ref(false);
+const openBlueprintModal = () => { isBlueprintModalOpen.value = true }
+const closeBlueprintModal = () => { isBlueprintModalOpen.value = false }
 
 const showGeometryPopUp = ref(false);
 const toggleGeometryPopUp = () => { showGeometryPopUp.value = !showGeometryPopUp.value }
