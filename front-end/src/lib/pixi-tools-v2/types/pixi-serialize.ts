@@ -81,6 +81,8 @@ export interface SerializedContainerProperties
 
 export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
 	rotation?: number;
+	borderWidth?: number;
+	borderColor?: number;
 }
 
 export interface SerializedLineGraphic {
