@@ -2,8 +2,9 @@ import { Point } from "pixi.js";
 import { FramedContainer } from "../class/framedContainer";
 import { lowestNumberFinder } from "../utils/numberFinder";
 import { ViewportUI } from "../viewportUI";
+import { SerializedContainer } from "../types/pixi-serialize";
 
-export const empathyMap = (viewport: ViewportUI, point: Point, width: number, height: number) => {
+export const empathyMap = (viewport: ViewportUI, point: Point, width: number, height: number): Partial<SerializedContainer> => {
 	const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
@@ -12,7 +13,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 	const centerY = height / 2;
 	const largeZone = height * 0.38; // 100 - 38 * 2 = 24;
 	const smallZone = height * 0.24;
-	const circleRadius = width / 6;
+	const circleRadius = width / 7;
 
 	return {
 		typeId: 'frame',
@@ -61,6 +62,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xFFFFFF,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000
 						},
 						bounds: {
 							x: point.x - centerX,
@@ -90,6 +93,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xFFFFFF,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x,
@@ -119,6 +124,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xFFFFFF,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x - centerX,
@@ -148,6 +155,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xFFFFFF,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000
 						},
 						bounds: {
 							x: point.x,
@@ -181,6 +190,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xCFD1D0,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000
 						},
 						bounds: {
 							x: point.x - centerX,
@@ -210,6 +221,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xCFD1D0,
 							alpha: 1,
+							borderWidth: 1,
+							borderColor: 0x000000
 						},
 						bounds: {
 							x: point.x,
@@ -243,6 +256,8 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							interactive: false,
 							color: 0xFFFFFF,
 							alpha: 1,
+							borderWidth: 1.5,
+							borderColor: 0x000000
 						},
 						bounds: {
 							x: point.x - circleRadius,
