@@ -121,25 +121,25 @@ export class DTOBorrowingMaterial {
 	@IsOptional()
 	public borrowingID: ObjectId;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsISO8601()
 	public borrowingDate: Date;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@Length(5, 125)
 	public borrowingUser: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@Length(5, 500)
 	public description: string;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsISO8601()
 	public returnDate: Date;
 
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
 	@Length(3, 125)
 	public status: string;
