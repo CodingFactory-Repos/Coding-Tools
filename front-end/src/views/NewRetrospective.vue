@@ -1,10 +1,10 @@
 <template>
 	<div class="flex flex-col h-full">
-		<div class="flex">
-			<div class="text-black w-full">
-				{{title}}
+		<div class="flex relative justify-center items-center mb-2 mt-2">
+			<div class="text-black w-full h-full absolute left-16">
+				<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{title}}</h2>
 			</div>
-			<div class="w-full">
+			<div class="w-fit">
 				<Timer />
 			</div>
 		</div>
@@ -65,6 +65,6 @@ onUnmounted(() => {
 <style lang="scss">
 
 .privateSection {
-	z-index: 1000;
+	z-index: 10;
 }
 </style>

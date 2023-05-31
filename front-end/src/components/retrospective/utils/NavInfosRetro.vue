@@ -1,7 +1,16 @@
 <template>
-	<nav class="bg-gray-50 dark:bg-gray-700 w-full flex justify-center">
+	<nav class="bg-gray-50 dark:bg-gray-700 w-full flex justify-center relative">
 		<div class="max-w-screen-xl px-4 py-3 mx-auto">
 			<div class="flex items-center">
+					<DefaultButton
+					to="/app/retrospective"
+					text="Retrospective"
+					text-style="text-white hover:text-white"
+					background="gradiant"
+					class="h-9 absolute right-2 lg:left-16 lg:right-auto"
+				>
+					<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
+				</DefaultButton>
 				<ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm gap-2">
 					<li>
 						<button @click="toggleSideBar" class="text-gray-900 dark:text-white hover:underline flex items-center gap-2" aria-current="page">
@@ -31,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import DefaultButton from '@/components/common/buttons/Default.vue';
+import SvgArrows from '@/components/common/svg/Arrows.vue';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { config } from '@/config/config';
 import { computed } from 'vue';
