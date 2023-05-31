@@ -13,7 +13,7 @@ export class ArticlesController {
 
 	@Get('')
 	async getArticle(@Req() req: Request, @Res() res: Response) {
-		const article = await this.articlesService.getArticle()
+		const article = await this.articlesService.getArticle();
 		return res.status(201).json(article);
 	}
 
