@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
+import { CronService } from 'src/cron/cron.service';
 
 import { DatabaseModule } from 'src/external-modules/database/mongo.module';
 import { AuthModule } from 'src/auth/auth.module';
@@ -21,6 +22,8 @@ import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
+// @ts-ignore
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
 	imports: [
@@ -42,8 +45,9 @@ import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.mod
 		OpenHousesModule,
 		ProjectsModule,
 		RetrospectivesModule,
+		ScheduleModule.forRoot(),
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, CronService],
 })
 export class AppModule {}
