@@ -50,7 +50,7 @@
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn
 /back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
