@@ -61,6 +61,8 @@ export class CallsRepository {
 			);
 		}
 
+		console.log(pdf.content)
+
 		pdf.content.push({
 			text: "Étudiants n'ayant pas scanné",
 			style: 'header',
@@ -111,7 +113,6 @@ export class CallsRepository {
 			ul: studentsIdentities,
 		});
 	}
-
 	async savePdf(pdf: any) {
 		try {
 			const directoryPath = path.join(__dirname, '..', 'pdf'); // Go up one directory and then specify the directory path where you want to save the PDF
@@ -123,18 +124,22 @@ export class CallsRepository {
 				fs.mkdirSync(directoryPath, { recursive: true });
 			}
 
-			// Convert the PDF object to JSON
-			const pdfJson = JSON.stringify(pdf);
+			const finalPdf = pdfMake.createPdf(pdf);
+			// Get the PDF buffer
+			let pdfBuffer = null;
+			pdfBuffer = await new Promise((resolve, reject) => {
+				finalPdf.getBuffer((buffer: any) => {
+					resolve(buffer);
+				});
+			});
 
-			// Save the PDF to the file
-			fs.writeFileSync(filePath, pdfJson);
-
-			console.log('PDF saved successfully:', filePath);
+			fs.writeFileSync(filePath, pdfBuffer);
 			return filePath;
 		} catch (error) {
 			console.error('Error saving PDF:', error);
 		}
 	}
+
 	async deletePdf(attachments: any[]) {
 		for (const attachment of attachments) {
 			fs.unlinkSync(attachment);
@@ -692,6 +697,9 @@ export class CallsRepository {
 		function createPDF() {
 			// Create an empty pdf
 			return {
+				info: {
+					title: 'Absences',
+				},
 				content: [
 					{
 						text:
