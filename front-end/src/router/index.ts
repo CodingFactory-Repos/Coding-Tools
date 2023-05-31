@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: ':id',
-						component: () => import('../views/app/RelatedProfileView.vue')
+						component: () => import('../views/app/RelatedProfileView.vue'),
 					},
 				],
 			},
@@ -117,6 +117,10 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
+			{
+				path: 'materialsDashboard',
+				component: () => import('../views/materialDashboardView.vue'),
+			},
 		],
 		meta: {
 			requiresAuth: true,
