@@ -58,6 +58,8 @@ export class Normalizer {
 				cursor: 'pointer',
 				interactive: true,
 				alpha: 1,
+				borderWidth: 0,
+				borderColor: 0x000000,
 			};
 		}
 
