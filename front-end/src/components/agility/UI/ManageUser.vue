@@ -1,5 +1,5 @@
 <template>
-	<ModalOverlay  v-if="showLogoutModal" @close="beforeModalClose" size="lg">
+	<ModalOverlay v-if="showLogoutModal" @close="beforeModalClose" size="lg">
 		<template #header>
 			<span class="text-lg font-bold pb-2 text-black dark:text-white">Manage the users access</span>
 		</template>
