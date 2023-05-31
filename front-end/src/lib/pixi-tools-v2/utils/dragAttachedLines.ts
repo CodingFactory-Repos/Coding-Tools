@@ -1,12 +1,15 @@
-import { FramedContainer } from "../class/framedContainer";
-import { GenericContainer } from "../class/genericContainer";
-import { LineContainer } from "../class/lineContainer";
-import { ViewportSocketPlugin } from "../plugins/viewportSocketPlugin";
-import { ElementPosition } from "../types/pixi-container";
-import { BezierHandle } from "../types/pixi-enums";
-import { getLengthFromPoints } from "./lengthFromPoints";
+import { FramedContainer } from '../class/framedContainer';
+import { GenericContainer } from '../class/genericContainer';
+import { LineContainer } from '../class/lineContainer';
+import { ViewportSocketPlugin } from '../plugins/viewportSocketPlugin';
+import { ElementPosition } from '../types/pixi-container';
+import { BezierHandle } from '../types/pixi-enums';
+import { getLengthFromPoints } from './lengthFromPoints';
 
-export const dragAttachedLines = (container: GenericContainer | FramedContainer, socketPlugin: ViewportSocketPlugin) => {
+export const dragAttachedLines = (
+	container: GenericContainer | FramedContainer,
+	socketPlugin: ViewportSocketPlugin,
+) => {
 	if (container?.linkedLinesUUID?.length > 0) {
 		const containerUUID = container.uuid;
 		const uuids = container.linkedLinesUUID;
@@ -101,11 +104,7 @@ export const dragAttachedLines = (container: GenericContainer | FramedContainer,
 				line.draw();
 			}
 
-			socketPlugin.emit(
-				'ws-line-updated',
-				lineContainer.uuid,
-				lineContainer.serializeControl(),
-			);
+			socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
 		}
 	}
 };

@@ -1,3 +1,4 @@
+import { EventMode } from 'pixi.js';
 import {
 	AttachedContainer,
 	ElementBounds,
@@ -63,7 +64,7 @@ export interface SerializedContainerAnchors {
 }
 
 export interface SerializedProperties extends ElementCursor {
-	interactive: boolean;
+	eventMode: EventMode;
 }
 
 export interface SerializedLineProperties {
@@ -77,10 +78,13 @@ export interface SerializedContainerProperties
 	isAttachedToFrame: boolean;
 	tabNumberContext: number;
 	frameNumber: number;
+	disabled: boolean;
 }
 
 export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
 	rotation?: number;
+	borderWidth?: number;
+	borderColor?: number;
 }
 
 export interface SerializedLineGraphic {

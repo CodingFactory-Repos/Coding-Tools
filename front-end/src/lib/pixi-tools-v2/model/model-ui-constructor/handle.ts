@@ -4,6 +4,7 @@ import { InternalTypeId } from '../../types/pixi-serialize';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
+import { PixiEventMode } from '../../types/pixi-enums';
 
 export class Handle extends ModelGraphics {
 	public readonly uuid: string;
@@ -22,7 +23,7 @@ export class Handle extends ModelGraphics {
 		this.cursor = cursor ?? 'default';
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
-		this.interactive = true;
+		this.eventMode = PixiEventMode.STATIC;
 		this.radius = radius;
 		this.draw(attr);
 	}

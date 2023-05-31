@@ -1,3 +1,4 @@
+import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface AgilityStore {
@@ -41,4 +42,14 @@ export interface AgilityTemplateMetaDetails {
 	url: string;
 	name: string;
 	isNew: boolean;
+	type: LitteralBlueprintTypes;
 }
+
+export const getAgileBlueprints = {
+	elevatorpitch: null,
+	empathymap: empathyMap,
+	impactmapping: null,
+	personas: null,
+};
+
+export type LitteralBlueprintTypes = keyof typeof getAgileBlueprints;

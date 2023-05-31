@@ -44,6 +44,8 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 	public readonly typeId: GraphicTypeId | InternalTypeId;
 	public color: number;
 	public cursor: CSSStyleProperty.Cursor;
+	public borderWidth?: number;
+	public borderColor?: number;
 
 	abstract draw(attr: Partial<GraphicUIProperties>): void;
 	abstract serialized(): SerializedGraphic;
