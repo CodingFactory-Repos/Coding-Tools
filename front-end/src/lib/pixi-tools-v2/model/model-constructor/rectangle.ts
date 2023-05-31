@@ -9,6 +9,8 @@ export class Rectangle extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
+	public borderWidth: number;
+	public borderColor: number;
 	public color: number;
 
 	static registerGraphic(attributes: SerializedGraphic) {
@@ -23,6 +25,8 @@ export class Rectangle extends ModelGraphics {
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
 		this.interactive = properties.interactive;
+		this.borderWidth = properties.borderWidth;
+		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
@@ -37,9 +41,12 @@ export class Rectangle extends ModelGraphics {
 		this.width = width;
 
 		this.clear();
+		if(this.borderWidth > 0)
+			this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
 		this.drawRect(0, 0, width, height);
 		this.endFill();
+
 	}
 
 	public serialized() {
