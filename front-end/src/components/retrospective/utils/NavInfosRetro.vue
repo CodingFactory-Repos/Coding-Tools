@@ -13,7 +13,10 @@
 						</button>
 					</li>
 					<li>
-						<button class="text-gray-900 dark:text-white hover:underline flex items-center gap-2">
+						<button
+							@click="copyLink"
+							class="text-gray-900 dark:text-white hover:underline flex items-center gap-2"
+						>
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M13.5 1a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/></svg>
 							Share
 						</button>
@@ -29,14 +32,32 @@
 
 <script lang="ts" setup>
 import { useRetrospectiveStore } from '@/store/retrospective.store';
+import { config } from '@/config/config';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import Swal from 'sweetalert2';
 
 
 const retroStore = useRetrospectiveStore();
 const participants = computed(() => retroStore.currentRetro.participants)
+const route = useRoute();
+const url = `${config.prodSiteUrl}${route.fullPath}`;
 
 const toggleSideBar = () => {
 	retroStore.tryToggleSideBar();
+}
+
+const copyLink = () => {
+	navigator.clipboard.writeText(url);
+	Swal.fire({
+		position: 'top-end',
+		text: "Url copied !",
+		showConfirmButton: false,
+		timer: 1500,
+		color: '#5c5f73',
+		padding: '0em',
+		toast: true
+	})
 }
 
 </script>
