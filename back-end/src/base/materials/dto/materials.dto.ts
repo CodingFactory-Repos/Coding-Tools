@@ -9,7 +9,9 @@ import {
 	Length,
 	Max,
 	Min,
+	isNotEmpty,
 } from 'class-validator';
+import { ObjectId } from 'mongodb';
 
 export class DTOCreateMaterials {
 	@IsNotEmpty()
@@ -116,6 +118,9 @@ export class DTOMaetrials {
 }
 
 export class DTOBorrowingMaterial {
+	@IsOptional()
+	public borrowingID: ObjectId;
+
 	@IsNotEmpty()
 	@IsISO8601()
 	public borrowingDate: Date;
