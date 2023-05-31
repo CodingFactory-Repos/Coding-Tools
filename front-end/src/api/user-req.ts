@@ -9,9 +9,9 @@ export const trySaveUserProfile = (userProfile: DeepPartial<User>) => {
 };
 
 export const tryGetClassProfileList = () => {
-	return http.get<Status<{users: Array<UserProfileList>}>>('/users/profile/list');
-}
+	return http.get<Status<{ users: Array<UserProfileList> }>>('/users/profile/list');
+};
 
 export const tryGetRelatedUserProfile = (id: string) => {
 	return http.get<Status<IRelatedUserProfile>>(`/users/profile/${id}`);
-}
+};

@@ -6,7 +6,7 @@ import router from './router';
 import store from './store';
 
 import 'flowbite';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './styles/scss/config.scss';
