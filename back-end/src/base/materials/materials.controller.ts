@@ -59,6 +59,8 @@ export class MaterialsController {
 		const update = {
 			$push: { borrowingHistory: { ...body, borrowingUser: new ObjectId(body.borrowingUser) } },
 		};
+		// Add and objectId to the borrowingID
+		update.$push.borrowingHistory.borrowingID = new ObjectId(body.borrowingID);
 
 		this.materialsService.addReservation(query, update).then((material) => {
 			res.status(200).json(material);
@@ -83,20 +85,6 @@ export class MaterialsController {
 	@Get('pendingReservation')
 	async getPendingReservation(@Res() res: Response) {
 		const materials = await this.materialsService.getPendingReservation();
-		// remove everything expect the borrowingHistory
-		materials.forEach((material) => {
-			delete material._id;
-			delete material.name;
-			delete material.description;
-			delete material.type;
-			delete material.price;
-			delete material.acquisitionDate;
-			delete material.picture;
-			delete material.state;
-			delete material.siteLocation;
-			delete material.storageCupboard;
-			delete material.status;
-		});
 		res.status(200).json(materials);
 	}
 }
