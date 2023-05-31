@@ -87,4 +87,27 @@ export class MaterialsController {
 		const materials = await this.materialsService.getPendingReservation();
 		res.status(200).json(materials);
 	}
+
+	@Put('reservation/accept/:id')
+	async acceptReservation(
+		@Param('id') id: string,
+		@Body() body: DTOBorrowingMaterial,
+		@Res() res: Response,
+	) {
+		const query = { _id: new ObjectId(id) };
+		const update = {
+			$set: {
+				'borrowingHistory.$[elem].status': 'ACCEPTED',
+			},
+		};
+		const options = {
+			arrayFilters: [{ 'elem.borrowingID': new ObjectId(body.borrowingID) }],
+		};
+		try {
+			const material = await this.materialsService.acceptReservation(query, update, options);
+			res.status(200).json(material);
+		} catch (err) {
+			res.status(400).json(err);
+		}
+	}
 }
