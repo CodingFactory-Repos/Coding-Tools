@@ -19,7 +19,6 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 	return {
 		typeId: 'frame',
 		background: {
-			uuid: "bullshit",
 			typeId: 'framebox',
 			properties: {
 				cursor: 'pointer',
