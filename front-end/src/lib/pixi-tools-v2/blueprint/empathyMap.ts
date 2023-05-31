@@ -248,7 +248,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				Center circle of the empathy map (USER)
 			 ******************************************/
 
-			// Centered Circle [USER]
+			// Centered Circle [USER]
 			{
 				typeId: 'generic',
 				properties: {
