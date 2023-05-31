@@ -39,4 +39,7 @@ export class MaterialsService {
 	async getPendingReservation() {
 		return await this.materialsRepository.getPendingReservation();
 	}
+	async acceptReservation(query, update, options) {
+		return await this.materialsRepository.acceptReservation(query, update, options);
+	}
 }
