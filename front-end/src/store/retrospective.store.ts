@@ -14,7 +14,8 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	tempMovingPostit: {},
 	currentRetro: {},
 	userCursors: [],
-	allRetros: []
+	allRetros: [],
+	isSideBar: false
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -122,7 +123,6 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
 			this.userCursors.splice(findCursor, 1);
 		},
-		// Last from store
 		async getAllRetros(this: RetrospectiveStore) {
 			const resp = await tryGetAllRetro();
 			this.allRetros = resp.data.retrospectives;
@@ -137,6 +137,12 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			const findUser = this.currentRetro.participants.findIndex(el => el === user.email);
 			if (findUser !== -1)
 				this.currentRetro.participants.splice(findUser, 1);
+		},
+		tryToggleSideBar(this: RetrospectiveStore) {
+			this.isSideBar = !this.isSideBar;
+		},
+		tryCloseSideBar(this: RetrospectiveStore) {
+			this.isSideBar = false;
 		}
 	},
 });

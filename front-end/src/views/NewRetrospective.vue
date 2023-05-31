@@ -10,7 +10,7 @@
 		</div>
 		<div>
 			<div class="w-full bg-slate-300">
-				Navigation informations
+				<NavInfosRetro />
 			</div>
 		</div>
 		<div class="h-full">
@@ -33,6 +33,7 @@ import { computed, onUnmounted, onMounted } from 'vue';
 import Board from '@/components/retrospective/Board.vue';
 import Timer from '@/components/retrospective/Timer.vue';
 import PrivateSection from '@/components/retrospective/PrivateSection.vue'
+import NavInfosRetro from '@/components/retrospective/utils/NavInfosRetro.vue'
 import { useRoute } from 'vue-router';
 import { socketRetro, useSocket } from '@/composables/useSocketRetro';
 
