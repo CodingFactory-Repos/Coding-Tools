@@ -172,7 +172,7 @@ export class LineContainer extends PluginContainer {
 				frameNumber: this.frameNumber,
 				startContainer: this.startContainer,
 				endContainer: this.endContainer,
-				disabled: this.disabled
+				disabled: this.disabled,
 			},
 			childs: [graphicSerialized],
 		};

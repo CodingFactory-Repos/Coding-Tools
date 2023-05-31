@@ -41,8 +41,7 @@ export class Circle extends ModelGraphics {
 		this.position.set(x, y);
 
 		this.clear();
-		if(this.borderWidth > 0)
-			this.lineStyle(this.borderWidth, this.borderColor, 1);
+		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
 		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();

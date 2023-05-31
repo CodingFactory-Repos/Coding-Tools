@@ -41,8 +41,7 @@ export class Triangle extends ModelGraphics {
 		this.width = width;
 
 		this.clear();
-		if(this.borderWidth > 0)
-			this.lineStyle(this.borderWidth, this.borderColor, 1);
+		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
 		this.moveTo(0, height);
 		this.lineTo(width / 2, 0);

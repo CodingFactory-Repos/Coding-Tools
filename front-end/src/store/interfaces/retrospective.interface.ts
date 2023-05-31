@@ -1,11 +1,10 @@
 import { User } from './auth.interfaces';
 
-
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>,
-	tempMovingPostit: Postit,
-	currentRetro: Retrospective
-	userCursors: Array<UserCursor>
+	privatePostit: Array<Postit>;
+	tempMovingPostit: Postit;
+	currentRetro: Retrospective;
+	userCursors: Array<UserCursor>;
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -22,41 +21,40 @@ export interface RetrospectiveStore {
 	removeCursor?: (this: RetrospectiveStore, user: UserDisconnect) => void;
 }
 
-
 export interface Retrospective {
-	_id?: string
-	slug?: string
-	title?: string
-	optionTemplate?: number
-	participants?: Array<User>
-	postits?: Postits
-	createdAt?: Date
-	endedAt?: Date
+	_id?: string;
+	slug?: string;
+	title?: string;
+	optionTemplate?: number;
+	participants?: Array<User>;
+	postits?: Postits;
+	createdAt?: Date;
+	endedAt?: Date;
 }
 
 export interface Postits {
-	1?: Array<Postit>
-	2?: Array<Postit>
-	3?: Array<Postit>
+	1?: Array<Postit>;
+	2?: Array<Postit>;
+	3?: Array<Postit>;
 }
 export interface Postit {
-	id?: string
-	user?: string // to see
-	value?: string
-	type?: number
+	id?: string;
+	user?: string; // to see
+	value?: string;
+	type?: number;
 }
 
 export interface UserDisconnect {
-	email?: string
-	id: string
+	email?: string;
+	id: string;
 }
 
 export interface UserCursor {
-	position: Positions
-	clientId: string
+	position: Positions;
+	clientId: string;
 }
 
 export interface Positions {
-	x: number
-	y: number
+	x: number;
+	y: number;
 }

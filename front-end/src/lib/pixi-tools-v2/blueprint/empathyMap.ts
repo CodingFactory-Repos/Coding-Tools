@@ -1,11 +1,16 @@
-import { Point } from "pixi.js";
-import { FramedContainer } from "../class/framedContainer";
-import { lowestNumberFinder } from "../utils/numberFinder";
-import { ViewportUI } from "../viewportUI";
-import { SerializedContainer } from "../types/pixi-serialize";
-import { PixiEventMode } from "../types/pixi-enums";
+import { Point } from 'pixi.js';
+import { FramedContainer } from '../class/framedContainer';
+import { lowestNumberFinder } from '../utils/numberFinder';
+import { ViewportUI } from '../viewportUI';
+import { SerializedContainer } from '../types/pixi-serialize';
+import { PixiEventMode } from '../types/pixi-enums';
 
-export const empathyMap = (viewport: ViewportUI, point: Point, width: number, height: number): Partial<SerializedContainer> => {
+export const empathyMap = (
+	viewport: ViewportUI,
+	point: Point,
+	width: number,
+	height: number,
+): Partial<SerializedContainer> => {
 	const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
@@ -23,7 +28,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xFF00FF,
+				color: 0xff00ff,
 				alpha: 0,
 				borderWidth: 0,
 				borderColor: 0x000000,
@@ -33,7 +38,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				y: point.y - height / 2,
 				width,
 				height,
-			}
+			},
 		},
 		properties: {
 			cursor: 'pointer',
@@ -65,19 +70,19 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xFFFFFF,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 1,
-							borderColor: 0x000000
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x - centerX,
 							y: point.y - centerY,
 							width: centerX,
 							height: largeZone,
-						}
+						},
 					},
-				]
+				],
 			},
 
 			// Edge rectangle [THINK&FEEL]
@@ -97,7 +102,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xFFFFFF,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 1,
 							borderColor: 0x000000,
@@ -107,9 +112,9 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							y: point.y - centerY,
 							width: centerX,
 							height: largeZone,
-						}
-					}
-				]
+						},
+					},
+				],
 			},
 
 			// Edge rectangle [SEE]
@@ -129,7 +134,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xFFFFFF,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 1,
 							borderColor: 0x000000,
@@ -139,9 +144,9 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 							y: point.y - centerY + largeZone,
 							width: centerX,
 							height: largeZone,
-						}
-					}
-				]
+						},
+					},
+				],
 			},
 
 			// Edge rectangle [HEAR]
@@ -161,19 +166,19 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xFFFFFF,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 1,
-							borderColor: 0x000000
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x,
 							y: point.y - centerY + largeZone,
 							width: centerX,
 							height: largeZone,
-						}
-					}
-				]
+						},
+					},
+				],
 			},
 
 			/****************************************************
@@ -197,19 +202,19 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xCFD1D0,
+							color: 0xcfd1d0,
 							alpha: 1,
 							borderWidth: 1,
-							borderColor: 0x000000
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x - centerX,
-							y: point.y - centerY + (largeZone * 2),
+							y: point.y - centerY + largeZone * 2,
 							width: centerX,
 							height: smallZone,
-						}
-					}
-				]
+						},
+					},
+				],
 			},
 
 			// Bottom rectangle [GAIN]
@@ -229,19 +234,19 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xCFD1D0,
+							color: 0xcfd1d0,
 							alpha: 1,
 							borderWidth: 1,
-							borderColor: 0x000000
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x,
-							y: point.y - centerY + (largeZone * 2),
+							y: point.y - centerY + largeZone * 2,
 							width: centerX,
 							height: smallZone,
-						}
-					}
-				]
+						},
+					},
+				],
 			},
 
 			/******************************************
@@ -265,19 +270,19 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xFFFFFF,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 1.5,
-							borderColor: 0x000000
+							borderColor: 0x000000,
 						},
 						bounds: {
 							x: point.x - circleRadius,
 							y: point.y - centerY + largeZone - circleRadius,
 							radius: circleRadius,
-						}
-					}
-				]
-			}
-		]
-	}
-}
+						},
+					},
+				],
+			},
+		],
+	};
+};

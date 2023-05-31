@@ -135,7 +135,7 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
-		if (e.forced ||this.eventMode === 'none' || this.disabled) return;
+		if (e.forced || this.eventMode === 'none' || this.disabled) return;
 		if (e.target === this.frameBox && this.listeners('pointerdown').length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);

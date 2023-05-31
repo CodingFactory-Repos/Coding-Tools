@@ -53,9 +53,9 @@ export const modelSerializer = (model: ModelGraphics) => {
 			eventMode: model.eventMode,
 			color: model.color,
 			alpha: model.alpha,
-		}
+		};
 
-		if(model.borderWidth !== undefined && model.borderColor !== undefined) {
+		if (model.borderWidth !== undefined && model.borderColor !== undefined) {
 			properties.borderWidth = model.borderWidth;
 			properties.borderColor = model.borderColor;
 		}

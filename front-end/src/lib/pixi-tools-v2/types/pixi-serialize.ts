@@ -72,7 +72,9 @@ export interface SerializedLineProperties {
 	endContainer: AttachedContainer;
 }
 
-export interface SerializedContainerProperties extends SerializedProperties, Partial<SerializedLineProperties> {
+export interface SerializedContainerProperties
+	extends SerializedProperties,
+		Partial<SerializedLineProperties> {
 	isAttachedToFrame: boolean;
 	tabNumberContext: number;
 	frameNumber: number;

@@ -46,10 +46,10 @@ export interface AgilityTemplateMetaDetails {
 }
 
 export const getAgileBlueprints = {
-	'elevatorpitch': null,
-	'empathymap': empathyMap,
-	'impactmapping': null,
-	'personas': null,
-}
+	elevatorpitch: null,
+	empathymap: empathyMap,
+	impactmapping: null,
+	personas: null,
+};
 
 export type LitteralBlueprintTypes = keyof typeof getAgileBlueprints;

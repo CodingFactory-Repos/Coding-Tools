@@ -41,12 +41,10 @@ export class Rectangle extends ModelGraphics {
 		this.width = width;
 
 		this.clear();
-		if(this.borderWidth > 0)
-			this.lineStyle(this.borderWidth, this.borderColor, 1);
+		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
 		this.drawRect(0, 0, width, height);
 		this.endFill();
-
 	}
 
 	public serialized() {

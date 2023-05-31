@@ -60,7 +60,7 @@ export const useProjectStore = defineStore('project', {
 			const scene = toRaw(this.scene);
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			scene.viewport.off('pointerup', this.createGeometry);
-			scene.viewport.off('pointerup', this.createBlueprint)
+			scene.viewport.off('pointerup', this.createBlueprint);
 		},
 		enableSelectionBox(this: ProjectStore, destroy = false) {
 			if (destroy && this.selectionBox) {
@@ -121,9 +121,14 @@ export const useProjectStore = defineStore('project', {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
 			const generateBlueprint: Function | null = getAgileBlueprints[this.deferredBlueprint];
-			if(generateBlueprint === null) return;
+			if (generateBlueprint === null) return;
 
-			const data = generateBlueprint(scene.viewport, point, 1000, 800) as Partial<SerializedContainer>;
+			const data = generateBlueprint(
+				scene.viewport,
+				point,
+				1000,
+				800,
+			) as Partial<SerializedContainer>;
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
