@@ -3,6 +3,7 @@ import { FramedContainer } from "../class/framedContainer";
 import { lowestNumberFinder } from "../utils/numberFinder";
 import { ViewportUI } from "../viewportUI";
 import { SerializedContainer } from "../types/pixi-serialize";
+import { PixiEventMode } from "../types/pixi-enums";
 
 export const empathyMap = (viewport: ViewportUI, point: Point, width: number, height: number): Partial<SerializedContainer> => {
 	const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
@@ -22,7 +23,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 			typeId: 'framebox',
 			properties: {
 				cursor: 'pointer',
-				eventMode: 'static',
+				eventMode: PixiEventMode.STATIC,
 				color: 0xFF00FF,
 				alpha: 0,
 				borderWidth: 0,
@@ -37,7 +38,7 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 		},
 		properties: {
 			cursor: 'pointer',
-			eventMode: 'static',
+			eventMode: PixiEventMode.STATIC,
 			tabNumberContext: -1,
 			isAttachedToFrame: false,
 			frameNumber: frameNumber,

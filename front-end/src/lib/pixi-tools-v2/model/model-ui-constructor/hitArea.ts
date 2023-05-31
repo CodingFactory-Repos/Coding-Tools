@@ -4,6 +4,7 @@ import { InternalTypeId } from '../../types/pixi-serialize';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
+import { PixiEventMode } from '../../types/pixi-enums';
 
 export class HitArea extends ModelGraphics {
 	public readonly uuid: string;
@@ -23,7 +24,7 @@ export class HitArea extends ModelGraphics {
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.lineWidth = lineWidth ?? 5;
-		this.eventMode = 'static';
+		this.eventMode = PixiEventMode.STATIC;
 		this.draw(attr);
 	}
 

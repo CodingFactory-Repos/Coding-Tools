@@ -6,6 +6,7 @@ import { ViewportUI } from '../viewportUI';
 
 import { BoundsContainer, ModelGraphics } from '../types/pixi-class';
 import type { CanvasContainer } from '../types/pixi-aliases';
+import { PixiEventMode } from '../types/pixi-enums';
 
 export class WrappedContainer extends BoundsContainer {
 	protected readonly viewport: ViewportUI;
@@ -26,7 +27,7 @@ export class WrappedContainer extends BoundsContainer {
 
 		this.typeId = 'wrap';
 		this.cursor = 'pointer';
-		this.eventMode = 'static';
+		this.eventMode = PixiEventMode.STATIC;
 		this.viewport = viewport;
 		this.manager = manager;
 
@@ -37,7 +38,7 @@ export class WrappedContainer extends BoundsContainer {
 		clearTimeout(this.timeout);
 		this.timeout = null;
 		this.awaitDblClick = false;
-		this.toggleChildrenEventMode('static');
+		this.toggleChildrenEventMode(PixiEventMode.STATIC);
 		this.removeChildren();
 		this.wrappedBox.destroy();
 		this.wrappedBox = null;
@@ -123,12 +124,12 @@ export class WrappedContainer extends BoundsContainer {
 			properties: {
 				color: 0xff00ff,
 				cursor: 'pointer',
-				eventMode: 'static',
+				eventMode: PixiEventMode.STATIC,
 				alpha: 0,
 			},
 		});
 		this.wrappedBox.cursor = 'pointer';
-		this.wrappedBox.eventMode = 'static';
+		this.wrappedBox.eventMode = PixiEventMode.STATIC;
 		this.addChildAt(this.wrappedBox, 0);
 		this.toggleChildrenEventMode('none');
 		this.awaitDblClick = false;
@@ -140,7 +141,7 @@ export class WrappedContainer extends BoundsContainer {
 		if (!this.awaitDblClick) {
 			if (this.timeout) clearTimeout(this.timeout);
 
-			this.toggleChildrenEventMode('static');
+			this.toggleChildrenEventMode(PixiEventMode.STATIC);
 			this.viewport.setChildIndex(this, 1);
 			this.timeout = null;
 			this.awaitDblClick = true;

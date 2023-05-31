@@ -9,6 +9,7 @@ import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 import type { ProjectStore } from '@/store/interfaces/project.interface';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { pick } from '@/utils/object.helper';
+import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
 
 const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
@@ -67,13 +68,15 @@ export const useProjectStore = defineStore('project', {
 		createFramedGeometry(this: ProjectStore, event: FederatedPointerEvent) {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
-			const data: Partial<SerializedContainer> = {
-				typeId: 'frame',
-				background: {
-					typeId: 'framebox',
-				},
-			};
-			const framedContainer = Normalizer.container(scene.viewport, data, false, point);
+			// const data: Partial<SerializedContainer> = {
+			// 	typeId: 'frame',
+			// 	background: {
+			// 		typeId: 'framebox',
+			// 	},
+			// };
+			const data = empathyMap(this.scene.viewport, point, 1000, 800) as Partial<SerializedContainer>;
+			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
+			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
 			scene.viewport.addChild(framedContainer);
 
 			scene.viewport.off('pointerup', this.createFramedGeometry);

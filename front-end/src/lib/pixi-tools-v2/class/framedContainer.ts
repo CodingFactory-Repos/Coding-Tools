@@ -20,6 +20,7 @@ import {
 } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
+import { PixiEventMode } from '../types/pixi-enums';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -84,8 +85,8 @@ export class FramedContainer extends PluginContainer {
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new TitleContainer();
 		this.titleContainer.tabNumberContext = this.frameNumber;
-		this.titleContainer.eventMode = 'static';
-		this.mainContainer.eventMode = 'static';
+		this.titleContainer.eventMode = PixiEventMode.STATIC;
+		this.mainContainer.eventMode = PixiEventMode.STATIC;
 
 		for (const element of children) {
 			this.mainContainer.addChild(element);

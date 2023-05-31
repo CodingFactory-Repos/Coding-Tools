@@ -75,3 +75,11 @@ export enum DownloadType {
 export type GeometryTypes = typeof GeometryTypes;
 export type LiteralGeometryTypes = keyof GeometryTypes;
 export type ContainerType = typeof ContainerType;
+
+export enum PixiEventMode {
+	NONE = 'none',
+	PASSIVE = 'passive',
+	AUTO = 'auto',
+	STATIC = 'static',
+	DYNAMIC = 'dynamic',
+}
