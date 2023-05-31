@@ -29,11 +29,10 @@
 
 <script lang="ts" setup>
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { computed, onUnmounted } from 'vue';
+import { computed, onUnmounted, onMounted } from 'vue';
 import Board from '@/components/retrospective/Board.vue';
 import Timer from '@/components/retrospective/Timer.vue';
 import PrivateSection from '@/components/retrospective/PrivateSection.vue'
-import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { socketRetro, useSocket } from '@/composables/useSocketRetro';
 
