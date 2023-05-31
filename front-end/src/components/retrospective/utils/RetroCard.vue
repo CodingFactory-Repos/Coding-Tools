@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+	<div class="max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 		<a href="#">
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{retro.title}}</h5>
 		</a>
@@ -14,6 +14,11 @@
 					clip-rule="evenodd"></path>
 			</svg>
 		</button>
+		<div class="flex justify-end text-black mt-2 text-sm">
+			<div>
+				{{ new Date(retro.createdAt).toLocaleDateString("FR-fr") }}
+			</div>
+		</div>
 	</div>
 </template>
 

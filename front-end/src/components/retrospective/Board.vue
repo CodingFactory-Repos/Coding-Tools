@@ -59,7 +59,7 @@
 			</div>
 		</div>
 		<UserCursors />
-		<div class="h-full bg-light-secondary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto z-100"
+		<div class="h-full bg-light-secondary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto z-10"
 			:style="showSideBar ? 'width: 250px' : 'width: 0px;'">
 			<SideBarParticipants />
 		</div>
