@@ -55,7 +55,23 @@ export class MaterialsRepository {
 		return this.materials.findOne({ _id: new ObjectId(id) });
 	}
 	async getPendingReservation() {
-		// return only the borrowingHistory that has a PENDING reservation
-		return this.materials.find({ 'borrowingHistory.status': 'PENDING' }).toArray();
+		// return only the borrowingHistory index that has the status in PENDING
+		const materials = await this.materials
+			.aggregate([
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+				{ $unwind: '$borrowingHistory' },
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+			])
+			.toArray();
+
+		return materials;
+	}
+	async acceptReservation(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
 	}
 }
