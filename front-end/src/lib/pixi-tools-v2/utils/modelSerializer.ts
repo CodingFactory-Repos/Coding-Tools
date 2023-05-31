@@ -16,7 +16,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 			},
 			properties: {
 				cursor: model.cursor,
-				interactive: model.interactive,
+				eventMode: model.eventMode,
 				color: model.color,
 				alpha: model.alpha,
 				borderWidth: model.borderWidth,
@@ -42,7 +42,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 			},
 			properties: {
 				cursor: model.cursor,
-				interactive: model.interactive,
+				eventMode: model.eventMode,
 				color: model.color,
 				alpha: model.alpha,
 			},
@@ -50,12 +50,11 @@ export const modelSerializer = (model: ModelGraphics) => {
 	} else {
 		const properties: SerializedGraphicProperties = {
 			cursor: model.cursor,
-			interactive: model.interactive,
+			eventMode: model.eventMode,
 			color: model.color,
 			alpha: model.alpha,
 		}
 
-		console.log(model.borderWidth, model.borderColor)
 		if(model.borderWidth !== undefined && model.borderColor !== undefined) {
 			properties.borderWidth = model.borderWidth;
 			properties.borderColor = model.borderColor;

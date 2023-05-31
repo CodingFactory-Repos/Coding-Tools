@@ -56,7 +56,7 @@ export class Normalizer {
 			attributes.properties = {
 				color: 0xffffff,
 				cursor: 'pointer',
-				interactive: true,
+				eventMode: 'static',
 				alpha: 1,
 				borderWidth: 0,
 				borderColor: 0x000000,
@@ -103,9 +103,10 @@ export class Normalizer {
 			attributes.properties = {
 				cursor: 'pointer',
 				frameNumber,
-				interactive: true,
+				eventMode: 'static',
 				isAttachedToFrame: false,
 				tabNumberContext: tabContext ?? -1,
+				disabled: false,
 			};
 		}
 

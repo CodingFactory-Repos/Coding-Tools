@@ -23,7 +23,7 @@ export class HitArea extends ModelGraphics {
 		this.color = color ?? 0x0c8ce9;
 		this.alpha = alpha ?? 1;
 		this.lineWidth = lineWidth ?? 5;
-		this.interactive = true;
+		this.eventMode = 'static';
 		this.draw(attr);
 	}
 

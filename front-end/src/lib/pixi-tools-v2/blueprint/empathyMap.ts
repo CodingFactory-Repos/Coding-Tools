@@ -18,12 +18,15 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 	return {
 		typeId: 'frame',
 		background: {
+			uuid: "bullshit",
 			typeId: 'framebox',
 			properties: {
 				cursor: 'pointer',
-				interactive: true,
-				color: 0xFFFFFF,
+				eventMode: 'static',
+				color: 0xFF00FF,
 				alpha: 0,
+				borderWidth: 0,
+				borderColor: 0x000000,
 			},
 			bounds: {
 				x: point.x - centerX,
@@ -34,10 +37,11 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 		},
 		properties: {
 			cursor: 'pointer',
-			interactive: true,
+			eventMode: 'static',
 			tabNumberContext: -1,
 			isAttachedToFrame: false,
-			frameNumber: frameNumber
+			frameNumber: frameNumber,
+			disabled: false,
 		},
 		childs: [
 			/************************************************************************
@@ -49,17 +53,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xFFFFFF,
 							alpha: 1,
 							borderWidth: 1,
@@ -80,17 +85,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xFFFFFF,
 							alpha: 1,
 							borderWidth: 1,
@@ -111,17 +117,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xFFFFFF,
 							alpha: 1,
 							borderWidth: 1,
@@ -142,17 +149,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xFFFFFF,
 							alpha: 1,
 							borderWidth: 1,
@@ -177,17 +185,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xCFD1D0,
 							alpha: 1,
 							borderWidth: 1,
@@ -208,17 +217,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'rectangle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xCFD1D0,
 							alpha: 1,
 							borderWidth: 1,
@@ -243,17 +253,18 @@ export const empathyMap = (viewport: ViewportUI, point: Point, width: number, he
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					interactive: false,
+					eventMode: 'none',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
+					disabled: true,
 				},
 				childs: [
 					{
 						typeId: 'circle',
 						properties: {
 							cursor: 'pointer',
-							interactive: false,
+							eventMode: 'none',
 							color: 0xFFFFFF,
 							alpha: 1,
 							borderWidth: 1.5,

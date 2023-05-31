@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from 'pixi.js';
+import { EventMode, FederatedPointerEvent } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 import { FramedContainer } from './framedContainer';
 import { Rectangle } from '../model/template';
@@ -26,7 +26,7 @@ export class WrappedContainer extends BoundsContainer {
 
 		this.typeId = 'wrap';
 		this.cursor = 'pointer';
-		this.interactive = true;
+		this.eventMode = 'static';
 		this.viewport = viewport;
 		this.manager = manager;
 
@@ -37,7 +37,7 @@ export class WrappedContainer extends BoundsContainer {
 		clearTimeout(this.timeout);
 		this.timeout = null;
 		this.awaitDblClick = false;
-		this.toggleChildrenInteractive(true);
+		this.toggleChildrenEventMode('static');
 		this.removeChildren();
 		this.wrappedBox.destroy();
 		this.wrappedBox = null;
@@ -46,18 +46,18 @@ export class WrappedContainer extends BoundsContainer {
 		this.removeAllListeners('pointerup');
 	}
 
-	public toggleChildrenInteractive = (interactive: boolean) => {
+	public toggleChildrenEventMode = (eventMode: EventMode) => {
 		for (const element of this.absoluteChildren) {
-			element.interactive = interactive;
+			element.eventMode = eventMode;
 
 			if (element instanceof FramedContainer) {
 				element.mainContainer.children.forEach((ctn) => {
-					ctn.interactive = interactive;
-					ctn.children.forEach((graph) => (graph.interactive = interactive));
+					ctn.eventMode = eventMode;
+					ctn.children.forEach((graph) => (graph.eventMode = eventMode));
 				});
 			} else {
 				element.children.forEach((graph) => {
-					graph.interactive = interactive;
+					graph.eventMode = eventMode;
 				});
 			}
 		}
@@ -123,14 +123,14 @@ export class WrappedContainer extends BoundsContainer {
 			properties: {
 				color: 0xff00ff,
 				cursor: 'pointer',
-				interactive: true,
+				eventMode: 'static',
 				alpha: 0,
 			},
 		});
 		this.wrappedBox.cursor = 'pointer';
-		this.wrappedBox.interactive = true;
+		this.wrappedBox.eventMode = 'static';
 		this.addChildAt(this.wrappedBox, 0);
-		this.toggleChildrenInteractive(false);
+		this.toggleChildrenEventMode('none');
 		this.awaitDblClick = false;
 		this.timeout = null;
 	}
@@ -140,13 +140,13 @@ export class WrappedContainer extends BoundsContainer {
 		if (!this.awaitDblClick) {
 			if (this.timeout) clearTimeout(this.timeout);
 
-			this.toggleChildrenInteractive(true);
+			this.toggleChildrenEventMode('static');
 			this.viewport.setChildIndex(this, 1);
 			this.timeout = null;
 			this.awaitDblClick = true;
 
 			this.timeout = setTimeout(() => {
-				this.toggleChildrenInteractive(false);
+				this.toggleChildrenEventMode('none');
 				this.viewport.setChildIndex(this, this.viewport.children.length - 13);
 				this.awaitDblClick = false;
 				this.timeout = null;

@@ -82,7 +82,7 @@ export class BezierPlugin {
 		) as LineContainer;
 
 		this.lineContainer = lineContainer;
-		this.lineContainer.interactive = false;
+		this.lineContainer.eventMode = 'static';
 		this.lineBezier = lineContainer.getGraphicChildren()[0] as LineBezier;
 		this.viewport.addChildAt(this.lineContainer, this.viewport.children.length - 13);
 
@@ -200,7 +200,7 @@ export class BezierPlugin {
 			this.container.off('pointerdown', this._cancelBezierCurve);
 			this._removeViewportBezierEvent();
 			if (this.lineContainer) {
-				this.lineContainer.interactive = true;
+				this.lineContainer.eventMode = 'static';
 			}
 			this.lineContainer = null;
 			this.lineBezier = null;

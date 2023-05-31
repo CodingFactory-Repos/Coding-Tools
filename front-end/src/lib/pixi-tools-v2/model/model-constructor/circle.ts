@@ -25,7 +25,7 @@ export class Circle extends ModelGraphics {
 
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
 		this.borderWidth = properties.borderWidth;
 		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
