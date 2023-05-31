@@ -70,7 +70,7 @@ export interface SerializedContainerAnchors {
 
 export interface SerializedProperties {
 	cursor: string;
-	interactive: boolean;
+	eventMode: 'none' | 'passive' | 'auto' | 'static' | 'dynamic';
 }
 
 export interface SerializedLineProperties {
