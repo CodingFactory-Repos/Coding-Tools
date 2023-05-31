@@ -55,10 +55,7 @@ export class MaterialsRepository {
 		return this.materials.findOne({ _id: new ObjectId(id) });
 	}
 	async getPendingReservation() {
-		return this.materials
-			.find({
-				$or: [{ 'borrowingHistory.status': 'PENDING' }],
-			})
-			.toArray();
+		// return only the borrowingHistory that has a PENDING reservation
+		return this.materials.find({ 'borrowingHistory.status': 'PENDING' }).toArray();
 	}
 }
