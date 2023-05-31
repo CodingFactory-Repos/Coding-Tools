@@ -18,6 +18,14 @@ export class MaterialsService {
 		return await this.materialsRepository.getAllMaterials();
 	}
 
+	async getAllMaterialsStats() {
+		return await this.materialsRepository.getAllMaterialsStats();
+	}
+
+	async getAllMacs() {
+		return await this.materialsRepository.getAllMacs();
+	}
+
 	async createNewMaterial(payload: DTOCreateMaterials) {
 		const query = payload as Material;
 		return await this.materialsRepository.createMaterial(query);

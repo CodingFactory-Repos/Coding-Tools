@@ -31,6 +31,19 @@ export class MaterialsController {
 		});
 	}
 
+	@Get('/stats')
+	async getStats(@Res() res: Response) {
+		this.materialsService.getAllMaterialsStats().then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+	@Get('/macs')
+	async getMacs(@Res() res: Response) {
+		this.materialsService.getAllMacs().then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+
 	@Post('/create')
 	async createMaterial(@Body() body: DTOCreateMaterials, @Res() res: Response) {
 		await this.materialsService.createNewMaterial(body).then((material) => {
