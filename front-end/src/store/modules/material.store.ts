@@ -8,6 +8,8 @@ import {
 	updateMaterial,
 	deleteMaterial,
 	borrowMaterial,
+	getPendingMaterials,
+	acceptBorrowing,
 } from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { Material, MaterialStore, BorrowingMaterial } from '@/store/interfaces/material.interface';
@@ -17,8 +19,10 @@ export const useMaterialStore = defineStore('materialStore', {
 		filter: { input: string; site: string; type: string; state: string };
 		input: string;
 		materials: Array<Material>;
+		pendingMaterials: Array<Material>;
 	} => {
 		return {
+			pendingMaterials: [],
 			materials: [],
 			filter: {
 				input: '',
@@ -69,6 +73,19 @@ export const useMaterialStore = defineStore('materialStore', {
 			if (res.status !== 200) throw new Error('The returned status was not expected');
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials[index] = res.data;
+			return true;
+		}),
+		getPendingMaterials: withErrorHandler(async function () {
+			const res = await getPendingMaterials();
+			if (res.status !== 200) throw new Error('The returned status was not expected');
+			this.pendingMaterials = res.data;
+			return true;
+		}),
+		acceptBorrowing: withErrorHandler(async function (id: string, payload: any) {
+			const res = await acceptBorrowing(id, payload);
+			if (res.status !== 200) throw new Error('The returned status was not expected');
+			const index = this.pendingMaterials.findIndex((el) => el._id === id);
+			this.pendingMaterials.splice(index, 1);
 			return true;
 		}),
 	},
