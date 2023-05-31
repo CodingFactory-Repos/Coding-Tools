@@ -82,8 +82,9 @@ export class BezierPlugin {
 		) as LineContainer;
 
 		this.lineContainer = lineContainer;
-		this.lineContainer.eventMode = PixiEventMode.STATIC;
+		this.lineContainer.eventMode = PixiEventMode.NONE;
 		this.lineBezier = lineContainer.getGraphicChildren()[0] as LineBezier;
+			
 		this.viewport.addChildAt(this.lineContainer, this.viewport.children.length - 13);
 
 		this.container.attachLine(this.lineContainer.uuid);
