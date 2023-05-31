@@ -14,7 +14,7 @@ export class IdeasCommentsRepository {
 	async getAllIdeasComments(query: IdeaComment) {
 		console.log({ query });
 		const { equipmentId } = query;
-		const coucou = await this.ideasComments
+		return await this.ideasComments
 			.aggregate([
 				{ $match: { equipmentId: new ObjectId(equipmentId) } },
 				{
@@ -27,7 +27,6 @@ export class IdeasCommentsRepository {
 				},
 			])
 			.toArray();
-		return coucou;
 	}
 
 	async createIdeaComment(query: IdeaComment) {
