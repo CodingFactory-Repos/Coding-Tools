@@ -114,7 +114,7 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	public getGraphicChildren() {
-		return [this.children[0]] as Array<ModelGraphics>;
+		return [this.children[0]] as unknown as Array<ModelGraphics>;
 	}
 
 	public cloneToContainer(): Container {
@@ -197,9 +197,8 @@ export class GenericContainer extends PluginContainer {
 
 	public attachLine(lineUUID: string) {
 		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
-		if (index === -1) {
-			this.linkedLinesUUID.push(lineUUID);
-		}
+		if (index === -1) return;
+		this.linkedLinesUUID.push(lineUUID);
 	}
 
 	public detachLine(lineUUID: string) {

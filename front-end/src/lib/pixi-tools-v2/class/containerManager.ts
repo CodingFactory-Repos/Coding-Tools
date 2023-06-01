@@ -71,6 +71,20 @@ export class ContainerManager {
 						line.destroy();
 						this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
 					});
+				} else if(ctn instanceof LineContainer) {
+					if (ctn.startContainer?.containerUUID !== undefined) {
+						const container = this.viewport.socketPlugin.elements[
+							ctn.startContainer.containerUUID
+						] as CanvasContainer;
+						container.detachLine(ctn.startContainer.containerUUID);
+					}
+
+					if (ctn.endContainer?.containerUUID !== undefined) {
+						const container = this.viewport.socketPlugin.elements[
+							ctn.endContainer.containerUUID
+						] as CanvasContainer;
+						container.detachLine(ctn.endContainer.containerUUID);
+					}
 				}
 
 				if (this.viewport.socketPlugin) {
