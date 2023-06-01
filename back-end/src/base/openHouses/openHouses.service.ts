@@ -14,4 +14,12 @@ export class OpenHousesService {
 
 	// Business logic methods goes there...
 	// Define your own methods
+
+	async getAllHouses() {
+		return await this.openHousesRepository.getAllHouses();
+	}
+
+	async getOpenHouseBy(id) {
+		return await this.openHousesRepository.getOpenHouseById(id);
+	}
 }
