@@ -9,6 +9,7 @@ export interface RetrospectiveStore {
 	isSideBar: boolean
 	inputSearch: string
 	dateSearch?: number
+	isRetroFinished?: boolean
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -40,8 +41,10 @@ export interface Retrospective {
 	participants?: Array<string>
 	postits?: Postits
 	createdAt?: Date
-	endedAt?: Date
+	endedAt?: Date | null
 	creator?: string
+	isRetroEnded?: boolean;
+	isLocked?: boolean;
 }
 
 export interface Postits {

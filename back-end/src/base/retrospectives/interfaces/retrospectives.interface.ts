@@ -9,6 +9,8 @@ export interface Retrospective {
 	participants?: Array<string>;
 	postits: Array<Postit>;
 	endedAt?: Date;
+	isRetroEnded?: boolean;
+	isLocked?: boolean;
 }
 
 export interface Postit {

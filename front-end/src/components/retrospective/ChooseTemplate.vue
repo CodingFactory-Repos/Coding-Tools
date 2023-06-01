@@ -54,7 +54,10 @@ export default defineComponent({
 					1: [],
 					2: [],
 					3: []
-				}
+				},
+				endedAt: null,
+				isRetroEnded: false,
+				isLocked: false
 			}
 			const createdRetro = await retrospectiveStore.createNewRetro(retro)
 			if (createdRetro) {

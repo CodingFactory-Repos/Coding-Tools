@@ -101,4 +101,59 @@ export class RetrospectiveGateway
 		};
 		client.to(client.roomId).emit('peer-mouse-moved', returnData);
 	}
+
+
+	@SubscribeMessage('end-currentRetro')
+	async endCurrentRetro(client: AuthSocket) {
+		const endedDate = new Date();
+		client.to(client.roomId).emit('end-currentRetro', endedDate);
+
+		const query = { slug: client.roomId };
+		const update = {$set: { endedAt: endedDate, isRetroEnded: true}}
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+	@SubscribeMessage('lock-retro')
+	async lockCurrentRetro(client: AuthSocket, lock: boolean) {
+		client.to(client.roomId).emit('lock-retro', lock);
+		const query = { slug: client.roomId };
+		const update = {$set: { isLocked: lock }}
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+
+	//@@@@@@@@@@@ TIMER SECTION @@@@@@@@@@@@@@@
+
+	@SubscribeMessage('start-timer')
+	startTimer(client: AuthSocket) {
+		client.to(client.roomId).emit('start-timer');
+	}
+
+	@SubscribeMessage('pause-timer')
+	pauseTimer(client: AuthSocket) {
+		client.to(client.roomId).emit('pause-timer');
+	}
+
+	@SubscribeMessage('reset-timer')
+	async resetTimer(client: AuthSocket) {
+		const query = { _id: client.user.id as ObjectId };
+		const user = await this.usersRepository.findOne(query);
+		const queryRetro = { slug: client.roomId };
+		const currentRetro = await this.retrospectivesRepository.findOne(queryRetro);
+
+		const update = {$set: { endedAt: null, isRetroEnded: false}}
+
+
+		if ((user.role === 2 || user.role === 3) && currentRetro.isRetroEnded) {
+			await this.retrospectivesRepository.updateOneRetrospective(currentRetro, update);
+			client.to(client.roomId).emit('reset-timer');
+		}
+		if (user.role === 1 && !currentRetro.isRetroEnded) {
+			client.to(client.roomId).emit('reset-timer');
+		}
+
+	}
+
+	//@@@@@@@@@@@ END TIMER SECTION @@@@@@@@@@@@@@@
+
 }

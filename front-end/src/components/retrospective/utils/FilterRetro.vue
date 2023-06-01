@@ -47,7 +47,6 @@ const retroStore = useRetrospectiveStore();
 const searchInput = ref("");
 
 const rangeDate = computed(() => {
-	console.log(props.allRetros);
 	const datesRetro = props.allRetros.map(item => new Date(item.createdAt).getFullYear());
 
 	const minDate = Math.min(...datesRetro);

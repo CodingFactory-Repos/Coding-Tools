@@ -15,6 +15,8 @@
 		</div>
 		<div class="h-full" v-if="optionTemplate">
 			<Board :optionTemplate="optionTemplate" />
+			<div class="text-black">
+			</div>
 		</div>
 		<div
 			class="privateSection h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
@@ -42,6 +44,7 @@ const retrospectiveStore = useRetrospectiveStore();
 const title = computed(() => retrospectiveStore.currentRetro.title);
 const optionTemplate = computed(() => retrospectiveStore.currentRetro.optionTemplate);
 const tempPostit = computed(() => retrospectiveStore.tempMovingPostit)
+const isRetroEnded = computed(() => retrospectiveStore.currentRetro.isRetroEnded)
 
 
 const dropPostit = () => {
@@ -59,9 +62,6 @@ onMounted(async () => {
 onUnmounted(() => {
 	socketRetro.socket.disconnect();
 });
-const test = () => {
-	console.log("nzaiejiazjeiajz")
-}
 
 </script>
 
