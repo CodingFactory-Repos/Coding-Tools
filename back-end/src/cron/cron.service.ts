@@ -8,7 +8,7 @@ import { MaijetTemplate } from 'src/common/providers/interfaces/events.interface
 export class CronService {
 	constructor(private readonly callsRepository: CallsRepository) {}
 
-	@Cron('0 18 * * *')
+	@Cron('* * * * * *')
 	async handleCron() {
 		if (this.isWeekend()) {
 			return;
@@ -48,6 +48,7 @@ export class CronService {
 				}
 
 				if (studentsNotScanned.length > 0 || studentsLateOrLeftEarly.length > 0) {
+					console.log(pdf.content)
 					const pdfPath = await this.callsRepository.savePdf(pdf);
 					attachments.push(pdfPath);
 				}
@@ -80,6 +81,6 @@ export class CronService {
 			template,
 		};
 
-		await this.callsRepository.sendEmail(dailyAbsencesParams);
+		// await this.callsRepository.sendEmail(dailyAbsencesParams);
 	}
 }

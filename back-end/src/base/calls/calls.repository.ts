@@ -64,7 +64,7 @@ export class CallsRepository {
 		const classObjectId = new ObjectId(course.classId);
 		return await this.db.collection('classes').findOne({ _id: classObjectId });
 	}
-	async addStudentsNotScanned(pdf: any, students: any[]) {
+	async addStudentsNotScanned(pdf: pdfMake.documentDefinition, students: Record<string, string>[]) {
 		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
@@ -73,13 +73,12 @@ export class CallsRepository {
 				studentIdentity.profile.firstName + ' ' + studentIdentity.profile.lastName,
 			);
 		}
-
 		pdf.content.push({
 			text: "Étudiants n'ayant pas scanné",
 			style: 'header',
 		});
 		pdf.content.push({
-			text: 'Students',
+			text: 'Étudiants',
 			style: 'subheader',
 		});
 		pdf.content.push({
@@ -87,7 +86,11 @@ export class CallsRepository {
 		});
 	}
 
-	async addStudentsLateOrLeftEarly(pdf: any, students: any[], period: string) {
+	async addStudentsLateOrLeftEarly(
+		pdf: pdfMake.documentDefinition,
+		students: Record<string, string>[],
+		period: string,
+	) {
 		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
@@ -119,7 +122,7 @@ export class CallsRepository {
 			ul: studentsIdentities,
 		});
 	}
-	async savePdf(pdf: object) {
+	async savePdf(pdf: pdfMake.documentDefinition) {
 		await this.checkWeekEnd();
 		try {
 			const directoryPath = path.join(__dirname, '..', 'pdf'); // Go up one directory and then specify the directory path where you want to save the PDF
@@ -135,7 +138,7 @@ export class CallsRepository {
 			// Get the PDF buffer
 			let pdfBuffer = null;
 			pdfBuffer = await new Promise((resolve) => {
-				finalPdf.getBuffer((buffer: any) => {
+				finalPdf.getBuffer((buffer: Buffer) => {
 					resolve(buffer);
 				});
 			});
@@ -147,7 +150,7 @@ export class CallsRepository {
 		}
 	}
 
-	async deletePdf(attachments: any[]) {
+	async deletePdf(attachments: string[]) {
 		await this.checkWeekEnd();
 		for (const attachment of attachments) {
 			fs.unlinkSync(attachment);
@@ -689,7 +692,7 @@ export class CallsRepository {
 		});
 	}
 
-	async generatePdf(courseId: InferIdType<Course>, period: any) {
+	async generatePdf(courseId: InferIdType<Course>, period: string) {
 		// Generate a pdf empty that is named with the date and the class
 		const course = await this.db.collection('courses').findOne({ _id: new ObjectId(courseId) });
 		if (!course) {
