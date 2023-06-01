@@ -8,27 +8,40 @@ import { ViewportUI } from '../viewportUI';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { DownloadPlugin } from '../plugins/managerDownloadPlugin';
 import { GenericContainer } from './genericContainer';
+import { BezierPlugin } from '../plugins/containerBezierLinkPlugin';
+import { LineContainer } from './lineContainer';
+import { BezierManipulationPlugin } from '../plugins/bezierManipulationPlugin';
+import { reactive } from 'vue';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
 	protected readonly resizePlugin: ResizePlugin;
 	protected readonly dragPlugin: DragPlugin;
+	protected readonly bezierPlugin: BezierPlugin;
+	protected readonly bezierManipulationPlugin: BezierManipulationPlugin;
 	public readonly wrappedContainer: WrappedContainer;
 	public readonly downloadPlugin: DownloadPlugin;
-	private _selectedContainers: Array<CanvasContainer>;
+	// No time to fix this, the reactive cause pixi to lose context and cause errors.
+	// But at the same time, we need the reactivity, it's very annoying.
+	public selectedContainers: Array<CanvasContainer> = reactive([]);
+	private _selectedContainers: Array<CanvasContainer> = [];
+	public isEditingContainerProperties = false;
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
 		this.wrappedContainer = new WrappedContainer(this, this.viewport);
 		this.resizePlugin = new ResizePlugin(this.viewport);
 		this.dragPlugin = new DragPlugin(this.viewport);
+		this.bezierPlugin = new BezierPlugin(this.viewport);
 		this.downloadPlugin = new DownloadPlugin(this.viewport);
-		this._selectedContainers = [];
+		this.bezierManipulationPlugin = new BezierManipulationPlugin(this.viewport);
 
 		window.onkeydown = this._destroySelected.bind(this);
 	}
 
 	private _destroySelected(e: KeyboardEvent) {
+		if (this.isEditingContainerProperties) return;
+
 		const key = e.key;
 
 		if (key === 'Backspace') {
@@ -37,6 +50,29 @@ export class ContainerManager {
 			}
 
 			this._selectedContainers.forEach((ctn) => {
+				if (!(ctn instanceof LineContainer)) {
+					const uuid = [...ctn.linkedLinesUUID];
+					uuid.forEach((lineIdentifier) => {
+						const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
+						if (line.startContainer?.containerUUID !== undefined) {
+							const container = this.viewport.socketPlugin.elements[
+								line.startContainer.containerUUID
+							] as CanvasContainer;
+							container.detachLine(lineIdentifier);
+						}
+
+						if (line.endContainer?.containerUUID !== undefined) {
+							const container = this.viewport.socketPlugin.elements[
+								line.endContainer.containerUUID
+							] as CanvasContainer;
+							container.detachLine(lineIdentifier);
+						}
+
+						line.destroy();
+						this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
+					});
+				}
+
 				if (this.viewport.socketPlugin) {
 					if (ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
 						const frame = ctn.parent.parent as FramedContainer;
@@ -49,8 +85,11 @@ export class ContainerManager {
 			});
 			this.viewport.destroyBorder();
 			this.viewport.destroyResizeHandles();
+			this.viewport.destroyBezierHandles();
 			this.viewport.destroyResizeHitArea();
-			this._selectedContainers = [];
+			this.viewport.destroyBezierCurveHandle();
+			this.selectedContainers.length = 0;
+			this._selectedContainers.length = 0;
 		}
 	}
 
@@ -63,6 +102,7 @@ export class ContainerManager {
 	public selectContainer(container: CanvasContainer, isShift: boolean) {
 		if (!this._selectedContainers.includes(container)) {
 			// Select the container and retrieve the position index
+			this.selectedContainers.push(container);
 			const len = this._selectedContainers.push(container);
 			const index = len - 1;
 
@@ -119,26 +159,26 @@ export class ContainerManager {
 		}
 
 		this.viewport.destroyBorder();
-		this._selectedContainers = [];
+		this.selectedContainers.length = 0;
+		this._selectedContainers.length = 0;
 	}
 
 	public deselectAllExceptThisContainer(index: number) {
-		const selected: Array<CanvasContainer> = [];
 		const unselected: Array<CanvasContainer> = [];
 
 		for (let n = 0; n < this._selectedContainers.length; n++) {
-			if (index === n) {
-				selected.push(this._selectedContainers[n]);
-			} else {
+			if (index !== n) {
 				unselected.push(this._selectedContainers[n]);
+				this._selectedContainers.splice(n, 1);
+				this.selectedContainers.splice(n, 1);
 			}
 		}
 
-		this._selectedContainers = selected;
 		return unselected;
 	}
 
 	public drawBorder(container: PluginContainer) {
+		if (container instanceof LineContainer) return;
 		const borderOptions = container.getGeometry();
 
 		this.viewport.createBorder({
@@ -159,13 +199,26 @@ export class ContainerManager {
 	}
 
 	public attachPlugins(container: PluginContainer) {
-		this.resizePlugin.attach(container);
-		this.dragPlugin.attach(container);
+		this.viewport.getVisibleChildren();
+
+		if (container instanceof LineContainer) {
+			this.bezierManipulationPlugin.attach(container);
+		} else {
+			this.resizePlugin.attach(container);
+			this.dragPlugin.attach(container);
+
+			if (container instanceof FramedContainer || container instanceof GenericContainer) {
+				this.bezierPlugin.attach(container);
+			}
+		}
 	}
 
 	public detachPlugins() {
 		this.resizePlugin.detach();
 		this.dragPlugin.detach();
+		this.bezierPlugin.detach();
+		this.bezierManipulationPlugin.detach();
+		this.viewport.onScreenChildren.length = 0;
 	}
 
 	public getSelectedCenter() {

@@ -4,6 +4,7 @@ import { InternalTypeId } from '../../types/pixi-serialize';
 import { generateUniqueId } from '../../utils/uniqueId';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { modelBounds } from '../../utils/modelBounds';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 
 export class Grid extends ModelGraphics {
 	protected readonly gridSpacing = 1; // 1 pixel
@@ -62,5 +63,9 @@ export class Grid extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }

@@ -8,7 +8,7 @@
 				@click="selectImage(icon)"
 				class="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors duration-200"
 			>
-				<img :src="icon.url" class="w-full h-auto mx-auto" />
+				<img :src="icon.url" class="w-full h-auto mx-auto" alt="article" />
 			</div>
 		</div>
 	</div>
