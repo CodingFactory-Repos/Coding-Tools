@@ -80,23 +80,5 @@ export default defineComponent({
 			isPO: true,
 		};
 	},
-	mounted() {
-		this.isProductOwner(); // Utiliser la méthode isPO pour définir la valeur de isPO
-	},
-	methods: {
-		isProductOwner: withErrorHandler(async function() {
-			// Utiliser une fonction fléchée
-			try {
-				const response = await http.get(`/calls/is_product_owner/`);
-				// TODO: Ici, il faut définir la valeur de isPO
-				// this.isPO = response.data.isPO;
-				this.isPO = true;
-			} catch (error) {
-				console.error(error);
-				// this.isPO = false;
-				this.isPO = true;
-			}
-		}),
-	},
 });
 </script>
