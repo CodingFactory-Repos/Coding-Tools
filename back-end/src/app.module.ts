@@ -22,7 +22,6 @@ import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
-// @ts-ignore
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({

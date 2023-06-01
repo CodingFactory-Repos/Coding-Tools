@@ -51,7 +51,7 @@ export class CallsRepository {
 	async getClassSupervisor(courseId: InferIdType<Course>) {
 		const courseObjectId = new ObjectId(courseId);
 		const course = await this.courses.findOne({ _id: courseObjectId });
-		// @ts-ignore
+		// @ts-ignore (Mandatory because of typo issue)
 		const classObjectId = new ObjectId(course.classId);
 		const classroom = await this.db.collection('classes').findOne({ _id: classObjectId });
 		return await this.db.collection('users').findOne({ _id: new ObjectId(classroom.pedago) });
@@ -60,11 +60,11 @@ export class CallsRepository {
 	async getClass(courseId: InferIdType<Course>) {
 		const courseObjectId = new ObjectId(courseId);
 		const course = await this.courses.findOne({ _id: courseObjectId });
-		// @ts-ignore
+		// @ts-ignore (Mandatory because of typo issue)
 		const classObjectId = new ObjectId(course.classId);
 		return await this.db.collection('classes').findOne({ _id: classObjectId });
 	}
-	async addStudentsNotScanned(pdf: any, students: any, period: any) {
+	async addStudentsNotScanned(pdf: any, students: any[]) {
 		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
@@ -87,7 +87,7 @@ export class CallsRepository {
 		});
 	}
 
-	async addStudentsLateOrLeftEarly(pdf: any, students: any, period: any) {
+	async addStudentsLateOrLeftEarly(pdf: any, students: any[], period: string) {
 		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
@@ -119,7 +119,7 @@ export class CallsRepository {
 			ul: studentsIdentities,
 		});
 	}
-	async savePdf(pdf: any) {
+	async savePdf(pdf: object) {
 		await this.checkWeekEnd();
 		try {
 			const directoryPath = path.join(__dirname, '..', 'pdf'); // Go up one directory and then specify the directory path where you want to save the PDF
@@ -134,7 +134,7 @@ export class CallsRepository {
 			const finalPdf = pdfMake.createPdf(pdf);
 			// Get the PDF buffer
 			let pdfBuffer = null;
-			pdfBuffer = await new Promise((resolve, reject) => {
+			pdfBuffer = await new Promise((resolve) => {
 				finalPdf.getBuffer((buffer: any) => {
 					resolve(buffer);
 				});
@@ -677,7 +677,6 @@ export class CallsRepository {
 		if (!call) {
 			return [];
 		}
-
 
 		const students = call.students.map((student) => {
 			return student;

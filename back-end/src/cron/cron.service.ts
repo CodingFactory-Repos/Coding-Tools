@@ -31,7 +31,7 @@ export class CronService {
 					(student) => !studentsScanned.includes(student),
 				);
 				if (studentsNotScanned.length > 0) {
-					await this.callsRepository.addStudentsNotScanned(pdf, studentsNotScanned, period);
+					await this.callsRepository.addStudentsNotScanned(pdf, studentsNotScanned);
 				}
 
 				// Get the list of students that were late or that left early
@@ -39,7 +39,6 @@ export class CronService {
 					course._id,
 					period,
 				);
-
 				if (studentsLateOrLeftEarly.length > 0) {
 					await this.callsRepository.addStudentsLateOrLeftEarly(
 						pdf,
