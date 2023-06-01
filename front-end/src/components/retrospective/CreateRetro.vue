@@ -55,8 +55,8 @@ export default defineComponent({
 			}
 		};
 
-		onMounted(() => {
-			isProductOwner();
+		onMounted(async() => {
+			await isProductOwner();
 		})
 		const isProductOwner = async () => {
 			// Je vois avec Louis ce qu'il veut faire parce que pas compris, bref

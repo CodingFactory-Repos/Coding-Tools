@@ -58,8 +58,8 @@ const toggleSideBar = () => {
 	retroStore.tryToggleSideBar();
 }
 
-const copyLink = () => {
-	navigator.clipboard.writeText(url);
+const copyLink = async () => {
+	await navigator.clipboard.writeText(url);
 	Swal.fire({
 		position: 'top-end',
 		text: "Url copied !",
