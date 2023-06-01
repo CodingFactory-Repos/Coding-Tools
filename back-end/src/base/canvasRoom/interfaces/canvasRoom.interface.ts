@@ -19,6 +19,8 @@ export interface CanvasRoomMeta {
 	description: string;
 	snapshot: string;
 	readonly: boolean;
+	ownerFirstName?: string;
+	ownerLastName?: string;
 }
 
 export interface CanvasMetaDataList extends CanvasRoomProperties {

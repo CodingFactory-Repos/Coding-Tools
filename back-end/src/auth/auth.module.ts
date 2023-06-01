@@ -23,7 +23,14 @@ import { AllowedStudentsRepository } from '@/base/users/allowed.students.reposit
 		}),
 		forwardRef(() => UsersModule),
 	],
-	providers: [AuthService, JwtStrategy, AuthEventEmitter, UsersRepository, AllowedStudentsRepository, MailjetListeners],
+	providers: [
+		AuthService,
+		JwtStrategy,
+		AuthEventEmitter,
+		UsersRepository,
+		AllowedStudentsRepository,
+		MailjetListeners,
+	],
 	controllers: [AuthController],
 	exports: [AuthService],
 })
