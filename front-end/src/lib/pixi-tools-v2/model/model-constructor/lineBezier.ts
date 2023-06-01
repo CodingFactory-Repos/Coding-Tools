@@ -1,13 +1,13 @@
 import { LINE_CAP, Polygon, LINE_JOIN } from 'pixi.js';
 import { ModelGraphics } from '../../types/pixi-class';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
-import { DashLineShader } from '@pixi/graphics-smooth'
+import { DashLineShader } from '@pixi/graphics-smooth';
 import { modelBounds } from '../../utils/modelBounds';
 import { modelSerializer } from '../../utils/modelSerializer';
 import { ElementPosition } from '../../types/pixi-container';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 
-const shader = new DashLineShader({dash: 8, gap: 5});
+const shader = new DashLineShader({ dash: 8, gap: 5 });
 
 export class LineBezier extends ModelGraphics {
 	public readonly uuid: string;
@@ -52,7 +52,7 @@ export class LineBezier extends ModelGraphics {
 
 	public draw() {
 		this.clear();
-		this.lineStyle({ width: 4, color: this.color, shader: this.dashed ? shader: undefined });
+		this.lineStyle({ width: 4, color: this.color, shader: this.dashed ? shader : undefined });
 		this.line.cap = LINE_CAP.ROUND;
 
 		const arrowSize = 10; // Adjust this value as needed
@@ -72,11 +72,11 @@ export class LineBezier extends ModelGraphics {
 		// this.drawCircle(this.endControl.x, this.endControl.y, 10);
 		this.endFill();
 
-		if(this.arrowHead) {
+		if (this.arrowHead) {
 			this.drawArrowHead(arrowSize, angleOffset);
 		}
 
-		if(this.timer !== null) {
+		if (this.timer !== null) {
 			clearTimeout(this.timer);
 			this.timer = null;
 		}
@@ -140,14 +140,14 @@ export class LineBezier extends ModelGraphics {
 			const a = Math.atan2(-x1 + x0, y1 - y0);
 			const deltaX = distance * Math.cos(a);
 			const deltaY = distance * Math.sin(a);
-			
+
 			// Add the x, y at the beginning
 			output[j] = x + deltaX;
 			output[j + 1] = y + deltaY;
 
 			// Add the reflected x, y at the end
-			output[(output.length - 1) - j - 1] = x - deltaX;
-			output[(output.length - 1) - j] = y - deltaY;
+			output[output.length - 1 - j - 1] = x - deltaX;
+			output[output.length - 1 - j] = y - deltaY;
 		}
 
 		// close the shape

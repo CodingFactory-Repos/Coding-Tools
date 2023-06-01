@@ -41,7 +41,7 @@ export class Ellipse extends ModelGraphics {
 		this.position.set(x, y);
 		this.width = width;
 		this.height = height;
-	
+
 		this.clear();
 		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);

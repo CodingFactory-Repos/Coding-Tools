@@ -87,7 +87,7 @@ export const pruneTheProjectTree = (
 							x: point.x,
 							y: point.y - foliageHeightOffset,
 							width: foliageWidth,
-							height: foliageHeight
+							height: foliageHeight,
 						},
 					},
 				],
@@ -137,7 +137,7 @@ export const pruneTheProjectTree = (
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0x9FB6BC,
+							color: 0x9fb6bc,
 							arrowHead: false,
 							dashed: true,
 							alpha: 1,
@@ -145,8 +145,8 @@ export const pruneTheProjectTree = (
 						lineControl: {
 							start: { x: startX + firstLineOffset, y: endY },
 							end: { x: endX - firstLineOffset, y: endY },
-							startControl: { x: startX + firstLineOffset, y: startY + (firstLineOffset * 1.5) },
-							endControl: { x: endX - firstLineOffset, y: startY + (firstLineOffset * 1.5) },
+							startControl: { x: startX + firstLineOffset, y: startY + firstLineOffset * 1.5 },
+							endControl: { x: endX - firstLineOffset, y: startY + firstLineOffset * 1.5 },
 						},
 					},
 				],
@@ -167,7 +167,7 @@ export const pruneTheProjectTree = (
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0x9FB6BC,
+							color: 0x9fb6bc,
 							arrowHead: false,
 							dashed: true,
 							alpha: 1,

@@ -50,14 +50,14 @@ export class Tree extends ModelGraphics {
 
 	public createFractal(x: number, y: number, length: number, angle: number, depth: number) {
 		if (depth === 0) return;
-		
+
 		const endX = x + length * Math.cos(angle);
 		const endY = y + length * Math.sin(angle);
-		
+
 		this.lineStyle(this.borderWidth, this.color);
 		this.moveTo(x, y);
 		this.lineTo(endX, endY);
-		
+
 		const childLength = length * 0.75;
 		const childAngle = angle - Math.PI / 4;
 		this.createFractal(endX, endY, childLength, childAngle, depth - 1);

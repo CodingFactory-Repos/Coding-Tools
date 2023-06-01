@@ -8,7 +8,15 @@ import {
 } from './pixi-container';
 
 export type ContainerTypeId = 'generic' | 'frame' | 'line';
-export type GraphicTypeId = 'rectangle' | 'circle' | 'framebox' | 'triangle' | 'polygon' | 'bezier' | 'tree' | 'ellipse';
+export type GraphicTypeId =
+	| 'rectangle'
+	| 'circle'
+	| 'framebox'
+	| 'triangle'
+	| 'polygon'
+	| 'bezier'
+	| 'tree'
+	| 'ellipse';
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
