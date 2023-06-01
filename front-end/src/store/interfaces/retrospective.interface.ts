@@ -1,4 +1,4 @@
-import { User } from './auth.interfaces';
+
 
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>,

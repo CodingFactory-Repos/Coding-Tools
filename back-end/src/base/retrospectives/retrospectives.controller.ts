@@ -59,8 +59,7 @@ export class RetrospectivesController {
 	@UseGuards(JwtAuthGuard)
 	async updateParticipants(
 		@Res() res: Response,
-		@Body() body: Body,
-		@Jwt() userId: ObjectId
+		@Body() body: Body
 		) {
 		const retro = body as unknown as Retrospective
 		await this.retrospectivesService.tryUpdateParticipants(retro)

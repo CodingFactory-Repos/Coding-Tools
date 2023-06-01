@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { User } from 'src/base/users/interfaces/users.interface';
 
 export interface Retrospective {
 	_id?: ObjectId;
