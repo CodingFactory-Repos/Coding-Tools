@@ -42,6 +42,13 @@ export const apiTryGetTemplatesMeta = () => {
 					isNew: true,
 					type: 'impactmapping',
 				},
+				{
+					key: 'something',
+					url: 'https://www.imagescreations.fr/wp-content/uploads/persona_emma-1200x800.jpg',
+					name: 'prune the project tree',
+					isNew: true,
+					type: 'prunetheprojecttree',
+				},
 			],
 		},
 	});
