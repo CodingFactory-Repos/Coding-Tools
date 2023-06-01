@@ -14,6 +14,9 @@
 					clip-rule="evenodd"></path>
 			</svg>
 		</button>
+		<div class="flex justify-center text-black font-thin mt-2 text-sm">
+			{{ retro.creator }}
+		</div>
 		<div class="flex justify-end text-black mt-2 text-sm">
 			<div>
 				{{ new Date(retro.createdAt).toLocaleDateString("FR-fr") }}

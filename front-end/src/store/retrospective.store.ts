@@ -15,7 +15,9 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	currentRetro: {},
 	userCursors: [],
 	allRetros: [],
-	isSideBar: false
+	isSideBar: false,
+	inputSearch: "",
+	dateSearch: 0
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -143,6 +145,14 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		},
 		tryCloseSideBar(this: RetrospectiveStore) {
 			this.isSideBar = false;
+		},
+		inputSearchFilter(this: RetrospectiveStore, value: string) {
+			this.inputSearch = value;
+		},
+		dateSearchFilter(this: RetrospectiveStore, value: number) {
+			this.dateSearch = value;
+			console.log("searchDate", this.dateSearch);
+
 		}
 	},
 });

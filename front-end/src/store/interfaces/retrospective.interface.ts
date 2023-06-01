@@ -7,6 +7,8 @@ export interface RetrospectiveStore {
 	userCursors: Array<UserCursor>
 	allRetros: Array<Retrospective>
 	isSideBar: boolean
+	inputSearch: string
+	dateSearch?: number
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -37,6 +39,7 @@ export interface Retrospective {
 	postits?: Postits
 	createdAt?: Date
 	endedAt?: Date
+	creator?: string
 }
 
 export interface Postits {
