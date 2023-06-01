@@ -5,7 +5,11 @@ import { withErrorHandler } from '@/utils/storeHandler';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { UserStore } from '@/store/interfaces/user.interface';
 import { STATUS } from '@/store/interfaces/axios.interface';
-import { tryGetClassProfileList, trySaveUserProfile, tryGetRelatedUserProfile } from '@/api/user-req';
+import {
+	tryGetClassProfileList,
+	trySaveUserProfile,
+	tryGetRelatedUserProfile,
+} from '@/api/user-req';
 
 const userStoreDefaultState = (): UserStore => ({
 	temporaryProfileUser: {},
@@ -20,31 +24,28 @@ export const useUserStore = defineStore('user', {
 	getters: {
 		uploadFinished(this: UserStore) {
 			return this.uploadWaitingList.every((b) => b);
-		}
+		},
 	},
 	actions: {
 		saveProfile: withErrorHandler(async function (this: UserStore) {
 			const res = await trySaveUserProfile(this.temporaryProfileUser);
-			if (res.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
+			if (res.data.status !== STATUS.OK) throw new Error('The returned status was not expected');
 			return true;
 		}, true),
 		addAwaitUpload(this: UserStore) {
 			const len = this.uploadWaitingList.push(false);
 			return len - 1;
 		},
-		relatedGroupProfile: withErrorHandler(async function(this: UserStore) {
+		relatedGroupProfile: withErrorHandler(async function (this: UserStore) {
 			const res = await tryGetClassProfileList();
-			if (res.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
-			
+			if (res.data.status !== STATUS.OK) throw new Error('The returned status was not expected');
+
 			this.relatedProfiles = res.data.users;
 			return true;
 		}),
-		getRelatedUserProfile: withErrorHandler(async function(this: UserStore, id: string) {
+		getRelatedUserProfile: withErrorHandler(async function (this: UserStore, id: string) {
 			const res = await tryGetRelatedUserProfile(id);
-			if (res.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
+			if (res.data.status !== STATUS.OK) throw new Error('The returned status was not expected');
 
 			this.relatedUserProfile = res.data;
 			return true;
@@ -57,4 +58,3 @@ export const useUserStore = defineStore('user', {
 		},
 	},
 });
-

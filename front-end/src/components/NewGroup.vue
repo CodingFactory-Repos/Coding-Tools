@@ -20,7 +20,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .popupcontainer {
     z-index: 1;
 }

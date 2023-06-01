@@ -8,12 +8,19 @@ import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { SerializedContainerBounds, SerializedContainer } from '../types/pixi-serialize';
+import {
+	SerializedContainerBounds,
+	SerializedContainer,
+	SerializedControl,
+	SerializedColorimetry,
+} from '../types/pixi-serialize';
+import { LineContainer } from '../class/lineContainer';
 
 interface CanvasSocketEvents {
 	'ws-element-deleted': (uuid: string, uuidFrame?: string) => void;
 	'ws-element-added': (serialized: SerializedContainer) => void;
 	'ws-element-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
+	'ws-line-updated': (uuid: string, serializedBounds: SerializedControl) => void;
 	'ws-element-modified': () => void;
 	'ws-mouse-moved': (position: ElementPosition) => void;
 	'ws-frame-child-added': (
@@ -26,6 +33,7 @@ interface CanvasSocketEvents {
 		serialized: SerializedContainer,
 		serializedChild: SerializedContainer,
 	) => void;
+	'ws-element-colorized': (uuid: string, serializedColor: SerializedColorimetry) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -36,7 +44,10 @@ export interface CanvasSocketOptions {
 
 export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents> {
 	protected readonly socketManager: SocketManager;
-	public readonly elements: Record<string, CanvasContainer> | Record<string, ModelGraphics> = {};
+	public readonly elements:
+		| Record<string, CanvasContainer>
+		| Record<string, ModelGraphics>
+		| Record<string, LineContainer> = {};
 
 	constructor(viewport: ViewportUI, socketOptions?: CanvasSocketOptions) {
 		const { uri, roomId, options } = socketOptions;
@@ -68,13 +79,21 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.on('ws-frame-child-removed', (uuid, serialized, serializedChild) => {
 			this.socketManager.updateFrameOnChildRemoved(uuid, serialized, serializedChild);
 		});
+
+		this.on('ws-line-updated', (uuid, serializedControl) => {
+			this.socketManager.updateLineControls(uuid, serializedControl);
+		});
+
+		this.on('ws-element-colorized', (uuid, serializedColorimetry) => {
+			this.socketManager.updateColorimetry(uuid, serializedColorimetry);
+		});
 	}
 
 	public disconnect() {
 		this.socketManager._close();
 	}
 
-	public trackElementByUUID(container: GenericContainer | FramedContainer) {
+	public trackElementByUUID(container: GenericContainer | FramedContainer | LineContainer) {
 		if (container instanceof FramedContainer) {
 			this.elements[container.uuid] = container;
 
@@ -94,6 +113,12 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 			this.elements[container.uuid] = container;
 			const genericChild = container.getGraphicChildren()[0];
 			this.elements[genericChild.uuid] = genericChild;
+		}
+
+		if (container instanceof LineContainer) {
+			this.elements[container.uuid] = container;
+			const child = container.children[0];
+			this.elements[child.uuid] = child;
 		}
 	}
 
