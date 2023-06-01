@@ -45,6 +45,8 @@ export const modelSerializer = (model: ModelGraphics) => {
 				eventMode: model.eventMode,
 				color: model.color,
 				alpha: model.alpha,
+				arrowHead: model.arrowHead,
+				dashed: model.dashed,
 			},
 		};
 	} else {
