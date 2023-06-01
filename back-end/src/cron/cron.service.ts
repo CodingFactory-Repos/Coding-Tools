@@ -48,7 +48,6 @@ export class CronService {
 				}
 
 				if (studentsNotScanned.length > 0 || studentsLateOrLeftEarly.length > 0) {
-					console.log(pdf.content)
 					const pdfPath = await this.callsRepository.savePdf(pdf);
 					attachments.push(pdfPath);
 				}

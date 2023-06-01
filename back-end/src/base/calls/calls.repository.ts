@@ -49,19 +49,17 @@ export class CallsRepository {
 	}
 
 	async getClassSupervisor(courseId: InferIdType<Course>) {
-		const courseObjectId = new ObjectId(courseId);
-		const course = await this.courses.findOne({ _id: courseObjectId });
+		const course = await this.courses.findOne({ _id: courseId });
 		// @ts-ignore (Mandatory because of typo issue)
-		const classObjectId = new ObjectId(course.classId);
+		const classObjectId = course.classId;
 		const classroom = await this.db.collection('classes').findOne({ _id: classObjectId });
 		return await this.db.collection('users').findOne({ _id: new ObjectId(classroom.pedago) });
 	}
 
 	async getClass(courseId: InferIdType<Course>) {
-		const courseObjectId = new ObjectId(courseId);
-		const course = await this.courses.findOne({ _id: courseObjectId });
+		const course = await this.courses.findOne({ _id: courseId });
 		// @ts-ignore (Mandatory because of typo issue)
-		const classObjectId = new ObjectId(course.classId);
+		const classObjectId = course.classId;
 		return await this.db.collection('classes').findOne({ _id: classObjectId });
 	}
 	async addStudentsNotScanned(pdf: pdfMake.documentDefinition, students: Record<string, string>[]) {
