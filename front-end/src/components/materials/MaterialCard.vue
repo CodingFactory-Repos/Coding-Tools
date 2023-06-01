@@ -16,7 +16,7 @@
 	</div>
 	<Modal v-if="detailsModal" @close="detailsModal = false">
 		<template #body>
-			<DetailsMaterials v-if="detailsModal" :id="cardId" />
+			<DetailsMaterials :id="cardId" :material="material" />
 		</template>
 	</Modal>
 	<div
@@ -77,6 +77,8 @@ import FormMaterial from '@/components/materials/FormMaterials.vue';
 import Modal from '@/components/common/Modal.vue';
 import DetailsMaterials from './DetailsMaterials.vue';
 import { useAuthStore } from '@/store/modules/auth.store';
+import { http } from '@/api/network/axios';
+import { Material } from '@/store/interfaces/material.interface';
 
 defineProps({
 	id: { type: String, required: true },
@@ -89,6 +91,7 @@ const authStore = useAuthStore();
 const currentUserId = computed(() => authStore.user._id);
 
 const reservationModal = ref(false);
+const material = ref<Material>();
 const detailsModal = ref(false);
 const cardId = ref('');
 
@@ -97,7 +100,12 @@ function openModalByRef(ref: string, identifiant: string) {
 		cardId.value = identifiant;
 		reservationModal.value = true;
 	} else if (ref === 'detailsModal') {
+
 		cardId.value = identifiant;
+
+		http.get(`materials/get/` + identifiant).then((res) => {
+			material.value = res.data;
+		});
 		detailsModal.value = true;
 	}
 }

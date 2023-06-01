@@ -1,7 +1,6 @@
-import { isEmpty } from "@/utils/string.helper";
+import { isEmpty } from '@/utils/string.helper';
 
-
-export const filterInvalidProperties = <T> (obj: T, customStrValidator?: string): T => {
+export const filterInvalidProperties = <T>(obj: T, customStrValidator?: string): T => {
 	const filteredObj = {} as T;
 	for (const key in obj) {
 		const value = obj[key];
@@ -10,9 +9,9 @@ export const filterInvalidProperties = <T> (obj: T, customStrValidator?: string)
 				const newArray = [] as typeof value;
 
 				for (let i = 0; i < value.length; i++) {
-					if(value[i] instanceof Date) {
+					if (value[i] instanceof Date) {
 						newArray.push(value[i].toISOString());
-					} else if (typeof value[i] === "object") {
+					} else if (typeof value[i] === 'object') {
 						const filteredObj = filterInvalidProperties(value[i], customStrValidator);
 						if (!isEmpty(filteredObj)) {
 							newArray.push(filteredObj);
@@ -23,20 +22,20 @@ export const filterInvalidProperties = <T> (obj: T, customStrValidator?: string)
 				}
 
 				filteredObj[key] = newArray;
-			} else if(value instanceof Date) {
+			} else if (value instanceof Date) {
 				filteredObj[key] = value.toISOString() as T[Extract<keyof T, string>];
-			} else if(typeof value === "object") {
+			} else if (typeof value === 'object') {
 				const filteredObjValue = filterInvalidProperties(value, customStrValidator);
 				if (!isEmpty(filteredObjValue)) {
 					filteredObj[key] = filteredObjValue;
 				}
-			} else if(typeof value === "string" && !(value as string).includes(customStrValidator)) {
+			} else if (typeof value === 'string' && !(value as string).includes(customStrValidator)) {
 				filteredObj[key] = value;
-			} else if(typeof value !== "string") {
+			} else if (typeof value !== 'string') {
 				filteredObj[key] = value;
 			}
 		}
 	}
 
 	return filteredObj;
-}
+};

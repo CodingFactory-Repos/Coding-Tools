@@ -9,12 +9,14 @@ import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 import type { ProjectStore } from '@/store/interfaces/project.interface';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { pick } from '@/utils/object.helper';
+import { getAgileBlueprints } from '@/store/interfaces/agility.interface';
 
 const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
 	canvas: null,
 	default: true,
 	deferredGeometry: null,
+	deferredBlueprint: null,
 	selectionBox: null,
 	onFullscreen: false,
 	immersion: false,
@@ -31,6 +33,9 @@ export const useProjectStore = defineStore('project', {
 		getFrames(this: ProjectStore) {
 			return this.scene?.viewport?.activeFrames || [];
 		},
+		getSelected(this: ProjectStore) {
+			return this.scene?.viewport?.manager?.selectedContainers || [];
+		},
 	},
 	actions: {
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
@@ -41,12 +46,21 @@ export const useProjectStore = defineStore('project', {
 			const scene = toRaw(this.scene);
 			scene.viewport.on('pointerup', framed ? this.createFramedGeometry : this.createGeometry);
 		},
+		setBlueprintEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor) {
+			this.default = false;
+			this.canvas.classList.toggle(cursor);
+			this.removeGeometryEvent();
+
+			const scene = toRaw(this.scene);
+			scene.viewport.on('pointerup', this.createBlueprint);
+		},
 		removeGeometryEvent(this: ProjectStore) {
 			// We remove all the event related to pointerup if they exist.
 			// Know a better way to do it ? Be my guest.
 			const scene = toRaw(this.scene);
 			scene.viewport.off('pointerup', this.createFramedGeometry);
 			scene.viewport.off('pointerup', this.createGeometry);
+			scene.viewport.off('pointerup', this.createBlueprint);
 		},
 		enableSelectionBox(this: ProjectStore, destroy = false) {
 			if (destroy && this.selectionBox) {
@@ -89,16 +103,40 @@ export const useProjectStore = defineStore('project', {
 					},
 				],
 			};
-			const genericContainer = Normalizer.container(scene.viewport, data, false, point);
+			const genericContainer = Normalizer.container(
+				scene.viewport,
+				data,
+				false,
+				point,
+				this.selectedFrameNumber,
+			);
 			scene.viewport.addChild(genericContainer);
-
-			if (this.selectedFrameNumber) {
-				genericContainer.tabNumberContext = this.selectedFrameNumber;
-			}
 
 			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
+			this.default = true;
+		},
+		createBlueprint(this: ProjectStore, event: FederatedPointerEvent) {
+			const scene = toRaw(this.scene);
+			const point = scene.viewport.toWorld(event.global.clone());
+			const generateBlueprint: Function | null = getAgileBlueprints[this.deferredBlueprint];
+			if (generateBlueprint === null) return;
+
+			const data = generateBlueprint(
+				scene.viewport,
+				point,
+				1000,
+				800,
+			) as Partial<SerializedContainer>;
+
+			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
+			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
+			scene.viewport.addChild(framedContainer);
+
+			scene.viewport.off('pointerup', this.createBlueprint);
+			this.canvas.classList.toggle('default');
+			this.deferredBlueprint = null;
 			this.default = true;
 		},
 		increaseZoom(this: ProjectStore) {
@@ -123,12 +161,14 @@ export const useProjectStore = defineStore('project', {
 			this.scene.viewport.worldHeight = newHeight;
 		},
 		setFrameCanvas(this: ProjectStore, frameNumber: number) {
+			this.scene.viewport.activeFrameNumber = frameNumber;
 			this.scene.viewport.toggleHidding(false, this.selectedFrameNumber);
 			this.scene.viewport.children.find(
 				(ctn) => ctn instanceof FramedContainer && ctn.frameNumber === frameNumber,
 			).visible = true;
 		},
 		setDefaultCanvas(this: ProjectStore) {
+			this.scene.viewport.activeFrameNumber = null;
 			this.scene.viewport.toggleHidding(true);
 		},
 		canvasDownload(this: ProjectStore, mime: string) {
