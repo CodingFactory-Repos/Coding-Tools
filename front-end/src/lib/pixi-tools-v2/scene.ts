@@ -11,6 +11,7 @@ export class Scene extends Application {
 	constructor(
 		canvas: HTMLCanvasElement,
 		heightOffset: number,
+		isDark: boolean,
 		socketOptions?: CanvasSocketOptions,
 	) {
 		super({
@@ -18,7 +19,7 @@ export class Scene extends Application {
 			width: window.innerWidth,
 			height: window.innerHeight - heightOffset,
 			autoDensity: true,
-			backgroundColor: 0x202126,
+			backgroundColor: isDark ? 0x202126 : 0xe5e5e5,
 			resolution: devicePixelRatio + 1,
 		});
 
@@ -35,8 +36,14 @@ export class Scene extends Application {
 		};
 
 		this.heightOffset = heightOffset;
-		this.viewport = new ViewportUI(this, viewportOptions, socketOptions);
+		this.viewport = new ViewportUI(this, viewportOptions, isDark, socketOptions);
 		this.stage.addChild(this.viewport);
 		this.ticker.start();
+	}
+
+	public changeTheme(isDark: boolean) {
+		//@ts-ignore
+		this.renderer.background._backgroundColor = isDark ? 0x202126 : 0xe5e5e5;
+		this.viewport.changeGridTheme(isDark);
 	}
 }
