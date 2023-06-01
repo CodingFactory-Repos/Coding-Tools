@@ -10,6 +10,7 @@ import {
 } from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
+import { SmoothGraphics } from '@pixi/graphics-smooth';
 
 export interface Bounds {
 	x: number;
@@ -39,7 +40,7 @@ export abstract class PluginContainer extends BoundsContainer {
 	protected abstract onSelected(e: FederatedPointerEvent): void;
 }
 
-export abstract class ModelGraphics extends Graphics implements WithId {
+export abstract class ModelGraphics extends SmoothGraphics implements WithId {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId | InternalTypeId;
 	public color: number;

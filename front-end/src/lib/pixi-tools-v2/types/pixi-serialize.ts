@@ -85,6 +85,8 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	rotation?: number;
 	borderWidth?: number;
 	borderColor?: number;
+	arrowHead?: boolean;
+	dashed?: boolean;
 }
 
 export interface SerializedLineGraphic {
