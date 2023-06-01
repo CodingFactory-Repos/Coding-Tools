@@ -21,6 +21,7 @@ import {
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { PixiEventMode } from '../types/pixi-enums';
+import { LineContainer } from './lineContainer';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -230,6 +231,8 @@ export class FramedContainer extends PluginContainer {
 			if (element instanceof Rectangle) {
 				graphics.push(element);
 			} else if (element instanceof GenericContainer) {
+				graphics.push(element.getGraphicChildren());
+			} else if (element instanceof LineContainer) {
 				graphics.push(element.getGraphicChildren());
 			}
 		}

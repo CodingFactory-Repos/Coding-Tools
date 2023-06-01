@@ -11,6 +11,7 @@ import {
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
 import { SmoothGraphics } from '@pixi/graphics-smooth';
+import { LineContainer } from '../class/lineContainer';
 
 export interface Bounds {
 	x: number;
@@ -55,7 +56,7 @@ export abstract class ModelGraphics extends SmoothGraphics implements WithId {
 }
 
 export class FramedMainContainer extends Container {
-	public readonly children: Array<GenericContainer | Rectangle>;
+	public readonly children: Array<GenericContainer | Rectangle | LineContainer>;
 }
 
 export class TitleContainer extends Container {
