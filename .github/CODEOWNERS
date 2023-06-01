@@ -7,6 +7,7 @@
 /back-end/.env.example @Maghwyn @Loule95450
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
+/back-end/package-lock.json @Maghwyn @Kevw94
 /back-end/src/app.controller.ts @Maghwyn @Kevw94
 /back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
@@ -163,6 +164,7 @@
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/retrospective/ChooseTemplate.vue @Loule95450
+/front-end/src/components/retrospective/Timer.vue @Maghwyn @Loule95450 @progresso85
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
