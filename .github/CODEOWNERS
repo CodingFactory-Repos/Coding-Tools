@@ -164,7 +164,8 @@
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/retrospective/ChooseTemplate.vue @Loule95450
-/front-end/src/components/retrospective/Timer.vue @Maghwyn @Loule95450 @progresso85
+/front-end/src/components/retrospective/CreateRetro.vue @Maghwyn @Kevw94
+/front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
