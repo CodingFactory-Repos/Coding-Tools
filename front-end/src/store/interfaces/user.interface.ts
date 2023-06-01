@@ -30,3 +30,4 @@ export interface UserProfileList {
 export interface UserCanvasList extends UserProfileList {
 	pending?: boolean;
 }
+
