@@ -35,7 +35,8 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
-		return `https://1b68-2a01-cb00-e91-b600-2d60-c9db-21f5-24f.eu.ngrok.io/calls/presence/` + jwt;
+		// TODO: Change this to the real url in the environment variables
+		return `https://backend-codingtools.loule.me/calls/presence/` + jwt;
 	}
 
 	async getActualCourse(userId: ObjectId) {

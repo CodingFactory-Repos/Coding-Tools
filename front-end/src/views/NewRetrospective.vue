@@ -1,16 +1,16 @@
 <template>
 	<div class="flex flex-col h-full">
-		<div class="flex">
-			<div class="text-black w-full">
-				{{title}}
+		<div class="flex relative justify-center items-center mb-2 mt-2">
+			<div class="text-black w-full h-full absolute left-16">
+				<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{title}}</h2>
 			</div>
-			<div class="w-full">
+			<div class="w-fit">
 				<Timer />
 			</div>
 		</div>
 		<div>
 			<div class="w-full bg-slate-300">
-				Navigation informations
+				<NavInfosRetro />
 			</div>
 		</div>
 		<div class="h-full">
@@ -33,6 +33,7 @@ import { computed, onUnmounted, onMounted } from 'vue';
 import Board from '@/components/retrospective/Board.vue';
 import Timer from '@/components/retrospective/Timer.vue';
 import PrivateSection from '@/components/retrospective/PrivateSection.vue'
+import NavInfosRetro from '@/components/retrospective/utils/NavInfosRetro.vue'
 import { useRoute } from 'vue-router';
 import { socketRetro, useSocket } from '@/composables/useSocketRetro';
 
@@ -64,6 +65,6 @@ onUnmounted(() => {
 <style lang="scss">
 
 .privateSection {
-	z-index: 1000;
+	z-index: 10;
 }
 </style>

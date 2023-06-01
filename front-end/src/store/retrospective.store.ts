@@ -1,4 +1,4 @@
-import { createRetro, newPostit, tryGetCurrentRetro } from '@/api/retrospective-req';
+import { createRetro, newPostit, tryGetAllRetro, tryGetCurrentRetro, tryUpdateParticipants } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
 	Postit,
@@ -14,6 +14,10 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	tempMovingPostit: {},
 	currentRetro: {},
 	userCursors: [],
+	allRetros: [],
+	isSideBar: false,
+	inputSearch: "",
+	dateSearch: 0
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -121,5 +125,32 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
 			this.userCursors.splice(findCursor, 1);
 		},
+		async getAllRetros(this: RetrospectiveStore) {
+			const resp = await tryGetAllRetro();
+			this.allRetros = resp.data.retrospectives;
+		},
+		async participantJoin(this: RetrospectiveStore, email: string) {
+			const isUserHere = this.currentRetro.participants.findIndex(el => el === email)
+			if (isUserHere === -1)
+				this.currentRetro.participants.push(email);
+			await tryUpdateParticipants(this.currentRetro);
+		},
+		async participantLeave(this: RetrospectiveStore, user: UserDisconnect) {
+			const findUser = this.currentRetro.participants.findIndex(el => el === user.email);
+			if (findUser !== -1)
+				this.currentRetro.participants.splice(findUser, 1);
+		},
+		tryToggleSideBar(this: RetrospectiveStore) {
+			this.isSideBar = !this.isSideBar;
+		},
+		tryCloseSideBar(this: RetrospectiveStore) {
+			this.isSideBar = false;
+		},
+		inputSearchFilter(this: RetrospectiveStore, value: string) {
+			this.inputSearch = value;
+		},
+		dateSearchFilter(this: RetrospectiveStore, value: number) {
+			this.dateSearch = value;
+		}
 	},
 });

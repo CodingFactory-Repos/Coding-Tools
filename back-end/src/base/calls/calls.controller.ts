@@ -30,7 +30,6 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok', qrcode: qrcode });
 	}
 	@Get('/presence/:jwt')
-	@UseGuards(JwtAuthGuard)
 	async presence(@Param() param: JwtQRCode, @Res() res: Response) {
 		const message = await this.callsService.updateUserPresence(param.jwt, true);
 		return res.status(201).json({ status: message });
