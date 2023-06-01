@@ -4,11 +4,10 @@ type AsyncFunction = (...args: unknown[]) => Promise<unknown>;
 
 export function withErrorHandler<T extends AsyncFunction, R extends boolean>(
 	action: T,
-	errors?: R
-): (...args: Parameters<T>) => R extends true
-	? ReturnType<T> | Promise<string>
-	: ReturnType<T> | Promise<undefined>
-{
+	errors?: R,
+): (
+	...args: Parameters<T>
+) => R extends true ? ReturnType<T> | Promise<string> : ReturnType<T> | Promise<undefined> {
 	return async function (this: unknown, ...args: Parameters<T>) {
 		try {
 			const bindedAction = action.bind(this);

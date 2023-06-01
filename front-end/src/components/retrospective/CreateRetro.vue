@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import Overlay from '@/components/retrospective/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
@@ -55,30 +55,30 @@ export default defineComponent({
 			}
 		};
 
+		onMounted(async() => {
+			await isProductOwner();
+		})
+		const isProductOwner = async () => {
+			// Je vois avec Louis ce qu'il veut faire parce que pas compris, bref
+			// Utiliser une fonction fléchée
+			try {
+				const response = await http.get(`/calls/is_product_owner/`);
+				// TODO: Ici, il faut définir la valeur de isPO
+				// this.isPO = response.data.isPO;
+				isPO.value = true;
+			} catch (error) {
+				console.error(error);
+				// this.isPO = false;
+				isPO.value = true;
+			}
+		};
+
 		return {
 			chooseTemplate,
 			displayTemplate,
 			active,
 			isPO: true,
 		};
-	},
-	mounted() {
-		this.isProductOwner(); // Utiliser la méthode isPO pour définir la valeur de isPO
-	},
-	methods: {
-		isProductOwner: withErrorHandler(async () => {
-			// Utiliser une fonction fléchée
-			try {
-				const response = await http.get(`/calls/is_product_owner/`);
-				// TODO: Ici, il faut définir la valeur de isPO
-				// this.isPO = response.data.isPO;
-				this.isPO = true;
-			} catch (error) {
-				console.error(error);
-				// this.isPO = false;
-				this.isPO = true;
-			}
-		}),
 	},
 });
 </script>

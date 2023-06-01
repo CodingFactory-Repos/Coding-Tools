@@ -4,6 +4,7 @@ import { ContainerManager } from './containerManager';
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
 import {
 	ContainerTypeId,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedGraphic,
@@ -15,6 +16,8 @@ export class GenericContainer extends PluginContainer {
 	public readonly children: Array<Graphics>;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
+	public linkedLinesUUID: Array<string> = [];
+	public disabled: boolean;
 
 	public absMinX: number;
 	public absMinY: number;
@@ -23,7 +26,7 @@ export class GenericContainer extends PluginContainer {
 
 	public cursor: CSSStyleProperty.Cursor;
 	public isAttachedToFrame: boolean;
-	public tabNumberContext = null;
+	public tabNumberContext: number;
 	public frameNumber: number;
 
 	static registerContainer(
@@ -48,7 +51,8 @@ export class GenericContainer extends PluginContainer {
 		this.uuid = uuid;
 		this.typeId = typeId as ContainerTypeId;
 		this.cursor = properties.cursor;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
+		this.disabled = properties.disabled;
 		this.tabNumberContext = properties.tabNumberContext;
 		this.isAttachedToFrame = properties.isAttachedToFrame;
 		this.frameNumber = properties.frameNumber;
@@ -74,7 +78,7 @@ export class GenericContainer extends PluginContainer {
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
-		if (e.forced || !this.interactive) return;
+		if (e.forced || this.eventMode === 'none' || this.disabled) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
 	}
@@ -140,10 +144,11 @@ export class GenericContainer extends PluginContainer {
 			},
 			properties: {
 				cursor: this.cursor,
-				interactive: this.interactive,
+				eventMode: this.eventMode,
 				tabNumberContext: this.tabNumberContext,
 				isAttachedToFrame: this.isAttachedToFrame,
 				frameNumber: this.frameNumber,
+				disabled: this.disabled,
 			},
 			childs: [graphicSerialized],
 		};
@@ -165,6 +170,16 @@ export class GenericContainer extends PluginContainer {
 		};
 	}
 
+	public serializedColorimetry(): SerializedColorimetry {
+		const graphic = this.getGraphicChildren()[0];
+		const graphicSerialized = graphic.serializedColorimetry();
+
+		return {
+			uuid: this.uuid,
+			childs: [graphicSerialized],
+		};
+	}
+
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
 		const graphic = this.getGraphicChildren()[0];
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
@@ -178,5 +193,18 @@ export class GenericContainer extends PluginContainer {
 		graphic.position.set(bounds.x, bounds.y);
 		graphic.width = bounds.width;
 		graphic.height = bounds.height;
+	}
+
+	public attachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if (index === -1) {
+			this.linkedLinesUUID.push(lineUUID);
+		}
+	}
+
+	public detachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if (index === -1) return;
+		this.linkedLinesUUID.splice(index, 1);
 	}
 }

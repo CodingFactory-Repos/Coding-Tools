@@ -12,9 +12,7 @@ import {
 
 import { WSServiceErrorCatcher } from '@/common/decorators/ws.catch.decorator';
 import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.middleware';
-import {
-	ElementPosition,
-} from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
+import { ElementPosition } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { RetrospectivesRepository } from '@/base/retrospectives/retrospectives.repository';
@@ -28,7 +26,9 @@ import { Postit, Retrospective } from '@/base/retrospectives/interfaces/retrospe
 	},
 	namespace: 'retrospective',
 })
-export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class RetrospectiveGateway
+	implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
 	constructor(
 		@Inject(forwardRef(() => RetrospectivesRepository))
 		private retrospectivesRepository: RetrospectivesRepository,
@@ -58,8 +58,8 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 
 		const userDisconnected = {
 			email: user.profile.email,
-			id: client.id
-		}
+			id: client.id,
+		};
 
 		client.to(client.roomId).emit('peer-disconnected', userDisconnected);
 	}
@@ -79,7 +79,7 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 		client.to(client.roomId).emit('postit-deleted', postit);
 
 		const query = { slug: client.roomId };
-		const update = { $pull: { [`postits.${postit.type}`] : {id:  postit.id}} } ;
+		const update = { $pull: { [`postits.${postit.type}`]: { id: postit.id } } };
 
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
@@ -88,8 +88,8 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 	async handlePostitUpdated(client: AuthSocket, postit: Postit) {
 		client.to(client.roomId).emit('postit-updated', postit);
 
-		const query = { slug: client.roomId,  [`postits.${postit.type}.id`] : postit.id };
-		const update = { $set: { [`postits.${postit.type}.$.value`]: postit.value }};
+		const query = { slug: client.roomId, [`postits.${postit.type}.id`]: postit.id };
+		const update = { $set: { [`postits.${postit.type}.$.value`]: postit.value } };
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
@@ -97,8 +97,8 @@ export class RetrospectiveGateway implements OnGatewayInit, OnGatewayConnection,
 	handleMouseMoved(client: AuthSocket, position: ElementPosition) {
 		const returnData = {
 			position,
-			clientId: client.id
-		}
+			clientId: client.id,
+		};
 		client.to(client.roomId).emit('peer-mouse-moved', returnData);
 	}
 }

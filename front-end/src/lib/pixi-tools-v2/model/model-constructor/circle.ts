@@ -2,12 +2,15 @@ import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
 import { modelBounds } from '../../utils/modelBounds';
+import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
 export class Circle extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
+	public borderWidth: number;
+	public borderColor: number;
 	public radius: number;
 	public color: number;
 
@@ -22,7 +25,9 @@ export class Circle extends ModelGraphics {
 
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
+		this.borderWidth = properties.borderWidth;
+		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
@@ -30,14 +35,15 @@ export class Circle extends ModelGraphics {
 		this.draw(bounds);
 	}
 
-	public draw(bounds: ElementBounds) {
+	public draw(bounds: Partial<ElementBounds>) {
 		const { x, y, radius } = bounds;
 		this.radius = radius;
 		this.position.set(x, y);
 
 		this.clear();
+		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
-		this.drawCircle(x, y, this.radius);
+		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();
 	}
 
@@ -47,5 +53,9 @@ export class Circle extends ModelGraphics {
 
 	public serializedBounds() {
 		return modelBounds(this);
+	}
+
+	public serializedColorimetry() {
+		return modelColorimetry(this);
 	}
 }

@@ -20,3 +20,11 @@ export interface CourseIdObject {
 export interface StudentIdObject {
 	studentId: string;
 }
+
+export interface AbsencesParams {
+	supervisor: User;
+	attachments: string[];
+	classObject: any;
+	course: Course;
+	template: number;
+}
