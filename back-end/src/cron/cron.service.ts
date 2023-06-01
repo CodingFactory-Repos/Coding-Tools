@@ -10,14 +10,20 @@ export class CronService {
 
 	@Cron('0 18 * * *')
 	async handleCron() {
-		console.log('Called Every Minute');
+		// ---- Return if we're on weekend ---- //
+		const today = new Date();
+
+		if (today.getDay() === 6 || today.getDay() === 0) {
+			return;
+		}
+		// ---- End ---- //
+
 		const courses = await this.callsRepository.getActualCourses();
 		const periods = ['arrival', 'departure'];
 		for (const course of courses) {
 			const attachments = [];
 			const classObject = await this.callsRepository.getClass(course._id);
 			const supervisor = await this.callsRepository.getClassSupervisor(course._id);
-			console.log(supervisor.profile.firstName);
 			for (const period of periods) {
 				const pdf = await this.callsRepository.generatePdf(course._id, period);
 				const studentsScanned = await this.callsRepository.getStudentsScanned(course._id, period);
@@ -26,8 +32,6 @@ export class CronService {
 				);
 				if (studentsNotScanned.length > 0) {
 					await this.callsRepository.addStudentsNotScanned(pdf, studentsNotScanned, period);
-					// Console.log the content of the pdf
-					console.log(pdf);
 				}
 
 				// Get the list of students that were late or that left early
@@ -36,23 +40,19 @@ export class CronService {
 					period,
 				);
 
-				console.log('Students late or left early ' + studentsLateOrLeftEarly.length);
 				if (studentsLateOrLeftEarly.length > 0) {
 					await this.callsRepository.addStudentsLateOrLeftEarly(
 						pdf,
 						studentsLateOrLeftEarly,
 						period,
 					);
-					console.log(pdf.content);
 				}
-				console.log('Students well added late or early');
 				if (studentsNotScanned.length > 0 || studentsLateOrLeftEarly.length > 0) {
 					// Save the pdf into a file and add it to the attachments
 					const pdf_path = await this.callsRepository.savePdf(pdf);
 					// Add the path of the pdf to the attachments
 					attachments.push(pdf_path);
 				}
-				console.log('PDF well added to attachments');
 			}
 			// If attachments is not empty
 			if (attachments.length > 0) {
@@ -65,10 +65,8 @@ export class CronService {
 					course,
 					template,
 				};
-				console.log('Params well retrieved');
 
 				await this.callsRepository.sendEmail(dailyAbsencesParams);
-				console.log('Email well sent');
 				await this.callsRepository.deletePdf(attachments);
 			}
 		}

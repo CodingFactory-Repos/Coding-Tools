@@ -26,6 +26,18 @@ export class CallsRepository {
 		return this.db.collection<Course>('courses');
 	}
 
+	async isWeekEnd(date: Date) {
+		const day = date.getDay();
+		return day === 0 || day === 6;
+	}
+	async checkWeekEnd() {
+		const date = new Date();
+		const isWeekEnd = await this.isWeekEnd(date);
+		if (isWeekEnd) {
+			throw new ServiceError('FORBIDDEN', 'Vous ne pouvez pas performer ces actions le week-end');
+		}
+	}
+
 	async getActualCourses() {
 		const actualDate = new Date();
 
@@ -53,6 +65,7 @@ export class CallsRepository {
 		return await this.db.collection('classes').findOne({ _id: classObjectId });
 	}
 	async addStudentsNotScanned(pdf: any, students: any, period: any) {
+		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
 			const studentIdentity = await this.db.collection('users').findOne({ _id: student });
@@ -60,8 +73,6 @@ export class CallsRepository {
 				studentIdentity.profile.firstName + ' ' + studentIdentity.profile.lastName,
 			);
 		}
-
-		console.log(pdf.content)
 
 		pdf.content.push({
 			text: "Étudiants n'ayant pas scanné",
@@ -77,12 +88,7 @@ export class CallsRepository {
 	}
 
 	async addStudentsLateOrLeftEarly(pdf: any, students: any, period: any) {
-		// Create a list with the students firstname and lastname and add it to the pdf (not doc definition)
-		console.log(students);
-		// const studentsIdentities = students.map(
-		// 	(student) => student[0].firstName + ' ' + student[0].lastName + ' ' + student[1],
-		// );
-		// Get student identities using the "student" to get their objectId
+		await this.checkWeekEnd();
 		const studentsIdentities = [];
 		for (const student of students) {
 			const studentObjectId = new ObjectId(student.student);
@@ -114,6 +120,7 @@ export class CallsRepository {
 		});
 	}
 	async savePdf(pdf: any) {
+		await this.checkWeekEnd();
 		try {
 			const directoryPath = path.join(__dirname, '..', 'pdf'); // Go up one directory and then specify the directory path where you want to save the PDF
 			const fileName = `absences_daily_${new Date().getTime()}.pdf`;
@@ -141,12 +148,14 @@ export class CallsRepository {
 	}
 
 	async deletePdf(attachments: any[]) {
+		await this.checkWeekEnd();
 		for (const attachment of attachments) {
 			fs.unlinkSync(attachment);
 		}
 	}
 
 	async sendEmail(dailyAbsencesParams: AbsencesParams) {
+		await this.checkWeekEnd();
 		const courseDate = new Date().toLocaleDateString('fr-FR', {
 			day: '2-digit',
 			month: '2-digit',
@@ -183,6 +192,7 @@ export class CallsRepository {
 		return this.calls.findOne(query, options);
 	}
 	async updateUserPresence(userId: ObjectId, courseId: string, presence: boolean) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);
 		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
@@ -406,6 +416,7 @@ export class CallsRepository {
 	}
 
 	async createRandomGroups(courseId: string) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
 		const course = await this.db.collection('courses').findOne({
@@ -456,7 +467,7 @@ export class CallsRepository {
 	}
 
 	async emptyGroups(courseId: string) {
-		// Keep the same structure as it was and replace the values by "''"
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
 		const course = await this.db.collection('courses').findOne({
@@ -504,6 +515,7 @@ export class CallsRepository {
 	}
 
 	async joinGroup(courseId: string, groupId: string, userId: ObjectId) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);
 		const actualDate = new Date();
@@ -589,6 +601,7 @@ export class CallsRepository {
 		};
 	}
 	async joiningGroup(courseObjectId, actualDate, course, groupId, newGroup) {
+		await this.checkWeekEnd();
 		await this.db.collection('courses').updateOne(
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
@@ -604,6 +617,7 @@ export class CallsRepository {
 		);
 	}
 	async leavingGroup(courseObjectId, actualDate, course, ancientGroupId, updatedGroup) {
+		await this.checkWeekEnd();
 		await this.db.collection('courses').updateOne(
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
@@ -638,7 +652,6 @@ export class CallsRepository {
 		if (!call) {
 			return [];
 		}
-		console.log('SALUT ' + call._id);
 
 		return call.students.map((student) => {
 			return student;
@@ -665,7 +678,6 @@ export class CallsRepository {
 			return [];
 		}
 
-		console.log('SALUT ' + call._id);
 
 		const students = call.students.map((student) => {
 			return student;
