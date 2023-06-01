@@ -50,7 +50,6 @@ export class CallsRepository {
 
 	async getClassSupervisor(courseId: InferIdType<Course>) {
 		const course = await this.courses.findOne({ _id: courseId });
-		// @ts-ignore (Mandatory because of typo issue)
 		const classObjectId = course.classId;
 		const classroom = await this.db.collection('classes').findOne({ _id: classObjectId });
 		return await this.db.collection('users').findOne({ _id: new ObjectId(classroom.pedago) });
@@ -58,7 +57,6 @@ export class CallsRepository {
 
 	async getClass(courseId: InferIdType<Course>) {
 		const course = await this.courses.findOne({ _id: courseId });
-		// @ts-ignore (Mandatory because of typo issue)
 		const classObjectId = course.classId;
 		return await this.db.collection('classes').findOne({ _id: classObjectId });
 	}
