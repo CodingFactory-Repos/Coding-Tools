@@ -20,8 +20,14 @@ export interface IRelatedUserProfile {
 }
 
 export interface UserProfileList {
+	groupName?: string;
 	picture: string;
 	firstName: string;
 	lastName: string;
 	id: string;
 }
+
+export interface UserCanvasList extends UserProfileList {
+	pending?: boolean;
+}
+
