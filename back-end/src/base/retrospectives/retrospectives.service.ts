@@ -15,8 +15,8 @@ export class RetrospectivesService {
 	) {}
 
 	async newRetrospective(retrospective: Retrospective) {
-		const slug = generateCodeToken()
-		retrospective.slug = slug
+		const slug = generateCodeToken();
+		retrospective.slug = slug;
 
 		await this.retrospectivesRepository.createRetrospective(retrospective);
 
@@ -24,8 +24,7 @@ export class RetrospectivesService {
 	}
 
 	async getCurrentRetro(slug: string) {
-		const tryGetCurrentRetro = await this.retrospectivesRepository.findOne({ slug: slug})
-		if (tryGetCurrentRetro)
-			return tryGetCurrentRetro
+		const tryGetCurrentRetro = await this.retrospectivesRepository.findOne({ slug: slug });
+		if (tryGetCurrentRetro) return tryGetCurrentRetro;
 	}
 }

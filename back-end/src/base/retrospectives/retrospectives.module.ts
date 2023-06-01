@@ -12,7 +12,13 @@ import { JwtService } from '@nestjs/jwt';
 
 @Module({
 	imports: [DatabaseModule, forwardRef(() => AuthModule)],
-	providers: [JwtService, RetrospectivesService, RetrospectivesRepository, UsersRepository, RetrospectiveGateway],
+	providers: [
+		JwtService,
+		RetrospectivesService,
+		RetrospectivesRepository,
+		UsersRepository,
+		RetrospectiveGateway,
+	],
 	controllers: [RetrospectivesController],
 	exports: [RetrospectivesService, RetrospectivesRepository],
 })
