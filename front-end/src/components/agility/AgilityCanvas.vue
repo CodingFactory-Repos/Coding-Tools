@@ -20,11 +20,17 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import AgilityCanvasUI from '@/components/agility/AgilityCanvasUI.vue';
 import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
+import { LineContainer } from '../../lib/pixi-tools-v2/class/lineContainer';
+import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
+import { useThemeStore } from '@/store/modules/theme.store';
 
 const route = useRoute();
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
+const themeStore = useThemeStore();
 
+const isDark = computed(() => themeStore.theme);
+const scene = computed(() => projectStore.scene);
 const projectLoading = computed(() => agilityStore.projectLoading);
 const project = computed(() => agilityStore.currentProject);
 
@@ -33,6 +39,12 @@ const roomId = ref(route.path.match(/[^/]+$/)[0]);
 const loading = ref(projectLoading.value || project.value.length > 0);
 let timeout: NodeJS.Timeout = null;
 let rawScene: Scene = null;
+
+watch(isDark, val => {
+	if(scene.value) {
+		scene.value.changeTheme(val);
+	}
+})
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
@@ -48,7 +60,7 @@ onMounted(() => {
 	}
 
 	// 84 represent the offset height due to tabs
-	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, socketOptions);
+	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, isDark.value, socketOptions);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
 	projectStore.enableSelectionBox();
@@ -84,7 +96,32 @@ const autoFillProject = async () => {
 		}
 
 		await processBatchesWithDelay();
+		linkLines();
 		loading.value = false;
+	}
+}
+
+const linkLines = () => {
+	const elements =  scene.value?.viewport?.socketPlugin?.elements;
+	if(elements) {
+		for(const key in elements) {
+			const ctn = elements[key];
+			if(ctn instanceof LineContainer) {
+				if(ctn.startContainer?.containerUUID !== undefined) {
+					const container = elements[ctn.startContainer.containerUUID] as CanvasContainer;
+					if(!container.linkedLinesUUID.includes(ctn.uuid)) {
+						container.attachLine(ctn.uuid);
+					}
+				}
+
+				if(ctn.endContainer?.containerUUID !== undefined) {
+					const container = elements[ctn.endContainer.containerUUID] as CanvasContainer;
+					if(!container.linkedLinesUUID.includes(ctn.uuid)) {
+						container.attachLine(ctn.uuid);
+					}
+				}
+			}
+		}
 	}
 }
 

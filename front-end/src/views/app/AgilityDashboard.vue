@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full h-full flex flex-col gap-10 pt-20 p-4">
+	<div class="w-full flex flex-col gap-10 pt-20 p-4">
 		<AgilityTemplateDisplay/>
 		<AgilityProjectDisplay/>
 	</div>

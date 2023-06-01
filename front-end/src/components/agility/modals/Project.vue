@@ -4,7 +4,7 @@
 			<div class="flex flex-col gap-6 items-center justify-center">
 				<div class="flex gap-8 items-start">
 					<div class="w-52 min-w-[13rem]">
-						<img ref="imageRef" class="w-full h-44 rounded" :src="url" alt="project_image"/>
+						<img ref="imageRef" class="w-full h-44 rounded" :src="url ?? 'https://'" alt="project_image"/>
 					</div>
 					<div class="flex flex-col gap-8 w-full items-start">
 						<div class="w-5/6">
@@ -24,7 +24,7 @@
 								<span class="text-sm text-black dark:text-white">Updated</span>
 							</div>
 							<div class="h-full flex flex-col justify-start items-start gap-4">
-								<span class="text-sm text-black dark:text-white">Owner Name (todo)</span>
+								<span class="text-sm text-black dark:text-white">{{ ownerName }}</span>
 								<span class="text-sm text-black dark:text-white">{{ new Date(project.createdAt).toLocaleString() }}</span>
 								<span class="text-sm text-black dark:text-white">{{ new Date(project.lastUpdatedAt).toLocaleString() }}</span>
 							</div>
@@ -45,14 +45,45 @@
 			</div>
 		</template>
 		<template #footer>
-			<DefaultButton
-				@click="() => isFormValid ? saveProjectMeta() : {}"
-				type="button"
-				text="Save"
-				text-style="text-white hover:text-white"
-				background="gradiant"
-				:disabled="!isFormValid"
-			/>
+			<div class="flex gap-2 w-full h-full justify-between">
+				<DefaultButton
+					@click="() => isFormValid ? saveProjectMeta() : {}"
+					type="button"
+					text="Save"
+					text-style="text-white hover:text-white"
+					background="gradiant"
+					:disabled="!isFormValid"
+				/>
+				<DefaultButton
+					v-if="isOwner"
+					@click="openDeleteModal"
+					type="button"
+					text="Delete project"
+					text-style="text-white hover:text-white"
+					background="bg-red-500 hover:bg-red-600"
+				/>
+			</div>
+		</template>
+	</ModalOverlay>
+	<ModalOverlay  v-if="showDeleteModal" @close="closeDeleteModal" size="sm">
+		<template #body>
+			<div class="flex flex-col gap-4 items-center justify-center pt-3">
+				<h2 class="font-bold text-black dark:text-light-font text-center pt-3">This action is not reversible, are you sure you want to delete this project ?</h2>
+				<div class="flex gap-5">
+					<DefaultButton
+						@click="closeDeleteModal"
+						text="Cancel"
+						text-style="text-black dark:text-black font-bold text-sm"
+						background="bg-light-secondary hover:bg-light-tertiary"
+					/>
+					<DefaultButton
+						@click="deleteProject"
+						text="Yes, delete the project"
+						text-style="text-white dark:text-white font-bold text-sm"
+						background="bg-red-500 hover:bg-red-600"
+					/>
+				</div>
+			</div>
 		</template>
 	</ModalOverlay>
 	<ModalOverlay v-if="showWarningModal" @close="exitProjectMeta" size="lg">
@@ -100,6 +131,7 @@ import ModalOverlay from '@/components/common/Modal.vue';
 import SvgInfo from '@/components/common/svg/Info.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import { cloneDeep } from 'lodash';
+import Swal from 'sweetalert2';
 
 const props = defineProps({
 	roomId: { type: String, required: true },
@@ -113,12 +145,15 @@ const project = ref(cloneDeep(projectRef.value));
 
 const showMetaModal = ref(false);
 const showWarningModal = ref(false);
+const showDeleteModal = ref(false);
 const isFormValid = ref(true);
 const imageRef = ref<HTMLImageElement>();
 
 const url = ref(project.value.meta.snapshot);
+const isOwner = ref<boolean>(project.value.isOwner);
 const previousMetaTitle = ref<string>(project.value.meta.title);
 const previousMetaDesc = ref<string>(project.value.meta.description);
+const ownerName = ref<string>(project.value.meta.ownerFirstName + " " + project.value.meta.ownerLastName);
 const formTitle = ref<HTMLInputElement>();
 const formDesc = ref<HTMLTextAreaElement>();
 
@@ -126,6 +161,8 @@ const openMetaModal = () => showMetaModal.value = true;
 const closeMetaModal = () => showMetaModal.value = false;
 const openWarningModal = () => showWarningModal.value = true;
 const closeWarningModal = () => showWarningModal.value = false;
+const openDeleteModal = () => showDeleteModal.value = true;
+const closeDeleteModal = () => showDeleteModal.value = false;
 
 const replaceGenericImage = () => {
 	if(imageRef.value) {
@@ -171,6 +208,21 @@ const beforeModalClose = () => {
 	if (previousMetaTitle.value !== project.value.meta.title || previousMetaDesc.value !== project.value.meta.description) {
 		openWarningModal();
 	} else {
+		emit('close');
+	}
+}
+
+const deleteProject = async () => {
+	const res = await agilityStore.tryDeleteProject(props.roomId);
+	if(!res) {
+		Swal.fire({
+			icon: "error",
+			title: "An error occured",
+			text: "The project could not be deleted"
+		})
+	} else {
+		closeDeleteModal();
+		closeMetaModal();
 		emit('close');
 	}
 }

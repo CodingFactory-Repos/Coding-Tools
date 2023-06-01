@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .sprints {
     display: flex;
     flex-wrap: wrap;
@@ -115,11 +115,13 @@ export default {
 .relative {
     position: relative;
 }
-button {
+
+/** //! DONT, Use a class or use tailwind but don't do a style that can affect other pages */
+/* button {
     background-color: #bfbfbf;
     padding: 5px;
     font-size: 15px;
-}
+} */
 .icon {
     width: 20px;
     height: 20px;
