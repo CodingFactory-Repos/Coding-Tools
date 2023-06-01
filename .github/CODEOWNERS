@@ -8,6 +8,7 @@
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
 /back-end/src/app.controller.ts @Maghwyn @Kevw94
+/back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
 /back-end/src/auth/auth.module.ts @Maghwyn
@@ -90,7 +91,7 @@
 /back-end/src/external-modules/database/mongo.module.ts @Maghwyn
 /back-end/src/external-modules/database/mongo.service.ts @Maghwyn @Kevw94
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
-/back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn @AyakorK
+/back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn @Kevw94
 /back-end/types/index.d.ts @Maghwyn
 /front-end/ @Loule95450 @Maghwyn
 /front-end/.env.example @Maghwyn
@@ -170,7 +171,7 @@
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/composables/useSocketRetro.ts @Maghwyn @Loule95450
-/front-end/src/config/config.ts @Maghwyn @AyakorK
+/front-end/src/config/config.ts @Maghwyn @Kevw94
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
 /front-end/src/images/CodingToolsLogo.png @TheoLandemaine
@@ -220,13 +221,14 @@
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
+/front-end/src/store/interfaces/article.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
-/front-end/src/store/interfaces/material.interface.ts @Maghwyn @Kevw94
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
+/front-end/src/store/interfaces/retrospective.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
+/front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/user.interface.ts @Maghwyn
-/front-end/src/store/modules/ @Kevw94 @Maghwyn
 /front-end/src/store/modules/agility.store.ts @Maghwyn @AyakorK
 /front-end/src/store/modules/article.store.ts @Maghwyn @Loule95450
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
