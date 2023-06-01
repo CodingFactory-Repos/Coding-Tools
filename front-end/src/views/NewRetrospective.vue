@@ -1,10 +1,10 @@
 <template>
 	<div class="flex flex-col h-full">
-		<div class="flex relative justify-center items-center mb-2 mt-2">
-			<div class="text-black w-full h-full absolute left-16">
+		<div class="flex relative justify-center items-center mb-2 mt-2 h-40">
+			<div class="text-black w-fit  absolute left-16">
 				<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{title}}</h2>
 			</div>
-			<div class="w-fit">
+			<div class="flex items-center gap-2">
 				<Timer />
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 				<NavInfosRetro />
 			</div>
 		</div>
-		<div class="h-full">
+		<div class="h-full" v-if="optionTemplate">
 			<Board :optionTemplate="optionTemplate" />
 		</div>
 		<div
@@ -59,6 +59,9 @@ onMounted(async () => {
 onUnmounted(() => {
 	socketRetro.socket.disconnect();
 });
+const test = () => {
+	console.log("nzaiejiazjeiajz")
+}
 
 </script>
 
