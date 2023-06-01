@@ -35,6 +35,7 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
+		// TODO: Change this to the real url in the environment variables
 		return `https://backend-codingtools.loule.me/calls/presence/` + jwt;
 	}
 

@@ -692,7 +692,7 @@ export class CallsRepository {
 
 	async generatePdf(courseId: InferIdType<Course>, period: string) {
 		// Generate a pdf empty that is named with the date and the class
-		const course = await this.db.collection('courses').findOne({ _id: new ObjectId(courseId) });
+		const course = await this.db.collection('courses').findOne({ _id: courseId });
 		if (!course) {
 			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}

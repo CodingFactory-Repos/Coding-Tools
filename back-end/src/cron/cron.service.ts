@@ -8,12 +8,8 @@ import { MailjetTemplate } from 'src/common/providers/interfaces/events.interfac
 export class CronService {
 	constructor(private readonly callsRepository: CallsRepository) {}
 
-	@Cron('0 18 * * *')
+	@Cron('0 18 * * 1-5')
 	async handleCron() {
-		if (this.isWeekend()) {
-			return;
-		}
-
 		const courses = await this.callsRepository.getActualCourses();
 		const periods = ['arrival', 'departure'];
 
@@ -58,11 +54,6 @@ export class CronService {
 				await this.callsRepository.deletePdf(attachments);
 			}
 		}
-	}
-
-	isWeekend() {
-		const today = new Date();
-		return today.getDay() === 6 || today.getDay() === 0;
 	}
 
 	getStudentsNotScanned(allStudents, scannedStudents) {
