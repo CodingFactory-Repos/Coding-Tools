@@ -1,3 +1,4 @@
+import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface AgilityStore {
@@ -5,13 +6,16 @@ export interface AgilityStore {
 	metaTemplates: Array<AgilityTemplateMetaDetails>;
 	currentProject: Array<SerializedContainer>;
 	projectLoading: boolean;
+	isOwner: boolean;
 
 	tryCreateNewProject?: (this: AgilityStore) => Promise<boolean | string>;
 	tryGetProjectsMeta?: (this: AgilityStore) => Promise<boolean>;
 	tryGetRoomProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 	tryGetRoomAccess?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 	trySaveProjectMeta?: (this: AgilityStore) => Promise<boolean>;
+	tryDeleteProject?: (this: AgilityStore, roomId: string) => Promise<boolean>;
 }
+
 export interface ProjectMeta {
 	roomId: string;
 	isOwner: boolean;
@@ -25,6 +29,8 @@ export interface ProjectMetaDetails {
 	description: string;
 	snapshot: string;
 	readonly: boolean;
+	ownerFirstName: string;
+	ownerLastName: string;
 }
 
 export interface AgilityTemplateMeta {
@@ -36,4 +42,14 @@ export interface AgilityTemplateMetaDetails {
 	url: string;
 	name: string;
 	isNew: boolean;
+	type: LitteralBlueprintTypes;
 }
+
+export const getAgileBlueprints = {
+	elevatorpitch: null,
+	empathymap: empathyMap,
+	impactmapping: null,
+	personas: null,
+};
+
+export type LitteralBlueprintTypes = keyof typeof getAgileBlueprints;

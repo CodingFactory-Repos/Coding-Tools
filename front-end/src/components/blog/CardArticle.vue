@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<img
 		class="object-cover h-48 w-96 rounded-t-lg"
@@ -20,54 +21,131 @@
 				{{ item.title ? item.title : 'Pas de titre spécifié' }}
 			</h5>
 		</a>
-		<p class="mb-3 p-3 font-normal text-gray-700 dark:text-gray-400">
-			{{
-				item.descriptions[0].value.length > 100
-					? item.descriptions[0].value.substring(0, 100) + '...'
-					: item.descriptions[0].value
-			}}
-		</p>
+		<p
+			v-html="renderMarkdown()"
+			class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
+		></p>
+	</div>
+	<div class="pt-2 pb-5 flex flex-row justify-center items-center">
+		<button
+			type="button"
+			@click="addLike(item._id)"
+			class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center mr-2 dark:text-blue-500"
+		>
+			<div v-if="item.likes" class="flex flex-row justify-center items-center">
+				<div v-if="hasUserLiked">
+					<SolidLike />
+				</div>
+				<div v-else>
+					<OutlineLike />
+				</div>
+
+				<span v-if="item.likes.length > 0" class="ml-2">{{ item.likes.length }}</span>
+			</div>
+			<div v-else>
+				<OutlineLike />
+			</div>
+		</button>
 		<button
 			type="button"
 			@click="openArticle(item._id)"
 			class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 		>
-			Read more
-			<svg
-				aria-hidden="true"
-				class="w-4 h-4 ml-2 -mr-1"
-				fill="white"
-				viewBox="0 0 20 20"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					fill-rule="evenodd"
-					d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-					clip-rule="evenodd"
-				/>
-			</svg>
+			Lire l'article
+		</button>
+		<button
+			type="button"
+			@click="addDislike(item._id)"
+			class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center ml-2 dark:text-blue-500"
+		>
+			<div v-if="item.dislikes" class="flex flex-row justify-center items-center">
+				<span v-if="item.dislikes.length > 0" class="mr-2">{{ item.dislikes.length }}</span>
+
+				<div v-if="hasUserDisliked">
+					<SolidDislike />
+				</div>
+				<div v-else>
+					<OutlineDislike />
+				</div>
+			</div>
+			<div v-else>
+				<OutlineDislike />
+			</div>
 		</button>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
+import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
+import MarkdownIt from 'markdown-it';
+import OutlineLike from '@/components/common/svg/OutlineLike.vue';
+import SolidLike from '@/components/common/svg/SolidLike.vue';
+import OutlineDislike from '@/components/common/svg/OutlineDislike.vue';
+import SolidDislike from '@/components/common/svg/SolidDislike.vue';
 
-defineProps<{
+const props = defineProps<{
 	item: any;
 }>();
 
+let markdown = ref('');
+
+// create renderMarkdown method
+const renderMarkdown = () => {
+	const md = new MarkdownIt();
+	return md.render(markdown.value);
+};
+
 // get store
 const articleStore = useArticleStore();
-
+const authStore = useAuthStore();
 const router = useRouter();
+
+const user = authStore.user;
 
 // Fetch the articles
 const getArticles = async () => {
 	await articleStore.getArticle();
+	if (props.item.descriptions.length > 60) {
+		markdown.value = props.item.descriptions.substring(0, 60);
+		markdown.value += '...';
+	} else {
+		markdown.value = props.item.descriptions;
+	}
 };
+
+const addLike = async (id: string) => {
+	const like = {
+		id: user._id,
+	};
+
+	await articleStore.addLike(id, like);
+	await articleStore.removeDislike(id, like);
+
+	window.location.reload();
+};
+
+const addDislike = async (id: string) => {
+	const dislike = {
+		id: user._id,
+	};
+
+	await articleStore.addDislike(id, dislike);
+	await articleStore.removeLike(id, dislike);
+
+	window.location.reload();
+};
+
+// Check if the user has liked the item
+const hasUserLiked = computed(() => {
+	return props.item.likes.some((like) => like.id === user._id);
+});
+
+const hasUserDisliked = computed(() => {
+	return props.item.dislikes.some((dislike) => dislike.id === user._id);
+});
 
 // Call the getArticles method when the component is created
 onMounted(() => {

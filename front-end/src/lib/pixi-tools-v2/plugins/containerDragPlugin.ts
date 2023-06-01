@@ -5,6 +5,7 @@ import { ViewportUI } from '../viewportUI';
 
 import type { InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
+import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 type FrameIntersect = {
 	frame: FramedContainer;
@@ -56,6 +57,7 @@ export class DragPlugin {
 	private _initDragging = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
+		if (e.global === undefined) return;
 
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
@@ -96,13 +98,26 @@ export class DragPlugin {
 			const dy = cursorPosition.y - this.initialCursorPosition.y;
 
 			for (const element of this.initialGraphicsState) {
+				if (element === null) continue;
+
 				const newX = element.x + dx;
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
 
+				if (element.child.typeId === 'framebox') {
+					const frame = element.child.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						dragAttachedLines(frame, this.viewport.socketPlugin);
+						continue;
+					}
+				}
+
 				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
 
 				const parent = element.child.parent as CanvasContainer;
+				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
+				if (parent.typeId === 'wrap') continue;
+
 				const childBounds = element.child.getBounds();
 				const centerX = childBounds.x + childBounds.width / 2;
 				const centerY = childBounds.y + childBounds.height / 2;
@@ -154,10 +169,8 @@ export class DragPlugin {
 						}
 					}
 				}
-			}
 
-			if (this.container instanceof FramedContainer) {
-				this.container.emit('moved', null);
+				dragAttachedLines(parent, this.viewport.socketPlugin);
 			}
 
 			if (this.container instanceof WrappedContainer) {
@@ -166,6 +179,12 @@ export class DragPlugin {
 						element.emit('moved', null);
 					}
 				}
+			} else {
+				if (this.container instanceof FramedContainer) {
+					this.container.emit('moved', null);
+				}
+
+				dragAttachedLines(this.container, this.viewport.socketPlugin);
 			}
 
 			if (this.viewport.socketPlugin) {
@@ -187,6 +206,7 @@ export class DragPlugin {
 			this.viewport.destroyBorder();
 			this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
 			this.viewport.updateResizeHitAreas(geometry);
+			this.viewport.updateBezierHandles(geometry, false);
 			this.viewport.updateResizeHandles(geometry, false);
 		} catch (err) {
 			if (err instanceof Error) {
@@ -220,7 +240,7 @@ export class DragPlugin {
 			this.unconstraints.forEach((ctn) => {
 				if (ctn.isAttachedToFrame) {
 					const frame = ctn.parent.parent as FramedContainer;
-					frame.removeNestedChild(ctn, this.viewport.children.length - 9, false);
+					frame.removeNestedChild(ctn, this.viewport.children.length - 13, false);
 				}
 			});
 

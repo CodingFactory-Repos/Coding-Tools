@@ -1,13 +1,13 @@
 <template>
 	<div class="flex h-full flex-col gap-3 w-full sm:w-fit">
-		<div class="h-full flex flex-col rounded-lg bg-light-primary dark:bg-dark-highlight min-w-[300px] min-h-[388px] overflow-y-scroll p-2 w-full">
-			<span class="w-full flex justify-center text-sm pb-2 text-black dark:text-white bold">{{ groupName }}</span>
-			<hr class="w-full pb-4 dark:border-dark-tertiary"/>
+		<div class="h-full flex flex-col rounded-lg gap-2 bg-light-primary dark:bg-dark-highlight min-w-[300px] min-h-[388px] overflow-y-scroll p-2 w-full">
+			<span class="w-full flex justify-center text-sm text-black dark:text-white bold">{{ groupName }}</span>
+			<hr class="w-full pb-2 dark:border-dark-tertiary"/>
 			<template v-if="relatedProfiles.length > 0">
 				<div
 					v-for="(relatedUser, index) in relatedProfiles"
 					:key="`related_user_${index}`"
-					@click="viewRelatedUserProfile(relatedUser.id)"
+					@click.stop="viewRelatedUserProfile(relatedUser.id)"
 					class="px-2 py-2 w-full flex gap-5 items-center bg-light-secondary dark:bg-dark-tertiary rounded-lg cursor-pointer hover:scale-[1.02] transition-transform"
 				>
 					<img
@@ -31,7 +31,7 @@ import { useRouter } from 'vue-router';
 import { UserProfileList } from '@/store/interfaces/user.interface';
 import { useAuthStore } from '@/store/modules/auth.store';
 
-const props = defineProps<{
+defineProps<{
 	groupName: string;
 	relatedProfiles: Array<UserProfileList>;
 }>();

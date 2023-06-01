@@ -19,3 +19,15 @@ export class ProjectMetaDTO {
 	@IsBoolean()
 	readonly: boolean;
 }
+
+export class ProjectUserIdDTO {
+	@IsString()
+	@Length(24)
+	userId: string;
+}
+
+export class ProjectInvitationVerificationDTO {
+	@IsString()
+	@Length(32)
+	token: string;
+}
