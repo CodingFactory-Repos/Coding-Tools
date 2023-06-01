@@ -28,6 +28,8 @@ export const pruneTheProjectTree = (
 	const foliageWidth = width * 0.9;
 	const foliageHeight = height * 0.7;
 
+	//! WARNING: Ellipse and Tree aren't supported for the resize.
+
 	return {
 		typeId: 'frame',
 		background: {
