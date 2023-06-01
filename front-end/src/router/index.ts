@@ -32,8 +32,6 @@ const routes: Array<RouteRecordRaw> = [
 		path: '/app',
 		component: () => import('../layout/app/AppLayout.vue'),
 		children: [
-			//! A retirer quand c'est fini
-			{ path: 'timer', component: () => import('../views/TimerView.vue') },
 			{
 				path: 'account',
 				children: [
