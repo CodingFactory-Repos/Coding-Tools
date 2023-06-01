@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { CallsRepository } from '@/base/calls/calls.repository';
 import { AbsencesParams } from '@/base/calls/interfaces/calls.interface';
-import { MaijetTemplate } from 'src/common/providers/interfaces/events.interface';
+import { MailjetTemplate } from 'src/common/providers/interfaces/events.interface';
 
 @Injectable()
 export class CronService {
@@ -70,7 +70,7 @@ export class CronService {
 	}
 
 	async sendDailyAbsencesEmail(supervisor, attachments, classObject, course) {
-		const template = MaijetTemplate.dailyAbsence;
+		const template = MailjetTemplate.dailyAbsence;
 
 		const dailyAbsencesParams: AbsencesParams = {
 			supervisor,
