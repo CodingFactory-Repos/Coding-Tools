@@ -151,8 +151,6 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		},
 		dateSearchFilter(this: RetrospectiveStore, value: number) {
 			this.dateSearch = value;
-			console.log("searchDate", this.dateSearch);
-
 		}
 	},
 });

@@ -28,6 +28,8 @@ export interface RetrospectiveStore {
 	participantLeave?: (this: RetrospectiveStore, user: UserDisconnect) => Promise<void>;
 	tryToggleSideBar?: (this: RetrospectiveStore) => void;
 	tryCloseSideBar?: (this: RetrospectiveStore) => void;
+	inputSearchFilter?: (this: RetrospectiveStore, value: string) => void;
+	dateSearchFilter?: (this: RetrospectiveStore, value: number) => void;
 }
 
 export interface Retrospective {
