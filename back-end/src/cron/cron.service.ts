@@ -8,7 +8,7 @@ import { MaijetTemplate } from 'src/common/providers/interfaces/events.interface
 export class CronService {
 	constructor(private readonly callsRepository: CallsRepository) {}
 
-	@Cron('* * * * * *')
+	@Cron('0 18 * * *')
 	async handleCron() {
 		if (this.isWeekend()) {
 			return;
@@ -81,6 +81,6 @@ export class CronService {
 			template,
 		};
 
-		// await this.callsRepository.sendEmail(dailyAbsencesParams);
+		await this.callsRepository.sendEmail(dailyAbsencesParams);
 	}
 }

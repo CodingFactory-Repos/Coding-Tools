@@ -27,7 +27,7 @@ export class MailjetService {
 		}
 	}
 
-	async sendUniversalEmailWithAttachments(options: EmailConstructorOptions, attachments: any[]) {
+	async sendUniversalEmailWithAttachments(options: EmailConstructorOptions, attachments: string[]) {
 		try {
 			if (options.templateId === undefined) throw new Error('Missing templateId');
 			if (options.recipients === undefined) throw new Error('Missing recipients');

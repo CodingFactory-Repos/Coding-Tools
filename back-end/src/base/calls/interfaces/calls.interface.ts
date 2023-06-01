@@ -22,9 +22,9 @@ export interface StudentIdObject {
 }
 
 export interface AbsencesParams {
-	supervisor: any;
-	attachments: any[];
+	supervisor: User;
+	attachments: string[];
 	classObject: any;
-	course: any;
+	course: Course;
 	template: number;
 }
