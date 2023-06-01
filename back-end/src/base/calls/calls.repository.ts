@@ -683,7 +683,7 @@ export class CallsRepository {
 		});
 
 		return students.filter((student) => {
-			if ((student.late && student.late[0]) || (student.leftEarly && student.leftEarly[0])) {
+			if (student.late?.[0] || student.leftEarly?.[0]) {
 				return [student + (student.late[1] || student.leftEarly[1])];
 			}
 		});
