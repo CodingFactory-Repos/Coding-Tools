@@ -35,7 +35,7 @@
 		"qrcode": "^1.5.3",
 		"sass": "^1.62.1",
 		"socket.io-client": "^4.6.2",
-		"sweetalert2": "^11.7.9",
+		"sweetalert2": "^11.7.10",
 		"uuid": "^9.0.0",
 		"vue": "^3.3.4",
 		"vue-color-kit": "^1.0.5",
