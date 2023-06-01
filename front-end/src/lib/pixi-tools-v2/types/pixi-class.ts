@@ -1,4 +1,4 @@
-import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
+import { Container, DisplayObject, FederatedPointerEvent } from 'pixi.js';
 import { ContainerManager } from '../class/containerManager';
 import { GenericContainer } from '../class/genericContainer';
 import {

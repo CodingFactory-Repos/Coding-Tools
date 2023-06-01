@@ -7,10 +7,6 @@ import { modelSerializer } from '../../utils/modelSerializer';
 import { ElementPosition } from '../../types/pixi-container';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 
-interface XYZ extends ElementPosition {
-	z: number;
-}
-
 const shader = new DashLineShader({dash: 8, gap: 5});
 
 export class LineBezier extends ModelGraphics {
