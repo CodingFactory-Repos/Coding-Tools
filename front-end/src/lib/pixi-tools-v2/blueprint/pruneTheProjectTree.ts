@@ -21,14 +21,9 @@ export const pruneTheProjectTree = (
 	const endY = point.y + height / 2;
 
 	const centerX = width / 2;
-	const foliageHeightOffset = height * 0.05;
 	const firstLineOffset = width * 0.2;
-	const treeWidth = width * 0.9;
-	const treeHeight = height * 0.9;
 	const foliageWidth = width * 0.9;
 	const foliageHeight = height * 0.7;
-
-	//! WARNING: Ellipse and Tree aren't supported for the resize.
 
 	return {
 		typeId: 'frame',
@@ -74,7 +69,7 @@ export const pruneTheProjectTree = (
 				},
 				childs: [
 					{
-						typeId: 'ellipse',
+						typeId: 'circle',
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
@@ -84,8 +79,9 @@ export const pruneTheProjectTree = (
 							borderColor: 0x000000,
 						},
 						bounds: {
-							x: point.x,
-							y: point.y - foliageHeightOffset,
+							x: point.x - foliageWidth / 2,
+							y: point.y - width * 0.3,
+							radius: width * 0.3,
 							width: foliageWidth,
 							height: foliageHeight,
 						},
@@ -96,27 +92,27 @@ export const pruneTheProjectTree = (
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
-					eventMode: 'none',
+					eventMode: 'static',
 					tabNumberContext: frameNumber,
 					isAttachedToFrame: true,
 					frameNumber: frameNumber,
-					disabled: true,
+					disabled: false,
 				},
 				childs: [
 					{
 						typeId: 'tree',
 						properties: {
 							cursor: 'none',
-							eventMode: 'none',
-							color: 0x000000,
-							borderWidth: 30,
-							alpha: 0.6,
+							eventMode: 'static',
+							color: 0xffffff,
+							borderWidth: 10,
+							alpha: 1,
 						},
 						bounds: {
-							x: point.x,
-							y: endY,
-							width: treeWidth,
-							height: treeHeight,
+							x: startX,
+							y: startY,
+							width: width,
+							height: height,
 						},
 					},
 				],
