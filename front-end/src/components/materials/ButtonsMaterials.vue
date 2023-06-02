@@ -130,7 +130,6 @@
 			/>
 		</div>
 		<div class="mb-5"></div>
-		<!-- Put the button in the center -->
 		<Button
 			type="submit"
 			class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none gap-2 gradiant"

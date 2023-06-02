@@ -101,14 +101,10 @@
 
 <script lang="ts" setup>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import { useUserStore } from '@/store/modules/user.store';
 import { useMaterialStore } from '@/store/modules/material.store';
-import { http } from '@/api/network/axios';
 
 const materialStore = useMaterialStore();
-const userStore = useUserStore();
 const reservation = computed(() => materialStore.pendingMaterials);
-const relatedProfiles = computed(() => userStore.relatedProfiles);
 const users = ref([]);
 
 onMounted(() => {
@@ -134,7 +130,6 @@ function declineReservation(materialID: string, borrowID: string) {
 	materialStore.declineBorrowing(materialID, payload);
 }
 
-// on the close of the modal we need to clear the user object
 onBeforeUnmount(() => {
 	users.value = [];
 });
