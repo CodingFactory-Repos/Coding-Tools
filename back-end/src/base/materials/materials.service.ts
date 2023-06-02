@@ -42,6 +42,9 @@ export class MaterialsService {
 	async declineReservation(query, update, options) {
 		return await this.materialsRepository.declineReservation(query, update, options);
 	}
+	async returnMaterial(query, update, options) {
+		return await this.materialsRepository.returnMaterial(query, update, options);
+	}
 	async acceptReservation(query, update, options) {
 		return await this.materialsRepository.acceptReservation(query, update, options);
 	}

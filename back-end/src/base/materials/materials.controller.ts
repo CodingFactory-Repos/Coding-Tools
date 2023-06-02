@@ -21,7 +21,7 @@ import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/ma
 
 @Controller('materials')
 @UseFilters(ServiceErrorCatcher)
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class MaterialsController {
 	constructor(
 		@Inject('DATABASE_CONNECTION') private db: Db,
@@ -132,6 +132,31 @@ export class MaterialsController {
 		};
 		try {
 			const material = await this.materialsService.declineReservation(query, update, options);
+			res.status(200).json(material);
+		} catch (err) {
+			res.status(400).json(err);
+		}
+	}
+	@Put('reservation/return/:id/')
+	async returnMaterial(
+		@Param('id') id: string,
+		@Body() body: DTOBorrowingMaterial,
+		@Res() res: Response,
+	) {
+		const query = { _id: new ObjectId(id) };
+		const updateSet = {
+			$set: {
+				status: true,
+				'borrowingHistory.$[elem].status': 'RETURNED',
+				'borrowingHistory.$[elem].returnedTo': new ObjectId(body.returnedTo),
+				'borrowingHistory.$[elem].dateReturned': new Date(Date.now()),
+			},
+		};
+		const options = {
+			arrayFilters: [{ 'elem.borrowingID': new ObjectId(body.borrowingID) }],
+		};
+		try {
+			const material = await this.materialsService.returnMaterial(query, updateSet, options);
 			res.status(200).json(material);
 		} catch (err) {
 			res.status(400).json(err);

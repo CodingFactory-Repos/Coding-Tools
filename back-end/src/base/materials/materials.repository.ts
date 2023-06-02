@@ -82,4 +82,12 @@ export class MaterialsRepository {
 		await this.materials.findOneAndUpdate(query, update, options);
 		return this.materials.findOne(query);
 	}
+	async returnMaterial(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
+	}
 }

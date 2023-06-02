@@ -24,16 +24,20 @@ export const borrowMaterial = async (id: string, payload: any) => {
 
 export const getPendingMaterials = async () => {
 	return http.get<Array<Material>>('materials/pendingReservation');
-}
+};
 
 export const acceptBorrowing = async (id: string, payload: any) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/accept/${id}`, payload);
-}
+};
 
 export const declineBorrowing = async (id: string, payload: any) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/decline/${id}`, payload);
-}
+};
+
+export const returnMaterial = async (id: string, payload: any) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/return/${id}`, payload);
+};
 
 export const getUserById = async (id: string) => {
 	return http.get<User>(`materials/users/${id}`);
-}
+};
