@@ -37,7 +37,6 @@ export const useMaterialStore = defineStore('materialStore', {
 		getMaterials: withErrorHandler(async function (this: MaterialStore) {
 			const res = await getMaterials();
 			if (res.status !== 200) throw new Error('The returned status was not expected');
-
 			this.materials = res.data;
 			return true;
 		}),
@@ -46,7 +45,7 @@ export const useMaterialStore = defineStore('materialStore', {
 			material: Partial<Material>,
 		) {
 			const res = await createMaterial(material);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			this.materials.push(res.data);
 			return true;
 		}),
@@ -56,34 +55,34 @@ export const useMaterialStore = defineStore('materialStore', {
 			id: string,
 		) {
 			const res = await updateMaterial(material, id);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials[index] = res.data;
 			return true;
 		}),
 		deleteMaterial: withErrorHandler(async function (id: string) {
 			const res = await deleteMaterial(id);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials.splice(index, 1);
 			return true;
 		}),
 		borrowMaterial: withErrorHandler(async function (id: string, payload: BorrowingMaterial) {
 			const res = await borrowMaterial(id, payload);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			const index = this.materials.findIndex((el) => el._id === id);
 			this.materials[index] = res.data;
 			return true;
 		}),
 		getPendingMaterials: withErrorHandler(async function () {
 			const res = await getPendingMaterials();
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			this.pendingMaterials = res.data;
 			return true;
 		}),
 		acceptBorrowing: withErrorHandler(async function (id: string, payload: any) {
 			const res = await acceptBorrowing(id, payload);
-			if (res.status !== 200) throw new Error('The returned status was not expected');
+			if (res.status !== 200) return false;
 			const index = this.pendingMaterials.findIndex((el) => el._id === id);
 			this.pendingMaterials.splice(index, 1);
 			return true;
