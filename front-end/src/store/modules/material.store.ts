@@ -12,6 +12,7 @@ import {
 	acceptBorrowing,
 	getUserById,
 	declineBorrowing,
+	returnMaterial,
 } from '@/api/material-req';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { Material, MaterialStore, BorrowingMaterial } from '@/store/interfaces/material.interface';
@@ -96,6 +97,13 @@ export const useMaterialStore = defineStore('materialStore', {
 			if (res.status !== 200) return false;
 			const index = this.pendingMaterials.findIndex((el) => el._id === id);
 			this.pendingMaterials.splice(index, 1);
+			return true;
+		}),
+		returnMaterial: withErrorHandler(async function (id: string, payload:any) {
+			const res = await returnMaterial(id, payload);
+			if (res.status !== 200) return false;
+			const index = this.materials.findIndex((el) => el._id === id);
+			this.materials[index] = res.data;
 			return true;
 		}),
 		getUserById: withErrorHandler(async function (id: string) {
