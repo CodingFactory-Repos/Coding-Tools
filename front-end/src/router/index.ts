@@ -58,7 +58,6 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-			{ path: 'testChat', component: () => import('../views/ChatTest.vue') },
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
 			{
 				path: 'blog',
