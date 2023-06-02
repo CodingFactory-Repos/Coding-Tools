@@ -1,6 +1,5 @@
-import { DeepPartial } from "@/interfaces/advanced-types.interface";
-import { User } from "@/store/interfaces/auth.interfaces";
-
+import { DeepPartial } from '@/interfaces/advanced-types.interface';
+import { User } from '@/store/interfaces/auth.interfaces';
 
 export interface UserStore {
 	temporaryProfileUser: DeepPartial<User>;
@@ -21,8 +20,14 @@ export interface IRelatedUserProfile {
 }
 
 export interface UserProfileList {
+	groupName?: string;
 	picture: string;
 	firstName: string;
 	lastName: string;
 	id: string;
 }
+
+export interface UserCanvasList extends UserProfileList {
+	pending?: boolean;
+}
+

@@ -28,3 +28,11 @@ export interface MessageObject {
 	sender_name: string;
 	date: Date;
 }
+
+export interface AbsencesParams {
+	supervisor: User;
+	attachments: string[];
+	classObject: any;
+	course: Course;
+	template: number;
+}

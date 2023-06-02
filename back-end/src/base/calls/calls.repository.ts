@@ -1,14 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Db, Filter, FindOneAndUpdateOptions, ObjectId } from 'mongodb';
-import { Call } from 'src/base/calls/interfaces/calls.interface';
+import { Db, Filter, FindOneAndUpdateOptions, InferIdType, ObjectId } from 'mongodb';
+import { AbsencesParams, Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 import crypto from 'crypto';
 import { Roles } from '@/base/users/interfaces/users.interface';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { MailjetService } from 'src/external-modules/mailjet/mailjet.service';
+import fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class CallsRepository {
-	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
+	constructor(
+		@Inject('DATABASE_CONNECTION') private db: Db,
+		@Inject(MailjetService)
+		private readonly mailjetService: MailjetService,
+	) {}
 
 	get calls() {
 		return this.db.collection<Call>('calls');
@@ -17,10 +26,172 @@ export class CallsRepository {
 		return this.db.collection<Course>('courses');
 	}
 
+	async isWeekEnd(date: Date) {
+		const day = date.getDay();
+		return day === 0 || day === 6;
+	}
+	async checkWeekEnd() {
+		const date = new Date();
+		const isWeekEnd = await this.isWeekEnd(date);
+		if (isWeekEnd) {
+			throw new ServiceError('FORBIDDEN', 'Vous ne pouvez pas performer ces actions le week-end');
+		}
+	}
+
+	async getActualCourses() {
+		const actualDate = new Date();
+
+		return await this.courses
+			.find({
+				$and: [{ periodStart: { $lte: actualDate } }, { periodEnd: { $gte: actualDate } }],
+			})
+			.toArray();
+	}
+
+	async getClassSupervisor(courseId: InferIdType<Course>) {
+		const course = await this.courses.findOne({ _id: courseId });
+		const classObjectId = course.classId;
+		const classroom = await this.db.collection('classes').findOne({ _id: classObjectId });
+		return await this.db.collection('users').findOne({ _id: new ObjectId(classroom.pedago) });
+	}
+
+	async getClass(courseId: InferIdType<Course>) {
+		const course = await this.courses.findOne({ _id: courseId });
+		const classObjectId = course.classId;
+		return await this.db.collection('classes').findOne({ _id: classObjectId });
+	}
+	async addStudentsNotScanned(pdf: pdfMake.documentDefinition, students: Record<string, string>[]) {
+		await this.checkWeekEnd();
+		const studentsIdentities = [];
+		for (const student of students) {
+			const studentIdentity = await this.db.collection('users').findOne({ _id: student });
+			studentsIdentities.push(
+				studentIdentity.profile.firstName + ' ' + studentIdentity.profile.lastName,
+			);
+		}
+		pdf.content.push({
+			text: "Étudiants n'ayant pas scanné",
+			style: 'header',
+		});
+		pdf.content.push({
+			text: 'Étudiants',
+			style: 'subheader',
+		});
+		pdf.content.push({
+			ul: studentsIdentities,
+		});
+	}
+
+	async addStudentsLateOrLeftEarly(
+		pdf: pdfMake.documentDefinition,
+		students: Record<string, string>[],
+		period: string,
+	) {
+		await this.checkWeekEnd();
+		const studentsIdentities = [];
+		for (const student of students) {
+			const studentObjectId = new ObjectId(student.student);
+			const studentIdentity = await this.db.collection('users').findOne({ _id: studentObjectId });
+			const lateOrLeftEarly = period === 'arrival' ? student.late : student.leftEarly;
+			const lateOrLeftEarlyText = period === 'arrival' ? 'en retard de ' : 'parti en avance de ';
+			studentsIdentities.push(
+				studentIdentity.profile.firstName +
+					' ' +
+					studentIdentity.profile.lastName +
+					' ' +
+					lateOrLeftEarlyText +
+					lateOrLeftEarly[1],
+			);
+		}
+
+		const text = period === 'arrival' ? 'Étudiants en retard' : 'Étudiants étant partis plus tôt';
+
+		pdf.content.push({
+			text: text,
+			style: 'header',
+		});
+		pdf.content.push({
+			text: 'Étudiants',
+			style: 'subheader',
+		});
+		pdf.content.push({
+			ul: studentsIdentities,
+		});
+	}
+	async savePdf(pdf: pdfMake.documentDefinition) {
+		await this.checkWeekEnd();
+		try {
+			const directoryPath = path.join(__dirname, '..', 'pdf'); // Go up one directory and then specify the directory path where you want to save the PDF
+			const fileName = `absences_daily_${new Date().getTime()}.pdf`;
+			const filePath = path.join(directoryPath, fileName);
+
+			// Create the directory if it doesn't exist
+			if (!fs.existsSync(directoryPath)) {
+				fs.mkdirSync(directoryPath, { recursive: true });
+			}
+
+			const finalPdf = pdfMake.createPdf(pdf);
+			// Get the PDF buffer
+			let pdfBuffer = null;
+			pdfBuffer = await new Promise((resolve) => {
+				finalPdf.getBuffer((buffer: Buffer) => {
+					resolve(buffer);
+				});
+			});
+
+			fs.writeFileSync(filePath, pdfBuffer);
+			return filePath;
+		} catch (error) {
+			console.error('Error saving PDF:', error);
+		}
+	}
+
+	async deletePdf(attachments: string[]) {
+		await this.checkWeekEnd();
+		for (const attachment of attachments) {
+			fs.unlinkSync(attachment);
+		}
+	}
+
+	async sendEmail(dailyAbsencesParams: AbsencesParams) {
+		await this.checkWeekEnd();
+		const courseDate = new Date().toLocaleDateString('fr-FR', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+		});
+		const className = dailyAbsencesParams.classObject.groupTag;
+
+		const attachments = [];
+		for (const attachment of dailyAbsencesParams.attachments) {
+			const attachmentName = attachment.split('/').pop();
+			attachments.push({
+				ContentType: 'application/pdf',
+				Filename: attachmentName,
+				Base64Content: fs.readFileSync(attachment).toString('base64'),
+			});
+		}
+
+		await this.mailjetService.sendUniversalEmailWithAttachments(
+			{
+				templateId: dailyAbsencesParams.template,
+				recipients: [
+					{
+						Email: dailyAbsencesParams.supervisor.profile.email,
+						Name: dailyAbsencesParams.supervisor.profile.firstName,
+					},
+				],
+				args: { courseDate, className },
+			},
+			attachments,
+		);
+	}
+
 	async findOne(query: Filter<Call>, options: FindOneAndUpdateOptions = undefined) {
 		return this.calls.findOne(query, options);
 	}
 	async updateUserPresence(userId: ObjectId, courseId: string, presence: boolean) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);
 		const course = await this.db.collection('courses').findOne({ _id: courseObjectId });
@@ -244,6 +415,7 @@ export class CallsRepository {
 	}
 
 	async createRandomGroups(courseId: string) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
 		const course = await this.db.collection('courses').findOne({
@@ -294,7 +466,7 @@ export class CallsRepository {
 	}
 
 	async emptyGroups(courseId: string) {
-		// Keep the same structure as it was and replace the values by "''"
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
 		const course = await this.db.collection('courses').findOne({
@@ -394,6 +566,7 @@ export class CallsRepository {
 		return course.messages;
 	}
 	async joinGroup(courseId: string, groupId: string, userId: ObjectId) {
+		await this.checkWeekEnd();
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);
 		const actualDate = new Date();
@@ -479,6 +652,7 @@ export class CallsRepository {
 		};
 	}
 	async joiningGroup(courseObjectId, actualDate, course, groupId, newGroup) {
+		await this.checkWeekEnd();
 		await this.db.collection('courses').updateOne(
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
@@ -494,6 +668,7 @@ export class CallsRepository {
 		);
 	}
 	async leavingGroup(courseObjectId, actualDate, course, ancientGroupId, updatedGroup) {
+		await this.checkWeekEnd();
 		await this.db.collection('courses').updateOne(
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
@@ -507,5 +682,103 @@ export class CallsRepository {
 				},
 			},
 		);
+	}
+
+	async getStudentsScanned(_id: InferIdType<Course>, period: string) {
+		const course = await this.db.collection('courses').findOne({ _id });
+
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const actualDate = new Date();
+		if (actualDate < course.periodStart || actualDate > course.periodEnd) {
+			throw new ServiceError('BAD_REQUEST', 'Course is not active');
+		}
+
+		// Search in calls if the user is present
+		const call = await this.db
+			.collection('calls')
+			.findOne({ course: _id, period: period, date: this.getDate(actualDate) });
+
+		if (!call) {
+			return [];
+		}
+
+		return call.students.map((student) => {
+			return student;
+		});
+	}
+
+	async getStudentsLateOrLeftEarly(_id: InferIdType<Course>, period: string) {
+		const course = await this.db.collection('courses').findOne({ _id });
+
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const actualDate = new Date();
+		if (actualDate < course.periodStart || actualDate > course.periodEnd) {
+			throw new ServiceError('BAD_REQUEST', 'Course is not active');
+		}
+
+		// Search in calls if the user is present
+		const call = await this.db
+			.collection('calls')
+			.findOne({ course: _id, period: period, date: this.getDate(actualDate) });
+
+		if (!call) {
+			return [];
+		}
+
+		const students = call.students.map((student) => {
+			return student;
+		});
+
+		return students.filter((student) => {
+			if (student.late?.[0] || student.leftEarly?.[0]) {
+				return [student + (student.late[1] || student.leftEarly[1])];
+			}
+		});
+	}
+
+	async generatePdf(courseId: InferIdType<Course>, period: string) {
+		// Generate a pdf empty that is named with the date and the class
+		const course = await this.db.collection('courses').findOne({ _id: courseId });
+		if (!course) {
+			throw new ServiceError('NOT_FOUND', 'Course not found');
+		}
+		const actualDate = new Date();
+		if (actualDate < course.periodStart || actualDate > course.periodEnd) {
+			throw new ServiceError('BAD_REQUEST', 'Course is not active');
+		}
+
+		// Use pdfmake to create the pdf
+		pdfMake.vfs = pdfFonts.pdfMake.vfs;
+		pdfMake.vfs = pdfFonts.pdfMake.vfs;
+		const periodName = period == 'arrival' ? 'matin' : 'après-midi';
+
+		function createPDF() {
+			// Create an empty pdf
+			return {
+				info: {
+					title: 'Absences',
+				},
+				content: [
+					{
+						text:
+							course.tag +
+							' ' +
+							'Absences et Retards' +
+							' du ' +
+							actualDate.toISOString().split('T')[0] +
+							' ' +
+							periodName,
+						fontSize: 20,
+						alignment: 'center',
+						margin: [0, 0, 0, 20],
+					},
+				],
+			};
+		}
+		return createPDF();
 	}
 }

@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 					{
 						path: ':id',
-						component: () => import('../views/app/RelatedProfileView.vue')
+						component: () => import('../views/app/RelatedProfileView.vue'),
 					},
 				],
 			},
@@ -66,6 +66,10 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: '',
 						component: () => import('../views/DisplayArticleView.vue'),
+					},
+					{
+						path: 'new',
+						component: () => import('../views/AddArticleView.vue'),
 					},
 					{
 						path: ':id',
@@ -94,7 +98,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/Retrospective.vue'),
 					},
 					{
-						path: 'new',
+						path: ':id',
 						component: () => import('../views/NewRetrospective.vue'),
 					},
 				],
@@ -114,6 +118,10 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: 'project/:slug',
 						component: () => import('../views/app/AgilityProject.vue'),
+					},
+					{
+						path: 'accept-invitation',
+						component: () => import('../views/app/AgilityInvitation.vue'),
 					},
 				],
 			},
