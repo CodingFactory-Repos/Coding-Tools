@@ -83,6 +83,7 @@
 				v-for="(material, index) in materials"
 				:key="`material_${material.name}_${index}`"
 				:id="material._id"
+				:material="material"
 				:name="material.name"
 				:url="material.picture"
 				:status="material.status"
