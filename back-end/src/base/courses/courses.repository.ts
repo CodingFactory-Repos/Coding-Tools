@@ -26,6 +26,10 @@ export class CoursesRepository {
 	) {
 		return this.courses.findOneAndUpdate(query, update, options);
 	}
+	
+	async find(query: Filter<Course>, options: FindOneAndUpdateOptions = undefined) {
+		return this.courses.find(query, options);
+	}
 
 	async findOne(query: Filter<Course>, options: FindOneAndUpdateOptions = undefined) {
 		return this.courses.findOne(query, options);

@@ -1,5 +1,6 @@
 <template>
-    <Courses/>
+    <Courses />
+
 </template>
 
 <script lang="ts" setup>

@@ -12,6 +12,14 @@ export class CoursesService {
 		private coursesRepository: CoursesRepository,
 	) {}
 
+	async getAllCourses() {
+		return await this.coursesRepository.find({});
+	}
+
+	async getOneCourse(id: string) {
+		return await this.coursesRepository.findOne({ id });
+	}
+
 	// Business logic methods goes there...
 	// Define your own methods
 }

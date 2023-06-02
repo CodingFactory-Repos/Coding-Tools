@@ -10,7 +10,14 @@ export class CoursesController {
 	constructor(private readonly coursesService: CoursesService) {}
 
 	@Get()
-	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
+	async getAllCourses(@Res() res: Response) {
+		const courses = await this.coursesService.getAllCourses();
+		return res.status(201).json({ status: 'ok', courses });
+	}
+
+	@Get(':id')
+	async getOneCourse(@Res() res: Response) {
+		const course = await this.coursesService.getOneCourse('id');
+		return res.status(201).json({ status: 'ok', course });
 	}
 }

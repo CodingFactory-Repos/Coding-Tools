@@ -60,6 +60,7 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+
 			{
 				path: 'blog',
 				children: [
@@ -90,6 +91,22 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+
+			{ 
+				path: 'courses',
+				children:[
+					{
+						path: '',
+						component: () => import('../views/CoursesView.vue')
+					},
+					{
+						path:':slug',
+						component: () => import('../components/courses/CoursesDetail.vue')
+					}
+				]
+			},
+			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
+
 			{
 				path: 'retrospective',
 				children: [
