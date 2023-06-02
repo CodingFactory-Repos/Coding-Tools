@@ -23,7 +23,7 @@
 						class="relative inline-flex items-center text-sm font-medium text-center text-white rounded-lg"
 						@click="showNotificationCenter"
 					>
-						<Bell width="22" height="22" />
+						<Bell width="22" height="22" class="!fill-gray-400" />
 						<span class="sr-only">Notifications</span>
 						<div
 							class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900"

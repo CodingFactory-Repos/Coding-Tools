@@ -30,7 +30,7 @@
 				src="https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"
 			/>
 
-			<span class="dark:text-dark-font text-s font-bold text-center">{{ name }}</span>
+			<span class="dark:text-dark-font text-s font-bold text-center text-gray-900">{{ name }}</span>
 			<span
 				v-if="status === true"
 				class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
