@@ -17,7 +17,8 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	allRetros: [],
 	isSideBar: false,
 	inputSearch: "",
-	dateSearch: 0
+	dateSearch: 0,
+	isRetroFinished: false,
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -151,6 +152,33 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		},
 		dateSearchFilter(this: RetrospectiveStore, value: number) {
 			this.dateSearch = value;
+		},
+		endCurrentRetro(this: RetrospectiveStore, endedDate: Date) {
+			this.currentRetro.endedAt = endedDate;
+			this.currentRetro.isRetroEnded = true;
+		},
+		resetRetro(this: RetrospectiveStore) {
+			this.currentRetro.endedAt = null;
+			this.currentRetro.isRetroEnded = false;
+		},
+		lockRetro(this: RetrospectiveStore, locked: boolean) {
+			this.currentRetro.isLocked = locked
+		},
+		// @@@@@@@@@@ TIMER RETRO @@@@@@@@@@@@@@
+		runningTimer(this: RetrospectiveStore) {
+			// const timerStore = useTimerStore();
+			this.currentRetro.isTimerRunning = true;
+			// this.currentRetro.timerInterval = setInterval(() => (timerStore.timePassed += 1), 1000);
+		},
+		stopingTimer(this: RetrospectiveStore) {
+			this.currentRetro.isTimerRunning = false;
+			clearInterval(this.currentRetro.timerInterval);
+		},
+		progressTimer(this: RetrospectiveStore, time: number) {
+			this.currentRetro.timePassed = time;
+		},
+		resetTimer(this: RetrospectiveStore) {
+			this.currentRetro.timePassed = 0
 		}
 	},
 });

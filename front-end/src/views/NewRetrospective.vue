@@ -4,7 +4,7 @@
 			<div class="text-black w-fit  absolute left-16">
 				<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{title}}</h2>
 			</div>
-			<div class="flex items-center gap-2">
+			<div class="flex items-center gap-2" v-if="optionTemplate">
 				<Timer />
 			</div>
 		</div>
@@ -15,6 +15,8 @@
 		</div>
 		<div class="h-full" v-if="optionTemplate">
 			<Board :optionTemplate="optionTemplate" />
+			<div class="text-black">
+			</div>
 		</div>
 		<div
 			class="privateSection h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
@@ -59,9 +61,6 @@ onMounted(async () => {
 onUnmounted(() => {
 	socketRetro.socket.disconnect();
 });
-const test = () => {
-	console.log("nzaiejiazjeiajz")
-}
 
 </script>
 
