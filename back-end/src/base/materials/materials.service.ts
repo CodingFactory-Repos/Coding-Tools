@@ -39,6 +39,9 @@ export class MaterialsService {
 	async getPendingReservation() {
 		return await this.materialsRepository.getPendingReservation();
 	}
+	async declineReservation(query, update, options) {
+		return await this.materialsRepository.declineReservation(query, update, options);
+	}
 	async acceptReservation(query, update, options) {
 		return await this.materialsRepository.acceptReservation(query, update, options);
 	}

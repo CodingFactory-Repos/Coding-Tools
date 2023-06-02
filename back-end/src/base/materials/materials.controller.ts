@@ -101,6 +101,7 @@ export class MaterialsController {
 		const query = { _id: new ObjectId(id) };
 		const update = {
 			$set: {
+				status: false,
 				'borrowingHistory.$[elem].status': 'ACCEPTED',
 			},
 		};
@@ -109,6 +110,28 @@ export class MaterialsController {
 		};
 		try {
 			const material = await this.materialsService.acceptReservation(query, update, options);
+			res.status(200).json(material);
+		} catch (err) {
+			res.status(400).json(err);
+		}
+	}
+	@Put('reservation/decline/:id')
+	async decilneReservation(
+		@Param('id') id: string,
+		@Body() body: DTOBorrowingMaterial,
+		@Res() res: Response,
+	) {
+		const query = { _id: new ObjectId(id) };
+		const update = {
+			$set: {
+				'borrowingHistory.$[elem].status': 'DECLINED',
+			},
+		};
+		const options = {
+			arrayFilters: [{ 'elem.borrowingID': new ObjectId(body.borrowingID) }],
+		};
+		try {
+			const material = await this.materialsService.declineReservation(query, update, options);
 			res.status(200).json(material);
 		} catch (err) {
 			res.status(400).json(err);
