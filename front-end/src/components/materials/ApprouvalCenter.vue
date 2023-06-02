@@ -44,10 +44,21 @@
 											?.profile.lastName
 									}} </span
 								>: {{ res.name }}
+								<span>
+									Du :
+									<span class="font-semibold text-gray-900 dark:text-white">
+										{{ new Date(res.borrowingHistory.borrowingDate).toLocaleDateString() }}
+									</span>
+									juqu'au :
+									<span class="font-semibold text-gray-900 dark:text-white">
+										{{ new Date(res.borrowingHistory.returnDate).toLocaleDateString() }}
+									</span>
+								</span>
 							</div>
 							<button
 								type="button"
 								class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+								@click="declineReservation(res._id, res.borrowingHistory.borrowingID)"
 							>
 								Refuser
 							</button>
@@ -114,6 +125,13 @@ function acceptReservation(materialID: string, borrowingID: string) {
 		borrowingID: borrowingID,
 	};
 	materialStore.acceptBorrowing(materialID, payload);
+}
+
+function declineReservation(materialID: string, borrowID: string) {
+	const payload = {
+		borrowingID: borrowID,
+	};
+	materialStore.declineBorrowing(materialID, payload);
 }
 
 // on the close of the modal we need to clear the user object
