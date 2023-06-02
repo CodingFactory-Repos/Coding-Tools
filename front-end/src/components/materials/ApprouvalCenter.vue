@@ -1,5 +1,4 @@
 <template>
-	<!-- <div v-for="res in reservation"> -->
 	<div
 		id="dropdownNotification"
 		class="z-20 absolute w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700"
@@ -9,11 +8,8 @@
 			class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white"
 		></div>
 		<div v-for="res in reservation" :key="res._id">
-			<!-- <div v-for="history in res.borrowingHistory" :key="history.borrowingID"> -->
 			<div class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 				<div class="divide-y divide-gray-100 dark:divide-gray-700">
-					<!-- Fait une boucle qui va afficher le nombre de demande de réservation qu'il y as dans borrowingHistory -->
-					<!-- <div v-for="res in reservation"> -->
 					<a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<div class="flex-shrink-0">
 							<img class="rounded-full w-11 h-11" :src="res.picture" :alt="res.name" />
@@ -40,7 +36,13 @@
 							<div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">
 								Nouvelle demande d'emprunt de matériel de
 								<span class="font-semibold text-gray-900 dark:text-white">
-									{{ getUsernameById(res.borrowingHistory.borrowingUser) }}</span
+									{{
+										users.filter((user) => user._id === res.borrowingHistory.borrowingUser)[0]
+											?.profile.firstName +
+										' ' +
+										users.filter((user) => user._id === res.borrowingHistory.borrowingUser)[0]
+											?.profile.lastName
+									}} </span
 								>: {{ res.name }}
 							</div>
 							<button
@@ -60,7 +62,6 @@
 					</a>
 				</div>
 			</div>
-			<!-- </div> -->
 		</div>
 		<a
 			href="#"
@@ -85,11 +86,10 @@
 			</div>
 		</a>
 	</div>
-	<!-- </div> -->
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useUserStore } from '@/store/modules/user.store';
 import { useMaterialStore } from '@/store/modules/material.store';
 import { http } from '@/api/network/axios';
@@ -97,12 +97,17 @@ import { http } from '@/api/network/axios';
 const materialStore = useMaterialStore();
 const userStore = useUserStore();
 const reservation = computed(() => materialStore.pendingMaterials);
-// const user = computed(() => userStore.relatedUserProfile);
-const firstName = ref('');
-const lastName = ref('');
+const relatedProfiles = computed(() => userStore.relatedProfiles);
+const users = ref([]);
 
 onMounted(() => {
-	materialStore.getPendingMaterials();
+	materialStore.getPendingMaterials().then(() => {
+		reservation.value.forEach((res1) => {
+			materialStore.getUserById(res1.borrowingHistory.borrowingUser).then((res) => {
+				users.value.push(res);
+			});
+		});
+	});
 });
 function acceptReservation(materialID: string, borrowingID: string) {
 	const payload = {
@@ -111,11 +116,8 @@ function acceptReservation(materialID: string, borrowingID: string) {
 	materialStore.acceptBorrowing(materialID, payload);
 }
 
-function getUsernameById(id: string) {
-	http.get(`/users/profile/${id}`).then((res) => {
-		firstName.value = res.data.user.profile.firstName;
-		lastName.value = res.data.user.profile.lastName;
-	});
-	return firstName.value + ' ' + lastName.value;
-}
+// on the close of the modal we need to clear the user object
+onBeforeUnmount(() => {
+	users.value = [];
+});
 </script>
