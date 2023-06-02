@@ -2,9 +2,11 @@
 	<h1 class="right-1">Bonjour</h1>
 	<div class="cards">
 		<div v-for="res in reservation" :key="res._id" class="p-0.5">
-			<div class="flex px-4 py-3 max-w-[400px] min-h-[170px] dark:hover:bg-gray-700 rounded">
+			<div
+				class="flex px-4 py-3 max-w-[400px] min-h-[170px] dark:bg-gray-800 dark:hover:bg-gray-700 border border-gray-300 rounded-lg dark:border-none hover:bg-gray-200"
+			>
 				<div class="divide-y divide-gray-100 dark:divide-gray-700">
-					<a class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+					<a class="flex px-4 py-3">
 						<div class="flex-shrink-0">
 							<img class="rounded-full w-11 h-11" :src="res.picture" :alt="res.name" />
 							<div
