@@ -50,6 +50,7 @@
 import { withErrorHandler } from '@/utils/storeHandler';
 import { ref } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
+import Swal from 'sweetalert2';
 
 const props = defineProps<{
 	id: string;
@@ -61,15 +62,32 @@ const today = new Date().toISOString().substring(0, 10);
 const borrowingDate = ref('');
 const description = ref('');
 const returnDate = ref('');
+const emit = defineEmits(['close']);
 
-const borrorwingMaterial = withErrorHandler(async function (identifiant: string) {
-	materialStore.borrowMaterial(identifiant, {
+const borrorwingMaterial = async (identifiant: string) =>{
+	const response = await materialStore.borrowMaterial(identifiant, {
 		borrowingDate: new Date(borrowingDate.value),
 		borrowingUser: props.userId,
 		description: description.value,
 		returnDate: new Date(returnDate.value),
 		status: 'PENDING',
 	});
-
-});
+	if (response) {
+		Swal.fire({
+			title: 'Success',
+			text: 'Material borrowed successfully',
+			icon: 'success',
+			confirmButtonText: 'OK',
+		}).then(() => {
+			emit('close');
+		});
+	} else {
+		Swal.fire({
+			title: 'Error',
+			text: 'An error occured while borrowing material',
+			icon: 'error',
+			confirmButtonText: 'OK',
+		});
+	}
+};
 </script>

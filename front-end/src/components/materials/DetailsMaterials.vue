@@ -177,12 +177,14 @@ import { Roles } from '@/store/interfaces/auth.interfaces';
 import { withErrorHandler } from '@/utils/storeHandler';
 import Modal from '@/components/common/Modal.vue';
 import ImagePicker from '@/components/materials/ImagePicker.vue';
+import Swal from 'sweetalert2';
 
 const props = defineProps<{
 	id: string;
 	material: Object;
 }>();
 
+const emit = defineEmits(['close']);
 const authStore = useAuthStore();
 const materialStore = useMaterialStore();
 const user = computed(() => authStore.user);
@@ -192,9 +194,25 @@ const userRole = computed(() => user.value?.role);
 const showLink = ref({});
 const showHistory = ref(false);
 
-const editMaterial = () => {
-	console.log(props.material)
-	materialStore.updateMaterial(props.material, props.id);
+const editMaterial = async () => {
+	// console.log(props.material);
+	const response = await materialStore.updateMaterial(props.material, props.id);
+
+	if (response) {
+		Swal.fire({
+			title: 'Material edited',
+			icon: 'success',
+			confirmButtonText: 'Ok',
+		});
+		emit('close');
+	} else {
+		Swal.fire({
+			title: 'Error',
+			text: 'An error occured while editing the material',
+			icon: 'error',
+			confirmButtonText: 'Ok',
+		});
+	}
 };
 
 function onImageSelected(image) {
@@ -203,6 +221,22 @@ function onImageSelected(image) {
 }
 
 const deleteMaterial = () => {
-	materialStore.deleteMaterial(props.id);
+	Swal.fire({
+		title: 'Are yu sure you want to delete this material?',
+		showCancelButton: true,
+		confirmButtonText: 'Delete',
+		cancelButtonText: `Cancel`,
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			const response = await materialStore.deleteMaterial(props.id);
+			if (response) {
+				Swal.fire('The material has been deleted', '', 'success');
+				emit('close');
+			} else {
+				Swal.fire('An error occured while deleting the material', '', 'error');
+			}
+		}
+	});
+	emit('close');
 };
 </script>

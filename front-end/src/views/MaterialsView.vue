@@ -35,7 +35,7 @@
 			</div>
 			<Modal v-if="showModal" @close="showModal = false">
 				<template #body>
-					<ButtonsMaterials />
+					<ButtonsMaterials @close="showModal = false" />
 				</template>
 			</Modal>
 			<div v-if="notificationCenter">

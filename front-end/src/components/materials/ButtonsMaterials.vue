@@ -45,7 +45,6 @@
 				</template>
 			</Modal>
 			<div class="form-group">
-				<!-- Img centered in the middle -->
 				<div class="flex justify-center">
 					<img :src="picture" alt="Selected Image" class="mt-4 w-28 h-28" />
 				</div>
@@ -142,10 +141,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 import ImagePicker from '@/components/materials/ImagePicker.vue';
 import Modal from '@/components/common/Modal.vue';
+import Swal from 'sweetalert2';
 
 const materialStore = useMaterialStore();
 
@@ -158,15 +158,15 @@ const state = ref('');
 const siteLocation = ref('');
 const storageCupboard = ref('');
 const description = ref('');
+const emit = defineEmits(['close']);
 
 function onImageSelected(image) {
 	picture.value = image;
 	showImageModal.value = false;
 }
 
-const addMaterial = () => {
-	console.log("addMaterial" + picture.value);
-	materialStore.addMaterial({
+const addMaterial = async () => {
+	const response = await materialStore.addMaterial({
 		name: name.value,
 		type: type.value,
 		price: price.value,
@@ -178,5 +178,23 @@ const addMaterial = () => {
 		description: description.value,
 		status: true,
 	});
-}
+	if (response) {
+		emit('close');
+		Swal.fire({
+			position: 'center',
+			icon: 'success',
+			title: 'Material added successfully',
+			showConfirmButton: false,
+			timer: 1500,
+		});
+	} else {
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: 'Error while adding material',
+			showConfirmButton: false,
+			timer: 1500,
+		});
+	}
+};
 </script>
