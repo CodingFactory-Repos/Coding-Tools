@@ -1,5 +1,5 @@
 <template>
-	<div v-if="studentList" class="relative w-full mx-auto my-4 md:w-9/12">
+	<div v-if="studentList" class="relative w-9/12 flex ml-1 my-4 md:w-9/12 align-left justify-start">
 		<table class="text-center w-full">
 			<caption hidden>
 				Students
