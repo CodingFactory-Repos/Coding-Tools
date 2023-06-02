@@ -13,7 +13,7 @@
 		<div v-for="res in reservation.slice(0, 4)" :key="res._id">
 			<div class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 				<div class="divide-y divide-gray-100 dark:divide-gray-700">
-					<a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+					<a class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 						<div class="flex-shrink-0">
 							<img class="rounded-full w-11 h-11" :src="res.picture" :alt="res.name" />
 							<div
