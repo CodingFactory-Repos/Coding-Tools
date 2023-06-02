@@ -19,7 +19,7 @@ import { Material, MaterialStore, BorrowingMaterial } from '@/store/interfaces/m
 
 export const useMaterialStore = defineStore('materialStore', {
 	state: (): {
-		filter: { input: string; site: string; type: string; state: string };
+		filter: { input: string; site: string; type: string; state: string; status: boolean };
 		input: string;
 		materials: Array<Material>;
 		pendingMaterials: Array<Material>;
@@ -32,6 +32,7 @@ export const useMaterialStore = defineStore('materialStore', {
 				site: '',
 				state: '',
 				type: '',
+				status: true,
 			},
 			input: '',
 		};
@@ -99,7 +100,7 @@ export const useMaterialStore = defineStore('materialStore', {
 			this.pendingMaterials.splice(index, 1);
 			return true;
 		}),
-		returnMaterial: withErrorHandler(async function (id: string, payload:any) {
+		returnMaterial: withErrorHandler(async function (id: string, payload: any) {
 			const res = await returnMaterial(id, payload);
 			if (res.status !== 200) return false;
 			const index = this.materials.findIndex((el) => el._id === id);
@@ -134,6 +135,11 @@ export const useMaterialStore = defineStore('materialStore', {
 				// Si on a une catégorie, on check si le matériel possède cette catégorie.
 				if (!isEmpty(state.filter.type)) {
 					const res = material.type.toUpperCase().includes(state.filter.type.toUpperCase());
+					validator.push(res);
+				}
+				//On check si le matériel est disponible ou indisponible et on push dans le validator;
+				if (state.filter.status !== null) {
+					const res = material.status === state.filter.status;
 					validator.push(res);
 				}
 				return validator.every((el) => el === true);

@@ -10,7 +10,7 @@
 		</template>
 	</Modal>
 	<div
-		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-center"
+		class="w-auto p-1.5 h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-center"
 	>
 		<div
 			@click="openModalByRef('detailsModal', id, material)"
