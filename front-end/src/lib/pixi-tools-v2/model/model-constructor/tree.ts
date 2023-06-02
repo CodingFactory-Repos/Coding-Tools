@@ -1,9 +1,11 @@
+import { SmoothGraphics, SmoothGraphicsData } from '@pixi/graphics-smooth';
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
 import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
+import { Matrix } from 'pixi.js';
 
 export class Tree extends ModelGraphics {
 	public readonly uuid: string;
@@ -25,7 +27,7 @@ export class Tree extends ModelGraphics {
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
 		this.eventMode = properties.eventMode;
-		this.borderWidth = properties.borderWidth;
+		this.borderWidth = properties.borderWidth || 4;
 		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
@@ -39,13 +41,24 @@ export class Tree extends ModelGraphics {
 		this.position.set(x, y);
 		this.width = width;
 		this.height = height;
-		const halfWidth = width / 2;
+		let maxLength = 0;
+		const diff = this.calculatePercentageDifference(width, height);
+		if(height < width) {
+			maxLength = (height * (1 + Math.min(diff, 0.1))) / 2;
+		} else {
+			maxLength = Math.min(width, height) / 2;
+		}
+
+		const initialLength = maxLength * 0.6;
 
 		this.clear();
-		const length = Math.sqrt(halfWidth * halfWidth + height * height);
-		this.createFractal(0, 0, length, -Math.PI / 2, 6);
-		this.width = width;
-		this.height = height;
+		this.beginFill(0, 0);
+		this.drawRect(0,0, width, height);
+		this.createFractal(width / 2, height, initialLength, -Math.PI / 2, 6);
+	}
+
+	private calculatePercentageDifference(a: number, b: number) {
+		return Math.abs(((b - a) / a) * 100) / 100;
 	}
 
 	public createFractal(x: number, y: number, length: number, angle: number, depth: number) {
@@ -58,10 +71,13 @@ export class Tree extends ModelGraphics {
 		this.moveTo(x, y);
 		this.lineTo(endX, endY);
 
-		const childLength = length * 0.75;
-		const childAngle = angle - Math.PI / 4;
-		this.createFractal(endX, endY, childLength, childAngle, depth - 1);
-		this.createFractal(endX, endY, childLength, childAngle + Math.PI / 2, depth - 1);
+		const leftAngle = angle + Math.PI / 4;
+		const rightAngle = angle - Math.PI / 4;
+		const newLength = length * 0.7;
+		const newDepth = depth - 1;
+
+		this.createFractal(endX, endY, newLength, leftAngle, newDepth);
+		this.createFractal(endX, endY, newLength, rightAngle, newDepth);
 	}
 
 	public serialized() {
