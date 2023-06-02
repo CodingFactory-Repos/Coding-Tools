@@ -125,13 +125,32 @@ export class RetrospectiveGateway
 	//@@@@@@@@@@@ TIMER SECTION @@@@@@@@@@@@@@@
 
 	@SubscribeMessage('start-timer')
-	startTimer(client: AuthSocket) {
+	async startTimer(client: AuthSocket) {
 		client.to(client.roomId).emit('start-timer');
+
+		const query = { slug: client.roomId };
+		const update = {$set: { isTimerRunning: true }};
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+
+	@SubscribeMessage('progess-timer')
+	async progressTimer(client: AuthSocket, time: number) {
+		client.to(client.roomId).emit('progess-timer', time);
+		const query = { slug: client.roomId };
+		const update = {$set: { timePassed: time }};
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('pause-timer')
-	pauseTimer(client: AuthSocket) {
+	async pauseTimer(client: AuthSocket) {
 		client.to(client.roomId).emit('pause-timer');
+
+		const query = { slug: client.roomId };
+		const update = {$set: { isTimerRunning: false }};
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
 	@SubscribeMessage('reset-timer')
@@ -148,7 +167,11 @@ export class RetrospectiveGateway
 			await this.retrospectivesRepository.updateOneRetrospective(currentRetro, update);
 			client.to(client.roomId).emit('reset-timer');
 		}
-		if (user.role === 1 && !currentRetro.isRetroEnded) {
+		if ((user.role === 1 || user.role === 2 || user.role === 3) && !currentRetro.isRetroEnded) {
+			const query = { slug: client.roomId };
+			const update = {$set: { timePassed: 0}};
+
+			await this.retrospectivesRepository.updateOneRetrospective(query, update);
 			client.to(client.roomId).emit('reset-timer');
 		}
 

@@ -57,7 +57,10 @@ export default defineComponent({
 				},
 				endedAt: null,
 				isRetroEnded: false,
-				isLocked: false
+				isLocked: false,
+				isTimerRunning: false,
+				timerInterval: null,
+				timePassed: 0
 			}
 			const createdRetro = await retrospectiveStore.createNewRetro(retro)
 			if (createdRetro) {

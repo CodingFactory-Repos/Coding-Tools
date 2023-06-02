@@ -56,17 +56,14 @@
 import { socketRetro } from '@/composables/useSocketRetro';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { useTimerStore } from '@/store/timer.store';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 
-const TIME_LIMIT = 3;
+const TIME_LIMIT = 300;
 
 const authStore = useAuthStore();
 const retroStore = useRetrospectiveStore();
-const timerStore = useTimerStore();
-const timePassed = computed(() => timerStore.timePassed)
-const timerInterval =  ref(null);
-const isTimerRunning =  computed(() => timerStore.isTimerRunning);
+const timePassed = computed(() => retroStore.currentRetro.timePassed)
+const isTimerRunning =  computed(() => retroStore.currentRetro.isTimerRunning);
 const isRetroFinished = computed(() => retroStore.isRetroFinished);
 const isRetroLocked = computed(() => retroStore.currentRetro.isLocked);
 
@@ -98,21 +95,24 @@ watch(timeLeftComp, newValue => {
 })
 
 const startTimer = () => {
-	timerStore.isTimerRunning = true;
+	retroStore.currentRetro.isTimerRunning = true;
 	socketRetro.socket.emit('start-timer')
-	timerInterval.value = setInterval(() => (timerStore.timePassed += 1), 1000);
+	retroStore.currentRetro.timerInterval = setInterval(() => {
+		retroStore.currentRetro.timePassed += 1
+		socketRetro.socket.emit('progess-timer', timePassed.value)
+	}, 1000);
 
 };
 
 const pause = () => {
-	timerStore.isTimerRunning = false;
-	socketRetro.socket.emit('pause-timer')
-	clearInterval(timerInterval.value);
+	retroStore.currentRetro.isTimerRunning = false;
+	socketRetro.socket.emit('pause-timer');
+	clearInterval(retroStore.currentRetro.timerInterval);
 };
 
 const resetTimer = () => {
 	socketRetro.socket.emit('reset-timer')
-	timerStore.timePassed = 0;
+	retroStore.currentRetro.timePassed = 0;
 	if (authStore.user.role !== 1) {
 		retroStore.currentRetro.isRetroEnded = false;
 	}

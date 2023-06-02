@@ -11,6 +11,9 @@ export interface Retrospective {
 	endedAt?: Date;
 	isRetroEnded?: boolean;
 	isLocked?: boolean;
+	isTimerRunning?: boolean;
+	timerInterval?: NodeJS.Timer;
+	timePassed?: number;
 }
 
 export interface Postit {

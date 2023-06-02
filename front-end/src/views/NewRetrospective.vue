@@ -4,7 +4,7 @@
 			<div class="text-black w-fit  absolute left-16">
 				<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{title}}</h2>
 			</div>
-			<div class="flex items-center gap-2">
+			<div class="flex items-center gap-2" v-if="optionTemplate">
 				<Timer />
 			</div>
 		</div>
@@ -44,7 +44,6 @@ const retrospectiveStore = useRetrospectiveStore();
 const title = computed(() => retrospectiveStore.currentRetro.title);
 const optionTemplate = computed(() => retrospectiveStore.currentRetro.optionTemplate);
 const tempPostit = computed(() => retrospectiveStore.tempMovingPostit)
-const isRetroEnded = computed(() => retrospectiveStore.currentRetro.isRetroEnded)
 
 
 const dropPostit = () => {

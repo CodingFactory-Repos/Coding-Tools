@@ -1,13 +1,11 @@
 import { manager } from '@/api/network/socket.io';
 import { Postit, Postits } from '@/store/interfaces/retrospective.interface';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
-import { useTimerStore } from '@/store/timer.store';
 import { Socket } from 'socket.io-client';
 import Swal from 'sweetalert2';
 
 function handleSocketEvents(socket: Socket) {
 	const retrospectiveStore = useRetrospectiveStore();
-	const timerStore = useTimerStore();
 
 	socket.on("peer-connected", (email) => {
 		Swal.fire({
@@ -63,16 +61,20 @@ function handleSocketEvents(socket: Socket) {
 	// @@@@@@@@@@@ TIMER SECTION @@@@@@@@@
 
 	socket.on("start-timer", () => {
-		timerStore.startTimer();
+		retrospectiveStore.runningTimer()
+	})
+
+	socket.on("progess-timer", (time) => {
+		retrospectiveStore.progressTimer(time);
 	})
 
 	socket.on("pause-timer", () => {
-		timerStore.pauseTimer();
+		retrospectiveStore.stopingTimer();
 	})
 
 	socket.on("reset-timer", () => {
-		timerStore.resetTimer();
 		retrospectiveStore.resetRetro();
+		retrospectiveStore.resetTimer();
 	})
 
 	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@

@@ -45,6 +45,9 @@ export interface Retrospective {
 	creator?: string
 	isRetroEnded?: boolean;
 	isLocked?: boolean;
+	isTimerRunning?: boolean;
+	timerInterval?: NodeJS.Timer;
+	timePassed?: number;
 }
 
 export interface Postits {

@@ -163,6 +163,22 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		},
 		lockRetro(this: RetrospectiveStore, locked: boolean) {
 			this.currentRetro.isLocked = locked
+		},
+		// @@@@@@@@@@ TIMER RETRO @@@@@@@@@@@@@@
+		runningTimer(this: RetrospectiveStore) {
+			// const timerStore = useTimerStore();
+			this.currentRetro.isTimerRunning = true;
+			// this.currentRetro.timerInterval = setInterval(() => (timerStore.timePassed += 1), 1000);
+		},
+		stopingTimer(this: RetrospectiveStore) {
+			this.currentRetro.isTimerRunning = false;
+			clearInterval(this.currentRetro.timerInterval);
+		},
+		progressTimer(this: RetrospectiveStore, time: number) {
+			this.currentRetro.timePassed = time;
+		},
+		resetTimer(this: RetrospectiveStore) {
+			this.currentRetro.timePassed = 0
 		}
 	},
 });
