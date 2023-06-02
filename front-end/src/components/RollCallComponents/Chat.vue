@@ -1,14 +1,17 @@
 <template>
-	<div class="chatbox flex-col w-full max-h-[750px] relative">
-		<div
-			class="chatbox_messages h-[750px] max-h-[750px] overflow-y-hidden flex flex-col-reverse z-0"
-		>
-			<chat-multi-message v-for="message in messages" :key="message.id" :message="message" />
+	<div class="chatbox w-1/4 max-h-[700px] flex flex-col absolute fixed bottom-1 right-1 z-100">
+		<div class="chatbox_messages h-[700px] overflow-y-scroll flex flex-col-reverse mb-8">
+			<chat-multi-message
+				v-for="message in messages"
+				:key="message.id"
+				:message="message"
+				:class="['message flex-col z-0']"
+			/>
 		</div>
-		<div class="chatbox_input flex-col w-full">
+		<div class="chatbox_input flex-col w-full absolute fixed bottom-2">
 			<div class="w-full">
 				<div
-					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute fixed bottom-0"
+					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute fixed bottom-7"
 				>
 					<img
 						v-for="gif in gifs"
@@ -57,6 +60,7 @@ const searchTerm = ref('');
 const gifs = ref([]);
 const newMessageText = ref('');
 const courseId = ref();
+const count = ref();
 
 /* SOCKET */
 
@@ -87,19 +91,7 @@ onUnmounted(() => {
 
 /* METHODS */
 
-const getRandomPosition = () => {
-	const randomPos = `bottom-${Math.floor(Math.random() * 6 + 6)}`;
-	return `absolute ${randomPos} left-1/2 transform -translate-x-1/2`;
-};
-
-const getRandomRotation = () => {
-	const randomRot = Math.floor(Math.random() * 29 + 2);
-	return `rotate-${randomRot}`;
-};
-
 const addMessage = async (msg: Object) => {
-	// const randomPosition = Math.random() * (window.innerHeight / 2) + 'px';
-	// const randomRotation = Math.random() * (30 - 2) + 2 + 'deg';
 	messages.value.unshift(msg);
 	let courseId = await getCourseId();
 	console.log(89, courseId);
@@ -134,11 +126,12 @@ const sendGifMessage = (url: string) => {
 		url: url,
 		type: 'gif',
 		sender_id: 1 /* user.id */,
-		sender_name: 'Phi' /* currentUser.profile.firstName user.name */,
+		sender_name: currentUser.value.profile.firstName,
 		date: getDate(),
 	};
 	gifs.value = [];
 	searchTerm.value = '';
+	count.value = count.value + 1;
 	addMessage(newGifMessage);
 	socket.emit('message', newGifMessage);
 };
@@ -179,9 +172,10 @@ const sendMessage = async () => {
 		type: 'msg',
 		text: newMessageText.value,
 		sender_id: 1 /* user.id */,
-		sender_name: 'Phi' /*currentUser.profile.firstName,*/,
+		sender_name: 'Phi' /* currentUser.value.profile.firstName */,
 		date: getDate(),
 	};
+	count.value = count.value + 1;
 	addMessage(newMessage);
 	socket.emit('message', newMessage);
 	console.log(151, messages.value);
