@@ -10,7 +10,7 @@
 		</template>
 	</Modal>
 	<div
-		class="w-auto p-1.5 h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-center"
+		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 m-1.5 justify-start items-center"
 	>
 		<div
 			@click="openModalByRef('detailsModal', id, material)"
@@ -19,7 +19,7 @@
 		>
 			<img
 				v-if="url"
-				class="w-100 h-100 rounded-lg cursor-pointer select h-100"
+				class="w-100 p-2 h-100 rounded-lg cursor-pointer select h-100"
 				:src="url"
 				:alt="`template_${name}_img`"
 			/>

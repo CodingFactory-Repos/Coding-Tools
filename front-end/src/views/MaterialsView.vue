@@ -3,7 +3,7 @@
 		<div class="ButtonsContainer">
 			<div
 				v-if="userRole === Roles.PEDAGOGUE"
-				class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
+				class="w-full max-w-[195px] flex bg-light-primary dark:bg-dark-secondary border-b rounded-lg dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
 			>
 				<div class="grow flex h-full gap-1 items-center">
 					<IconButton class="h-fit" type="button" @click="createPDF">
