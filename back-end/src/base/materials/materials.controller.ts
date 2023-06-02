@@ -3,6 +3,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	Inject,
 	Param,
 	Post,
 	Put,
@@ -14,7 +15,7 @@ import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { MaterialsService } from 'src/base/materials/materials.service';
-import { ObjectId } from 'mongodb';
+import { ObjectId, Db } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/materials.dto';
 
@@ -22,7 +23,10 @@ import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/ma
 @UseFilters(ServiceErrorCatcher)
 @UseGuards(JwtAuthGuard)
 export class MaterialsController {
-	constructor(private readonly materialsService: MaterialsService) {}
+	constructor(
+		@Inject('DATABASE_CONNECTION') private db: Db,
+		private readonly materialsService: MaterialsService,
+	) {}
 
 	@Get('')
 	index(@Res() res: Response) {
@@ -109,5 +113,12 @@ export class MaterialsController {
 		} catch (err) {
 			res.status(400).json(err);
 		}
+	}
+	@Get('users/:id')
+	async getUserById(@Param('id') id: string, @Res() res: Response) {
+		// put id in objectId property
+		const _id = new ObjectId(id);
+		const user = await this.db.collection('users').findOne({ _id: _id });
+		res.status(200).json(user);
 	}
 }
