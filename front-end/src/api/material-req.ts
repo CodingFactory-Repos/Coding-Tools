@@ -1,4 +1,5 @@
 import { http } from '@/api/network/axios';
+import { User } from '@/store/interfaces/auth.interfaces';
 import { Material, BorrowingMaterial } from '@/store/interfaces/material.interface';
 
 export const getMaterials = async () => {
@@ -27,4 +28,8 @@ export const getPendingMaterials = async () => {
 
 export const acceptBorrowing = async (id: string, payload: any) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/accept/${id}`, payload);
+}
+
+export const getUserById = async (id: string) => {
+	return http.get<User>(`materials/users/${id}`);
 }
