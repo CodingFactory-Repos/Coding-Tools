@@ -1,0 +1,12 @@
+.gradiant {
+	background: rgb(65, 41, 92) !important;
+	background: linear-gradient(90deg, #41295c 0%, #c6499b 100%) !important;
+
+	&:hover {
+		background: linear-gradient(90deg, #5a397f 0%, #f85cc1 100%) !important;
+	}
+}
+
+html > body.swal2-height-auto { //! Nope, i refuse to use auto !important.
+	height: 100% !important;
+}

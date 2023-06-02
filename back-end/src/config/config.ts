@@ -1,18 +1,29 @@
-import { getDb } from './mongo';
+import { EnvConfiguration } from 'src/config/interface/config.interface';
 
-// Global express.js configuration
-export const config = {
+// Ensure type checking
+export const config: EnvConfiguration = {
 	app: {
 		host: process.env.HOST,
+		base: process.env.BASE_URL,
 		port: process.env.PORT,
 		env: process.env.NODE_ENV,
-		whitelist: process.env.WHITELIST,
+		whitelist: JSON.parse(process.env.WHITELIST) || [process.env.WHITELIST],
+		redirect: process.env.FRONT_URL_REDIRECT,
 	},
 	mongo: {
 		uri: process.env.MONGO_URI,
-		name: process.env.MONGO_DBNAME,
+		dbname: process.env.MONGO_DBNAME,
+	},
+	jwt: {
+		secret: process.env.JWT_SECRET,
+		cookie: {
+			secure: JSON.parse(process.env.COOKIE_SECURE),
+			samesite: JSON.parse(process.env.COOKIE_SAMESITE),
+		},
+	},
+	mailjet: {
+		user: process.env.MAILJET_USER,
+		pass: process.env.MAILJET_PASS,
+		noreply: process.env.MAILJET_NOREPLY,
 	},
 };
-
-// Global mongodb instance
-export const mongodb = getDb(config.mongo.uri, config.mongo.name);

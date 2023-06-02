@@ -1,16 +1,19 @@
-/**
- * Cors origin checkup.
- * Function contains two parameters, origin and callback.
- * Origin : Does not have acces to request, only the origin as string.
- * Callback : Validate the cors, could be callback(true/null/false).
- *
- * OR
- *
- * Cors delegation.
- * Function contains two paramaeters, request and callback.
- * ! You will need to setup the origin parameters by yourself.
- * Request : Express request
- * Callback : Validate the cors, could be callback(true/null/false) or callback(origins options).
- *
- * ! This file will use config.whitelist to validate the origin.
- */
+import { ForbiddenException } from '@nestjs/common';
+import { CorsOptionsCallback } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { Request } from 'express';
+
+import { config } from 'src/config/config';
+
+export const corsOptionsDelegate = (req: Request, callback: CorsOptionsCallback) => {
+	const whitelist = config.app.whitelist;
+	const origin = req.header('origin');
+
+	console.log(origin, 'endpoint: ', req.url);
+	if (origin && whitelist.indexOf(origin) !== -1) {
+		return callback(null, { origin: true, credentials: true });
+	} else if (origin === undefined) {
+		return callback(null, { origin: true, credentials: true });
+	}
+
+	throw new ForbiddenException();
+};
