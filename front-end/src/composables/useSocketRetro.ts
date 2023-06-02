@@ -49,6 +49,36 @@ function handleSocketEvents(socket: Socket) {
 		retrospectiveStore.removeCursor(user);
 		retrospectiveStore.participantLeave(user);
 	});
+
+	socket.on("end-currentRetro", (endeDate) => {
+		retrospectiveStore.endCurrentRetro(endeDate)
+	})
+
+	socket.on("lock-retro", (lock) => {
+		retrospectiveStore.lockRetro(lock)
+	})
+
+	// @@@@@@@@@@@ TIMER SECTION @@@@@@@@@
+
+	socket.on("start-timer", () => {
+		retrospectiveStore.runningTimer()
+	})
+
+	socket.on("progess-timer", (time) => {
+		retrospectiveStore.progressTimer(time);
+	})
+
+	socket.on("pause-timer", () => {
+		retrospectiveStore.stopingTimer();
+	})
+
+	socket.on("reset-timer", () => {
+		retrospectiveStore.resetRetro();
+		retrospectiveStore.resetTimer();
+	})
+
+	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@
+
 }
 
 export const socketRetro: { socket: Socket } = {

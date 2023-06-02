@@ -5,8 +5,9 @@
 		</span>
 	</div>
 	<button
-		class="p-1 text-black"
+		class="p-1 text-black disabled:bg-transparent dark:disabled:bg-transparent"
 		v-on="isTimerRunning ? { click: pause } : { click: startTimer }"
+		:disabled="isRetroFinished"
 	>
 		<svg v-if="!isTimerRunning" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 			<path fill="#07bc0c" d="m9.5 16.5l7-4.5l-7-4.5v9ZM12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Zm0-8Z"
@@ -18,10 +19,10 @@
 		</svg>
 	</button>
 	<button
-		class="p-1 text-black"
+		class="p-1 text-black disabled:bg-transparent dark:disabled:bg-transparent disabled:cursor-not-allowed"
 		:class="isTimerRunning ? 'invisible' : 'visible'"
 		@click="resetTimer"
-		:disabled="isTimerRunning"
+		:disabled="isTimerRunning || isRetroFinished && authStore.user.role !== 2 ? true : false"
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 21 21">
 			<g fill="none" fill-rule="evenodd" stroke="#6cacbd" stroke-linecap="round" stroke-linejoin="round">
@@ -30,76 +31,96 @@
 			</g>
 		</svg>
 	</button>
+
+	<button
+		class="p-1 text-black disabled:bg-transparent dark:disabled:bg-transparent disabled:cursor-not-allowed"
+		:class="(authStore.user.role === 2 || authStore.user.role === 3) ? 'block' : 'hidden'"
+		@click="lockRetro"
+	>
+		<svg v-if="!isRetroLocked" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<path fill="none" stroke="#DAA520" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H8zm0 0V7c0-1.333.8-4 4-4c1.904 0 2.958.944 3.5 1.99M12 14v3"
+			/>
+		</svg>
+		<svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<g fill="#DAA520">
+				<path d="M3 13a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6zm3-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H6z"
+				/>
+				<path d="M7 7a5 5 0 0 1 10 0v4a1 1 0 1 1-2 0V7a3 3 0 1 0-6 0v4a1 1 0 1 1-2 0V7zm5 7a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1z"
+				/>
+			</g>
+		</svg>
+	</button>
 </template>
 
-<script lang="ts">
-import SvgTimer from '@/components/common/svg/Timer.vue';
-
-const FULL_DASH_ARRAY = 283;
-
+<script lang="ts" setup>
+import { socketRetro } from '@/composables/useSocketRetro';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { useRetrospectiveStore } from '@/store/retrospective.store';
+import { computed, watch } from 'vue';
 
 const TIME_LIMIT = 300;
 
-export default {
-	data() {
-		return {
-			timePassed: 0,
-			timerInterval: null,
-			timerState: "",
-			isTimerRunning: false,
-			isTimePaused: false
-		};
-	},
-	components: {
-		SvgTimer,
-	},
+const authStore = useAuthStore();
+const retroStore = useRetrospectiveStore();
+const timePassed = computed(() => retroStore.currentRetro.timePassed)
+const isTimerRunning =  computed(() => retroStore.currentRetro.isTimerRunning);
+const isRetroFinished = computed(() => retroStore.isRetroFinished);
+const isRetroLocked = computed(() => retroStore.currentRetro.isLocked);
 
-	computed: {
-		formattedTimeLeft() {
-			const timeLeft = this.timeLeft;
-			const minutes = Math.floor(timeLeft / 60);
-			let seconds : any;
-			seconds = timeLeft % 60;
 
-			if (seconds < 10) {
-				seconds  = `0${seconds}`;
-			}
+const timeLeftComp = computed(() => TIME_LIMIT - timePassed.value);
 
-			return `${minutes}:${seconds}`;
-		},
+const formattedTimeLeft = computed(() => {
+	const timeLeft = timeLeftComp.value;
+	const minutes = Math.floor(timeLeft / 60);
+	let seconds: any;
+	seconds = timeLeft % 60;
 
-		timeLeft() {
-			return TIME_LIMIT - this.timePassed;
-		},
+	if (seconds < 10) {
+		seconds = `0${seconds}`;
+	}
 
-		timeFraction() {
-			const rawTimeFraction = this.timeLeft / TIME_LIMIT;
-			return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
-		},
-	},
+	return `${minutes}:${seconds}`;
+})
 
-	watch: {
-		timeLeft(newValue) {
-			if (newValue === 0) {
-				this.onTimesUp();
-			}
-		},
-	},
+watch(timeLeftComp, newValue => {
+	if (newValue === 0) {
+		retroStore.isRetroFinished = true;
+		retroStore.currentRetro.isRetroEnded = true
+		pause();
+		socketRetro.socket.emit('end-currentRetro')
+	} else {
+		retroStore.isRetroFinished = false;
+	}
+})
 
-	methods: {
+const startTimer = () => {
+	retroStore.currentRetro.isTimerRunning = true;
+	socketRetro.socket.emit('start-timer')
+	retroStore.currentRetro.timerInterval = setInterval(() => {
+		retroStore.currentRetro.timePassed += 1
+		socketRetro.socket.emit('progess-timer', timePassed.value)
+	}, 1000);
 
-		startTimer() {
-			this.isTimerRunning = true;
-			this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
-		},
-		pause() {
-			this.isTimerRunning = false;
-			clearInterval(this.timerInterval);
-		},
-		resetTimer() {
-			this.timePassed = 0;
-		}
-	},
 };
-</script>
 
+const pause = () => {
+	retroStore.currentRetro.isTimerRunning = false;
+	socketRetro.socket.emit('pause-timer');
+	clearInterval(retroStore.currentRetro.timerInterval);
+};
+
+const resetTimer = () => {
+	socketRetro.socket.emit('reset-timer')
+	retroStore.currentRetro.timePassed = 0;
+	if (authStore.user.role !== 1) {
+		retroStore.currentRetro.isRetroEnded = false;
+	}
+}
+
+const lockRetro = () => {
+	retroStore.currentRetro.isLocked = !retroStore.currentRetro.isLocked;
+	socketRetro.socket.emit("lock-retro", retroStore.currentRetro.isLocked)
+}
+
+</script>
