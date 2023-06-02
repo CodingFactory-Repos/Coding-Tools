@@ -6,14 +6,14 @@
 	</Modal>
 	<Modal v-if="detailsModal" @close="detailsModal = false">
 		<template #body>
-			<DetailsMaterials :id="cardId" :material="material" @close="detailsModal = false" />
+			<DetailsMaterials :id="cardId" :material="materials" @close="detailsModal = false" />
 		</template>
 	</Modal>
 	<div
 		class="w-auto h-100 flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-center"
 	>
 		<div
-			@click="openModalByRef('detailsModal', id)"
+			@click="openModalByRef('detailsModal', id, material)"
 			class="w-32 h-full flex flex-col justify-between gap-2 relative"
 			style="min-width: 8rem"
 		>
@@ -44,12 +44,21 @@
 			</span>
 		</div>
 		<button
-			v-if="status === false"
+			v-if="status === false && userRole === Roles.USER"
 			disabled
 			data
 			class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
 		>
 			<span class="text-white">Reserved</span>
+		</button>
+		<button
+			v-if="status === false && userRole === Roles.PEDAGOGUE"
+			type="button"
+			data
+			class="font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant"
+			@click="materialReturned(id, material)"
+		>
+			<span class="text-white">Validate the return</span>
 		</button>
 		<button
 			v-else
@@ -67,36 +76,49 @@ import FormMaterial from '@/components/materials/FormMaterials.vue';
 import Modal from '@/components/common/Modal.vue';
 import DetailsMaterials from './DetailsMaterials.vue';
 import { useAuthStore } from '@/store/modules/auth.store';
+import { useMaterialStore } from '@/store/modules/material.store';
 import { http } from '@/api/network/axios';
+import { Roles } from '@/store/interfaces/auth.interfaces';
 import { Material } from '@/store/interfaces/material.interface';
 
 defineProps({
 	id: { type: String, required: true },
 	name: { type: String, required: true },
+	material: { type: Object, required: true },
 	url: { type: String, required: true },
 	status: { type: Boolean, required: true },
 });
 
 const authStore = useAuthStore();
+const materialStore = useMaterialStore();
+const user = computed(() => authStore.user);
+const userRole = computed(() => user.value?.role);
 const currentUserId = computed(() => authStore.user._id);
 
 const reservationModal = ref(false);
-const material = ref<Material>();
+const materials = ref();
 const detailsModal = ref(false);
 const cardId = ref('');
 
-function openModalByRef(ref: string, identifiant: string) {
+function openModalByRef(ref: string, identifiant: string, material?: Material) {
 	if (ref === 'reservationModal') {
 		cardId.value = identifiant;
 		reservationModal.value = true;
 	} else if (ref === 'detailsModal') {
 		cardId.value = identifiant;
 
-		http.get(`materials/get/` + identifiant).then((res) => {
-			material.value = res.data;
-		});
+		materials.value = material;
 		detailsModal.value = true;
 	}
+}
+
+function materialReturned(id: string, material: Material) {
+	const payload = {
+		returnedTo: currentUserId.value,
+		borrowingID: material.borrowingHistory.filter((material) => material.status === 'ACCEPTED')[0]
+			.borrowingID,
+	};
+	materialStore.returnMaterial(id, payload);
 }
 </script>
 
