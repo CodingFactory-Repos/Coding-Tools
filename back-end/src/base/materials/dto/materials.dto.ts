@@ -143,4 +143,10 @@ export class DTOBorrowingMaterial {
 	@IsString()
 	@Length(3, 125)
 	public status: string;
+
+	@IsOptional()
+	public returnedTo: ObjectId;
+
+	@IsOptional()
+	public dateReturned: Date;
 }
