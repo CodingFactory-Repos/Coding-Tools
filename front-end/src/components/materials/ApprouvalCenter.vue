@@ -7,7 +7,8 @@
 		<div
 			class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white"
 		></div>
-		<div v-for="res in reservation.slice(0, 5)" :key="res._id">
+		<!-- Limit it to 4 -->
+		<div v-for="res in reservation.slice(0, 4)" :key="res._id">
 			<div class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 				<div class="divide-y divide-gray-100 dark:divide-gray-700">
 					<a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -106,22 +107,22 @@ import { useMaterialStore } from '@/store/modules/material.store';
 
 const router = useRouter();
 const materialStore = useMaterialStore();
-const reservation = computed(() => materialStore.pendingMaterials);
-const users = ref([]);
 
 function approuvalRouter() {
 	router.push('/app/materials/approuvals');
 }
 
-onMounted(() => {
-	materialStore.getPendingMaterials().then(() => {
-		reservation.value.forEach((res1) => {
-			materialStore.getUserById(res1.borrowingHistory.borrowingUser).then((res) => {
-				users.value.push(res);
-			});
-		});
-	});
+defineProps({
+	reservation: {
+		type: Array,
+		required: true,
+	},
+	users: {
+		type: Array,
+		required: true,
+	},
 });
+
 function acceptReservation(materialID: string, borrowingID: string) {
 	const payload = {
 		borrowingID: borrowingID,
@@ -135,8 +136,4 @@ function declineReservation(materialID: string, borrowID: string) {
 	};
 	materialStore.declineBorrowing(materialID, payload);
 }
-
-onBeforeUnmount(() => {
-	users.value = [];
-});
 </script>
