@@ -17,6 +17,7 @@ import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { RetrospectivesRepository } from '@/base/retrospectives/retrospectives.repository';
 import { Postit, Retrospective } from '@/base/retrospectives/interfaces/retrospectives.interface';
+import { Roles } from '@/base/users/interfaces/users.interface';
 
 @UseFilters(WSServiceErrorCatcher)
 @WebSocketGateway({
@@ -116,10 +117,14 @@ export class RetrospectiveGateway
 	@SubscribeMessage('lock-retro')
 	async lockCurrentRetro(client: AuthSocket, lock: boolean) {
 		client.to(client.roomId).emit('lock-retro', lock);
-		const query = { slug: client.roomId };
-		const update = {$set: { isLocked: lock }}
+		const queryUser = { _id: client.user.id as ObjectId };
+		const user = await this.usersRepository.findOne(queryUser);
+		if (user.role === Roles.PEDAGOGUE || user.role === Roles.PRODUCT_OWNER) {
+			const query = { slug: client.roomId };
+			const update = {$set: { isLocked: lock }}
 
-		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+			await this.retrospectivesRepository.updateOneRetrospective(query, update);
+		}
 	}
 
 	//@@@@@@@@@@@ TIMER SECTION @@@@@@@@@@@@@@@
@@ -163,11 +168,11 @@ export class RetrospectiveGateway
 		const update = {$set: { endedAt: null, isRetroEnded: false}}
 
 
-		if ((user.role === 2 || user.role === 3) && currentRetro.isRetroEnded) {
+		if ((user.role === Roles.PRODUCT_OWNER || user.role === Roles.PEDAGOGUE) && currentRetro.isRetroEnded) {
 			await this.retrospectivesRepository.updateOneRetrospective(currentRetro, update);
 			client.to(client.roomId).emit('reset-timer');
 		}
-		if ((user.role === 1 || user.role === 2 || user.role === 3) && !currentRetro.isRetroEnded) {
+		if ((user.role === Roles.STUDENT || user.role === Roles.PRODUCT_OWNER || user.role === Roles.PEDAGOGUE) && !currentRetro.isRetroEnded) {
 			const query = { slug: client.roomId };
 			const update = {$set: { timePassed: 0}};
 
