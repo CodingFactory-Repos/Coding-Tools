@@ -7,7 +7,7 @@
 		<div
 			class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white"
 		></div>
-		<div v-for="res in reservation" :key="res._id">
+		<div v-for="res in reservation.slice(0, 5)" :key="res._id">
 			<div class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 				<div class="divide-y divide-gray-100 dark:divide-gray-700">
 					<a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -75,7 +75,7 @@
 			</div>
 		</div>
 		<a
-			href="#"
+			@click="approuvalRouter"
 			class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
 		>
 			<div class="inline-flex items-center">
@@ -100,12 +100,18 @@
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 
+const router = useRouter();
 const materialStore = useMaterialStore();
 const reservation = computed(() => materialStore.pendingMaterials);
 const users = ref([]);
+
+function approuvalRouter() {
+	router.push('/app/materials/approuvals');
+}
 
 onMounted(() => {
 	materialStore.getPendingMaterials().then(() => {
