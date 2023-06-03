@@ -93,28 +93,8 @@ onUnmounted(() => {
 
 /* METHODS */
 
-const displayHint = () => {
-	hoverHint.value = true;
-};
-
-const hideHint = () => {
-	hoverHint.value = false;
-};
-
 const addMessage = async (msg: Object) => {
 	messages.value.unshift(msg);
-	let courseId = await getCourseId();
-	console.log(89, courseId);
-	try {
-		const res = await http.post(`/calls/save_message/${courseId}`, { newMessage: msg });
-		console.log(107, res);
-	} catch (err) {
-		if (err instanceof AxiosError) {
-			console.error(err.message);
-		} else {
-			console.error('Unexpected Error : ', err);
-		}
-	}
 };
 
 const getCourseId = withErrorHandler(async () => {
@@ -147,11 +127,7 @@ const sendGifMessage = (url: string) => {
 	gifs.value = [];
 	searchTerm.value = '';
 	count.value = count.value + 1;
-	addMessage(newGifMessage)
-		.then((res) => {
-			console.log(res);
-		})
-		.catch((err) => console.error(150, err));
+	addMessage(newGifMessage);
 	socket.emit('message', newGifMessage);
 };
 
@@ -183,7 +159,7 @@ const getGifs = async () => {
 		});
 };
 
-const sendMessage = () => {
+const sendMessage = async () => {
 	console.log(139, 'sendMessage');
 	if (!newMessageText.value) return;
 	const newMessage = {
@@ -194,11 +170,19 @@ const sendMessage = () => {
 		date: getDate(),
 	};
 	count.value = count.value + 1;
-	addMessage(newMessage)
-		.then((res) => {
-			console.log(res);
-		})
-		.catch((err) => console.error(193, err));
+	addMessage(newMessage);
+	let courseId = await getCourseId();
+	console.log(89, courseId);
+	try {
+		const res = await http.post(`/calls/save_message/${courseId}`, { newMessage: newMessage });
+		console.log(107, res);
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			console.error(189, err.message);
+		} else {
+			console.error('Unexpected Error : ', err);
+		}
+	}
 	socket.emit('message', newMessage);
 	console.log(151, messages.value);
 	newMessageText.value = ''; /* reset the message state */
