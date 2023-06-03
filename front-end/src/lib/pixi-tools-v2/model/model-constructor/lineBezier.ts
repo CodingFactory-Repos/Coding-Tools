@@ -81,10 +81,12 @@ export class LineBezier extends ModelGraphics {
 			this.timer = null;
 		}
 
-		this.timer = setTimeout(() => {
-			this.getBounds();
-			this.perfectPolygonLine();
-		}, 100);
+		if(this.eventMode !== 'none') {
+			this.timer = setTimeout(() => {
+				this.getBounds();
+				this.perfectPolygonLine();
+			}, 100);
+		}
 	}
 
 	private drawArrowHead(arrowSize: number, angleOffset: number) {
