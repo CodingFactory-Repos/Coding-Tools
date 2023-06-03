@@ -162,7 +162,7 @@ const getGifs = async () => {
 
 	axios
 		.get(url)
-		.then(async(response) => {
+		.then(async (response) => {
 			console.log(response.data);
 			let json = await response.data;
 			console.log(json);
