@@ -24,14 +24,14 @@
 				<input
 					v-model="newMessageText"
 					@keydown.enter="sendMessage"
-					placeholder="  Envoyer un message"
-					class="w-9/12 text-white max-h-[27.2px] relative rounded-tl-full rounded-bl-full"
+					placeholder="Envoyer un message"
+					class="w-9/12 p-2 text-white max-h-[27.2px] relative rounded-tl-full rounded-bl-full"
 				/>
 				<input
 					v-model="searchTerm"
 					@keydown.enter="getGifs()"
 					placeholder="Gif"
-					class="w-3/12 text-white max-h-[27.2px] rounded-br-full rounded-tr-full"
+					class="w-3/12 p-2 text-white max-h-[27.2px] rounded-br-full rounded-tr-full"
 				/>
 			</div>
 		</div>
@@ -40,7 +40,6 @@
 <script setup lang="ts">
 import ChatMultiMessage from './ChatMultiMessage.vue';
 import { useAuthStore } from '../../store/modules/auth.store';
-import { io } from 'socket.io-client';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import { manager } from '@/api/network/socket.io';
@@ -61,6 +60,8 @@ const gifs = ref([]);
 const newMessageText = ref('');
 const courseId = ref();
 const count = ref();
+const hoverHint = ref(false);
+const randomColor = ref(false);
 
 /* SOCKET */
 
@@ -81,6 +82,7 @@ socket.on('peer-chat-message', (data: Object) => {
 onMounted(async () => {
 	courseId.value = await getCourseId();
 	console.log(79, courseId.value);
+	// replace with courseId.value when implementing otherwise it'll default to room 1
 	socket.auth = { roomId: roomId.value.toString() };
 	socket.connect();
 });
@@ -90,6 +92,14 @@ onUnmounted(() => {
 });
 
 /* METHODS */
+
+const displayHint = () => {
+	hoverHint.value = true;
+};
+
+const hideHint = () => {
+	hoverHint.value = false;
+};
 
 const addMessage = async (msg: Object) => {
 	messages.value.unshift(msg);
@@ -126,7 +136,7 @@ const sendGifMessage = (url: string) => {
 		url: url,
 		type: 'gif',
 		sender_id: 1 /* user.id */,
-		sender_name: currentUser.value.profile.firstName,
+		sender_name: currentUser.value.profile.firstName, // needs to have a profile firstName
 		date: getDate(),
 	};
 	gifs.value = [];
@@ -172,90 +182,14 @@ const sendMessage = async () => {
 		type: 'msg',
 		text: newMessageText.value,
 		sender_id: 1 /* user.id */,
-		sender_name: 'Phi' /* currentUser.value.profile.firstName */,
+		sender_name: currentUser.value.profile.firstName,
 		date: getDate(),
 	};
+	console.log(198, randomColor.value);
 	count.value = count.value + 1;
 	addMessage(newMessage);
 	socket.emit('message', newMessage);
 	console.log(151, messages.value);
 	newMessageText.value = ''; /* reset the message state */
 };
-
-// export default {
-// 	components: {
-// 		ChatMultiMessage,
-// 	},
-// 	props: {
-// 		roomId: {
-// 			type: String,
-// 			required: true,
-// 		},
-// 	},
-// 	methods: {
-// 		getDate() {
-// 			const current = new Date();
-// 			const date = `${current.getHours()}:${current.getMinutes()} -
-// 			${current.getDate()}/${current.getMonth() + 1}`;
-// 			return date;
-// 		},
-// 		sendGifMessage(url) {
-// 			const newGifMessage = {
-// 				url: url,
-// 				type: 'gif',
-// 				sender_id: 1 /* user.id */,
-// 				sender_name: 'Phi' /* currentUser.profile.firstName user.name */,
-// 				date: this.getDate(),
-// 			};
-// 			this.gifs = [];
-// 			this.searchTerm = '';
-// 			socket.emit('message', newGifMessage);
-// 		},
-// 		buildGifs(json) {
-// 			this.gifs = json.data // ok
-// 				.map((gif) => gif.id)
-// 				.map((gifId) => {
-// 					return `https://media.giphy.com/media/${gifId}/giphy.gif`;
-// 				});
-// 		},
-// 		async getGifs() {
-// 			// not working on keydown fetching on keyup
-// 			console.log(112, 'getGifs');
-// 			this.gifs = [];
-// 			// gets the gifs preview ( limit is the number fo choices available )
-// 			let apiKey = '12ujTlV1hDN8v0xzjdlyDq2u48DCR1qy';
-// 			let searchEndPoint = 'https://api.giphy.com/v1/gifs/search?';
-// 			let limit = 20;
-//
-// 			let url = `${searchEndPoint}&api_key=${apiKey}&q=${this.searchTerm}&limit=${limit}`;
-// 			fetch(url)
-// 				.then(async (response) => {
-// 					let json = await response.json();
-// 					console.log(json);
-// 					return json;
-// 				})
-// 				.then((json) => {
-// 					this.buildGifs(json);
-// 				})
-// 				.catch((err) => {
-// 					console.log(err);
-// 				});
-// 		},
-// 		async sendMessage() {
-// 			console.log(138, 'sendMessage');
-//
-// 			if (!this.newMessageText) return;
-// 			const newMessage = {
-// 				type: 'msg',
-// 				text: this.newMessageText,
-// 				sender_id: 1 /* user.id */,
-// 				sender_name: 'Phi' /*currentUser.profile.firstName,*/,
-// 				date: this.getDate(),
-// 			};
-// 			socket.emit('message', newMessage);
-// 			console.log(this.messages);
-// 			this.newMessageText = ''; /* reset the message state */
-// 		},
-// 	},
-// };
 </script>
