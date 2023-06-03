@@ -19,7 +19,7 @@ export class OpenHousesService {
 		return await this.openHousesRepository.getAllHouses();
 	}
 
-	async getOpenHouseBy(id) {
+	async getOpenHouseById(id) {
 		return await this.openHousesRepository.getOpenHouseById(id);
 	}
 }
