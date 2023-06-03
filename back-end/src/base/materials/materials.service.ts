@@ -26,6 +26,31 @@ export class MaterialsService {
 		return await this.materialsRepository.getAllMacs();
 	}
 
+	async getMacsStatus(kind: string) {
+		const data = await this.materialsRepository.getMacsStatus(kind);
+		const status = data.map(({ status, count }) => {
+			const stati = ['Emprunté', 'Disponible'];
+			return { status: stati[+status], count };
+		});
+		return status;
+	}
+
+	async getMaterialsUsed() {
+		const material = await this.materialsRepository.getMaterialsUsed();
+		const top = material
+			.map(({ borrowingHistory, name }) => {
+				const [{ borrowingDate, returnDate }] = borrowingHistory;
+				const borrowing = +new Date(borrowingDate);
+				const returndate = +new Date(returnDate);
+				const time = returndate - borrowing;
+				const days = Math.floor(time / 864e5);
+				return { name, days };
+			})
+			.sort((a, b) => b.days - a.days)
+			.slice(0, 5);
+		return top;
+	}
+
 	async createNewMaterial(payload: DTOCreateMaterials) {
 		const query = payload as Material;
 		return await this.materialsRepository.createMaterial(query);

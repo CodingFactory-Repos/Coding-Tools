@@ -1,12 +1,7 @@
 <template>
-	<div class="col-span-2">
-		<h2>{{ this.title }}</h2>
-		<Bar
-			id="my-chart-id"
-			:option="chartOptions"
-			:data="chartData"
-			class="rounded-lg bg-light-tertiary dark:bg-dark-tertiary"
-		/>
+	<div class="col-span-2 rounded-lg bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md">
+		<h2 class="text-dark-primary dark:text-light-primary">{{ this.title }}</h2>
+		<Bar id="my-chart-id" :options="chartOptions" :data="chartData" class="" />
 	</div>
 </template>
 
@@ -40,6 +35,14 @@ export default {
 			},
 			chartOptions: {
 				responsive: true,
+				plugins: {
+					legend: {
+						display: true,
+						labels: {
+							color: '#5c5f73',
+						},
+					},
+				},
 			},
 		};
 	},

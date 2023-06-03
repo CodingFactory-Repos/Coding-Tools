@@ -4,7 +4,7 @@
 		label="name"
 		value="days"
 		caption="Nombre de jours depuis l'acquisition"
-		title="Liste des 5 équipements les plus vieux par nombre de jours"
+		title="Les 5 équipements les plus vieux par nombre de jours"
 	/>
 </template>
 <script>

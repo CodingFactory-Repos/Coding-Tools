@@ -1,12 +1,7 @@
 <template>
-	<div>
-		<h2>{{ this.title }}</h2>
-		<Doughnut
-			id="my-chart-id"
-			:option="chartOptions"
-			:data="chartData"
-			class="rounded-lg bg-light-tertiary dark:bg-dark-tertiary"
-		/>
+	<div class="rounded-lg bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md">
+		<h2 class="text-dark-primary dark:text-light-primary">{{ this.title }}</h2>
+		<Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" class="" />
 	</div>
 </template>
 
@@ -31,7 +26,19 @@ export default {
 			},
 			chartOptions: {
 				responsive: true,
-				maintainAspectRatio: false,
+				maintainAspectRatio: true,
+				plugins: {
+					legend: {
+						display: true,
+						labels: {
+							color: '#5c5f73',
+							boxWidth: 20,
+							boxHeight: 20,
+							usePointStyle: true,
+							pointStyle: 'circle',
+						},
+					},
+				},
 			},
 		};
 	},
@@ -59,7 +66,7 @@ export default {
 				datasets: [
 					{
 						label: this.caption,
-						backgroundColor: ['#462a5f', '#83397C'],
+						backgroundColor: ['#462a5f', '#C04898'],
 						data,
 						borderWidth: 0,
 					},

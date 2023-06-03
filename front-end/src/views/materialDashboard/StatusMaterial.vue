@@ -1,11 +1,10 @@
 <template>
 	<DoughnutChart
 		:data="datas"
-		label="campus"
+		label="status"
 		value="count"
 		caption=""
-		title="Nombre de macs par campus"
-		class=""
+		title="Nombre de macs empruntés"
 	/>
 </template>
 <script>
@@ -20,9 +19,8 @@ export default {
 		};
 	},
 	async created() {
-		console.log('created nb material chart');
-		const { data: items } = await http.get(`/materials/macs`);
-		console.log(items);
+		console.log('created status');
+		const { data: items } = await http.get(`/materials/statusMacs/Hardware`);
 		this.datas = items;
 	},
 	components: { DoughnutChart },

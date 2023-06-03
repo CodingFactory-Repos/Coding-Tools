@@ -44,6 +44,35 @@ export class MaterialsRepository {
 			.toArray();
 	}
 
+	async getMacsStatus(kind) {
+		return this.materials
+			.aggregate([
+				{
+					$match: {
+						type: kind,
+					},
+				},
+				{
+					$group: {
+						_id: '$status',
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$project: {
+						status: '$_id',
+						count: '$count',
+						_id: false,
+					},
+				},
+			])
+			.toArray();
+	}
+
+	async getMaterialsUsed() {
+		return this.materials.find({ borrowingHistory: { $exists: true } }).toArray();
+	}
+
 	async createMaterial(query: Material) {
 		this.materials.insertOne(query);
 		//Return the new material
