@@ -160,7 +160,7 @@ export default {
             highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
         }
 
-        return `<pre class='hljs overflow-x-scroll'><code class="">${highlightedCode}</code></pre>`
+        return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
     },
       });
 
@@ -174,30 +174,36 @@ export default {
       let inCodeBlock = false
 
       lines.forEach(line => {
+        // console.log(line)
+
+        console.log(line)
 
         if (line.startsWith('<h1>')) {
           this.title = this.getSubstring(line, '>', '<')
           this.resultArray[this.index].push({value: line})
         }
         else if (line.startsWith('<h2>')) {
-			if (this.firstSection) {
-				this.firstSection = false
-				this.resultArray[this.index].push({value: line})
-				this.headers.push(this.getSubstring(line, '>', '<'))
-			}
-			else {
-				this.resultArray.push([]);
-				this.index++;
-				this.resultArray[this.index].push({value: line})
-				this.headers.push(this.getSubstring(line, '>', '<'))
-			}
+          if (this.firstSection) {
+            this.firstSection = false
+            this.resultArray[this.index].push({value: line})
+            this.headers.push(this.getSubstring(line, '>', '<'))
+          }
+          else {
+            this.resultArray.push([]);
+            this.index++;
+            this.resultArray[this.index].push({value: line})
+            this.headers.push(this.getSubstring(line, '>', '<'))
+          }
         }
-        else if (line.startsWith('<pre>') || inCodeBlock) {
+        else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
+
+          // console.log(line)
           if (!inCodeBlock) {
             inCodeBlock = true
             code += line+'\n'
           }
-          else if (line.startsWith('<pre>') && inCodeBlock) {
+
+          else if (line.includes('</pre>')) {
             inCodeBlock = false
             code += line
 
@@ -208,12 +214,13 @@ export default {
             code += line+'\n'
           }
         }
-        else
+        else {
           this.resultArray[this.index].push({value: line})
+        }
 
       });
 
-      // console.log(this.headers)
+      console.log(this.resultArray)
     },
 	openUserPanel() {
             this.isUserPanelOpen = true

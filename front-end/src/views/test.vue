@@ -7,5 +7,5 @@
 
 import test_markdown_it from '@/components/blog/test_markdown_it.vue';
 
-import MarkdownViewer from '@/components/blog/MarkdonwViewer.vue'
+import MarkdownViewer from '@/components/blog/MarkdownViewer.vue'
 </script>

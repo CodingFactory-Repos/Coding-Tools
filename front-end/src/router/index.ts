@@ -71,12 +71,21 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/AddArticleView.vue'),
 					},
 					{
+						path: 'new/tutorial',
+						component: () => import('../views/AddTutorialView.vue'),
+					},
+					
+					{
 						path: ':id',
 						component: () => import('../views/ShowArticleView.vue'),
 					},
+					
 				],
 			},
-			{ path: 'test', component: () => import('../views/test.vue') },
+			{
+				path: 'test',
+				component: () => import('../views/test.vue'),
+			},
 			{
 				path: 'scrum',
 				children: [
