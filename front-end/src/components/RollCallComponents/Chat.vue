@@ -61,7 +61,6 @@ const newMessageText = ref('');
 const courseId = ref();
 const count = ref();
 const hoverHint = ref(false);
-const randomColor = ref(false);
 
 /* SOCKET */
 
@@ -73,7 +72,11 @@ socket.on('peer-connected', (id: string) => {
 
 socket.on('peer-chat-message', (data: Object) => {
 	let msg = data;
-	addMessage(msg);
+	addMessage(msg)
+		.then((res) => {
+			console.log(res);
+		})
+		.catch((err) => console.error(193, err));
 });
 
 onMounted(async () => {
@@ -144,7 +147,11 @@ const sendGifMessage = (url: string) => {
 	gifs.value = [];
 	searchTerm.value = '';
 	count.value = count.value + 1;
-	addMessage(newGifMessage);
+	addMessage(newGifMessage)
+		.then((res) => {
+			console.log(res);
+		})
+		.catch((err) => console.error(150, err));
 	socket.emit('message', newGifMessage);
 };
 
@@ -186,9 +193,12 @@ const sendMessage = () => {
 		sender_name: currentUser.value.profile.firstName,
 		date: getDate(),
 	};
-	console.log(198, randomColor.value);
 	count.value = count.value + 1;
-	addMessage(newMessage);
+	addMessage(newMessage)
+		.then((res) => {
+			console.log(res);
+		})
+		.catch((err) => console.error(193, err));
 	socket.emit('message', newMessage);
 	console.log(151, messages.value);
 	newMessageText.value = ''; /* reset the message state */
