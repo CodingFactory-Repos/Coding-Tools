@@ -1,11 +1,11 @@
 <template>
 
-  <div class="codeLab">
+  <div class="codeLab text-gray-900 dark:text-white">
     <input type="file" accept=".md" @change="handleFileChange" />
 
 
     <!-- <div v-if="fileContent !== ''" v-html="renderedMarkdown"></div> -->
-    <div v-if="resultArray.length>0" class="mb-2 tracking-tight text-gray-900 dark:text-white">
+    <div v-if="resultArray.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
 
 		<!-- STICKY BAR -->
 		<div tabindex="-1" class="fixed top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
@@ -22,13 +22,47 @@
 					</svg>
 				</button>
 
-				<!-- SIDEBAR -->
-				<aside v-if="open" id="codelab-sidebar" class="fixed inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none" aria-label="Sidebar">
+
+			</div>
+		</div>
+
+		<!-- CONTENT HERE -->
+		<div class="flex flex-col items-center">
+			<div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
+				<h2>About this coding tutorial</h2>
+				<div>Last updated : </div>
+				<div>Redacted by : </div>
+			</div>
+
+			<div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
+				<div v-for="(data, index) in resultArray[step]" :key="index">
+					<div v-for="(line, row) in data" :key="row">
+						<div v-html="line" class="htmlData"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+    </div>
+  </div>
+
+
+					<!-- SIDEBAR -->
+					<aside v-if="open"         x-show="open"
+        x-transition:enter="transition duration-300 ease-in-out transform"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition duration-300 ease-in-out transform"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        @keydown.escape="window.innerWidth <= 1024 ? open = false : ''"
+
+         class="fixed inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
 					<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
 						<div class="absolute right-0 p-1 transform -translate-x-full">
 							<button
-							@click.prevent="toggle()"
-							class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring"
+								@click.prevent="toggle()"
+								class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring"
 							>
 								<svg
 									class="w-5 h-5"
@@ -43,27 +77,14 @@
 						</div>
 						<ul class="space-y-2 font-medium">
 							<li v-for="(item, index) in headers" :key="index">
-								<a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+								<a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
 									<h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
 								</a>
 							</li> 
 						</ul>
 					</div>
 				</aside>
-			</div>
-		</div>
 
-		<!-- CONTENT HERE -->
-		<div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">				
-			<div v-for="(data, index) in resultArray[step]" :key="index">
-				<div v-for="(line, row) in data" :key="row">
-					<div v-html="line" class="htmlData"></div>
-				</div>
-			</div>
-		</div>
-    </div>
-
-  </div>
 
   <div>
     <button v-if="step>0" @click="step = step -= 1" class="backBtn py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white ">Back</button>
@@ -139,7 +160,7 @@ export default {
             highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
         }
 
-        return `<pre class='hljs'><code>${highlightedCode}</code></pre>`
+        return `<pre class='hljs overflow-x-scroll'><code class="">${highlightedCode}</code></pre>`
     },
       });
 
@@ -154,11 +175,11 @@ export default {
 
       lines.forEach(line => {
 
-        if (line.includes('h1')) {
+        if (line.startsWith('<h1>')) {
           this.title = this.getSubstring(line, '>', '<')
           this.resultArray[this.index].push({value: line})
         }
-        else if (line.includes('h2')) {
+        else if (line.startsWith('<h2>')) {
 			if (this.firstSection) {
 				this.firstSection = false
 				this.resultArray[this.index].push({value: line})
@@ -171,12 +192,12 @@ export default {
 				this.headers.push(this.getSubstring(line, '>', '<'))
 			}
         }
-        else if (line.includes('pre') || inCodeBlock) {
+        else if (line.startsWith('<pre>') || inCodeBlock) {
           if (!inCodeBlock) {
             inCodeBlock = true
             code += line+'\n'
           }
-          else if (line.includes('pre') && inCodeBlock) {
+          else if (line.startsWith('<pre>') && inCodeBlock) {
             inCodeBlock = false
             code += line
 
