@@ -5,17 +5,18 @@ import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
-export class Circle extends ModelGraphics {
+export class Ellipse extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
 	public borderWidth: number;
 	public borderColor: number;
-	public radius: number;
+	public radiusX: number;
+	public radiusY: number;
 	public color: number;
 
 	static registerGraphic(attributes: SerializedGraphic) {
-		return new Circle(attributes);
+		return new Ellipse(attributes);
 	}
 
 	constructor(attributes: SerializedGraphic) {
@@ -36,18 +37,18 @@ export class Circle extends ModelGraphics {
 	}
 
 	public draw(bounds: Partial<ElementBounds>) {
-		const { x, y, radius, width, height } = bounds;
-		this.radius = radius;
+		const { x, y, width, height } = bounds;
 		this.position.set(x, y);
+		this.width = width;
+		this.height = height;
 
 		this.clear();
 		if (this.borderWidth > 0) this.lineStyle(this.borderWidth, this.borderColor, 1);
 		this.beginFill(this.color);
-		this.drawCircle(this.radius, this.radius, this.radius);
+		this.drawEllipse(0, 0, width, height);
 		this.endFill();
-
-		if(width !== undefined && width > 0) this.width = width;
-		if(height !== undefined && height > 0) this.height = height;
+		this.width = width;
+		this.height = height;
 	}
 
 	public serialized() {

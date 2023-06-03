@@ -1,4 +1,4 @@
-import { Container, DisplayObject, FederatedPointerEvent, Graphics } from 'pixi.js';
+import { Container, DisplayObject, FederatedPointerEvent } from 'pixi.js';
 import { ContainerManager } from '../class/containerManager';
 import { GenericContainer } from '../class/genericContainer';
 import {
@@ -10,6 +10,8 @@ import {
 } from './pixi-serialize';
 import { Rectangle } from '../model/template';
 import type { GraphicUIProperties } from './pixi-ui';
+import { SmoothGraphics } from '@pixi/graphics-smooth';
+import { LineContainer } from '../class/lineContainer';
 
 export interface Bounds {
 	x: number;
@@ -39,7 +41,7 @@ export abstract class PluginContainer extends BoundsContainer {
 	protected abstract onSelected(e: FederatedPointerEvent): void;
 }
 
-export abstract class ModelGraphics extends Graphics implements WithId {
+export abstract class ModelGraphics extends SmoothGraphics implements WithId {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId | InternalTypeId;
 	public color: number;
@@ -54,7 +56,7 @@ export abstract class ModelGraphics extends Graphics implements WithId {
 }
 
 export class FramedMainContainer extends Container {
-	public readonly children: Array<GenericContainer | Rectangle>;
+	public readonly children: Array<GenericContainer | Rectangle | LineContainer>;
 }
 
 export class TitleContainer extends Container {

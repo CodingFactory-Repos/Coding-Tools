@@ -1,4 +1,5 @@
 import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
+import { pruneTheProjectTree } from '@/lib/pixi-tools-v2/blueprint/pruneTheProjectTree';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface AgilityStore {
@@ -50,6 +51,7 @@ export const getAgileBlueprints = {
 	empathymap: empathyMap,
 	impactmapping: null,
 	personas: null,
+	prunetheprojecttree: pruneTheProjectTree,
 };
 
 export type LitteralBlueprintTypes = keyof typeof getAgileBlueprints;
