@@ -41,7 +41,7 @@
 import ChatMultiMessage from './ChatMultiMessage.vue';
 import { useAuthStore } from '../../store/modules/auth.store';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { manager } from '@/api/network/socket.io';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
@@ -72,11 +72,8 @@ socket.on('peer-connected', (id: string) => {
 });
 
 socket.on('peer-chat-message', (data: Object) => {
-	console.log('test', data);
 	let msg = data;
-	console.log(72, msg);
 	addMessage(msg);
-	console.log(77, messages.value);
 });
 
 onMounted(async () => {
@@ -105,17 +102,22 @@ const addMessage = async (msg: Object) => {
 	messages.value.unshift(msg);
 	let courseId = await getCourseId();
 	console.log(89, courseId);
-	await http
-		.post(`/calls/save_message/${courseId}`, { newMessage: msg })
-		.then((response) => console.log(92, response))
-		.catch((error) => console.error(error));
+	try {
+		const res = await http.post(`/calls/save_message/${courseId}`, { newMessage: msg });
+		console.log(107, res);
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			console.error(err.message);
+		} else {
+			console.error('Unexpected Error : ', err);
+		}
+	}
 };
 
 const getCourseId = withErrorHandler(async () => {
-	http.get(`/calls/actual_course/`).then((response) => {
-		console.log(98, response);
-		return response.data.actualCourse;
-	});
+	const res = await http.get(`/calls/actual_course/`);
+	console.log(119, res);
+	return res.data.actualCourse;
 });
 
 // const getMessages = withErrorHandler(async () => {
@@ -151,7 +153,6 @@ const buildGifs = (json: any) => {
 };
 
 const getGifs = async () => {
-	console.log(114, 'getGifs');
 	gifs.value = []; // gets the gif preview
 
 	let apiKey = '12ujTlV1hDN8v0xzjdlyDq2u48DCR1qy'; // add to .env
@@ -161,7 +162,7 @@ const getGifs = async () => {
 
 	axios
 		.get(url)
-		.then(async (response) => {
+		.then(async(response) => {
 			console.log(response.data);
 			let json = await response.data;
 			console.log(json);
@@ -175,7 +176,7 @@ const getGifs = async () => {
 		});
 };
 
-const sendMessage = async () => {
+const sendMessage = () => {
 	console.log(139, 'sendMessage');
 	if (!newMessageText.value) return;
 	const newMessage = {
