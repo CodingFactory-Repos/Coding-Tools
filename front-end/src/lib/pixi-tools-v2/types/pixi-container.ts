@@ -1,6 +1,6 @@
 import { ModelGraphics } from './pixi-class';
 import { BezierHandle } from './pixi-enums';
-import { SerializedContainerAnchors } from './pixi-serialize';
+import { SerializedContainerAnchors, SerializedLineGraphic } from './pixi-serialize';
 
 export interface ElementPosition {
 	x: number;
@@ -32,6 +32,8 @@ export interface ContainerSize extends ElementSize, SerializedContainerAnchors {
 export interface InitialGraphicState extends ElementBounds {
 	child: ModelGraphics;
 }
+
+export interface InitialGraphicLineState extends InitialGraphicState, Partial<SerializedLineGraphic> {};
 
 export interface AttachedContainer {
 	containerUUID: string;
