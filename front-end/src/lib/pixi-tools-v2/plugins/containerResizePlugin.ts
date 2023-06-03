@@ -12,8 +12,9 @@ import {
 	TopWall,
 	BottomWall,
 } from '../types/pixi-enums';
-import type { PluginContainer } from '../types/pixi-aliases';
+import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import type { ContainerSize, InitialGraphicState } from '../types/pixi-container';
+import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 export interface ProportionScaleOptions {
 	parentInitialWidth: number;
@@ -304,10 +305,20 @@ export class ResizePlugin {
 				this.initialGraphicsState[n].child.x = updates.x;
 				this.initialGraphicsState[n].child.height = updates.height;
 				this.initialGraphicsState[n].child.y = updates.y;
-			}
 
-			if (this.container instanceof FramedContainer) {
-				this.container.emit('moved', null);
+				if (this.initialGraphicsState[n].child.typeId === 'framebox') {
+					const frame = this.initialGraphicsState[n].child.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						dragAttachedLines(frame, this.viewport.socketPlugin);
+						continue;
+					}
+				}
+
+				const parent = this.initialGraphicsState[n].child.parent as CanvasContainer;
+				//@ts-ignore
+				if (parent.typeId === 'wrap') continue;
+
+				dragAttachedLines(parent, this.viewport.socketPlugin);
 			}
 
 			if (this.container instanceof WrappedContainer) {
@@ -316,6 +327,12 @@ export class ResizePlugin {
 						element.emit('moved', null);
 					}
 				}
+			} else {
+				if (this.container instanceof FramedContainer) {
+					this.container.emit('moved', null);
+				}
+
+				dragAttachedLines(this.container, this.viewport.socketPlugin);
 			}
 
 			if (this.viewport.socketPlugin) {
@@ -339,6 +356,7 @@ export class ResizePlugin {
 			this.viewport.createBorder({ ...geometry, scale: this.viewport.scaled });
 			this.viewport.updateResizeHitAreas(geometry);
 			this.viewport.updateResizeHandles(geometry, false);
+			this.viewport.updateBezierHandles(geometry, false);
 
 			if (isPastBounds) {
 				const isXAxis = isPastLeft || isPastRight;

@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import AccountProfile from '@/components/account/AccountProfile.vue';
 import AccountHeader from '@/components/account/AccountHeader.vue';
@@ -55,10 +55,13 @@ const schoolProfile = computed(() => user.value.schoolProfile ?? {} as Partial<U
 const businessProfile = computed(() => user.value.businessProfile ?? {} as Partial<UserBusinessProfile>);
 const profileBackground = computed(() => profile.value?.background ?? "/template-no-image.png");
 
-onMounted(async () => {
+const route = useRoute();
+
+watch(route, val => {
+	if(val.path === "/app/account") return;
+
 	try {
-		const route = useRoute();
-		const id = route.path.match(/[^/]+$/)[0];
+		const id = val.path.match(/[^/]+$/)[0];
 		userId.value = id;
 		userStore.getRelatedUserProfile(id);
 	} catch(err) {
@@ -66,5 +69,5 @@ onMounted(async () => {
 			console.error(err);
 		}
 	}
-})
+}, { immediate: true })
 </script>
