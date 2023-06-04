@@ -3,9 +3,10 @@ import { FramedContainer } from '../class/framedContainer';
 import { WrappedContainer } from '../class/wrappedContainer';
 import { ViewportUI } from '../viewportUI';
 
-import type { InitialGraphicState } from '../types/pixi-container';
+import type { InitialGraphicLineState, InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
+import { LineBezier } from '../model/template';
 
 type FrameIntersect = {
 	frame: FramedContainer;
@@ -14,7 +15,8 @@ type FrameIntersect = {
 
 export class DragPlugin {
 	protected readonly viewport: ViewportUI;
-	protected readonly initialGraphicsState: Array<InitialGraphicState> = [];
+	protected readonly initialGraphicsState: Array<InitialGraphicState | InitialGraphicLineState> =
+		[];
 	protected readonly endHandler: (e: FederatedPointerEvent) => void;
 	protected container: PluginContainer = null;
 	protected initialCursorPosition: Point = null;
@@ -62,13 +64,27 @@ export class DragPlugin {
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
 			element.cursor = 'grabbing';
-			this.initialGraphicsState.push({
-				child: element,
-				width: element.width,
-				height: element.height,
-				x: element.x,
-				y: element.y,
-			});
+			if (element instanceof LineBezier) {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+					start: { ...element.start },
+					end: { ...element.end },
+					startControl: { ...element.startControl },
+					endControl: { ...element.endControl },
+				});
+			} else {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+				});
+			}
 		}
 
 		this.frameIntersect = [];
@@ -99,6 +115,21 @@ export class DragPlugin {
 
 			for (const element of this.initialGraphicsState) {
 				if (element === null) continue;
+
+				if (element.child instanceof LineBezier) {
+					const frame = element.child.parent?.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						const data = element as InitialGraphicLineState;
+						element.child.start.x = data.start.x + dx;
+						element.child.start.y = data.start.y + dy;
+						element.child.end.x = data.end.x + dx;
+						element.child.end.y = data.end.y + dy;
+						element.child.startControl.x = data.startControl.x + dx;
+						element.child.startControl.y = data.startControl.y + dy;
+						element.child.endControl.x = data.endControl.x + dx;
+						element.child.endControl.y = data.endControl.y + dy;
+					}
+				}
 
 				const newX = element.x + dx;
 				const nexY = element.y + dy;

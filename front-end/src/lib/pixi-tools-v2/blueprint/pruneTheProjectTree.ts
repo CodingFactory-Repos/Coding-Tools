@@ -5,7 +5,7 @@ import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
 import { PixiEventMode } from '../types/pixi-enums';
 
-export const empathyMap = (
+export const pruneTheProjectTree = (
 	viewport: ViewportUI,
 	point: Point,
 	width: number,
@@ -15,19 +15,15 @@ export const empathyMap = (
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
 
-	const centerX = width / 2;
-	const centerY = height / 2;
-	const largeZone = height * 0.38; // 100 - 38 * 2 = 24;
-	const circleRadius = width / 7;
+	const startX = point.x - width / 2;
+	const startY = point.y - height / 2;
+	const endX = point.x + width / 2;
+	const endY = point.y + height / 2;
 
-	const halfWidth = width / 2;
-	const halfHeight = height / 2;
-	const startX = point.x - halfWidth;
-	const startY = point.y - halfHeight;
-	const endX = point.x + halfWidth;
-	const endY = point.y + halfHeight;
-	const centerStartX = point.x;
-	const lineWidth = 4;
+	const centerX = width / 2;
+	const firstLineOffset = width * 0.2;
+	const foliageWidth = width * 0.9;
+	const foliageHeight = height * 0.7;
 
 	return {
 		typeId: 'frame',
@@ -36,8 +32,8 @@ export const empathyMap = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xd8d8d8,
-				alpha: 1,
+				color: 0xff00ff,
+				alpha: 0,
 				borderWidth: 0,
 				borderColor: 0x000000,
 			},
@@ -57,96 +53,10 @@ export const empathyMap = (
 			disabled: false,
 		},
 		childs: [
-			{
-				typeId: 'line',
-				properties: {
-					cursor: 'pointer',
-					eventMode: 'none',
-					tabNumberContext: frameNumber,
-					isAttachedToFrame: true,
-					frameNumber: frameNumber,
-					disabled: true,
-				},
-				childs: [
-					{
-						typeId: 'bezier',
-						properties: {
-							cursor: 'pointer',
-							eventMode: 'none',
-							color: 0x9fb6bc,
-							arrowHead: false,
-							dashed: true,
-							alpha: 1,
-						},
-						lineControl: {
-							start: { x: centerStartX, y: startY + lineWidth / 2 },
-							end: { x: centerStartX, y: endY - lineWidth / 2 },
-							startControl: { x: centerStartX, y: startY + lineWidth / 2 },
-							endControl: { x: centerStartX, y: endY - lineWidth / 2 },
-						},
-					},
-				],
-			},
-			{
-				typeId: 'line',
-				properties: {
-					cursor: 'pointer',
-					eventMode: 'none',
-					tabNumberContext: frameNumber,
-					isAttachedToFrame: true,
-					frameNumber: frameNumber,
-					disabled: true,
-				},
-				childs: [
-					{
-						typeId: 'bezier',
-						properties: {
-							cursor: 'pointer',
-							eventMode: 'none',
-							color: 0x9fb6bc,
-							arrowHead: false,
-							dashed: true,
-							alpha: 1,
-						},
-						lineControl: {
-							start: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
-							startControl: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
-						},
-					},
-				],
-			},
-			{
-				typeId: 'line',
-				properties: {
-					cursor: 'pointer',
-					eventMode: 'none',
-					tabNumberContext: frameNumber,
-					isAttachedToFrame: true,
-					frameNumber: frameNumber,
-					disabled: true,
-				},
-				childs: [
-					{
-						typeId: 'bezier',
-						properties: {
-							cursor: 'pointer',
-							eventMode: 'none',
-							color: 0x9fb6bc,
-							arrowHead: false,
-							dashed: true,
-							alpha: 1,
-						},
-						lineControl: {
-							start: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							startControl: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-						},
-					},
-				],
-			},
+			/*******************************
+				PRUNE THE TREE [SQUELETON]
+			 *******************************/
+
 			{
 				typeId: 'generic',
 				properties: {
@@ -163,15 +73,106 @@ export const empathyMap = (
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xd8d8d8,
-							alpha: 1,
-							borderWidth: 3,
-							borderColor: 0x9fb6bc,
+							color: 0x228b22,
+							alpha: 0.2,
+							borderWidth: 0,
+							borderColor: 0x000000,
 						},
 						bounds: {
-							x: point.x - circleRadius,
-							y: point.y - centerY + largeZone - circleRadius,
-							radius: circleRadius,
+							x: point.x - foliageWidth / 2,
+							y: point.y - width * 0.3,
+							radius: width * 0.3,
+							width: foliageWidth,
+							height: foliageHeight,
+						},
+					},
+				],
+			},
+			{
+				typeId: 'generic',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'static',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: false,
+				},
+				childs: [
+					{
+						typeId: 'tree',
+						properties: {
+							cursor: 'none',
+							eventMode: 'static',
+							color: 0xffffff,
+							borderWidth: 10,
+							alpha: 1,
+						},
+						bounds: {
+							x: startX,
+							y: startY,
+							width: width,
+							height: height,
+						},
+					},
+				],
+			},
+			{
+				typeId: 'line',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'bezier',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0x9fb6bc,
+							arrowHead: false,
+							dashed: true,
+							alpha: 1,
+						},
+						lineControl: {
+							start: { x: startX + firstLineOffset + 2, y: endY },
+							end: { x: endX - firstLineOffset + 2, y: endY },
+							startControl: { x: startX + firstLineOffset + 2, y: startY + firstLineOffset * 1.5 },
+							endControl: { x: endX - firstLineOffset + 2, y: startY + firstLineOffset * 1.5 },
+						},
+					},
+				],
+			},
+			{
+				typeId: 'line',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'bezier',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0x9fb6bc,
+							arrowHead: false,
+							dashed: true,
+							alpha: 1,
+						},
+						lineControl: {
+							start: { x: endX - width + 2, y: endY },
+							end: { x: endX + 2, y: endY },
+							startControl: { x: startX + 2, y: startY },
+							endControl: { x: startX + width + 2, y: startY },
 						},
 					},
 				],
