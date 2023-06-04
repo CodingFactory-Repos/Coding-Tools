@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 import { parseCookieString } from '@/common/helpers/string.helper';
 import { config } from '@/config/config';
 import { Logger as NestLogger } from '@nestjs/common';
-import { WSServiceError } from '@/common/decorators/ws.catch.decorator'; // C CV
+import { WSServiceError } from '@/common/decorators/ws.catch.decorator';
 
 export interface AuthSocket extends Socket {
 	user: JwtPayload;
