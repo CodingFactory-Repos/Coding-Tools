@@ -7,7 +7,6 @@
 					<input type="text" name="title" v-model="title" placeholder="Title :" /><br />
 					<input type="datetime-local" v-model="date" /><br />
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
-					<!--button type="button" @click="showActivity=true">new Activity</button-->
 					<activity :Activities="Activities"></activity>
 					<div>
 						<input type="text" v-model="street" placeholder="street :" /><br />
@@ -26,15 +25,10 @@
 
 <script setup lang="ts">
 import ModalOverlay from '@/components/common/Modal.vue';
-import FormOpenHouse from './FormOpenHouses.vue';
-import { useOpenHouseStore } from '@/store/modules/openHouse.store';
-import { setgroups } from 'process';
 import { ref } from 'vue';
 import activity from './NewActivity.vue';
 import participant from './NewParticipant.vue';
 import { http } from '@/api/network/axios';
-
-const openHouseStore = useOpenHouseStore();
 
 const showMetaModal = ref(false);
 

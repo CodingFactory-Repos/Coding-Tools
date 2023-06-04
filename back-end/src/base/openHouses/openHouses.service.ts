@@ -26,7 +26,7 @@ export class OpenHousesService {
 	async createOpenHouses(query) {
 		return await this.openHousesRepository.createOpenHouses(query);
 	}
-	async getAllUsers(){
+	async getAllUsers() {
 		return await this.usersRepository.getAllUsers();
 	}
 }

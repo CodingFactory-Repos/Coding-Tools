@@ -26,14 +26,14 @@ export class OpenHousesController {
 	}
 
 	@Post('/create')
-	createOpenHouses(@Req() req, @Res() res: Response) {
-		this.openHousesService.createOpenHouses(req.body).then((material) => {
+	async createOpenHouses(@Req() req, @Res() res: Response) {
+		await this.openHousesService.createOpenHouses(req.body).then((material) => {
 			res.status(200).json(material);
 		});
 	}
 	@Get('/users')
-	getUsers(@Res() res: Response) {
-		this.openHousesService.getAllUsers().then((users) => {
+	async getUsers(@Res() res: Response) {
+		await this.openHousesService.getAllUsers().then((users) => {
 			res.status(200).json(users);
 		});
 	}
