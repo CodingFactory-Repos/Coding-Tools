@@ -1,4 +1,4 @@
-import { OpenHouse, OpenHouseStore } from '../interfaces/openhouse.store';
+import { OpenHouseStore } from '../interfaces/openhouse.store';
 import { defineStore } from 'pinia';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';

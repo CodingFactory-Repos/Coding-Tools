@@ -82,8 +82,8 @@ const getOpenHouse = async () => {
 };
 
 // Call the getArticles method when the component is created
-onMounted(() => {
-	getOpenHouse();
+onMounted(async () => {
+	await getOpenHouse();
 });
 
 // Function to open the openHouse page

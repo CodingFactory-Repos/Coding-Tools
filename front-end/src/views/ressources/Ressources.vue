@@ -1,6 +1,5 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-	<!--<Ressources></Ressources>-->
 	<div>
 		<h1>Ressources</h1>
 		<div>
@@ -17,7 +16,6 @@
 </template>
 
 <script lang="ts">
-import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { defineComponent } from 'vue';
 import CoursPage from '@/components/RessourcesComponents/Cours.vue';
 import OpenHousesPage from '@/components/RessourcesComponents/OpenHouses.vue';
