@@ -1,4 +1,7 @@
+import { elavatorPitch } from '@/lib/pixi-tools-v2/blueprint/elevatorPitch';
 import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
+import { impactMapping } from '@/lib/pixi-tools-v2/blueprint/impactMapping';
+import { personas } from '@/lib/pixi-tools-v2/blueprint/personas';
 import { pruneTheProjectTree } from '@/lib/pixi-tools-v2/blueprint/pruneTheProjectTree';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
@@ -47,10 +50,10 @@ export interface AgilityTemplateMetaDetails {
 }
 
 export const getAgileBlueprints = {
-	elevatorpitch: null,
+	elevatorpitch: elavatorPitch,
 	empathymap: empathyMap,
-	impactmapping: null,
-	personas: null,
+	impactmapping: impactMapping,
+	personas: personas,
 	prunetheprojecttree: pruneTheProjectTree,
 };
 
