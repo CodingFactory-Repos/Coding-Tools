@@ -9,7 +9,7 @@
       <div tabindex="-1" class="relative top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
           <div class="flex items-center mx-auto">
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-              <h2>title</h2>
+              <h1>{{ title }}</h1>
           </p>
           <button 
             @click.prevent="toggle()" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -29,7 +29,7 @@
         <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
           <h2>About this coding tutorial</h2>
           <div>Last updated : {{ date }}</div>
-          <!-- <div>Redacted by : {{ user.profile.email }}</div> -->
+          <div>Redacted by : {{ owner }}</div>
         </div>
 
         <div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
@@ -114,6 +114,9 @@ const authStore = useAuthStore();
 const user = computed(() => authStore.user);
 
 if (!props.markdown){
+
+  console.log('we in without props')
+
   // get id from url
   const _id = computed(() => {
     const url = window.location.href;
@@ -124,14 +127,23 @@ if (!props.markdown){
   // get article by id
   const getArticleById = async (_id: string) => {
     await articleStore.getArticleById(_id);
-    srcMarkdown.value = oneItems.value.descriptions;
+    srcMarkdown.value = oneItems.value.content;
+    date.value = oneItems.value.date
+    title.value = oneItems.value.title
+
+    renderMarkdown()
   };
 
   // get article by id on mounted
   onMounted(() => {
     getArticleById(_id.value);
-    srcMarkdown.value = oneItems.value.descriptions;
+    srcMarkdown.value = oneItems.value.content;
+    date.value = oneItems.value.date
+    title.value = oneItems.value.title
+
+    renderMarkdown()
   });
+
 }
 
 const formatDate = (date: Date) => {
@@ -143,8 +155,9 @@ const formatDate = (date: Date) => {
 };
 
 const step = ref(0)
-const title = ref('')
-const date = ref(Date())
+const title = ref('Your title here')
+const date = ref('The date it was uploaded')
+const owner = ref('Your email')
 
 // visuals
 const isUserPanelOpen = ref(false)
@@ -175,7 +188,7 @@ const renderMarkdown = () => {
                 highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
             }
 
-            return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
+            return `<pre class='hljs overflow-x-scroll'><span class=''>${lang}</span></br><code class="${lang}">${highlightedCode}</code></pre>`
         },
     });
 
@@ -260,7 +273,7 @@ const setStep = (i) => {
   .backBtn {
     position: absolute;
     bottom: 5%;
-    left: 16%;
+    left: 10%;
   }
 
   .nextBtn {
