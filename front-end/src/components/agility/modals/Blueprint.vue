@@ -48,10 +48,10 @@ const beforeModalClose = () => {
 }
 
 const setBlueprintType = (type: LitteralBlueprintTypes) => {
-	// if(type === 'personas') {
-	// 	openPersonaModal();
-	// 	return;
-	// }
+	if(type === 'personas') {
+		openPersonaModal();
+		return;
+	}
 
 	projectStore.deferredBlueprint = type;
 	projectStore.setBlueprintEvent('pointer');
