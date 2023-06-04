@@ -101,7 +101,7 @@ import { useAuthStore } from '@/store/modules/auth.store';
 
 // use router
 import { useRouter } from 'vue-router';
-import { userInfo } from 'os';
+
 const router = useRouter();
 
 const props = defineProps(['markdown'])
@@ -210,7 +210,7 @@ const renderMarkdown = () => {
             formatedArray.value[indexArray.value].push({value: line})
         }
         else if (line.startsWith('<h2>')) {
-            if (firstSection.value == true) {
+            if (firstSection.value) {
                 firstSection.value = false
                 formatedArray.value[indexArray.value].push({value: line})
                 headers.value.push(getSubstring(line, '>', '<'))
