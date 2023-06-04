@@ -21,6 +21,14 @@ export interface StudentIdObject {
 	studentId: string;
 }
 
+export interface MessageObject {
+	type: string;
+	text: string;
+	sender_id: number;
+	sender_name: string;
+	date: Date;
+}
+
 export interface AbsencesParams {
 	supervisor: User;
 	attachments: string[];

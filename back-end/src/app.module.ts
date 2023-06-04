@@ -22,6 +22,7 @@ import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
+import { ChatModule } from '@/external-modules/chat/chat.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
@@ -44,6 +45,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 		OpenHousesModule,
 		ProjectsModule,
 		RetrospectivesModule,
+		ChatModule,
 		ScheduleModule.forRoot(),
 	],
 	controllers: [AppController],
