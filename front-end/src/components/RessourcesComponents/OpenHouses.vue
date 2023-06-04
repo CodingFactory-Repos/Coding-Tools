@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/require-v-for-key -->
 <template>
 	<div>
 		<div class="text-center pt-4">
@@ -21,7 +22,7 @@
 					<div class="pt-3 pb-2">
 						<span
 							class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-							>{{ item.title }}</span
+							>{{ formatDate(item.date) }}</span
 						>
 					</div>
 					<div class="pt-2 pb-5">
@@ -50,7 +51,7 @@
 									fill-rule="evenodd"
 									d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
 									clip-rule="evenodd"
-								></path>
+								/>
 							</svg>
 						</button>
 					</div>
@@ -88,7 +89,17 @@ onMounted(() => {
 
 // Function to open the openHouse page
 const openOpenHouse = (id: string) => {
-	router.push({ name: 'OpenHouse', params: { id } });
+	router.push(`/app/ressource/openhouse/${id}`);
+};
+
+// Function to format the date
+const formatDate = (date) => {
+	const options = {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	} as Intl.DateTimeFormatOptions;
+	return new Date(date).toLocaleDateString('fr-FR', options);
 };
 </script>
 

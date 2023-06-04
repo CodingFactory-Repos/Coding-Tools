@@ -124,7 +124,24 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-			{ path: 'ressource', component: () => import('../views/ressources/Ressources.vue') },
+
+			{
+				path: 'ressource',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/Ressources.vue'),
+					},
+					{
+						path: 'openhouse',
+						component: () => import('../views/OpenHouses.vue'),
+					},
+					{
+						path: 'openhouse/:id',
+						component: () => import('../views/OpenHousesDetails.vue'),
+					},
+				],
+			},
 		],
 		meta: {
 			requiresAuth: true,

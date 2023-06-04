@@ -11,6 +11,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 					_id: '',
 					title: '',
 					picture: '',
+					date: '',
 					schedule: [
 						{
 							time: '',
@@ -37,6 +38,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 			oneItems: {
 				_id: '',
 				title: '',
+				date: '',
 				picture: '',
 				schedule: [
 					{
@@ -60,6 +62,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 				description: '',
 				project: '',
 			},
+			idOpenHouse: '',
 		};
 	},
 	actions: {

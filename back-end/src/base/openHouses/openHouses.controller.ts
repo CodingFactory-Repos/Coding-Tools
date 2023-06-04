@@ -17,9 +17,8 @@ export class OpenHousesController {
 	}
 
 	@Get('/:id')
-	getOpenHouseById(@Req() _req: Request, @Res() res: Response) {
-		this.openHousesService.getAllHouses().then((openHouses) => {
-			return res.status(201).json(openHouses);
-		});
+	async getOpenHouseById(@Req() req: Request, @Res() res: Response) {
+		const openHouse = await this.openHousesService.getOpenHouseById(req.params.id);
+		return res.status(201).json(openHouse);
 	}
 }
