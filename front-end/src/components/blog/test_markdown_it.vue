@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
 		<input type="file" @change="handleFileChange" accept=".md" />
     </div>
@@ -95,5 +95,5 @@ const readFile = async (file) => {
 </script>
 
 <style scoped>
-    @import 'node_modules/highlight.js/styles/atom-one-dark.css';
-</style>
+    /* @import 'node_modules/highlight.js/styles/atom-one-dark.css'; */
+</style> -->
