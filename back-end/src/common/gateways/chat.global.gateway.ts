@@ -27,9 +27,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 	@SubscribeMessage('message')
 	async handleMessage(client: AuthSocket, args) {
-		console.log(30, args);
 		this.messages.unshift(args);
-		console.log(32, this.messages[0]);
 		client.to(client.roomId).emit('peer-chat-message', this.messages[0]);
 	}
 
