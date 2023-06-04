@@ -1,95 +1,97 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<img
-		class="object-cover h-48 w-96 rounded-t-lg"
-		:src="
-			item.picture && item.picture != ''
-				? item.picture
-				: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
-		"
-		alt=""
-	/>
-	<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 left-2">
-		<button
-			type="button"
-			@click="deleteArticle(item._id)"
-			class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-		>
-			<DeleteLogo />
-		</button>
-	</div>
-	<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 right-2">
-		<button
-			type="button"
-			@click="editArticle(item._id)"
-			class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-xs p-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-		>
-			<Edit class="!fill-light-primary" />
-		</button>
-	</div>
-	<div class="pt-3 pb-2">
-		<span
-			class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-			>{{ item.type }}
-		</span>
-	</div>
-	<div class="pt-2 pb-5">
-		<a href="#">
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-				{{ item.title ? item.title : 'Pas de titre spécifié' }}
-			</h5>
-		</a>
-		<p
-			v-html="renderMarkdown()"
-			class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
-		></p>
-	</div>
-	<div class="pt-2 pb-5 flex flex-row justify-center items-center">
-		<button
-			type="button"
-			@click="addLike(item._id)"
-			class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center mr-2 dark:text-blue-500"
-		>
-			<div v-if="item.likes" class="flex flex-row justify-center items-center">
-				<div v-if="hasUserLiked">
-					<SolidLike />
+	<div class="boxShadow">
+		<img
+			class="object-cover h-48 w-96 rounded-t-lg"
+			:src="
+				item.picture && item.picture != ''
+					? item.picture
+					: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
+			"
+			alt=""
+		/>
+		<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 left-2">
+			<button
+				type="button"
+				@click="deleteArticle(item._id)"
+				class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+			>
+				<DeleteLogo />
+			</button>
+		</div>
+		<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+			<button
+				type="button"
+				@click="editArticle(item._id)"
+				class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-xs p-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+			>
+				<Edit class="!fill-light-primary" />
+			</button>
+		</div>
+		<div class="pt-3 pb-2">
+			<span
+				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+				>{{ item.type }}
+			</span>
+		</div>
+		<div class="pt-2 pb-5">
+			<a href="#">
+				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+					{{ item.title ? item.title : 'Pas de titre spécifié' }}
+				</h5>
+			</a>
+			<p
+				v-html="renderMarkdown()"
+				class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
+			></p>
+		</div>
+		<div class="pt-2 pb-5 flex flex-row justify-center items-center">
+			<button
+				type="button"
+				@click="addLike(item._id)"
+				class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center mr-2 dark:text-blue-500"
+			>
+				<div v-if="item.likes" class="flex flex-row justify-center items-center">
+					<div v-if="hasUserLiked">
+						<SolidLike />
+					</div>
+					<div v-else>
+						<OutlineLike />
+					</div>
+
+					<span v-if="item.likes.length > 0" class="ml-2">{{ item.likes.length }}</span>
 				</div>
 				<div v-else>
 					<OutlineLike />
 				</div>
+			</button>
+			<button
+				type="button"
+				@click="openArticle(item._id)"
+				class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+			>
+				Lire l'article
+			</button>
+			<button
+				type="button"
+				@click="addDislike(item._id)"
+				class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center ml-2 dark:text-blue-500"
+			>
+				<div v-if="item.dislikes" class="flex flex-row justify-center items-center">
+					<span v-if="item.dislikes.length > 0" class="mr-2">{{ item.dislikes.length }}</span>
 
-				<span v-if="item.likes.length > 0" class="ml-2">{{ item.likes.length }}</span>
-			</div>
-			<div v-else>
-				<OutlineLike />
-			</div>
-		</button>
-		<button
-			type="button"
-			@click="openArticle(item._id)"
-			class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-		>
-			Lire l'article
-		</button>
-		<button
-			type="button"
-			@click="addDislike(item._id)"
-			class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center ml-2 dark:text-blue-500"
-		>
-			<div v-if="item.dislikes" class="flex flex-row justify-center items-center">
-				<span v-if="item.dislikes.length > 0" class="mr-2">{{ item.dislikes.length }}</span>
-
-				<div v-if="hasUserDisliked">
-					<SolidDislike />
+					<div v-if="hasUserDisliked">
+						<SolidDislike />
+					</div>
+					<div v-else>
+						<OutlineDislike />
+					</div>
 				</div>
 				<div v-else>
 					<OutlineDislike />
 				</div>
-			</div>
-			<div v-else>
-				<OutlineDislike />
-			</div>
-		</button>
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -97,7 +99,6 @@
 import { computed, onMounted, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
-import { useUserStore } from '@/store/modules/user.store';
 import { useRouter } from 'vue-router';
 import MarkdownIt from 'markdown-it';
 import Swal from 'sweetalert2';
@@ -127,9 +128,6 @@ const articleStore = useArticleStore();
 const authStore = useAuthStore();
 const user = authStore.user;
 
-const userStore = useUserStore();
-const relatedUserProfile = userStore.relatedUserProfile;
-
 const router = useRouter();
 
 // Fetch the articles
@@ -141,11 +139,6 @@ const getArticles = async () => {
 	} else {
 		markdown.value = props.item.descriptions;
 	}
-};
-
-const getUserById = async (id: string) => {
-	await userStore.getRelatedUserProfile(id);
-	console.log(userStore.relatedUserProfile);
 };
 
 const addLike = async (id: string) => {
@@ -210,7 +203,6 @@ const hasUserDisliked = computed(() => {
 // Call the getArticles method when the component is created
 onMounted(() => {
 	getArticles();
-	getUserById(props.item.owner);
 });
 
 // function to check if user is participant

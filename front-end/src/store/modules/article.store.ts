@@ -41,11 +41,8 @@ export const useArticleStore = defineStore('article', {
 						firstName: '',
 						lastName: '',
 						title: '',
-						descriptions: [
-							{
-								value: '',
-							},
-						],
+						descriptions: '',
+						picture: '',
 						date: new Date(),
 					},
 				],

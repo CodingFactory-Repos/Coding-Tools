@@ -33,8 +33,7 @@ export interface Comments {
 	firstName: string;
 	lastName: string;
 	title: string;
-	descriptions: {
-		value: string;
-	}[];
+	descriptions: string;
 	date: Date;
+	picture?: string;
 }

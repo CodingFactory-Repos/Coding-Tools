@@ -78,6 +78,7 @@ const tabs = ref([
 	{ id: 'tutos', label: 'Tutoriels' },
 	{ id: 'events', label: 'Événements' },
 	{ id: 'liked', label: 'Likes' },
+	{ id: 'participate', label: 'Participations' },
 ]);
 
 const activeTab = ref('infos');
@@ -105,6 +106,12 @@ const filteredItems = (tabId) => {
 		case 'liked':
 			return items.value.filter(
 				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+			);
+		case 'participate':
+			return items.value.filter(
+				(item) =>
+					item.participants &&
+					item.participants.some((participant) => participant.id === user.value._id),
 			);
 		default:
 			return [];
