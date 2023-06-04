@@ -47,12 +47,12 @@ export class RetrospectivesController {
 	}
 
 	@Post('/newPostit')
-	newPostit(@Res() res: Response, @Body() body: Body) {
+	@UseGuards(JwtAuthGuard)
+	async newPostit(@Res() res: Response, @Body() body: Body, @Jwt() userId: ObjectId) {
 		// TODO: AFTER
 		const postit = body as Postit;
-		const randomId = generateCodeToken();
-		postit.id = randomId;
-		return res.status(201).json({ newPostit: postit });
+		const newPostit = await this.retrospectivesService.createNewPostit(postit, userId);
+		return res.status(201).json({ newPostit: newPostit });
 	}
 
 	@Post('/participants')

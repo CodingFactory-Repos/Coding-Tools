@@ -62,6 +62,7 @@ export interface Postit {
 	value?: string;
 	type?: number;
 	visible?: boolean;
+	sylable?: string;
 }
 
 export interface UserDisconnect {

@@ -3,7 +3,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { RetrospectivesRepository } from 'src/base/retrospectives/retrospectives.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { Retrospective } from './interfaces/retrospectives.interface';
+import { Postit, Retrospective } from './interfaces/retrospectives.interface';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
@@ -57,5 +57,17 @@ export class RetrospectivesService {
 		const update = { $set: { participants: retro.participants } };
 
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+
+	async createNewPostit(postit: Postit, userId: ObjectId) {
+		const user = await this.usersRepository.findOne({ _id: userId})
+
+		if (user && user.profile.firstName && user.profile.lastName) {
+			postit.sylable = user.profile.firstName[0] + user.profile.lastName[0]
+		};
+
+		const randomId = generateCodeToken();
+		postit.id = randomId;
+		return postit;
 	}
 }
