@@ -19,6 +19,7 @@
 						:key="gif.id"
 						class="w-[200px] h-[200px] z-1000"
 						@click="sendGifMessage(gif)"
+						alt="gif"
 					/>
 				</div>
 				<input
@@ -72,11 +73,7 @@ socket.on('peer-connected', (id: string) => {
 
 socket.on('peer-chat-message', (data: Object) => {
 	let msg = data;
-	addMessage(msg)
-		.then((res) => {
-			console.log(res);
-		})
-		.catch((err) => console.error(193, err));
+	addMessage(msg);
 });
 
 onMounted(async () => {
@@ -93,7 +90,7 @@ onUnmounted(() => {
 
 /* METHODS */
 
-const addMessage = async (msg: Object) => {
+const addMessage = (msg: Object) => {
 	messages.value.unshift(msg);
 };
 
