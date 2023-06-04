@@ -1,4 +1,10 @@
-import { createRetro, newPostit, tryGetAllRetro, tryGetCurrentRetro, tryUpdateParticipants } from '@/api/retrospective-req';
+import {
+	createRetro,
+	newPostit,
+	tryGetAllRetro,
+	tryGetCurrentRetro,
+	tryUpdateParticipants,
+} from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
 	Postit,
@@ -16,7 +22,7 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	userCursors: [],
 	allRetros: [],
 	isSideBar: false,
-	inputSearch: "",
+	inputSearch: '',
 	dateSearch: 0,
 	isRetroFinished: false,
 });
@@ -131,15 +137,13 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.allRetros = resp.data.retrospectives;
 		},
 		async participantJoin(this: RetrospectiveStore, email: string) {
-			const isUserHere = this.currentRetro.participants.findIndex(el => el === email)
-			if (isUserHere === -1)
-				this.currentRetro.participants.push(email);
+			const isUserHere = this.currentRetro.participants.findIndex((el) => el === email);
+			if (isUserHere === -1) this.currentRetro.participants.push(email);
 			await tryUpdateParticipants(this.currentRetro);
 		},
 		async participantLeave(this: RetrospectiveStore, user: UserDisconnect) {
-			const findUser = this.currentRetro.participants.findIndex(el => el === user.email);
-			if (findUser !== -1)
-				this.currentRetro.participants.splice(findUser, 1);
+			const findUser = this.currentRetro.participants.findIndex((el) => el === user.email);
+			if (findUser !== -1) this.currentRetro.participants.splice(findUser, 1);
 		},
 		tryToggleSideBar(this: RetrospectiveStore) {
 			this.isSideBar = !this.isSideBar;
@@ -162,13 +166,11 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.currentRetro.isRetroEnded = false;
 		},
 		lockRetro(this: RetrospectiveStore, locked: boolean) {
-			this.currentRetro.isLocked = locked
+			this.currentRetro.isLocked = locked;
 		},
 		// @@@@@@@@@@ TIMER RETRO @@@@@@@@@@@@@@
 		runningTimer(this: RetrospectiveStore) {
-			// const timerStore = useTimerStore();
 			this.currentRetro.isTimerRunning = true;
-			// this.currentRetro.timerInterval = setInterval(() => (timerStore.timePassed += 1), 1000);
 		},
 		stopingTimer(this: RetrospectiveStore) {
 			this.currentRetro.isTimerRunning = false;
@@ -178,7 +180,7 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.currentRetro.timePassed = time;
 		},
 		resetTimer(this: RetrospectiveStore) {
-			this.currentRetro.timePassed = 0
-		}
+			this.currentRetro.timePassed = 0;
+		},
 	},
 });

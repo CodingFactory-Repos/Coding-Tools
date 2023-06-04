@@ -1,15 +1,13 @@
-
-
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>,
-	tempMovingPostit: Postit,
-	currentRetro: Retrospective
-	userCursors: Array<UserCursor>
-	allRetros: Array<Retrospective>
-	isSideBar: boolean
-	inputSearch: string
-	dateSearch?: number
-	isRetroFinished?: boolean
+	privatePostit: Array<Postit>;
+	tempMovingPostit: Postit;
+	currentRetro: Retrospective;
+	userCursors: Array<UserCursor>;
+	allRetros: Array<Retrospective>;
+	isSideBar: boolean;
+	inputSearch: string;
+	dateSearch?: number;
+	isRetroFinished?: boolean;
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -34,15 +32,15 @@ export interface RetrospectiveStore {
 }
 
 export interface Retrospective {
-	_id?: string
-	slug?: string
-	title?: string
-	optionTemplate?: number
-	participants?: Array<string>
-	postits?: Postits
-	createdAt?: Date
-	endedAt?: Date | null
-	creator?: string
+	_id?: string;
+	slug?: string;
+	title?: string;
+	optionTemplate?: number;
+	participants?: Array<string>;
+	postits?: Postits;
+	createdAt?: Date;
+	endedAt?: Date | null;
+	creator?: string;
 	isRetroEnded?: boolean;
 	isLocked?: boolean;
 	isTimerRunning?: boolean;
