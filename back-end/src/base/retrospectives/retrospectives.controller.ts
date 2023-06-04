@@ -3,7 +3,6 @@ import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.service';
-import { generateCodeToken } from '@/common/helpers/string.helper';
 import { Postit, Retrospective } from './interfaces/retrospectives.interface';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
