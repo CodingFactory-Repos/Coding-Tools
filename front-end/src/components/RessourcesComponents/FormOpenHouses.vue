@@ -26,8 +26,6 @@
 <script setup lang="ts">
 import ModalOverlay from '@/components/common/Modal.vue';
 import { ref } from 'vue';
-import activity from './NewActivity.vue';
-import participant from './NewParticipant.vue';
 import { http } from '@/api/network/axios';
 
 const showMetaModal = ref(false);
