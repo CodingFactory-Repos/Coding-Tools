@@ -9,7 +9,9 @@
 	<div>
 		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="2xl">
 			<template #header>
-				<h2 class="text-lg font-medium text-gray-900 dark:text-white">Liste des participants</h2>
+				<h2 class="text-lg font-medium text-gray-900 dark:text-white">
+					Liste des participants ({{ oneItems.participants.length }})
+				</h2>
 			</template>
 			<template #body>
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
