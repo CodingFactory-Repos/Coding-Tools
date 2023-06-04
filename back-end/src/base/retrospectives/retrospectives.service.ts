@@ -64,7 +64,7 @@ export class RetrospectivesService {
 
 		if (user && user.profile.firstName && user.profile.lastName) {
 			postit.sylable = user.profile.firstName[0] + user.profile.lastName[0]
-		};
+		}
 
 		const randomId = generateCodeToken();
 		postit.id = randomId;
