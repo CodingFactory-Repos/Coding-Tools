@@ -44,8 +44,6 @@ export const elavatorPitch = (
 			frameNumber: frameNumber,
 			disabled: false,
 		},
-		childs: [
-
-		]
-	}
-}
+		childs: [],
+	};
+};

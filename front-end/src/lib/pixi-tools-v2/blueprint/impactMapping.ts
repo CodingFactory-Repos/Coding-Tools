@@ -24,8 +24,8 @@ export const impactMapping = (
 
 	const quarter = width / 4;
 	const firstQuarterX = startX + quarter;
-	const secondQuarterX = startX + (quarter*2);
-	const thirdQuarterX = startX + (quarter*3);
+	const secondQuarterX = startX + quarter * 2;
+	const thirdQuarterX = startX + quarter * 3;
 	const lineWidth = 4;
 
 	const tableLineY = startY + width / 10;
@@ -37,7 +37,7 @@ export const impactMapping = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xD8D8D8,
+				color: 0xd8d8d8,
 				alpha: 1,
 				borderWidth: 0,
 				borderColor: 0x000000,
@@ -178,6 +178,6 @@ export const impactMapping = (
 					},
 				],
 			},
-		]
-	}
-}
+		],
+	};
+};

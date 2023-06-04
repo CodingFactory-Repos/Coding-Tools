@@ -81,7 +81,7 @@ export class LineBezier extends ModelGraphics {
 			this.timer = null;
 		}
 
-		if(this.eventMode !== 'none') {
+		if (this.eventMode !== 'none') {
 			this.timer = setTimeout(() => {
 				this.getBounds();
 				this.perfectPolygonLine();

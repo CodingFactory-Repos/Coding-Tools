@@ -44,8 +44,6 @@ export const personas = (
 			frameNumber: frameNumber,
 			disabled: false,
 		},
-		childs: [
-
-		]
-	}
-}
+		childs: [],
+	};
+};

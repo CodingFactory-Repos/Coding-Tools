@@ -33,7 +33,9 @@ export interface InitialGraphicState extends ElementBounds {
 	child: ModelGraphics;
 }
 
-export interface InitialGraphicLineState extends InitialGraphicState, Partial<SerializedLineGraphic> {}
+export interface InitialGraphicLineState
+	extends InitialGraphicState,
+		Partial<SerializedLineGraphic> {}
 
 export interface AttachedContainer {
 	containerUUID: string;

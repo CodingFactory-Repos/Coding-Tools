@@ -15,7 +15,8 @@ type FrameIntersect = {
 
 export class DragPlugin {
 	protected readonly viewport: ViewportUI;
-	protected readonly initialGraphicsState: Array<InitialGraphicState | InitialGraphicLineState> = [];
+	protected readonly initialGraphicsState: Array<InitialGraphicState | InitialGraphicLineState> =
+		[];
 	protected readonly endHandler: (e: FederatedPointerEvent) => void;
 	protected container: PluginContainer = null;
 	protected initialCursorPosition: Point = null;
@@ -63,17 +64,17 @@ export class DragPlugin {
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
 			element.cursor = 'grabbing';
-			if(element instanceof LineBezier) {
+			if (element instanceof LineBezier) {
 				this.initialGraphicsState.push({
 					child: element,
 					width: element.width,
 					height: element.height,
 					x: element.x,
 					y: element.y,
-					start: {...element.start},
-					end: {...element.end},
-					startControl: {...element.startControl},
-					endControl: {...element.endControl},
+					start: { ...element.start },
+					end: { ...element.end },
+					startControl: { ...element.startControl },
+					endControl: { ...element.endControl },
 				});
 			} else {
 				this.initialGraphicsState.push({

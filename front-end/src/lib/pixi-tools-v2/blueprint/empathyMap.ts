@@ -29,7 +29,6 @@ export const empathyMap = (
 	const centerStartX = point.x;
 	const lineWidth = 4;
 
-
 	return {
 		typeId: 'frame',
 		background: {
@@ -37,7 +36,7 @@ export const empathyMap = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xD8D8D8,
+				color: 0xd8d8d8,
 				alpha: 1,
 				borderWidth: 0,
 				borderColor: 0x000000,
@@ -164,7 +163,7 @@ export const empathyMap = (
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xD8D8D8,
+							color: 0xd8d8d8,
 							alpha: 1,
 							borderWidth: 3,
 							borderColor: 0x9fb6bc,
