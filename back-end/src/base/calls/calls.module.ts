@@ -9,10 +9,12 @@ import { CallsService } from 'src/base/calls/calls.service';
 import { CallsController } from 'src/base/calls/calls.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from '@/config/config';
+import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
 
 @Module({
 	imports: [
 		DatabaseModule,
+		MailjetModule,
 		JwtModule.register({
 			secret: config.jwt.secret,
 			signOptions: { expiresIn: '3min' },

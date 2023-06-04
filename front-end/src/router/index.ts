@@ -124,6 +124,7 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+			{ path: 'ressource', component: () => import('../views/ressources/Ressources.vue') },
 		],
 		meta: {
 			requiresAuth: true,
