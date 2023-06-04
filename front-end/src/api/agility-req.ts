@@ -40,7 +40,7 @@ export const apiTryGetTemplatesMeta = () => {
 					url: 'https://www.imagescreations.fr/wp-content/uploads/persona_emma-1200x800.jpg',
 					name: 'personas',
 					isNew: true,
-					type: 'impactmapping',
+					type: 'personas',
 				},
 				{
 					key: 'something',
