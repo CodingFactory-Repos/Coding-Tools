@@ -6,7 +6,7 @@
 		<div class="text-center flex items-center justify-center max-w-full h-full">
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 				<div
-					v-for="item in items"
+					v-for="item in this.items"
 					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 				>
 					<img
@@ -64,6 +64,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useOpenHouseStore } from '@/store/modules/openHouse.store';
+
 
 // Use the openHouses store
 const openHousesStore = useOpenHouseStore();

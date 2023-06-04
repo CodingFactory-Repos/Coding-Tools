@@ -29,6 +29,7 @@
                 <input type="text" v-model="search" placeholder="Rechercher un cours"
                     class="border-2 border-black m-4 inline-block p-2 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent w-full">
             </div>
+    
             <div>
                 <div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -86,6 +87,7 @@ const course = ref([]);
 
 
 http.get('/courses').then((response) => {
+   // console.log(response.data);  
     course.value = response.data
 })
 

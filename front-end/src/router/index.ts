@@ -92,7 +92,7 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 
-			{ 
+			/*{ 
 				path: 'courses',
 				children:[
 					{
@@ -104,7 +104,7 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../components/courses/CoursesDetail.vue')
 					}
 				]
-			},
+			},*/
 			{ path: 'blog', component: () => import('../views/AddArticleView.vue') },
 
 			{

@@ -25,6 +25,7 @@ export const useCourseStore = defineStore('course', {
         getAllCourses: withErrorHandler(async function (this: CourseStore) {
             this.courseLoading = true;
             const { data } = await http.get('/courses');
+            console.log(data);
             this.courses = data.courses;
             this.courseLoading = false;
         }),
