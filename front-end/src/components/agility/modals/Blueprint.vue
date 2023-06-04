@@ -17,11 +17,13 @@
 			</div>
 		</template>
 	</ModalOverlay>
+	<PersonaModal v-if="isPersonaModalOpen" @close="closePersonaModal"/>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue';
 
+import PersonaModal from '@/components/agility/modals/Persona.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import AgilityTemplateCard from '@/components/agility/cards/AgilityTemplateCard.vue';
@@ -33,9 +35,12 @@ const agilityStore = useAgilityStore();
 const projectStore = useProjectStore();
 const metaTemplates = computed(() => agilityStore.metaTemplates);
 const showBlueprintModal = ref(false);
+const isPersonaModalOpen = ref(false);
 
 const openBlueprintModal = () => showBlueprintModal.value = true;
 const closeBlueprintModal = () => showBlueprintModal.value = false;
+const openPersonaModal = () => isPersonaModalOpen.value = true;
+const closePersonaModal = () => isPersonaModalOpen.value = false;
 
 const beforeModalClose = () => {
 	closeBlueprintModal();
@@ -43,6 +48,11 @@ const beforeModalClose = () => {
 }
 
 const setBlueprintType = (type: LitteralBlueprintTypes) => {
+	// if(type === 'personas') {
+	// 	openPersonaModal();
+	// 	return;
+	// }
+
 	projectStore.deferredBlueprint = type;
 	projectStore.setBlueprintEvent('pointer');
 	closeBlueprintModal();
