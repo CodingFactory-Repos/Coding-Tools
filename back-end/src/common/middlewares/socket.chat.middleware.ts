@@ -18,23 +18,23 @@ export type ChatMiddleware = (socket: Socket, next: (err?: Error) => void) => vo
 export const ChatAuthMiddleware = (jwtService: JwtService): ChatMiddleware => {
 	return (socket: AuthSocket, next) => {
 		try {
-			const cookies = socket.handshake.headers.cookie || '';
-			const tokenCookie = parseCookieString(cookies);
-			if (Object.keys(tokenCookie).length === 0)
+			const chatCookies = socket.handshake.headers.cookie || '';
+			const tokenChatCookie = parseCookieString(chatCookies);
+			if (Object.keys(tokenChatCookie).length === 0)
 				throw new Error('Could not find any cookies in the ws headers');
-			const parsedTokenCookie = JSON.parse(tokenCookie['token']);
-			const token = parsedTokenCookie['token'];
-			if (!token) throw new Error('Token is undefined');
+			const parsedTokenCookie = JSON.parse(tokenChatCookie['token']);
+			const chatToken = parsedTokenCookie['token'];
+			if (!chatToken) throw new Error('Token is undefined');
 
-			const payload = <JwtPayload>jwtService.verify(token, { secret: config.jwt.secret });
-			if (!payload?.id || !(payload?.role >= 0 && payload?.role <= 2))
+			const chatPayload = <JwtPayload>jwtService.verify(chatToken, { secret: config.jwt.secret });
+			if (!chatPayload?.id || !(chatPayload?.role >= 0 && chatPayload?.role <= 2))
 				throw new Error('The jwt content is invalid');
-			payload.id = new ObjectId(payload.id);
+			chatPayload.id = new ObjectId(chatPayload.id);
 
 			const roomId = socket.handshake.auth.roomId;
 
 			socket.roomId = roomId;
-			socket.user = payload;
+			socket.user = chatPayload;
 			next();
 		} catch (err) {
 			if (err instanceof Error) {
