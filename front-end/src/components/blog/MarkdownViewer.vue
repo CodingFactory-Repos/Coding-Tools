@@ -5,7 +5,7 @@
 
 
     <!-- <div v-if="fileContent !== ''" v-html="renderedMarkdown"></div> -->
-    <div v-if="resultArray.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
+    <div v-if="markdown.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
 
 		<!-- STICKY BAR -->
 		<div tabindex="-1" class="relative top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
@@ -85,10 +85,9 @@
 					</div>
 				</aside>
 
-
   <div>
     <button v-if="step>0" @click="step = step -= 1" class="backBtn py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white ">Back</button>
-    <button v-if="step<resultArray.length-2" @click="step=step=step+=1" class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">Next</button>
+    <button v-if="step<markdown.length-1" @click="step=step=step+=1" class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">Next</button>
   </div>
   
 </template>
@@ -96,29 +95,10 @@
 <script lang="ts">
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
-// import 'highlight.js'
-
 
 export default {
   name: 'MarkdownViewer',
-  props: ['markdown'],
-  setup(props){
-	// watchScreen() {
-    //         if (window.innerWidth <= 768) {
-    //             this.isUserPanelOpen = false
-    //         } else if (window.innerWidth >= 768 && window.innerWidth < 1280) {
-    //             this.isUserPanelOpen = false
-    //         } else if (window.innerWidth >= 1280) {
-    //             this.isUserPanelOpen = true
-    //         }
-    //     },
-      console.log(props.markdown)
-  },
-  computed: {
-    test : function(){
-      console.log(this.props.markdown)
-    }
-  },
+  props: ['markdown', 'headers'],
   data() {
     return {
 	isUserPanelOpen: false,
@@ -127,7 +107,6 @@ export default {
 		renderedMarkdown: '',
 		resultArray: [],
 		index: 0,
-		headers: [],
 		step: 0,
 		title: '',
 		right: true,
@@ -136,99 +115,97 @@ export default {
   },
   methods: {
     toggle() {
-		console.log(this.resultArray)
 			this.open = !this.open;
 		},
-	setStep (i) {
-		console.log(i)
-		this.step = i;
-	},
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.fileContent = reader.result;
-          this.renderMarkdown();
-        };
-        reader.readAsText(file);
-      }
+    setStep (i) {
+      this.step = i;
     },
-    getSubstring(str, start, end) {
-      let char1 = str.indexOf(start) + 1
-      let char2 = str.lastIndexOf(end)
-      return str.substring(char1, char2)
-    },
-    renderMarkdown() {
-      const md = new MarkdownIt({
-        highlight(code, lang) {
-        let highlightedCode = code;
+    // handleFileChange(event) {
+    //   const file = event.target.files[0];
+    //   if (file) {
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //       this.fileContent = reader.result;
+    //       this.renderMarkdown();
+    //     };
+    //     reader.readAsText(file);
+    //   }
+    // },
+    // getSubstring(str, start, end) {
+    //   let char1 = str.indexOf(start) + 1
+    //   let char2 = str.lastIndexOf(end)
+    //   return str.substring(char1, char2)
+    // },
+    // renderMarkdown() {
+    //   const md = new MarkdownIt({
+    //     highlight(code, lang) {
+    //     let highlightedCode = code;
 
-        if(hljs.getLanguage(lang)){
-            highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
-        }
+    //     if(hljs.getLanguage(lang)){
+    //         highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
+    //     }
 
-        return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
-    },
-      });
+    //     return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
+    // },
+    //   });
 
-      this.renderedMarkdown = md.render(this.fileContent);
+    //   this.renderedMarkdown = md.render(this.fileContent);
 
-      let lines = this.renderedMarkdown.split('\n')
+    //   let lines = this.renderedMarkdown.split('\n')
 
-      this.resultArray.push([])
+    //   this.resultArray.push([])
 
-      let code = '';
-      let inCodeBlock = false
+    //   let code = '';
+    //   let inCodeBlock = false
 
-      lines.forEach(line => {
-        // console.log(line)
+    //   lines.forEach(line => {
+    //     // console.log(line)
 
-        // console.log(line)
+    //     // console.log(line)
 
-        if (line.startsWith('<h1>')) {
-          this.title = this.getSubstring(line, '>', '<')
-          this.resultArray[this.index].push({value: line})
-        }
-        else if (line.startsWith('<h2>')) {
-          if (this.firstSection) {
-            this.firstSection = false
-            this.resultArray[this.index].push({value: line})
-            this.headers.push(this.getSubstring(line, '>', '<'))
-          }
-          else {
-            this.resultArray.push([]);
-            this.index++;
-            this.resultArray[this.index].push({value: line})
-            this.headers.push(this.getSubstring(line, '>', '<'))
-          }
-        }
-        else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
+    //     if (line.startsWith('<h1>')) {
+    //       this.title = this.getSubstring(line, '>', '<')
+    //       this.resultArray[this.index].push({value: line})
+    //     }
+    //     else if (line.startsWith('<h2>')) {
+    //       if (this.firstSection) {
+    //         this.firstSection = false
+    //         this.resultArray[this.index].push({value: line})
+    //         this.headers.push(this.getSubstring(line, '>', '<'))
+    //       }
+    //       else {
+    //         this.resultArray.push([]);
+    //         this.index++;
+    //         this.resultArray[this.index].push({value: line})
+    //         this.headers.push(this.getSubstring(line, '>', '<'))
+    //       }
+    //     }
+    //     else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
 
-          if (!inCodeBlock) {
-            inCodeBlock = true
-            code += line+'\n'
-          }
+    //       if (!inCodeBlock) {
+    //         inCodeBlock = true
+    //         code += line+'\n'
+    //       }
 
-          else if (line.includes('</pre>')) {
-            inCodeBlock = false
-            code += line
+    //       else if (line.includes('</pre>')) {
+    //         inCodeBlock = false
+    //         code += line
 
-            this.resultArray[this.index].push({value: code})
-            code = ''
-          }
-          else {
-            code += line+'\n'
-          }
-        }
-        else {
-          this.resultArray[this.index].push({value: line})
-        }
+    //         this.resultArray[this.index].push({value: code})
+    //         code = ''
+    //       }
+    //       else {
+    //         code += line+'\n'
+    //       }
+    //     }
+    //     else {
+    //       this.resultArray[this.index].push({value: line})
+    //     }
 
-      });
+    //   });
 
-      // console.log(this.resultArray)
-    },
+    //   // console.log(this.resultArray)
+    // },
 	openUserPanel() {
             this.isUserPanelOpen = true
             this.$nextTick(() => {
