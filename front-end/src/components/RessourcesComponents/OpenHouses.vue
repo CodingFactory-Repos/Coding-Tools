@@ -89,7 +89,7 @@ onMounted(() => {
 
 // Function to open the openHouse page
 const openOpenHouse = (id: string) => {
-	router.push(`/app/ressource/${id}`);
+	router.push(`/app/ressource/openhouse/${id}`);
 };
 
 // Function to format the date
