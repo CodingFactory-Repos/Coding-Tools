@@ -9,7 +9,6 @@ import {
 	MessageObject,
 	StudentIdObject,
 } from '@/base/calls/interfaces/calls.interface';
-// import { Course } from '@base/courses/interfaces/courses.interface';
 
 @Injectable()
 export class CallsService {

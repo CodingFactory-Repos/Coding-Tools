@@ -34,10 +34,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	async handleConnection(client: AuthSocket) {
-		console.log('am i connected ?'); // does log
-		console.log(client.roomId);
 		client.join(client.roomId);
-		console.log(42, client.rooms);
 		client.to(client.roomId).emit('peer-connected', client.id);
 	}
 

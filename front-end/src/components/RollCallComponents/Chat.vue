@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import ChatMultiMessage from './ChatMultiMessage.vue';
 import { useAuthStore } from '../../store/modules/auth.store';
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import axios, { AxiosError } from 'axios';
 import { manager } from '@/api/network/socket.io';
 import { http } from '@/api/network/axios';
@@ -99,13 +99,6 @@ const getCourseId = withErrorHandler(async () => {
 	console.log(119, res);
 	return res.data.actualCourse;
 });
-
-// const getMessages = withErrorHandler(async () => {
-// 	if (!courseId) {
-// 		await getCourseId();
-// 	}
-// 	await http.get(`/calls/get_messages/${courseId}`);
-// });
 const getDate = () => {
 	const current = new Date();
 	const date = `${current.getHours()}:${current.getMinutes()} -

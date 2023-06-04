@@ -7,12 +7,7 @@ import { config } from 'src/config/config';
 
 import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
-import { createServer } from 'http';
-import express from 'express';
-import { Server } from 'socket.io';
-import initializeChat from '@/external-modules/chat/server';
 //! Proxy settings, production only
-// import { NestExpressApplication } from '@nestjs/platform-express';
 // <NestExpressApplication>
 // app.set('trust proxy', 1);
 
