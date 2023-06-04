@@ -19,7 +19,7 @@ export default ({
 
     },
 
-})
+});
 /*
 import { computed, onMounted, ref } from 'vue';
 
@@ -98,14 +98,14 @@ const getArticleById = async (_id: string) => {
 	markdown.value = oneItems.value.descriptions;
 };*/
 
-const formatDate = (date: Date) => {
+/*const formatDate = (date: Date) => {
 	// transform date to string
 	const newDate = date.toString();
 	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
 	const timeSplited = newDate.split('T')[1].split('.')[0];
 	return `${dateSplited} at ${timeSplited}`;
 };
-
+*/
 
 
 

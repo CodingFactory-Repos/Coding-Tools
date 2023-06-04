@@ -75,24 +75,16 @@
 import AddCourse from './AddCourses.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { http } from "@/api/network/axios";
+import { useCourseStore } from '@/store/modules/course.store';
 
-
-
+const courseStore = useCourseStore();
+courseStore.getAllCourses();
 const router = useRouter()
 const showModal = ref(false)
 const startYears = ref(new Date().getFullYear());
 const endYears = ref(new Date().getFullYear() + 1);
 const search = ref('');
 const course = ref([]);
-
-
-http.get('/courses').then((response) => {
-   // console.log(response.data);  
-    course.value = response.data
-})
-
-
 
 const filteredCourseList = computed(() => {
     return course.value.filter((course) => {

@@ -3,7 +3,7 @@
 		<div v-if="userStatus==0">
 			<Courses />
 		</div>	
-		<detail/>
+
 	</div>
 </template>
 
