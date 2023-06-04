@@ -1,21 +1,29 @@
 <template>
     <div>
-        <!--div v-if="course">
-            <h1>{{ course.tag }}</h1>
-            <p>{{ course.description }}</p>
-        </div-->
-
-        <!--div v-else>
-            <p>Chargement...</p>
-        </div-->
+   
     </div>
 </template>
 
 <script lang="ts">
-/*
-import { computed, onMounted, ref } from 'vue';
+import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
 import { useCourseStore } from '@/store/modules/course.store';
+
+export default ({
+    data(){  
+        return{
+
+        };
+    },
+    methods:{
+
+    },
+
+})
+/*
+import { computed, onMounted, ref } from 'vue';
+
+
 
 
 // Use the openHouses store
@@ -42,7 +50,7 @@ onMounted(() => {
 
 //import { defineComponent } from 'vue';
 
-export default defineComponent({
+
     async beforeRouteEnter(to, from, next) {
         const store = useCourseStore();
         await store.getAllCourses();
@@ -58,25 +66,11 @@ export default defineComponent({
 
 });*/
 
-import { computed, onMounted, ref } from 'vue';
-import { useCourseStore } from '@/store/modules/course.store';
-//import { useAuthStore } from '@/store/modules/auth.store';  //authentification pour plus tard
-//import ModalOverlay from '@/components/common/Modal.vue';
 
-import Swal from 'sweetalert2';
-/*import MarkdownIt from 'markdown-it';
 
-let markdown = ref('');
-
-// create renderMarkdown method
-const renderMarkdown = () => {
-	const md = new MarkdownIt();
-	return md.render(markdown.value);
-};
-*/
 // get store
-const courseStore = useCourseStore();
-const allcourse = computed(() => courseStore.getAllCourses);
+//const courseStore = useCourseStore();
+//const allcourse = computed(() => courseStore.getAllCourses);
 
 /*const authStore = useAuthStore();
 const user = computed(() => authStore.user);*/
@@ -90,14 +84,14 @@ const closeMetaModal = () => (showModal.value = false);
 const openCommentModal = () => (showCommentModal.value = true);
 const closeCommentModal = () => (showCommentModal.value = false);
 const changeComments = () => (showComments.value = !showComments.value);
-*/
+
 // get id from url
 const _id = computed(() => {
 	const url = window.location.href;
 	const id = url.substring(url.lastIndexOf('/') + 1);
 	return id;
 });
-/*
+
 // get article by id
 const getArticleById = async (_id: string) => {
 	await articleStore.getArticleById(_id);
@@ -112,11 +106,7 @@ const formatDate = (date: Date) => {
 	return `${dateSplited} at ${timeSplited}`;
 };
 
-// get article by id on mounted
-onMounted(() => {
-	console.log(allcourse);
-//	markdown.value = oneItems.value.descriptions;
-});
+
 
 
 
