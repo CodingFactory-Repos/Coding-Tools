@@ -15,7 +15,7 @@
 					<input type="text" v-model="town" placeholder="town :"><br>		
 				</div>
 				<textarea placeholder="Description :" v-model="description"></textarea><br>
-				<participant :participants="participants" ></participant>
+				<participant :participants="participants" @clear="clearParticipants"></participant>
 				<input type="file" @change="onFileSelected" ><br>
 				<button type="submit">Submit</button>
 			</form>
@@ -85,6 +85,10 @@ const closeMetaModal = () => showMetaModal.value = false;
 			console.log(event);
 			
 		};
+
+		const clearParticipants = function(){
+			participants.splice(0, participants.length);
+		}
 //	 },
 
 
