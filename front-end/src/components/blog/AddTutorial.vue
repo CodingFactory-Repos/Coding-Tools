@@ -102,7 +102,7 @@
 		</form>
 	</div>
     <div>
-        <MarkdownViewer :markdown="formatedArray" v-bind="formatedArray"></MarkdownViewer>
+        <MarkdownViewer :markdown="formatedArray" :headers="headers" v-bind="{formatedArray, headers}" ></MarkdownViewer>
     </div>
     <!-- </div> -->
 
@@ -254,6 +254,7 @@ const renderMarkdown = () => {
       let inCodeBlock = false
       firstSection.value = true
       indexArray.value = 0
+      headers.value = []
 
       lines.forEach(line => {
 
@@ -296,12 +297,15 @@ const renderMarkdown = () => {
         }
 
       });
+      console.log(headers)
     }
 
 const getSubstring = (str, start, end) => {
-      let char1 = str.indexOf(start) + 1
-      let char2 = str.lastIndexOf(end+1)
-      return str.substring(char1, char2)
+
+    let char1 = str.indexOf(start) + 1
+    let char2 = str.lastIndexOf(end)
+
+    return str.substring(char1, char2)
 }
 </script>
 
