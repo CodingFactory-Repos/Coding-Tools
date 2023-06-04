@@ -7,6 +7,7 @@ import { config } from 'src/config/config';
 
 import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
+
 //! Proxy settings, production only
 // <NestExpressApplication>
 // app.set('trust proxy', 1);
