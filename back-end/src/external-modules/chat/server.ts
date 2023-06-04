@@ -1,8 +1,3 @@
-// const app = express();
-// const httpServer = createServer(app);
-//
-// httpServer.listen(5173);
-// const io = new Server(httpServer);
 function initializeChat(io) {
 	const messages = [];
 	io.on('connect', (socket) => {
