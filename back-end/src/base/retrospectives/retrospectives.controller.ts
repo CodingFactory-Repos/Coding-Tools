@@ -22,12 +22,8 @@ export class RetrospectivesController {
 	// TODO: DTO
 	@Post('/newRetro')
 	@UseGuards(JwtAuthGuard)
-	async newRetro(
-		@Jwt() userId: ObjectId,
-		@Res() res: Response,
-		@Body() body: Body
-		) {
-		const retro = body as unknown as Retrospective
+	async newRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: Body) {
+		const retro = body as unknown as Retrospective;
 		const retrospective = await this.retrospectivesService.newRetrospective(retro, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
@@ -57,12 +53,9 @@ export class RetrospectivesController {
 
 	@Post('/participants')
 	@UseGuards(JwtAuthGuard)
-	async updateParticipants(
-		@Res() res: Response,
-		@Body() body: Body
-		) {
-		const retro = body as unknown as Retrospective
-		await this.retrospectivesService.tryUpdateParticipants(retro)
+	async updateParticipants(@Res() res: Response, @Body() body: Body) {
+		const retro = body as unknown as Retrospective;
+		await this.retrospectivesService.tryUpdateParticipants(retro);
 
 		return res.status(201).json({ status: 'ok' });
 	}

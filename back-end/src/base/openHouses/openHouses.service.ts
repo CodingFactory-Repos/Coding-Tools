@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { OpenHousesRepository } from 'src/base/openHouses/openHouses.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
-import {ObjectId} from "mongodb";
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class OpenHousesService {
