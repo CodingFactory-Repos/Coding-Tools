@@ -1,5 +1,5 @@
 import { manager } from '@/api/network/socket.io';
-import { Postit, Postits } from '@/store/interfaces/retrospective.interface';
+import { Postit, Postits, Retrospective } from '@/store/interfaces/retrospective.interface';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { Socket } from 'socket.io-client';
 import Swal from 'sweetalert2';
@@ -78,6 +78,10 @@ function handleSocketEvents(socket: Socket) {
 	})
 
 	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@
+
+	socket.on("update-visibility", (postits: Postits) => {
+		retrospectiveStore.setSocketVisibility(postits)
+	})
 
 }
 

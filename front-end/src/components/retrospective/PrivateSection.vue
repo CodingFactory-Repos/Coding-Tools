@@ -15,6 +15,7 @@ import { useRetrospectiveStore } from '@/store/retrospective.store';
 import CreatePostit from './CreatePostit.vue';
 import UpdatePostit from './UpdatePostit.vue';
 import { computed } from 'vue';
+
 const retroStore = useRetrospectiveStore();
 const isLock = computed(() =>
 	retroStore.currentRetro.isLocked && retroStore.currentRetro.isRetroEnded
