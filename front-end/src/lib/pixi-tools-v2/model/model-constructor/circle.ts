@@ -46,8 +46,8 @@ export class Circle extends ModelGraphics {
 		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();
 
-		if(width !== undefined && width > 0) this.width = width;
-		if(height !== undefined && height > 0) this.height = height;
+		if (width !== undefined && width > 0) this.width = width;
+		if (height !== undefined && height > 0) this.height = height;
 	}
 
 	public serialized() {

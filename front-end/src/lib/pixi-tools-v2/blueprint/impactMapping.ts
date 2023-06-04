@@ -5,7 +5,7 @@ import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
 import { PixiEventMode } from '../types/pixi-enums';
 
-export const empathyMap = (
+export const impactMapping = (
 	viewport: ViewportUI,
 	point: Point,
 	width: number,
@@ -15,19 +15,20 @@ export const empathyMap = (
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
 
-	const centerX = width / 2;
-	const centerY = height / 2;
-	const largeZone = height * 0.38; // 100 - 38 * 2 = 24;
-	const circleRadius = width / 7;
-
 	const halfWidth = width / 2;
 	const halfHeight = height / 2;
 	const startX = point.x - halfWidth;
 	const startY = point.y - halfHeight;
 	const endX = point.x + halfWidth;
 	const endY = point.y + halfHeight;
-	const centerStartX = point.x;
+
+	const quarter = width / 4;
+	const firstQuarterX = startX + quarter;
+	const secondQuarterX = startX + quarter * 2;
+	const thirdQuarterX = startX + quarter * 3;
 	const lineWidth = 4;
+
+	const tableLineY = startY + width / 10;
 
 	return {
 		typeId: 'frame',
@@ -42,8 +43,8 @@ export const empathyMap = (
 				borderColor: 0x000000,
 			},
 			bounds: {
-				x: point.x - centerX,
-				y: point.y - height / 2,
+				x: startX,
+				y: startY,
 				width,
 				height,
 			},
@@ -79,10 +80,10 @@ export const empathyMap = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: centerStartX, y: startY + lineWidth / 2 },
-							end: { x: centerStartX, y: endY - lineWidth / 2 },
-							startControl: { x: centerStartX, y: startY + lineWidth / 2 },
-							endControl: { x: centerStartX, y: endY - lineWidth / 2 },
+							start: { x: firstQuarterX, y: startY + lineWidth / 2 },
+							end: { x: firstQuarterX, y: endY - lineWidth / 2 },
+							startControl: { x: firstQuarterX, y: startY + lineWidth / 2 },
+							endControl: { x: firstQuarterX, y: endY - lineWidth / 2 },
 						},
 					},
 				],
@@ -109,10 +110,10 @@ export const empathyMap = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
-							startControl: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
+							start: { x: secondQuarterX, y: startY + lineWidth / 2 },
+							end: { x: secondQuarterX, y: endY - lineWidth / 2 },
+							startControl: { x: secondQuarterX, y: startY + lineWidth / 2 },
+							endControl: { x: secondQuarterX, y: endY - lineWidth / 2 },
 						},
 					},
 				],
@@ -139,16 +140,16 @@ export const empathyMap = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							startControl: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone * 2 },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone * 2 },
+							start: { x: thirdQuarterX, y: startY + lineWidth / 2 },
+							end: { x: thirdQuarterX, y: endY - lineWidth / 2 },
+							startControl: { x: thirdQuarterX, y: startY + lineWidth / 2 },
+							endControl: { x: thirdQuarterX, y: endY - lineWidth / 2 },
 						},
 					},
 				],
 			},
 			{
-				typeId: 'generic',
+				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
 					eventMode: 'none',
@@ -159,19 +160,20 @@ export const empathyMap = (
 				},
 				childs: [
 					{
-						typeId: 'circle',
+						typeId: 'bezier',
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xd8d8d8,
+							color: 0x9fb6bc,
+							arrowHead: false,
+							dashed: true,
 							alpha: 1,
-							borderWidth: 3,
-							borderColor: 0x9fb6bc,
 						},
-						bounds: {
-							x: point.x - circleRadius,
-							y: point.y - centerY + largeZone - circleRadius,
-							radius: circleRadius,
+						lineControl: {
+							start: { x: startX + lineWidth / 2, y: tableLineY },
+							end: { x: endX - lineWidth / 2, y: tableLineY },
+							startControl: { x: startX + lineWidth / 2, y: tableLineY },
+							endControl: { x: endX - lineWidth / 2, y: tableLineY },
 						},
 					},
 				],

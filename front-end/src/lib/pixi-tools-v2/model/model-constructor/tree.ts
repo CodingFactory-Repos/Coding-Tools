@@ -41,7 +41,7 @@ export class Tree extends ModelGraphics {
 		this.height = height;
 		let maxLength = 0;
 		const diff = this.calculatePercentageDifference(width, height);
-		if(height < width) {
+		if (height < width) {
 			maxLength = (height * (1 + Math.min(diff, 0.1))) / 2;
 		} else {
 			maxLength = Math.min(width, height) / 2;
@@ -51,7 +51,7 @@ export class Tree extends ModelGraphics {
 
 		this.clear();
 		this.beginFill(0, 0);
-		this.drawRect(0,0, width, height);
+		this.drawRect(0, 0, width, height);
 		this.createFractal(width / 2, height, initialLength, -Math.PI / 2, 6);
 	}
 
