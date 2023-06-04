@@ -8,7 +8,7 @@
     <div v-if="resultArray.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
 
 		<!-- STICKY BAR -->
-		<div tabindex="-1" class="fixed top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
+		<div tabindex="-1" class="relative top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
 				<div class="flex items-center mx-auto">
 					<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
 						<h2>{{ title }}</h2>
@@ -35,7 +35,7 @@
 			</div>
 
 			<div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
-				<div v-for="(data, index) in resultArray[step]" :key="index">
+				<div v-for="(data, index) in markdown[step]" :key="index">
 					<div v-for="(line, row) in data" :key="row">
 						<div v-html="line" class="htmlData"></div>
 					</div>
@@ -57,7 +57,7 @@
         x-transition:leave-end="translate-x-full"
         @keydown.escape="window.innerWidth <= 1024 ? open = false : ''"
 
-         class="fixed inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
+         class="relative md:!fixed inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
 					<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
 						<div class="absolute right-0 p-1 transform -translate-x-full">
 							<button
@@ -93,13 +93,16 @@
   
 </template>
 
-<script>
+<script lang="ts">
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
+// import 'highlight.js'
+
 
 export default {
   name: 'MarkdownViewer',
-  setup(){
+  props: ['markdown'],
+  setup(props){
 	// watchScreen() {
     //         if (window.innerWidth <= 768) {
     //             this.isUserPanelOpen = false
@@ -109,7 +112,12 @@ export default {
     //             this.isUserPanelOpen = true
     //         }
     //     },
-
+      console.log(props.markdown)
+  },
+  computed: {
+    test : function(){
+      console.log(this.props.markdown)
+    }
   },
   data() {
     return {
@@ -176,7 +184,7 @@ export default {
       lines.forEach(line => {
         // console.log(line)
 
-        console.log(line)
+        // console.log(line)
 
         if (line.startsWith('<h1>')) {
           this.title = this.getSubstring(line, '>', '<')
@@ -197,7 +205,6 @@ export default {
         }
         else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
 
-          // console.log(line)
           if (!inCodeBlock) {
             inCodeBlock = true
             code += line+'\n'
@@ -220,7 +227,7 @@ export default {
 
       });
 
-      console.log(this.resultArray)
+      // console.log(this.resultArray)
     },
 	openUserPanel() {
             this.isUserPanelOpen = true
@@ -233,13 +240,13 @@ export default {
 </script>
 
 <style lang="scss">
-  @import 'node_modules/highlight.js/styles/atom-one-dark.css';
 
-//   .codeLab{
-//     max-width: 60%;
-//     margin: 0 auto;
-//     font-size: 17px;
-//   }
+
+  .codeLab{
+    max-width: 60%;
+    margin: 0 auto;
+    font-size: 17px;
+  }
   
   .htmlData h2 {
     line-height: 2em;
@@ -262,4 +269,65 @@ export default {
   .selected {
 	border: 3px grey;
   }
+
+  pre code.hljs {
+    display:block !important;
+    overflow-x:auto !important;
+    padding:1em !important;
+}
+
+code.hljs {
+    padding:3px 5px !important;
+}
+
+.hljs{
+    color:#abb2bf !important;
+    background:#282c34 !important;
+}
+
+.hljs-comment,.hljs-quote{
+    color:#5c6370 !important;
+    font-style:italic !important;
+}
+
+.hljs-doctag,.hljs-formula,.hljs-keyword{
+    color:#c678dd !important;
+}
+
+.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst{
+    color:#e06c75 !important;
+}
+
+.hljs-literal{
+    color:#56b6c2 !important;
+}
+
+.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string,.hljs-regexp,.hljs-string{
+    color:#98c379 !important;
+}
+
+.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable{
+    color:#d19a66 !important;
+}
+
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title{
+    color:#61aeee !important;
+}
+
+.hljs-builtin,.hljs-class .hljs-title,.hljs-title.class{
+    color:#e6c07b !important;
+}
+
+.hljs-emphasis{
+    font-style:italic !important;
+}
+
+.hljs-strong{
+    font-weight:700 !important;
+}
+
+.hljs-link{
+    text-decoration:underline !important;
+}
+
 </style>
