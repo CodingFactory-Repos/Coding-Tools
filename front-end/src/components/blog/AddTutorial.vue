@@ -115,12 +115,10 @@ import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import Swal from 'sweetalert2';
 import MarkdownViewer from './MarkdownViewer.vue'
-import MarkdownIt from 'markdown-it';
-import hljs from 'highlight.js';
 
 // use router
 import { useRouter } from 'vue-router';
-import { result } from 'lodash-es';
+
 const router = useRouter();
 
 // use the store
@@ -162,10 +160,7 @@ const mavonOptions = ref({
 })
 
 watch(content, (newContent) => {
-
     content.value = newContent
-
-    // renderMarkdown()
 })
 
 const handleFileChange = (event) => {
@@ -232,81 +227,6 @@ const addArticle = async () => {
 	type.value = '';
 	date.value = new Date();
 };
-
-// const renderMarkdown = () => {
-    
-//     const md = new MarkdownIt({
-//         highlight(code, lang) {
-//             let highlightedCode = code;
-
-//             if(hljs.getLanguage(lang)){
-//                 highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
-//             }
-
-//             return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
-//         },
-//     });
-
-//     renderedMarkdown.value = md.render(content.value);
-
-//     let lines = renderedMarkdown.value.split('\n')
-
-//     formatedArray.value = [[]]
-
-//     let code = '';
-//     let inCodeBlock = false
-//     firstSection.value = true
-//     indexArray.value = 0
-//     headers.value = []
-
-//     lines.forEach(line => {
-
-//         if (line.startsWith('<h1>')) {
-//             formatedArray.value[indexArray.value].push({value: line})
-//         }
-//         else if (line.startsWith('<h2>')) {
-//             if (firstSection.value == true) {
-//                 firstSection.value = false
-//                 formatedArray.value[indexArray.value].push({value: line})
-//                 headers.value.push(getSubstring(line, '>', '<'))
-//             }
-//             else {
-//                 formatedArray.value.push([]);
-//                 indexArray.value++;
-//                 formatedArray.value[indexArray.value].push({value: line})
-//                 headers.value.push(getSubstring(line, '>', '<'))
-//             }
-//         }
-//         else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
-
-//             if (!inCodeBlock) {
-//                 inCodeBlock = true
-//                 code += line+'\n'
-//             }
-//             else if (line.includes('</pre>')) {
-//                 inCodeBlock = false
-//                 code += line
-
-//                 formatedArray.value[indexArray.value].push({value: code})
-//                 code = ''
-//             }
-//             else {
-//                 code += line+'\n'
-//             }
-//         }
-//         else {
-//             formatedArray.value[indexArray.value].push({value: line})
-//         }
-//     });
-// }
-
-// const getSubstring = (str, start, end) => {
-
-//     let char1 = str.indexOf(start) + 1
-//     let char2 = str.lastIndexOf(end)
-
-//     return str.substring(char1, char2)
-// }
 </script>
 
 <style scoped>
