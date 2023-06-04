@@ -3,7 +3,6 @@ import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { OpenHousesService } from 'src/base/openHouses/openHouses.service';
-import { CourseIdObject } from '@/base/calls/interfaces/calls.interface';
 import { ObjectId } from 'mongodb';
 
 @Controller('openhouses')
