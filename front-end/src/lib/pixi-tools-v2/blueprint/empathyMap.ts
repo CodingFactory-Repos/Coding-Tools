@@ -18,7 +18,6 @@ export const empathyMap = (
 	const centerX = width / 2;
 	const centerY = height / 2;
 	const largeZone = height * 0.38; // 100 - 38 * 2 = 24;
-	const smallZone = height * 0.24;
 	const circleRadius = width / 7;
 
 	const halfWidth = width / 2;
@@ -28,7 +27,6 @@ export const empathyMap = (
 	const endX = point.x + halfWidth;
 	const endY = point.y + halfHeight;
 	const centerStartX = point.x;
-	const centerStartY = point.y;
 	const lineWidth = 4;
 
 
