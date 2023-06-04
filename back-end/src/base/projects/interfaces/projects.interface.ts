@@ -1,12 +1,10 @@
+import { Course } from '@/base/courses/interfaces/courses.interface';
+import { User } from '@/base/users/interfaces/users.interface';
 import { ObjectId } from 'mongodb';
-import { Course } from 'src/base/courses/interfaces/courses.interface';
-import { Group } from 'src/base/groups/interfaces/groups.interface';
 
 export interface Project {
-	_id?: ObjectId;
+	_id: ObjectId;
 	title: string;
-	description: string;
-	picture?: string;
-	group?: Group;
-	course?: Course;
+	course?: Course; //Si course est défini, le projet est un projet de cours, sinon c'est un projet personnel et creator est défini
+	creator?: User;
 }
