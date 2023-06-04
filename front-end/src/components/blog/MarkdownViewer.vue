@@ -127,16 +127,11 @@ if (!props.markdown){
   // get article by id
   const getArticleById = async (_id: string) => {
     await articleStore.getArticleById(_id);
-    srcMarkdown.value = oneItems.value.content;
-    date.value = oneItems.value.date
-    title.value = oneItems.value.title
-
-    renderMarkdown()
   };
 
   // get article by id on mounted
-  onMounted(() => {
-    getArticleById(_id.value);
+  onMounted( async () => {
+    await getArticleById(_id.value);
     srcMarkdown.value = oneItems.value.content;
     date.value = oneItems.value.date
     title.value = oneItems.value.title
