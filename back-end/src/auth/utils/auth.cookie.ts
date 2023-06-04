@@ -13,7 +13,7 @@ export const createAuthCookie = (strategy: string) => {
 export const expireAuthCookie = () => {
 	return cookie.serialize('token', '', {
 		httpOnly: true,
-		secure: true, // config.jwt.cookie.secure
+		secure: false, // config.jwt.cookie.secure
 		expires: new Date(0),
 		sameSite: 'none', // config.jwt.cookie.samesite
 		path: '/',
