@@ -61,6 +61,11 @@ export class Normalizer {
 				borderWidth: 0,
 				borderColor: 0x000000,
 			};
+
+			if (Graphic === LineBezier) {
+				attributes.properties.arrowHead = true;
+				attributes.properties.dashed = false;
+			}
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
@@ -114,7 +119,7 @@ export class Normalizer {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
 
-				if (childTypeId === 'generic' || childTypeId === 'frame') {
+				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line') {
 					const containerChildren = this.container(
 						viewport,
 						element as SerializedContainer,

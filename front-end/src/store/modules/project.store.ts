@@ -126,8 +126,8 @@ export const useProjectStore = defineStore('project', {
 			const data = generateBlueprint(
 				scene.viewport,
 				point,
-				1000,
-				800,
+				1200,
+				900,
 			) as Partial<SerializedContainer>;
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);

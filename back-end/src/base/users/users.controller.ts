@@ -65,4 +65,5 @@ export class UsersController {
 		const users = await this.usersService.getUserListOnRoom(roomId, user);
 		return res.status(200).json({ status: 'ok', users });
 	}
+	
 }
