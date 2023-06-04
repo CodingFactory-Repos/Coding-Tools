@@ -74,17 +74,15 @@ const routes: Array<RouteRecordRaw> = [
 						path: 'new/tutorial',
 						component: () => import('../views/AddTutorialView.vue'),
 					},
-					
 					{
 						path: ':id',
 						component: () => import('../views/ShowArticleView.vue'),
 					},
-					
+					{
+						path: 'tutorial/:id',
+						component: () => import('../views/MarkdownViewer.vue')
+					}
 				],
-			},
-			{
-				path: 'test',
-				component: () => import('../views/test.vue'),
 			},
 			{
 				path: 'scrum',
