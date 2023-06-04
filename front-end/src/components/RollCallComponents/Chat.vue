@@ -1,5 +1,5 @@
 <template>
-	<div class="chatbox w-1/4 max-h-[700px] flex flex-col absolute fixed bottom-1 right-1 z-100">
+	<div class="chatbox w-1/4 max-h-[700px] flex flex-col fixed bottom-1 right-2 z-100">
 		<div class="chatbox_messages h-[700px] overflow-y-scroll flex flex-col-reverse mb-8">
 			<chat-multi-message
 				v-for="message in messages"
@@ -8,10 +8,10 @@
 				:class="['message flex-col z-0']"
 			/>
 		</div>
-		<div class="chatbox_input flex-col w-full absolute fixed bottom-2">
+		<div class="chatbox_input flex-col w-full absolute bottom-2">
 			<div class="w-full">
 				<div
-					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute fixed bottom-7"
+					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute bottom-7"
 				>
 					<img
 						v-for="gif in gifs"

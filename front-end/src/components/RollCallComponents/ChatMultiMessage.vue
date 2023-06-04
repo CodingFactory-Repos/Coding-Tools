@@ -1,6 +1,6 @@
 <template>
 	<div :class="['message flex-col z-0 mb-3']" v-if="message.type == 'msg'">
-		<div :class="['message_body text-2xl font text-gray-400 text-center mb-1']">
+		<div :class="['message_body text-xl font text-gray-400 text-center mb-1']">
 			{{ message.text }}
 		</div>
 		<div class="sender text-xs font-thin text-gray-500 text-center">
