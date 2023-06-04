@@ -1,5 +1,5 @@
 <template>
-    <!-- <div id="createTutorialContainer"> -->
+    <div id="createTutorialContainer" class="flex flex-col gap-5">
         <div class="text-center max-w-full w-4/5 m-auto h-full">
 		<h2 class="text-3xl font-bold pt-5 text-gray-900">Create Tutorial</h2>
 		<form @submit.prevent="addArticle">
@@ -38,8 +38,8 @@
 					<input
                         type="text"
 						language="fr"
-						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						v-model="descriptions"
+						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						v-model="description"
 					/>
 				</div>
 			</div>
@@ -101,10 +101,10 @@
 			</div>
 		</form>
 	</div>
-    <div>
-        <MarkdownViewer :markdown="formatedArray" :headers="headers" v-bind="{formatedArray, headers}" ></MarkdownViewer>
+        <div v-if="content">
+            <MarkdownViewer :markdown="content"></MarkdownViewer>
+        </div>
     </div>
-    <!-- </div> -->
 
 </template>
 
@@ -130,8 +130,8 @@ const authStore = useAuthStore();
 // form data
 const title = ref('');
 const picture = ref('');
-const descriptions = ref('');
-const content = ref()
+const description = ref('');
+const content = ref('')
 const tags = ref('');
 const type = ref('');
 const date = ref(new Date());
@@ -162,8 +162,10 @@ const mavonOptions = ref({
 })
 
 watch(content, (newContent) => {
+
     content.value = newContent
-    renderMarkdown()
+
+    // renderMarkdown()
 })
 
 const handleFileChange = (event) => {
@@ -173,7 +175,7 @@ const handleFileChange = (event) => {
         const reader = new FileReader();
         reader.onload = () => {
             fileContent.value = reader.result;
-            content.value = reader.result
+            content.value = reader.result.toString()
         };
         reader.readAsText(file);
     }
@@ -182,7 +184,7 @@ const handleFileChange = (event) => {
 // Function to post the data to the API
 const addArticle = async () => {
 	// add verification if all the fields are filled
-	if (!title.value || !picture.value || !tags.value || !type.value || !descriptions.value) {
+	if (!title.value || !tags.value || !description.value || !content.value || !picture.value) {
 		Swal.fire({
 			title: 'You have to fill all the fields',
 			text: 'Please fill all the fields to create a new article',
@@ -197,11 +199,12 @@ const addArticle = async () => {
 	let data = {
 		owner: authStore.user._id,
 		title: title.value,
-		descriptions: descriptions.value,
+		descriptions: description.value,
         content: content.value,
-		picture: picture.value,
 		tags: tags.value,
 		type: 'tutos',
+        status: 'pending',
+        picture: picture.value,
 		date: date.value.toString(),
 	};
 
@@ -222,7 +225,7 @@ const addArticle = async () => {
 
 	//reset the form
 	title.value = '';
-	descriptions.value = '';
+	description.value = '';
     content.value = '';
 	picture.value = '';
 	tags.value = '';
@@ -230,83 +233,80 @@ const addArticle = async () => {
 	date.value = new Date();
 };
 
-const renderMarkdown = () => {
+// const renderMarkdown = () => {
     
-    const md = new MarkdownIt({
-        highlight(code, lang) {
-            let highlightedCode = code;
+//     const md = new MarkdownIt({
+//         highlight(code, lang) {
+//             let highlightedCode = code;
 
-            if(hljs.getLanguage(lang)){
-                highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
-            }
+//             if(hljs.getLanguage(lang)){
+//                 highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
+//             }
 
-            return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
-        },
-    });
+//             return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
+//         },
+//     });
 
-    renderedMarkdown.value = md.render(content.value);
+//     renderedMarkdown.value = md.render(content.value);
 
-    let lines = renderedMarkdown.value.split('\n')
+//     let lines = renderedMarkdown.value.split('\n')
 
-    formatedArray.value = [[]]
+//     formatedArray.value = [[]]
 
-      let code = '';
-      let inCodeBlock = false
-      firstSection.value = true
-      indexArray.value = 0
-      headers.value = []
+//     let code = '';
+//     let inCodeBlock = false
+//     firstSection.value = true
+//     indexArray.value = 0
+//     headers.value = []
 
-      lines.forEach(line => {
+//     lines.forEach(line => {
 
-        if (line.startsWith('<h1>')) {
-          formatedArray.value[indexArray.value].push({value: line})
-        }
-        else if (line.startsWith('<h2>')) {
-          if (firstSection.value == true) {
-            firstSection.value = false
-            formatedArray.value[indexArray.value].push({value: line})
-            headers.value.push(getSubstring(line, '>', '<'))
-          }
-          else {
-            formatedArray.value.push([]);
-            indexArray.value++;
-            formatedArray.value[indexArray.value].push({value: line})
-            headers.value.push(getSubstring(line, '>', '<'))
-          }
-        }
-        else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
+//         if (line.startsWith('<h1>')) {
+//             formatedArray.value[indexArray.value].push({value: line})
+//         }
+//         else if (line.startsWith('<h2>')) {
+//             if (firstSection.value == true) {
+//                 firstSection.value = false
+//                 formatedArray.value[indexArray.value].push({value: line})
+//                 headers.value.push(getSubstring(line, '>', '<'))
+//             }
+//             else {
+//                 formatedArray.value.push([]);
+//                 indexArray.value++;
+//                 formatedArray.value[indexArray.value].push({value: line})
+//                 headers.value.push(getSubstring(line, '>', '<'))
+//             }
+//         }
+//         else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
 
-          if (!inCodeBlock) {
-            inCodeBlock = true
-            code += line+'\n'
-          }
+//             if (!inCodeBlock) {
+//                 inCodeBlock = true
+//                 code += line+'\n'
+//             }
+//             else if (line.includes('</pre>')) {
+//                 inCodeBlock = false
+//                 code += line
 
-          else if (line.includes('</pre>')) {
-            inCodeBlock = false
-            code += line
+//                 formatedArray.value[indexArray.value].push({value: code})
+//                 code = ''
+//             }
+//             else {
+//                 code += line+'\n'
+//             }
+//         }
+//         else {
+//             formatedArray.value[indexArray.value].push({value: line})
+//         }
+//     });
+// }
 
-            formatedArray.value[indexArray.value].push({value: code})
-            code = ''
-          }
-          else {
-            code += line+'\n'
-          }
-        }
-        else {
-          formatedArray.value[indexArray.value].push({value: line})
-        }
+// const getSubstring = (str, start, end) => {
 
-      });
-      console.log(headers)
-    }
+//     let char1 = str.indexOf(start) + 1
+//     let char2 = str.lastIndexOf(end)
 
-const getSubstring = (str, start, end) => {
-
-    let char1 = str.indexOf(start) + 1
-    let char2 = str.lastIndexOf(end)
-
-    return str.substring(char1, char2)
-}
+//     return str.substring(char1, char2)
+// }
 </script>
 
 <style scoped>

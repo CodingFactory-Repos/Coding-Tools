@@ -1,14 +1,15 @@
 <template>
 
+<div class="relative">
   <div class="codeLab text-gray-900 dark:text-white">
 
-    <div v-if="markdown.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
+    <div v-if="formatedArray.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
 
       <!-- STICKY BAR -->
       <div tabindex="-1" class="relative top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
           <div class="flex items-center mx-auto">
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-              <h2>{{ title }}</h2>
+              <h2>title</h2>
           </p>
           <button 
             @click.prevent="toggle()" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -27,215 +28,243 @@
       <div class="flex flex-col items-center">
         <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
           <h2>About this coding tutorial</h2>
-          <div>Last updated : </div>
-          <div>Redacted by : </div>
+          <div>Last updated : {{ date }}</div>
+          <!-- <div>Redacted by : {{ user.profile.email }}</div> -->
         </div>
 
         <div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
-          <div v-for="(data, index) in markdown[step]" :key="index">
+          <div v-for="(data, index) in formatedArray[step]" :key="index">
             <div v-for="(line, row) in data" :key="row">
               <div v-html="line" class="htmlData"></div>
             </div>
           </div>
         </div>
       </div>
-		
     </div>
   </div>
 
 
-					<!-- SIDEBAR -->
-					<aside v-if="open"         x-show="open"
-        x-transition:enter="transition duration-300 ease-in-out transform"
-        x-transition:enter-start="translate-x-full"
-        x-transition:enter-end="translate-x-0"
-        x-transition:leave="transition duration-300 ease-in-out transform"
-        x-transition:leave-start="translate-x-0"
-        x-transition:leave-end="translate-x-full"
-        @keydown.escape="window.innerWidth <= 1024 ? open = false : ''"
-
-         class="relative md:!fixed inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
-					<div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
-						<div class="absolute right-0 p-1 transform -translate-x-full">
-							<button
-								@click.prevent="toggle()"
-								class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring"
-							>
-								<svg
-									class="w-5 h-5"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-								</svg>
-							</button>
-						</div>
-						<ul class="space-y-2 font-medium">
-							<li v-for="(item, index) in headers" :key="index">
-								<a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-									<h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
-								</a>
-							</li> 
-						</ul>
-					</div>
-				</aside>
+  <!-- SIDEBAR -->
+  <aside v-if="open"
+      x-show="open"
+      x-transition:enter="transition duration-300 ease-in-out transform"
+      x-transition:enter-start="translate-x-full"
+      x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition duration-300 ease-in-out transform"
+      x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="translate-x-full"
+      @keydown.escape="window.innerWidth <= 1024 ? open = false : ''"
+      class="absolute inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
+    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
+      <div class="absolute right-0 p-1 transform -translate-x-full">
+        <button
+          @click.prevent="toggle()"
+          class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring"
+        >
+          <svg
+            class="w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <ul class="space-y-2 font-medium">
+        <li v-for="(item, index) in headers" :key="index">
+          <a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            <h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
+          </a>
+        </li> 
+      </ul>
+    </div>
+  </aside>
 
   <div>
     <button v-if="step>0" @click="step = step -= 1" class="backBtn py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white ">Back</button>
-    <button v-if="step<markdown.length-1" @click="step=step=step+=1" class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">Next</button>
+    <button v-if="step<formatedArray.length-1" @click="step=step=step+=1" class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">Next</button>
   </div>
+</div>
+
+
   
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useArticleStore } from '@/store/modules/article.store';
+import { useAuthStore } from '@/store/modules/auth.store';
 
-export default {
-  name: 'MarkdownViewer',
-  props: ['markdown', 'headers'],
-  data() {
-    return {
-	isUserPanelOpen: false,
-		open: false,
-		fileContent: '',
-		renderedMarkdown: '',
-		resultArray: [],
-		index: 0,
-		step: 0,
-		title: '',
-		right: true,
-		firstSection: true,
-    };
-  },
-  methods: {
-    toggle() {
-			this.open = !this.open;
-		},
-    setStep (i) {
-      this.step = i;
-    },
-    //   const file = event.target.files[0];
-    //   if (file) {
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       this.fileContent = reader.result;
-    //       this.renderMarkdown();
-    //     };
-    //     reader.readAsText(file);
-    //   }
-    // },
-    // getSubstring(str, start, end) {
-    //   let char1 = str.indexOf(start) + 1
-    //   let char2 = str.lastIndexOf(end)
-    //   return str.substring(char1, char2)
-    // },
-    // renderMarkdown() {
-    //   const md = new MarkdownIt({
-    //     highlight(code, lang) {
-    //     let highlightedCode = code;
+// use router
+import { useRouter } from 'vue-router';
+import { userInfo } from 'os';
+const router = useRouter();
 
-    //     if(hljs.getLanguage(lang)){
-    //         highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
-    //     }
+const props = defineProps(['markdown'])
 
-    //     return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
-    // },
-    //   });
+// get store
+const articleStore = useArticleStore();
+const oneItems = computed(() => articleStore.oneItems);
 
-    //   this.renderedMarkdown = md.render(this.fileContent);
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
-    //   let lines = this.renderedMarkdown.split('\n')
+if (!props.markdown){
+  // get id from url
+  const _id = computed(() => {
+    const url = window.location.href;
+    const id = url.substring(url.lastIndexOf('/') + 1);
+    return id;
+  });
+  
+  // get article by id
+  const getArticleById = async (_id: string) => {
+    await articleStore.getArticleById(_id);
+    srcMarkdown.value = oneItems.value.descriptions;
+  };
 
-    //   this.resultArray.push([])
+  // get article by id on mounted
+  onMounted(() => {
+    getArticleById(_id.value);
+    srcMarkdown.value = oneItems.value.descriptions;
+  });
+}
 
-    //   let code = '';
-    //   let inCodeBlock = false
+const formatDate = (date: Date) => {
+	// transform date to string
+	const newDate = date.toString();
+	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
+	const timeSplited = newDate.split('T')[1].split('.')[0];
+	return `${dateSplited} at ${timeSplited}`;
+};
 
-    //   lines.forEach(line => {
-    //     // console.log(line)
+const step = ref(0)
+const title = ref('')
+const date = ref(Date())
 
-    //     // console.log(line)
+// visuals
+const isUserPanelOpen = ref(false)
+const open = ref(false)
 
-    //     if (line.startsWith('<h1>')) {
-    //       this.title = this.getSubstring(line, '>', '<')
-    //       this.resultArray[this.index].push({value: line})
-    //     }
-    //     else if (line.startsWith('<h2>')) {
-    //       if (this.firstSection) {
-    //         this.firstSection = false
-    //         this.resultArray[this.index].push({value: line})
-    //         this.headers.push(this.getSubstring(line, '>', '<'))
-    //       }
-    //       else {
-    //         this.resultArray.push([]);
-    //         this.index++;
-    //         this.resultArray[this.index].push({value: line})
-    //         this.headers.push(this.getSubstring(line, '>', '<'))
-    //       }
-    //     }
-    //     else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
+// infos displayed
+const formatedArray = ref([[]]);
 
-    //       if (!inCodeBlock) {
-    //         inCodeBlock = true
-    //         code += line+'\n'
-    //       }
+// for md render
+const srcMarkdown = ref()
+const renderedMarkdown = ref()
+const indexArray = ref(0)
+const headers = ref([])
+const firstSection = ref(true);
 
-    //       else if (line.includes('</pre>')) {
-    //         inCodeBlock = false
-    //         code += line
+watch(() => props.markdown, (newVal, oldVal) => {
+  srcMarkdown.value = newVal;
 
-    //         this.resultArray[this.index].push({value: code})
-    //         code = ''
-    //       }
-    //       else {
-    //         code += line+'\n'
-    //       }
-    //     }
-    //     else {
-    //       this.resultArray[this.index].push({value: line})
-    //     }
+  renderMarkdown()
+})
 
-    //   });
+const renderMarkdown = () => {
+    const md = new MarkdownIt({
+        highlight(code, lang) {
+            let highlightedCode = code;
 
-    //   // console.log(this.resultArray)
-    // },
-    openUserPanel() {
-              this.isUserPanelOpen = true
-              this.$nextTick(() => {
-                  this.$refs.userPanel.focus()
-              })
-          },
-    },
-  }
-;
+            if(hljs.getLanguage(lang)){
+                highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
+            }
+
+            return `<pre class='hljs overflow-x-scroll'><code class="${lang}">${highlightedCode}</code></pre>`
+        },
+    });
+
+    renderedMarkdown.value = md.render(srcMarkdown.value);
+
+    let lines = renderedMarkdown.value.split('\n')
+
+    formatedArray.value = [[]]
+
+    let code = '';
+    let inCodeBlock = false
+    firstSection.value = true
+    indexArray.value = 0
+    headers.value = []
+
+    lines.forEach(line => {
+
+        if (line.startsWith('<h1>')) {
+            formatedArray.value[indexArray.value].push({value: line})
+        }
+        else if (line.startsWith('<h2>')) {
+            if (firstSection.value == true) {
+                firstSection.value = false
+                formatedArray.value[indexArray.value].push({value: line})
+                headers.value.push(getSubstring(line, '>', '<'))
+            }
+            else {
+                formatedArray.value.push([]);
+                indexArray.value++;
+                formatedArray.value[indexArray.value].push({value: line})
+                headers.value.push(getSubstring(line, '>', '<'))
+            }
+        }
+        else if (line.includes("<pre class='hljs overflow-x-scroll'>") || inCodeBlock) {
+
+            if (!inCodeBlock) {
+                inCodeBlock = true
+                code += line+'\n'
+            }
+            else if (line.includes('</pre>')) {
+                inCodeBlock = false
+                code += line
+
+                formatedArray.value[indexArray.value].push({value: code})
+                code = ''
+            }
+            else {
+                code += line+'\n'
+            }
+        }
+        else {
+            formatedArray.value[indexArray.value].push({value: line})
+        }
+    });
+    console.log(formatedArray.value)
+}
+
+const getSubstring = (str, start, end) => {
+
+    let char1 = str.indexOf(start) + 1
+    let char2 = str.lastIndexOf(end)
+
+    return str.substring(char1, char2)
+}
+
+const toggle = () => {
+    open.value = !open.value;
+}
+
+const setStep = (i) => {
+    step.value = i;
+}
 </script>
 
 <style lang="scss">
-
-
   .codeLab{
     max-width: 60%;
     margin: 0 auto;
     font-size: 17px;
   }
-  
-  .htmlData h2 {
-    line-height: 2em;
-
-    font-size: 20px;
-  }
 
   .backBtn {
-    position: fixed;
+    position: absolute;
     bottom: 5%;
     left: 16%;
   }
 
   .nextBtn {
-    position: fixed;
+    position: absolute;
     bottom: 5%;
     right: 10%;
   }
