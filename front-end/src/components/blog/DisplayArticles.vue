@@ -7,7 +7,7 @@
 				@click="redirectNewArticle"
 				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
-				<span class="text-white">Create article</span>
+				<span class="text-white">Créer un article</span>
 			</button>
 		</div>
 
@@ -75,8 +75,8 @@ const getArticles = async () => {
 
 const tabs = ref([
 	{ id: 'infos', label: 'Infos' },
-	{ id: 'tutos', label: 'Tutorials' },
-	{ id: 'events', label: 'Events' },
+	{ id: 'tutos', label: 'Tutoriels' },
+	{ id: 'events', label: 'Événements' },
 	{ id: 'liked', label: 'Likes' },
 ]);
 
