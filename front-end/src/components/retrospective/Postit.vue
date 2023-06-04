@@ -131,7 +131,6 @@ const writeUpdatePostit = () => {
 	if (props.postit.value === previousValue.value) {
 		previousValue.value = '';
 		updatePostit.value = false;
-		return;
 	} else {
 		retroStore.updateRetroPostit(props.postit);
 		previousValue.value = '';
