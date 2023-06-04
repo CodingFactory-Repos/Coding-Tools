@@ -1,7 +1,7 @@
 <template>
 
 <div class="relative">
-  <div class="codeLab text-gray-900 dark:text-white">
+  <div class="codeLab text-gray-900 dark:text-white ">
 
     <div v-if="formatedArray.length>0" class=" mb-2 tracking-tight text-gray-900 dark:text-white">
 
@@ -10,33 +10,50 @@
           <div class="flex items-center mx-auto">
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
               <h1>{{ title }}</h1>
-          </p>
-          <button 
-            @click.prevent="toggle()" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-            <span class="sr-only">Open sidebar</span>
+            </p>
+            <button 
+              v-if="windowWidth <= 1024"
+              @click.prevent="toggle()" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+              <span class="sr-only">Open sidebar</span>
 
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-            </svg>
-          </button>
-
-
+              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+              </svg>
+            </button>
         </div>
       </div>
 
       <!-- CONTENT HERE -->
-      <div class="flex flex-col items-center">
-        <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
-          <h2>About this coding tutorial</h2>
-          <div>Last updated : {{ date }}</div>
-          <div>Redacted by : {{ owner }}</div>
+
+      <div class="flex flex-row">
+        <div :class=" windowWidth >= 1024 ? 'flex flex-col items-center w-3/4' : 'flex flex-col items-center w-4/4'">
+          <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
+            <h2>About this coding tutorial</h2>
+            <div>Published : {{ date }}</div>
+            <!-- <div>Redacted by : {{ owner }}</div> -->
+          </div>
+
+          <div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
+            <div v-for="(data, index) in formatedArray[step]" :key="index">
+              <div v-for="(line, row) in data" :key="row">
+                <div v-html="line" class="htmlData"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
-          <div v-for="(data, index) in formatedArray[step]" :key="index">
-            <div v-for="(line, row) in data" :key="row">
-              <div v-html="line" class="htmlData"></div>
-            </div>
+        <div class="w-1/4"
+          v-if="windowWidth >= 1024"
+        >
+          <div class="h-80 px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
+
+            <ul class="space-y-2 font-medium">
+              <li v-for="(item, index) in headers" :key="index">
+                <a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-200 dark:bg-gray-700 block py-2 pl-3 pr-4 dark:text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -45,7 +62,7 @@
 
 
   <!-- SIDEBAR -->
-  <aside v-if="open"
+  <aside v-if="open && windowWidth <= 1024"
       x-show="open"
       x-transition:enter="transition duration-300 ease-in-out transform"
       x-transition:enter-start="translate-x-full"
@@ -53,7 +70,7 @@
       x-transition:leave="transition duration-300 ease-in-out transform"
       x-transition:leave-start="translate-x-0"
       x-transition:leave-end="translate-x-full"
-      @keydown.escape="window.innerWidth <= 1024 ? open = false : ''"
+      @keydown.escape="windowWidth <= 1024 ? open = false : ''"
       class="absolute inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
       <div class="absolute right-0 p-1 transform -translate-x-full">
@@ -74,7 +91,7 @@
       </div>
       <ul class="space-y-2 font-medium">
         <li v-for="(item, index) in headers" :key="index">
-          <a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+          <a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 dark:text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
             <h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
           </a>
         </li> 
@@ -113,9 +130,14 @@ const oneItems = computed(() => articleStore.oneItems);
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
 
-if (!props.markdown){
+const windowWidth = ref(window.innerWidth)
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth
+  })
+})
 
-  console.log('we in without props')
+if (!props.markdown){
 
   // get id from url
   const _id = computed(() => {
@@ -133,7 +155,7 @@ if (!props.markdown){
   onMounted( async () => {
     await getArticleById(_id.value);
     srcMarkdown.value = oneItems.value.content;
-    date.value = oneItems.value.date
+    date.value = formatDate(oneItems.value.date)
     title.value = oneItems.value.title
 
     renderMarkdown()
@@ -141,12 +163,15 @@ if (!props.markdown){
 
 }
 
-const formatDate = (date: Date) => {
+const formatDate = (date) => {
 	// transform date to string
-	const newDate = date.toString();
-	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
-	const timeSplited = newDate.split('T')[1].split('.')[0];
-	return `${dateSplited} at ${timeSplited}`;
+	let tempDate;
+
+  date = date.split(' ')
+  
+  tempDate = date[2]+' '+date[1]+' '+date[3]
+
+  return tempDate
 };
 
 const step = ref(0)
@@ -238,7 +263,6 @@ const renderMarkdown = () => {
             formatedArray.value[indexArray.value].push({value: line})
         }
     });
-    console.log(formatedArray.value)
 }
 
 const getSubstring = (str, start, end) => {
@@ -260,7 +284,6 @@ const setStep = (i) => {
 
 <style lang="scss">
   .codeLab{
-    max-width: 60%;
     margin: 0 auto;
     font-size: 17px;
   }
@@ -274,7 +297,7 @@ const setStep = (i) => {
   .nextBtn {
     position: absolute;
     bottom: 5%;
-    right: 10%;
+    right: 35%;
   }
 
   .selected {
