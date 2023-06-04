@@ -16,7 +16,7 @@ export interface AuthSocket extends Socket {
 export type ChatMiddleware = (socket: Socket, next: (err?: Error) => void) => void;
 
 export const ChatAuthMiddleware = (jwtService: JwtService): ChatMiddleware => {
-	return async (socket: AuthSocket, next) => {
+	return (socket: AuthSocket, next) => {
 		try {
 			const cookies = socket.handshake.headers.cookie || '';
 			const tokenCookie = parseCookieString(cookies);
