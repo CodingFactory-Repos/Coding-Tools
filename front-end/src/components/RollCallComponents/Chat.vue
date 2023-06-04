@@ -1,5 +1,8 @@
 <template>
-	<div class="chatbox w-1/4 max-h-[700px] flex flex-col fixed bottom-1 right-2 z-100">
+	<div
+		class="chatbox w-1/4 max-h-[700px] flex flex-col fixed bottom-1 right-2 z-100"
+		v-if="courseId != undefined"
+	>
 		<div class="chatbox_messages h-[700px] overflow-y-scroll flex flex-col-reverse mb-8">
 			<chat-multi-message
 				v-for="message in messages"
@@ -55,7 +58,7 @@ const messages = ref<Array<Object>>([]);
 
 const authStore = useAuthStore();
 const currentUser = computed(() => authStore.user);
-const roomId = computed(() => props.roomId); // roomId = CourseId
+const roomId = computed(() => props.roomId);
 const searchTerm = ref('');
 const gifs = ref([]);
 const newMessageText = ref('');
@@ -78,9 +81,8 @@ socket.on('peer-chat-message', (data: Object) => {
 
 onMounted(async () => {
 	courseId.value = await getCourseId();
-	console.log(79, courseId.value);
-	// replace with courseId.value when implementing otherwise it'll default to room 1
-	socket.auth = { roomId: roomId.value.toString() };
+	// socket.auth = { roomId: roomId.value.toString() }; // fall back to default room 1
+	socket.auth = { roomId: courseId.value.toString() };
 	socket.connect();
 });
 
@@ -96,7 +98,6 @@ const addMessage = (msg: Object) => {
 
 const getCourseId = withErrorHandler(async () => {
 	const res = await http.get(`/calls/actual_course/`);
-	console.log(119, res);
 	return res.data.actualCourse;
 });
 const getDate = () => {
@@ -136,21 +137,18 @@ const getGifs = async () => {
 	axios
 		.get(url)
 		.then(async (response) => {
-			console.log(response.data);
 			let json = await response.data;
-			console.log(json);
 			return json;
 		})
 		.then((json) => {
 			buildGifs(json);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 };
 
 const sendMessage = async () => {
-	console.log(139, 'sendMessage');
 	if (!newMessageText.value) return;
 	const newMessage = {
 		type: 'msg',
@@ -162,10 +160,8 @@ const sendMessage = async () => {
 	count.value = count.value + 1;
 	addMessage(newMessage);
 	let courseId = await getCourseId();
-	console.log(89, courseId);
 	try {
 		const res = await http.post(`/calls/save_message/${courseId}`, { newMessage: newMessage });
-		console.log(107, res);
 	} catch (err) {
 		if (err instanceof AxiosError) {
 			console.error(189, err.message);
@@ -174,7 +170,6 @@ const sendMessage = async () => {
 		}
 	}
 	socket.emit('message', newMessage);
-	console.log(151, messages.value);
 	newMessageText.value = ''; /* reset the message state */
 };
 </script>
