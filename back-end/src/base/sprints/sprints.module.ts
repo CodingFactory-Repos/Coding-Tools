@@ -4,14 +4,17 @@ import { AuthModule } from 'src/auth/auth.module';
 import { DatabaseModule } from 'src/external-modules/database/mongo.module';
 
 import { UsersRepository } from 'src/base/users/users.repository';
-import { GroupsRepository } from 'src/base/groups/groups.repository';
-import { GroupsService } from 'src/base/groups/groups.service';
-import { GroupsController } from 'src/base/groups/groups.controller';
+import { SprintsService } from 'src/base/sprints/sprints.service';
+import { SprintsRepository } from 'src/base/sprints/sprints.repository';
+import { SprintsController } from 'src/base/sprints/sprints.controller';
 
 @Module({
-	imports: [DatabaseModule, forwardRef(() => AuthModule)],
-	providers: [GroupsService, GroupsRepository, UsersRepository],
-	controllers: [GroupsController],
-	exports: [GroupsService, GroupsRepository],
+	imports: [
+		DatabaseModule,
+		forwardRef(() => AuthModule),
+	],
+	providers: [SprintsService, SprintsRepository, UsersRepository],
+	controllers: [SprintsController],
+	exports: [SprintsService, SprintsRepository],
 })
-export class GroupsModule {}
+export class SprintsModule {}

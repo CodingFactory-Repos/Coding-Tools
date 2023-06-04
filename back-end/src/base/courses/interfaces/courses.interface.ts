@@ -16,6 +16,7 @@ export interface Course {
 	endedAt: Date;
 	call: Call;
 	siteLocation: string;
+	groups: Array<ObjectId>;
 }
 
 export interface Call {
