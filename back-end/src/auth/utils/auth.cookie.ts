@@ -3,9 +3,9 @@ import cookie from 'cookie';
 export const createAuthCookie = (strategy: string) => {
 	return cookie.serialize('token', strategy, {
 		httpOnly: true,
-		secure: true, // config.jwt.cookie.secure
+		secure: false, // config.jwt.cookie.secure
 		maxAge: 60 * 60 * 24 * 30,
-		sameSite: 'none', // config.jwt.cookie.samesite
+		sameSite: 'lax', // config.jwt.cookie.samesite
 		path: '/',
 	});
 };
@@ -15,7 +15,7 @@ export const expireAuthCookie = () => {
 		httpOnly: true,
 		secure: false, // config.jwt.cookie.secure
 		expires: new Date(0),
-		sameSite: 'none', // config.jwt.cookie.samesite
+		sameSite: 'lax', // config.jwt.cookie.samesite
 		path: '/',
 	});
 };
