@@ -7,7 +7,34 @@
 
       <!-- STICKY BAR -->
       <div tabindex="-1" class="relative top-0 left-0 z-0 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 block">
+        
           <div class="flex items-center mx-auto">
+            <button
+					type="button"
+					@click="
+						() => {
+							$router.push('/app/blog');
+						}
+					"
+					class="mr-20 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				>
+					<svg
+						fill="none"
+						class="w-4 h-4 mr-2 -ml-1"
+						stroke="white"
+						stroke-width="1.5"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+						/>
+					</svg>
+					All articles
+				</button>
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
               <h1>{{ title }}</h1>
             </p>
