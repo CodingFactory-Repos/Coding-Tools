@@ -22,7 +22,7 @@
 			type="button"
 			@click="
 				() => {
-					$router.push('/app/ressource');
+					$router.push('/app/ressource/openhouse');
 				}
 			"
 		>
