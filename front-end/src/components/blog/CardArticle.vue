@@ -9,11 +9,29 @@
 		"
 		alt=""
 	/>
+	<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 left-2">
+		<button
+			type="button"
+			@click="deleteArticle(item._id)"
+			class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+		>
+			<DeleteLogo />
+		</button>
+	</div>
+	<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+		<button
+			type="button"
+			@click="editArticle(item._id)"
+			class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-xs p-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+		>
+			<Edit class="!fill-light-primary" />
+		</button>
+	</div>
 	<div class="pt-3 pb-2">
 		<span
 			class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-			>{{ item.type }}</span
-		>
+			>{{ item.type }}
+		</span>
 	</div>
 	<div class="pt-2 pb-5">
 		<a href="#">
@@ -79,12 +97,17 @@
 import { computed, onMounted, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
+import { useUserStore } from '@/store/modules/user.store';
 import { useRouter } from 'vue-router';
 import MarkdownIt from 'markdown-it';
+import Swal from 'sweetalert2';
+
 import OutlineLike from '@/components/common/svg/OutlineLike.vue';
 import SolidLike from '@/components/common/svg/SolidLike.vue';
 import OutlineDislike from '@/components/common/svg/OutlineDislike.vue';
 import SolidDislike from '@/components/common/svg/SolidDislike.vue';
+import DeleteLogo from '@/components/common/svg/DeleteLogo.vue';
+import Edit from '@/components/common/svg/Edit.vue';
 
 const props = defineProps<{
 	item: any;
@@ -100,10 +123,14 @@ const renderMarkdown = () => {
 
 // get store
 const articleStore = useArticleStore();
-const authStore = useAuthStore();
-const router = useRouter();
 
+const authStore = useAuthStore();
 const user = authStore.user;
+
+const userStore = useUserStore();
+const relatedUserProfile = userStore.relatedUserProfile;
+
+const router = useRouter();
 
 // Fetch the articles
 const getArticles = async () => {
@@ -116,13 +143,22 @@ const getArticles = async () => {
 	}
 };
 
+const getUserById = async (id: string) => {
+	await userStore.getRelatedUserProfile(id);
+	console.log(userStore.relatedUserProfile);
+};
+
 const addLike = async (id: string) => {
 	const like = {
 		id: user._id,
 	};
 
-	await articleStore.addLike(id, like);
-	await articleStore.removeDislike(id, like);
+	if (hasUserLiked.value) {
+		await articleStore.removeLike(id, like);
+	} else {
+		await articleStore.addLike(id, like);
+		await articleStore.removeDislike(id, like);
+	}
 
 	window.location.reload();
 };
@@ -132,10 +168,34 @@ const addDislike = async (id: string) => {
 		id: user._id,
 	};
 
-	await articleStore.addDislike(id, dislike);
-	await articleStore.removeLike(id, dislike);
+	if (hasUserDisliked.value) {
+		await articleStore.removeDislike(id, dislike);
+	} else {
+		await articleStore.addDislike(id, dislike);
+		await articleStore.removeLike(id, dislike);
+	}
 
 	window.location.reload();
+};
+
+const deleteArticle = async (id: string) => {
+	Swal.fire({
+		title: 'Are you sure to delete this article ?',
+		icon: 'info',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes',
+		cancelButtonText: 'No',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+			await articleStore.deleteArticle(id);
+			window.location.reload();
+		}
+	});
+};
+
+const editArticle = async (id: string) => {
+	router.push(`/app/blog/edit/${id}`);
 };
 
 // Check if the user has liked the item
@@ -150,6 +210,7 @@ const hasUserDisliked = computed(() => {
 // Call the getArticles method when the component is created
 onMounted(() => {
 	getArticles();
+	getUserById(props.item.owner);
 });
 
 // function to check if user is participant

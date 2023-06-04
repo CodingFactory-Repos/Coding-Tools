@@ -77,14 +77,20 @@ export const useArticleStore = defineStore('article', {
 			return true;
 		}),
 
+		//update article in the database
+		updateArticle: withErrorHandler(async function (id: string, article: Article) {
+			const response = await http.put(`/articles/update/${id}`, article);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
 		// add participant to the array of participants in article in the database
 		addParticipant: withErrorHandler(async function (id: string, participant) {
-			console.log('id', id);
-			console.log('participant', participant);
-			// const response = await http.put(`/articles/participant/${id}`, participant);
-			// const oneItems = response.data;
-			// this.oneItems = oneItems;
-			// return true;
+			const response = await http.put(`/articles/participant/${id}`, participant);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
 		}),
 
 		// remove participant from the array of participants in article in the database
@@ -129,6 +135,13 @@ export const useArticleStore = defineStore('article', {
 
 		addComment: withErrorHandler(async function (id: string, comment) {
 			const response = await http.put(`/articles/comment/${id}`, comment);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+
+		deleteArticle: withErrorHandler(async function (id: string) {
+			const response = await http.delete(`/articles/delete/${id}`);
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;

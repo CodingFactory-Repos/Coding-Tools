@@ -1,4 +1,14 @@
-import { Controller, Get, Res, UseFilters, Post, Req, Put, UseGuards } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Res,
+	UseFilters,
+	Post,
+	Req,
+	Put,
+	UseGuards,
+	Delete,
+} from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from '@/common/decorators/catch.decorator';
@@ -26,6 +36,13 @@ export class ArticlesController {
 	@Get('/:id')
 	async getArticleById(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.getArticleById(req.params.id);
+		return res.status(201).json(article);
+	}
+
+	@Put('/update/:id')
+	async updateArticle(@Req() req: Request, @Res() res: Response) {
+		const update = { $set: req.body };
+		const article = await this.articlesService.updateArticle(req.params.id, update);
 		return res.status(201).json(article);
 	}
 
@@ -75,6 +92,13 @@ export class ArticlesController {
 	@Put('/comment/:id')
 	async addComment(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addComment(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// delete article
+	@Delete('/delete/:id')
+	async deleteArticle(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.deleteArticle(req.params.id);
 		return res.status(201).json(article);
 	}
 }
