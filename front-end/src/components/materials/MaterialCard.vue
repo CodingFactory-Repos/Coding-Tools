@@ -80,6 +80,7 @@ import { useMaterialStore } from '@/store/modules/material.store';
 import { http } from '@/api/network/axios';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { Material } from '@/store/interfaces/material.interface';
+import Swal from 'sweetalert2';
 
 defineProps({
 	id: { type: String, required: true },
@@ -119,6 +120,11 @@ function materialReturned(id: string, material: Material) {
 			.borrowingID,
 	};
 	materialStore.returnMaterial(id, payload);
+	Swal.fire({
+		icon: 'success',
+		title: 'Success',
+		text: 'The material has been returned successfully',
+	});
 }
 </script>
 

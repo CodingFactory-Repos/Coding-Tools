@@ -75,6 +75,8 @@
 <script lang="ts" setup>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
+import Swal from 'sweetalert2';
+
 
 const materialStore = useMaterialStore();
 const reservation = computed(() => materialStore.pendingMaterials);
@@ -94,6 +96,12 @@ function acceptReservation(materialID: string, borrowingID: string) {
 		borrowingID: borrowingID,
 	};
 	materialStore.acceptBorrowing(materialID, payload);
+	Swal.fire({
+		title: 'Emprunt accepté',
+		icon: 'success',
+		showConfirmButton: false,
+		timer: 1500,
+	})
 }
 
 function declineReservation(materialID: string, borrowID: string) {
@@ -101,6 +109,12 @@ function declineReservation(materialID: string, borrowID: string) {
 		borrowingID: borrowID,
 	};
 	materialStore.declineBorrowing(materialID, payload);
+	Swal.fire({
+		title: 'Emprunt refusé',
+		icon: 'success',
+		showConfirmButton: false,
+		timer: 1500,
+	})
 }
 
 onBeforeUnmount(() => {
