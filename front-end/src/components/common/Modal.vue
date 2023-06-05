@@ -18,7 +18,7 @@
 				</div>
 
 				<!-- Modal body -->
-				<div :class="$slots.footer ? '!py-6' : ''">
+				<div :class="$slots.footer ? '!py-6 grow' : ''">
 					<slot name="body" id="body" />
 				</div>
 
@@ -59,7 +59,7 @@ const modalSizeClasses = {
 	'5xl': 'max-w-5xl',
 	'6xl': 'max-w-6xl',
 	'7xl': 'max-w-7xl',
-	'full': 'w-screen h-screen p-4 !m-0 justify-between'
+	'full': 'w-screens p-4 !m-0 min-h-screen justify-between'
 }
 
 function closeModal() {
