@@ -9,13 +9,15 @@
 	<div>
 		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="2xl">
 			<template #header>
-				<h2 class="text-lg font-medium text-gray-900 dark:text-white">List of participants</h2>
+				<h2 class="text-lg font-medium text-gray-900 dark:text-white">
+					Liste des participants ({{ oneItems.participants.length }})
+				</h2>
 			</template>
 			<template #body>
 				<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 						<caption class="hidden">
-							List of participants
+							Liste des participants
 						</caption>
 						<thead
 							class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -39,15 +41,40 @@
 									{{ participant.email }}
 								</th>
 								<td class="px-6 py-4">
-									{{ participant.firstName ? participant.firstName : 'No firstName' }}
+									{{ participant.firstName ? participant.firstName : 'Non indiqué' }}
 								</td>
 								<td class="px-6 py-4">
-									{{ participant.lastName ? participant.lastName : 'No lastName' }}
+									{{ participant.lastName ? participant.lastName : 'Non indiqué' }}
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
+			</template>
+			<template #footer>
+				<button
+					v-if="isFinish()"
+					type="button"
+					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+				>
+					Événement passé
+				</button>
+				<button
+					v-else-if="isParticipant()"
+					@click="participationEvent(oneItems._id)"
+					type="button"
+					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+				>
+					Je participe déjà !
+				</button>
+				<button
+					v-else
+					type="button"
+					@click="participationEvent(oneItems._id)"
+					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				>
+					Je veux participer !
+				</button>
 			</template>
 		</ModalOverlay>
 		<img
@@ -59,47 +86,11 @@
 			"
 			alt=""
 		/>
-		<div class="text-center pt-4">
-			<div v-if="oneItems.type == 'Evenement'" class="flex flew-row items-center justify-around">
-				<button
-					v-if="isFinish()"
-					type="button"
-					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-				>
-					Finished
-				</button>
-				<button
-					v-else-if="isParticipant()"
-					@click="participationEvent(oneItems._id)"
-					type="button"
-					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-				>
-					I already participate !
-				</button>
-				<button
-					v-else
-					type="button"
-					@click="participationEvent(oneItems._id)"
-					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-				>
-					I want to participate !
-				</button>
+		<div class="text-center pt-4 relative">
+			<div v-if="oneItems.type == 'Evenement'">
 				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
 					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
 				</h1>
-				<button
-					type="button"
-					@click="openMetaModal"
-					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-				>
-					{{
-						oneItems.participants?.length == 0 || oneItems.participants == undefined
-							? 'No once participate'
-							: oneItems.participants?.length == 1
-							? `See the only participant`
-							: `See the ${oneItems.participants?.length} participants`
-					}}
-				</button>
 			</div>
 			<div v-else>
 				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
@@ -115,8 +106,9 @@
 		</div>
 
 		<div class="pt-2 pb-5 text-center">
-			<div v-html="renderMarkdown()"></div>
-
+			<div v-html="renderMarkdown()" class="text-gray-900 dark:text-white"></div>
+		</div>
+		<div class="pt-5">
 			<button
 				v-if="oneItems.type !== 'Evenement'"
 				type="button"
@@ -142,7 +134,7 @@
 						d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
 					/>
 				</svg>
-				All articles
+				Tous les articles
 			</button>
 
 			<div v-else class="flex justify-around items-center flex-row">
@@ -170,58 +162,56 @@
 							d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
 						/>
 					</svg>
-					All articles
+					Tous les articles
 				</button>
 				<button
 					type="button"
 					@click="openCommentModal"
 					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 				>
-					Write a comment
+					<Comment />
 				</button>
 				<button
 					type="button"
-					@click="changeComments"
-					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					@click="openMetaModal"
+					class="items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 				>
-					{{
-						oneItems.comments?.length == 0 || oneItems.comments == undefined
-							? 'No once comment'
-							: oneItems.comments?.length == 1
-							? `1 comment`
-							: `${oneItems.comments?.length} comments`
-					}}
+					Participation
 				</button>
 			</div>
 		</div>
 	</div>
 
-	<div :class="showComments ? 'display' : 'display-none'">
-		<!-- <div class="text-center">
-			<h3 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">All Comments</h3>
-		</div> -->
+	<div>
 		<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
+			<header class="mb-2">
+				<h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+					{{ comment.title }}
+				</h3>
+			</header>
 			<div class="flex items-center mb-4 space-x-4">
 				<img
 					class="w-10 h-10 rounded-full"
-					src="https://cdn.discordapp.com/attachments/930039778332786718/1088502450786402394/luffy.jpeg"
+					:src="
+						comment.picture
+							? comment.picture
+							: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
+					"
 					alt=""
 				/>
-				<div class="space-y-1 font-medium dark:text-white">
-					<p>{{ comment.firstName }} {{ comment.lastName }}</p>
+				<div class="font-medium dark:text-white">
+					<p class="text-gray-900 dark:text-white">
+						{{ comment.firstName }} {{ comment.lastName }}
+					</p>
+					<p class="text-xs text-gray-500 dark:text-gray-400">{{ comment.email }}</p>
 				</div>
 			</div>
 			<footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
-				<p>Write the {{ formatDate(comment.date) }}</p>
+				<p>Écrit le {{ formatDate(comment.date) }}</p>
 			</footer>
-			<!-- {{ comment.date.split('T')[0].split('-').reverse().join('/') }} {{ comment.date.split('T')[1].split('.')[0] -->
 
-			<p
-				v-for="description in comment.descriptions"
-				:key="description.value"
-				class="mb-2 font-light text-gray-500 dark:text-gray-400"
-			>
-				{{ description.value }}
+			<p class="mb-2 font-light text-gray-500 dark:text-gray-400">
+				{{ comment.descriptions }}
 			</p>
 		</article>
 	</div>
@@ -235,6 +225,7 @@ import ModalOverlay from '@/components/common/Modal.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
+import Comment from '../common/svg/Comment.vue';
 
 let markdown = ref('');
 
@@ -253,7 +244,6 @@ const user = computed(() => authStore.user);
 
 // Display the modal
 const showModal = ref(false);
-const showComments = ref(false);
 const showCommentModal = ref(false);
 
 // Function to open and close the modal
@@ -261,7 +251,6 @@ const openMetaModal = () => (showModal.value = true);
 const closeMetaModal = () => (showModal.value = false);
 const openCommentModal = () => (showCommentModal.value = true);
 const closeCommentModal = () => (showCommentModal.value = false);
-const changeComments = () => (showComments.value = !showComments.value);
 
 // get id from url
 const _id = computed(() => {
@@ -281,7 +270,7 @@ const formatDate = (date: Date) => {
 	const newDate = date.toString();
 	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
 	const timeSplited = newDate.split('T')[1].split('.')[0];
-	return `${dateSplited} at ${timeSplited}`;
+	return `${dateSplited} à ${timeSplited}`;
 };
 
 // get article by id on mounted
@@ -296,6 +285,13 @@ const participationEvent = (id) => {
 		(participant) => participant.email === user.value.profile.email,
 	);
 
+	const participant = {
+		firstName: user.value.profile.firstName,
+		lastName: user.value.profile.lastName,
+		email: user.value.profile.email,
+		id: user.value._id,
+	};
+
 	if (isParticipant) {
 		Swal.fire({
 			title: 'Do you want to unsubscribe from the event ?',
@@ -307,8 +303,7 @@ const participationEvent = (id) => {
 			confirmButtonText: 'Yes, i want !',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				articleStore.removeParticipant(id, user.value.profile);
-				window.location.reload();
+				articleStore.removeParticipant(id, participant);
 			}
 		});
 	} else {
@@ -325,18 +320,11 @@ const participationEvent = (id) => {
 				authStore.getCurrentUser();
 
 				// @ts-ignore
-				if (oneItems.value.participants?.includes(user.value.profile)) {
+				if (oneItems.value.participants?.includes(participant)) {
 					return;
 				}
 
-				const profile = {
-					...user.value.profile,
-					_id: id,
-				};
-
-				articleStore.addParticipant(id, profile);
-
-				window.location.reload();
+				articleStore.addParticipant(id, participant);
 			}
 		});
 	}

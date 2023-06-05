@@ -15,12 +15,7 @@ export interface Article {
 	type: string;
 	status: string;
 	content?: string;
-	participants?: {
-		id: string;
-		firstName: string;
-		lastName: string;
-		email: string;
-	}[];
+	participants?: Participants[];
 	likes?: {
 		id: string;
 	}[];
@@ -30,13 +25,19 @@ export interface Article {
 	comments?: Comments[];
 }
 
+export interface Participants {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+}
+
 export interface Comments {
 	email: string;
 	firstName: string;
 	lastName: string;
 	title: string;
-	descriptions: {
-		value: string;
-	}[];
+	descriptions: string;
 	date: Date;
+	picture?: string;
 }
