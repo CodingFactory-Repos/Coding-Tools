@@ -27,9 +27,16 @@
 						d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83z" />
 				</svg>
 			</button>
-		<div class="text-black">
-			{{ postit.value }}
+		<div
+			class="text-black break-all"
+			:class="isPostitVisible || isOwner ? '' : 'wave-text'"
+		>
+			<span>
+				{{ postit.value }}
+			</span>
 		</div>
+		<div class="text-black text-black flex justify-center items-center absolute w-10 h-10 -bottom-5 -right-4 z-100 bg-[#92ccc9] rounded-full">{{ userPostit }}</div>
+
 	</div>
 	<div
 			v-else
@@ -59,6 +66,7 @@
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 11 11"><path d="M2.2 1.19l3.3 3.3L8.8 1.2a.67.67 0 0 1 .5-.2a.75.75 0 0 1 .7.7a.66.66 0 0 1-.2.48L6.49 5.5L9.8 8.82c.13.126.202.3.2.48a.75.75 0 0 1-.7.7a.67.67 0 0 1-.5-.2L5.5 6.51L2.21 9.8a.67.67 0 0 1-.5.2a.75.75 0 0 1-.71-.71a.66.66 0 0 1 .2-.48L4.51 5.5L1.19 2.18A.66.66 0 0 1 1 1.7a.75.75 0 0 1 .7-.7a.67.67 0 0 1 .5.19z" fill="#f7f6f1"/></svg>
 			</button>
+			<div class="text-black text-black flex justify-center items-center absolute w-10 h-10 -bottom-5 -right-4 z-100 bg-[#92ccc9] rounded-full">{{ userPostit }}</div>
 		</div>
 </template>
 
@@ -76,6 +84,8 @@ const isOwner = computed(() => authStore.user.profile.email === props.postit.use
 const updatePostit = ref(false);
 const updatePostitArea = ref();
 const previousValue = ref("");
+const isPostitVisible = computed(() => props.postit.visible);
+const userPostit = computed(() => props.postit.sylable ? props.postit.sylable : "NC");
 
 const isLock = computed(() =>
 	retroStore.currentRetro.isLocked && retroStore.currentRetro.isRetroEnded
@@ -145,9 +155,17 @@ const undoModification = () => {
 
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap');
 
 .postit\:buttons-visible:hover > .hidden {
 	display: flex;
+}
+
+
+.wave-text > span {
+	font-size: 2rem;
+	font-family: 'Mrs Saint Delafield', cursive;
+	filter: blur(3px);
 }
 
 
