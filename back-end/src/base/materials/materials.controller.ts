@@ -21,7 +21,7 @@ import { DTOBorrowingMaterial, DTOCreateMaterials, DTOMaetrials } from './dto/ma
 
 @Controller('materials')
 @UseFilters(ServiceErrorCatcher)
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class MaterialsController {
 	constructor(
 		@Inject('DATABASE_CONNECTION') private db: Db,
