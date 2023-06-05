@@ -1,6 +1,7 @@
 <template>
-	<div class="text-center max-w-full w-4/5 m-auto h-full">
-		<h2 class="text-3xl font-bold pt-5 text-gray-900">Create Article</h2>
+    <div id="createTutorialContainer" class="flex flex-col gap-5">
+        <div class="text-center max-w-full w-4/5 m-auto h-full">
+		<h2 class="text-3xl font-bold pt-5 text-gray-900">Create Tutorial</h2>
 		<form @submit.prevent="addArticle">
 			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 				<div>
@@ -21,43 +22,42 @@
 					<label
 						for="countries"
 						class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Select an option</label
+						>Import your .md file</label
 					>
 					<div class="relative mb-6">
-						<select
-							id="countries"
-							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-							v-model="type"
-						>
-							<option value="" selected disabled>Select type</option>
-							<option value="Infos">Infos</option>
-							<option value="Tuto">Tuto</option>
-							<option value="Evenement">Evenement</option>
-						</select>
+                        <input type="file" accept=".md" @change="handleFileChange" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input">
 					</div>
 				</div>
 			</div>
 
-			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+            <label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
 				>Description</label
 			>
 			<div class="mb-6 relative z-10">
 				<div class="relative mb-6 flex">
-					<mavon-editor
+					<input
+                        type="text"
 						language="fr"
-						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						v-model="descriptions"
+						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						v-model="description"
 					/>
 				</div>
 			</div>
-			<div class="h-10 mb-6">
-				<datepicker
-					v-model="date"
-					:full-month-name="true"
-					placeholder="YYYY-MM-DD"
-					:typeable="true"
-					class="vuejs3-datepicker w-[300px] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-				/>
+
+			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+				>Content</label
+			>
+			<div class="mb-6 relative z-10">
+				<div class="relative mb-6 flex">
+					<mavon-editor
+                        v-model="content"
+                        :toolbars="mavonOptions"
+						language="fr"
+						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+                        defaultOpen="true"
+					/>
+				</div>
 			</div>
 
 			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
@@ -101,18 +101,24 @@
 			</div>
 		</form>
 	</div>
+        <div v-if="content">
+            <MarkdownViewer :markdown="content"></MarkdownViewer>
+        </div>
+    </div>
+
 </template>
 
 <script lang="ts" setup>
 // Post the data to the API
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
-import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
+import MarkdownViewer from './MarkdownViewer.vue'
 
 // use router
 import { useRouter } from 'vue-router';
+
 const router = useRouter();
 
 // use the store
@@ -122,15 +128,58 @@ const authStore = useAuthStore();
 // form data
 const title = ref('');
 const picture = ref('');
-const descriptions = ref('...');
+const description = ref('');
+const content = ref('')
 const tags = ref('');
 const type = ref('');
 const date = ref(new Date());
 
+// page functionnality
+const formatedArray = ref([[]]);
+const firstSection = ref(true);
+const fileContent = ref()
+const renderedMarkdown = ref()
+const indexArray = ref(0)
+const headers = ref([])
+const mavonOptions = ref({
+    bold: true,
+    italic: true,
+    header: true,
+    underline: true,
+    strikethrough: true,
+    mark: true,
+    superscript: true,
+    subscript: true,
+    quote: true,
+    ol: true,
+    ul: true,
+    link: true,
+    imagelink: true,
+    code: true,
+    table: true,
+})
+
+watch(content, (newContent) => {
+    content.value = newContent
+})
+
+const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            fileContent.value = reader.result;
+            content.value = reader.result.toString()
+        };
+        reader.readAsText(file);
+    }
+}
+
 // Function to post the data to the API
 const addArticle = async () => {
 	// add verification if all the fields are filled
-	if (!title.value || !picture.value || !tags.value || !type.value || !descriptions.value) {
+	if (!title.value || !tags.value || !description.value || !content.value || !picture.value) {
 		Swal.fire({
 			title: 'You have to fill all the fields',
 			text: 'Please fill all the fields to create a new article',
@@ -145,11 +194,12 @@ const addArticle = async () => {
 	let data = {
 		owner: authStore.user._id,
 		title: title.value,
-		descriptions: descriptions.value,
-		picture: picture.value,
+		descriptions: description.value,
+        content: content.value,
 		tags: tags.value,
-		type: type.value,
-		status: 'validated',
+		type: 'tutos',
+        status: 'pending',
+        picture: picture.value,
 		date: date.value.toString(),
 	};
 
@@ -170,7 +220,8 @@ const addArticle = async () => {
 
 	//reset the form
 	title.value = '';
-	descriptions.value = '...';
+	description.value = '';
+    content.value = '';
 	picture.value = '';
 	tags.value = '';
 	type.value = '';
