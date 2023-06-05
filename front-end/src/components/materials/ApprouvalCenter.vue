@@ -104,7 +104,6 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 
 const router = useRouter();

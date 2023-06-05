@@ -140,7 +140,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 import ImagePicker from '@/components/materials/ImagePicker.vue';
 import Modal from '@/components/common/Modal.vue';
