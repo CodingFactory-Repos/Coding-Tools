@@ -54,7 +54,7 @@
 				<h3>Lacked</h3>
 			</div>
 			<div
-				class="text-black bg-slate-300 flex flex-wrap gap-6 items-start justify-center content-start overflow-visible pt-6 pb-6">
+				class="text-black bg-slate-300 flex flex-wrap gap-6 items-start justify-center content-start pt-6 pb-6 overflow-y-scroll">
 				<Postit :postit="postit" v-for="postit in postitsInCurrentRetro[3]" />
 			</div>
 		</div>
