@@ -74,7 +74,7 @@ const items = computed(() => {
 
 // Redirect the user to the article's creation page
 const redirectNewArticle = () => {
-	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial')
+	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial');
 	else router.push('/app/blog/new');
 };
 

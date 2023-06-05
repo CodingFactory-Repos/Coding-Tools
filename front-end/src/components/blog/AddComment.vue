@@ -98,8 +98,6 @@ const addComment = async (id) => {
 	}).then(async (result) => {
 		if (result.isConfirmed) {
 			await articleStore.addComment(id, data);
-			// reload the page
-			window.location.reload();
 		}
 	});
 };

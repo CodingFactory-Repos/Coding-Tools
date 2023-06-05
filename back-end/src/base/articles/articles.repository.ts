@@ -34,7 +34,8 @@ export class ArticlesRepository {
 	}
 
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
-		return this.articles.updateOne(query, update);
+		this.articles.updateOne(query, update);
+		return this.articles.findOne(query);
 	}
 
 	async findOneAndUpdateArticle(

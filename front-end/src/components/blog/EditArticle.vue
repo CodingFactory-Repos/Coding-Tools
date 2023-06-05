@@ -141,6 +141,7 @@ const descriptions = ref('');
 const tags = ref('');
 const type = ref('');
 const date = ref(new Date());
+const status = ref('ok');
 
 watch(oneItems, (newVal) => {
 	title.value = newVal.title;
@@ -174,6 +175,7 @@ const editArticle = async () => {
 		tags: tags.value,
 		type: type.value,
 		date: date.value.toString(),
+		status: status.value,
 	};
 
 	Swal.fire({

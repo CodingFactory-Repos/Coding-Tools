@@ -161,8 +161,6 @@ const addLike = async (id: string) => {
 		await articleStore.addLike(id, like);
 		await articleStore.removeDislike(id, like);
 	}
-
-	window.location.reload();
 };
 
 const addDislike = async (id: string) => {
@@ -176,8 +174,6 @@ const addDislike = async (id: string) => {
 		await articleStore.addDislike(id, dislike);
 		await articleStore.removeLike(id, dislike);
 	}
-
-	window.location.reload();
 };
 
 const deleteArticle = async (id: string) => {

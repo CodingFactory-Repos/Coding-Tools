@@ -184,6 +184,11 @@
 
 	<div>
 		<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
+			<header class="mb-2">
+				<h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+					{{ comment.title }}
+				</h3>
+			</header>
 			<div class="flex items-center mb-4 space-x-4">
 				<img
 					class="w-10 h-10 rounded-full"
@@ -202,7 +207,7 @@
 				</div>
 			</div>
 			<footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
-				<p>Write the {{ formatDate(comment.date) }}</p>
+				<p>Écrit le {{ formatDate(comment.date) }}</p>
 			</footer>
 
 			<p class="mb-2 font-light text-gray-500 dark:text-gray-400">
@@ -265,7 +270,7 @@ const formatDate = (date: Date) => {
 	const newDate = date.toString();
 	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
 	const timeSplited = newDate.split('T')[1].split('.')[0];
-	return `${dateSplited} at ${timeSplited}`;
+	return `${dateSplited} à ${timeSplited}`;
 };
 
 // get article by id on mounted
@@ -299,7 +304,6 @@ const participationEvent = (id) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				articleStore.removeParticipant(id, participant);
-				window.location.reload();
 			}
 		});
 	} else {
@@ -321,8 +325,6 @@ const participationEvent = (id) => {
 				}
 
 				articleStore.addParticipant(id, participant);
-
-				window.location.reload();
 			}
 		});
 	}
