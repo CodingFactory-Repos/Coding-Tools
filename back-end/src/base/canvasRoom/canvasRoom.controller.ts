@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Res, UseFilters, UseGuards } from '
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
-import { CanvasRoomService } from '@/base/canvasRoom/canvasRoom.service';
+import { CanvasRoomService } from './canvasRoom.service';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
