@@ -58,7 +58,16 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+			{
+				path: 'materials',
+				children: [
+					{ path: '', component: () => import('../views/MaterialsView.vue') },
+					{
+						path: 'approuvals',
+						component: () => import('../views/MaterialsApprouvalCenterView.vue'),
+					},
+				],
+			},
 			{
 				path: 'blog',
 				children: [
@@ -132,7 +141,11 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-
+			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
+			{
+				path: 'materialsDashboard',
+				component: () => import('../views/materialDashboardView.vue'),
+      },
 			{
 				path: 'ressource',
 				children: [

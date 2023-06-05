@@ -18,6 +18,39 @@ export class MaterialsService {
 		return await this.materialsRepository.getAllMaterials();
 	}
 
+	async getAllMaterialsStats() {
+		return await this.materialsRepository.getAllMaterialsStats();
+	}
+
+	async getAllMacs() {
+		return await this.materialsRepository.getAllMacs();
+	}
+
+	async getMacsStatus(kind: string) {
+		const data = await this.materialsRepository.getMacsStatus(kind);
+		const status = data.map(({ status, count }) => {
+			const stati = ['Emprunté', 'Disponible'];
+			return { status: stati[+status], count };
+		});
+		return status;
+	}
+
+	async getMaterialsUsed() {
+		const material = await this.materialsRepository.getMaterialsUsed();
+		const top = material
+			.map(({ borrowingHistory, name }) => {
+				const [{ borrowingDate, returnDate }] = borrowingHistory;
+				const borrowing = +new Date(borrowingDate);
+				const returndate = +new Date(returnDate);
+				const time = returndate - borrowing;
+				const days = Math.floor(time / 864e5);
+				return { name, days };
+			})
+			.sort((a, b) => b.days - a.days)
+			.slice(0, 5);
+		return top;
+	}
+
 	async createNewMaterial(payload: DTOCreateMaterials) {
 		const query = payload as Material;
 		return await this.materialsRepository.createMaterial(query);
@@ -35,5 +68,17 @@ export class MaterialsService {
 	}
 	async getMaterialById(id) {
 		return await this.materialsRepository.getMaterialById(id);
+	}
+	async getPendingReservation() {
+		return await this.materialsRepository.getPendingReservation();
+	}
+	async declineReservation(query, update, options) {
+		return await this.materialsRepository.declineReservation(query, update, options);
+	}
+	async returnMaterial(query, update, options) {
+		return await this.materialsRepository.returnMaterial(query, update, options);
+	}
+	async acceptReservation(query, update, options) {
+		return await this.materialsRepository.acceptReservation(query, update, options);
 	}
 }

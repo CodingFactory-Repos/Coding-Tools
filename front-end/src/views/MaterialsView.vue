@@ -3,7 +3,7 @@
 		<div class="ButtonsContainer">
 			<div
 				v-if="userRole === Roles.PEDAGOGUE"
-				class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
+				class="w-full max-w-[195px] flex bg-light-primary dark:bg-dark-secondary border-b rounded-lg dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
 			>
 				<div class="grow flex h-full gap-1 items-center">
 					<IconButton class="h-fit" type="button" @click="createPDF">
@@ -18,13 +18,29 @@
 						<!-- Put the color in blue when graphComponent is true-->
 						<Chart width="22" height="22" :isActive="graphComponent" />
 					</IconButton>
+					<IconButton
+						type="button"
+						class="relative inline-flex items-center text-sm font-medium text-center text-white rounded-lg"
+						@click="showNotificationCenter"
+					>
+						<Bell width="22" height="22" class="!fill-gray-400" />
+						<span class="sr-only">Notifications</span>
+						<div
+							class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900"
+						>
+							{{ reservation.length }}
+						</div>
+					</IconButton>
 				</div>
 			</div>
 			<Modal v-if="showModal" @close="showModal = false">
 				<template #body>
-					<ButtonsMaterials />
+					<ButtonsMaterials @close="showModal = false" />
 				</template>
 			</Modal>
+			<div v-if="notificationCenter">
+				<ApprouvalCenter :users="users" :reservation="reservation" />
+			</div>
 			<!-- <h2 class="text-2xl font-bold dark:text-dark-font">List of all materials</h2> -->
 			<div class="cards mt-5" v-if="materialsComponent">
 				<ListMaterials />
@@ -37,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import Modal from '@/components/common/Modal.vue';
 import ListMaterials from '@/components/materials/ListMaterials.vue';
 import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
@@ -53,13 +69,20 @@ import { Material } from '@/store/interfaces/material.interface';
 import ChartMaterials from '@/components/materials/ChartMaterials.vue';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { useAuthStore } from '@/store/modules/auth.store';
+import Bell from '@/components/common/svg/Bell.vue';
+import ApprouvalCenter from '@/components/materials/ApprouvalCenter.vue';
+import { useMaterialStore } from '@/store/modules/material.store';
 
 const showModal = ref(false);
+const notificationCenter = ref(false);
 const graphComponent = ref(false);
 const materialsComponent = ref(true);
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
 const userRole = computed(() => user.value?.role);
+const materialStore = useMaterialStore();
+const reservation = computed(() => materialStore.pendingMaterials);
+const users = ref([]);
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 let base64Image = null;
@@ -77,9 +100,23 @@ fetch(CodingToolsLogo)
 		console.error("Erreur lors du chargement de l'image :", error);
 	});
 
+onMounted(() => {
+	materialStore.getPendingMaterials().then(() => {
+		reservation.value.forEach((res1) => {
+			materialStore.getUserById(res1.borrowingHistory.borrowingUser).then((res) => {
+				users.value.push(res);
+			});
+		});
+	});
+});
+
 const showGraph = () => {
 	graphComponent.value = !graphComponent.value;
 	materialsComponent.value = !materialsComponent.value;
+};
+
+const showNotificationCenter = () => {
+	notificationCenter.value = !notificationCenter.value;
 };
 
 function createPDF() {

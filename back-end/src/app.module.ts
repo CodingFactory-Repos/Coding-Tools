@@ -18,6 +18,7 @@ import { CoursesModule } from 'src/base/courses/courses.module';
 import { EquipmentsLoanModule } from 'src/base/equipmentsLoan/equipmentsLoan.module';
 import { GroupsModule } from 'src/base/groups/groups.module';
 import { IdeasEquipmentsModule } from 'src/base/ideasEquipments/ideasEquipments.module';
+import { IdeasCommentsModule } from 'src/base/ideasComments/ideasComments.module';
 import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
@@ -41,6 +42,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 		EquipmentsLoanModule,
 		GroupsModule,
 		IdeasEquipmentsModule,
+		IdeasCommentsModule,
 		MaterialsModule,
 		OpenHousesModule,
 		ProjectsModule,
