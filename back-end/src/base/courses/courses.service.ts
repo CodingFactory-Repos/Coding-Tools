@@ -1,14 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-
 import { CoursesRepository } from 'src/base/courses/courses.repository';
-import { UsersRepository } from 'src/base/users/users.repository';
 
 @Injectable()
 export class CoursesService {
 	constructor(
-		@Inject(forwardRef(() => UsersRepository))
 		@Inject(forwardRef(() => CoursesRepository))
-		private usersRepository: UsersRepository,
 		private coursesRepository: CoursesRepository,
 	) {}
 
@@ -19,5 +15,8 @@ export class CoursesService {
 		return await this.coursesRepository.getAllCourses();
 	}
 
+	async getCoursesById(id) {
+		return await this.coursesRepository.getCourseById(id);
+	}
 }
 

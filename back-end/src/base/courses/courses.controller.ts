@@ -15,6 +15,12 @@ export class CoursesController {
 			return res.status(201).json(courses);
 		});
 	}
+	@Get('/:id')
+	getCoursesByI(@Req() req: Request, @Res() res: Response){
+		this.coursesService.getCoursesById(req.params.id).then((courses) => {
+			return res.status(201).json(courses);
+		});
+	}
 }
 
 

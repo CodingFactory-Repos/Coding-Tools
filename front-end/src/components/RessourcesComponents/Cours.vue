@@ -67,7 +67,7 @@ import { el } from 'date-fns/locale';
 
 const startYears = ref(new Date().getFullYear());
 const endYears = ref(new Date().getFullYear() + 1);
-let TagList = [];
+const TagList = ref([]);
 let currentYearsCourses = [];
 const showModal = ref(false)
 // let coursesFiltered = [];
@@ -105,11 +105,11 @@ function getCurrentYearsCours(){
 }
 
 function getAllTagCourse() {
-	TagList = [];
+	TagList.value = [];
 	//const coursesList = items.value;
 	currentYearsCourses.forEach(element =>{
-		if(!TagList.includes(element.language.toUpperCase())){
-			TagList.push(element.language.toUpperCase());
+		if(!TagList.value.includes(element.language.toUpperCase())){
+			TagList.value.push(element.language.toUpperCase());
 		}
 	})
 	console.log(TagList);
@@ -121,6 +121,7 @@ const router = useRouter();
 // Fetch the articles
 const getCourses = async () => {
 	await courseStore.getCourse();
+	getCurrentYearsCours();
 };
 
 // Call the getArticles method when the component is created

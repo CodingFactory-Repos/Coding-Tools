@@ -1,6 +1,7 @@
 export interface CoursesStore {
 	items: Course[];
 	idCourses: string;
+    oneItems: Course;
 }
 
 export interface Course {
