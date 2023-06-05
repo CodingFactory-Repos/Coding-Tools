@@ -58,7 +58,9 @@
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/retrospectives/ @Kevw94 @Maghwyn
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
+/back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
 /back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
@@ -75,7 +77,7 @@
 /back-end/src/common/decorators/role.decorator.ts @Maghwyn @Kevw94
 /back-end/src/common/decorators/ws.catch.decorator.ts @Maghwyn @Kevw94
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
-/back-end/src/common/gateways/retrospective.global.gateway.ts @Maghwyn @Loule95450 @Kevw94
+/back-end/src/common/gateways/retrospective.global.gateway.ts @Kevw94 @AyakorK
 /back-end/src/common/guards/auth.guard.ts @Maghwyn
 /back-end/src/common/guards/role.guard.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/string.helper.ts @Loule95450 @Maghwyn
@@ -159,12 +161,11 @@
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
-/front-end/src/components/retrospective/ @Loule95450 @Maghwyn
 /front-end/src/components/retrospective/ChooseTemplate.vue @Loule95450
-/front-end/src/components/retrospective/CreateRetro.vue @Maghwyn @Kevw94
-/front-end/src/components/retrospective/Postit.vue @Maghwyn @Loule95450 @Kevw94
-/front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450 @Kevw94
-/front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94
+/front-end/src/components/retrospective/CreatePostit.vue @AyakorK @Maghwyn @Loule95450
+/front-end/src/components/retrospective/Postit.vue @Kevw94 @AyakorK
+/front-end/src/components/retrospective/PrivateSection.vue @Kevw94 @AyakorK
+/front-end/src/components/retrospective/UpdatePostit.vue @AyakorK @Maghwyn @Loule95450
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
