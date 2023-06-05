@@ -36,7 +36,7 @@ export class Circle extends ModelGraphics {
 	}
 
 	public draw(bounds: Partial<ElementBounds>) {
-		const { x, y, radius } = bounds;
+		const { x, y, radius, width, height } = bounds;
 		this.radius = radius;
 		this.position.set(x, y);
 
@@ -45,6 +45,9 @@ export class Circle extends ModelGraphics {
 		this.beginFill(this.color);
 		this.drawCircle(this.radius, this.radius, this.radius);
 		this.endFill();
+
+		if (width !== undefined && width > 0) this.width = width;
+		if (height !== undefined && height > 0) this.height = height;
 	}
 
 	public serialized() {
