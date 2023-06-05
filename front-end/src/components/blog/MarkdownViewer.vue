@@ -57,7 +57,6 @@
           <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
             <h2>A propos de ce tutoriel</h2>
             <div>Publié le : {{ date }}</div>
-            <!-- <div>Redacted by : {{ owner }}</div> -->
           </div>
 
           <div class="block max-w-xl p-6 mt-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
