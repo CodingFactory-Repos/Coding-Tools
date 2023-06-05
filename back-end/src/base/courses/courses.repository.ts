@@ -11,6 +11,10 @@ export class CoursesRepository {
 		return this.db.collection<Course>('courses');
 	}
 
+	async getAllCourses() {
+		return this.courses.find().toArray();
+	}
+
 	async createCourse(query: Course) {
 		return this.courses.insertOne(query);
 	}

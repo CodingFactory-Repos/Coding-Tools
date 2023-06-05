@@ -21,8 +21,8 @@
 					<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 						{{ userEmail }}
 					</td>
-					<td class="px-6 py-4">{{ histoire.borrowingDate }}</td>
-					<td class="px-6 py-4">{{ histoire.returnDate }}</td>
+					<td class="px-6 py-4">{{ new Date(histoire.borrowingDate).toLocaleDateString() }}</td>
+					<td class="px-6 py-4">{{ new Date(histoire.dateReturned).toLocaleDateString() }}</td>
 					<td class="px-6 py-4">{{ histoire.description }}</td>
 				</tr>
 			</tbody>
@@ -36,5 +36,6 @@ import { BorrowingMaterial } from '@/store/interfaces/material.interface';
 defineProps<{
 	history: Array<BorrowingMaterial>;
 	userEmail: string;
-}>()
+	returnedUser: string;
+}>();
 </script>

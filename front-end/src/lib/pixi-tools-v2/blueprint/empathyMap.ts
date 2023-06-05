@@ -18,7 +18,7 @@ export const empathyMap = (
 	const centerX = width / 2;
 	const centerY = height / 2;
 	const largeZone = height * 0.38; // 100 - 38 * 2 = 24;
-	const circleRadius = width / 7;
+	const circleRadius = width / 9;
 
 	const halfWidth = width / 2;
 	const halfHeight = height / 2;
@@ -26,7 +26,6 @@ export const empathyMap = (
 	const startY = point.y - halfHeight;
 	const endX = point.x + halfWidth;
 	const endY = point.y + halfHeight;
-	const centerStartX = point.x;
 	const lineWidth = 4;
 
 	return {
@@ -36,7 +35,7 @@ export const empathyMap = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xd8d8d8,
+				color: 0xffffff,
 				alpha: 1,
 				borderWidth: 0,
 				borderColor: 0x000000,
@@ -79,10 +78,10 @@ export const empathyMap = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: centerStartX, y: startY + lineWidth / 2 },
-							end: { x: centerStartX, y: endY - lineWidth / 2 },
-							startControl: { x: centerStartX, y: startY + lineWidth / 2 },
-							endControl: { x: centerStartX, y: endY - lineWidth / 2 },
+							start: { x: startX + lineWidth / 2, y: startY + lineWidth / 2 },
+							end: { x: endX - lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							startControl: { x: startX + lineWidth / 2, y: startY + lineWidth / 2 },
+							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
 						},
 					},
 				],
@@ -109,10 +108,40 @@ export const empathyMap = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
-							startControl: { x: startX + lineWidth / 2, y: point.y - centerY + largeZone },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + largeZone },
+							start: { x: endX - lineWidth / 2, y: startY + lineWidth / 2 },
+							end: { x: startX + lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							startControl: { x: endX - lineWidth / 2, y: startY + lineWidth / 2 },
+							endControl: { x: startX + lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+						},
+					},
+				],
+			},
+			{
+				typeId: 'line',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'bezier',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0x9fb6bc,
+							arrowHead: false,
+							dashed: true,
+							alpha: 1,
+						},
+						lineControl: {
+							start: { x: point.x, y: point.y - centerY + largeZone * 2 + lineWidth / 2 },
+							end: { x: point.x, y: endY - lineWidth / 2 },
+							startControl: { x: point.x, y: point.y - centerY + largeZone * 2 + lineWidth / 2 },
+							endControl: { x: point.x, y: endY - lineWidth / 2 },
 						},
 					},
 				],
@@ -163,7 +192,7 @@ export const empathyMap = (
 						properties: {
 							cursor: 'pointer',
 							eventMode: 'none',
-							color: 0xd8d8d8,
+							color: 0xffffff,
 							alpha: 1,
 							borderWidth: 3,
 							borderColor: 0x9fb6bc,
