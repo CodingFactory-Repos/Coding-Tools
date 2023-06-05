@@ -176,7 +176,7 @@
 /front-end/src/components/retrospective/ChooseTemplate.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/CreatePostit.vue @Loule95450 @Maghwyn @Kevw94
 /front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
-/front-end/src/components/retrospective/Postit.vue @Maghwyn @Loule95450
+/front-end/src/components/retrospective/Postit.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/UpdatePostit.vue @Loule95450 @Maghwyn @Kevw94
 /front-end/src/components/retrospective/utils/ @Maghwyn
@@ -190,6 +190,7 @@
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/components/RollCallComponents/StudentListComponent.vue @Maghwyn
+/front-end/src/composables/ @Kevw94 @Maghwyn
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
@@ -249,7 +250,6 @@
 /front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
-/front-end/src/store/ @AyakorK @Maghwyn
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
@@ -279,7 +279,6 @@
 /front-end/src/utils/mergeObjects.ts @Maghwyn
 /front-end/src/utils/object.helper.ts @Maghwyn @Loule95450
 /front-end/src/utils/string.helper.ts @Maghwyn @Loule95450
-/front-end/src/views/ @AyakorK @Maghwyn
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AddArticleView.vue @TheoLandemaine
 /front-end/src/views/AddCommentView.vue @TheoLandemaine
