@@ -18,10 +18,12 @@ import { CoursesModule } from 'src/base/courses/courses.module';
 import { EquipmentsLoanModule } from 'src/base/equipmentsLoan/equipmentsLoan.module';
 import { GroupsModule } from 'src/base/groups/groups.module';
 import { IdeasEquipmentsModule } from 'src/base/ideasEquipments/ideasEquipments.module';
+import { IdeasCommentsModule } from 'src/base/ideasComments/ideasComments.module';
 import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
+import { ChatModule } from '@/external-modules/chat/chat.module';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
@@ -40,10 +42,12 @@ import { ScheduleModule } from '@nestjs/schedule';
 		EquipmentsLoanModule,
 		GroupsModule,
 		IdeasEquipmentsModule,
+		IdeasCommentsModule,
 		MaterialsModule,
 		OpenHousesModule,
 		ProjectsModule,
 		RetrospectivesModule,
+		ChatModule,
 		ScheduleModule.forRoot(),
 	],
 	controllers: [AppController],

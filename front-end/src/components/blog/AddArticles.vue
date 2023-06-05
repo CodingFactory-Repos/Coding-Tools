@@ -149,6 +149,7 @@ const addArticle = async () => {
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
+		status: 'validated',
 		date: date.value.toString(),
 	};
 

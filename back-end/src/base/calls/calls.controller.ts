@@ -1,11 +1,11 @@
-import { Controller, Get, Res, UseFilters, UseGuards, Param } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, UseGuards, Param, Post, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { CallsService } from 'src/base/calls/calls.service';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
-import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
+import { CourseIdObject, JwtQRCode, MessageObject } from '@/base/calls/interfaces/calls.interface';
 import { RoleValidator } from '@/common/guards/role.guard';
 import { Roles } from '@/base/users/interfaces/users.interface';
 
@@ -78,6 +78,24 @@ export class CallsController {
 		return res.status(201).json({ status: message });
 	}
 
+	@Post('save_message/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async saveMessage(
+		@Jwt() userId: ObjectId,
+		@Param() courseId: CourseIdObject,
+		@Body()
+		newMessage: MessageObject,
+	) {
+		console.log('yo');
+		await this.callsService.saveMessage(userId, courseId, newMessage);
+	}
+
+	@Get('get_messages/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async getMesssages(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const messages = await this.callsService.getMessages(courseId);
+		return res.status(201).json({ messages: messages });
+	}
 	@Get('/create_random_groups/:courseId')
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async createRandomGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {

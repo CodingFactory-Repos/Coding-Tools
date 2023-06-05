@@ -21,6 +21,7 @@ import {
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { PixiEventMode } from '../types/pixi-enums';
+import { LineContainer } from './lineContainer';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -231,6 +232,8 @@ export class FramedContainer extends PluginContainer {
 				graphics.push(element);
 			} else if (element instanceof GenericContainer) {
 				graphics.push(element.getGraphicChildren());
+			} else if (element instanceof LineContainer) {
+				graphics.push(element.getGraphicChildren());
 			}
 		}
 
@@ -248,6 +251,9 @@ export class FramedContainer extends PluginContainer {
 			} else if (element instanceof GenericContainer) {
 				const clonedContainer = element.cloneToContainer();
 				cloned.addChild(clonedContainer);
+			} else if (element instanceof LineContainer) {
+				const clonedContainer = element.cloneToContainer();
+				cloned.addChild(clonedContainer);
 			}
 		}
 
@@ -262,6 +268,8 @@ export class FramedContainer extends PluginContainer {
 			if (element instanceof Rectangle) {
 				backgroundSerialized = element.serialized();
 			} else if (element instanceof GenericContainer) {
+				genericContainerSerialized.push(element.serializeData());
+			} else if (element instanceof LineContainer) {
 				genericContainerSerialized.push(element.serializeData());
 			}
 		}
@@ -297,6 +305,8 @@ export class FramedContainer extends PluginContainer {
 				backgroundSerialized = element.serializedBounds();
 			} else if (element instanceof GenericContainer) {
 				genericContainerSerializedBounds.push(element.serializeBounds());
+			} else if (element instanceof LineContainer) {
+				genericContainerSerializedBounds.push(element.serializeControl());
 			}
 		}
 
@@ -325,6 +335,8 @@ export class FramedContainer extends PluginContainer {
 				backgroundSerialized = element.serializedColorimetry();
 			} else if (element instanceof GenericContainer) {
 				genericContainerSerialized.push(element.serializedColorimetry());
+			} else if (element instanceof LineContainer) {
+				genericContainerSerialized.push(element.serializedColorimetry());
 			}
 		}
 
@@ -350,6 +362,8 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	public attachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if (index !== -1) return;
 		this.linkedLinesUUID.push(lineUUID);
 	}
 

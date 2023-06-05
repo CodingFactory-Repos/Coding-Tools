@@ -18,15 +18,14 @@ export class RetrospectivesService {
 
 	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
 		const date = new Date();
-		const user = await this.usersRepository.findOne({ _id: userId})
-		if (user === null)
-			return;
+		const user = await this.usersRepository.findOne({ _id: userId });
+		if (user === null) return;
 
 		retrospective.createdAt = date;
-		retrospective.creator = user.profile.email
-		retrospective.participants.push(user.profile.email)
-		const slug = generateCodeToken()
-		retrospective.slug = slug
+		retrospective.creator = user.profile.email;
+		retrospective.participants.push(user.profile.email);
+		const slug = generateCodeToken();
+		retrospective.slug = slug;
 
 		await this.retrospectivesRepository.createRetrospective(retrospective);
 
@@ -39,22 +38,18 @@ export class RetrospectivesService {
 	}
 
 	async getAllRetro(userId: ObjectId) {
-		const user = await this.usersRepository.findOne({ _id: userId})
-		if (user === null)
-			return;
+		const user = await this.usersRepository.findOne({ _id: userId });
+		if (user === null) return;
 
 		const query = {
-			$or: [
-				{ creator: user.profile?.email },
-				{ participants: { $in: [user.profile?.email] } }
-			]
-		}
+			$or: [{ creator: user.profile?.email }, { participants: { $in: [user.profile?.email] } }],
+		};
 		const allRetro = await this.retrospectivesRepository.findAll(query);
 		return allRetro;
 	}
 
 	async tryUpdateParticipants(retro: Retrospective) {
-		const query = { slug: retro.slug }
+		const query = { slug: retro.slug };
 		const update = { $set: { participants: retro.participants } };
 
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);

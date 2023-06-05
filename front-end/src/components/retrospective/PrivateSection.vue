@@ -1,13 +1,10 @@
 <template>
-
-	<div
-		v-if="!isLock"
-		v-for="(privatePostit, index) in privatePostits"
-		:key="index"
-		>
+	<div v-if="!isLock">
+		<div v-for="(privatePostit, index) in privatePostits" :key="index">
 			<UpdatePostit :privatePostit="privatePostit" />
+		</div>
 	</div>
-	<CreatePostit v-if="!isLock"/>
+	<CreatePostit v-if="!isLock" />
 </template>
 
 <script lang="ts" setup>
@@ -17,23 +14,11 @@ import UpdatePostit from './UpdatePostit.vue';
 import { computed } from 'vue';
 
 const retroStore = useRetrospectiveStore();
-const isLock = computed(() =>
-	retroStore.currentRetro.isLocked && retroStore.currentRetro.isRetroEnded
-	?
-		true
-	:
-		!retroStore.currentRetro.isLocked && !retroStore.currentRetro.isRetroEnded
-	?
-		false
-	:
-		retroStore.currentRetro.isLocked || retroStore.currentRetro.isRetroEnded
-	?
-		true
-	:
-		false
-);
+
+const isLock = computed(() => {
+	const { isLocked, isRetroEnded } = retroStore.currentRetro;
+	return [isLocked, isRetroEnded].some((b) => b);
+});
 
 const privatePostits = computed(() => retroStore.privatePostit);
-
-
 </script>

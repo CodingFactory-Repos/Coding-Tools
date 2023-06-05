@@ -4,8 +4,8 @@
 		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible z-10"
 		:class="isOwner && !isLock ? 'cursor-grab' : ''"
 		:draggable="isOwner && !isLock"
-        @dragstart="dragStart"
-        @dragend="dragEnd"
+		@dragstart="dragStart"
+		@dragend="dragEnd"
 	>
 		<button
 				v-if="isOwner && !isLock"
@@ -39,8 +39,17 @@
 
 	</div>
 	<div
-			v-else
-			class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible cursor-grab"
+		v-else
+		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible cursor-grab"
+	>
+		<textarea
+			v-model="postit.value"
+			id="message"
+			rows="4"
+			class="block p-2.5 h-full w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
+			placeholder="Update"
+			@blur="focusOut"
+			ref="updatePostitArea"
 		>
 			<textarea
 				v-model="postit.value"
@@ -76,83 +85,69 @@ import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { computed, nextTick, ref } from 'vue';
 
 const props = defineProps({
-	postit: { type: Object, required: true}
-})
+	postit: { type: Object, required: true },
+});
 const retroStore = useRetrospectiveStore();
 const authStore = useAuthStore();
-const isOwner = computed(() => authStore.user.profile.email === props.postit.user ? true : false)
+const isOwner = computed(() => (authStore.user.profile.email === props.postit.user ? true : false));
 const updatePostit = ref(false);
 const updatePostitArea = ref();
+
 const previousValue = ref("");
 const isPostitVisible = computed(() => props.postit.visible);
 const userPostit = computed(() => props.postit.sylable ? props.postit.sylable : "NC");
 
-const isLock = computed(() =>
-	retroStore.currentRetro.isLocked && retroStore.currentRetro.isRetroEnded
-	?
-		true
-	:
-		!retroStore.currentRetro.isLocked && !retroStore.currentRetro.isRetroEnded
-	?
-		false
-	:
-		retroStore.currentRetro.isLocked || retroStore.currentRetro.isRetroEnded
-	?
-		true
-	:
-		false
-);
+const isLock = computed(() => {
+	const { isLocked, isRetroEnded } = retroStore.currentRetro;
+	return [isLocked, isRetroEnded].some((b) => b);
+});
+
 const dragStart = () => {
 	retroStore.tempMovingPostit = props.postit;
-}
+};
 
 const dragEnd = () => {
-	console.log("goodbye");
-
-}
+	console.log('goodbye');
+};
 
 const removePostit = () => {
-	retroStore.removeRetroPostit(props.postit)
-}
+	retroStore.removeRetroPostit(props.postit);
+};
 
 const tryUpdatePostit = () => {
-	updatePostit.value = true
+	updatePostit.value = true;
 	nextTick(() => {
 		previousValue.value = props.postit.value;
-		updatePostitArea.value.focus()
+		updatePostitArea.value.focus();
 	});
-
-}
+};
 
 const focusOut = () => {
-	if (previousValue.value === "") {
-		updatePostit.value = false
+	if (previousValue.value === '') {
+		updatePostit.value = false;
 	}
 	if (previousValue.value === props.postit.value) {
-		updatePostit.value = false
+		updatePostit.value = false;
 	}
-}
+};
 
 const writeUpdatePostit = () => {
 	if (props.postit.value === previousValue.value) {
-		previousValue.value = "";
-		updatePostit.value = false
-		return
+		previousValue.value = '';
+		updatePostit.value = false;
 	} else {
-		retroStore.updateRetroPostit(props.postit)
-		previousValue.value = "";
-		updatePostit.value = false
+		retroStore.updateRetroPostit(props.postit);
+		previousValue.value = '';
+		updatePostit.value = false;
 	}
-}
+};
 
 const undoModification = () => {
-	props.postit.value = previousValue.value
-	previousValue.value = "";
-	updatePostit.value = false
-}
-
+	props.postit.value = previousValue.value;
+	previousValue.value = '';
+	updatePostit.value = false;
+};
 </script>
-
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap');
@@ -170,3 +165,4 @@ const undoModification = () => {
 
 
 </style>
+
