@@ -5,8 +5,13 @@
 			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
 				STORIES
 			</span>
-
-			<draggable class="h-full w-full flex flex-col gap-2 overflow-auto" v-model="stories" group="columns" @end="handleDragEnd">
+<!--
+		<draggable
+			class="h-full w-full flex flex-col gap-2 overflow-auto"
+			v-model="stories"
+			group="columns"
+			@end="handleDragEnd"
+		>
 		  <div v-for="storyData in stories" :key="storyData.id">
 			<div @click="openModal(storyData)">
 			  {{ storyData}}
@@ -14,7 +19,7 @@
 			  {{ storyData.title }}
 			</div>
 		  </div>
-		</draggable>
+		</draggable>-->
 		
 		
 		<div class="w-full h-12 p-3">
@@ -148,7 +153,6 @@ import { withErrorHandler } from '@/utils/storeHandler';
 import { http } from '@/api/network/axios';
 import { reactive,onMounted, ref } from 'vue';
 import { defineComponent } from 'vue';
-import draggable from 'vuedraggable';
 
 
 export interface ScrumCard {
