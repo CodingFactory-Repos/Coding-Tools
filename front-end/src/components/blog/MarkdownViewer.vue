@@ -105,7 +105,7 @@
           class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring "
         >
           <svg
-            class="w-5 h-5 bg-blue-800 dark:bg-zinc-600"
+            class="w-5 h-5 bg-blue-700 dark:bg-transparent"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
