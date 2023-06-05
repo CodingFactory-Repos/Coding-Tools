@@ -64,6 +64,7 @@
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/retrospectives/ @Kevw94 @Maghwyn
+/back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Loule95450 @Kevw94
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
 /back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Loule95450
@@ -81,8 +82,9 @@
 /back-end/src/common/decorators/jwt.decorator.ts @Maghwyn @Loule95450
 /back-end/src/common/decorators/role.decorator.ts @Maghwyn @Kevw94
 /back-end/src/common/decorators/ws.catch.decorator.ts @Maghwyn @Kevw94
-/back-end/src/common/gateways/ @AyakorK @Maghwyn
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
+/back-end/src/common/gateways/chat.global.gateway.ts @Maghwyn @AyakorK
+/back-end/src/common/gateways/retrospective.global.gateway.ts @Maghwyn @Loule95450
 /back-end/src/common/guards/auth.guard.ts @Maghwyn
 /back-end/src/common/guards/role.guard.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/string.helper.ts @Loule95450 @Maghwyn
@@ -163,7 +165,6 @@
 /front-end/src/components/common/svg/Shrink.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgCrown.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgThreeDot.vue @Maghwyn @Kevw94
-/front-end/src/components/common/svg/Timer.vue @Maghwyn
 /front-end/src/components/common/uix/SelectionBox.vue @Loule95450 @Maghwyn
 /front-end/src/components/materials/ButtonsMaterials.vue @Maghwyn @RuKaSuu
 /front-end/src/components/materials/ChartMaterials.vue @Maghwyn @Loule95450
@@ -171,13 +172,15 @@
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
+/front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/ChooseTemplate.vue @Maghwyn @Loule95450
-/front-end/src/components/retrospective/CreatePostit.vue @AyakorK @Maghwyn @Loule95450
-/front-end/src/components/retrospective/CreateRetro.vue @Maghwyn @Kevw94
+/front-end/src/components/retrospective/CreatePostit.vue @Loule95450 @Maghwyn @Kevw94
 /front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
-/front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94
-/front-end/src/components/retrospective/UpdatePostit.vue @AyakorK @Maghwyn @Loule95450
+/front-end/src/components/retrospective/Postit.vue @Maghwyn @Loule95450
+/front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
+/front-end/src/components/retrospective/UpdatePostit.vue @Loule95450 @Maghwyn @Kevw94
 /front-end/src/components/retrospective/utils/ @Maghwyn
+/front-end/src/components/retrospective/utils/NavInfosRetro.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
@@ -187,7 +190,6 @@
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/components/RollCallComponents/StudentListComponent.vue @Maghwyn
-/front-end/src/composables/ @Kevw94 @Maghwyn
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
@@ -247,6 +249,7 @@
 /front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
+/front-end/src/store/ @AyakorK @Maghwyn
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
@@ -276,6 +279,7 @@
 /front-end/src/utils/mergeObjects.ts @Maghwyn
 /front-end/src/utils/object.helper.ts @Maghwyn @Loule95450
 /front-end/src/utils/string.helper.ts @Maghwyn @Loule95450
+/front-end/src/views/ @AyakorK @Maghwyn
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AddArticleView.vue @TheoLandemaine
 /front-end/src/views/AddCommentView.vue @TheoLandemaine
