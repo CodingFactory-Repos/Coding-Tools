@@ -199,7 +199,6 @@ const showLink = ref({});
 const showHistory = ref(false);
 
 const editMaterial = async () => {
-	// console.log(props.material);
 	const response = await materialStore.updateMaterial(props.material, props.id);
 
 	if (response) {
@@ -226,7 +225,7 @@ function onImageSelected(image) {
 
 const deleteMaterial = () => {
 	Swal.fire({
-		title: 'Are yu sure you want to delete this material?',
+		title: 'Are you sure you want to delete this material?',
 		showCancelButton: true,
 		confirmButtonText: 'Delete',
 		cancelButtonText: `Cancel`,
