@@ -9,6 +9,7 @@
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
 /back-end/package-lock.json @Maghwyn @Kevw94
 /back-end/src/app.controller.ts @Maghwyn @Kevw94
+/back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
 /back-end/src/auth/auth.module.ts @Maghwyn
@@ -45,6 +46,8 @@
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/ideasEquipments/ @Heloise-lelez @Maghwyn
+/back-end/src/base/ideasEquipments/ideasEquipments.module.ts @Maghwyn
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
