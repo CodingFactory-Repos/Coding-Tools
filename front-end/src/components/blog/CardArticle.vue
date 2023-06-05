@@ -66,11 +66,20 @@
 				</div>
 			</button>
 			<button
+				v-if="item.type != 'Tuto'"
 				type="button"
 				@click="openArticle(item._id)"
 				class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 			>
 				Lire l'article
+			</button>
+			<button
+				v-else
+				type="button"
+				@click="openTutorial(item._id)"
+				class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+			>
+				Lire le tutoriel
 			</button>
 			<button
 				type="button"
@@ -208,6 +217,10 @@ onMounted(() => {
 // function to check if user is participant
 const openArticle = (id: string) => {
 	router.push(`/app/blog/${id}`);
+};
+
+const openTutorial = (id: string) => {
+	router.push(`/app/blog/tutorial/${id}`);
 };
 </script>
 

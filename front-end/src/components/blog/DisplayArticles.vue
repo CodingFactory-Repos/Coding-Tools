@@ -3,11 +3,20 @@
 		<div class="text-center pt-4">
 			<h1 class="text-4xl mb-2 font-bold tracking-tight text-gray-900 dark:text-white">Blog</h1>
 			<button
+				v-if="activeTab != 'tutos'"
 				type="submit"
 				@click="redirectNewArticle"
 				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
 				<span class="text-white">Créer un article</span>
+			</button>
+			<button
+				v-else
+				type="submit"
+				@click="redirectNewArticle"
+				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
+			>
+				<span class="text-white">Create tutorial</span>
 			</button>
 		</div>
 
@@ -65,7 +74,8 @@ const items = computed(() => {
 
 // Redirect the user to the article's creation page
 const redirectNewArticle = () => {
-	router.push('/app/blog/new');
+	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial')
+	else router.push('/app/blog/new');
 };
 
 // Fetch the articles

@@ -13,6 +13,8 @@ export interface Article {
 	picture: string;
 	tags: string;
 	type: string;
+	status: string;
+	content?: string;
 	participants?: {
 		id: string;
 		firstName: string;
