@@ -34,7 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
 	async validate(payload: JwtPayload) {
 		if (!payload?.id) throw new UnauthorizedException();
-		if (!(payload?.role >= 0 && payload?.role <= 2)) throw new UnauthorizedException();
+		if (!(payload?.role >= 0 && payload?.role <= 3)) throw new UnauthorizedException();
 		payload.id = new ObjectId(payload.id);
 		return payload;
 	}

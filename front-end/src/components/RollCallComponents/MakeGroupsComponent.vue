@@ -1,5 +1,5 @@
 <template>
-	<div v-if="courseId">
+	<div v-if="courseId" class="mx-auto">
 		<a :href="groupUrl">
 			<button class="bg-blue-500 text-white py-2 px-4 rounded mt-4">Former les groupes</button>
 		</a>
