@@ -35,4 +35,8 @@ export class CoursesRepository {
 		const options = { projection: { _id: 1 } };
 		return this.courses.findOne(query, options);
 	}
+
+	async getAllCourses() {
+		return this.courses.find({}).toArray();
+	}
 }
