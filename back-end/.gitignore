@@ -39,3 +39,5 @@ data
 
 .env
 .eslintcache
+
+uploads/*.webp
