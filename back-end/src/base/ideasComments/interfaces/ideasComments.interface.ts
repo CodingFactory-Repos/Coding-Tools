@@ -1,5 +1,4 @@
-import { ObjectId, Timestamp } from 'mongodb';
-import { IdeaEquipment } from '../../ideasEquipments/interfaces/ideasEquipments.interface';
+import { ObjectId } from 'mongodb';
 
 export interface IdeaComment {
 	_id?: ObjectId;

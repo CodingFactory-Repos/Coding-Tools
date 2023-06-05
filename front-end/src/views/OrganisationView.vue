@@ -18,8 +18,8 @@
                         <span style="font-size:20px;" >Critères d'acceptation:<br/></span>
                         <span style="font-size:20px;" >Valeur:<br/></span>
                         <div style="position:absolute;right:10px;bottom:10px;">
-                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
+                            <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png" alt="orga_1"></button>
+                            <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png" alt="orga_2"></button>
                         </div>
                     </div>
                 </div>
