@@ -1,0 +1,108 @@
+/* $default    :   #C5C5C5;
+$current #decaff; */
+/* default */
+
+.materialsIdeas-form {
+	max-width: 80%;
+	margin: 25px;
+	align-items: center;
+	text-align: left;
+	padding: 10px 20px;
+	border-radius: 10px;
+}
+label {
+	padding-bottom: 10px;
+}
+button {
+	padding: 10px;
+}
+ul {
+	list-style: none;
+	padding: 0;
+}
+.wrapper {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+.task {
+	width: 100%;
+	margin-top: 30px;
+	height: 40px;
+	font-size: 14px;
+	display: flex;
+}
+.complete {
+	text-decoration: line-through;
+}
+
+.btn-add {
+	flex-shrink: 0;
+	margin-left: 10px;
+	border: none;
+	border-radius: 5px;
+}
+
+.btn-delete {
+	border: none;
+	border-radius: 5px;
+	float: right;
+}
+.task-list {
+	border-radius: 2px;
+	display: block;
+}
+.task-list-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+	border-radius: 5px;
+	margin-bottom: 12px;
+	padding: 10px;
+	justify-content: space-between;
+}
+
+.task-list-item span {
+	flex-grow: 2;
+	font-weight: bold;
+	font-size: large;
+}
+
+.popUp {
+	margin: auto;
+	width: 100%;
+}
+
+.infoLayout {
+	padding: 30px;
+	width: 60%;
+	margin: 30px;
+	max-width: 600px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.infoLayout .closeBtn {
+	align-self: flex-end;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+.infoLayout li {
+	margin-top: 15px;
+}
+
+.infoLayout_device-btn {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	margin: 15px 25px 0;
+}
+
+.ideas-comments__messages li {
+	margin-bottom: 15px;
+}

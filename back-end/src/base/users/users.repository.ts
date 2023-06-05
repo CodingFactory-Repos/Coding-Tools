@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions, Db } from 'mongodb';
 import { User } from './interfaces/users.interface';
-import { Db } from 'mongodb';
-import { profile } from 'console';
-
 @Injectable()
 export class UsersRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}

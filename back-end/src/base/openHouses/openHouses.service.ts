@@ -2,6 +2,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { OpenHousesRepository } from 'src/base/openHouses/openHouses.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class OpenHousesService {
@@ -18,13 +19,14 @@ export class OpenHousesService {
 	async getAllHouses() {
 		return await this.openHousesRepository.getAllHouses();
 	}
-	async getOpenHouseById(id) {
-		return await this.openHousesRepository.getOpenHouseById(id);
+	async getOpenHouseBy(id: ObjectId) {
+		const query = { _id: new ObjectId(id) };
+		return this.openHousesRepository.findOne(query);
 	}
 	async createOpenHouses(query) {
 		return await this.openHousesRepository.createOpenHouses(query);
 	}
-	async getAllUsers(){
+	async getAllUsers() {
 		return await this.usersRepository.getAllUsers();
 	}
 }

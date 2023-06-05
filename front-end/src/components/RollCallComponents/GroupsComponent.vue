@@ -56,7 +56,6 @@ let groups = [];
 
 export default {
 	name: 'StudentList',
-
 	data() {
 		return {
 			courseId,
@@ -65,7 +64,6 @@ export default {
 			isPO: false,
 		};
 	},
-
 	mounted() {
 		this.getCourseId();
 		this.isProductOwner();
@@ -119,7 +117,7 @@ export default {
 				return response.data.identity;
 			});
 		}),
-		isProductOwnerlol: withErrorHandler(async function () {
+		isProductOwner: withErrorHandler(async function () {
 			http.get(`/calls/is_product_owner/`).then((response) => {
 				this.isPO = response.data.isProductOwner;
 			});

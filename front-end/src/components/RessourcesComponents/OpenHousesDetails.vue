@@ -31,7 +31,7 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useOpenHouseStore } from '@/store/modules/openHouse.store';
 
 // get store
@@ -51,8 +51,8 @@ const getOpenHouseById = async (_id: string) => {
 };
 
 // fetch openHouse data on mounted
-onMounted(() => {
-	getOpenHouseById(_id.value);
+onMounted(async() => {
+	await getOpenHouseById(_id.value);
 });
 </script>
 <style scoped>
