@@ -65,9 +65,6 @@ ul {
 	justify-content: space-between;
 }
 
-.task-list-item input {
-}
-
 .task-list-item span {
 	flex-grow: 2;
 	font-weight: bold;
