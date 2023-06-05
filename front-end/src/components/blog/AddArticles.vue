@@ -142,7 +142,6 @@ const addArticle = async () => {
 		return;
 	}
 
-	// TODO: WIP status
 	let data = {
 		owner: authStore.user._id,
 		title: title.value,
