@@ -37,7 +37,7 @@ export const impactMapping = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xd8d8d8,
+				color: 0xffffff,
 				alpha: 1,
 				borderWidth: 0,
 				borderColor: 0x000000,
