@@ -148,8 +148,8 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
 			{
 				path: 'materialsDashboard',
-				component: () => import('../views/materialDashboardView.vue'),
-      },
+				component: () => import('../views/MaterialDashboardView.vue'),
+			},
 			{
 				path: 'ressource',
 				children: [
