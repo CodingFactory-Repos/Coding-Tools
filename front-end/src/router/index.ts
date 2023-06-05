@@ -88,9 +88,13 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/ShowArticleView.vue'),
 					},
 					{
+						path: 'edit/:id',
+						component: () => import('../views/EditArticleView.vue'),
+					},
+					{
 						path: 'tutorial/:id',
 						component: () => import('../views/MarkdownViewer.vue'),
-					}
+					},
 				],
 			},
 			{
