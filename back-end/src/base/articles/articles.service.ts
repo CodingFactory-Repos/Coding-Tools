@@ -28,6 +28,11 @@ export class ArticlesService {
 		return await this.articlesRepository.getArticleById(id);
 	}
 
+	// Function to update an article
+	async updateArticle(id, queryArticle) {
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
+	}
+
 	// add participant to the array of participants in article in the database
 	async addParticipant(id, queryParticipant) {
 		const update = { $push: { participants: queryParticipant } };
@@ -75,6 +80,11 @@ export class ArticlesService {
 		const update = { $push: { comments: queryComment } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// delete article
+	async deleteArticle(id) {
+		return await this.articlesRepository.deleteOneArticle(id);
 	}
 
 	// Business logic methods goes there...
