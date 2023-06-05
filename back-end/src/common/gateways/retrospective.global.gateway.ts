@@ -188,4 +188,18 @@ export class RetrospectiveGateway
 	}
 
 	//@@@@@@@@@@@ END TIMER SECTION @@@@@@@@@@@@@@@
+
+
+	//@@@@@@@@@@@ Postit visibility @@@@@@@@@@@@@@@
+	@SubscribeMessage('update-visibility')
+	async updateVisibility(client: AuthSocket, currentRetro: Retrospective) {
+		client.to(client.roomId).emit('update-visibility', currentRetro.postits);
+
+		const postits = currentRetro.postits;
+		const query = { slug: client.roomId };
+		const update = { $set: { postits: postits } };
+
+		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+
 }

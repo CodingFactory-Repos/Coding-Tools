@@ -8,12 +8,14 @@ import {
 import { defineStore } from 'pinia';
 import {
 	Postit,
+	Postits,
 	Retrospective,
 	RetrospectiveStore,
 	UserCursor,
 	UserDisconnect,
 } from './interfaces/retrospective.interface';
 import { socketRetro } from '@/composables/useSocketRetro';
+import { useAuthStore } from './modules/auth.store';
 
 const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	privatePostit: [],
@@ -25,6 +27,7 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	inputSearch: '',
 	dateSearch: 0,
 	isRetroFinished: false,
+	isPostitVisible: false,
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -180,7 +183,24 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.currentRetro.timePassed = time;
 		},
 		resetTimer(this: RetrospectiveStore) {
-			this.currentRetro.timePassed = 0;
+			this.currentRetro.timePassed = 0
 		},
+		setVisibilityPostit(this: RetrospectiveStore) {
+			const authStore = useAuthStore();
+			for (const key in this.currentRetro.postits) {
+				const array = this.currentRetro.postits[key];
+				array.forEach((element: Postit) => {
+					if (element.user === authStore.user.profile.email) {
+						element.visible = !element.visible;
+					}
+				})
+			}
+			socketRetro.socket.emit("update-visibility", this.currentRetro);
+		},
+		setSocketVisibility(this: RetrospectiveStore, postits: Postits) {
+			this.currentRetro.postits = postits
+
+		}
+
 	},
 });
