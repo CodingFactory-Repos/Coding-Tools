@@ -29,30 +29,27 @@ export class MaterialsController {
 	) {}
 
 	@Get('')
-	index(@Res() res: Response) {
-		this.materialsService.getAllMaterials().then((materials) => {
-			res.status(200).json(materials);
-		});
+	async index(@Res() res: Response) {
+		const materials = await this.materialsService.getAllMaterials();
+		return res.status(200).json(materials);
 	}
 
 	@Post('/create')
 	async createMaterial(@Body() body: DTOCreateMaterials, @Res() res: Response) {
-		await this.materialsService.createNewMaterial(body).then((material) => {
-			res.status(200).json(material);
-		});
+		const material = await this.materialsService.createNewMaterial(body);
+		return res.status(200).json(material);
 	}
 
 	@Put('/update/:id')
-	updateMaterial(@Param('id') id: string, @Body() body: DTOMaetrials, @Res() res: Response) {
+	async updateMaterial(@Param('id') id: string, @Body() body: DTOMaetrials, @Res() res: Response) {
 		const query = { _id: new ObjectId(id) };
 		const update = { $set: body };
-		this.materialsService.updateMaterial(query, update).then((material) => {
-			res.status(200).json(material);
-		});
+		const material = await this.materialsService.updateMaterial(query, update);
+		return res.status(200).json(material);
 	}
 
 	@Put('reservation/:id')
-	addReservation(
+	async addReservation(
 		@Param('id') id: string,
 		@Body() body: DTOBorrowingMaterial,
 		@Res() res: Response,
@@ -72,11 +69,10 @@ export class MaterialsController {
 	}
 
 	@Delete('/delete/:id')
-	deleteMaterial(@Param('id') id: string, @Res() res: Response) {
+	async deleteMaterial(@Param('id') id: string, @Res() res: Response) {
 		const query = { _id: new ObjectId(id) };
-		this.materialsService.deleteMaterial(query).then((material) => {
-			res.status(200).json(material);
-		});
+		const material = await this.materialsService.deleteMaterial(query);
+		return res.status(200).json(material);
 	}
 
 	@Get('get/:id')

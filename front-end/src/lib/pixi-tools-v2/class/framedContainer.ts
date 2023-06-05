@@ -11,13 +11,16 @@ import {
 } from '../types/pixi-class';
 import {
 	ContainerTypeId,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
 	SerializedGraphic,
 	SerializedGraphicBounds,
+	SerializedGraphicColorimetry,
 } from '../types/pixi-serialize';
 import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
+import { PixiEventMode } from '../types/pixi-enums';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -29,6 +32,8 @@ export class FramedContainer extends PluginContainer {
 	public readonly titleContainer: TitleContainer;
 	public readonly uuid: string;
 	public readonly typeId: ContainerTypeId;
+	public linkedLinesUUID: Array<string> = [];
+	public disabled: boolean;
 
 	public absMinX: number;
 	public absMinY: number;
@@ -64,7 +69,8 @@ export class FramedContainer extends PluginContainer {
 		this.uuid = uuid;
 		this.typeId = typeId as ContainerTypeId;
 		this.cursor = properties.cursor;
-		this.interactive = properties.interactive;
+		this.eventMode = properties.eventMode;
+		this.disabled = properties.disabled;
 		this.tabNumberContext = properties.tabNumberContext;
 		this.isAttachedToFrame = properties.isAttachedToFrame;
 		this.frameNumber = properties.frameNumber;
@@ -79,8 +85,8 @@ export class FramedContainer extends PluginContainer {
 		this.mainContainer = new FramedMainContainer();
 		this.titleContainer = new TitleContainer();
 		this.titleContainer.tabNumberContext = this.frameNumber;
-		this.titleContainer.interactive = true;
-		this.mainContainer.interactive = true;
+		this.titleContainer.eventMode = PixiEventMode.STATIC;
+		this.mainContainer.eventMode = PixiEventMode.STATIC;
 
 		for (const element of children) {
 			this.mainContainer.addChild(element);
@@ -129,7 +135,7 @@ export class FramedContainer extends PluginContainer {
 	}
 
 	protected onSelected(e: FederatedPointerEvent) {
-		if (e.forced || !this.interactive) return;
+		if (e.forced || this.eventMode === 'none' || this.disabled) return;
 		if (e.target === this.frameBox && this.listeners('pointerdown').length > 0) return;
 		e.stopPropagation();
 		this.manager.selectContainer(this, e.originalEvent.shiftKey);
@@ -272,10 +278,11 @@ export class FramedContainer extends PluginContainer {
 			background: backgroundSerialized,
 			properties: {
 				cursor: this.cursor,
-				interactive: this.interactive,
+				eventMode: this.eventMode,
 				tabNumberContext: this.tabNumberContext,
 				isAttachedToFrame: this.isAttachedToFrame,
 				frameNumber: this.frameNumber,
+				disabled: this.disabled,
 			},
 			childs: genericContainerSerialized,
 		};
@@ -308,6 +315,26 @@ export class FramedContainer extends PluginContainer {
 		};
 	}
 
+	public serializedColorimetry(): SerializedColorimetry {
+		const genericContainerSerialized: Array<SerializedColorimetry | SerializedGraphicColorimetry> =
+			[];
+		let backgroundSerialized: SerializedGraphicColorimetry;
+
+		for (const element of this.mainContainer.children) {
+			if (element instanceof Rectangle) {
+				backgroundSerialized = element.serializedColorimetry();
+			} else if (element instanceof GenericContainer) {
+				genericContainerSerialized.push(element.serializedColorimetry());
+			}
+		}
+
+		return {
+			uuid: this.uuid,
+			background: backgroundSerialized,
+			childs: genericContainerSerialized,
+		};
+	}
+
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = serializedBounds.background.bounds;
@@ -320,6 +347,16 @@ export class FramedContainer extends PluginContainer {
 		this.frameBox.position.set(bounds.x, bounds.y);
 		this.frameBox.width = bounds.width;
 		this.frameBox.height = bounds.height;
+	}
+
+	public attachLine(lineUUID: string) {
+		this.linkedLinesUUID.push(lineUUID);
+	}
+
+	public detachLine(lineUUID: string) {
+		const index = this.linkedLinesUUID.findIndex((uuid) => uuid === lineUUID);
+		if (index === -1) return;
+		this.linkedLinesUUID.splice(index, 1);
 	}
 
 	get frameBoxBounds() {

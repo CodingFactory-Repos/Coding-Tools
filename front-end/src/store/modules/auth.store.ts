@@ -13,9 +13,6 @@ import {
 	trySendResetPasswordEmail,
 	tryResetPassword,
 	tryGetMe,
-	tryAddEvents,
-	tryRemoveEvents,
-	tryAddArticles,
 } from '@/api/auth-req';
 
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
@@ -93,32 +90,6 @@ export const useAuthStore = defineStore('auth', {
 				this,
 				keys?.length ? pick(authStoreDefaultState(), keys) : authStoreDefaultState(), // if no keys provided, reset all
 			);
-		},
-
-		//! TODO: What are these, and why is it inside the authentification store ?
-		addEventToUser: async function (this: AuthStore, eventId: string) {
-			const response = await tryAddEvents(eventId);
-
-			if (response.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
-
-			return true;
-		},
-		removeEventToUser: async function (this: AuthStore, eventId: string) {
-			const response = await tryRemoveEvents(eventId);
-
-			if (response.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
-
-			return true;
-		},
-		addArticleToUser: async function (this: AuthStore, articleId: string) {
-			const response = await tryAddArticles(articleId);
-
-			if (response.data.status !== STATUS.OK)
-				throw new Error('The returned status was not expected');
-
-			return true;
 		},
 	},
 });
