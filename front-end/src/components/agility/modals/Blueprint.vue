@@ -17,7 +17,7 @@
 			</div>
 		</template>
 	</ModalOverlay>
-	<PersonaModal v-if="isPersonaModalOpen" @close="closePersonaModal"/>
+	<PersonaModal v-if="isPersonaModalOpen" @close="finishPersonaBuilder"/>
 </template>
 
 <script lang="ts" setup>
@@ -41,6 +41,11 @@ const openBlueprintModal = () => showBlueprintModal.value = true;
 const closeBlueprintModal = () => showBlueprintModal.value = false;
 const openPersonaModal = () => isPersonaModalOpen.value = true;
 const closePersonaModal = () => isPersonaModalOpen.value = false;
+
+const finishPersonaBuilder = () => {
+	closePersonaModal();
+	beforeModalClose();
+}
 
 const beforeModalClose = () => {
 	closeBlueprintModal();
