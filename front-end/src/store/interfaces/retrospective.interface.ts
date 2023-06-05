@@ -1,10 +1,15 @@
-import { User } from './auth.interfaces';
+
 
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>;
-	tempMovingPostit: Postit;
-	currentRetro: Retrospective;
-	userCursors: Array<UserCursor>;
+	privatePostit: Array<Postit>,
+	tempMovingPostit: Postit,
+	currentRetro: Retrospective
+	userCursors: Array<UserCursor>
+	allRetros: Array<Retrospective>
+	isSideBar: boolean
+	inputSearch: string
+	dateSearch?: number
+	isRetroFinished?: boolean
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -19,17 +24,30 @@ export interface RetrospectiveStore {
 	updateFromSocket?: (this: RetrospectiveStore, postit: Postit) => void;
 	updateUserCursor?: (this: RetrospectiveStore, userCursor: UserCursor) => void;
 	removeCursor?: (this: RetrospectiveStore, user: UserDisconnect) => void;
+	getAllRetros?: (this: RetrospectiveStore) => Promise<void>;
+	participantJoin?: (this: RetrospectiveStore, email: string) => Promise<void>;
+	participantLeave?: (this: RetrospectiveStore, user: UserDisconnect) => Promise<void>;
+	tryToggleSideBar?: (this: RetrospectiveStore) => void;
+	tryCloseSideBar?: (this: RetrospectiveStore) => void;
+	inputSearchFilter?: (this: RetrospectiveStore, value: string) => void;
+	dateSearchFilter?: (this: RetrospectiveStore, value: number) => void;
 }
 
 export interface Retrospective {
-	_id?: string;
-	slug?: string;
-	title?: string;
-	optionTemplate?: number;
-	participants?: Array<User>;
-	postits?: Postits;
-	createdAt?: Date;
-	endedAt?: Date;
+	_id?: string
+	slug?: string
+	title?: string
+	optionTemplate?: number
+	participants?: Array<string>
+	postits?: Postits
+	createdAt?: Date
+	endedAt?: Date | null
+	creator?: string
+	isRetroEnded?: boolean;
+	isLocked?: boolean;
+	isTimerRunning?: boolean;
+	timerInterval?: NodeJS.Timer;
+	timePassed?: number;
 }
 
 export interface Postits {

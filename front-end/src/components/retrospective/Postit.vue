@@ -2,13 +2,13 @@
 	<div
 		v-if="!updatePostit"
 		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible z-10"
-		:class="isOwner ? 'cursor-grab' : ''"
-		:draggable="isOwner"
+		:class="isOwner && !isLock ? 'cursor-grab' : ''"
+		:draggable="isOwner && !isLock"
         @dragstart="dragStart"
         @dragend="dragEnd"
 	>
 		<button
-				v-if="isOwner"
+				v-if="isOwner && !isLock"
 				@click="removePostit"
 				class="text-black flex justify-center items-center absolute w-10 h-10 -right-5 -top-5 -z-100 bg-[#e85454] rounded-full hidden overflow-visible"
 			>
@@ -18,7 +18,7 @@
 				</svg>
 			</button>
 			<button
-				v-if="isOwner"
+				v-if="isOwner && !isLock"
 				@click="tryUpdatePostit"
 				class="text-black flex justify-center items-center absolute w-10 h-10 -right-5 top-7 z-100 bg-[#e7e7e2] rounded-full hidden"
 			>
@@ -77,6 +77,21 @@ const updatePostit = ref(false);
 const updatePostitArea = ref();
 const previousValue = ref("");
 
+const isLock = computed(() =>
+	retroStore.currentRetro.isLocked && retroStore.currentRetro.isRetroEnded
+	?
+		true
+	:
+		!retroStore.currentRetro.isLocked && !retroStore.currentRetro.isRetroEnded
+	?
+		false
+	:
+		retroStore.currentRetro.isLocked || retroStore.currentRetro.isRetroEnded
+	?
+		true
+	:
+		false
+);
 const dragStart = () => {
 	retroStore.tempMovingPostit = props.postit;
 }
