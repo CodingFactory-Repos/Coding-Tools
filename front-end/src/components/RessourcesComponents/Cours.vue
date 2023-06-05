@@ -1,6 +1,13 @@
 <template>
 
 	<div>
+		<div class="flex items-center justify-center">
+            <!--button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
+                @click="startYears-- && endYears--">←</button>
+            <span class="text-2xl font-bold">{{ startYears }} - {{ endYears }}</span>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
+                @click="startYears++ && endYears++">→</button-->
+        </div>
 		<div v-for="language in TagList" >
 			<h5>{{ language }}</h5>
 		</div>	
