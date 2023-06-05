@@ -67,21 +67,6 @@
 				></textarea>
 			</FormField>
 			<FormField
-				label="What is their typical todo-day ?"
-				:limit="true"
-				:char-limit="200"
-				:char-number="personaBuilder.typicalDay.length"
-			>
-				<textarea
-					v-model.trim="personaBuilder.typicalDay"
-					class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
-					rows="3"
-					maxlength="200"
-				></textarea>
-			</FormField>
-		</div>
-		<div class="flex gap-5">
-			<FormField
 				label="Verbatism of the persona"
 				:limit="true"
 				:char-limit="200"
@@ -95,16 +80,31 @@
 				></textarea>
 			</FormField>
 		</div>
+		<div class="flex gap-5">
+			<FormField
+				label="Persona bio"
+				:limit="true"
+				:char-limit="300"
+				:char-number="personaBuilder.bio.length"
+			>
+				<textarea
+					v-model.trim="personaBuilder.bio"
+					class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
+					rows="3"
+					maxlength="300"
+				></textarea>
+			</FormField>
+		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, onUnmounted } from 'vue';
 import FormField from '@/components/common/FormField.vue';
-import { PersonaBuilder } from '../modals/Persona.vue';
+import { PersonaBuilder } from '@/components/agility/modals/Persona.vue';
 
 const emits = defineEmits<{
-	(e: 'unmounted', builder: PersonaBuilder)
+	(e: 'unmounted', builder: Partial<PersonaBuilder>)
 }>();
 
 const props = defineProps<{
@@ -117,7 +117,7 @@ const personaBuilder = reactive({
 	professionalBackground: props.profile.professionalBackground ?? '',
 	personalSituation: props.profile.personalSituation ?? '',
 	motivation: props.profile.motivation ?? '',
-	typicalDay: props.profile.typicalDay ?? '',
+	bio: props.profile.bio ?? '',
 	verbatism: props.profile.verbatism ?? '',
 })
 
