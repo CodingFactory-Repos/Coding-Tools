@@ -1,23 +1,67 @@
 <template>
 	<div>
-		<button @click="openMetaModal">add open house</button>
+		<button
+			@click="openMetaModal"
+			class="mt-4 md:mt-0 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+		>
+			Créer une journée porte ouverte
+		</button>
 		<ModalOverlay v-if="showMetaModal" @close="closeMetaModal" size="lg">
 			<template #body>
 				<form @submit.prevent="addOpenHouses">
-					<input type="text" name="title" v-model="title" placeholder="Title :" /><br />
-					<input type="datetime-local" v-model="date" /><br />
-					<input type="url" placeholder="picture link" v-model="picture" /><br />
-					<!--button type="button" @click="showActivity=true">new Activity</button-->
-					<activity :Activities="Activities"></activity>
+					<input
+						type="text"
+						name="title"
+						v-model="title"
+						placeholder="Title :"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+					/><br />
+					<input
+						type="datetime-local"
+						v-model="date"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+					/><br />
+					<input
+						type="url"
+						placeholder="picture link"
+						v-model="picture"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+					/><br />
+					<activity :Activities="Activities" class="mt-2" />
 					<div>
-						<input type="text" v-model="street" placeholder="street :" /><br />
-						<input type="text" v-model="zipCode" placeholder="zip code :" /><br />
-						<input type="text" v-model="town" placeholder="town :" /><br />
+						<input
+							type="text"
+							v-model="street"
+							placeholder="street :"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						/><br />
+						<input
+							type="text"
+							v-model="zipCode"
+							placeholder="zip code :"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						/><br />
+						<input
+							type="text"
+							v-model="town"
+							placeholder="town :"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						/><br />
 					</div>
-					<textarea placeholder="Description :" v-model="description"></textarea><br />
-					<participant :participants="participants" @clear="clearParticipants"></participant>
-					<input type="file" @change="onFileSelected" /><br />
-					<button type="submit">Submit</button>
+					<textarea
+						placeholder="Description :"
+						v-model="description"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+					></textarea
+					><br />
+					<participant :participants="participants" @clear="clearParticipants" class="mt-2" />
+					<input type="file" @change="onFileSelected" class="mt-2" /><br />
+					<button
+						type="submit"
+						class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+					>
+						Valider
+					</button>
 				</form>
 			</template>
 		</ModalOverlay>

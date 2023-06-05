@@ -20,7 +20,7 @@
 						/>
 					</svg>
 				</div>
-				<div class="text-white text-lg mt-2">Open House</div>
+				<div class="text-white text-lg mt-2">Journée Porte Ouverte</div>
 			</div>
 
 			<div
