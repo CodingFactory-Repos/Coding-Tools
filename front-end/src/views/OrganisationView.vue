@@ -102,6 +102,7 @@ export default{
 </script>
 
 <style>
+/** Don't add global style, thank you ! */
 .groups {
     display: flex;
     flex-wrap: wrap;
@@ -141,11 +142,6 @@ export default{
 }
 .relative {
     position: relative;
-}
-button {
-    background-color: #bfbfbf;
-    padding: 5px;
-    font-size: 15px;
 }
 .icon {
     width: 20px;
