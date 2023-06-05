@@ -80,6 +80,13 @@
 			Participer
 		</button>
 	</div>
+	<div class="flex flex-col items-center space-y-4">
+		<!-- Lien vers le premier PDF -->
+		<a :href="pdf1" download class="text-blue-700 hover:text-blue-800"> Télécharger le PDF 1 </a>
+
+		<!-- Lien vers le deuxième PDF -->
+		<a :href="pdf2" download class="text-blue-700 hover:text-blue-800"> Télécharger le PDF 2 </a>
+	</div>
 	<div class="w-full flex justify-center items-center">
 		<button
 			type="button"
