@@ -1,12 +1,12 @@
 <template>
 	<div id="createTutorialContainer" class="flex flex-col gap-5">
 		<div class="text-center max-w-full w-4/5 m-auto h-full">
-			<h2 class="text-3xl font-bold pt-5 text-gray-900">Create Tutorial</h2>
+			<h2 class="text-3xl font-bold pt-5 text-gray-900">Créer un Tutoriel</h2>
 			<form @submit.prevent="addArticle">
 				<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 					<div>
 						<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-							>Title</label
+							>Titre</label
 						>
 						<div class="relative mb-6">
 							<input
@@ -22,7 +22,7 @@
 						<label
 							for="countries"
 							class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-							>Import your .md file</label
+							>Importer votre fichier .md</label
 						>
 						<div class="relative mb-6">
 							<input
@@ -51,7 +51,7 @@
 				</div>
 
 				<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-					>Content</label
+					>Contenu</label
 				>
 				<div class="mb-6 relative z-10">
 					<div class="relative mb-6 flex">
@@ -70,7 +70,7 @@
 						<label
 							for="picture"
 							class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-							>Picture</label
+							>Image</label
 						>
 						<div class="relative mb-6">
 							<input
@@ -103,7 +103,7 @@
 						type="submit"
 						class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
 					>
-						Create
+						Créer
 					</button>
 				</div>
 			</form>
