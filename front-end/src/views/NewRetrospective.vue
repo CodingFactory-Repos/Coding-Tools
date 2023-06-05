@@ -10,7 +10,7 @@
 		</div>
 		<div>
 			<div class="w-full bg-slate-300">
-				<NavInfosRetro />
+				<NavInfosRetro v-if="optionTemplate"/>
 			</div>
 		</div>
 		<div class="h-full" v-if="optionTemplate">

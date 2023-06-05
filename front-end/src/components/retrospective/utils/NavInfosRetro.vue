@@ -31,7 +31,17 @@
 						</button>
 					</li>
 					<li>
-						<a href="#" class="text-gray-900 dark:text-white hover:underline">End Retro</a>
+						<button
+							@click="revealPostit"
+							class="text-gray-900 dark:text-white hover:underline flex items-center gap-2"
+							:class="areStickiesVisible ? 'text-[#07bc0c]' : 'text-[#D61F69]'"
+						>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+							<path :fill="areStickiesVisible ? '#07bc0c' : '#D61F69'" d="M3.998 21A.996.996 0 0 1 3 20.007V3.993C3 3.445 3.445 3 3.993 3h16.014c.548 0 .993.447.993.998V16l-5.003 5H3.998ZM5 19h10.169L19 15.171V5H5v14Z"
+							/>
+						</svg>
+							{{ areStickiesVisible ? "Your stickies are public &emsp;" : "Your stickies are private" }}
+						</button>
 					</li>
 				</ul>
 			</div>
@@ -47,12 +57,19 @@ import { config } from '@/config/config';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
+import { useAuthStore } from '@/store/modules/auth.store';
 
 
 const retroStore = useRetrospectiveStore();
+const authStore = useAuthStore();
 const participants = computed(() => retroStore.currentRetro.participants)
 const route = useRoute();
 const url = `${config.prodSiteUrl}${route.fullPath}`;
+const areStickiesVisible = computed(() => Object.values(retroStore.currentRetro.postits).some(array => {
+	const isObjectUser = array.find(obj => obj.user === authStore.user.profile.email);
+	return isObjectUser && isObjectUser.visible === true;
+}))
+
 
 const toggleSideBar = () => {
 	retroStore.tryToggleSideBar();
@@ -69,6 +86,10 @@ const copyLink = async () => {
 		padding: '0em',
 		toast: true
 	})
+}
+
+const revealPostit = () => {
+	retroStore.setVisibilityPostit();
 }
 
 </script>
