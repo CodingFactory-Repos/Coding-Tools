@@ -140,6 +140,9 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
+/front-end/src/components/blog/ @AyakorK @Maghwyn @TheoLandemaine
+/front-end/src/components/blog/AddComment.vue @Maghwyn @Loule95450
+/front-end/src/components/blog/ShowArticle.vue @Maghwyn @Loule95450
 /front-end/src/components/common/ @Kevw94 @Maghwyn
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
@@ -232,7 +235,7 @@
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
-/front-end/src/store/interfaces/article.interface.ts @Maghwyn @Loule95450
+/front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine @AyakorK
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
@@ -240,7 +243,7 @@
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/user.interface.ts @Maghwyn
 /front-end/src/store/modules/agility.store.ts @Maghwyn @AyakorK
-/front-end/src/store/modules/article.store.ts @Maghwyn @Loule95450
+/front-end/src/store/modules/article.store.ts @Maghwyn @TheoLandemaine @AyakorK
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/material.store.ts @Kevw94 @Maghwyn
 /front-end/src/store/modules/project.store.ts @Maghwyn
