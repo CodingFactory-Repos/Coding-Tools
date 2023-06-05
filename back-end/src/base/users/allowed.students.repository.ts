@@ -14,7 +14,10 @@ export class AllowedStudentsRepository {
 		return this.allowedStudents.insertOne(query);
 	}
 
-	async updateOneAllowedStudent(query: Filter<AllowedStudent>, update: Partial<AllowedStudent> | UpdateFilter<AllowedStudent>) {
+	async updateOneAllowedStudent(
+		query: Filter<AllowedStudent>,
+		update: Partial<AllowedStudent> | UpdateFilter<AllowedStudent>,
+	) {
 		return this.allowedStudents.updateOne(query, update);
 	}
 
