@@ -33,7 +33,7 @@
 							d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
 						/>
 					</svg>
-					All articles
+					Tous les articles
 				</button>
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
               <h1>{{ title }}</h1>
@@ -55,8 +55,8 @@
       <div class="flex flex-row">
         <div :class=" windowWidth >= 1024 ? 'flex flex-col items-center w-3/4' : 'flex flex-col items-center w-4/4'">
           <div v-if="step===0" class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">				
-            <h2>About this coding tutorial</h2>
-            <div>Published : {{ date }}</div>
+            <h2>A propos de ce tutoriel</h2>
+            <div>Publié le : {{ date }}</div>
             <!-- <div>Redacted by : {{ owner }}</div> -->
           </div>
 
