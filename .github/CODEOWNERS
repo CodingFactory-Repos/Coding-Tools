@@ -9,7 +9,6 @@
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
 /back-end/package-lock.json @Maghwyn @Kevw94
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
-/back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
 /back-end/src/auth/auth.module.ts @Maghwyn
@@ -46,16 +45,15 @@
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/ideasEquipments/ @Heloise-lelez @Maghwyn
-/back-end/src/base/ideasEquipments/ideasEquipments.module.ts @Maghwyn
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
-/back-end/src/base/materials/dto/materials.dto.ts @Maghwyn @RuKaSuu @Kevw94
+/back-end/src/base/materials/dto/materials.dto.ts @Maghwyn @RuKaSuu
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @RuKaSuu
 /back-end/src/base/materials/materials.controller.ts @AyakorK @Maghwyn @RuKaSuu
 /back-end/src/base/materials/materials.module.ts @Maghwyn
 /back-end/src/base/materials/materials.repository.ts @Loule95450 @RuKaSuu
+/back-end/src/base/materials/materials.service.ts @Maghwyn @RuKaSuu
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/openHouses/openHouses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
@@ -130,7 +128,7 @@
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
 /front-end/src/components/agility/cards/AgilityTemplateCard.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/modals/ @Maghwyn
-/front-end/src/components/agility/modals/Blueprint.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/modals/Blueprint.vue @Maghwyn
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
 /front-end/src/components/agility/UI/ @Kevw94 @Maghwyn
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
@@ -143,13 +141,13 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
-/front-end/src/components/blog/ @AyakorK @Maghwyn @TheoLandemaine
+/front-end/src/components/blog/ @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/AddComment.vue @Maghwyn @Loule95450
 /front-end/src/components/blog/ShowArticle.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
 /front-end/src/components/common/drawer/RouterOption.vue @Loule95450 @Maghwyn
-/front-end/src/components/common/FormField.vue @Loule95450
+/front-end/src/components/common/FormField.vue @Maghwyn
 /front-end/src/components/common/Modal.vue @Loule95450 @Maghwyn @RuKaSuu
 /front-end/src/components/common/svg/ @Loule95450 @Maghwyn
 /front-end/src/components/common/svg/Abstract.vue @Maghwyn @Kevw94
@@ -161,12 +159,9 @@
 /front-end/src/components/common/svg/SvgCrown.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgThreeDot.vue @Maghwyn @Kevw94
 /front-end/src/components/common/uix/SelectionBox.vue @Loule95450 @Maghwyn
-/front-end/src/components/materials/ @Kevw94 @Maghwyn @RuKaSuu
-/front-end/src/components/materials/ButtonsMaterials.vue @Maghwyn @RuKaSuu
+/front-end/src/components/materials/ @Maghwyn @RuKaSuu
 /front-end/src/components/materials/ChartMaterials.vue @Maghwyn @Loule95450
-/front-end/src/components/materials/DetailsMaterials.vue @Maghwyn @RuKaSuu
 /front-end/src/components/materials/ImagePicker.vue @Maghwyn @Loule95450
-/front-end/src/components/materials/MaterialCard.vue @Maghwyn @RuKaSuu
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
@@ -239,16 +234,16 @@
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
-/front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine @AyakorK
+/front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
-/front-end/src/store/interfaces/material.interface.ts @Maghwyn @RuKaSuu @Kevw94
+/front-end/src/store/interfaces/material.interface.ts @Maghwyn @RuKaSuu
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/user.interface.ts @Maghwyn
 /front-end/src/store/modules/agility.store.ts @Maghwyn @AyakorK
-/front-end/src/store/modules/article.store.ts @Maghwyn @TheoLandemaine @AyakorK
+/front-end/src/store/modules/article.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/material.store.ts @Kevw94 @Maghwyn
 /front-end/src/store/modules/project.store.ts @Maghwyn
@@ -278,7 +273,7 @@
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
-/front-end/src/views/OrganisationView.vue @Maghwyn @Kevw94
+/front-end/src/views/OrganisationView.vue @Maghwyn
 /front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/views/RollCall.vue @AyakorK @Loule95450
 /front-end/src/views/SprintsView.vue @Maghwyn @Loule95450 @Kevw94
