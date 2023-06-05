@@ -8,7 +8,7 @@
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
 /back-end/package-lock.json @Maghwyn @Kevw94
-/back-end/src/app.controller.ts @Maghwyn @Kevw94
+/back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
@@ -99,6 +99,13 @@
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn @Kevw94
 /back-end/types/index.d.ts @Maghwyn
+/back-end/uploads/ @Kevw94 @Loule95450 @Maghwyn
+/back-end/uploads/0c2e6742-914e-4dc1-8658-9be68c7fba18.webp @Loule95450 @AyakorK
+/back-end/uploads/6f54e6cc-325c-4a86-94c5-6c02ab9802dc.webp @Loule95450
+/back-end/uploads/a49c1015-9b00-4460-aedf-724a6300416e.webp @Loule95450
+/back-end/uploads/b8810feb-c01e-489e-85f3-4c3f00558201.webp @Loule95450
+/back-end/uploads/cfc9845e-b4a1-4e34-8f42-89856a9ad9ae.webp @Loule95450 @AyakorK
+/back-end/uploads/f3e3c529-ca16-4e6c-9de4-919a5e0060f6.webp @Loule95450 @AyakorK
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
 /front-end/.gitignore @Loule95450
 /front-end/index.html @TheoLandemaine
@@ -285,7 +292,3 @@
 /front-end/types/shims-mime.d.ts @Maghwyn
 /front-end/vite.config.ts @Loule95450 @Maghwyn
 /README.md @Thomlam
-/uploads/ @Kevw94 @Maghwyn
-/uploads/0c2e6742-914e-4dc1-8658-9be68c7fba18.webp @Maghwyn @Loule95450
-/uploads/cfc9845e-b4a1-4e34-8f42-89856a9ad9ae.webp @Maghwyn @Loule95450
-/uploads/f3e3c529-ca16-4e6c-9de4-919a5e0060f6.webp @Maghwyn @Loule95450
