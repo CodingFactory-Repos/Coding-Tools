@@ -14,47 +14,51 @@
 						name="title"
 						v-model="title"
 						placeholder="Title :"
-						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 					/><br />
 					<input
 						type="datetime-local"
 						v-model="date"
-						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 					/><br />
 					<input
 						type="url"
 						placeholder="picture link"
 						v-model="picture"
-						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 					/><br />
-					<activity :Activities="Activities" class="mt-2" />
+					<activity :Activities="Activities" class="mt-2 text-black" />
 					<div>
 						<input
 							type="text"
 							v-model="street"
 							placeholder="street :"
-							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 						/><br />
 						<input
 							type="text"
 							v-model="zipCode"
 							placeholder="zip code :"
-							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 						/><br />
 						<input
 							type="text"
 							v-model="town"
 							placeholder="town :"
-							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+							class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 						/><br />
 					</div>
 					<textarea
 						placeholder="Description :"
 						v-model="description"
-						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+						class="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
 					></textarea
 					><br />
-					<participant :participants="participants" @clear="clearParticipants" class="mt-2" />
+					<participant
+						:participants="participants"
+						@clear="clearParticipants"
+						class="mt-2 text-black"
+					/>
 					<input type="file" @change="onFileSelected" class="mt-2" /><br />
 					<button
 						type="submit"
