@@ -25,7 +25,6 @@
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
 /back-end/src/base/articles/articles.module.ts @Maghwyn
-/back-end/src/base/articles/articles.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
@@ -147,8 +146,10 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
-/front-end/src/components/blog/AddComment.vue @Maghwyn @Loule95450
-/front-end/src/components/blog/ShowArticle.vue @Maghwyn @Loule95450
+/front-end/src/components/blog/ @Maghwyn @TheoLandemaine
+/front-end/src/components/blog/AddTutorial.vue @Maghwyn
+/front-end/src/components/blog/EditArticle.vue @Maghwyn
+/front-end/src/components/blog/MarkdownViewer.vue @Maghwyn @AyakorK
 /front-end/src/components/common/ @Kevw94 @Maghwyn
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
@@ -159,7 +160,9 @@
 /front-end/src/components/common/svg/Abstract.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Bell.vue @Maghwyn @AyakorK
 /front-end/src/components/common/svg/Cloud.vue @Maghwyn @Kevw94
+/front-end/src/components/common/svg/Comment.vue @Maghwyn
 /front-end/src/components/common/svg/Cross.vue @Maghwyn @Kevw94
+/front-end/src/components/common/svg/DeleteLogo.vue @Maghwyn
 /front-end/src/components/common/svg/ExpandArrow.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Home.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Shrink.vue @Maghwyn @Kevw94
@@ -190,7 +193,6 @@
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/components/RollCallComponents/StudentListComponent.vue @Maghwyn
-/front-end/src/composables/ @Kevw94 @Maghwyn
 /front-end/src/config/config.ts @Maghwyn @AyakorK
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
@@ -253,13 +255,18 @@
 /front-end/src/store/index.ts @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
+/front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
+/front-end/src/store/interfaces/material.interface.ts @Maghwyn @AyakorK
+/front-end/src/store/interfaces/openhouse.store.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
-/front-end/src/store/interfaces/retrospective.interface.ts @Maghwyn @Kevw94
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
+/front-end/src/store/interfaces/timer.interface.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/user.interface.ts @Maghwyn
+/front-end/src/store/modules/ @AyakorK @Maghwyn
+/front-end/src/store/modules/article.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/material.store.ts @Kevw94 @Maghwyn
 /front-end/src/store/modules/project.store.ts @Maghwyn
@@ -279,6 +286,7 @@
 /front-end/src/utils/mergeObjects.ts @Maghwyn
 /front-end/src/utils/object.helper.ts @Maghwyn @Loule95450
 /front-end/src/utils/string.helper.ts @Maghwyn @Loule95450
+/front-end/src/views/ @AyakorK @Maghwyn
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
 /front-end/src/views/AddArticleView.vue @TheoLandemaine
 /front-end/src/views/AddCommentView.vue @TheoLandemaine
@@ -290,6 +298,7 @@
 /front-end/src/views/calls/ @Maghwyn
 /front-end/src/views/CardArticleView.vue @TheoLandemaine
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
+/front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
@@ -308,3 +317,4 @@
 /front-end/vite.config.ts @Loule95450 @Maghwyn
 /README.md @Thomlam
 /uploads/0f35f378-e43d-4ce0-8bf1-265b1836704b.webp @Maghwyn @AyakorK
+/uploads/331a31c8-ddb9-43b8-ba4e-22c47be6e266.webp @Maghwyn
