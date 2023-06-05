@@ -8,6 +8,15 @@
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
                 @click="startYears++ && endYears++; getCurrentYearsCours();">→</button>
         </div>
+		<div>
+			<div class="flex items-center justify-center">
+            <div class="flex items-center justify-center">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                    @click="showModal = true">+</button>
+                <AddCourse v-if="showModal" @close="showModal = false" />
+            </div>
+        </div>
+		</div>
 		<div v-for="language in TagList" @click="showCoursesByLanguage(language)" >
 			<h5>{{ language }}</h5>
 		</div>	
@@ -52,6 +61,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCoursStore } from '@/store/modules/course.store';
+import AddCourse from './AddCourse.vue'
 import { elements } from 'chart.js';
 import { el } from 'date-fns/locale';
 
