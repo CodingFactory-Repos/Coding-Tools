@@ -99,13 +99,13 @@
       @keydown.escape="windowWidth <= 1024 ? open = false : ''"
       class="absolute inset-y-0 top-0 right-0 z-10 flex-shrink-0 bg-white xl:z-0 xl:sticky w-80 dark:bg-darker dark:text-light xl:border-l dark:border-indigo-800 focus:outline-none">
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
-      <div class="absolute right-0 p-1 transform -translate-x-full">
+      <div class="absolute right-0 p-1 transform -translate-x-full ">
         <button
           @click.prevent="toggle()"
-          class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring"
+          class="p-2 rounded-md text-dark dark:text-light focus:outline-none focus:ring "
         >
           <svg
-            class="w-5 h-5"
+            class="w-5 h-5 bg-blue-800 dark:bg-zinc-600"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
