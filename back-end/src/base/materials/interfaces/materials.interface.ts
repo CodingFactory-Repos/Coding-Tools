@@ -16,10 +16,12 @@ export interface Material {
 }
 
 export interface BorrowingMaterial {
+	borrowingID?: ObjectId;
 	borrowingDate: Date;
 	borrowingUser: string;
 	description: string;
 	returnDate: Date;
+	status: string;
 }
 
 export interface JWTUsers {

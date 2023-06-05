@@ -1,4 +1,4 @@
-import { OpenHouse, OpenHouseStore } from '../interfaces/openhouse.store';
+import { OpenHouseStore } from '../interfaces/openhouse.store';
 import { defineStore } from 'pinia';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
@@ -11,6 +11,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 					_id: '',
 					title: '',
 					picture: '',
+					date: '',
 					schedule: [
 						{
 							time: '',
@@ -37,6 +38,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 			oneItems: {
 				_id: '',
 				title: '',
+				date: '',
 				picture: '',
 				schedule: [
 					{
@@ -60,6 +62,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 				description: '',
 				project: '',
 			},
+			idOpenHouse: '',
 		};
 	},
 	actions: {

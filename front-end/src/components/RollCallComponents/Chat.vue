@@ -81,7 +81,6 @@ socket.on('peer-chat-message', (data: Object) => {
 
 onMounted(async () => {
 	courseId.value = await getCourseId();
-	// socket.auth = { roomId: roomId.value.toString() }; // fall back to default room 1
 	socket.auth = { roomId: courseId.value.toString() };
 	socket.connect();
 });
@@ -161,7 +160,7 @@ const sendMessage = async () => {
 	addMessage(newMessage);
 	let courseId = await getCourseId();
 	try {
-		const res = await http.post(`/calls/save_message/${courseId}`, { newMessage: newMessage });
+		await http.post(`/calls/save_message/${courseId}`, { newMessage: newMessage });
 	} catch (err) {
 		if (err instanceof AxiosError) {
 			console.error(189, err.message);
