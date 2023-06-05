@@ -11,6 +11,10 @@ export class IdeasEquipmentsRepository {
 		return this.db.collection<IdeaEquipment>('ideasEquipments');
 	}
 
+	async getAllIdeasEquipments() {
+		return this.ideasEquipments.find().toArray();
+	}
+
 	async createIdeaEquipment(query: IdeaEquipment) {
 		return this.ideasEquipments.insertOne(query);
 	}
@@ -37,5 +41,9 @@ export class IdeasEquipmentsRepository {
 	async ideaEquipmentExist(query: Filter<IdeaEquipment>) {
 		const options = { projection: { _id: 1 } };
 		return this.ideasEquipments.findOne(query, options);
+	}
+
+	async deleteOneideaEquipment(query: Filter<IdeaEquipment>) {
+		return this.ideasEquipments.deleteOne(query);
 	}
 }

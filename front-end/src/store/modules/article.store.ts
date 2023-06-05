@@ -16,6 +16,7 @@ export const useArticleStore = defineStore('article', {
 					picture: '',
 					tags: '',
 					type: '',
+					status: '',
 				},
 			],
 			oneItems: {
@@ -27,6 +28,8 @@ export const useArticleStore = defineStore('article', {
 				picture: '',
 				tags: '',
 				type: '',
+				status: '',
+				content: '',
 				participants: [
 					{
 						id: '',

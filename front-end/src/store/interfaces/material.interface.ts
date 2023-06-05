@@ -13,11 +13,14 @@ export interface MaterialStore {
 }
 
 export interface BorrowingMaterial {
-	id?: string;
+	borrowingID: string;
 	borrowingDate: Date;
 	borrowingUser: string;
 	description: string;
 	returnDate: Date;
+	status: string;
+	returnedTo: string;
+	dateReturned: Date,
 }
 
 export interface Material {

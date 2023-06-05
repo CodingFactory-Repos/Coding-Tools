@@ -1,5 +1,6 @@
 import { http } from '@/api/network/axios';
-import { Material } from '@/store/interfaces/material.interface';
+import { User } from '@/store/interfaces/auth.interfaces';
+import { Material, BorrowingMaterial } from '@/store/interfaces/material.interface';
 
 export const getMaterials = async () => {
 	return http.get<Array<Material>>('/materials');
@@ -15,4 +16,28 @@ export const updateMaterial = async (material: Material, id: string) => {
 
 export const deleteMaterial = async (id: string) => {
 	return http.delete<Material>(`materials/delete/${id}`);
+};
+
+export const borrowMaterial = async (id: string, payload: BorrowingMaterial) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/${id}`, payload);
+};
+
+export const getPendingMaterials = async () => {
+	return http.get<Array<Material>>('materials/pendingReservation');
+};
+
+export const acceptBorrowing = async (id: string, payload: BorrowingMaterial) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/accept/${id}`, payload);
+};
+
+export const declineBorrowing = async (id: string, payload: BorrowingMaterial) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/decline/${id}`, payload);
+};
+
+export const returnMaterial = async (id: string, payload: BorrowingMaterial) => {
+	return http.put<BorrowingMaterial>(`materials/reservation/return/${id}`, payload);
+};
+
+export const getUserById = async (id: string) => {
+	return http.get<User>(`materials/users/${id}`);
 };
