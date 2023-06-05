@@ -7,7 +7,7 @@ import {
 	CanvasMetaDataList,
 	CanvasRoom,
 	CanvasRoomMeta,
-} from '@/base/CanvasRoom/interfaces/canvasRoom.interface';
+} from './interfaces/canvasRoom.interface';
 import {
 	PROJECTION_PROJECT_META_LIST,
 	PROJECTION_PROJECT,
