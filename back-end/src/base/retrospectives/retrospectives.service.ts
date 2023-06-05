@@ -5,6 +5,7 @@ import { RetrospectivesRepository } from 'src/base/retrospectives/retrospectives
 import { UsersRepository } from 'src/base/users/users.repository';
 import { Retrospective } from './interfaces/retrospectives.interface';
 import { ObjectId } from 'mongodb';
+import { PostitDTO, RetrospectiveDTO } from './dto/retrospectives.dto';
 
 @Injectable()
 export class RetrospectivesService {
@@ -15,7 +16,7 @@ export class RetrospectivesService {
 		private retrospectivesRepository: RetrospectivesRepository,
 	) {}
 
-	async newRetrospective(retrospective: Retrospective, userId: ObjectId) {
+	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
 		const date = new Date();
 		const user = await this.usersRepository.findOne({ _id: userId });
 		if (user === null) return;
@@ -52,5 +53,17 @@ export class RetrospectivesService {
 		const update = { $set: { participants: retro.participants } };
 
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
+	}
+
+	async createNewPostit(postit: PostitDTO, userId: ObjectId) {
+		const user = await this.usersRepository.findOne({ _id: userId})
+
+		if (user && user.profile.firstName && user.profile.lastName) {
+			postit.sylable = user.profile.firstName[0] + user.profile.lastName[0]
+		}
+
+		const randomId = generateCodeToken();
+		postit.id = randomId;
+		return postit;
 	}
 }
