@@ -1,7 +1,43 @@
 <template>
 
 	<div>
-        <h2>Cours</h2>
+		<div v-for="language in TagList" >
+			<h5>{{ language }}</h5>
+		</div>	
+		<div class="text-center flex items-center justify-center max-w-full h-full">
+			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+				<div
+					v-for="item in items"
+					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+				>
+					<img
+						class="object-cover h-48 w-96 rounded-t-lg"
+						:src="
+							item.picture && item.picture != ''
+								? item.picture
+								: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
+						"
+						alt=""
+					/>
+					<div class="pt-3 pb-2">
+						<span
+							class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+							>{{ formatDate(item.createdAt) }}</span
+						>
+					</div>
+					<div class="pt-2 pb-5">
+						<a href="#">
+							<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+								{{ item.tag ? item.tag : 'Pas de titre spécifié' }}
+							</h5>
+						</a>
+						<p class="mb-3 p-3 font-normal text-gray-700 dark:text-gray-400">
+							{{ item.language ? item.language : 'Pas de description spécifiée' }}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -10,7 +46,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCoursStore } from '@/store/modules/course.store';
 
-
+let TagList = [];
 // Use the openHouses store
 const courseStore = useCoursStore();
 // Create a reactive variable to store the articles
@@ -19,18 +55,32 @@ const items = computed(() => courseStore.items);
 // Display the modal
 //const showModal = ref(false);
 
+function getAllTagCourse() {
+	const coursesList = items.value;
+	coursesList.forEach(element =>{
+		if(!TagList.includes(element.language.toUpperCase())){
+			TagList.push(element.language.toUpperCase());
+		}
+	})
+	console.log(TagList);
+}
+
 // Get the router
 const router = useRouter();
 
 // Fetch the articles
 const getCourses = async () => {
 	await courseStore.getCourse();
+
 };
 
 // Call the getArticles method when the component is created
-onMounted(() => {
-	getCourses();
+onMounted(async() => {
+	await getCourses();
+	getAllTagCourse();
 });
+
+	// materialStore.getMaterials();
 
 // Function to open the openHouse page
 /*const openCourse = (id: string) => {
