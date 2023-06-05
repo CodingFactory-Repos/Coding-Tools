@@ -21,4 +21,6 @@ export interface Postit {
 	user?: string; // to see
 	value?: string;
 	type?: number;
+	visible?: boolean;
+	sylable?: string;
 }

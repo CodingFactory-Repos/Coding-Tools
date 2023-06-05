@@ -1,7 +1,7 @@
 <template>
 	<!-- TODO: Rework the board creation -->
 	<div
-		class="border-solid border-2 border-sky-300 flex min-h-[36rem] max-h-[38rem]"
+		class="border-solid border-2 border-sky-300 flex min-h-[26rem] max-h-[28rem]"
 		v-if="postitsInCurrentRetro"
 	>
 		<div
