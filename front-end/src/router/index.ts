@@ -87,6 +87,11 @@ const routes: Array<RouteRecordRaw> = [
 						path: 'board',
 						component: () => import('../views/BoardView.vue'),
 					},
+					
+					{
+						path: 'chart',
+						component: () => import('../views/ChartView.vue'),
+					},
 				],
 			},
 			{

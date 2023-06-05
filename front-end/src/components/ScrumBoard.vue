@@ -1,190 +1,358 @@
 <template>
-	<div class="container">
-		bonjour
-		<h1 class="text-2xl font-bold mb-4">Board EduScrum - Semaine {{ semaineProp }}</h1> 
+<div class="bg-blue-100 ">
+	<div class="w-full h-full flex gap-3 px-5 py-2 overflow-auto">
+		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+				STORIES
+			</span>
 
-		<div class="grid grid-cols-5 gap-4">
-			<!-- Colonne 1 : Stories -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">Stories</h2>
-				<draggable v-if="storiesProp.length>0" v-model="storiesProp">
-					<div v-for="task in storiesProp" :key="task.id">
-						{{ task.title }}
-					</div>
-				</draggable>
+			<draggable class="h-full w-full flex flex-col gap-2 overflow-auto" v-model="stories" group="columns" @end="handleDragEnd">
+		  <div v-for="storyData in stories" :key="storyData.id">
+			<div @click="openModal(storyData)">
+			  {{ storyData}}
+			  <span class="inline-block w-2 h-2 rounded-full" :style="{ backgroundColor: storyData.color }"></span>
+			  {{ storyData.title }}
 			</div>
-  
-			<!-- Colonne 2 : Critères d'acceptation -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">Critères d'acceptation</h2>
-  
-				<draggable  v-if="storiesProp.length>0" v-model="storiesProp">
-					<div v-for="task in storiesProp" :key="task.id">
-						{{ task.title }}
-						<div v-for="(critere, index) in task.criteres" :key="index">
-							{{ critere }}
-						</div>
-					</div>
-				</draggable>
-			</div>
-
-			<!-- Colonne 3 : TODO -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">TODO</h2>
-				<draggable v-if="todoProp.length>0" v-model="todoProp">
-					<div v-for="task in todoProp" :key="task.id">
-						{{ task.title }}
-					</div>
-				</draggable>
-			</div>
-
-			<!-- Colonne 4 : En cours -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">En cours</h2>
-				<draggable  v-if="inprogressProp.length>0" v-model="inprogressProp">
-					<div v-for="task in inprogressProp" :key="task.id">
-						{{ task.title }}
-					</div>
-				</draggable>
-			</div>
-
-			<!-- Colonne 5 : Terminé -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">Terminé</h2>
-				<draggable  v-if="doneProp.length>0" v-model="doneProp">
-					<div v-for="task in doneProp" :key="task.id">
-						{{ task.title }}
-					</div>
-				</draggable>
-			</div>
-
-			<!-- Colonne 6 : DOD -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">DOD</h2>
-				<div class="p-2">
-					<div v-for="(dod, index) in dodList" :key="index" class="bg-white rounded-md p-2 mb-2">
-						<div class="flex justify-between">
-							<div class="text-lg font-semibold">{{ dod.title }}</div>
-							<div class="cursor-pointer" @click="removeDod(index)">
-								<svg class="w-4 h-4 fill-current text-gray-400 hover:text-gray-600" viewBox="0 0 20 20">
-									<path
-									d="M10 0c-5.522847 0-10 4.477153-10 10s4.477153 10 10 10 10-4.477153 10-10-4.477153-10-10-10zm3.535534 13.535534c.390525.390524.390525 1.023689 0 1.414213-.195262.195262-.451185.292893-.707107.292893-.255922 0-.511845-.097631-.707107-.292893l-2.828427-2.828427-2.828427 2.828427c-.195262.195262-.451185.292893-.707107.292893-.255922 0-.511845-.097631-.707107-.292893-.390524-.390524-.390524-1.023689 0-1.414213l2.828427-2.828427-2.828427-2.828427c-.390524-.390524-.390524-1.023689 0-1.414213.390524-.390524 1.023689-.390524 1.414213 0l2.828427 2.828427 2.828427-2.828427c.390524-.390524 1.023689-.390524 1.414213 0 .390524.390524.390524 1.023689 0 1.414213l-2.828427 2.828427 2.828427 2.828427z" />
-								</svg>
-							</div>
-						</div>
-						<div class="text-gray-600">{{ dod.description }}</div>
-					</div>
-					<div class="flex justify-center">
-						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-							@click="showDodForm = true">Ajouter DOD</button>
-					</div>
-				</div>
-
-				<div v-if="showDodForm" class="fixed z-50 inset-0 overflow-y-auto">
-					<div class="flex items-center justify-center min-h-screen">
-						<div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-							<h2 class="text-lg font-semibold mb-2">Ajouter une nouvelle DOD</h2>
-							<div class="mb-4">
-								<label class="block"></label>
-								<input class="border rounded-md w-full py-2 px-3" type="text" v-model="newDod.title" placeholder="Titre" />
-							</div>
-							<div class="mb-4">
-								<label class="block"></label>
-								<textarea class="border rounded-md w-full py-2 px-3" v-model="newDod.description"
-									placeholder="Description"></textarea>
-							</div>
-							<div class="flex justify-end">
-								<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2"
-									@click="addDod">Ajouter</button>
-								<button class="bg-white hover:bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full"
-									@click="showDodForm = false">Annuler</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Colonne 7 : DOF -->
-			<div class="bg-gray-100 p-4 rounded-lg">
-				<h2 class="text-lg font-semibold mb-2">DOF</h2>
-				<div class="p-2">
-					<div v-for="(dof, index) in dofList" :key="index" class="bg-white rounded-md p-2 mb-2">
-						<div class="flex justify-between">
-							<div class="text-lg font-semibold">{{ dof.title }}</div>
-							<div class="cursor-pointer" @click="removeDof(index)">
-								<svg class="w-4 h-4 fill-current text-gray-400 hover:text-gray-600" viewBox="0 0 20 20">
-									<path
-									d="M10 0c-5.522847 0-10 4.477153-10 10s4.477153 10 10 10 10-4.477153 10-10-4.477153-10-10-10zm3.535534 13.535534c.390525.390524.390525 1.023689 0 1.414213-.195262.195262-.451185.292893-.707107.292893-.255922 0-.511845-.097631-.707107-.292893l-2.828427-2.828427-2.828427 2.828427c-.195262.195262-.451185.292893-.707107.292893-.255922 0-.511845-.097631-.707107-.292893-.390524-.390524-.390524-1.023689 0-1.414213l2.828427-2.828427-2.828427-2.828427c-.390524-.390524-.390524-1.023689 0-1.414213.390524-.390524 1.023689-.390524 1.414213 0l2.828427 2.828427 2.828427-2.828427c.390524-.390524 1.023689-.390524 1.414213 0 .390524.390524.390524 1.023689 0 1.414213l-2.828427 2.828427 2.828427 2.828427z" />
-								</svg>
-							</div>
-						</div>
-						<div class="text-gray-600">{{ dof.description }}</div>
-					</div>
-					<div class="flex justify-center">
-						<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="addDof">
-							Add DOF
-						</button>
-					</div>
-				</div>
-			</div>
-			<p class="mt-8"><strong>DOD:</strong> Definition of Done - ce qui doit être rempli pour qu'une user story soit
-			considérée comme terminée.</p>
-			<p><strong>DOF:</strong> Definition of Fun - les éléments de qualité qui sont importants pour les utilisateurs et
-			qui rendent l'application agréable à utiliser.</p>
+		  </div>
+		</draggable>
+		
+		
+		<div class="w-full h-12 p-3">
+	  <span @click="createCard('stories')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
+   		Add a STORY
+ 	  </span>
+    </div>
 		</div>
-	</div>
-</template>
+		
+		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+				TODO
+			</span>
+			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+				<div v-for="todoData in todo" :key="todoData.id">
+					<div @click="openModal(todoData)">
+						{{ todoData  }}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+				IN PROGRESS
+			</span>
+			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+				<div v-for="inProgressData in inProgress" :key="inProgressData.id">
+					<div @click="openModal(inProgressData)">
+						{{ inProgressData }}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+				DONE
+			</span>
+			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+				<div v-for="doneData in done" :key="doneData.id">
+					<div @click="openModal(doneData)">
+						{{ doneData }}
+					</div>
+				</div>
+			</div>
+		</div>
 	
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
+<ModalOverlay v-if="showModal" @close="closeModal" size="lg">
+		<template #body>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="Stories">Title :</label>
+    <input v-model="form.title" type="text" id="Stories" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="acceptanceCriteria">Description :</label>
+    <textarea v-model="form.description" id="acceptanceCriteria" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+  </div>
+</template>
+
+<template #footer>
+  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="submitForm(form)">
+    Soumettre
+  </button>
+</template>
+
+	</ModalOverlay>
+</div>
+
+
+	 <div>
+	  <div class="column" id="dod-column">
+		<h2>DOD</h2>
+		<ul>
+		  <li v-for="item in dodList" :key="item.id">
+			<div class="post-it" @click="editItem(item)">{{ item.content }}</div>
+		  </li>
+		</ul>
+
+		<div class="add-post-it">
+		  <input type="text" v-model="newDodItem" placeholder="Add new item">
+		  <button @click="addItem('dod')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">Add a DOD</button>
+		</div>
+	  </div>
+  
+	  <div class="column" id="dof-column">
+		<h2>DOF</h2>
+		<ul>
+		  <li v-for="item in dofList" :key="item.id">
+			<div class="post-it" @click="editItem(item)">{{ item.content }}</div>
+		  </li>
+		</ul>
+		<div class="add-post-it">
+		  <input type="text" v-model="newDofItem" placeholder="Add new item">
+		  <span @click="addItem('dof')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">Add a DOF
+		  </span>
+		</div>
+
+	
+	  </div>
+	</div> 
+
+</div>
+</template>
+
+
+<!--
+	<div class="mb-4">
+				<label class="block text-gray-700 text-sm font-bold mb-2" for="Stories ">Title :</label>
+				<input v-model="form.title" type="text" id="Stories " class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+			</div>
+			
+			<div class="mb-4">
+				<label class="block text-gray-700 text-sm font-bold mb-2" for="acceptanceCriteria">Description :</label>
+				<textarea v-model="form.description" id="acceptanceCriteria" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+			</div>
+		</template>
+		<template #footer>
+			<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="submitForm(form)">
+				Soumettre
+			</button>
+		</template> -->
+	
+
+
+
+
+
+<script lang="ts" setup>
+import ModalOverlay from '@/components/common/Modal.vue';
+import { withErrorHandler } from '@/utils/storeHandler';
+import { http } from '@/api/network/axios';
+import { reactive,onMounted, ref } from 'vue';
+import { defineComponent } from 'vue';
 import draggable from 'vuedraggable';
 
-const props = defineProps<{
+
+export interface ScrumCard {
+  id: string;
+  title: string;
+  description: string;
+  created: Date | string;
+  updated: Date | string;
+  color: string;
+}
+
+const stories = ref<ScrumCard[]>([])
+
+const handleDragEnd = (event) => {
+      const { newIndex, oldIndex } = event;
+      const item = stories.value.splice(oldIndex, 1)[0];
+      stories.value.splice(newIndex, 0, item);
+}
+
+
+
+defineProps<{
 	semaine: number,
-	stories: Array<any>,
-	todo: Array<any>,
-	inProgres: Array<any>,
-	done: Array<any>,
+	stories: Array<ScrumCard>,
+	todo: Array<ScrumCard>,
+	inProgress: Array<ScrumCard>,
+	done: Array<ScrumCard>,
 }>()
 
-const semaineProp = ref(props.semaine);
-const storiesProp = ref(props.stories);
-const todoProp = ref(props.todo);
-const inprogressProp = ref(props.inProgres);
-const doneProp = ref(props.done);
+const dod = reactive([]);
+const dof = reactive([]);
+
+const form = reactive({
+	id: undefined,
+	title: undefined,
+	description: undefined,
+	created: undefined,
+	updated: undefined
+})
+const addToDod = () => {
+  const newDodItem = 'Nouveau critère DOD';
+  dod.push(newDodItem);
+};
+
+const addToDof = () => {
+  const newDofItem = 'Nouveau critère DOF';
+  dof.push(newDofItem);
+};
+
+const createCard = (value: string) => {
+    form.title = 'Editer le titre';
+    form.description = 'Editer la description';
+    showModal.value = true;
+}
+
+const config = reactive({
+  draggedItem: null,
+  draggedItemIndex: -1,
+});
+
+const showModal = ref(false);
+
+const openModal = (card: ScrumCard) => {
+	form.title = card.title ?? '';
+	form.description = card.description ?? '';
+	form.created = card.created;
+	form.updated = card.updated;
+	form.id = card.id;
+	showModal.value = true;
+}
+
+const closeModal = () => {
+	form.id = undefined;
+	form.title = undefined;
+	form.description = undefined;
+	form.created = undefined;
+	form.updated = undefined;
+	showModal.value = false;
+}
+
+const columns = reactive([
+  { title: 'STORIES', cards: [] },
+  { title: 'TODO', cards: [] },
+  { title: 'IN PROGRESS', cards: [] },
+  { title: 'DONE', cards: [] },
+]);
+
+
+const openForm = () => {
+    form.title = '';
+    form.description = '';
+    showModal.value = true;
+  };
+
+const submitForm = withErrorHandler(async function(form: Partial<ScrumCard>) {
+	
+	if (form.title && form.description) {
+	  const newCard: ScrumCard = {
+		id: Math.random().toString(),
+		title: form.title,
+		description: form.description,
+		created: new Date(),
+		updated: new Date(),
+		color: '#FF0000',
+	  };
+	  stories.value.push(newCard);
+	  closeModal();
+	} else {
+	  console.log("Veuillez remplir tous les champs.");
+	}
+	
+
+	if(form.id) {
+		const res = await http.patch('/api/endpoint', form);
+		console.log(res.data);
+	} else {
+		const res = await http.post('/api/endpoint', form);
+		console.log(res.data)
+	}
+})
+
+const dragStart = (fromColumnIndex, cardIndex) => {
+  config.draggedItem = { fromColumnIndex, cardIndex };
+};
+
+const dragOver = (toColumnIndex, event) => {
+  event.preventDefault();
+};
+
+const drop = (toColumnIndex, event) => {
+  event.preventDefault();
+  const { draggedItem } = config;
+  if (draggedItem) {
+    const { fromColumnIndex, cardIndex } = draggedItem;
+    const fromColumn = columns[fromColumnIndex];
+    const toColumn = columns[toColumnIndex];
+
+    const card = fromColumn.cards.splice(cardIndex, 1)[0];
+    toColumn.cards.push(card);
+
+    config.draggedItem = null;
+  }
+};
 
 
 const dodList = ref([]);
-const showDodForm = ref(false);
+  const dofList = ref([]);
+  const newDodItem = ref('');
+  const newDofItem = ref('');
+  
+  const addItem = (column) => {
+	if (column === 'dod') {
+	  if (newDodItem.value.trim() !== '') {
+		dodList.value.push({
+		  id: Date.now(),
+		  content: newDodItem.value
+		});
+		newDodItem.value = '';
+	  }
+	} else if (column === 'dof') {
+	  if (newDofItem.value.trim() !== '') {
+		dofList.value.push({
+		  id: Date.now(),
+		  content: newDofItem.value
+		});
+		newDofItem.value = '';
+	  }
+	}
+  };
+  
+  const editItem = (item) => {
+	console.log('Editing item:', item);
+  };
 
-const dofList = ref([]);
+  </script> 
 
+  
 
-const newDod = reactive({
-	title: "",
-	description: ""
-})
-
-const addDod = () => {
-	//a definir
+<style>
+.column {
+  display: inline-block;
+  width: 300px;
+  padding: 20px;
+  margin: 10px;
+  background-color: #f0f0f0;
 }
 
-const addDof = () => {
-	//a definir
+.add-post-it {
+  margin-top: 10px;
 }
 
-const removeDod = (index: number) => {
-	//a definir
-}
-
-const removeDof = (index: number) => {
-	//a definir
-}
-</script>
-
-<style scoped>/* Styles pour le board EduScrum */
-.dragging {
-opacity: 0.5;
-border: 2px dashed gray;
+.post-it {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  cursor: pointer;
 }
 </style>
+
+  
+ 
+
+  
+  
+  
+  
+  

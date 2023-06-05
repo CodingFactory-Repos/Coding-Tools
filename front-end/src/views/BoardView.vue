@@ -3,7 +3,7 @@
     :semaine="1" 
     :stories="[]"
     :todo="[]"
-    :inProgres="[]"
+    :inProgress="[]"
     :done="[]"
 
   />
