@@ -59,6 +59,7 @@ watch(frames, val => {
 		const index = val.indexOf(selectedNumber.value);
 		if(index === -1) {
 			projectStore.selectedFrameNumber = null;
+			projectStore.scene.viewport.activeFrameNumber = null;
 		}
 	}
 });

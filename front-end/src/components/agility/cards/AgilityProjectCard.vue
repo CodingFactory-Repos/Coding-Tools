@@ -15,7 +15,7 @@
 				<SvgThreeDot width="32" heigh="32" class="shadow-wall hidden"/>
 			</div>
 			<div class="shadow-wall hidden absolute w-full h-full z-20 bg-[#00000066]"></div>
-			<img ref="imageRef" class="w-full h-48 rounded p-3" :src="url" :alt="`project snapshot`"/>
+			<img ref="imageRef" class="w-full h-48 rounded p-3" :src="url ?? 'https://'" :alt="`project snapshot`"/>
 		</div>
 		<span class="text-[#5c5f73] dark:text-dark-font text-sm font-bold px-3 pb-3">
 			{{ title }}

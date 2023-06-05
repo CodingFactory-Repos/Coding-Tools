@@ -12,8 +12,9 @@ export class DownloadPlugin {
 	}
 
 	public downloadOne(container: CanvasContainer, mime: string) {
+		const { width, height } = container;
 		const cloneContainer = container.cloneToContainer();
-		const { width, height, x, y } = cloneContainer.getBounds();
+		const { x, y } = cloneContainer.getBounds();
 		cloneContainer.position.set(-x, -y);
 
 		const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
@@ -40,8 +41,9 @@ export class DownloadPlugin {
 
 		for (let n = 0; n < containers.length; n++) {
 			const container = containers[n];
+			const { width, height } = container;
 			const cloneContainer = container.cloneToContainer();
-			const { width, height, x, y } = cloneContainer.getBounds();
+			const { x, y } = cloneContainer.getBounds();
 			cloneContainer.position.set(-x, -y);
 
 			const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
