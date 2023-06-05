@@ -55,7 +55,6 @@ export default {
 			userId,
 		};
 	},
-	computed: {},
 
 	watch: {
 		equipmentId: function () {
