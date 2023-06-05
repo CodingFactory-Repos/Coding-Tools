@@ -88,9 +88,13 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/ShowArticleView.vue'),
 					},
 					{
+						path: 'edit/:id',
+						component: () => import('../views/EditArticleView.vue'),
+					},
+					{
 						path: 'tutorial/:id',
-						component: () => import('../views/MarkdownViewer.vue')
-					}
+						component: () => import('../views/MarkdownViewer.vue'),
+					},
 				],
 			},
 			{
@@ -144,8 +148,8 @@ const routes: Array<RouteRecordRaw> = [
 			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
 			{
 				path: 'materialsDashboard',
-				component: () => import('../views/materialDashboardView.vue'),
-      },
+				component: () => import('../views/MaterialDashboardView.vue'),
+			},
 			{
 				path: 'ressource',
 				children: [
