@@ -3,8 +3,9 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
 import { RetrospectivesRepository } from 'src/base/retrospectives/retrospectives.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { Postit, Retrospective } from './interfaces/retrospectives.interface';
+import { Retrospective } from './interfaces/retrospectives.interface';
 import { ObjectId } from 'mongodb';
+import { PostitDTO, RetrospectiveDTO } from './dto/retrospectives.dto';
 
 @Injectable()
 export class RetrospectivesService {
@@ -15,7 +16,7 @@ export class RetrospectivesService {
 		private retrospectivesRepository: RetrospectivesRepository,
 	) {}
 
-	async newRetrospective(retrospective: Retrospective, userId: ObjectId) {
+	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
 		const date = new Date();
 		const user = await this.usersRepository.findOne({ _id: userId})
 		if (user === null)
@@ -59,7 +60,7 @@ export class RetrospectivesService {
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
 
-	async createNewPostit(postit: Postit, userId: ObjectId) {
+	async createNewPostit(postit: PostitDTO, userId: ObjectId) {
 		const user = await this.usersRepository.findOne({ _id: userId})
 
 		if (user && user.profile.firstName && user.profile.lastName) {

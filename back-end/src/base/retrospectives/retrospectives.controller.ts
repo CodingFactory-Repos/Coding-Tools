@@ -3,10 +3,10 @@ import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.service';
-import { Postit, Retrospective } from './interfaces/retrospectives.interface';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
+import { PostitDTO, RetrospectiveDTO } from '@/base/retrospectives/dto/retrospectives.dto';
 
 @Controller('retrospectives')
 @UseFilters(ServiceErrorCatcher)
@@ -18,16 +18,14 @@ export class RetrospectivesController {
 		return res.status(201).json({ status: 'ok' });
 	}
 
-	// TODO: DTO
 	@Post('/newRetro')
 	@UseGuards(JwtAuthGuard)
 	async newRetro(
 		@Jwt() userId: ObjectId,
 		@Res() res: Response,
-		@Body() body: Body
+		@Body() body: RetrospectiveDTO
 		) {
-		const retro = body as unknown as Retrospective
-		const retrospective = await this.retrospectivesService.newRetrospective(retro, userId);
+		const retrospective = await this.retrospectivesService.newRetrospective(body, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
 
@@ -40,6 +38,7 @@ export class RetrospectivesController {
 	}
 
 	@Get('/:slug')
+	@UseGuards(JwtAuthGuard)
 	async getCurrentRetro(@Res() res: Response, @Param('slug') slug: string) {
 		const currentRetro = await this.retrospectivesService.getCurrentRetro(slug);
 		return res.status(201).json({ currentRetro: currentRetro });
@@ -47,10 +46,9 @@ export class RetrospectivesController {
 
 	@Post('/newPostit')
 	@UseGuards(JwtAuthGuard)
-	async newPostit(@Res() res: Response, @Body() body: Body, @Jwt() userId: ObjectId) {
-		// TODO: AFTER
-		const postit = body as Postit;
-		const newPostit = await this.retrospectivesService.createNewPostit(postit, userId);
+	async newPostit(@Res() res: Response, @Body() body: PostitDTO, @Jwt() userId: ObjectId) {
+
+		const newPostit = await this.retrospectivesService.createNewPostit(body, userId);
 		return res.status(201).json({ newPostit: newPostit });
 	}
 
@@ -58,10 +56,9 @@ export class RetrospectivesController {
 	@UseGuards(JwtAuthGuard)
 	async updateParticipants(
 		@Res() res: Response,
-		@Body() body: Body
+		@Body() body: RetrospectiveDTO
 		) {
-		const retro = body as unknown as Retrospective
-		await this.retrospectivesService.tryUpdateParticipants(retro)
+		await this.retrospectivesService.tryUpdateParticipants(body)
 
 		return res.status(201).json({ status: 'ok' });
 	}
