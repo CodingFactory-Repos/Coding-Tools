@@ -22,7 +22,7 @@
 					v-model="comment"
 				/>
 				<button
-					class="font-bold bg-light-icon rounded-lg text-sm focus:outline-none dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary disabled:text-light-font border-2 border-dark-font disabled:border-dark-icon items-center gap-2"
+					class="font-bold bg-light-icon rounded-lg text-sm focus:outline-none dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary dark:disabled:border-dark-icon bg-light-tertiary text-dark-primary disabled:text-light-font border-2 border-dark-font disabled:border-light-font items-center gap-2"
 					:disabled="comment === ''"
 				>
 					Envoyer
@@ -55,8 +55,6 @@ export default {
 			userId,
 		};
 	},
-	computed: {},
-
 	watch: {
 		equipmentId: function () {
 			this.getComments();

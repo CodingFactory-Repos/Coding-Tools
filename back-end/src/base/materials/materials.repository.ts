@@ -107,9 +107,46 @@ export class MaterialsRepository {
 		return this.materials.deleteOne(query);
 	}
 	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
-		return this.materials.updateOne(query, update);
+		this.materials.updateOne(query, update);
+		return this.materials.findOne(query);
 	}
 	async getMaterialById(id: string) {
 		return this.materials.findOne({ _id: new ObjectId(id) });
+	}
+	async getPendingReservation() {
+		// return only the borrowingHistory index that has the status in PENDING
+		const materials = await this.materials
+			.aggregate([
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+				{ $unwind: '$borrowingHistory' },
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+			])
+			.toArray();
+
+		return materials;
+	}
+	async acceptReservation(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
+	}
+	async declineReservation(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
+	}
+	async returnMaterial(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
 	}
 }
