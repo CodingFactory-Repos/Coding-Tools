@@ -34,6 +34,33 @@ export class MaterialsController {
 		return res.status(200).json(materials);
 	}
 
+	@Get('/stats')
+	async getStats(@Res() res: Response) {
+		this.materialsService.getAllMaterialsStats().then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+	@Get('/macs')
+	async getMacs(@Res() res: Response) {
+		this.materialsService.getAllMacs().then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+
+	@Get('/usedList')
+	async getMaterialsUsed(@Res() res: Response) {
+		this.materialsService.getMaterialsUsed().then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+
+	@Get('/statusMacs/:kind')
+	async getMacsStatus(@Param('kind') kind: string, @Res() res: Response) {
+		this.materialsService.getMacsStatus(kind).then((materials) => {
+			res.status(200).json(materials);
+		});
+	}
+
 	@Post('/create')
 	async createMaterial(@Body() body: DTOCreateMaterials, @Res() res: Response) {
 		const material = await this.materialsService.createNewMaterial(body);

@@ -134,6 +134,10 @@ const routes: Array<RouteRecordRaw> = [
 				],
 			},
 			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
+			{
+				path: 'materialsDashboard',
+				component: () => import('../views/materialDashboardView.vue'),
+			},
 		],
 		meta: {
 			requiresAuth: true,
