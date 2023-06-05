@@ -1,43 +1,23 @@
 <template>
-    <div class="container">
-        <h1 class="marg">Organisation</h1>
-        <div class="actualSprint marg">Sprint de la semaine: VueJS, du 05/12 au 09/12 avec François<br/>
-            <RouterLink to="scrum/sprint" class="link">Afficher les sprints</RouterLink>
+    <div class="">
+        <h1 class="text-6xl font-bold dark:text-dark-font">Organisation</h1>
+        <div class="actualSprint marg">Sprint sélectionné:<br/>
+            <select id="select" @change="setCourseId($event)">
+                <option>Sélectionnez un Sprint</option>
+                <option v-for="course in courses"  :value=course._id>{{ course.tag }}</option>
+            </select>
         </div>
-        <div class="marg relative">
-            <h2 style="font-size:36px;">Vos groupes</h2>
-            <button class="button" style="position:absolute;right:10px;top:5px;">Créer un groupe</button>
+        <div class="w-full h-fit flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
+            <h2 class="text-2xl font-bold dark:text-dark-font">Plannings de ce sprint</h2>
             <div class="groups">
-                <div class="iconeGroupe">
-                    <span style="font-size:20px;">Nom du groupe</span>
+                <div class="iconeGroupe" v-for="group in groups">
+                    <span style="font-size:20px;" v-for="student in group">{{ student }}<br/></span>
                     <div style="position:absolute;right:10px;bottom:10px;">
                         <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
                         <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
                     </div>
                     <div style="position:absolute;left:10px;bottom:10px;">
-                        <button>Ouvrir le tableau</button>
-                    </div>
-                </div>
-                
-                <div class="iconeGroupe">
-                    <span style="font-size:20px;">Nom du groupe</span>
-                    <div style="position:absolute;right:10px;bottom:10px;">
-                        <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                        <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
-                    </div>
-                    <div style="position:absolute;left:10px;bottom:10px;">
-                        <button>Créer un tableau</button>
-                    </div>
-                </div>
-
-                <div class="iconeGroupe">
-                    <span style="font-size:20px;">Nom du groupe</span>
-                    <div style="position:absolute;right:10px;bottom:10px;">
-                        <button><img class="icon" src="https://cdn-icons-png.flaticon.com/512/2089/2089792.png"></button>
-                        <button style="background-color:red;"><img class="icon" src="https://cdn-icons-png.flaticon.com/512/542/542724.png"></button>
-                    </div>
-                    <div style="position:absolute;left:10px;bottom:10px;">
-                        <button>Créer un tableau</button>
+                        <button>Ouvrir le projet</button>
                     </div>
                 </div>
             </div>
@@ -45,7 +25,77 @@
     </div>  
 </template>
 
-<script>
+<script lang="ts">
+import { http } from '@/api/network/axios';
+import { withErrorHandler } from '@/utils/storeHandler';
+
+let courseId = '';
+let courses = [];
+let studentList = [];
+let groups = [];
+
+export default{
+	name: 'OrganisationView',
+	data() {
+		return {
+            courses,
+            courseId,
+			groups,
+			studentList,
+			isPO: false,
+		};
+	},
+
+	mounted() {
+		this.getCourses();
+        this.getStudents();
+		//this.isProductOwner();
+	},
+	methods: {
+		getCourses: withErrorHandler(async function () {
+			http.get(`/courses`).then((response) => {
+				this.courses = response.data;
+			});
+		}),
+        getStudents: withErrorHandler(async function () {
+            http.get(`/users`).then((response) => {
+                this.studentList = response.data;
+            });
+        }),
+        setCourseId(event) {
+            let course;
+            this.courses.forEach(courseElt => {
+                if(courseElt._id == event.target.value) {
+                    course = courseElt;
+                }
+            });
+            this.courseId = course._id;
+            this.groups = course.groups;
+            console.log(course.tag);
+
+            this.groups.forEach(group => { //Pour chaque groupe
+                group.forEach(student => { //Pour chaque élève du groupe
+                    this.studentList.forEach(user => { //On compare avec tous les élèves
+                        console.log(student);
+                        console.log(user._id);
+                        if(student == user._id) {
+                            group[group.indexOf(student)] = (user.profile.firstName +' '+ user.profile.lastName);
+                            console.log("ccc");
+                        }
+                        console.log('--------------')
+                    }); 
+                    console.log("bbb");
+                });
+                console.log("aaa");
+            });
+        }
+		//isProductOwner: withErrorHandler(async function () {
+		//	http.get(`/calls/is_product_owner/`).then((response) => {
+		//		this.isPO = response.data.isProductOwner;
+		//	});
+		//}),
+	},
+};
 </script>
 
 <style>

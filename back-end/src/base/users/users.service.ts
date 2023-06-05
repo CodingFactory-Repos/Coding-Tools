@@ -1,7 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+
+import { UsersRepository } from 'src/base/users/users.repository';
+
 
 @Injectable()
 export class UsersService {
-	// Business logic methods goes there...
-	// Use it like a normal class
+	constructor(
+		@Inject(forwardRef(() => UsersRepository))
+		private usersRepository: UsersRepository,
+	) {}
+
+	async getAllUsers() {
+		return await this.usersRepository.getAllUsers();
+	}
 }

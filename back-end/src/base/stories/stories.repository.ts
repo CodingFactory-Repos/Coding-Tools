@@ -7,35 +7,30 @@ import { Story } from 'src/base/stories/interfaces/stories.interface';
 export class StoriesRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
-	get Backlogs() {
-		return this.db.collection<Story>('Backlogs');
+	get Stories() {
+		return this.db.collection<Story>('Stories');
 	}
 
-	async createBacklog(query: Story) {
-		return this.Backlogs.insertOne(query);
+	async createStory(query: Story) {
+		return this.Stories.insertOne(query);
 	}
 
-	async updateOneBacklog(
+	async updateOneStory(
 		query: Filter<Story>,
 		update: Partial<Story> | UpdateFilter<Story>,
 	) {
-		return this.Backlogs.updateOne(query, update);
+		return this.Stories.updateOne(query, update);
 	}
 
-	async findOneAndUpdateBacklog(
+	async findOneAndUpdateStory(
 		query: Filter<Story>,
 		update: Partial<Story>,
 		options: FindOneAndUpdateOptions = undefined,
 	) {
-		return this.Backlogs.findOneAndUpdate(query, update, options);
+		return this.Stories.findOneAndUpdate(query, update, options);
 	}
 
 	async findOne(query: Filter<Story>, options: FindOneAndUpdateOptions = undefined) {
-		return this.Backlogs.findOne(query, options);
-	}
-
-	async BacklogExist(query: Filter<Story>) {
-		const options = { projection: { _id: 1 } };
-		return this.Backlogs.findOne(query, options);
+		return this.Stories.findOne(query, options);
 	}
 }

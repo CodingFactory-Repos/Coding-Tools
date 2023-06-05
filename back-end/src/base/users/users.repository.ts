@@ -11,6 +11,10 @@ export class UsersRepository {
 		return this.db.collection<User>('users');
 	}
 
+	async getAllUsers() {
+		return this.users.find().toArray();
+	}
+
 	async createUser(query: User) {
 		return this.users.insertOne(query);
 	}

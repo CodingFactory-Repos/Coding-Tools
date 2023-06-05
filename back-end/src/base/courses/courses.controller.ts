@@ -9,8 +9,10 @@ import { CoursesService } from 'src/base/courses/courses.service';
 export class CoursesController {
 	constructor(private readonly coursesService: CoursesService) {}
 
-	@Get()
+	@Get('')
 	index(@Res() res: Response) {
-		return res.status(201).json({ status: 'ok' });
+		this.coursesService.getAllCourses().then((courses) => {
+			res.status(200).json(courses);
+		});
 	}
 }
