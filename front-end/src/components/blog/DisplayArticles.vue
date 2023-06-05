@@ -8,7 +8,7 @@
 				@click="redirectNewArticle"
 				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
-				<span class="text-white">Create article</span>
+				<span class="text-white">Créer un article</span>
 			</button>
 			<button
 				v-else
@@ -74,7 +74,7 @@ const items = computed(() => {
 
 // Redirect the user to the article's creation page
 const redirectNewArticle = () => {
-	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial')
+	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial');
 	else router.push('/app/blog/new');
 };
 
@@ -85,9 +85,10 @@ const getArticles = async () => {
 
 const tabs = ref([
 	{ id: 'infos', label: 'Infos' },
-	{ id: 'tutos', label: 'Tutorials' },
-	{ id: 'events', label: 'Events' },
+	{ id: 'tutos', label: 'Tutoriels' },
+	{ id: 'events', label: 'Événements' },
 	{ id: 'liked', label: 'Likes' },
+	{ id: 'participate', label: 'Participations' },
 ]);
 
 const activeTab = ref('infos');
@@ -115,6 +116,12 @@ const filteredItems = (tabId) => {
 		case 'liked':
 			return items.value.filter(
 				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+			);
+		case 'participate':
+			return items.value.filter(
+				(item) =>
+					item.participants &&
+					item.participants.some((participant) => participant.id === user.value._id),
 			);
 		default:
 			return [];
