@@ -28,8 +28,14 @@ export class ArticlesRepository {
 		return this.articles.insertOne(query);
 	}
 
+	// Function to delete an article
+	async deleteOneArticle(id: ObjectId) {
+		return this.articles.deleteOne({ _id: new ObjectId(id) });
+	}
+
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
-		return this.articles.updateOne(query, update);
+		this.articles.updateOne(query, update);
+		return this.articles.findOne(query);
 	}
 
 	async findOneAndUpdateArticle(

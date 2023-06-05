@@ -14,6 +14,65 @@ export class MaterialsRepository {
 	async getAllMaterials() {
 		return this.materials.find().toArray();
 	}
+
+	async getAllMaterialsStats() {
+		return this.materials.aggregate([{ $sort: { acquisitionDate: 1 } }, { $limit: 5 }]).toArray();
+	}
+
+	async getAllMacs() {
+		return this.materials
+			.aggregate([
+				{
+					$match: {
+						type: 'Mac',
+					},
+				},
+				{
+					$group: {
+						_id: '$siteLocation',
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$project: {
+						campus: '$_id',
+						count: '$count',
+						_id: false,
+					},
+				},
+			])
+			.toArray();
+	}
+
+	async getMacsStatus(kind) {
+		return this.materials
+			.aggregate([
+				{
+					$match: {
+						type: kind,
+					},
+				},
+				{
+					$group: {
+						_id: '$status',
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$project: {
+						status: '$_id',
+						count: '$count',
+						_id: false,
+					},
+				},
+			])
+			.toArray();
+	}
+
+	async getMaterialsUsed() {
+		return this.materials.find({ borrowingHistory: { $exists: true } }).toArray();
+	}
+
 	async createMaterial(query: Material) {
 		this.materials.insertOne(query);
 		//Return the new material
@@ -48,9 +107,46 @@ export class MaterialsRepository {
 		return this.materials.deleteOne(query);
 	}
 	async addOneReservation(query: Filter<Material>, update: Partial<Material>) {
-		return this.materials.updateOne(query, update);
+		this.materials.updateOne(query, update);
+		return this.materials.findOne(query);
 	}
 	async getMaterialById(id: string) {
 		return this.materials.findOne({ _id: new ObjectId(id) });
+	}
+	async getPendingReservation() {
+		// return only the borrowingHistory index that has the status in PENDING
+		const materials = await this.materials
+			.aggregate([
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+				{ $unwind: '$borrowingHistory' },
+				{ $match: { 'borrowingHistory.status': 'PENDING' } },
+			])
+			.toArray();
+
+		return materials;
+	}
+	async acceptReservation(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
+	}
+	async declineReservation(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
+	}
+	async returnMaterial(
+		query: Filter<Material>,
+		update: Partial<Material>,
+		options: FindOneAndUpdateOptions = undefined,
+	) {
+		await this.materials.findOneAndUpdate(query, update, options);
+		return this.materials.findOne(query);
 	}
 }

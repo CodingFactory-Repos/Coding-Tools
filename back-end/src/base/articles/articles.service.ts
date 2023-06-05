@@ -28,6 +28,11 @@ export class ArticlesService {
 		return await this.articlesRepository.getArticleById(id);
 	}
 
+	// Function to update an article
+	async updateArticle(id, queryArticle) {
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
+	}
+
 	// add participant to the array of participants in article in the database
 	async addParticipant(id, queryParticipant) {
 		const update = { $push: { participants: queryParticipant } };
@@ -42,11 +47,44 @@ export class ArticlesService {
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
 
+	// add like to the array of likes in article in the database
+	async addLike(id, queryLike) {
+		const update = { $push: { likes: queryLike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove like from the array of likes in article in the database
+	async removeLike(id, queryLike) {
+		const update = { $pull: { likes: queryLike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// add dislike to the array of dislikes in article in the database
+	async addDislike(id, queryDislike) {
+		const update = { $push: { dislikes: queryDislike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove dislike from the array of dislikes in article in the database
+	async removeDislike(id, queryDislike) {
+		const update = { $pull: { dislikes: queryDislike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
 	// add comment
 	async addComment(id, queryComment) {
 		const update = { $push: { comments: queryComment } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// delete article
+	async deleteArticle(id) {
+		return await this.articlesRepository.deleteOneArticle(id);
 	}
 
 	// Business logic methods goes there...

@@ -1,7 +1,7 @@
-import { Rectangle } from '../model/template';
+import { Circle, LineBezier, Rectangle } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
-import { ContainerType, GeometryTypes } from '../types/pixi-enums';
+import { ContainerType, GeometryTypes, PixiEventMode } from '../types/pixi-enums';
 import type { ElementPosition } from '../types/pixi-container';
 import {
 	ContainerTypeId,
@@ -13,6 +13,7 @@ import { generateUniqueId } from '../utils/uniqueId';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
+import { LineContainer } from './lineContainer';
 
 export class Normalizer {
 	static graphic(data: Partial<SerializedGraphic>, position?: ElementPosition) {
@@ -20,14 +21,34 @@ export class Normalizer {
 		const attributes = data as SerializedGraphic;
 
 		if (!attributes.bounds && position) {
-			const width = 200; // Need to find a solution rather than hardcoded
-			const height = 200; // Need to find a solution rather than hardcoded
+			if (Graphic === Circle) {
+				const radius = 100;
 
-			attributes.bounds = {
-				x: position.x - width / 2,
-				y: position.y - height / 2,
-				width,
-				height,
+				attributes.bounds = {
+					x: position.x - radius,
+					y: position.y - radius,
+					radius,
+				};
+			} else {
+				const width = 200; // Need to find a solution rather than hardcoded
+				const height = 200; // Need to find a solution rather than hardcoded
+
+				attributes.bounds = {
+					x: position.x - width / 2,
+					y: position.y - height / 2,
+					width,
+					height,
+				};
+			}
+		}
+
+		if (Graphic === LineBezier && !attributes.lineControl) {
+			const unset = { x: 0, y: 0 };
+			attributes.lineControl = {
+				start: unset,
+				end: unset,
+				startControl: unset,
+				endControl: unset,
 			};
 		}
 
@@ -35,9 +56,16 @@ export class Normalizer {
 			attributes.properties = {
 				color: 0xffffff,
 				cursor: 'pointer',
-				interactive: true,
+				eventMode: PixiEventMode.STATIC,
 				alpha: 1,
+				borderWidth: 0,
+				borderColor: 0x000000,
 			};
+
+			if (Graphic === LineBezier) {
+				attributes.properties.arrowHead = true;
+				attributes.properties.dashed = false;
+			}
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
@@ -51,6 +79,7 @@ export class Normalizer {
 		position?: ElementPosition,
 		tabContext?: number,
 	) {
+		if (data === null) return;
 		const { childs, background, ...attr } = data;
 		const Container = ContainerType[attr.typeId as ContainerTypeId];
 
@@ -79,9 +108,10 @@ export class Normalizer {
 			attributes.properties = {
 				cursor: 'pointer',
 				frameNumber,
-				interactive: true,
+				eventMode: PixiEventMode.STATIC,
 				isAttachedToFrame: false,
-				tabNumberContext: tabContext,
+				tabNumberContext: tabContext ?? -1,
+				disabled: false,
 			};
 		}
 
@@ -89,7 +119,7 @@ export class Normalizer {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
 
-				if (childTypeId === 'generic' || childTypeId === 'frame') {
+				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line') {
 					const containerChildren = this.container(
 						viewport,
 						element as SerializedContainer,
@@ -106,9 +136,9 @@ export class Normalizer {
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
-		if (Container === GenericContainer)
+		if (Container === GenericContainer || Container === LineContainer)
 			return Container.registerContainer(viewport, attributes, children, remote);
-		if (Container === FramedContainer)
+		else if (Container === FramedContainer)
 			return Container.registerContainer(
 				viewport,
 				attributes,

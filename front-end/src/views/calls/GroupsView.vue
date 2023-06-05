@@ -1,11 +1,13 @@
 <script lang="ts">
 import StudentListComponent from '@/components/RollCallComponents/StudentListComponent.vue';
 import GroupsComponent from '@/components/RollCallComponents/GroupsComponent.vue';
+import Chat from '@/components/RollCallComponents/Chat.vue';
 
 export default {
 	components: {
+		Chat,
 		StudentListComponent,
-    GroupsComponent,
+		GroupsComponent,
 	},
 	data() {
 		return {
@@ -18,5 +20,6 @@ export default {
 </script>
 <template>
 	<StudentListComponent />
-  <GroupsComponent />
+	<GroupsComponent />
+	<Chat room-id="1" />
 </template>

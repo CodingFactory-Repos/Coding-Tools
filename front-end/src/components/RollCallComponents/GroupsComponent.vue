@@ -64,7 +64,6 @@ export default {
 			isPO: false,
 		};
 	},
-
 	mounted() {
 		this.getCourseId();
 		this.isProductOwner();

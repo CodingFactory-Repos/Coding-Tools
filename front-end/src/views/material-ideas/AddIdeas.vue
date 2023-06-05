@@ -1,0 +1,148 @@
+<template>
+	<div class="wrapper">
+		<form class="materialsIdeas-form" @submit.prevent="addItem" autocomplete="off">
+			<h1 class="text-dark-secondary dark:text-dark-font text-center">Suggestion de matériel</h1>
+			<!-- to add new item into the list -->
+			<div class="task">
+				<input
+					type="text"
+					class="bg-light-secondary border text-dark-primary sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+					v-model="title"
+					placeholder="Ajouter une suggestion"
+				/>
+				<!-- Add item on click -->
+				<button
+					class="button btn-add 
+                    dark:text-dark-font 
+                    dark:disabled:bg-dark-tertiary
+                    dark:disabled:text-dark-icon
+                    dark:bg-dark-tertiary
+                    disabled:bg-light-tertiary disabled:text-light-font 
+                    font-bold 
+                    text-dark-primary bg-light-tertiary"
+					@click="openPopUp = true"
+					:disabled="title === ''"
+				>
+					Ajouter
+				</button>
+			</div>
+
+			<!-- Show added items in list view-->
+			<ul class="task-list">
+				<li
+					class="task-list-item bg-light-tertiary dark:bg-dark-tertiary"
+					v-for="item in items"
+					@click="openInfo(item)"
+				>
+					<span class="text-black dark:text-dark-font">{{ item.title }}</span>
+					<!-- create devis on click-->
+
+					<!-- delete item on click-->
+					<button
+						@click="(event) => deleteItem(item._id, event)"
+						class="button btn-delete text-dark-icon dark:text-dark-font"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							fill="currentColor"
+							viewBox="0 0 16 16"
+						>
+							<path
+								d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+							/>
+						</svg>
+					</button>
+				</li>
+			</ul>
+		</form>
+		<InfoLayout :selectedItem="selectedItem" @getId="getId" @close="closeInfo" v-if="infoState" />
+	</div>
+	<PopUp :title="title" @close="closePopup" @validation="getBdd" v-if="openPopUp" />
+</template>
+
+<script>
+import { http } from '@/api/network/axios';
+import PopUp from './PopUp.vue';
+import InfoLayout from './InfoLayout.vue';
+
+export default {
+	data() {
+		return {
+			newItem: '', //item before adding into array
+			openPopUp: false,
+			title: '',
+			items: [],
+			selectedItem: {},
+			infoState: '',
+		};
+	},
+	computed: {
+		totalItems() {
+			return this.items.length; //auto increment of 1 of each items added into array
+		},
+		isComplete() {
+			return this.items.filter((item) => item.completed).length; //to get completed [checkbox: checked]
+		},
+	},
+	methods: {
+		// addItem() {
+		// 	if (this.newItem !== '') {
+        //         console.log(this.newItem);
+		// 		this.items.push({ text: this.newItem, completed: false }); //check if input field is empty, if not empty then push [input] into array [items] and mark not completed [checkbox: unchecked]
+        //         this.title = "";
+		// 	}
+            
+		// },
+		async deleteItem(index, event) {
+			console.log(event);
+			event.stopPropagation();
+			console.log(index);
+			await http.delete('/ideasequipments/' + index);
+			this.getBdd();
+
+			//remove item
+		},
+		closePopup() {
+			this.openPopUp = false;
+            this.title = "";
+		},
+		closeInfo() {
+			this.infoState = '';
+			console.log('clode');
+		},
+		async getBdd() {
+			const { title, price, motiv, link, motivations } = this;
+			const body = { title, price, motiv, link, motivations };
+			const { data: items } = await http.get('/ideasequipments', body);
+			this.items = items || [];
+		},
+
+		// async getId(id){
+		//     await http.get("/ideaequipment/:id")
+		//     console.log("id requête : ", id)
+		// },
+
+		openInfo(item) {
+			console.log(item.title);
+			this.selectedItem = item;
+			// const id = this.selectedItem
+			console.log('selectedItem : id ', this.selectedItem);
+			this.infoState = this.selectedItem;
+		},
+	},
+	async created() {
+		this.getBdd();
+	},
+	components: {
+		PopUp,
+		InfoLayout,
+	},
+};
+</script>
+
+<style lang="scss">
+@import '../../assets/styles/components/add-ideas.css';
+@import '../../assets/styles/components/common/pop-up.css';
+</style>
