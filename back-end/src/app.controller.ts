@@ -24,7 +24,7 @@ import { JwtAuthGuard } from '@/common/guards/auth.guard';
 @UseFilters(ServiceErrorCatcher)
 export class AppController {
 	constructor(private readonly appService: AppService) {}
-	private readonly UPLOADS_DIR = resolve(join(cwd(), '..', 'uploads'));
+	private readonly UPLOADS_DIR = resolve(join(cwd(), 'uploads'));
 	private readonly UPLOADS_CONTEXT = ['private', 'public'];
 
 	@Get()
