@@ -2,19 +2,19 @@
 
 	<div>
 		<div class="flex items-center justify-center">
-            <!--button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
-                @click="startYears-- && endYears--">←</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
+                @click="startYears-- && endYears--; getCurrentYearsCours(); ">←</button>
             <span class="text-2xl font-bold">{{ startYears }} - {{ endYears }}</span>
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
-                @click="startYears++ && endYears++">→</button-->
+                @click="startYears++ && endYears++; getCurrentYearsCours();">→</button>
         </div>
-		<div v-for="language in TagList" >
+		<div v-for="language in TagList" @click="showCoursesByLanguage(language)" >
 			<h5>{{ language }}</h5>
 		</div>	
 		<div class="text-center flex items-center justify-center max-w-full h-full">
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 				<div
-					v-for="item in items"
+					v-for="item in coursesFiltered"
 					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 				>
 					<img
@@ -52,19 +52,51 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCoursStore } from '@/store/modules/course.store';
+import { elements } from 'chart.js';
+import { el } from 'date-fns/locale';
 
+const startYears = ref(new Date().getFullYear());
+const endYears = ref(new Date().getFullYear() + 1);
 let TagList = [];
+let currentYearsCourses = [];
+// let coursesFiltered = [];
+const coursesFiltered = ref([])
 // Use the openHouses store
 const courseStore = useCoursStore();
 // Create a reactive variable to store the articles
 const items = computed(() => courseStore.items);
 
+function showCoursesByLanguage(language){
+	 coursesFiltered.value = [];
+	currentYearsCourses.forEach(element =>{
+		if(element.language.toUpperCase() == language){
+			coursesFiltered.value.push(element);
+		}
+	})
+	console.log(coursesFiltered.value);
+}
+
 // Display the modal
 //const showModal = ref(false);
-
-function getAllTagCourse() {
+function getCurrentYearsCours(){
+	currentYearsCourses = [];
 	const coursesList = items.value;
 	coursesList.forEach(element =>{
+		const dateStart = new Date(element.periodStart).getFullYear();
+		const dateEnd = new Date(element.periodEnd).getFullYear();
+		if(dateStart>=startYears.value && dateEnd<=endYears.value){
+			currentYearsCourses.push(element);
+		}
+	})
+	getAllTagCourse();
+	coursesFiltered.value = currentYearsCourses;
+	console.log(currentYearsCourses);
+}
+
+function getAllTagCourse() {
+	TagList = [];
+	//const coursesList = items.value;
+	currentYearsCourses.forEach(element =>{
 		if(!TagList.includes(element.language.toUpperCase())){
 			TagList.push(element.language.toUpperCase());
 		}
@@ -78,13 +110,11 @@ const router = useRouter();
 // Fetch the articles
 const getCourses = async () => {
 	await courseStore.getCourse();
-
 };
 
 // Call the getArticles method when the component is created
 onMounted(async() => {
 	await getCourses();
-	getAllTagCourse();
 });
 
 	// materialStore.getMaterials();

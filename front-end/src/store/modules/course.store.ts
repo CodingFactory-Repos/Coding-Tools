@@ -2,6 +2,7 @@ import { CoursesStore, Course } from '../interfaces/cours.interface';
 import { defineStore } from 'pinia';
 import { withErrorHandler } from '@/utils/storeHandler';
 import {getCourses} from '@/api/ressource-req';
+import { isEmpty } from '@/utils/string.helper';
 
 export const useCoursStore = defineStore('course', {
 	state: (): CoursesStore => {
@@ -12,9 +13,9 @@ export const useCoursStore = defineStore('course', {
 					tag: '',
 					picture: '',
                     language:'',
-				    createdAt: '0000-00-00T00:00:00.000+00:00',
-					periodStart:'0000-00-00T00:00:00.000+00:00',
-                    periodEnd: '0000-00-00T00:00:00.000+00:00',
+				    createdAt: null,
+					periodStart:null,
+                    periodEnd: null,
 					presence: [],
 					project: [],
                     site:'',
@@ -35,4 +36,5 @@ export const useCoursStore = defineStore('course', {
 			return true;
 		}),
 	},
+  
 });

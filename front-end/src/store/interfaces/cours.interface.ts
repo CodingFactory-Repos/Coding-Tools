@@ -9,9 +9,9 @@ export interface Course {
 	classId?: string;
 	picture: string;
     language: string;
-    createdAt: String;
-    periodStart: String;
-    periodEnd: String;
+    createdAt: Date;
+    periodStart: Date;
+    periodEnd: Date;
     presence:[];
 	project:[];
     site: String;
