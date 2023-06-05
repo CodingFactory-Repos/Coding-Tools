@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { SerializedContainer } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
+import { SerializedContainer } from './ws.canvasRoom.interface';
 
 export interface CanvasRoom extends CanvasRoomProperties {
 	_id?: ObjectId;
