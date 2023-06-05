@@ -80,9 +80,17 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/AddArticleView.vue'),
 					},
 					{
+						path: 'new/tutorial',
+						component: () => import('../views/AddTutorialView.vue'),
+					},
+					{
 						path: ':id',
 						component: () => import('../views/ShowArticleView.vue'),
 					},
+					{
+						path: 'tutorial/:id',
+						component: () => import('../views/MarkdownViewer.vue')
+					}
 				],
 			},
 			{
@@ -137,6 +145,23 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'materialsDashboard',
 				component: () => import('../views/materialDashboardView.vue'),
+      },
+			{
+				path: 'ressource',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/Ressources.vue'),
+					},
+					{
+						path: 'openhouse',
+						component: () => import('../views/OpenHouses.vue'),
+					},
+					{
+						path: 'openhouse/:id',
+						component: () => import('../views/OpenHousesDetails.vue'),
+					},
+				],
 			},
 		],
 		meta: {

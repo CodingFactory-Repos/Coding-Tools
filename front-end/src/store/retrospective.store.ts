@@ -1,4 +1,10 @@
-import { createRetro, newPostit, tryGetCurrentRetro } from '@/api/retrospective-req';
+import {
+	createRetro,
+	newPostit,
+	tryGetAllRetro,
+	tryGetCurrentRetro,
+	tryUpdateParticipants,
+} from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
 	Postit,
@@ -14,6 +20,11 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	tempMovingPostit: {},
 	currentRetro: {},
 	userCursors: [],
+	allRetros: [],
+	isSideBar: false,
+	inputSearch: '',
+	dateSearch: 0,
+	isRetroFinished: false,
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -120,6 +131,56 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 		async removeCursor(this: RetrospectiveStore, user: UserDisconnect) {
 			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
 			this.userCursors.splice(findCursor, 1);
+		},
+		async getAllRetros(this: RetrospectiveStore) {
+			const resp = await tryGetAllRetro();
+			this.allRetros = resp.data.retrospectives;
+		},
+		async participantJoin(this: RetrospectiveStore, email: string) {
+			const isUserHere = this.currentRetro.participants.findIndex((el) => el === email);
+			if (isUserHere === -1) this.currentRetro.participants.push(email);
+			await tryUpdateParticipants(this.currentRetro);
+		},
+		async participantLeave(this: RetrospectiveStore, user: UserDisconnect) {
+			const findUser = this.currentRetro.participants.findIndex((el) => el === user.email);
+			if (findUser !== -1) this.currentRetro.participants.splice(findUser, 1);
+		},
+		tryToggleSideBar(this: RetrospectiveStore) {
+			this.isSideBar = !this.isSideBar;
+		},
+		tryCloseSideBar(this: RetrospectiveStore) {
+			this.isSideBar = false;
+		},
+		inputSearchFilter(this: RetrospectiveStore, value: string) {
+			this.inputSearch = value;
+		},
+		dateSearchFilter(this: RetrospectiveStore, value: number) {
+			this.dateSearch = value;
+		},
+		endCurrentRetro(this: RetrospectiveStore, endedDate: Date) {
+			this.currentRetro.endedAt = endedDate;
+			this.currentRetro.isRetroEnded = true;
+		},
+		resetRetro(this: RetrospectiveStore) {
+			this.currentRetro.endedAt = null;
+			this.currentRetro.isRetroEnded = false;
+		},
+		lockRetro(this: RetrospectiveStore, locked: boolean) {
+			this.currentRetro.isLocked = locked;
+		},
+		// @@@@@@@@@@ TIMER RETRO @@@@@@@@@@@@@@
+		runningTimer(this: RetrospectiveStore) {
+			this.currentRetro.isTimerRunning = true;
+		},
+		stopingTimer(this: RetrospectiveStore) {
+			this.currentRetro.isTimerRunning = false;
+			clearInterval(this.currentRetro.timerInterval);
+		},
+		progressTimer(this: RetrospectiveStore, time: number) {
+			this.currentRetro.timePassed = time;
+		},
+		resetTimer(this: RetrospectiveStore) {
+			this.currentRetro.timePassed = 0;
 		},
 	},
 });
