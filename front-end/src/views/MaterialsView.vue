@@ -57,8 +57,6 @@ import { computed, ref, onMounted } from 'vue';
 import Modal from '@/components/common/Modal.vue';
 import ListMaterials from '@/components/materials/ListMaterials.vue';
 import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
-import pdfMake from 'pdfmake';
 import SvgDownload from '@/components/common/svg/Download.vue';
 import Add from '@/components/common/svg/Add.vue';
 import Chart from '@/components/common/svg/Chart.vue';
@@ -73,6 +71,12 @@ import Bell from '@/components/common/svg/Bell.vue';
 import ApprouvalCenter from '@/components/materials/ApprouvalCenter.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 
+// This file will register globalThis.pdfMake.vfs, the documentation does not explicity define the behavior
+// Unless you want to change the font, you don't need to assign pdfmake.vfs = globalThis.pdfMake.vfs.
+// It will work either way with the import below, enjoy.
+import 'pdfmake/build/vfs_fonts.js';
+import { createPdf } from 'pdfmake/build/pdfmake';
+
 const showModal = ref(false);
 const notificationCenter = ref(false);
 const graphComponent = ref(false);
@@ -83,8 +87,6 @@ const userRole = computed(() => user.value?.role);
 const materialStore = useMaterialStore();
 const reservation = computed(() => materialStore.pendingMaterials);
 const users = ref([]);
-
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 let base64Image = null;
 
 fetch(CodingToolsLogo)
@@ -194,7 +196,7 @@ function createPDF() {
 				},
 			},
 		};
-		pdfMake.createPdf(docDefinition).open();
+		createPdf(docDefinition).open();
 	});
 }
 </script>
