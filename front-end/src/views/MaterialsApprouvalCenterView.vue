@@ -1,5 +1,4 @@
 <template>
-	<h1 class="right-1">Bonjour</h1>
 	<div class="cards">
 		<div v-for="res in reservation" :key="res._id" class="p-0.5">
 			<div
@@ -45,7 +44,7 @@
 									<span class="font-semibold text-gray-900 dark:text-white">
 										{{ new Date(res.borrowingHistory.borrowingDate).toLocaleDateString() }}
 									</span>
-									juqu'au :
+									jusqu'au :
 									<span class="font-semibold text-gray-900 dark:text-white">
 										{{ new Date(res.borrowingHistory.returnDate).toLocaleDateString() }}
 									</span>

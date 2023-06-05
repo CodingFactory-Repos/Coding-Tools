@@ -52,7 +52,7 @@
 									<span class="font-semibold text-gray-900 dark:text-white">
 										{{ new Date(res.borrowingHistory.borrowingDate).toLocaleDateString() }}
 									</span>
-									juqu'au :
+									jusqu'au :
 									<span class="font-semibold text-gray-900 dark:text-white">
 										{{ new Date(res.borrowingHistory.returnDate).toLocaleDateString() }}
 									</span>
