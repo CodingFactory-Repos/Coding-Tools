@@ -1,13 +1,3 @@
-import {
-	EMAIL_FORMAT,
-	STRICT_API_URL,
-	STRICT_GITHUB_URL,
-	STRICT_LINKEDIN_URL,
-	STRICT_URL,
-} from '@/common/constants/global';
-import { IsValidDatePeriod } from '@/common/validators/IsValidDatePeriod.validator';
-import { IsValidGitHubStat } from '@/common/validators/IsValidGitHubStat.validator';
-import { IsValidStringLength } from '@/common/validators/IsValidStringLength.validator';
 import { Type } from 'class-transformer';
 import {
 	IsArray,
