@@ -78,6 +78,11 @@ function handleSocketEvents(socket: Socket) {
 	});
 
 	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@
+
+	socket.on("update-visibility", (postits: Postits) => {
+		retrospectiveStore.setSocketVisibility(postits)
+	})
+
 }
 
 export const socketRetro: { socket: Socket } = {
