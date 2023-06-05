@@ -139,7 +139,11 @@
 		<div class="mb-5"></div>
 		<!-- Create a div that show all the borrowingHistory -->
 		<div v-if="showHistory">
-			<BorrowHistoryMaterials :history="props.material.borrowingHistory" :userEmail="userEmail" />
+			<!-- Only send the borrowingHistory that are RETURNED -->
+			<BorrowHistoryMaterials
+				:history="props.material.borrowingHistory.filter((history) => history.status == 'RETURNED')"
+				:userEmail="userEmail"
+			/>
 		</div>
 		<div class="mb-5"></div>
 		<div class="flex items-center justify-between">
@@ -191,7 +195,6 @@ const user = computed(() => authStore.user);
 const userEmail = computed(() => user.value?.profile?.email);
 const userRole = computed(() => user.value?.role);
 
-
 const showLink = ref({});
 const showHistory = ref(false);
 
@@ -215,7 +218,6 @@ const editMaterial = async () => {
 		});
 	}
 };
-
 
 function onImageSelected(image) {
 	props.material.picture = image;
