@@ -9,7 +9,6 @@ import {
 	Length,
 	Max,
 	Min,
-	isNotEmpty,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
 

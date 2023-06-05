@@ -26,15 +26,15 @@ export const getPendingMaterials = async () => {
 	return http.get<Array<Material>>('materials/pendingReservation');
 };
 
-export const acceptBorrowing = async (id: string, payload: any) => {
+export const acceptBorrowing = async (id: string, payload: BorrowingMaterial) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/accept/${id}`, payload);
 };
 
-export const declineBorrowing = async (id: string, payload: any) => {
+export const declineBorrowing = async (id: string, payload: BorrowingMaterial) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/decline/${id}`, payload);
 };
 
-export const returnMaterial = async (id: string, payload: any) => {
+export const returnMaterial = async (id: string, payload: BorrowingMaterial) => {
 	return http.put<BorrowingMaterial>(`materials/reservation/return/${id}`, payload);
 };
 

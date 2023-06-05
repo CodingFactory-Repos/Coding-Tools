@@ -84,7 +84,7 @@ export const useMaterialStore = defineStore('materialStore', {
 			this.pendingMaterials = res.data;
 			return true;
 		}),
-		acceptBorrowing: withErrorHandler(async function (id: string, payload: any) {
+		acceptBorrowing: withErrorHandler(async function (id: string, payload: BorrowingMaterial) {
 			const res = await acceptBorrowing(id, payload);
 			if (res.status !== 200) return false;
 			const index = this.pendingMaterials.findIndex((el) => el._id === id);
@@ -93,14 +93,14 @@ export const useMaterialStore = defineStore('materialStore', {
 			this.materials[index2] = res.data;
 			return true;
 		}),
-		declineBorrowing: withErrorHandler(async function (id: string, payload: any) {
+		declineBorrowing: withErrorHandler(async function (id: string, payload: BorrowingMaterial) {
 			const res = await declineBorrowing(id, payload);
 			if (res.status !== 200) return false;
 			const index = this.pendingMaterials.findIndex((el) => el._id === id);
 			this.pendingMaterials.splice(index, 1);
 			return true;
 		}),
-		returnMaterial: withErrorHandler(async function (id: string, payload: any) {
+		returnMaterial: withErrorHandler(async function (id: string, payload: BorrowingMaterial) {
 			const res = await returnMaterial(id, payload);
 			if (res.status !== 200) return false;
 			const index = this.materials.findIndex((el) => el._id === id);
