@@ -26,4 +26,8 @@ export const apiTryFetchUserListByRoom = (roomId: string, user: string) => {
 	);
 };
 
+export const getAllUsers = () => {
+	return http.get<Status<{users : Array<User>}>>('/users');
+}
+
 

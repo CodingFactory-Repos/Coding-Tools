@@ -81,5 +81,6 @@ export const useOpenHouseStore = defineStore('openhouse', {
 			this.oneItems = oneItems;
 			return true;
 		}),
+
 	},
 });

@@ -9,6 +9,7 @@ import {
 	tryGetClassProfileList,
 	trySaveUserProfile,
 	tryGetRelatedUserProfile,
+	getAllUsers,
 } from '@/api/user-req';
 
 const userStoreDefaultState = (): UserStore => ({
@@ -17,6 +18,7 @@ const userStoreDefaultState = (): UserStore => ({
 	uploadWaitingList: [],
 	relatedProfiles: [],
 	relatedUserProfile: {},
+	//usersList: [],
 });
 
 export const useUserStore = defineStore('user', {
@@ -56,5 +58,12 @@ export const useUserStore = defineStore('user', {
 				keys?.length ? pick(userStoreDefaultState(), keys) : userStoreDefaultState(), // if no keys provided, reset all
 			);
 		},
+		getAllUsers: withErrorHandler(async function () {
+			const response = await getAllUsers();
+			console.log(response.data);
+			const items = response.data;
+			this.usersList = items;
+			return true;
+		}),
 	},
 });

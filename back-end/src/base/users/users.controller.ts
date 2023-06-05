@@ -66,4 +66,10 @@ export class UsersController {
 		return res.status(200).json({ status: 'ok', users });
 	}
 	
+	@Get('/users')
+	getUsers(@Res() res: Response) {
+		this.usersService.getAllUsers().then((users) => {
+			res.status(201).json(users);
+		});
+	}
 }

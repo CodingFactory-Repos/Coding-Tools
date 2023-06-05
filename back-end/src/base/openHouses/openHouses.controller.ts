@@ -28,10 +28,5 @@ export class OpenHousesController {
 			res.status(200).json(material);
 		});
 	}
-	@Get('/users')
-	getUsers(@Res() res: Response) {
-		this.openHousesService.getAllUsers().then((users) => {
-			res.status(200).json(users);
-		});
-	}
+	
 }

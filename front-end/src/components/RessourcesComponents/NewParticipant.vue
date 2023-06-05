@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import {http} from "@/api/network/axios"
+import {useUserStore} from '@/store/modules/user.store';
 export default{
     data(){
         return{
@@ -49,7 +50,9 @@ export default{
         searchUser(){    //recherche de participant
            // this.$emit('clear');
             this.userList = [];
-            this.getUsers();  // recuperer les users de la bdd
+          //  this.getUsers();  // recuperer les users de la bdd
+            const userStore = useUserStore();
+            console.log(userStore.getAllUsers());
             this.usersNames.forEach(element =>{
                 const userName = element.firstName + " " + element.lastName;
                 let alreadyInList =false;
