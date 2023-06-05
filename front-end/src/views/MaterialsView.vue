@@ -84,7 +84,7 @@ const materialStore = useMaterialStore();
 const reservation = computed(() => materialStore.pendingMaterials);
 const users = ref([]);
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 let base64Image = null;
 
 fetch(CodingToolsLogo)
