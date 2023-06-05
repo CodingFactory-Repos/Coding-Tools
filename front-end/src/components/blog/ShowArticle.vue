@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
 	<ModalOverlay v-if="showCommentModal" @close="closeCommentModal" size="2xl">
 		<template #body>
@@ -28,6 +29,7 @@
 						<tbody>
 							<tr
 								v-for="participant in oneItems.participants"
+								:key="participant.email"
 								class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
 							>
 								<th
@@ -60,7 +62,14 @@
 		<div class="text-center pt-4">
 			<div v-if="oneItems.type == 'Evenement'" class="flex flew-row items-center justify-around">
 				<button
-					v-if="isParticipant()"
+					v-if="isFinish()"
+					type="button"
+					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+				>
+					Finished
+				</button>
+				<button
+					v-else-if="isParticipant()"
 					@click="participationEvent(oneItems._id)"
 					type="button"
 					class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -106,17 +115,7 @@
 		</div>
 
 		<div class="pt-2 pb-5 text-center">
-			<div v-for="(description, index) in oneItems.descriptions">
-				<img
-					v-if="description.type == 'image'"
-					:src="description.value"
-					:alt="oneItems.title + ' ' + index"
-					class="h-auto max-w-lg mx-auto"
-				/>
-				<p v-else class="mb-3 p-3 font-normal text-gray-700 dark:text-gray-400">
-					{{ description.value }}
-				</p>
-			</div>
+			<div v-html="renderMarkdown()"></div>
 
 			<button
 				v-if="oneItems.type !== 'Evenement'"
@@ -141,7 +140,7 @@
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-					></path>
+					/>
 				</svg>
 				All articles
 			</button>
@@ -169,7 +168,7 @@
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-						></path>
+						/>
 					</svg>
 					All articles
 				</button>
@@ -201,7 +200,7 @@
 		<!-- <div class="text-center">
 			<h3 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">All Comments</h3>
 		</div> -->
-		<article v-for="comment in oneItems.comments" class="p-5">
+		<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
 			<div class="flex items-center mb-4 space-x-4">
 				<img
 					class="w-10 h-10 rounded-full"
@@ -219,6 +218,7 @@
 
 			<p
 				v-for="description in comment.descriptions"
+				:key="description.value"
 				class="mb-2 font-light text-gray-500 dark:text-gray-400"
 			>
 				{{ description.value }}
@@ -227,15 +227,6 @@
 	</div>
 </template>
 
-<style scoped>
-.display {
-	display: block;
-}
-.display-none {
-	display: none;
-}
-</style>
-
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
@@ -243,7 +234,15 @@ import { useAuthStore } from '@/store/modules/auth.store';
 import ModalOverlay from '@/components/common/Modal.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
-import { last } from 'lodash';
+import MarkdownIt from 'markdown-it';
+
+let markdown = ref('');
+
+// create renderMarkdown method
+const renderMarkdown = () => {
+	const md = new MarkdownIt();
+	return md.render(markdown.value);
+};
 
 // get store
 const articleStore = useArticleStore();
@@ -274,6 +273,7 @@ const _id = computed(() => {
 // get article by id
 const getArticleById = async (_id: string) => {
 	await articleStore.getArticleById(_id);
+	markdown.value = oneItems.value.descriptions;
 };
 
 const formatDate = (date: Date) => {
@@ -287,6 +287,7 @@ const formatDate = (date: Date) => {
 // get article by id on mounted
 onMounted(() => {
 	getArticleById(_id.value);
+	markdown.value = oneItems.value.descriptions;
 });
 
 // function to throw a sweet alert to confirm the participation or to unsubscribe from the event
@@ -307,7 +308,6 @@ const participationEvent = (id) => {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				articleStore.removeParticipant(id, user.value.profile);
-				authStore.removeEventToUser(id);
 				window.location.reload();
 			}
 		});
@@ -329,10 +329,12 @@ const participationEvent = (id) => {
 					return;
 				}
 
-				articleStore.addParticipant(id, user.value.profile);
+				const profile = {
+					...user.value.profile,
+					_id: id,
+				};
 
-				// add event to user
-				authStore.addEventToUser(id);
+				articleStore.addParticipant(id, profile);
 
 				window.location.reload();
 			}
@@ -346,4 +348,19 @@ const isParticipant = () => {
 		(participant) => participant.email === user.value.profile.email,
 	);
 };
+
+const isFinish = () => {
+	const date = new Date(oneItems.value.date);
+	const now = new Date();
+	return date < now;
+};
 </script>
+
+<style scoped>
+.display {
+	display: block;
+}
+.display-none {
+	display: none;
+}
+</style>

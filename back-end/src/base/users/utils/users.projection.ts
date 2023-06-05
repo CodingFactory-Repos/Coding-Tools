@@ -2,17 +2,17 @@ export const USER_GITHUB_PROJECTION = {
 	projection: {
 		profile: {
 			githubProfile: 1,
-		}
-	}
-}
+		},
+	},
+};
 
 export const USER_GROUPNAME_PROJECTION = {
 	projection: {
 		schoolProfile: {
-			groupName: 1
-		}
-	}
-}
+			groupName: 1,
+		},
+	},
+};
 
 export const USER_PROFILE_LIST_PROJECTION = {
 	projection: {
@@ -21,9 +21,9 @@ export const USER_PROFILE_LIST_PROJECTION = {
 			firstName: 1,
 			lastName: 1,
 			picture: 1,
-		}
-	}
-}
+		},
+	},
+};
 
 export const USER_RELATED_PROFILE = {
 	projection: {
@@ -56,6 +56,6 @@ export const USER_RELATED_PROFILE = {
 			companyLogo: 1,
 			workingFrom: 1,
 			workingTo: 1,
-		}
-	}
-}
+		},
+	},
+};
