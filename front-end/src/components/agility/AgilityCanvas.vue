@@ -50,7 +50,7 @@ onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
 	const socketOptions: CanvasSocketOptions = {
-		uri: "ws://localhost:8010",
+		uri: "wss://codingtools.loule.me",
 		roomId: roomId.value,
 		options: {
 			transports: ["websocket"],
