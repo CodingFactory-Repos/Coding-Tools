@@ -28,6 +28,7 @@ const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	dateSearch: 0,
 	isRetroFinished: false,
 	isPostitVisible: false,
+	isLoading: true,
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -39,11 +40,13 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			if (resp.status === 201) return resp.data;
 		},
 		async getCurrentRetro(slug: string) {
-			// To wait for update in DB
-			// setTimeout(async () => {
-				const resp = await tryGetCurrentRetro(slug);
-				if (resp.status === 201) this.currentRetro = resp.data.currentRetro;
-			// }, 200)
+			const resp = await tryGetCurrentRetro(slug);
+			if (resp.status === 201) {
+				this.currentRetro = resp.data.currentRetro;
+				setTimeout(() => {
+					this.isLoading = false;
+				}, 1000);
+			}
 		},
 		async createPrivatePostit(this: RetrospectiveStore, privatePostit: Postit) {
 			const resp = await newPostit(privatePostit);

@@ -143,3 +143,8 @@ export class RetroUserIdDTO {
 	@Length(24)
 	userId: string;
 }
+
+export class RetroUserEmailDTO {
+	@IsString()
+	userEmail: string;
+}
