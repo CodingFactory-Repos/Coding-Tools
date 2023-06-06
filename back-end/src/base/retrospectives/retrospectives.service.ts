@@ -56,10 +56,10 @@ export class RetrospectivesService {
 	}
 
 	async createNewPostit(postit: PostitDTO, userId: ObjectId) {
-		const user = await this.usersRepository.findOne({ _id: userId})
+		const user = await this.usersRepository.findOne({ _id: userId });
 
 		if (user && user.profile.firstName && user.profile.lastName) {
-			postit.sylable = user.profile.firstName[0] + user.profile.lastName[0]
+			postit.sylable = user.profile.firstName[0] + user.profile.lastName[0];
 		}
 
 		const randomId = generateCodeToken();

@@ -107,8 +107,36 @@
 			</div>
 		</template>
 		<template #drawer-right>
-			<div class="h-full bg-light-primary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
-				
+			<div
+				class="relative border-l dark:border-darker-primary h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto overflow-hidden"
+				:style="drawerOpen ? 'width: 550px;' : 'width: 0;' "
+			>
+				<div class="h-full w-full overflow-y-scroll pb-16">
+					{{ childImages.length }}
+					<Draggable :list="childImages" itemKey="id" class="list-group" @start="dragging = true" @end="dragging = false" @change="handleListChange">
+						<template #item="{ element }">
+							<div class="list-group-item flex flex-col gap-2 relative p-3 pl-[2.75rem] hover:bg-dark-tertiary cursor-pointer">
+								<span class="absolute top-2 left-[1rem] text-white font-bold text-lg">{{ element.order }}</span>
+								<div class="border-2 border-dark-highlight rounded-lg overflow-hidden w-full h-36">
+									<img :src="element.base64" class="w-full h-full object-fit">
+								</div>
+								<div class="flex items-center justify-center">
+									<span class="text-xs text-white font-bold bg-[#85397c] px-3 py-0.5 rounded-lg">
+										{{ element.dimension.width }} x {{ element.dimension.height }}
+									</span>
+								</div>
+							</div>
+						</template>
+					</Draggable>
+				</div>
+				<div class="w-full flex justify-center items-center h-16 absolute bottom-0 bg-light-secondary dark:bg-dark-secondary">
+					<DefaultButton
+						text="Export to PDF"
+						text-style="text-black dark:text-white font-bold text-sm"
+						background="bg-light-secondary hover:bg-light-tertiary dark:bg-dark-tertiary"
+						class="w-32 min-w-[8rem]"
+					/>
+				</div>
 			</div>
 		</template>
 	</SelectionBox>
@@ -140,6 +168,7 @@ import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 
+import Draggable from 'vuedraggable';
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import SvgGear from '@/components/common/svg/Gear.vue';
 import SvgGroup from '@/components/common/svg/Group.vue';
@@ -175,7 +204,6 @@ watch(isDefault, val => {
 
 const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
-const drawerOpen = ref(false);
 
 const createGeometry = (geometry: LiteralGeometryTypes) => {
 	projectStore.deferredGeometry = geometry;
@@ -188,7 +216,53 @@ const createFrame = () => {
 	projectStore.setDeferredEvent("pointer", true);
 }
 
-const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
+const dragging = ref(false);
+const drawerOpen = computed(() => projectStore.pdfViewerOpen);
+const reactiveImages = computed(() => projectStore.getImages);
+const refreshImages = computed(() => projectStore.refreshPdfViewer);
+const childImages = ref(reactiveImages.value);
+
+watch(refreshImages, () => {
+	for(let n = 0; n < reactiveImages.value.length; n++) {
+		for(let i = 0; i < childImages.value.length; i++) {
+			if(reactiveImages.value[n].id === childImages.value[i].id) {
+				childImages.value[i].base64 = reactiveImages.value[n].base64;
+				childImages.value[i].dimension.height = reactiveImages.value[n].dimension.height;
+				childImages.value[i].dimension.width = reactiveImages.value[n].dimension.width;
+				break;
+			}
+		}
+	}
+})
+
+watch(reactiveImages, val => {
+	const uuids = val.map((img) => img.id);
+	if(childImages.value.length === 0 && uuids.length > 0) {
+		childImages.value = val;
+		return;
+	}
+
+	if(uuids.length < childImages.value.length) {
+		childImages.value = childImages.value.filter((img) => uuids.includes(img.id));
+		handleListChange();
+		return;
+	}
+	
+	if(uuids.length > childImages.value.length) {
+		childImages.value.push(val[val.length - 1]);
+		return;
+	}
+}, { immediate: true });
+
+const handleListChange = () => {
+	for(let n = 0; n < childImages.value.length; n++) {
+		childImages.value[n].order = n + 1;
+	}
+};
+
+const toggleDrawer = () => {
+	projectStore.pdfViewerOpen = !projectStore.pdfViewerOpen
+}
 
 const increaseZoom = () => {
 	projectStore.increaseZoom();
