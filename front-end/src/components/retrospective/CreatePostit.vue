@@ -53,7 +53,8 @@ const createPrivPostit = async () => {
 		return;
 	const privatePostit = {
 		user: currentUser.value.profile.email,
-		value: postitValue.value
+		value: postitValue.value,
+		visible: false,
 	}
 	const resp = await retroStore.createPrivatePostit(privatePostit);
 	if (resp === true)

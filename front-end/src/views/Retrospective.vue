@@ -3,9 +3,13 @@
 		<div>
 			<CreateRetro />
 		</div>
+		<div>
+			<PassedRetrospectives />
+		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import CreateRetro from '@/components/retrospective/CreateRetro.vue';
+import PassedRetrospectives from '@/components/retrospective/PassedRetrospectives.vue'
 </script>

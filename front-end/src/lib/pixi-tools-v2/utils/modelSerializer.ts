@@ -45,6 +45,8 @@ export const modelSerializer = (model: ModelGraphics) => {
 				eventMode: model.eventMode,
 				color: model.color,
 				alpha: model.alpha,
+				arrowHead: model.arrowHead,
+				dashed: model.dashed,
 			},
 		};
 	} else {
@@ -55,10 +57,8 @@ export const modelSerializer = (model: ModelGraphics) => {
 			alpha: model.alpha,
 		};
 
-		if (model.borderWidth !== undefined && model.borderColor !== undefined) {
-			properties.borderWidth = model.borderWidth;
-			properties.borderColor = model.borderColor;
-		}
+		if (model.borderWidth !== undefined) properties.borderWidth = model.borderWidth;
+		if (model.borderColor !== undefined) properties.borderColor = model.borderColor;
 
 		return {
 			uuid: model.uuid,
