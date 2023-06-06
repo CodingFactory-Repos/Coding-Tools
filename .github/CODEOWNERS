@@ -210,11 +210,9 @@
 /front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/ @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/containerManager.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Kevw94
-/front-end/src/lib/pixi-tools-v2/class/wrappedContainer.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ellipse.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @Maghwyn @Loule95450
