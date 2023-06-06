@@ -17,11 +17,15 @@ export interface ProjectStore {
 	viewportDefaultPos: ViewportDefaultPosition;
 	selectedFrameNumber: number;
 	pdfViewerOpen: boolean;
+	refreshPdfViewer: number;
+	timerId: NodeJS.Timeout;
 
 	getZoom?: () => number;
 	getFrames?: () => Array<number>;
 	getSelected?: () => Array<CanvasContainer>;
 
+	startRefreshing?: () => void;
+	stopRefreshing?: () => void;
 	toggleImmersion?: () => void;
 	removeGeometryEvent?: () => void;
 	enableSelectionBox?: (destroy?: boolean) => void;

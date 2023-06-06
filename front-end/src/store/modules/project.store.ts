@@ -23,6 +23,8 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	viewportDefaultPos: {},
 	selectedFrameNumber: null,
 	pdfViewerOpen: false,
+	refreshPdfViewer: 0,
+	timerId: null,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -39,10 +41,11 @@ export const useProjectStore = defineStore('project', {
 		},
 		getImages(this: ProjectStore) {
 			if(!this.pdfViewerOpen) return [];
+			this.refreshPdfViewer;
 
 			const frames = this.scene?.viewport?.childFrames || [];
 			const len = frames.length;
-			
+
 			const reactiveImages: Array<FramedPDF> = [];
 			for(let n = 0; n < len; n++) {
 				const container = frames[n];
@@ -62,8 +65,8 @@ export const useProjectStore = defineStore('project', {
 					order: n + 1,
 					base64: imageData,
 					dimension: {
-						width: width,
-						height: height,
+						width: Math.floor(width),
+						height: Math.floor(height),
 					}
 				});
 
@@ -75,6 +78,25 @@ export const useProjectStore = defineStore('project', {
 		}
 	},
 	actions: {
+		startRefreshing(this: ProjectStore) {
+			if (this.timerId) {
+				clearInterval(this.timerId);
+				this.timerId = null;
+			}
+
+			this.timerId = setInterval(() => {
+				this.refreshPdfViewer++;
+				this.startRefreshing();
+			}, 10000);
+		},
+		stopRefreshing(this: ProjectStore) {
+			if (this.timerId) {
+				clearInterval(this.timerId);
+				this.timerId = null;
+			}
+
+			this.refreshPdfViewer = 0;
+		},
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);
