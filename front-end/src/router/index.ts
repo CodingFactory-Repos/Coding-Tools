@@ -117,6 +117,10 @@ const routes: Array<RouteRecordRaw> = [
 						path: ':id',
 						component: () => import('../views/NewRetrospective.vue'),
 					},
+					{
+						path: 'accept-invitation',
+						component: () => import('../views/RetrospectiveInvitation.vue'),
+					},
 				],
 			},
 			{

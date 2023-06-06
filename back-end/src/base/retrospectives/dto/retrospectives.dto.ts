@@ -39,7 +39,7 @@ export class RetrospectiveDTO {
 
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	createdAt: Date;
 
 
@@ -48,13 +48,16 @@ export class RetrospectiveDTO {
 	@IsString({each: true})
 	participants: Array<string>;
 
+	@IsOptional()
+	@IsArray()
+	allowedPeers: Array<ObjectId>;
 
 	@IsObject()
 	@Type(() => PostitsDTO)
 	postits: Array<Postit>;
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	endedAt: Date;
 
 	@IsOptional()
@@ -126,4 +129,17 @@ class PostitsDTO {
 	@IsArray()
 	3: Array<PostitDTO>
 
+}
+
+
+export class ProjectRetroInvitationVerificationDTO {
+	@IsString()
+	@Length(32)
+	token: string;
+}
+
+export class RetroUserIdDTO {
+	@IsString()
+	@Length(24)
+	userId: string;
 }

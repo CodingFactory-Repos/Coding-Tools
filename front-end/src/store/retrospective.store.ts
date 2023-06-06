@@ -39,8 +39,11 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			if (resp.status === 201) return resp.data;
 		},
 		async getCurrentRetro(slug: string) {
-			const resp = await tryGetCurrentRetro(slug);
-			if (resp.status === 201) this.currentRetro = resp.data.currentRetro;
+			// To wait for update in DB
+			// setTimeout(async () => {
+				const resp = await tryGetCurrentRetro(slug);
+				if (resp.status === 201) this.currentRetro = resp.data.currentRetro;
+			// }, 200)
 		},
 		async createPrivatePostit(this: RetrospectiveStore, privatePostit: Postit) {
 			const resp = await newPostit(privatePostit);

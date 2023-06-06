@@ -14,6 +14,7 @@ export interface Retrospective {
 	isTimerRunning?: boolean;
 	timerInterval?: NodeJS.Timer;
 	timePassed?: number;
+	allowedPeers?: Array<ObjectId>;
 }
 
 export interface Postit {

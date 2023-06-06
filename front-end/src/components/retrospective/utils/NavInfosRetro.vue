@@ -23,7 +23,8 @@
 					</li>
 					<li>
 						<button
-							@click="copyLink"
+							v-if="isPo"
+							@click="openShareModal"
 							class="text-gray-900 dark:text-white hover:underline flex items-center gap-2"
 						>
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16"><path fill="currentColor" d="M13.5 1a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/></svg>
@@ -47,6 +48,11 @@
 			</div>
 		</div>
 	</nav>
+	<ShareRetro
+		v-if="isShareModalOpen"
+		:currentRetro="currentRetro"
+		@close="closeShareModal"
+	/>
 </template>
 
 <script lang="ts" setup>
@@ -54,21 +60,29 @@ import DefaultButton from '@/components/common/buttons/Default.vue';
 import SvgArrows from '@/components/common/svg/Arrows.vue';
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { config } from '@/config/config';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 import { useAuthStore } from '@/store/modules/auth.store';
+import ShareRetro from '@/components/retrospective/utils/ShareRetro.vue';
 
 
 const retroStore = useRetrospectiveStore();
 const authStore = useAuthStore();
-const participants = computed(() => retroStore.currentRetro.participants)
+const participants = computed(() => retroStore.currentRetro.participants);
+console.log("participants", participants.value);
+
 const route = useRoute();
 const url = `${config.prodSiteUrl}${route.fullPath}`;
 const areStickiesVisible = computed(() => Object.values(retroStore.currentRetro.postits).some(array => {
 	const isObjectUser = array.find(obj => obj.user === authStore.user.profile.email);
 	return isObjectUser && isObjectUser.visible === true;
 }))
+const isShareModalOpen = ref(false);
+const isPo = computed(() => (authStore.user.role === 2 || authStore.user.role === 3) ? true : false);
+const currentRetro = computed(() => retroStore.currentRetro)
+const closeShareModal = () => { isShareModalOpen.value = false };
+const openShareModal = () => { isShareModalOpen.value = true };
 
 
 const toggleSideBar = () => {

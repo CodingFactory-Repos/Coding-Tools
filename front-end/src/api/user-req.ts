@@ -6,6 +6,7 @@ import {
 	IRelatedUserProfile,
 	UserCanvasList,
 	UserProfileList,
+	UserRetroList,
 } from '@/store/interfaces/user.interface';
 
 export const trySaveUserProfile = (userProfile: DeepPartial<User>) => {
@@ -23,5 +24,11 @@ export const tryGetRelatedUserProfile = (id: string) => {
 export const apiTryFetchUserListByRoom = (roomId: string, user: string) => {
 	return http.get<Status<{ users: Array<UserCanvasList> }>>(
 		`/users/room?id=${roomId}&user=${user}`,
+	);
+};
+
+export const apiTryFetchUserListByRoomRetro = (roomId: string, user: string) => {
+	return http.get<Status<{ users: Array<UserRetroList> }>>(
+		`/users/roomRetro?id=${roomId}&user=${user}`,
 	);
 };
