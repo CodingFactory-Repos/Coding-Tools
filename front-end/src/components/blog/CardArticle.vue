@@ -103,7 +103,7 @@
 
 		</div>
 		<!-- Validation -->
-		<div v-if="item.type == 'Tuto' && user.role == 2" class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary">
+		<div v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)" class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary">
 			<div
 				class=""
 				:class="item.status == 'Accepted' ? 'status open' : 'status in-progress'"
