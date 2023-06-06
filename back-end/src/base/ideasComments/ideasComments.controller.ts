@@ -12,7 +12,6 @@ export class IdeasCommentsController {
 
 	@Get('/equipment/:id')
 	getComments(@Req() req, @Res() res: Response) {
-		console.log(req.params.id);
 		const query = { equipmentId: req.params.id };
 		this.ideasCommentsService.getAllIdeasComments(query).then((ideasComments) => {
 			return res.status(200).json(ideasComments);
