@@ -219,7 +219,21 @@ const createFrame = () => {
 const dragging = ref(false);
 const drawerOpen = computed(() => projectStore.pdfViewerOpen);
 const reactiveImages = computed(() => projectStore.getImages);
+const refreshImages = computed(() => projectStore.refreshPdfViewer);
 const childImages = ref(reactiveImages.value);
+
+watch(refreshImages, () => {
+	for(let n = 0; n < reactiveImages.value.length; n++) {
+		for(let i = 0; i < childImages.value.length; i++) {
+			if(reactiveImages.value[n].id === childImages.value[i].id) {
+				childImages.value[i].base64 = reactiveImages.value[n].base64;
+				childImages.value[i].dimension.height = reactiveImages.value[n].dimension.height;
+				childImages.value[i].dimension.width = reactiveImages.value[n].dimension.width;
+				break;
+			}
+		}
+	}
+})
 
 watch(reactiveImages, val => {
 	const uuids = val.map((img) => img.id);
