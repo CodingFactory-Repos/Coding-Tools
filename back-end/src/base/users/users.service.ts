@@ -32,7 +32,7 @@ export class UsersService {
 			const githubProfile = await this._getGithubProfile(userId);
 			if (!githubProfile && githubProfile !== '') return null;
 
-			const githubUsername = 'Maghwyn' ?? githubProfile.match(this.githubUserRegex)[0];
+			const githubUsername = githubProfile.match(this.githubUserRegex)[1];
 			const document = await axios
 				.get(this.githubStatLinkTemplate.replace('$USERNAME$', githubUsername))
 				.then((response: AxiosResponse) => response.data as string);
@@ -51,7 +51,7 @@ export class UsersService {
 		if (!githubProfile && githubProfile !== '') return null;
 
 		try {
-			const githubUsername = 'Maghwyn' ?? githubProfile.match(this.githubUserRegex)[0];
+			const githubUsername = githubProfile.match(this.githubUserRegex)[1];
 			const document = await axios
 				.get(this.githubLanguagesLinkTemplate.replace('$USERNAME$', githubUsername))
 				.then((response: AxiosResponse) => response.data as string);

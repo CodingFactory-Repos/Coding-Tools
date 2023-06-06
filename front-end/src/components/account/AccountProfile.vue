@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Roles, UserBusinessProfile, UserProfile, UserSchoolProfile } from '@/store/interfaces/auth.interfaces';
 import SvgPhone from '@/components/common/svg/Phone.vue';
 import SvgCalendar from '@/components/common/svg/Calendar.vue';
@@ -133,13 +133,16 @@ const season = computed(() => {
 })
 
 const svgGithubStat = ref<string>();
-onMounted(() => {
-	if(profile.value.githubProfile) {
+
+watch(profile, val => {
+	if(val.githubProfile) {
 		http.get(`users/github/stats/${props.id}`)
 			.then(response => svgGithubStat.value = response.data)
 			.catch((err: AxiosError) => { console.error(err.message) });
+	} else {
+		svgGithubStat.value = undefined;
 	}
-})
+}, { immediate: true })
 </script>
 
 <style lang="scss">
