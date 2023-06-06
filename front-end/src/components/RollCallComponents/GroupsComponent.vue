@@ -73,39 +73,57 @@ export default {
 	},
 	methods: {
 		getCourseId: withErrorHandler(async function () {
-			http.get(`/calls/actual_course/`).then((response) => {
+			try {
+				const response = await http.get(`/calls/actual_course/`);
 				this.courseId = response.data.actualCourse;
-				this.isThereCourse();
-			});
-		}),
-		isThereCourse() {
-			if (this.courseId) {
-				this.getStudentAmount();
-				this.getGroups();
+				await this.isThereCourse();
+			} catch (error) {
+				this.displaySwalGroup(error);
 			}
-		},
+		}),
+		isThereCourse: withErrorHandler(async function () {
+			if (this.courseId) {
+				try {
+					await this.getStudentAmount();
+					await this.getGroups();
+				} catch (error) {
+					this.displaySwalGroup(error);
+				}
+			}
+		}),
 		getStudentAmount: withErrorHandler(async function () {
-			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
+			try {
+				const response = await http.get(`/calls/student_list/${this.courseId}`);
 				this.studentList = response.data.studentList.length;
-				this.setNumberArrays();
-			});
+				await this.setNumberArrays();
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		setNumberArrays: withErrorHandler(async function () {
-			http.get(`/calls/array_generator/${this.studentList}/${this.courseId}`).then((response) => {
-				this.getGroups();
-			});
+			try {
+				await http.get(`/calls/array_generator/${this.studentList}/${this.courseId}`);
+				await this.getGroups();
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		getGroups: withErrorHandler(async function () {
-			http.get(`/calls/get_groups/${this.courseId}`).then((response) => {
+			try {
+				const response = await http.get(`/calls/get_groups/${this.courseId}`);
 				this.groups = response.data.array;
-			});
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		joinGroup: withErrorHandler(async function (index: number) {
-			http.get(`/calls/join_group/${this.courseId}/${index}`).then((response) => {
-				// If error sweet alert error
+			try {
+				const response = await http.get(`/calls/join_group/${this.courseId}/${index}`);
 				this.displaySwalGroup(response.data.status);
-				this.getGroups();
-			});
+				await this.getGroups();
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		chooseSwalConfig(message) {
 			let successMessages = ['successJoin', 'successUpdate', 'successEmpty'];
@@ -134,7 +152,7 @@ export default {
 					swalConfig.text = 'Tu as bien rejoint le groupe !';
 					break;
 				case 'successUpdate':
-					swalConfig.text = 'Vous avez bien été répartis dans des groupes !';
+					swalConfig.text = 'Vous avez créé des groupes aléatoires !';
 					break;
 				case 'successEmpty':
 					swalConfig.text = 'Les groupes ont bien été vidés !';
@@ -149,26 +167,36 @@ export default {
 			Swal.fire(this.chooseSwalConfig(message));
 		},
 		createRandomGroups: withErrorHandler(async function () {
-			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
+			try {
+				const response = await http.get(`/calls/create_random_groups/${this.courseId}`);
 				this.displaySwalGroup(response.data.status);
-				this.getGroups();
-			});
+				await this.getGroups();
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		emptyGroups: withErrorHandler(async function () {
-			http.get(`/calls/empty_groups/${this.courseId}`).then((response) => {
+			try {
+				const response = await http.get(`/calls/empty_groups/${this.courseId}`);
 				this.displaySwalGroup(response.data.status);
-				this.getGroups();
-			});
+				await this.getGroups();
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		getStudentIdentity: withErrorHandler(async function (student) {
-			http.get(`/calls/get_student_identity/${student}`).then((response) => {
-				return response.data.identity;
-			});
+			try {
+				return await http.get(`/calls/get_student_identity/${student}`);
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 		isProductOwner: withErrorHandler(async function () {
-			http.get(`/calls/is_product_owner/`).then((response) => {
-				this.isPO = response.data.isProductOwner;
-			});
+			try {
+				this.isPO = await http.get(`/calls/is_product_owner/`);
+			} catch (error) {
+				this.displaySwalGroup(error);
+			}
 		}),
 	},
 };
