@@ -73,10 +73,10 @@ export class ViewportUI extends Viewport {
 		});
 
 		this.on('childAdded', (child: CanvasContainer) => {
-            if (child instanceof FramedContainer) {
-                this.activeFrames.push(child.frameNumber);
-                this.childFrames.push(child);
-            }
+			if (child instanceof FramedContainer) {
+				this.activeFrames.push(child.frameNumber);
+				this.childFrames.push(child);
+			}
 
 			if (this.socketPlugin) {
 				this.socketPlugin.trackElementByUUID(child);
@@ -88,6 +88,7 @@ export class ViewportUI extends Viewport {
 				const index = this.activeFrames.indexOf(child.frameNumber);
 				if (index !== -1) {
 					this.activeFrames.splice(index, 1);
+					this.childFrames.splice(index, 1);
 				}
 			}
 
