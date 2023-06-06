@@ -8,7 +8,7 @@ import { BezierCurveHandle, BezierHandle, ResizeHandle } from './types/pixi-enum
 
 import type { CanvasContainer, Stage } from './types/pixi-aliases';
 import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types/pixi-ui';
-import { reactive } from 'vue';
+import { reactive, shallowReactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
 import { ElementPosition } from './types/pixi-container';
@@ -36,6 +36,7 @@ export class ViewportUI extends Viewport {
 	public activeFrameNumber = null;
 
 	public readonly activeFrames: Array<number> = reactive([]);
+	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
 
 	constructor(
 		scene: Scene,
@@ -74,6 +75,7 @@ export class ViewportUI extends Viewport {
 		this.on('childAdded', (child: CanvasContainer) => {
 			if (child instanceof FramedContainer) {
 				this.activeFrames.push(child.frameNumber);
+				this.childFrames.push(child);
 			}
 
 			if (this.socketPlugin) {
@@ -86,6 +88,7 @@ export class ViewportUI extends Viewport {
 				const index = this.activeFrames.indexOf(child.frameNumber);
 				if (index !== -1) {
 					this.activeFrames.splice(index, 1);
+					this.childFrames.splice(index, 1);
 				}
 			}
 
