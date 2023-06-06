@@ -107,55 +107,46 @@ export default {
 				this.getGroups();
 			});
 		}),
-		displaySwalGroup(message) {
-			let swalConfig;
+		chooseSwalConfig(message) {
+			let successMessages = ['successJoin', 'successUpdate', 'successEmpty'];
+			let swalConfig = {
+				icon: '',
+				title: '',
+				text: '',
+			};
+			// First do the "icon: and :title" part
+			if (successMessages.includes(message)) {
+				swalConfig.icon = 'success';
+				swalConfig.title = 'Succès !';
+			} else {
+				swalConfig.icon = 'error';
+				swalConfig.title = 'Oups ...';
+			}
 
 			switch (message) {
 				case 'full':
-					swalConfig = {
-						icon: 'error',
-						title: 'Oops...',
-						text: 'Ce groupe est plein !',
-					};
+					swalConfig.text = 'Ce groupe est plein !';
 					break;
 				case 'alreadyInGroup':
-					swalConfig = {
-						icon: 'error',
-						title: 'Oops...',
-						text: 'Tu es déjà dans ce groupe !',
-					};
+					swalConfig.text = 'Tu es déjà dans ce groupe !';
 					break;
 				case 'successJoin':
-					swalConfig = {
-						icon: 'success',
-						title: 'Succès !',
-						text: 'Tu as bien rejoint le groupe !',
-					};
+					swalConfig.text = 'Tu as bien rejoint le groupe !';
 					break;
 				case 'successUpdate':
-					swalConfig = {
-						icon: 'success',
-						title: 'Succès !',
-						text: 'Vous avez bien créé des groupes aléatoires !',
-					};
+					swalConfig.text = 'Vous avez bien été répartis dans des groupes !';
 					break;
 				case 'successEmpty':
-					swalConfig = {
-						icon: 'success',
-						title: 'Succès !',
-						text: 'Vous avez bien vidé les groupes !',
-					};
+					swalConfig.text = 'Les groupes ont bien été vidés !';
 					break;
 				default:
-					swalConfig = {
-						icon: 'error',
-						title: 'Oops...',
-						text: 'Une erreur est survenue !',
-					};
+					swalConfig.text = 'Une erreur est survenue !';
 					break;
 			}
-
-			Swal.fire(swalConfig);
+			return swalConfig;
+		},
+		displaySwalGroup(message) {
+			Swal.fire(this.chooseSwalConfig(message));
 		},
 		createRandomGroups: withErrorHandler(async function () {
 			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
