@@ -1,9 +1,9 @@
 <template>
 	<div
-		class="chatbox w-1/4 max-h-[700px] flex flex-col fixed bottom-1 right-2 z-100"
+		class="chatbox w-1/4 max-h-[400px] bg-transparent flex flex-col fixed bottom-1 right-2 z-100 overscroll-none"
 		v-if="courseId != undefined"
 	>
-		<div class="chatbox_messages h-[700px] overflow-y-scroll flex flex-col-reverse mb-8">
+		<div class="chatbox_messages h-[400px] overflow-y-scroll flex flex-col-reverse mb-8">
 			<chat-multi-message
 				v-for="message in messages"
 				:key="message.id"
@@ -14,28 +14,69 @@
 		<div class="chatbox_input flex-col w-full absolute bottom-2">
 			<div class="w-full">
 				<div
-					class="gif-container max-h-[200px] flex items-center z-10 w-full overflow-x-scroll absolute bottom-7"
+					class="gif-container h-[400px] flex z-10 w-[400px] mt-64 overflow-y-scroll"
 				>
-					<img
-						v-for="gif in gifs"
-						:src="gif"
-						:key="gif.id"
-						class="w-[200px] h-[200px] z-1000"
-						@click="sendGifMessage(gif)"
-						alt="gif"
-					/>
+					<div class="flex flex-wrap justify-center">
+						<img
+							v-for="gif in gifs"
+							:src="gif"
+							:key="gif.id"
+							class="w-[160px] h-[160px] z-1000 mx-1 my-1"
+							@click="sendGifMessage(gif)"
+							alt="gif"
+						/>
+					</div>
 				</div>
 				<input
 					v-model="newMessageText"
 					@keydown.enter="sendMessage"
 					placeholder="Envoyer un message"
-					class="w-9/12 p-2 text-white max-h-[27.2px] relative rounded-tl-full rounded-bl-full"
+					:class="{
+						'w-9/12': !gifSelected,
+						'w-3/12': gifSelected,
+						'p-2': true,
+						'bg-white': true,
+						'dark:bg-gray-700': true,
+						'text-black': true,
+						'placeholder-gray-600': true,
+						'dark:placeholder-gray-200': true,
+						'dark:text-white': true,
+						'max-h-[27.2px]': true,
+						relative: true,
+						'rounded-tl-full': true,
+						'rounded-bl-full': true,
+						'rounded-br-full': false,
+						'rounded-tr-full': false,
+						'transition-all': true,
+						'duration-300': true,
+						'ease-in-out': true,
+					}"
 				/>
 				<input
 					v-model="searchTerm"
-					@keydown.enter="getGifs()"
+					@keydown="getGifs"
 					placeholder="Gif"
-					class="w-3/12 p-2 text-white max-h-[27.2px] rounded-br-full rounded-tr-full"
+					:class="{
+						'w-3/12': !gifSelected,
+						'w-9/12': gifSelected,
+						'p-2': true,
+						'bg-white': true,
+						'dark:bg-gray-700': true,
+						'text-black': true,
+						'dark:text-white': true,
+						'placeholder-gray-600': true,
+						'dark:placeholder-gray-200': true,
+						'max-h-[27.2px]': true,
+						'rounded-br-full': true,
+						'rounded-tr-full': true,
+						'rounded-tl-full': false,
+						'rounded-bl-full': false,
+						'transition-all': true,
+						'duration-300': true,
+						'ease-in-out': true,
+					}"
+					@focusin="toggleGifSelected"
+					@focusout="toggleGifSelected"
 				/>
 			</div>
 		</div>
@@ -65,6 +106,8 @@ const newMessageText = ref('');
 const courseId = ref();
 const count = ref();
 const hoverHint = ref(false);
+const gifSelected = ref(false);
+const searchTimeout = ref(null);
 
 /* SOCKET */
 
@@ -75,8 +118,7 @@ socket.on('peer-connected', (id: string) => {
 });
 
 socket.on('peer-chat-message', (data: Object) => {
-	let msg = data;
-	addMessage(msg);
+	addMessage(data);
 });
 
 onMounted(async () => {
@@ -126,18 +168,23 @@ const buildGifs = (json: any) => {
 };
 
 const getGifs = async () => {
-	gifs.value = []; // gets the gif preview
+	clearTimeout(searchTimeout.value);
+	searchTimeout.value = setTimeout(() => {
+		searchGifs();
+	}, 1000);
+};
 
+const searchGifs = async () => {
+	// interval of few seconds before searching to avoid spamming
 	let apiKey = '12ujTlV1hDN8v0xzjdlyDq2u48DCR1qy'; // add to .env
 	let searchEndPoint = 'https://api.giphy.com/v1/gifs/search?';
-	let limit = 20;
+	let limit = 40;
 	let url = `${searchEndPoint}&api_key=${apiKey}&q=${searchTerm.value}&limit=${limit}`;
 
 	axios
 		.get(url)
 		.then(async (response) => {
-			let json = await response.data;
-			return json;
+			return await response.data;
 		})
 		.then((json) => {
 			buildGifs(json);
@@ -145,6 +192,10 @@ const getGifs = async () => {
 		.catch((err) => {
 			console.error(err);
 		});
+};
+
+const toggleGifSelected = () => {
+	gifSelected.value = !gifSelected.value;
 };
 
 const sendMessage = async () => {
