@@ -169,8 +169,8 @@ const buildGifs = (json: any) => {
 
 const getGifs = async () => {
 	clearTimeout(searchTimeout.value);
-	searchTimeout.value = setTimeout(() => {
-		searchGifs();
+	searchTimeout.value = setTimeout(async () => {
+		await searchGifs();
 	}, 1000);
 };
 
