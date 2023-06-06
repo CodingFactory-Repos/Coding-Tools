@@ -13,7 +13,7 @@ export interface Article {
 	picture: string;
 	tags: string;
 	type: string;
-	status: string;
+	status?: string;
 	content?: string;
 	participants?: Participants[];
 	likes?: {

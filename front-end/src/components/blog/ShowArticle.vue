@@ -6,7 +6,7 @@
 		</template>
 	</ModalOverlay>
 
-	<div>
+	<div class="text-center">
 		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="2xl">
 			<template #header>
 				<h2 class="text-lg font-medium text-gray-900 dark:text-white">
@@ -105,8 +105,8 @@
 			</div>
 		</div>
 
-		<div class="pt-2 pb-5 text-center">
-			<div v-html="renderMarkdown()" class="text-gray-900 dark:text-white"></div>
+		<div class="pt-2 pb-5 pr-40 pl-40 text-left">
+			<div v-html="renderMarkdown()" class="markdown-preview text-gray-900 dark:text-white"></div>
 		</div>
 		<div class="pt-5">
 			<button
@@ -350,5 +350,9 @@ const isFinish = () => {
 }
 .display-none {
 	display: none;
+}
+
+.markdown-preview img {
+	width: 100px; /* ajustez la taille de l'image selon vos besoins */
 }
 </style>
