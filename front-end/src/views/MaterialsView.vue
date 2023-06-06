@@ -96,6 +96,7 @@ const userRole = computed(() => user.value?.role);
 const materialStore = useMaterialStore();
 const reservation = computed(() => materialStore.pendingMaterials);
 const users = ref([]);
+
 let base64Image = null;
 
 fetch(CodingToolsLogo)

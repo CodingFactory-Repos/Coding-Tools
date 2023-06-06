@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
-	IsDate,
 	IsNotEmpty,
 	IsNumber,
 	IsObject,
@@ -38,7 +37,7 @@ export class RetrospectiveDTO {
 	creator: string;
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	createdAt: Date;
 
 	@IsOptional()
@@ -46,12 +45,16 @@ export class RetrospectiveDTO {
 	@IsString({ each: true })
 	participants: Array<string>;
 
+	@IsOptional()
+	@IsArray()
+	allowedPeers: Array<ObjectId>;
+
 	@IsObject()
 	@Type(() => PostitsDTO)
 	postits: Array<Postit>;
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	endedAt: Date;
 
 	@IsOptional()
@@ -121,4 +124,22 @@ class PostitsDTO {
 	@Type(() => PostitDTO)
 	@IsArray()
 	3: Array<PostitDTO>;
+}
+
+
+export class ProjectRetroInvitationVerificationDTO {
+	@IsString()
+	@Length(32)
+	token: string;
+}
+
+export class RetroUserIdDTO {
+	@IsString()
+	@Length(24)
+	userId: string;
+}
+
+export class RetroUserEmailDTO {
+	@IsString()
+	userEmail: string;
 }

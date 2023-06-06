@@ -1,14 +1,15 @@
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>;
 	tempMovingPostit: Postit;
-	currentRetro: Retrospective;
-	userCursors: Array<UserCursor>;
-	allRetros: Array<Retrospective>;
-	isSideBar: boolean;
-	inputSearch: string;
-	dateSearch?: number;
-	isRetroFinished?: boolean;
-	isPostitVisible?: boolean;
+	currentRetro: Retrospective
+	userCursors: Array<UserCursor>
+	allRetros: Array<Retrospective>
+	isSideBar: boolean
+	inputSearch: string
+	dateSearch?: number
+	isRetroFinished?: boolean
+	isPostitVisible?: boolean
+	isLoading?: boolean
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -47,6 +48,7 @@ export interface Retrospective {
 	isTimerRunning?: boolean;
 	timerInterval?: NodeJS.Timer;
 	timePassed?: number;
+	allowedPeers?: Array<string>;
 }
 
 export interface Postits {
