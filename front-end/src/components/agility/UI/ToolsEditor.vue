@@ -15,8 +15,9 @@
 			<IconButton class="h-fit" type="button" @click="setDefaultMode">
 				<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 			</IconButton>
-			<IconButton class="h-fit" type="button">
-				<SvgText width="22" height="22" class="!fill-gray-400"/>
+			<IconButton class="h-fit" type="button" @click="createGeometry('textarea')" >
+				<SvgText width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'textarea' }"/>
+		
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="createFrame">
 				<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
