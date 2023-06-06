@@ -198,7 +198,7 @@ const addArticle = async () => {
 		descriptions: description.value,
 		content: content.value,
 		tags: tags.value,
-		type: 'tutos',
+		type: 'Tuto',
 		status: 'pending',
 		picture: picture.value,
 		date: date.value.toString(),
