@@ -6,6 +6,7 @@ import { FederatedPointerEvent } from 'pixi.js';
 import { LitteralBlueprintTypes } from '@/store/interfaces/agility.interface';
 
 export interface ProjectStore {
+	[x: string]: any;
 	scene: Scene;
 	canvas: HTMLCanvasElement;
 	deferredGeometry: LiteralGeometryTypes;

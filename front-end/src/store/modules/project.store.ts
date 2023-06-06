@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from 'pixi.js';
+import { Container, FederatedPointerEvent, Renderer, autoDetectRenderer } from 'pixi.js';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
@@ -22,6 +22,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	immersion: false,
 	viewportDefaultPos: {},
 	selectedFrameNumber: null,
+	projectImages: [],
 });
 
 export const useProjectStore = defineStore('project', {
@@ -36,8 +37,52 @@ export const useProjectStore = defineStore('project', {
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
+		getImages(this: ProjectStore) {
+			const frames = this.scene?.viewport?.childFrames || [];
+			const len = frames.length;
+			console.log(len)
+			
+			this.projectImages = [];
+			for(let n = 0; n < len; n++) {
+				// const { width, height  } = frames[n];
+				// const renderer = autoDetectRenderer({ width, height });
+				// const disposableStage = new Container();
+				// renderer.render(disposableStage);
+				const container = frames[n];
+				const { width, height } = container;
+				const cloneContainer = container.cloneToContainer();
+				const { x, y } = cloneContainer.getBounds();
+				cloneContainer.position.set(-x, -y);
+
+				const renderer = new Renderer({ resolution: 1, width, height, backgroundAlpha: 0 });
+				renderer.render(cloneContainer);
+
+				const canvas = renderer.view;
+				const imageData = canvas.toDataURL('image/png');
+				const extension = imageData.split(',')[0].split(';')[0].split('/')[1];
+
+				cloneContainer.destroy();
+				renderer.destroy();
+                // return imageData
+
+				this.projectImages.push({
+					id: n,
+					random: Math.random(),
+					base64: imageData,
+					dimension: {
+						width: width,
+						height: height,
+					}
+				});
+				// renderer.destroy()
+			}
+			return this.projectImages;
+		}
 	},
 	actions: {
+		setImages(this:ProjectStore, array){
+			this.projectImages = array;
+		},
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);
