@@ -140,6 +140,7 @@
 /front-end/src/components/agility/UI/ @Kevw94 @Maghwyn
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
 /front-end/src/components/agility/UI/ColorPickerOption.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/UI/DefaultSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/UI/MiroSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/ShareProject.vue @Maghwyn @Loule95450
