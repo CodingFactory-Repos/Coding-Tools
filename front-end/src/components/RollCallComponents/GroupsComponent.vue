@@ -3,24 +3,26 @@
 		<div
 			v-for="(group, index) in groups"
 			:key="index"
-			class="bg-white text-gray-500 shadow rounded-lg"
+			class="dark:bg-[#343a40] hover:bg-gray-100 dark:hover:bg-gray-600 bg-[#ffff] text-gray-700 dark:text-gray-100 shadow rounded-lg flex flex-col"
 		>
-			<h2 class="bg-gray-100 p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
-			<div
-				v-for="(student, sIndex) in group"
-				:key="sIndex"
-				class="flex flex-row items-center p-2 border-b"
-			>
-				<div class="w-1/3">{{ sIndex + 1 }}</div>
-				<div class="w-2/3">
-					{{
-						student
-							? student.profile.firstName + ' ' + student.profile.lastName
-							: 'Rejoindre le groupe'
-					}}
+			<h2 class="p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
+			<div class="flex-grow">
+				<div
+					v-for="(student, sIndex) in group"
+					:key="sIndex"
+					class="flex flex-row items-center p-2 border-b"
+				>
+					<div class="w-1/3">Membre n°{{ sIndex + 1 }}</div>
+					<div class="w-2/3 text-black dark:text-gray-100">
+						{{
+							student
+								? student.profile.firstName + ' ' + student.profile.lastName
+								: 'Rejoindre le groupe'
+						}}
+					</div>
 				</div>
 			</div>
-			<div class="flex justify-center items-center p-4">
+			<div v-if="!isPO" class="flex justify-center items-center p-4">
 				<button
 					class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
 					@click="joinGroup(index)"
@@ -32,13 +34,13 @@
 	</div>
 	<div v-if="isPO" class="flex justify-center p-4 space-x-4">
 		<button
-			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded"
 			@click="createRandomGroups"
 		>
 			Create Random Groups
 		</button>
 		<button
-			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded"
 			@click="emptyGroups"
 		>
 			Empty Groups
@@ -49,6 +51,7 @@
 <script lang="ts">
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
+import Swal from 'sweetalert2';
 
 let courseId = '';
 let studentList = [];
@@ -99,16 +102,53 @@ export default {
 		}),
 		joinGroup: withErrorHandler(async function (index: number) {
 			http.get(`/calls/join_group/${this.courseId}/${index}`).then((response) => {
+				// If error sweet alert error
+				this.displaySwalGroup(response.data.status);
 				this.getGroups();
 			});
 		}),
+		displaySwalGroup(message) {
+			if (message === 'full') {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Ce groupe est plein !',
+				});
+			} else if (message === 'alreadyInGroup') {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Tu es déjà dans ce groupe !',
+				});
+			} else if (message === 'successJoin') {
+				Swal.fire({
+					icon: 'success',
+					title: 'Succès !',
+					text: 'Tu as bien rejoint le groupe !',
+				});
+			} else if (message === 'successUpdate') {
+				Swal.fire({
+					icon: 'success',
+					title: 'Succès !',
+					text: 'Vous avez bien créé des groupes aléatoires !',
+				});
+			} else if (message === 'successEmpty') {
+				Swal.fire({
+					icon: 'success',
+					title: 'Succès !',
+					text: 'Vous avez bien vidé les groupes !',
+				});
+			}
+		},
 		createRandomGroups: withErrorHandler(async function () {
 			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
+				this.displaySwalGroup(response.data.status);
 				this.getGroups();
 			});
 		}),
 		emptyGroups: withErrorHandler(async function () {
 			http.get(`/calls/empty_groups/${this.courseId}`).then((response) => {
+				this.displaySwalGroup(response.data.status);
 				this.getGroups();
 			});
 		}),
