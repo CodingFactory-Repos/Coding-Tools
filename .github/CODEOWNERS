@@ -30,7 +30,6 @@
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/calls/ @AyakorK @Maghwyn
 /back-end/src/base/calls/calls.module.ts @Loule95450 @Maghwyn
-/back-end/src/base/calls/calls.repository.ts @Maghwyn
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/canvasRoom/ @Loule95450 @Maghwyn
 /back-end/src/base/canvasRoom/canvasRoom.controller.ts @Maghwyn @Kevw94
@@ -41,6 +40,7 @@
 /back-end/src/base/CanvasRoom/interfaces/CanvasRoom.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
+/back-end/src/base/courses/courses.controller.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
@@ -48,8 +48,9 @@
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasComments/ @AyakorK @Maghwyn
 /back-end/src/base/ideasComments/interfaces/ideasComments.interface.ts @Maghwyn @AyakorK
-/back-end/src/base/ideasEquipments/ @Loule95450 @Maghwyn
+/back-end/src/base/ideasEquipments/ @AyakorK @Maghwyn
 /back-end/src/base/ideasEquipments/ideasEquipments.module.ts @Maghwyn
+/back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/dto/materials.dto.ts @Maghwyn @AyakorK
@@ -63,7 +64,7 @@
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/retrospectives/ @Kevw94 @Maghwyn
-/back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Loule95450 @Kevw94
+/back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn @Loule95450
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
@@ -80,9 +81,8 @@
 /back-end/src/common/decorators/jwt.decorator.ts @Maghwyn @Loule95450
 /back-end/src/common/decorators/role.decorator.ts @Maghwyn @Kevw94
 /back-end/src/common/decorators/ws.catch.decorator.ts @Maghwyn @Kevw94
+/back-end/src/common/gateways/ @AyakorK @Maghwyn
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
-/back-end/src/common/gateways/chat.global.gateway.ts @Maghwyn @AyakorK
-/back-end/src/common/gateways/retrospective.global.gateway.ts @Maghwyn @Loule95450
 /back-end/src/common/guards/auth.guard.ts @Maghwyn
 /back-end/src/common/guards/role.guard.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/string.helper.ts @Loule95450 @Maghwyn
@@ -107,6 +107,7 @@
 /back-end/uploads/.gitkeep @Loule95450
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
 /front-end/.gitignore @Loule95450
+/front-end/commitlint.config.js @Maghwyn @AyakorK
 /front-end/index.html @TheoLandemaine
 /front-end/package-lock.json @Loule95450 @Maghwyn
 /front-end/package.json @Loule95450 @Maghwyn
@@ -189,10 +190,8 @@
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
-/front-end/src/components/RollCallComponents/CallsComponent.vue @Maghwyn
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
-/front-end/src/components/RollCallComponents/StudentListComponent.vue @Maghwyn
 /front-end/src/config/config.ts @Maghwyn
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
@@ -201,7 +200,6 @@
 /front-end/src/images/left.svg @TheoLandemaine
 /front-end/src/images/right.svg @TheoLandemaine
 /front-end/src/interfaces/advanced-types.interface.ts @Loule95450 @Maghwyn
-/front-end/src/interfaces/advanced-types.interface\ copy.ts @Maghwyn @AyakorK
 /front-end/src/layout/app/AppLayout.vue @Maghwyn @Loule95450
 /front-end/src/layout/app/DrawerLayout.vue @Maghwyn @AyakorK
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
@@ -293,7 +291,8 @@
 /front-end/src/views/app/AgilityInvitation.vue @Maghwyn @Loule95450
 /front-end/src/views/app/AgilityProject.vue @Maghwyn @AyakorK
 /front-end/src/views/app/RelatedProfileView.vue @Maghwyn
-/front-end/src/views/calls/ @Maghwyn
+/front-end/src/views/calls/GroupsView.vue @Maghwyn @AyakorK
+/front-end/src/views/calls/RollCallView.vue @Maghwyn
 /front-end/src/views/CardArticleView.vue @TheoLandemaine
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
 /front-end/src/views/EditArticleView.vue @Maghwyn
@@ -311,7 +310,7 @@
 /front-end/tsconfig.node.json @Loule95450 @Maghwyn
 /front-end/types/pixi-event.d.ts @Loule95450
 /front-end/types/pixi-viewport.d.ts @Loule95450
-/front-end/types/shims-mime.d.ts @Maghwyn
+/front-end/types/shims-mime.d.ts @Maghwyn @AyakorK
 /front-end/vite.config.ts @Loule95450 @Maghwyn
 /README.md @Thomlam
 /uploads/0f35f378-e43d-4ce0-8bf1-265b1836704b.webp @Maghwyn @AyakorK
