@@ -85,7 +85,7 @@ export interface SerializedContainerProperties
 		Partial<SerializedLineProperties> {
 	isAttachedToFrame: boolean;
 	tabNumberContext: number;
-	frameNumber: number;
+	frameNumber?: number;
 	disabled: boolean;
 }
 

@@ -6,6 +6,7 @@ import { MailjetEmail, MailjetAskToken } from 'src/auth/events/auth.events.req';
 import { Events, MailjetTemplate } from 'src/common/providers/interfaces/events.interface';
 import { config } from 'src/config/config';
 import { MailjetCanvasInvitationRequest } from '@/base/canvasRoom/events/canvasRoom.events.req';
+import { MailjetNewTutorial } from '@/base/articles/events/newTutorial.events.req';
 
 Injectable();
 export class MailjetListeners {
@@ -90,6 +91,16 @@ export class MailjetListeners {
 			templateId: MailjetTemplate.retroInvitationRequest,
 			recipients: [{ Email: email }],
 			args: { senderFirstName, senderLastName, projectTitle, url },
+		});
+  }
+
+  @OnEvent(Events.newTutorial)
+	async handleNewTutorial (payload: MailjetNewTutorial) {
+		const emails = payload.email;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MailjetTemplate.newTutorial,
+			recipients: emails,
 		});
 	}
 }

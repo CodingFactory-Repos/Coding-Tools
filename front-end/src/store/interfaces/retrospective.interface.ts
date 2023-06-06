@@ -1,6 +1,6 @@
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>,
-	tempMovingPostit: Postit,
+	privatePostit: Array<Postit>;
+	tempMovingPostit: Postit;
 	currentRetro: Retrospective
 	userCursors: Array<UserCursor>
 	allRetros: Array<Retrospective>

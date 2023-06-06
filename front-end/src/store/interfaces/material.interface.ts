@@ -20,7 +20,7 @@ export interface BorrowingMaterial {
 	returnDate: Date;
 	status: string;
 	returnedTo: string;
-	dateReturned: Date,
+	dateReturned: Date;
 }
 
 export interface Material {

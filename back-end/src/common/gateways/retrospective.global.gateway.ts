@@ -190,7 +190,6 @@ export class RetrospectiveGateway
 
 	//@@@@@@@@@@@ END TIMER SECTION @@@@@@@@@@@@@@@
 
-
 	//@@@@@@@@@@@ Postit visibility @@@@@@@@@@@@@@@
 	@SubscribeMessage('update-visibility')
 	async updateVisibility(client: AuthSocket, currentRetro: Retrospective) {
@@ -202,5 +201,4 @@ export class RetrospectiveGateway
 
 		await this.retrospectivesRepository.updateOneRetrospective(query, update);
 	}
-
 }

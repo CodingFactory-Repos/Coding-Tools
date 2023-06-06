@@ -100,8 +100,30 @@
 					<OutlineDislike />
 				</div>
 			</button>
+
+		</div>
+		<!-- Validation -->
+		<div v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)" class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary">
+			<div
+				class=""
+				:class="item.status == 'Accepted' ? 'status open' : 'status in-progress'"
+			>
+				{{ item.status == 'Accepted' ? 'Accepté' : 'En attente' }}
+			</div>
+			<div class="flex flex-col space-y-2">
+				<button v-if="item.status != 'Accepted'" @click="updateStatus(item._id, 'Accepted')" class="border-solid border rounded-lg px-2 border-green-400 py-1 bg-green-400 dark:bg-transparent">
+					Accepter
+				</button>
+				<button v-else @click="updateStatus(item._id, 'Pending')" class="border-solid border rounded-lg px-2 border-yellow-400 bg-yellow-400 dark:bg-transparent py-1">
+					Suspendre
+				</button>
+				<button v-if="item.status != 'Accepted'" @click="deleteArticle(item._id)" class="border-solid border rounded-lg p-1 border-red-500 bg-red-400 dark:bg-transparent">
+					Refuser
+				</button>
+			</div>
 		</div>
 	</div>
+	
 </template>
 
 <script lang="ts" setup>
@@ -218,13 +240,73 @@ const openArticle = (id: string) => {
 const openTutorial = (id: string) => {
 	router.push(`/app/blog/tutorial/${id}`);
 };
+
+const updateStatus = async (id, status) => {
+	Swal.fire({
+		title: 'Validez votre choix',
+		icon: 'info',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Oui',
+		cancelButtonText: 'Non',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+
+			// get article
+			const oneItems = computed(() => articleStore.oneItems);
+			await articleStore.getArticleById(id)
+			const articleToEdit = ref(oneItems.value);
+
+			// edit fields
+			delete articleToEdit.value._id
+
+			if (status == "Pending") {
+				articleToEdit.value.status = 'Pending'
+			}
+			else {
+				articleToEdit.value.status = 'Accepted'
+			}
+
+			// post the data
+			await articleStore.updateArticle(id, articleToEdit.value);
+
+			// update page articles
+			await getArticles();
+		}
+	});
+}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .display {
 	display: block;
 }
 .display-none {
 	display: none;
 }
+
+.status {
+	&.open:before {
+		background-color: #94E185;
+		border-color: #78D965;
+		box-shadow: 0px 0px 4px 1px #94E185;
+	}
+
+	&.in-progress:before {
+		background-color: #FFC182;
+		border-color: #FFB161;
+		box-shadow: 0px 0px 4px 1px #FFC182;
+	}
+
+	&:before {
+		content: ' ';
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		margin-right: 10px;
+		border: 1px solid #000;
+		border-radius: 7px;
+	}
+}
+
 </style>
