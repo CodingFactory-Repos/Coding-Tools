@@ -38,7 +38,8 @@ export class CallsController {
 	@UseGuards(JwtAuthGuard)
 	async actualCourse(@Jwt() userId: ObjectId, @Res() res: Response) {
 		const actualCourse = await this.callsService.getActualCourse(userId);
-		return res.status(201).json({ status: 'ok', actualCourse: actualCourse });
+		const message = await this.callsService.getMessage(actualCourse, userId);
+		return res.status(201).json({ status: 'ok', actualCourse: actualCourse, message: message });
 	}
 
 	@Get('/student_list/:courseId')
@@ -86,7 +87,6 @@ export class CallsController {
 		@Body()
 		newMessage: MessageObject,
 	) {
-		console.log('yo');
 		await this.callsService.saveMessage(userId, courseId, newMessage);
 	}
 
