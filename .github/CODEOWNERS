@@ -64,7 +64,7 @@
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/retrospectives/ @Kevw94 @Maghwyn
-/back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn @Kevw94
+/back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
@@ -259,7 +259,7 @@
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
-/front-end/src/store/interfaces/material.interface.ts @Maghwyn @AyakorK
+/front-end/src/store/interfaces/material.interface.ts @Maghwyn
 /front-end/src/store/interfaces/openhouse.store.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
