@@ -39,7 +39,7 @@
 					<div class="pt-3 pb-2">
 						<span
 							class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-							>{{ formatDate(item.createdAt) }}</span
+							>{{ formatDate(item.periodStart) }}</span
 						>
 					</div>
 					<div class="pt-2 pb-5">
@@ -140,6 +140,7 @@ const openCourse = (id: string) => {
 
 // Function to format the date
 const formatDate = (date) => {
+	console.log(date);
 	const options = {
 		month: 'long',
 		day: 'numeric',

@@ -4,11 +4,12 @@
         <div class="modal-container">
             <h3 class="text-xl pb-2 font-medium leading-6 text-gray-900 flex justify-center mb-3">Ajouter un cours</h3>
             <div class="modal-body">
-                <form class="w-full max-w-sm" @submit.prevent="AddCourses">
+                <form class="w-full max-w-sm">
                     <input type="text" name="title" v-model="this.tag" placeholder="Title :" /><br />
 					<input type="datetime-local" v-model="this.periodStart" /><br />
                     <input type="datetime-local" v-model="this.periodEnd" /><br />
 					<input type="url" placeholder="picture link" v-model="this.picture" /><br />
+                    <input type="text" name="language" v-model="this.language" placeholder="Language :" /><br />
                     <div class="flex justify-center mt-6">
                         <button
                             class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -24,6 +25,7 @@
 </template>
 
 <script lang="ts">
+import { useCoursStore } from '@/store/modules/course.store';
 
 export default {
     name: 'AddCourses',
@@ -42,8 +44,24 @@ export default {
         }
     },
     methods: {
-        AddCourses(){
-            console.log(this.createdAt)
+        AddCourses(){ 
+            const course = useCoursStore();
+            let newCourse  = {
+                tag: this.tag,
+                classId: '',
+                picture: this.picture,
+                language: this.language,
+                createdAt: this.createdAt,
+                periodStart: this.periodStart,
+                periodEnd: this.periodEnd,
+                presence:[],
+                project:[],
+                site: '',
+                teacherId: '',
+            }
+            console.log(newCourse);
+            course.addCourse(this.newCourse);
+            console.log(course);
 
         }
     }

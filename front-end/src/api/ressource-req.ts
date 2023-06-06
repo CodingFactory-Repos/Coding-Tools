@@ -8,3 +8,7 @@ export const getCourses = async () => {
 export const getCoursesById = async (id: string) => {
 	return http.get<Course>(`/courses/${id}`);
 };
+
+export const createCourse = async (course: Course) => {
+	return http.post<Course>('/courses/create', course);
+};

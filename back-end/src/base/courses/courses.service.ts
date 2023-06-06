@@ -19,4 +19,7 @@ export class CoursesService {
 		return await this.coursesRepository.getCourseById(id);
 	}
 
+	async createCourse(query) {
+		return await this.coursesRepository.createCourse(query);
+	}
 }

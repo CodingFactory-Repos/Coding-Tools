@@ -1,6 +1,7 @@
 import {
 	Controller,
 	Get,
+	Post,
 	Res,
 	Req,
 	UseFilters,
@@ -27,6 +28,14 @@ export class CoursesController {
 	getCoursesByI(@Req() req: Request, @Res() res: Response){
 		this.coursesService.getCoursesById(req.params.id).then((courses) => {
 			return res.status(201).json(courses);
+		});
+	}
+
+
+	@Post('/create')
+	async createCourse(@Req() req: Request, @Res() res: Response) {
+		await this.coursesService.createCourse(req.body).then((course) => {
+			res.status(200).json(course);
 		});
 	}
 

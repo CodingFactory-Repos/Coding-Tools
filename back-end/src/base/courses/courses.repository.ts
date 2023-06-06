@@ -40,10 +40,6 @@ export class CoursesRepository {
 		return this.courses.findOne(query, options);
 	}
 
-	async getAllCourses() {
-		return this.courses.find({}).toArray();
-	}
-
 	async getCourseById(id: ObjectId) {
 		id = new ObjectId(id);
 		return this.courses.findOne({ _id: id });
