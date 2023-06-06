@@ -1,4 +1,4 @@
-import { FederatedPointerEvent } from 'pixi.js';
+import { FederatedPointerEvent, Renderer } from 'pixi.js';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
@@ -6,7 +6,7 @@ import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
-import type { ProjectStore } from '@/store/interfaces/project.interface';
+import type { FramedPDF, ProjectStore } from '@/store/interfaces/project.interface';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { pick } from '@/utils/object.helper';
 import { getAgileBlueprints } from '@/store/interfaces/agility.interface';
@@ -22,6 +22,9 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	immersion: false,
 	viewportDefaultPos: {},
 	selectedFrameNumber: null,
+	pdfViewerOpen: false,
+	refreshPdfViewer: 0,
+	timerId: null,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -36,8 +39,64 @@ export const useProjectStore = defineStore('project', {
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
+		getImages(this: ProjectStore) {
+			if(!this.pdfViewerOpen) return [];
+			this.refreshPdfViewer;
+
+			const frames = this.scene?.viewport?.childFrames || [];
+			const len = frames.length;
+
+			const reactiveImages: Array<FramedPDF> = [];
+			for(let n = 0; n < len; n++) {
+				const container = frames[n];
+				const { width, height } = container;
+				const cloneContainer = container.cloneToContainer();
+				const { x, y } = cloneContainer.getBounds();
+				cloneContainer.position.set(-x, -y);
+
+				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width: height, height: width, backgroundAlpha: 0 });
+				renderer.render(cloneContainer);
+
+				const canvas = renderer.view;
+				const imageData = canvas.toDataURL('image/png');
+
+				reactiveImages.push({
+					id: container.uuid,
+					order: n + 1,
+					base64: imageData,
+					dimension: {
+						width: Math.floor(width),
+						height: Math.floor(height),
+					}
+				});
+
+				cloneContainer.destroy();
+				renderer.destroy();
+			}
+
+			return reactiveImages;
+		}
 	},
 	actions: {
+		startRefreshing(this: ProjectStore) {
+			if (this.timerId) {
+				clearInterval(this.timerId);
+				this.timerId = null;
+			}
+
+			this.timerId = setInterval(() => {
+				this.refreshPdfViewer++;
+				this.startRefreshing();
+			}, 10000);
+		},
+		stopRefreshing(this: ProjectStore) {
+			if (this.timerId) {
+				clearInterval(this.timerId);
+				this.timerId = null;
+			}
+
+			this.refreshPdfViewer = 0;
+		},
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);
