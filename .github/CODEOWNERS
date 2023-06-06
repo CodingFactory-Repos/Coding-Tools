@@ -38,6 +38,7 @@
 /back-end/src/base/canvasRoom/canvasRoom.module.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/canvasRoom.repository.ts @Maghwyn @Kevw94
 /back-end/src/base/CanvasRoom/CanvasRoom.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/canvasRoom/canvasRoom.service.ts @Maghwyn
 /back-end/src/base/canvasRoom/dto/canvasRoom.dto.ts @Maghwyn
 /back-end/src/base/CanvasRoom/interfaces/CanvasRoom.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
@@ -192,7 +193,6 @@
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
-/front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/config/config.ts @Maghwyn
 /front-end/src/images/ @Loule95450 @Maghwyn
