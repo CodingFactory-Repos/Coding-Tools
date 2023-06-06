@@ -66,7 +66,6 @@
 /back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Loule95450 @Kevw94
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
-/back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/users/allowed.students.repository.ts @Maghwyn @Kevw94
