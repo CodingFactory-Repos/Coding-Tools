@@ -16,7 +16,8 @@ export type GraphicTypeId =
 	| 'polygon'
 	| 'bezier'
 	| 'tree'
-	| 'ellipse';
+	| 'ellipse'
+	| 'textarea'	;
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
