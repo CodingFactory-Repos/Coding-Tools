@@ -183,7 +183,7 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			this.currentRetro.timePassed = time;
 		},
 		resetTimer(this: RetrospectiveStore) {
-			this.currentRetro.timePassed = 0
+			this.currentRetro.timePassed = 0;
 		},
 		setVisibilityPostit(this: RetrospectiveStore) {
 			const authStore = useAuthStore();
@@ -193,14 +193,12 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 					if (element.user === authStore.user.profile.email) {
 						element.visible = !element.visible;
 					}
-				})
+				});
 			}
-			socketRetro.socket.emit("update-visibility", this.currentRetro);
+			socketRetro.socket.emit('update-visibility', this.currentRetro);
 		},
 		setSocketVisibility(this: RetrospectiveStore, postits: Postits) {
-			this.currentRetro.postits = postits
-
-		}
-
+			this.currentRetro.postits = postits;
+		},
 	},
 });

@@ -8,15 +8,15 @@ import { ObjectId } from 'mongodb';
 @Controller('ideascomments')
 @UseFilters(ServiceErrorCatcher)
 export class IdeasCommentsController {
-	constructor(private readonly ideasCommentsService: IdeasCommentsService) { }
-	
-	@Get("/equipment/:id")
+	constructor(private readonly ideasCommentsService: IdeasCommentsService) {}
+
+	@Get('/equipment/:id')
 	getComments(@Req() req, @Res() res: Response) {
-		console.log(req.params.id)
+		console.log(req.params.id);
 		const query = { equipmentId: req.params.id };
 		this.ideasCommentsService.getAllIdeasComments(query).then((ideasComments) => {
 			return res.status(200).json(ideasComments);
-		})
+		});
 	}
 
 	@Post('/add')

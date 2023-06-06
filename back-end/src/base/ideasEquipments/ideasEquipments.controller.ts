@@ -8,13 +8,13 @@ import { ObjectId } from 'mongodb';
 @Controller('ideasequipments')
 @UseFilters(ServiceErrorCatcher)
 export class IdeasEquipmentsController {
-	constructor(private readonly ideasEquipmentsService: IdeasEquipmentsService) { }
+	constructor(private readonly ideasEquipmentsService: IdeasEquipmentsService) {}
 
 	@Get()
 	index(@Res() res: Response) {
 		this.ideasEquipmentsService.getAllIdeasEquipments().then((ideasEquipments) => {
 			return res.status(200).json(ideasEquipments);
-		})
+		});
 	}
 
 	@Post('/add')

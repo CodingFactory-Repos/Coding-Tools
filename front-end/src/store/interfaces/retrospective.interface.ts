@@ -1,14 +1,14 @@
 export interface RetrospectiveStore {
-	privatePostit: Array<Postit>,
-	tempMovingPostit: Postit,
-	currentRetro: Retrospective
-	userCursors: Array<UserCursor>
-	allRetros: Array<Retrospective>
-	isSideBar: boolean
-	inputSearch: string
-	dateSearch?: number
-	isRetroFinished?: boolean
-	isPostitVisible?: boolean
+	privatePostit: Array<Postit>;
+	tempMovingPostit: Postit;
+	currentRetro: Retrospective;
+	userCursors: Array<UserCursor>;
+	allRetros: Array<Retrospective>;
+	isSideBar: boolean;
+	inputSearch: string;
+	dateSearch?: number;
+	isRetroFinished?: boolean;
+	isPostitVisible?: boolean;
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;

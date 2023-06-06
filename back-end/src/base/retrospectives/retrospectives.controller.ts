@@ -20,11 +20,7 @@ export class RetrospectivesController {
 
 	@Post('/newRetro')
 	@UseGuards(JwtAuthGuard)
-	async newRetro(
-		@Jwt() userId: ObjectId,
-		@Res() res: Response,
-		@Body() body: RetrospectiveDTO
-		) {
+	async newRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: RetrospectiveDTO) {
 		const retrospective = await this.retrospectivesService.newRetrospective(body, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
@@ -47,18 +43,14 @@ export class RetrospectivesController {
 	@Post('/newPostit')
 	@UseGuards(JwtAuthGuard)
 	async newPostit(@Res() res: Response, @Body() body: PostitDTO, @Jwt() userId: ObjectId) {
-
 		const newPostit = await this.retrospectivesService.createNewPostit(body, userId);
 		return res.status(201).json({ newPostit: newPostit });
 	}
 
 	@Post('/participants')
 	@UseGuards(JwtAuthGuard)
-	async updateParticipants(
-		@Res() res: Response,
-		@Body() body: RetrospectiveDTO
-		) {
-		await this.retrospectivesService.tryUpdateParticipants(body)
+	async updateParticipants(@Res() res: Response, @Body() body: RetrospectiveDTO) {
+		await this.retrospectivesService.tryUpdateParticipants(body);
 
 		return res.status(201).json({ status: 'ok' });
 	}
