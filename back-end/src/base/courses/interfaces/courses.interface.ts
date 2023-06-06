@@ -15,6 +15,12 @@ export interface Course {
 	project:[];
     site: String;
     teacherId?: ObjectId;
+	/*
+		productOwner?: User;
+	academicYear?: AcademicYear;
+	retrospective?: Retrospective;
+	*/
+
 }
 
 export interface Call {

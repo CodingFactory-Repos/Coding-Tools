@@ -13,5 +13,6 @@ export enum MailjetTemplate {
 	accountValidated = 4433137,
 	activationToken = 4422523,
 	resetToken = 4433132,
+	dailyAbsence = 4842752,
 	canvasInvitationRequest = 4841661,
 }

@@ -50,14 +50,14 @@ onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
 	const socketOptions: CanvasSocketOptions = {
-		uri: "ws://localhost:8010",
+		uri: 'wss://backend-codingtools.loule.me',
 		roomId: roomId.value,
 		options: {
-			transports: ["websocket"],
+			transports: ['websocket'],
 			withCredentials: true,
-			path: '/socket.io'
+			path: '/socket.io',
 		},
-	}
+	};
 
 	// 84 represent the offset height due to tabs
 	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, isDark.value, socketOptions);

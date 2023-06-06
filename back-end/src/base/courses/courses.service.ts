@@ -18,5 +18,5 @@ export class CoursesService {
 	async getCoursesById(id) {
 		return await this.coursesRepository.getCourseById(id);
 	}
-}
 
+}

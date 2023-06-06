@@ -1,6 +1,6 @@
 import { Manager } from 'socket.io-client';
 
-export const manager = new Manager('ws://localhost:8010', {
+export const manager = new Manager('wss://backend-codingtools.loule.me', {
 	transports: ['websocket'],
 	withCredentials: true,
 	path: '/socket.io',
