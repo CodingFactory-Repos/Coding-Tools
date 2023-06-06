@@ -1,4 +1,5 @@
 import { http } from '@/api/network/axios';
+import { Status } from '@/store/interfaces/axios.interface';
 import { Postit, Retrospective } from '@/store/interfaces/retrospective.interface';
 
 export const createRetro = async (retro: Retrospective) => {
@@ -19,4 +20,13 @@ export const tryGetAllRetro = async () => {
 
 export const tryUpdateParticipants = async (participants: Retrospective) => {
 	await http.post('/retrospectives/participants', participants);
+};
+
+
+export const apiTrySendRetroInvitation = (userId: string, roomId: string) => {
+	return http.post(`/retrospectives/invitation/${roomId}`, { userId });
+};
+
+export const apiTryVerifyRetroInvitationToken = (token: string) => {
+	return http.post<Status<{ roomId: string }>>('/retrospectives/verify-invitation', { token });
 };
