@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 
 import { ArticlesRepository } from 'src/base/articles/articles.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events'
 
 @Injectable()
 export class ArticlesService {
@@ -11,10 +12,35 @@ export class ArticlesService {
 		@Inject(forwardRef(() => ArticlesRepository))
 		private usersRepository: UsersRepository,
 		private articlesRepository: ArticlesRepository,
+		private newTutorialEmitter: NewTutorialEmitter,
 	) {}
 
 	// Function to add an article
 	async addArticle(queryArticle) {
+
+		queryArticle.status = 'Pending'
+
+		// send mail logic
+		if(queryArticle.type == 'Tuto'){
+			
+			// request to get all PO/Pedagos
+			const mailTargets = await this.usersRepository.findMany(
+				{
+					'role' :  { $in : [2, 3] }
+				},
+			)
+
+			// format mails for recipients
+			const recipientsMails: { Email : string }[] = mailTargets
+			.map(item => item.profile.email)
+			.map(mail => {
+				return { Email : mail }
+			})
+			
+			// emit mail
+			this.newTutorialEmitter.newTutorialMail(recipientsMails)
+		}
+
 		return await this.articlesRepository.createArticle(queryArticle);
 	}
 
