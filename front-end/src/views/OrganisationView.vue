@@ -1,6 +1,6 @@
 <template>
     <div class="mx-auto p-4 rounded-lg bg-light-primary dark:bg-dark-secondary text-left mt-10 ml-12 mr-12 w-11/12">
-        <div v-if="this.showProject == ''">
+        <div v-show="this.showProject == ''">
             <h1 class="text-6xl font-bold dark:text-dark-font">Organisation</h1>
             <div class="actualSprint marg">Sprint sélectionné:<br/>
                 <select id="select" @change="setCourseId($event)">
@@ -30,13 +30,27 @@
                     <div class="iconeGroupe" v-for="group in groups">
                         <span style="font-size:20px;" v-for="student in group">{{ student }}<br/></span>
                         <div style="position:absolute;left:10px;bottom:10px;">
-                            <button @click="this.showProject==true;" class="rounded-lg hover:bg-stone-300">Ouvrir le projet</button>
+                            <button @click="openProject(group)" class="rounded-lg hover:bg-stone-300">Ouvrir le projet</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
+        <div v-show="showProject" class="ml-12">
+            <div>
+                <p class="text-3xl font-bold dark:text-[#9ca3af] text-[#213547]"></p>
+                <p class="text-lg font-medium dark:text-[#9ca3af] text-[#213547]"></p>
+            </div>
+            <div class="w-full justify-center h-fit rounded-lg bg-light-primary dark:bg-dark-tertiary py-4 px-4" v-if="courseId != ''">
+                <h1 class="dark:text-[#9ca3af] text-[#213547]">Membres</h1>
+            <div class="flex flex-row flex-wrap gap-3 mt-4">
+                <div class="bg-[#5C5F73] rounded-lg px-4 py-2" v-for="student in selectedGroup" :key="student">
+                    <p class="text-2xl text-[#9ca3af]">{{ student }}</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -48,9 +62,12 @@ let courses = [];
 let studentList = [];
 let groups = [];
 let showProject = '';
+let selectedGroup = []
 
-export default{
-	name: 'OrganisationView',
+export default {
+
+    name: 'OrganisationView',
+    default: () => [],
 	data() {
 		return {
             courses,
@@ -58,13 +75,13 @@ export default{
 			groups,
 			studentList,
 			isPO: false,
-            showProject
+            showProject, 
+            selectedGroup,
 		};
-	},
+    },    
 
 	mounted() {
 		this.getCourses();
-		//this.isProductOwner();
 	},
 	methods: {
 		getCourses: withErrorHandler(async function () {
@@ -85,7 +102,14 @@ export default{
                     });
                 });
 			});
-		}),
+        }),
+
+        openProject(group) {
+            this.showProject = true;
+            this.selectedGroup = [...group];
+            console.log(this.selectedGroup)
+        },
+  
         setCourseId(event) {
             let course;
             this.courses.forEach(courseElt => {
@@ -93,6 +117,7 @@ export default{
                     course = courseElt;
                 }
             });
+
             this.courseId = course._id;
             this.groups = course.groups;
             this.getStudentList();
