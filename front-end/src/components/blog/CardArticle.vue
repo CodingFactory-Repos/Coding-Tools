@@ -271,7 +271,7 @@ const updateStatus = async (id, status) => {
 			await articleStore.updateArticle(id, articleToEdit.value);
 
 			// update page articles
-			getArticles()
+			await getArticles();
 		}
 	});
 }
