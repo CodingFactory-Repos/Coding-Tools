@@ -24,10 +24,10 @@ export const personas = (
 	const endX = centerX + halfWidth;
 	const endY = centerY + halfHeight;
 
-	const threeFiveX = startX + (width * (3/5));
-	const oneFourX = startX + (width * (1.25/4));
-	const threeFourX = startX + (width * (2.75/4));
-	const largeZone = height * 0.40; // 100 - 40 * 2 = 20;
+	const threeFiveX = startX + width * (3 / 5);
+	const oneFourX = startX + width * (1.25 / 4);
+	const threeFourX = startX + width * (2.75 / 4);
+	const largeZone = height * 0.4; // 100 - 40 * 2 = 20;
 	const lineWidth = 4;
 
 	return {
@@ -141,9 +141,9 @@ export const personas = (
 						},
 						lineControl: {
 							start: { x: oneFourX, y: startY + largeZone + lineWidth / 2 },
-							end: { x: oneFourX, y: startY + (largeZone * 2) + lineWidth / 2 },
+							end: { x: oneFourX, y: startY + largeZone * 2 + lineWidth / 2 },
 							startControl: { x: oneFourX, y: startY + largeZone + lineWidth / 2 },
-							endControl: { x: oneFourX, y: startY + (largeZone * 2) + lineWidth / 2 },
+							endControl: { x: oneFourX, y: startY + largeZone * 2 + lineWidth / 2 },
 						},
 					},
 				],
@@ -171,9 +171,9 @@ export const personas = (
 						},
 						lineControl: {
 							start: { x: threeFourX, y: startY + largeZone + lineWidth / 2 },
-							end: { x: threeFourX, y: startY + (largeZone * 2) + lineWidth / 2 },
+							end: { x: threeFourX, y: startY + largeZone * 2 + lineWidth / 2 },
 							startControl: { x: threeFourX, y: startY + largeZone + lineWidth / 2 },
-							endControl: { x: threeFourX, y: startY + (largeZone * 2) + lineWidth / 2 },
+							endControl: { x: threeFourX, y: startY + largeZone * 2 + lineWidth / 2 },
 						},
 					},
 				],

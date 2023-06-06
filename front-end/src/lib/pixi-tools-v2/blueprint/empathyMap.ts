@@ -79,9 +79,15 @@ export const empathyMap = (
 						},
 						lineControl: {
 							start: { x: startX + lineWidth / 2, y: startY + lineWidth / 2 },
-							end: { x: endX - lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							end: {
+								x: endX - lineWidth / 2,
+								y: point.y - centerY + largeZone * 2 - lineWidth / 2,
+							},
 							startControl: { x: startX + lineWidth / 2, y: startY + lineWidth / 2 },
-							endControl: { x: endX - lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							endControl: {
+								x: endX - lineWidth / 2,
+								y: point.y - centerY + largeZone * 2 - lineWidth / 2,
+							},
 						},
 					},
 				],
@@ -109,9 +115,15 @@ export const empathyMap = (
 						},
 						lineControl: {
 							start: { x: endX - lineWidth / 2, y: startY + lineWidth / 2 },
-							end: { x: startX + lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							end: {
+								x: startX + lineWidth / 2,
+								y: point.y - centerY + largeZone * 2 - lineWidth / 2,
+							},
 							startControl: { x: endX - lineWidth / 2, y: startY + lineWidth / 2 },
-							endControl: { x: startX + lineWidth / 2, y: point.y - centerY + (largeZone * 2) - lineWidth / 2 },
+							endControl: {
+								x: startX + lineWidth / 2,
+								y: point.y - centerY + largeZone * 2 - lineWidth / 2,
+							},
 						},
 					},
 				],
