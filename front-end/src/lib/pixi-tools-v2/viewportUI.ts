@@ -36,6 +36,7 @@ export class ViewportUI extends Viewport {
 	public activeFrameNumber = null;
 
 	public readonly activeFrames: Array<number> = reactive([]);
+	public readonly childFrames: Array<FramedContainer> = reactive([]);
 
 	constructor(
 		scene: Scene,
@@ -72,9 +73,10 @@ export class ViewportUI extends Viewport {
 		});
 
 		this.on('childAdded', (child: CanvasContainer) => {
-			if (child instanceof FramedContainer) {
-				this.activeFrames.push(child.frameNumber);
-			}
+            if (child instanceof FramedContainer) {
+                this.activeFrames.push(child.frameNumber);
+                this.childFrames.push(child);
+            }
 
 			if (this.socketPlugin) {
 				this.socketPlugin.trackElementByUUID(child);

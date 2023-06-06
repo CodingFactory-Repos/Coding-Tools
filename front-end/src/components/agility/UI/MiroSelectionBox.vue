@@ -107,9 +107,12 @@
 			</div>
 		</template>
 		<template #drawer-right>
-			<div class="h-full bg-light-primary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
-				
-			</div>
+			<div class="h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto" :style=" drawerOpen ? 'width: 550px;' : 'width: 0;' ">
+                <draggable v-for="(meta, index) in childImage" :key="`image_${index}`">
+                    <img :src="meta.base64">
+                    <span>{{ meta.dimension.width }} x {{ meta.dimension.height }}</span>
+                </draggable>
+            </div>
 		</template>
 	</SelectionBox>
 	<ShareProject
@@ -188,6 +191,7 @@ const createFrame = () => {
 	projectStore.setDeferredEvent("pointer", true);
 }
 
+const childImage = computed (()=> projectStore.getImages);
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
 
 const increaseZoom = () => {

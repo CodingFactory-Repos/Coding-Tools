@@ -18,15 +18,25 @@
 				</IconButton>
 			</div>
 			<div class="flex bg-light-secondary dark:bg-dark-tertiary gap-2 p-1 rounded h-10 items-center shadow-md pointer-events-auto">
-				<IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" @click="toggleDrawer">
+				 <IconButton class="h-fit !p-1.5 dark:hover:!bg-dark-secondary" type="button" > <!--@click="toggleDrawer" -->
 					<SvgSideBar width="22" height="22" class="!fill-gray-400"/>
 				</IconButton>
 			</div>
 		</template>
 		<template #drawer-right>
-			<div class="h-full bg-light-secondary dark:bg-dark-tertiary duration-200 transition-width pointer-events-auto" :style="drawerOpen ? 'width: 250px;' : 'width: 0;'">
-				
-			</div>
+			<div class="h-full bg-light-secondary dark:bg-dark-primary duration-200 transition-width pointer-events-auto" :style=" drawerOpen ? 'width: 550px;' : 'width: 0;' ">
+				<p>test</p>
+				{{ childImage.length }}	
+				<Draggable :list="childImage" itemKey="id" class="list-group" @start="dragging = true" @end="dragging = false">
+					<template #item="{ element }">
+						<div class="list-group-item">
+							<img :src="element.base64">
+							<span>{{ element.dimension.width }} x {{ element.dimension.height }}</span>
+							<p>test{{ element.random }}</p>
+						</div>
+					</template>
+				</Draggable>
+            </div>
 		</template>
 	</SelectionBox>
 </template>
@@ -36,7 +46,7 @@ import { computed, ref, watch } from 'vue';
 
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-
+import Draggable from 'vuedraggable';
 import SvgExpand from '@/components/common/svg/Expand.vue';
 import SvgMinus from '@/components/common/svg/Minus.vue';
 import SvgAdd from '@/components/common/svg/Add.vue';
@@ -56,8 +66,19 @@ const scale = computed(() => projectStore.getZoom);
 const isFullScreen = computed(() => projectStore.onFullscreen);
 
 const drawerOpen = ref(false);
+const dragging = ref(false)
+
+const childImage = computed({
+  get() {
+   return projectStore.getImages;
+  },
+  set(newValue) {
+    projectStore.setImages(newValue);
+  }
+})
 
 const toggleDrawer = () => drawerOpen.value = !drawerOpen.value;
+drawerOpen.value = !drawerOpen.value;
 
 function toggleFullScreen() {
 	if (!document.fullscreenElement) {
@@ -74,4 +95,5 @@ const increaseZoom = () => {
 const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
+
 </script>
