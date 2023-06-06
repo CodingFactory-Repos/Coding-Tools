@@ -27,9 +27,9 @@ import { ColorPicker } from 'vue-color-kit';
 
 import IconButton from '@/components/common/buttons/Icon.vue';
 import { useProjectStore } from '@/store/modules/project.store';
-import { GenericContainer } from '../../../lib/pixi-tools-v2/class/genericContainer';
-import { LineContainer } from '../../../lib/pixi-tools-v2/class/lineContainer';
-import { FramedContainer } from '../../../lib/pixi-tools-v2/class/framedContainer';
+import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
+import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
+import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useThemeStore } from '@/store/modules/theme.store';
 
 interface ColorPickerUpdate {

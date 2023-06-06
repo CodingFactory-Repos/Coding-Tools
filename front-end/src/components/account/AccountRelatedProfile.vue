@@ -12,7 +12,7 @@
 				>
 					<img
 						:src="relatedUser.picture || '/template-no-image.png'"
-						class="w-12 h-12 rounded-full border border-dark-secondary"
+						class="w-12 h-12 rounded-full border border-dark-secondary object-cover"
 						alt="profile_picture"
 					/>
 					<span class="bold text-sm text-black dark:text-white">{{ relatedUser.firstName + " " + relatedUser.lastName }}</span>
