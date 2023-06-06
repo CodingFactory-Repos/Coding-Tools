@@ -9,6 +9,7 @@ import { PostitDTO, RetrospectiveDTO } from './dto/retrospectives.dto';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 import { RetrospectivesRoomInvitationRepository } from './retrospectivesRoomInvitation.repository';
 import { RetrospectivesEventEmitter } from './events/retrospectives.events';
+import { RetrospectiveGateway } from '@/common/gateways/retrospective.global.gateway';
 
 @Injectable()
 export class RetrospectivesService {
@@ -19,6 +20,7 @@ export class RetrospectivesService {
 		private retrospectivesRepository: RetrospectivesRepository,
 		private retroRoomInvitationRepository: RetrospectivesRoomInvitationRepository,
 		private retrospectivesEventEmitter: RetrospectivesEventEmitter,
+		private retrospectiveGateway: RetrospectiveGateway,
 	) {}
 
 	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
@@ -154,5 +156,28 @@ export class RetrospectivesService {
 			{ $push: { allowedPeers: userInvited._id} },
 		);
 		return invitation.value.retroId;
+	}
+
+	async removeUserAccessToRetro(targetEmail: string, roomId: string, userId: ObjectId) {
+		try {
+			const userTarget = await this.usersRepository.findOne({'profile.email': targetEmail})
+			const userCreator = await this.usersRepository.findOne({_id: userId})
+
+			const query = { slug: roomId, creator: userCreator.profile.email };
+			const update = { $pull: { allowedPeers: userTarget._id , participants: userTarget.profile.email} };
+			await this.retrospectivesRepository.updateOneRetrospective(query, update);
+
+			const inviteQuery = { userId: userTarget._id, retroId: roomId };
+			await this.retroRoomInvitationRepository.deleteOneRetrospectivesRoomInvitation(inviteQuery);
+
+
+			this.retrospectiveGateway.server.to(userTarget._id.toString()).emit('accessRetro-lost');
+		} catch (err) {
+			if (err instanceof Error) {
+				NestLogger.error(err);
+			}
+
+			throw new ServiceError('BAD_REQUEST', 'Invalid payload');
+		}
 	}
 }

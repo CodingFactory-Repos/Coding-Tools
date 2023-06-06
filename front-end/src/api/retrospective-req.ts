@@ -30,3 +30,7 @@ export const apiTrySendRetroInvitation = (userId: string, roomId: string) => {
 export const apiTryVerifyRetroInvitationToken = (token: string) => {
 	return http.post<Status<{ roomId: string }>>('/retrospectives/verify-invitation', { token });
 };
+
+export const apiTryRemoveRetroUserAccess = (userEmail: string, roomId: string) => {
+	return http.post<Status>(`/retrospectives/participants/${roomId}/remove-access`, { userEmail });
+};

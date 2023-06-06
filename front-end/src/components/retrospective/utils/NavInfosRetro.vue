@@ -70,7 +70,6 @@ import ShareRetro from '@/components/retrospective/utils/ShareRetro.vue';
 const retroStore = useRetrospectiveStore();
 const authStore = useAuthStore();
 const participants = computed(() => retroStore.currentRetro.participants);
-console.log("participants", participants.value);
 
 const route = useRoute();
 const url = `${config.prodSiteUrl}${route.fullPath}`;
@@ -89,18 +88,6 @@ const toggleSideBar = () => {
 	retroStore.tryToggleSideBar();
 }
 
-const copyLink = async () => {
-	await navigator.clipboard.writeText(url);
-	Swal.fire({
-		position: 'top-end',
-		text: "Url copied !",
-		showConfirmButton: false,
-		timer: 1500,
-		color: '#5c5f73',
-		padding: '0em',
-		toast: true
-	})
-}
 
 const revealPostit = () => {
 	retroStore.setVisibilityPostit();

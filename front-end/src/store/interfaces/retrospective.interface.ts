@@ -9,6 +9,7 @@ export interface RetrospectiveStore {
 	dateSearch?: number
 	isRetroFinished?: boolean
 	isPostitVisible?: boolean
+	isLoading?: boolean
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
