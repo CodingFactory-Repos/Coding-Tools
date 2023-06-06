@@ -23,6 +23,7 @@ import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
 import { LineContainer } from '../../lib/pixi-tools-v2/class/lineContainer';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { config } from '@/config/config';
 
 const route = useRoute();
 const projectStore = useProjectStore();
@@ -50,7 +51,7 @@ onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
 	const socketOptions: CanvasSocketOptions = {
-		uri: 'wss://backend-codingtools.loule.me',
+		uri: config.socket.url,
 		roomId: roomId.value,
 		options: {
 			transports: ['websocket'],
@@ -149,5 +150,7 @@ onBeforeRouteLeave(() => {
 	}
 
 	document.removeEventListener('fullscreenchange', onFullscreenChange);
+	projectStore.stopRefreshing();
 })
+projectStore.startRefreshing();
 </script>

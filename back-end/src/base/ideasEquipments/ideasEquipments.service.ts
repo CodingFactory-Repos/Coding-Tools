@@ -12,11 +12,11 @@ export class IdeasEquipmentsService {
 		private ideasEquipmentsRepository: IdeasEquipmentsRepository,
 	) {}
 
-	async getAllIdeasEquipments(){
+	async getAllIdeasEquipments() {
 		return this.ideasEquipmentsRepository.getAllIdeasEquipments();
 	}
 
-	async addIdea(queryIdea){
+	async addIdea(queryIdea) {
 		return await this.ideasEquipmentsRepository.createIdeaEquipment(queryIdea);
 	}
 
