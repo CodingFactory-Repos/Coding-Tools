@@ -25,6 +25,7 @@
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
 /back-end/src/base/articles/articles.module.ts @Maghwyn
+/back-end/src/base/articles/articles.service.ts @Maghwyn
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
@@ -46,10 +47,9 @@
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/ideasComments/ @AyakorK @Maghwyn
+/back-end/src/base/ideasComments/ideasComments.module.ts @Maghwyn @AyakorK
+/back-end/src/base/ideasComments/ideasComments.repository.ts @Maghwyn @AyakorK
 /back-end/src/base/ideasComments/interfaces/ideasComments.interface.ts @Maghwyn @AyakorK
-/back-end/src/base/ideasEquipments/ @AyakorK @Maghwyn
-/back-end/src/base/ideasEquipments/ideasEquipments.module.ts @Maghwyn
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
@@ -126,9 +126,10 @@
 /front-end/src/assets/styles/components/add-ideas.css @Maghwyn @AyakorK
 /front-end/src/assets/styles/components/common/pop-up.css @Maghwyn @AyakorK
 /front-end/src/components/ @Kevw94 @Maghwyn
-/front-end/src/components/account/ @Kevw94 @Maghwyn
+/front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
+/front-end/src/components/agility/ @AyakorK @Maghwyn
 /front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
@@ -138,7 +139,7 @@
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
 /front-end/src/components/agility/UI/ @Kevw94 @Maghwyn
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
-/front-end/src/components/agility/UI/ColorPickerOption.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/UI/ColorPickerOption.vue @Maghwyn
 /front-end/src/components/agility/UI/DefaultSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/UI/MiroSelectionBox.vue @Maghwyn
@@ -152,7 +153,6 @@
 /front-end/src/components/blog/AddTutorial.vue @Maghwyn
 /front-end/src/components/blog/EditArticle.vue @Maghwyn
 /front-end/src/components/blog/MarkdownViewer.vue @Maghwyn
-/front-end/src/components/common/ @Kevw94 @Maghwyn
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
 /front-end/src/components/common/drawer/RouterOption.vue @Loule95450 @Maghwyn
@@ -171,13 +171,14 @@
 /front-end/src/components/common/svg/SvgCrown.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgThreeDot.vue @Maghwyn @Kevw94
 /front-end/src/components/common/uix/SelectionBox.vue @Loule95450 @Maghwyn
+/front-end/src/components/materials/ @AyakorK @Maghwyn
 /front-end/src/components/materials/ButtonsMaterials.vue @Maghwyn @RuKaSuu
 /front-end/src/components/materials/ChartMaterials.vue @Maghwyn @Loule95450
 /front-end/src/components/materials/ImagePicker.vue @Maghwyn @Loule95450
 /front-end/src/components/Navbar.vue @TheoLandemaine @Loule95450
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
-/front-end/src/components/retrospective/ @Kevw94 @Maghwyn
+/front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
 /front-end/src/components/retrospective/ChooseTemplate.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/CreatePostit.vue @Loule95450 @Maghwyn @Kevw94
 /front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
@@ -191,10 +192,8 @@
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
-/front-end/src/components/RollCallComponents/CallsComponent.vue @Maghwyn
 /front-end/src/components/RollCallComponents/GroupsComponent.vue @Maghwyn @Loule95450
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
-/front-end/src/components/RollCallComponents/StudentListComponent.vue @Maghwyn
 /front-end/src/config/config.ts @Maghwyn
 /front-end/src/images/ @Loule95450 @Maghwyn
 /front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
@@ -210,6 +209,7 @@
 /front-end/src/lib/pixi-tools-v2/ @Maghwyn
 /front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/blueprint/personas.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/ @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
@@ -225,6 +225,7 @@
 /front-end/src/lib/pixi-tools-v2/plugins/bezierManipulationPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/containerBezierLinkPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/ @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
@@ -237,6 +238,7 @@
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/utils/uniqueId.ts @Kevw94 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/viewportUI.ts @Maghwyn
 /front-end/src/lib/pixi-tools/docs/assets/css/index.css @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/js/index.js @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/media/favicon.ico @Loule95450
