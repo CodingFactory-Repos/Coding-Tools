@@ -25,6 +25,7 @@
 				<div
 					v-for="item in coursesFiltered"
 					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+					@click="openCourse(item._id)"
 				>
 					<img
 						class="object-cover h-48 w-96 rounded-t-lg"
@@ -132,9 +133,10 @@ onMounted(async() => {
 	// materialStore.getMaterials();
 
 // Function to open the openHouse page
-/*const openCourse = (id: string) => {
-	router.push(`/app/ressource/openhouse/${id}`);
-};*/
+const openCourse = (id: string) => {
+	console.log(id);
+	router.push(`/app/ressource/courses/${id}`);
+};
 
 // Function to format the date
 const formatDate = (date) => {
