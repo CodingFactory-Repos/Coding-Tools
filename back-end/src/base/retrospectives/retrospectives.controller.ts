@@ -6,7 +6,7 @@ import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.se
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { PostitDTO, RetrospectiveDTO } from '@/base/retrospectives/dto/retrospectives.dto';
+import { PostitDTO, ProjectRetroInvitationVerificationDTO, RetroUserEmailDTO, RetroUserIdDTO, RetrospectiveDTO } from '@/base/retrospectives/dto/retrospectives.dto';
 
 @Controller('retrospectives')
 @UseFilters(ServiceErrorCatcher)
@@ -52,6 +52,43 @@ export class RetrospectivesController {
 	async updateParticipants(@Res() res: Response, @Body() body: RetrospectiveDTO) {
 		await this.retrospectivesService.tryUpdateParticipants(body);
 
+		return res.status(201).json({ status: 'ok' });
+	}
+
+	@Post('invitation/:roomId')
+	@UseGuards(JwtAuthGuard)
+	async sendRetroInvitation(
+		@Jwt() userId: ObjectId,
+		@Body() body: RetroUserIdDTO,
+		@Param('roomId') roomId: string,
+		@Res() res: Response,
+	) {
+		await this.retrospectivesService.sendRetroInvitation(body.userId, roomId, userId);
+		return res.status(201).json({ status: 'ok' });
+	}
+
+	@Post('verify-invitation')
+	@UseGuards(JwtAuthGuard)
+	async verifyRetroInvitation(
+		@Jwt() userId: ObjectId,
+		@Body() body: ProjectRetroInvitationVerificationDTO,
+		@Res() res: Response,
+	) {
+		const roomId = await this.retrospectivesService.verifyRetroInvitation(body.token, userId);
+		return res.status(201).json({ status: 'ok', roomId });
+	}
+
+	@Post('participants/:roomId/remove-access')
+	@UseGuards(JwtAuthGuard)
+	async removeUserAccessToRetro(
+		@Jwt() userId: ObjectId,
+		@Param('roomId') roomId: string,
+		@Body() body: RetroUserEmailDTO,
+		@Res() res: Response,
+	) {
+		console.log("body", body);
+
+		await this.retrospectivesService.removeUserAccessToRetro(body.userEmail, roomId, userId);
 		return res.status(201).json({ status: 'ok' });
 	}
 }

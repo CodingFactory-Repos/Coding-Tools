@@ -79,8 +79,28 @@ function handleSocketEvents(socket: Socket) {
 
 	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@
 
-	socket.on('update-visibility', (postits: Postits) => {
-		retrospectiveStore.setSocketVisibility(postits);
+	socket.on("update-visibility", (postits: Postits) => {
+		retrospectiveStore.setSocketVisibility(postits)
+	})
+
+
+	socket.on('accessRetro-lost', () => {
+		Swal.fire({
+			title: "Your access has been removed",
+			showDenyButton: false,
+			showCancelButton: false,
+			showConfirmButton: false,
+			width: "auto",
+			allowOutsideClick: false,
+			allowEscapeKey: false
+		})
+		socket.disconnect();
+
+		const timer = setTimeout(() => {
+			Swal.close();
+			window.location.pathname = '/app/retrospective';
+			clearTimeout(timer);
+		}, 5000);
 	});
 }
 
