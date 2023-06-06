@@ -20,5 +20,5 @@ export type DeepPartial<T> = {
 		? Array<DeepPartial<U>>
 		: T[P] extends object
 		? DeepPartial<T[P]>
-		: T[P]
+		: T[P];
 };

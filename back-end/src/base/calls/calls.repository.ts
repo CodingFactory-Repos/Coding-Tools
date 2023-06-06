@@ -458,7 +458,7 @@ export class CallsRepository {
 				},
 			},
 		);
-		return 'successUpdate'
+		return 'successUpdate';
 	}
 
 	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
