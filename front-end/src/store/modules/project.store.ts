@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, Renderer, autoDetectRenderer } from 'pixi.js';
+import { FederatedPointerEvent, Renderer } from 'pixi.js';
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 
@@ -6,7 +6,7 @@ import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { Normalizer } from '@/lib/pixi-tools-v2/class/normalyzer';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
-import type { ProjectStore } from '@/store/interfaces/project.interface';
+import type { FramedPDF, ProjectStore } from '@/store/interfaces/project.interface';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
 import { pick } from '@/utils/object.helper';
 import { getAgileBlueprints } from '@/store/interfaces/agility.interface';
@@ -22,7 +22,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	immersion: false,
 	viewportDefaultPos: {},
 	selectedFrameNumber: null,
-	projectImages: [],
+	pdfViewerOpen: false,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -38,16 +38,13 @@ export const useProjectStore = defineStore('project', {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
 		getImages(this: ProjectStore) {
+			if(!this.pdfViewerOpen) return [];
+
 			const frames = this.scene?.viewport?.childFrames || [];
 			const len = frames.length;
-			console.log(len)
 			
-			this.projectImages = [];
+			const reactiveImages: Array<FramedPDF> = [];
 			for(let n = 0; n < len; n++) {
-				// const { width, height  } = frames[n];
-				// const renderer = autoDetectRenderer({ width, height });
-				// const disposableStage = new Container();
-				// renderer.render(disposableStage);
 				const container = frames[n];
 				const { width, height } = container;
 				const cloneContainer = container.cloneToContainer();
@@ -59,30 +56,25 @@ export const useProjectStore = defineStore('project', {
 
 				const canvas = renderer.view;
 				const imageData = canvas.toDataURL('image/png');
-				const extension = imageData.split(',')[0].split(';')[0].split('/')[1];
 
-				cloneContainer.destroy();
-				renderer.destroy();
-                // return imageData
-
-				this.projectImages.push({
-					id: n,
-					random: Math.random(),
+				reactiveImages.push({
+					id: container.uuid,
+					order: n + 1,
 					base64: imageData,
 					dimension: {
 						width: width,
 						height: height,
 					}
 				});
-				// renderer.destroy()
+
+				cloneContainer.destroy();
+				renderer.destroy();
 			}
-			return this.projectImages;
+
+			return reactiveImages;
 		}
 	},
 	actions: {
-		setImages(this:ProjectStore, array){
-			this.projectImages = array;
-		},
 		setDeferredEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor, framed: boolean) {
 			this.default = false;
 			this.canvas.classList.toggle(cursor);

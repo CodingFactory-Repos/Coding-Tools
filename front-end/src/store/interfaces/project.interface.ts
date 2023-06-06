@@ -6,7 +6,6 @@ import { FederatedPointerEvent } from 'pixi.js';
 import { LitteralBlueprintTypes } from '@/store/interfaces/agility.interface';
 
 export interface ProjectStore {
-	[x: string]: any;
 	scene: Scene;
 	canvas: HTMLCanvasElement;
 	deferredGeometry: LiteralGeometryTypes;
@@ -17,6 +16,7 @@ export interface ProjectStore {
 	immersion: boolean;
 	viewportDefaultPos: ViewportDefaultPosition;
 	selectedFrameNumber: number;
+	pdfViewerOpen: boolean;
 
 	getZoom?: () => number;
 	getFrames?: () => Array<number>;
@@ -40,4 +40,23 @@ export interface ProjectStore {
 export interface ViewportDefaultPosition {
 	scale?: { x: number; y: number };
 	pos?: { x: number; y: number };
+}
+
+export interface FramedPDF {
+	id: string,
+	order: number,
+	random?: number,
+	base64: string,
+	dimension: {
+		width: number,
+		height: number,
+	}
+}
+
+export interface DraggableUpdatePayload {
+	moved: {
+		element: FramedPDF,
+		newIndex: number,
+		oldIndex: number,
+	}
 }
