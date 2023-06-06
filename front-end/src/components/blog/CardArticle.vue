@@ -100,8 +100,28 @@
 					<OutlineDislike />
 				</div>
 			</button>
+
+		</div>
+		<!-- Validation -->
+		<div v-if="item.type == 'Tuto'" class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary">
+			<div
+				class=""
+				:class="item.status == 'Accepted' ? 'status open' : 'status in-progress'"
+			>
+				{{ item.status == 'Accepted' ? 'Accepted' : 'Pending' }}
+			</div>
+			<div class="flex flex-col space-y-2">
+				<button class="border-solid border rounded-lg px-2 border-green-400 py-1">
+					Accepter
+				</button>
+				<button class="border-solid border rounded-lg p-1 border-red-500">
+					Refuser
+				</button>
+			</div>
+			
 		</div>
 	</div>
+	
 </template>
 
 <script lang="ts" setup>
@@ -220,11 +240,36 @@ const openTutorial = (id: string) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .display {
 	display: block;
 }
 .display-none {
 	display: none;
 }
+
+.status {
+	&.open:before {
+		background-color: #94E185;
+		border-color: #78D965;
+		box-shadow: 0px 0px 4px 1px #94E185;
+	}
+
+	&.in-progress:before {
+		background-color: #FFC182;
+		border-color: #FFB161;
+		box-shadow: 0px 0px 4px 1px #FFC182;
+	}
+
+	&:before {
+		content: ' ';
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		margin-right: 10px;
+		border: 1px solid #000;
+		border-radius: 7px;
+	}
+}
+
 </style>
