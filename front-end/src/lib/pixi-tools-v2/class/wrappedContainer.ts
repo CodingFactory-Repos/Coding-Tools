@@ -56,10 +56,6 @@ export class WrappedContainer extends BoundsContainer {
 					ctn.eventMode = eventMode;
 					ctn.children.forEach((graph) => (graph.eventMode = eventMode));
 				});
-			} else {
-				element.children.forEach((graph) => {
-					graph.eventMode = eventMode;
-				});
 			}
 		}
 	};
@@ -131,7 +127,7 @@ export class WrappedContainer extends BoundsContainer {
 		this.wrappedBox.cursor = 'pointer';
 		this.wrappedBox.eventMode = PixiEventMode.STATIC;
 		this.addChildAt(this.wrappedBox, 0);
-		this.toggleChildrenEventMode('none');
+		this.toggleChildrenEventMode(PixiEventMode.NONE);
 		this.awaitDblClick = false;
 		this.timeout = null;
 	}
@@ -147,7 +143,7 @@ export class WrappedContainer extends BoundsContainer {
 			this.awaitDblClick = true;
 
 			this.timeout = setTimeout(() => {
-				this.toggleChildrenEventMode('none');
+				this.toggleChildrenEventMode(PixiEventMode.NONE);
 				this.viewport.setChildIndex(this, this.viewport.children.length - 13);
 				this.awaitDblClick = false;
 				this.timeout = null;
