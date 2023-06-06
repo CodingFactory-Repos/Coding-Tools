@@ -108,17 +108,19 @@
 				class=""
 				:class="item.status == 'Accepted' ? 'status open' : 'status in-progress'"
 			>
-				{{ item.status == 'Accepted' ? 'Accepted' : 'Pending' }}
+				{{ item.status == 'Accepted' ? 'Accepté' : 'En attente' }}
 			</div>
 			<div class="flex flex-col space-y-2">
-				<button class="border-solid border rounded-lg px-2 border-green-400 py-1">
+				<button v-if="item.status != 'Accepted'" @click="updateStatus(item._id, 'Accepted')" class="border-solid border rounded-lg px-2 border-green-400 py-1 bg-green-400 dark:bg-transparent">
 					Accepter
 				</button>
-				<button class="border-solid border rounded-lg p-1 border-red-500">
+				<button v-else @click="updateStatus(item._id, 'Pending')" class="border-solid border rounded-lg px-2 border-yellow-400 bg-yellow-400 dark:bg-transparent py-1">
+					Suspendre
+				</button>
+				<button v-if="item.status != 'Accepted'" @click="deleteArticle(item._id)" class="border-solid border rounded-lg p-1 border-red-500 bg-red-400 dark:bg-transparent">
 					Refuser
 				</button>
 			</div>
-			
 		</div>
 	</div>
 	
@@ -238,6 +240,41 @@ const openArticle = (id: string) => {
 const openTutorial = (id: string) => {
 	router.push(`/app/blog/tutorial/${id}`);
 };
+
+const updateStatus = async (id, status) => {
+	Swal.fire({
+		title: 'Validez votre choix',
+		icon: 'info',
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Oui',
+		cancelButtonText: 'Non',
+	}).then(async (result) => {
+		if (result.isConfirmed) {
+
+			// get article
+			const oneItems = computed(() => articleStore.oneItems);
+			await articleStore.getArticleById(id)
+			const articleToEdit = ref(oneItems.value);
+
+			// edit fields
+			delete articleToEdit.value._id
+
+			if (status == "Pending") {
+				articleToEdit.value.status = 'Pending'
+			}
+			else {
+				articleToEdit.value.status = 'Accepted'
+			}
+
+			// post the data
+			await articleStore.updateArticle(id, articleToEdit.value);
+
+			// update page articles
+			getArticles()
+		}
+	});
+}
 </script>
 
 <style scoped lang="scss">
