@@ -29,9 +29,7 @@
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/calls/ @AyakorK @Maghwyn
 /back-end/src/base/calls/calls.module.ts @Loule95450 @Maghwyn
-/back-end/src/base/calls/calls.repository.ts @Maghwyn
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/canvasRoom/ @Loule95450 @Maghwyn
 /back-end/src/base/canvasRoom/canvasRoom.controller.ts @Maghwyn @Kevw94
@@ -64,10 +62,9 @@
 /back-end/src/base/openHouses/openHouses.module.ts @Maghwyn
 /back-end/src/base/projects/interfaces/projects.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/projects/projects.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/retrospectives/ @Kevw94 @Maghwyn
 /back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
-/back-end/src/base/retrospectives/retrospectives.module.ts @Maghwyn
+/back-end/src/base/retrospectives/retrospectives.repository.ts @Maghwyn @Kevw94
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/users/allowed.students.repository.ts @Maghwyn @Kevw94
@@ -150,10 +147,10 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
-/front-end/src/components/blog/ @Maghwyn @TheoLandemaine
-/front-end/src/components/blog/AddTutorial.vue @Maghwyn
-/front-end/src/components/blog/EditArticle.vue @Maghwyn
-/front-end/src/components/blog/MarkdownViewer.vue @Maghwyn
+/front-end/src/components/blog/ @Maghwyn
+/front-end/src/components/blog/AddArticles.vue @Maghwyn @TheoLandemaine
+/front-end/src/components/blog/AddComment.vue @Maghwyn @TheoLandemaine
+/front-end/src/components/blog/ShowArticle.vue @Maghwyn @TheoLandemaine
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
 /front-end/src/components/common/drawer/RouterOption.vue @Loule95450 @Maghwyn
