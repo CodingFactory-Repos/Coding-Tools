@@ -108,37 +108,54 @@ export default {
 			});
 		}),
 		displaySwalGroup(message) {
-			if (message === 'full') {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'Ce groupe est plein !',
-				});
-			} else if (message === 'alreadyInGroup') {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: 'Tu es déjà dans ce groupe !',
-				});
-			} else if (message === 'successJoin') {
-				Swal.fire({
-					icon: 'success',
-					title: 'Succès !',
-					text: 'Tu as bien rejoint le groupe !',
-				});
-			} else if (message === 'successUpdate') {
-				Swal.fire({
-					icon: 'success',
-					title: 'Succès !',
-					text: 'Vous avez bien créé des groupes aléatoires !',
-				});
-			} else if (message === 'successEmpty') {
-				Swal.fire({
-					icon: 'success',
-					title: 'Succès !',
-					text: 'Vous avez bien vidé les groupes !',
-				});
+			let swalConfig;
+
+			switch (message) {
+				case 'full':
+					swalConfig = {
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Ce groupe est plein !',
+					};
+					break;
+				case 'alreadyInGroup':
+					swalConfig = {
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Tu es déjà dans ce groupe !',
+					};
+					break;
+				case 'successJoin':
+					swalConfig = {
+						icon: 'success',
+						title: 'Succès !',
+						text: 'Tu as bien rejoint le groupe !',
+					};
+					break;
+				case 'successUpdate':
+					swalConfig = {
+						icon: 'success',
+						title: 'Succès !',
+						text: 'Vous avez bien créé des groupes aléatoires !',
+					};
+					break;
+				case 'successEmpty':
+					swalConfig = {
+						icon: 'success',
+						title: 'Succès !',
+						text: 'Vous avez bien vidé les groupes !',
+					};
+					break;
+				default:
+					swalConfig = {
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Une erreur est survenue !',
+					};
+					break;
 			}
+
+			Swal.fire(swalConfig);
 		},
 		createRandomGroups: withErrorHandler(async function () {
 			http.get(`/calls/create_random_groups/${this.courseId}`).then((response) => {
