@@ -28,4 +28,12 @@ export class StoriesService {
 	async getStoryById(id) {
 		return await this.storiesRepository.getStoryById(id);
 	}
+
+	async getStoryByCourseId(id) {
+		return await this.storiesRepository.getStoryByCourseId(id);
+	}
+
+	async deleteStoryById(id) {
+		return await this.storiesRepository.deleteOneStory(id);
+	}
 }

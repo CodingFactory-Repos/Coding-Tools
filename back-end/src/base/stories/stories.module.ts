@@ -14,4 +14,4 @@ import { StoriesController } from 'src/base/stories/stories.controller';
 	controllers: [StoriesController],
 	exports: [StoriesService, StoriesRepository],
 })
-export class BacklogsModule {}
+export class StoriesModule {}

@@ -1,10 +1,11 @@
-import { Controller, Get, Res, UseFilters, Post, Req, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Post, Req, Put, UseGuards, Delete } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { StoriesService } from 'src/base/stories/stories.service';
 
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
+import { ObjectId } from 'mongodb';
 
 @Controller('stories')
 @UseFilters(ServiceErrorCatcher)
@@ -18,8 +19,9 @@ export class StoriesController {
 		return res.status(201).json(story);
 	}
 
-	@Post('/add')
+	@Post('/create')
 	async addStory(@Req() req: Request, @Res() res: Response) {
+		req.body.course = new ObjectId(req.body.course);
 		const story = await this.storiesService.createStory(req.body);
 		return res.status(201).json({ story, id: story.insertedId });
 	}
@@ -27,6 +29,18 @@ export class StoriesController {
 	@Get('/:id')
 	async getStoryById(@Req() req: Request, @Res() res: Response) {
 		const story = await this.storiesService.getStoryById(req.params.id);
+		return res.status(201).json(story);
+	}
+
+	@Get('/course/:id')
+	async getStoryByCourseId(@Req() req: Request, @Res() res: Response) {
+		const story = await this.storiesService.getStoryByCourseId(req.params.id);
+		return res.status(201).json(story);
+	}
+
+	@Delete('/delete/:id')
+	async deleteStoryById(@Req() req: Request, @Res() res: Response) {
+		const story = await this.storiesService.deleteStoryById(req.params.id);
 		return res.status(201).json(story);
 	}
 }

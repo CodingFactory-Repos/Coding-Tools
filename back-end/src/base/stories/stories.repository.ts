@@ -8,7 +8,7 @@ export class StoriesRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
 	get stories() {
-		return this.db.collection<Story>('Stories');
+		return this.db.collection<Story>('stories');
 	}
 
 	async getStory() {
@@ -41,5 +41,15 @@ export class StoriesRepository {
 
 	async findOne(query: Filter<Story>, options: FindOneAndUpdateOptions = undefined) {
 		return this.stories.findOne(query, options);
+	}
+
+	async getStoryByCourseId(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.stories.find({ course: id }).toArray();
+	}
+
+	async deleteOneStory(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.stories.deleteOne({ _id: id });
 	}
 }
