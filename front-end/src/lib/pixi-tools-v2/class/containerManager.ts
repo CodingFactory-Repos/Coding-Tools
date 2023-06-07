@@ -1,4 +1,4 @@
-import { Point } from 'pixi.js';
+import { Container, Point } from 'pixi.js';
 import { WrappedContainer } from './wrappedContainer';
 import { FramedContainer } from './framedContainer';
 import { ResizePlugin } from '../plugins/containerResizePlugin';
@@ -15,6 +15,7 @@ import { reactive } from 'vue';
 import { SerializedContainer, SerializedGraphic } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { PixiEventMode } from '../types/pixi-enums';
+import { TextContainer } from './textContainer';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -189,6 +190,9 @@ export class ContainerManager {
 		this.viewport.destroyBezierHandles();
 		this.viewport.destroyResizeHitArea();
 		this.viewport.destroyBezierCurveHandle();
+		for(let n = 0; n < this._selectedContainers.length; n++) {
+			this.handleDeselectTextContainer(this._selectedContainers[n]);
+		}
 		this.selectedContainers.length = 0;
 		this._selectedContainers.length = 0;
 	}
@@ -259,8 +263,17 @@ export class ContainerManager {
 		}
 
 		this.viewport.destroyBorder();
+		for(let n = 0; n < this._selectedContainers.length; n++) {
+			this.handleDeselectTextContainer(this._selectedContainers[n]);
+		}
 		this.selectedContainers.length = 0;
 		this._selectedContainers.length = 0;
+	}
+
+	private handleDeselectTextContainer(container: Container) {
+		if(!container.destroyed && container instanceof TextContainer) {
+			container.endEditing();
+		}
 	}
 
 	public deselectAllExceptThisContainer(index: number) {
@@ -269,6 +282,7 @@ export class ContainerManager {
 		for (let n = 0; n < this._selectedContainers.length; n++) {
 			if (index !== n) {
 				unselected.push(this._selectedContainers[n]);
+				this.handleDeselectTextContainer(this._selectedContainers[n]);
 				this._selectedContainers.splice(n, 1);
 				this.selectedContainers.splice(n, 1);
 			}
@@ -307,7 +321,10 @@ export class ContainerManager {
 			this.resizePlugin.attach(container);
 			this.dragPlugin.attach(container);
 
-			if (container instanceof FramedContainer || container instanceof GenericContainer) {
+			if (container instanceof FramedContainer
+					|| container instanceof GenericContainer
+					|| container instanceof TextContainer
+			) {
 				this.bezierPlugin.attach(container);
 			}
 		}

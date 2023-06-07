@@ -7,6 +7,7 @@ import type { InitialGraphicLineState, InitialGraphicState } from '../types/pixi
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
 import { LineBezier } from '../model/template';
+import { TextContainer } from '../class/textContainer';
 
 type FrameIntersect = {
 	frame: FramedContainer;
@@ -101,6 +102,9 @@ export class DragPlugin {
 	private _updateDragging = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
+		if (this.container instanceof TextContainer && this.container.isEditing) {
+			return;
+		}
 
 		const frames = this.viewport.children.filter(
 			(ctn) => ctn.visible && ctn instanceof FramedContainer,
