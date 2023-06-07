@@ -12,11 +12,11 @@ export class IdeasCommentsService {
 		private ideasCommentsRepository: IdeasCommentsRepository,
 	) {}
 
-	async getAllIdeasComments(query){
+	async getAllIdeasComments(query) {
 		return this.ideasCommentsRepository.getAllIdeasComments(query);
 	}
 
-	async addIdea(queryIdea){
+	async addIdea(queryIdea) {
 		return await this.ideasCommentsRepository.createIdeaComment(queryIdea);
 	}
 
