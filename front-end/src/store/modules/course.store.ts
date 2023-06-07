@@ -1,39 +1,71 @@
-import { withErrorHandler } from "@/utils/storeHandler";
-import { defineStore } from "pinia";
-import { CourseStore } from "../interfaces/course.interface";
-import { http } from '@/api/network/axios';
+import { CoursesStore, Course } from '../interfaces/cours.interface';
+import { defineStore } from 'pinia';
+import { withErrorHandler } from '@/utils/storeHandler';
+import {createCourse, getCourses, getCoursesById} from '@/api/ressource-req';
+import { isEmpty } from '@/utils/string.helper';
 
-export const useCourseStore = defineStore('course', {
-    state: (): CourseStore => ({
-        courses: [],
-        course: {
-            _id: '',
-            tag: '',
-            description: "",
-            image: "",
-            createdAt: "",
-            startPeriod: "",
-            endPeriod: "",
-            classId: "",
-            project: "",
-            site: "",
-            language: ""
-        },
-        courseLoading: false
-    }),
-    actions: {
-        getAllCourses: withErrorHandler(async function (this: CourseStore) {
-            this.courseLoading = true;
-            const { data } = await http.get('/courses');
-            console.log(data);
-            this.courses = data.courses;
-            this.courseLoading = false;
-        }),
-        getOneCourse: withErrorHandler(async function (this: CourseStore, id: string) {
-            this.courseLoading = true;
-            const { data } = await http.get(`/courses/${id}`);
-            this.course = data.course;
-            this.courseLoading = false;
-        }),
-    }
+export const useCoursStore = defineStore('course', {
+	state: (): CoursesStore => {
+		return {
+			items: [
+				{
+					_id: '',
+					tag: '',
+                    classTag: '',
+					picture: '',
+                    language:'',
+				    createdAt: null,
+					periodStart:null,
+                    periodEnd: null,
+					presence: [],
+					project: [],
+                    site:'',
+                    teacherId: ''
+				},
+			],
+            oneItems: {
+                _id: '',
+					tag: '',
+                    classTag: '',
+					picture: '',
+                    language:'',
+				    createdAt: null,
+					periodStart:null,
+                    periodEnd: null,
+					presence: [],
+					project: [],
+                    site:'',
+                    teacherId: ''
+            },
+		idCourses: "",
+        }
+	},
+	actions: {
+		//get courses in the database
+		getCourse: withErrorHandler(async function () {
+			const response = await getCourses();
+		//	console.log(response.data);
+			const items = response.data;
+			this.items = items;
+            console.log(this.items);
+			return true;
+		}),
+        getCourseById: withErrorHandler(async function (id: string) {
+			const response = await getCoursesById(id);
+			const oneItems = response.data;
+			this.oneItems = oneItems;
+			return true;
+		}),
+        addCourse: withErrorHandler(async function (
+			this: CoursesStore,
+			course: Course,
+		) {
+			const res = await createCourse(course); 
+			if (res.status !== 200) return false;
+			this.items.push(res.data);
+			return true;
+		}),
+	},
+  
+
 });

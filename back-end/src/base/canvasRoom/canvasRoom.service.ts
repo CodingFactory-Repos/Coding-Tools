@@ -1,13 +1,13 @@
 import { forwardRef, Inject, Injectable, Logger as NestLogger } from '@nestjs/common';
 
-import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
+import { CanvasRoomRepository } from './canvasRoom.repository';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import {
 	CanvasMetaDataList,
 	CanvasRoom,
 	CanvasRoomMeta,
-} from '@/base/CanvasRoom/interfaces/canvasRoom.interface';
+} from './interfaces/canvasRoom.interface';
 import {
 	PROJECTION_PROJECT_META_LIST,
 	PROJECTION_PROJECT,

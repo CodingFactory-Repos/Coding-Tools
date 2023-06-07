@@ -47,4 +47,8 @@ export class OpenHousesRepository {
 		id = new ObjectId(id);
 		return this.openHouses.findOne({ _id: id });
 	}
+
+	async createOpenHouses(query: OpenHouse) {
+		return this.openHouses.insertOne(query);
+	}
 }

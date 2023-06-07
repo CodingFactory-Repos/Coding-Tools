@@ -59,7 +59,16 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-			{ path: 'materials', component: () => import('../views/MaterialsView.vue') },
+			{
+				path: 'materials',
+				children: [
+					{ path: '', component: () => import('../views/MaterialsView.vue') },
+					{
+						path: 'approuvals',
+						component: () => import('../views/MaterialsApprouvalCenterView.vue'),
+					},
+				],
+			},
 
 			{
 				path: 'blog',
@@ -73,8 +82,20 @@ const routes: Array<RouteRecordRaw> = [
 						component: () => import('../views/AddArticleView.vue'),
 					},
 					{
+						path: 'new/tutorial',
+						component: () => import('../views/AddTutorialView.vue'),
+					},
+					{
 						path: ':id',
 						component: () => import('../views/ShowArticleView.vue'),
+					},
+					{
+						path: 'edit/:id',
+						component: () => import('../views/EditArticleView.vue'),
+					},
+					{
+						path: 'tutorial/:id',
+						component: () => import('../views/MarkdownViewer.vue'),
 					},
 				],
 			},
@@ -142,7 +163,36 @@ const routes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
-			{ path: 'ressource', component: () => import('../views/ressources/Ressources.vue') },
+			{ path: 'ideas', component: () => import('../views/AddIdeasView.vue') },
+			{
+				path: 'materialsDashboard',
+				component: () => import('../views/MaterialDashboardView.vue'),
+			},
+			{
+				path: 'ressource',
+				children: [
+					{
+						path: '',
+						component: () => import('../views/Ressources.vue'),
+					},
+					{
+						path: 'openhouse',
+						component: () => import('../views/OpenHouses.vue'),
+					},
+					{
+						path: 'openhouse/:id',
+						component: () => import('../views/OpenHousesDetails.vue'),
+					},
+					{
+						path: 'cours',
+						component: () => import('../views/CourseView.vue'),
+					},
+					{
+						path: 'courses/:id',
+						component: () => import('../views/CoursDetailsView.vue'),
+					},
+				],
+			},
 		],
 		meta: {
 			requiresAuth: true,

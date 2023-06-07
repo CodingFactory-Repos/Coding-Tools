@@ -5,19 +5,24 @@ import { Retrospective } from 'src/base/retrospectives/interfaces/retrospectives
 export interface Course {
 	_id?: ObjectId;
 	tag: string;
-	picture : string;
-	language: string;
-	createdAt: Date;
-	productOwner: ObjectId | User;
-	periodStart: Date;
-	periodEnd: Date;
-	call : Call;
-	projects : Array<string>;
-	siteLocation: string;
-	student : Array<ObjectId | User>;
+
+	classId?: ObjectId;
+	picture: string;
+    language: string;
+    createdAt: Date;
+    periodStart: Date;
+    periodEnd: Date;
+    presence:[];
+	project:[];
+    site: String;
+    teacherId?: ObjectId;
+	/*
+		productOwner?: User;
+	academicYear?: AcademicYear;
 	retrospective?: Retrospective;
-	files?: Array<string>;
-	commentaries?: Array<string>;
+	*/
+
+
 }
 
 export interface Call {
