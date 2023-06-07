@@ -12,6 +12,9 @@ import { BezierPlugin } from '../plugins/containerBezierLinkPlugin';
 import { LineContainer } from './lineContainer';
 import { BezierManipulationPlugin } from '../plugins/bezierManipulationPlugin';
 import { reactive } from 'vue';
+import { SerializedContainer, SerializedGraphic } from '../types/pixi-serialize';
+import { Normalizer } from './normalyzer';
+import { PixiEventMode } from '../types/pixi-enums';
 
 export class ContainerManager {
 	protected readonly viewport: ViewportUI;
@@ -26,6 +29,8 @@ export class ContainerManager {
 	public selectedContainers: Array<CanvasContainer> = reactive([]);
 	private _selectedContainers: Array<CanvasContainer> = [];
 	public isEditingContainerProperties = false;
+	private controlActive = false;
+	private copiedElements: Array<SerializedContainer> = [];
 
 	constructor(viewport: ViewportUI) {
 		this.viewport = viewport;
@@ -36,75 +41,156 @@ export class ContainerManager {
 		this.downloadPlugin = new DownloadPlugin(this.viewport);
 		this.bezierManipulationPlugin = new BezierManipulationPlugin(this.viewport);
 
-		window.onkeydown = this._destroySelected.bind(this);
+		window.onkeydown = this._onKeyPressed.bind(this);
+		window.onkeyup = this.__onKeyReleased.bind(this);
 	}
 
-	private _destroySelected(e: KeyboardEvent) {
+	private _onKeyPressed(e: KeyboardEvent) {
 		if (this.isEditingContainerProperties) return;
 
 		const key = e.key;
+		if (key === 'Backspace') this._destroyElement();
+		else if (key === 'Control') this.controlActive = true;
 
-		if (key === 'Backspace') {
-			if (this.wrappedContainer.children.length > 0) {
-				this.wrappedContainer.restoreStateContext();
+		if (this.controlActive && key.toLowerCase() === 'c') this._copyDeepElements();
+		else if (this.controlActive && key.toLowerCase() === 'v') this._pasteElements();
+	}
+
+	private __onKeyReleased(e: KeyboardEvent) {
+		const key = e.key;
+		if (key === 'Control') this.controlActive = false;
+	}
+
+	private _copyDeepElements() {
+		this.copiedElements = [];
+		for(let n = 0; n < this._selectedContainers.length; n++) {
+			const container = this._selectedContainers[n];
+			const data = container.serializeData();
+			delete data.uuid;
+			delete data.properties.frameNumber;
+
+			data.properties.eventMode = PixiEventMode.STATIC;
+
+			if (container instanceof FramedContainer) {
+				delete data.background.uuid;
+				data.background.properties.eventMode = PixiEventMode.STATIC;
+
+				for(let i = 0; i < data.childs.length; i++) {
+					const child = data.childs[i] as SerializedContainer;
+					delete child.uuid;
+					delete child.properties.frameNumber;
+
+					if (!data.properties.disabled) {
+						child.properties.eventMode = PixiEventMode.STATIC;
+					}
+
+					if (child?.childs) {
+						for(let x = 0; x < child.childs.length; x++) {
+							const subChild = child.childs[x];
+							delete subChild.uuid;
+						}
+					}
+				}
+			} else {
+				for(let i = 0; i < data.childs.length; i++) {
+					const child = data.childs[i] as SerializedGraphic;
+					delete child.uuid;
+					child.bounds.x = child.bounds.x + (child.bounds.width / 4);
+					child.bounds.y = child.bounds.y - (child.bounds.height / 4);
+				}
 			}
 
-			this._selectedContainers.forEach((ctn) => {
-				if (!(ctn instanceof LineContainer)) {
-					const uuid = [...ctn.linkedLinesUUID];
-					uuid.forEach((lineIdentifier) => {
-						const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
-						if (line.startContainer?.containerUUID !== undefined) {
-							const container = this.viewport.socketPlugin.elements[
-								line.startContainer.containerUUID
-							] as CanvasContainer;
-							container.detachLine(lineIdentifier);
-						}
-
-						if (line.endContainer?.containerUUID !== undefined) {
-							const container = this.viewport.socketPlugin.elements[
-								line.endContainer.containerUUID
-							] as CanvasContainer;
-							container.detachLine(lineIdentifier);
-						}
-
-						line.destroy();
-						this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
-					});
-				} else if (ctn instanceof LineContainer) {
-					if (ctn.startContainer?.containerUUID !== undefined) {
-						const container = this.viewport.socketPlugin.elements[
-							ctn.startContainer.containerUUID
-						] as CanvasContainer;
-						container.detachLine(ctn.startContainer.containerUUID);
-					}
-
-					if (ctn.endContainer?.containerUUID !== undefined) {
-						const container = this.viewport.socketPlugin.elements[
-							ctn.endContainer.containerUUID
-						] as CanvasContainer;
-						container.detachLine(ctn.endContainer.containerUUID);
-					}
-				}
-
-				if (this.viewport.socketPlugin) {
-					if (ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
-						const frame = ctn.parent.parent as FramedContainer;
-						this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid, frame.uuid);
-					} else {
-						this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
-					}
-				}
-				ctn.destroy();
-			});
-			this.viewport.destroyBorder();
-			this.viewport.destroyResizeHandles();
-			this.viewport.destroyBezierHandles();
-			this.viewport.destroyResizeHitArea();
-			this.viewport.destroyBezierCurveHandle();
-			this.selectedContainers.length = 0;
-			this._selectedContainers.length = 0;
+			this.copiedElements.push(data);
 		}
+	}
+
+	private _pasteElements() {
+		this.deselectAll();
+		this.detachPlugins();
+
+		for(let n = 0; n < this.copiedElements.length; n++) {
+			const elementData = this.copiedElements[n];
+			const container = Normalizer.container(this.viewport, elementData);
+			this.viewport.addChild(container);
+
+			//@ts-ignore
+			this.selectedContainers.push(container);
+			//@ts-ignore
+			this._selectedContainers.push(container);
+		}
+
+		if(this._selectedContainers.length > 1) {
+			this.wrapWithTemporaryParent();
+		} else {
+			this.drawBorder(this._selectedContainers[0]);
+			this.attachPlugins(this._selectedContainers[0]);
+		}
+	}
+
+	private _destroyElement() {
+		if (this.wrappedContainer.children.length > 0) {
+			this.wrappedContainer.restoreStateContext();
+		}
+
+		this._selectedContainers.forEach((ctn) => {
+			if (!(ctn instanceof LineContainer)) {
+				const uuid = [...ctn.linkedLinesUUID];
+				uuid.forEach((lineIdentifier) => {
+					const line = this.viewport.socketPlugin.elements[lineIdentifier] as LineContainer;
+					if (line.startContainer?.containerUUID !== undefined) {
+						const container = this.viewport.socketPlugin.elements[
+							line.startContainer.containerUUID
+						] as CanvasContainer;
+						container.detachLine(lineIdentifier);
+					}
+
+					if (line.endContainer?.containerUUID !== undefined) {
+						const container = this.viewport.socketPlugin.elements[
+							line.endContainer.containerUUID
+						] as CanvasContainer;
+						container.detachLine(lineIdentifier);
+					}
+
+					line.destroy();
+					this.viewport.socketPlugin.emit('ws-element-deleted', line.uuid);
+				});
+			} else if (ctn instanceof LineContainer) {
+				if (ctn.startContainer?.containerUUID !== undefined) {
+					const container = this.viewport.socketPlugin.elements[
+						ctn.startContainer.containerUUID
+					] as CanvasContainer;
+					container.detachLine(ctn.startContainer.containerUUID);
+				}
+
+				if (ctn.endContainer?.containerUUID !== undefined) {
+					const container = this.viewport.socketPlugin.elements[
+						ctn.endContainer.containerUUID
+					] as CanvasContainer;
+					container.detachLine(ctn.endContainer.containerUUID);
+				}
+			}
+
+			if (this.viewport.socketPlugin) {
+				if (ctn instanceof GenericContainer && ctn.isAttachedToFrame) {
+					const frame = ctn.parent.parent as FramedContainer;
+					this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid, frame.uuid);
+				} else {
+					this.viewport.socketPlugin.emit('ws-element-deleted', ctn.uuid);
+				}
+			}
+			ctn.destroy();
+		});
+		this._resetManagerState();
+	}
+
+	private _resetManagerState() {
+		this.viewport.destroyBorder();
+		this.viewport.destroyResizeHandles();
+		this.viewport.destroyBezierHandles();
+		this.viewport.destroyResizeHitArea();
+		this.viewport.destroyBezierCurveHandle();
+		this.selectedContainers.length = 0;
+		this._selectedContainers.length = 0;
 	}
 
 	/**
@@ -155,13 +241,13 @@ export class ContainerManager {
 			// If there is more than one children of the wrappedContainer,
 			//  add all of its children to the viewport + remove them and destroy its border, then draw the border of the clicked element.
 		} else if (this.wrappedContainer.children.length > 0) {
-			const index = this._selectedContainers.findIndex((el) => el === container);
-			if (index === -1) return;
+			const ctn = this._selectedContainers.find((el) => el.uuid === container.uuid);
+			if (ctn === undefined || ctn === null) return;
 
 			this.detachPlugins();
 			this.wrappedContainer.restoreStateContext();
-			this.viewport.destroyBorder();
-			this.deselectAllExceptThisContainer(index);
+			this._resetManagerState();
+			this._selectedContainers.push(ctn);
 			this.drawBorder(this._selectedContainers[0]);
 			this.attachPlugins(this._selectedContainers[0]);
 		}

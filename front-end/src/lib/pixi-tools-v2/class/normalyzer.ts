@@ -101,18 +101,21 @@ export class Normalizer {
 		}
 
 		if (!attributes.properties) {
-			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
-			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1;
-
 			attributes.properties = {
 				cursor: 'pointer',
-				frameNumber,
 				eventMode: PixiEventMode.STATIC,
 				isAttachedToFrame: false,
 				tabNumberContext: tabContext ?? -1,
 				disabled: false,
 			};
+		}
+
+		if (attributes.properties?.frameNumber === undefined) {
+			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
+			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
+			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1
+
+			attributes.properties.frameNumber = frameNumber;
 		}
 
 		if (childs !== undefined) {

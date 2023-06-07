@@ -1,10 +1,4 @@
-import {
-	Controller,
-	Get,
-	Res,
-	UseFilters,
-	UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
