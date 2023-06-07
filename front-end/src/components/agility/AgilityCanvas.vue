@@ -155,7 +155,7 @@ onBeforeRouteLeave(() => {
 projectStore.startRefreshing();
 </script>
 
-<style>
+<style lang="scss">
 html > body div.textEditor {
 	position: absolute;
 	color: #000000;
@@ -169,5 +169,19 @@ html > body div.textEditor {
 	background-color: transparent;
 	line-height: 1rem;
 	box-shadow: none !important;
+
+	&:focus-visible {
+		outline: none;
+	}
+
+	&.blank::before {
+		content: attr(data-placeholder);
+		font-size: 14px;
+		font-kerning: auto;
+		overflow-wrap: break-word;
+		white-space: pre-wrap;
+		color: rgb(160, 160, 160);
+		font-weight: normal;
+	}
 }
 </style>
