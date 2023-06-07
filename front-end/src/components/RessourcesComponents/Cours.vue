@@ -20,8 +20,8 @@
             </div>
         </div>
 		</div>
-		<select  v-model="selectedOption" @change="showCoursesByLanguage(selectedOption)">
-			<option value="" disabled selected>Sélectionnez une option</option>
+		<select  v-model="selectedOption" @change="showCoursesByLanguage()">
+			<option value="">Tous les cours</option>
 			<option v-for="language in TagList" :value="language" :key="language" >{{ language }}</option>
 		</select>
 	
@@ -87,28 +87,31 @@ const items = computed(() => courseStore.items);
 const user = computed(() => authStore.user);
 const userRole = computed(() => user.value?.role);
 
-function showCoursesByLanguage(language){
-	console.log(language);
+function showCoursesByLanguage(){
+	console.log(selectedOption);
 	coursesFiltered.value = [];
 	currentYearsCourses.forEach(element =>{
-		if(element.language.toUpperCase() == language){
+		if(element.language.toUpperCase() == selectedOption){
+			coursesFiltered.value.push(element);
+		}else if(selectedOption == ""){
 			coursesFiltered.value.push(element);
 		}
 	})
 };
 
 function getCurrentYearsCours(){
-	currentYearsCourses = [];
-	const coursesList = items.value;
+	currentYearsCourses = [];  //vider le tableau current years
+	const coursesList = items.value;   // list de tous les cours
 	coursesList.forEach(element =>{
-		const dateStart = new Date(element.periodStart).getFullYear();
+		const dateStart = new Date(element.periodStart).getFullYear();   //verif date
 		const dateEnd = new Date(element.periodEnd).getFullYear();
-		if(dateStart>=startYears.value && dateEnd<=endYears.value){
-			currentYearsCourses.push(element);
+		if(dateStart>=startYears.value && dateEnd<=endYears.value){   
+			currentYearsCourses.push(element);   //ajouter cours si date correspond
 		}
 	})
-	getAllTagCourse();
-	coursesFiltered.value = currentYearsCourses;
+	getAllTagCourse();  //récuperer tous les matieres des currents years cours
+	showCoursesByLanguage();
+	//coursesFiltered.value = currentYearsCourses;   //afficher les cours
 };
 
 function getAllTagCourse() {
