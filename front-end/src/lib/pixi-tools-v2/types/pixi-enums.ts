@@ -1,6 +1,7 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
+import { TextContainer } from '../class/textContainer';
 import { Circle, Rectangle, Triangle, LineBezier, Tree, Ellipse, TextArea } from '../model/template';
 
 export const GeometryTypes = {
@@ -27,8 +28,7 @@ export const ContainerType = {
 	generic: GenericContainer,
 	frame: FramedContainer,
 	line: LineContainer,
-	
-	//TODO Thomas - Define TextArea/StickyNote container here
+	text: TextContainer,
 } as const;
 
 export enum ResizeHandle {

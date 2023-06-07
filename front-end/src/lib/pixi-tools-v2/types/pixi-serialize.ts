@@ -7,7 +7,7 @@ import {
 	ElementPosition,
 } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame' | 'line';
+export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text';
 export type GraphicTypeId =
 	| 'rectangle'
 	| 'circle'
@@ -17,7 +17,7 @@ export type GraphicTypeId =
 	| 'bezier'
 	| 'tree'
 	| 'ellipse'
-	| 'textarea'	;
+	| 'textarea';
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
