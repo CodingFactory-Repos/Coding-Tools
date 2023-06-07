@@ -60,14 +60,19 @@ export class RetrospectivesService {
 		if (tryGetCurrentRetro) return tryGetCurrentRetro;
 	}
 
-	async getAllRetro(userId: ObjectId) {
+	async getRetrosByUser(userId: ObjectId) {
 		const user = await this.usersRepository.findOne({ _id: userId });
 		if (user === null) return;
 
 		const query = {
 			$or: [{ creator: user.profile?.email }, { participants: { $in: [user.profile?.email] } }],
 		};
-		const allRetro = await this.retrospectivesRepository.findAll(query);
+		const retroByUser = await this.retrospectivesRepository.findAll(query);
+		return retroByUser;
+	}
+
+	async getAllRetro() {
+		const allRetro = await this.retrospectivesRepository.findAll({});
 		return allRetro;
 	}
 

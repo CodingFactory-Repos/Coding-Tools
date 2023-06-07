@@ -14,8 +14,8 @@ export const newPostit = async (postit: Postit) => {
 	return await http.post('/retrospectives/newPostit', postit);
 };
 
-export const tryGetAllRetro = async () => {
-	return await http.get('/retrospectives/allRetros');
+export const tryGetRetrosByUser = async () => {
+	return await http.get('/retrospectives/retrosByUser');
 };
 
 export const tryUpdateParticipants = async (participants: Retrospective) => {
@@ -34,3 +34,7 @@ export const apiTryVerifyRetroInvitationToken = (token: string) => {
 export const apiTryRemoveRetroUserAccess = (userEmail: string, roomId: string) => {
 	return http.post<Status>(`/retrospectives/participants/${roomId}/remove-access`, { userEmail });
 };
+
+export const apiTryGetAllRetro = async () => {
+	return http.get('/retrospectives/allRetros');
+}
