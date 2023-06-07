@@ -85,8 +85,9 @@ export class TextContainer extends PluginContainer {
 		if (!this.isEditing && this._isSelected) {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
-			const { x, y, width, height, text } =  this.textGraphic;
-			this._viewport.startTextEditor(text, x, y, width, height);
+			const { x, y, width, height, text, color } =  this.textGraphic;
+			const fontSize = this.textGraphic.textStyle.fontSize;
+			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height);
 		}
 	}
 

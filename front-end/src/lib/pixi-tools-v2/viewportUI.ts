@@ -13,6 +13,7 @@ import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
 import { ElementPosition } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
+import { decimToHex } from './utils/colorsConvertor';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -62,6 +63,10 @@ export class ViewportUI extends Viewport {
 		this.textEditor.style.position = 'absolute';
 		this.textEditor.style.color = '#000000';
 		this.textEditor.style.display = 'none';
+		this.textEditor.style.resize = 'none';
+		this.textEditor.style.margin = '0px';
+		this.textEditor.style.padding = '0px';
+		this.textEditor.style.border = 'none';
 		this.textEditor.style.backgroundColor = 'transparent';
 		canvasWrapper.appendChild(this.textEditor);
 		
@@ -107,12 +112,14 @@ export class ViewportUI extends Viewport {
 		});
 	}
 
-	public startTextEditor(text: string, x: number, y: number, width: number, height: number) {
+	public startTextEditor(text: string, fontSize: number | string, color: number, x: number, y: number, width: number, height: number) {
 		const points = this.toScreen(x, y);
+		this.textEditor.style.color = decimToHex(color);
 		this.textEditor.style.left = `${points.x}px`;
 		this.textEditor.style.top = `${points.y}px`;
 		this.textEditor.style.width = `${width}px`;
 		this.textEditor.style.height = `${height}px`;
+		this.textEditor.style.fontSize = `${fontSize}px`;
 		this.textEditor.style.display = 'block';
 		this.textEditor.value = text;
 		this.textEditor.focus();

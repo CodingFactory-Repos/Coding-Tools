@@ -58,19 +58,18 @@ export class TextArea extends ModelGraphics {
 	}
 
 	public draw(bounds: Partial<ElementBounds>) {
-		const { width, height, x, y } = bounds;
+		const { x, y } = bounds;
 		this.position.set(x, y);
-		this.textStyle.fill = this.color;
+		this.textStyle.fill = this.color;		
+		this.textSprite.position.set(0, 0);
 
 		this.clear();
 		this.beginFill(this.color, 0);
 		if (this.borderWidth > 0) {
 			this.lineStyle(this.borderWidth, this.borderColor, 1);
 		}
-		this.drawRect(0, 0, width, height);
+		this.drawRect(0, 0, this.width, this.height);
 		this.endFill();
-		
-		this.textSprite.position.set(0, 0);
 	}
 
 	public serialized() {
