@@ -15,9 +15,8 @@
 			<IconButton class="h-fit" type="button" @click="setDefaultMode">
 				<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
 			</IconButton>
-			<IconButton class="h-fit" type="button" @click="createGeometry('textarea')" >
+			<IconButton class="h-fit" type="button" @click="createGeometry('textarea', 'text')" >
 				<SvgText width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'textarea' }"/>
-		
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="createFrame">
 				<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
@@ -119,6 +118,8 @@ import SvgRectangle from '@/components/common/svg/Rectangle.vue';
 import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
+import { Geometry } from 'pixi.js';
+import { ContainerTypeId } from '../../../lib/pixi-tools-v2/types/pixi-serialize';
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
@@ -137,12 +138,14 @@ watch(isDefault, val => {
 const setDefaultMode = () => {
 	projectStore.default = true;
 	projectStore.deferredGeometry = null;
+	projectStore.deferredContainer = null;
 	projectStore.deferredBlueprint = null;
 	projectStore.removeGeometryEvent();
 }
 
-const createGeometry = (geometry: LiteralGeometryTypes) => {
+const createGeometry = (geometry: LiteralGeometryTypes, container: ContainerTypeId = "generic") => {
 	projectStore.deferredGeometry = geometry;
+	projectStore.deferredContainer = container;
 	projectStore.setDeferredEvent("pointer", false);
 }
 
