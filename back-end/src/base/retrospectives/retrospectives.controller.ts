@@ -31,10 +31,18 @@ export class RetrospectivesController {
 		return res.status(201).json({ slug: retrospective.slug });
 	}
 
-	@Get('/allRetros')
+	@Get('/retrosByUser')
 	@UseGuards(JwtAuthGuard)
-	async allRetros(@Res() res: Response, @Jwt() userId: ObjectId) {
-		const retros = await this.retrospectivesService.getAllRetro(userId);
+	async getRetrosByUser(@Res() res: Response, @Jwt() userId: ObjectId) {
+		const retros = await this.retrospectivesService.getRetrosByUser(userId);
+
+		return res.status(200).json({ retrospectives: retros });
+	}
+
+	@Get('/allRetros')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PEDAGOGUE))
+	async getAllRetros(@Res() res: Response) {
+		const retros = await this.retrospectivesService.getAllRetro();
 
 		return res.status(200).json({ retrospectives: retros });
 	}

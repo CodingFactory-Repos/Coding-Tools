@@ -5,7 +5,7 @@ export interface RetrospectiveStore {
 	tempMovingPostit: Postit;
 	currentRetro: Retrospective
 	userCursors: Array<UserCursor>
-	allRetros: Array<Retrospective>
+	retrosByUser: Array<Retrospective>
 	isSideBar: boolean
 	inputSearch: string
 	dateSearch?: number
@@ -26,7 +26,7 @@ export interface RetrospectiveStore {
 	updateFromSocket?: (this: RetrospectiveStore, postit: Postit) => void;
 	updateUserCursor?: (this: RetrospectiveStore, userCursor: UserCursor) => void;
 	removeCursor?: (this: RetrospectiveStore, user: UserDisconnect) => void;
-	getAllRetros?: (this: RetrospectiveStore) => Promise<void>;
+	getRetrosByUser?: (this: RetrospectiveStore) => Promise<void>;
 	participantJoin?: (this: RetrospectiveStore, email: string) => Promise<void>;
 	participantLeave?: (this: RetrospectiveStore, user: UserDisconnect) => Promise<void>;
 	tryToggleSideBar?: (this: RetrospectiveStore) => void;
