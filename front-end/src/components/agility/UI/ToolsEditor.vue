@@ -1,5 +1,7 @@
 <template>
-	<div class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]">
+	<div
+		class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
+	>
 		<div class="flex h-full gap-1 items-center">
 			<DefaultButton
 				to="/app/agility/dashboard"
@@ -8,49 +10,114 @@
 				background="gradiant"
 				class="h-9"
 			>
-				<SvgArrows class="fill-white-icon dark:fill-white-icon"/>
+				<SvgArrows class="fill-white-icon dark:fill-white-icon" />
 			</DefaultButton>
 		</div>
 		<div class="grow flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button" @click="setDefaultMode">
-				<SvgCursor width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"/>
+				<SvgCursor
+					width="22"
+					height="22"
+					class="!fill-gray-400"
+					:class="{ '!fill-selected-icon dark:!fill-selected-icon': isDefault }"
+				/>
 			</IconButton>
-			<IconButton class="h-fit" type="button" @click="createGeometry('textarea', 'text')" >
-				<SvgText width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'textarea' }"/>
+			<IconButton class="h-fit" type="button" @click="createGeometry('textarea', 'text')">
+				<SvgText
+					width="22"
+					height="22"
+					class="!fill-gray-400"
+					:class="{
+						'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'textarea',
+					}"
+				/>
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="createFrame">
-				<SvgFrame width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox' }"/>
+				<SvgFrame
+					width="22"
+					height="22"
+					class="!fill-gray-400"
+					:class="{
+						'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+					}"
+				/>
 			</IconButton>
+			<div>
+				<IconButton class="h-fit" type="button" @click="createFrame">
+					<SvgFrame
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{
+							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+						}"
+					/>
+				</IconButton>
+			</div>
 			<div class="relative flex items-center justify-center z-10">
 				<IconButton class="h-fit" type="button" @click="toggleGeometryPopUp">
-					<SvgShape width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showGeometryPopUp}"/>
+					<SvgShape
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{ '!fill-selected-icon dark:!fill-selected-icon': showGeometryPopUp }"
+					/>
 				</IconButton>
 				<div
 					v-if="showGeometryPopUp"
 					class="absolute bottom-[-60px] w-fit h-[46px] px-1 py-1 bg-light-primary dark:bg-dark-secondary rounded-lg flex items-center justify-center border dark:border-darker-primary"
 				>
 					<IconButton class="h-fit" type="button" @click="createGeometry('rectangle')">
-						<SvgRectangle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle' }"/>
+						<SvgRectangle
+							width="22"
+							height="22"
+							class="!fill-gray-400"
+							:class="{
+								'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'rectangle',
+							}"
+						/>
 					</IconButton>
 					<IconButton class="h-fit" type="button" @click="createGeometry('circle')">
-						<SvgCircle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'circle' }"/>
+						<SvgCircle
+							width="22"
+							height="22"
+							class="!fill-gray-400"
+							:class="{
+								'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'circle',
+							}"
+						/>
 					</IconButton>
 					<IconButton class="h-fit" type="button" @click="createGeometry('triangle')">
-						<SvgTriangle width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'triangle' }"/>
+						<SvgTriangle
+							width="22"
+							height="22"
+							class="!fill-gray-400"
+							:class="{
+								'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'triangle',
+							}"
+						/>
 					</IconButton>
 				</div>
 			</div>
 			<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
 			<IconButton class="h-fit" type="button" @click="onContextMenu">
-				<SvgDownload width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"/>
-				<ContextMenu
-					v-model:show="showDownloadContextMenu"
-					:options="contextMenuOptions"
-				>
-					<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_PNG)">
+				<SvgDownload
+					width="22"
+					height="22"
+					class="!fill-gray-400"
+					:class="{ '!fill-selected-icon dark:!fill-selected-icon': showDownloadContextMenu }"
+				/>
+				<ContextMenu v-model:show="showDownloadContextMenu" :options="contextMenuOptions">
+					<ContextMenuItem
+						class="cursor-pointer border-b-[0.1px] border-gray-200"
+						@click="download(DownloadType.MIME_PNG)"
+					>
 						<span class="text-sm text-center w-full">Export PNG</span>
 					</ContextMenuItem>
-					<ContextMenuItem class="cursor-pointer border-b-[0.1px] border-gray-200" @click="download(DownloadType.MIME_JPG)">
+					<ContextMenuItem
+						class="cursor-pointer border-b-[0.1px] border-gray-200"
+						@click="download(DownloadType.MIME_JPG)"
+					>
 						<span class="text-sm text-center w-full">Export JPG</span>
 					</ContextMenuItem>
 					<ContextMenuItem class="cursor-pointer" @click="download(DownloadType.MIME_WEBP)">
@@ -59,25 +126,21 @@
 				</ContextMenu>
 			</IconButton>
 			<IconButton class="h-fit" type="button" @click="openBlueprintModal">
-				<SvgProject width="22" height="22" class="!fill-gray-400" :class="{ '!fill-selected-icon dark:!fill-selected-icon': isBlueprintModalOpen }"/>
+				<SvgProject
+					width="22"
+					height="22"
+					class="!fill-gray-400"
+					:class="{ '!fill-selected-icon dark:!fill-selected-icon': isBlueprintModalOpen }"
+				/>
 			</IconButton>
-			<ColorPickerOption position="bottom-[-330px] left-[30px]"/>
+			<ColorPickerOption position="bottom-[-330px] left-[30px]" />
 		</div>
-		<ShareProject
-			v-if="isShareModalOpen"
-			@close="closeShareModal"
-		/>
-		<ManageUser
-			v-if="isOwner && isManagerModalOpen"
-			@close="closeManagerModal"
-		/>
-		<BlueprintModal
-			v-if="isBlueprintModalOpen"
-			@close="closeBlueprintModal"
-		/>
+		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
+		<ManageUser v-if="isOwner && isManagerModalOpen" @close="closeManagerModal" />
+		<BlueprintModal v-if="isBlueprintModalOpen" @close="closeBlueprintModal" />
 		<div class="flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button" @click="openManagerModal" v-if="isOwner">
-				<SvgGear width="22" height="22" class="!fill-gray-400"/>
+				<SvgGear width="22" height="22" class="!fill-gray-400" />
 			</IconButton>
 			<DefaultButton
 				type="button"
@@ -87,7 +150,7 @@
 				background="gradiant"
 				@click="openShareModal"
 			>
-				<SvgGroup class="fill-white-icon dark:fill-white-icon"/>
+				<SvgGroup class="fill-white-icon dark:fill-white-icon" />
 			</DefaultButton>
 		</div>
 	</div>
@@ -127,12 +190,11 @@ const agilityStore = useAgilityStore();
 const isOwner = computed(() => agilityStore.isOwner);
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
-watch(isDefault, val => {
-	if(val) {
+watch(isDefault, (val) => {
+	if (val) {
 		projectStore.enableSelectionBox();
 		closeGeometryPopUp();
-	}
-	else projectStore.enableSelectionBox(true);
+	} else projectStore.enableSelectionBox(true);
 });
 
 const setDefaultMode = () => {
@@ -141,19 +203,19 @@ const setDefaultMode = () => {
 	projectStore.deferredContainer = null;
 	projectStore.deferredBlueprint = null;
 	projectStore.removeGeometryEvent();
-}
+};
 
-const createGeometry = (geometry: LiteralGeometryTypes, container: ContainerTypeId = "generic") => {
+const createGeometry = (geometry: LiteralGeometryTypes, container: ContainerTypeId = 'generic') => {
 	projectStore.deferredGeometry = geometry;
 	projectStore.deferredContainer = container;
-	projectStore.setDeferredEvent("pointer", false);
-}
+	projectStore.setDeferredEvent('pointer', false);
+};
 
 const createFrame = () => {
 	closeGeometryPopUp();
-	projectStore.deferredGeometry = "framebox";
-	projectStore.setDeferredEvent("pointer", true);
-}
+	projectStore.deferredGeometry = 'framebox';
+	projectStore.setDeferredEvent('pointer', true);
+};
 
 const contextMenuOptions = ref<MenuOptions>({
 	x: 10,
@@ -162,7 +224,7 @@ const contextMenuOptions = ref<MenuOptions>({
 	minWidth: 300,
 	theme: 'default dark',
 	customClass: '!text-white dark:bg-darker-primary shadow-none p-0 overflow-hidden min-w-[10rem]',
-})
+});
 
 const showDownloadContextMenu = ref(false);
 const onContextMenu = (e: MouseEvent) => {
@@ -170,29 +232,43 @@ const onContextMenu = (e: MouseEvent) => {
 	showDownloadContextMenu.value = true;
 	contextMenuOptions.value.x = e.x;
 	contextMenuOptions.value.y = e.y;
-}
+};
 
 const download = (mime: string) => {
 	projectStore.canvasDownload(mime);
-}
+};
 
 const isShareModalOpen = ref(false);
-const openShareModal = () => { isShareModalOpen.value = true }
-const closeShareModal = () => { isShareModalOpen.value = false }
+const openShareModal = () => {
+	isShareModalOpen.value = true;
+};
+const closeShareModal = () => {
+	isShareModalOpen.value = false;
+};
 
 const isManagerModalOpen = ref(false);
-const openManagerModal = () => { isManagerModalOpen.value = true }
-const closeManagerModal = () => { isManagerModalOpen.value = false }
+const openManagerModal = () => {
+	isManagerModalOpen.value = true;
+};
+const closeManagerModal = () => {
+	isManagerModalOpen.value = false;
+};
 
 const isBlueprintModalOpen = ref(false);
-const openBlueprintModal = () => { isBlueprintModalOpen.value = true }
-const closeBlueprintModal = () => { isBlueprintModalOpen.value = false }
+const openBlueprintModal = () => {
+	isBlueprintModalOpen.value = true;
+};
+const closeBlueprintModal = () => {
+	isBlueprintModalOpen.value = false;
+};
 
 const showGeometryPopUp = ref(false);
-const toggleGeometryPopUp = () => { showGeometryPopUp.value = !showGeometryPopUp.value }
+const toggleGeometryPopUp = () => {
+	showGeometryPopUp.value = !showGeometryPopUp.value;
+};
 const closeGeometryPopUp = () => {
-	if(showGeometryPopUp.value) {
-		showGeometryPopUp.value = false
+	if (showGeometryPopUp.value) {
+		showGeometryPopUp.value = false;
 	}
-}
+};
 </script>
