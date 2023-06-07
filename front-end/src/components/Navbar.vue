@@ -43,7 +43,7 @@
 								href="#"
 								class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white"
 							>
-								<img src="../images/CodingToolsLogo.png" class="h-32" alt="" />
+								<img src="@/assets/images/CodingToolsLogo.png" class="h-32" alt="" />
 							</a>
 						</li>
 						<li>
@@ -258,7 +258,7 @@
 								href="#"
 								class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white"
 							>
-								<img src="../images/CodingToolsFavicon.png" class="min-w-100 w-[24px]" alt="" />
+								<img src="@/assets/images/CodingToolsFavicon.png" class="min-w-100 w-[24px]" alt="" />
 							</a>
 						</li>
 						<li class="text-center">
