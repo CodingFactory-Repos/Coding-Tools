@@ -25,6 +25,14 @@ export class RetrospectivesService {
 	) {}
 
 	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
+		const user = await this.usersRepository.findOne({ _id: userId });
+		if (user === null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
+
+
 		const queryRetro = { "associatedCourse._id": retrospective.associatedCourse._id}
 		const isCoursesAlreadyAsignated = await this.retrospectivesRepository.findOne(queryRetro);
 
@@ -35,17 +43,6 @@ export class RetrospectivesService {
 			);
 
 		const date = new Date();
-		const user = await this.usersRepository.findOne({ _id: userId });
-		if (user === null)
-			throw new ServiceError(
-				'UNAUTHORIZED',
-				'You do not have the rights to access this ressource.',
-			);
-		if (user.role === Roles.STUDENT)
-			throw new ServiceError(
-				'UNAUTHORIZED',
-				'You do not have the rights to access this ressource.',
-			);
 
 		retrospective.createdAt = date;
 		retrospective.creator = user.profile.email;
