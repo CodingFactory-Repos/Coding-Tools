@@ -87,6 +87,10 @@ export class ArticlesService {
 		return await this.articlesRepository.deleteOneArticle(id);
 	}
 
+	// updates many articles at a time (used for cron task)
+	async updateManyArticles(query, updateParams) {
+		return await this.articlesRepository.updateMany(query, updateParams);
+	}
 	// Business logic methods goes there...
 	// Define your own methods
 }
