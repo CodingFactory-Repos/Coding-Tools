@@ -74,12 +74,9 @@ export default {
 			this.comment = '';
 		},
 		async getComments() {
-			console.log('getComments()');
 			const { comment, equipmentId, userId } = this;
 			const body = { comment, equipmentId, userId };
 			const { data: items } = await http.get(`/ideascomments/equipment/${equipmentId}`, body);
-			console.log('oui');
-			console.log({ data: items });
 			this.items = items || [];
 		},
 		formatDate(date) {
