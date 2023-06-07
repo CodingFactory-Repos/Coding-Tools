@@ -31,6 +31,7 @@ import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
 import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { TextContainer } from '../../../lib/pixi-tools-v2/class/textContainer';
 
 interface ColorPickerUpdate {
 	hex: string;
@@ -97,6 +98,8 @@ const changeColor = (col: ColorPickerUpdate) => {
 
 		if(projectStore.scene.viewport.socketPlugin) {
 			const parent = graphic.parent;
+			// TODO: Thomas, remove this when readuy for the live editing
+			if(parent instanceof TextContainer) continue;
 			if(parent instanceof GenericContainer || parent instanceof LineContainer) {
 				projectStore.scene.viewport.socketPlugin.emit(
 					'ws-element-colorized',

@@ -60,6 +60,7 @@ export class TextArea extends ModelGraphics {
 	public draw(bounds: Partial<ElementBounds>) {
 		const { width, height, x, y } = bounds;
 		this.position.set(x, y);
+		this.textStyle.fill = this.color;
 
 		this.clear();
 		this.beginFill(this.color, 0);
