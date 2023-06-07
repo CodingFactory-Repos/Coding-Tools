@@ -7,6 +7,8 @@ import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { PostitDTO, ProjectRetroInvitationVerificationDTO, RetroUserEmailDTO, RetroUserIdDTO, RetrospectiveDTO } from '@/base/retrospectives/dto/retrospectives.dto';
+import { RoleValidator } from '@/common/guards/role.guard';
+import { Roles } from '../users/interfaces/users.interface';
 
 @Controller('retrospectives')
 @UseFilters(ServiceErrorCatcher)
@@ -19,8 +21,12 @@ export class RetrospectivesController {
 	}
 
 	@Post('/newRetro')
-	@UseGuards(JwtAuthGuard)
-	async newRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: RetrospectiveDTO) {
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
+	async newRetro(
+		@Jwt() userId: ObjectId,
+		@Res() res: Response,
+		@Body() body: RetrospectiveDTO
+		) {
 		const retrospective = await this.retrospectivesService.newRetrospective(body, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
