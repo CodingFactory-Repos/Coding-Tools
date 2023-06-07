@@ -1,3 +1,5 @@
+import { Course } from './course.interface'
+
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>,
 	tempMovingPostit: Postit,
@@ -49,6 +51,7 @@ export interface Retrospective {
 	timerInterval?: NodeJS.Timer;
 	timePassed?: number;
 	allowedPeers?: Array<string>;
+	associatedCourse?: Course;
 }
 
 export interface Postits {

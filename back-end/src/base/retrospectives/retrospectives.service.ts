@@ -10,6 +10,7 @@ import { ServiceError } from '@/common/decorators/catch.decorator';
 import { RetrospectivesRoomInvitationRepository } from './retrospectivesRoomInvitation.repository';
 import { RetrospectivesEventEmitter } from './events/retrospectives.events';
 import { RetrospectiveGateway } from '@/common/gateways/retrospective.global.gateway';
+import { Roles } from '../users/interfaces/users.interface';
 
 @Injectable()
 export class RetrospectivesService {
@@ -24,9 +25,27 @@ export class RetrospectivesService {
 	) {}
 
 	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
+		const queryRetro = { "associatedCourse._id": retrospective.associatedCourse._id}
+		const isCoursesAlreadyAsignated = await this.retrospectivesRepository.findOne(queryRetro);
+
+		if (isCoursesAlreadyAsignated !== null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'This course is already assigned.',
+			);
+
 		const date = new Date();
 		const user = await this.usersRepository.findOne({ _id: userId });
-		if (user === null) return;
+		if (user === null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
+		if (user.role === Roles.STUDENT)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
 
 		retrospective.createdAt = date;
 		retrospective.creator = user.profile.email;

@@ -16,6 +16,7 @@ import {
 } from './interfaces/retrospective.interface';
 import { socketRetro } from '@/composables/useSocketRetro';
 import { useAuthStore } from './modules/auth.store';
+import Swal from 'sweetalert2';
 
 const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	privatePostit: [],
@@ -36,8 +37,18 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 	state: (): RetrospectiveStore => retrospectiveDefaultState(),
 	actions: {
 		async createNewRetro(this: RetrospectiveStore, retro: Retrospective) {
-			const resp = await createRetro(retro);
-			if (resp.status === 201) return resp.data;
+			try {
+				const resp = await createRetro(retro);
+				if (resp.status === 201) return resp.data;
+			} catch (err) {
+				console.log("error", err.response.data.error);
+
+				Swal.fire({
+					icon: "error",
+					title: "Ooooops",
+					text: `${err.response.data.error}`
+				});
+			}
 		},
 		async getCurrentRetro(slug: string) {
 			const resp = await tryGetCurrentRetro(slug);
