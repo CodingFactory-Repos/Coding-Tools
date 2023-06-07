@@ -11,6 +11,7 @@ import {
 } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 import { TextArea } from '../model/template';
+import { GenericContainer } from './genericContainer';
 
 export class TextContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -87,7 +88,9 @@ export class TextContainer extends PluginContainer {
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } =  this.textGraphic;
 			const fontSize = this.textGraphic.textStyle.fontSize;
-			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height);
+			//@ts-ignore
+			const containerized = this.parent.typeId === 'generic';
+			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height, containerized);
 		}
 	}
 

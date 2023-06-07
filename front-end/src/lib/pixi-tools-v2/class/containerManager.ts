@@ -133,7 +133,16 @@ export class ContainerManager {
 			this.wrappedContainer.restoreStateContext();
 		}
 
-		this._selectedContainers.forEach((ctn) => {
+		const textContainer = this._selectedContainers.filter((ctn) => ctn instanceof TextContainer) as unknown as Array<TextContainer>;
+		for(let n = 0; n < textContainer.length; n++) {
+			if(textContainer[n].isEditing) {
+				return;
+			}
+		}
+
+		for(let n = 0; n < this._selectedContainers.length; n++) {
+			const ctn = this._selectedContainers[n];
+
 			if (!(ctn instanceof LineContainer)) {
 				const uuid = [...ctn.linkedLinesUUID];
 				uuid.forEach((lineIdentifier) => {
@@ -180,7 +189,8 @@ export class ContainerManager {
 				}
 			}
 			ctn.destroy();
-		});
+		}
+
 		this._resetManagerState();
 	}
 
