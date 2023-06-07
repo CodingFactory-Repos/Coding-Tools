@@ -249,13 +249,12 @@
 /front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
-/front-end/src/store/index.ts @Maghwyn
+/front-end/src/store/ @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
-/front-end/src/store/interfaces/material.interface.ts @Maghwyn
 /front-end/src/store/interfaces/openhouse.store.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
@@ -313,5 +312,3 @@
 /front-end/types/shims-mime.d.ts @Maghwyn
 /front-end/vite.config.ts @Loule95450 @Maghwyn
 /README.md @Thomlam
-/uploads/0f35f378-e43d-4ce0-8bf1-265b1836704b.webp @Maghwyn @AyakorK
-/uploads/331a31c8-ddb9-43b8-ba4e-22c47be6e266.webp @Maghwyn
