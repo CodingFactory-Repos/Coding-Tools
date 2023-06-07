@@ -60,14 +60,7 @@ export class ViewportUI extends Viewport {
 
 		const canvasWrapper = document.getElementById("viewport");
 		this.textEditor = document.createElement('textarea');
-		this.textEditor.style.position = 'absolute';
-		this.textEditor.style.color = '#000000';
-		this.textEditor.style.display = 'none';
-		this.textEditor.style.resize = 'none';
-		this.textEditor.style.margin = '0px';
-		this.textEditor.style.padding = '0px';
-		this.textEditor.style.border = 'none';
-		this.textEditor.style.backgroundColor = 'transparent';
+		this.textEditor.classList.add("textEditor");
 		canvasWrapper.appendChild(this.textEditor);
 		
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
@@ -112,12 +105,16 @@ export class ViewportUI extends Viewport {
 		});
 	}
 
-	public startTextEditor(text: string, fontSize: number | string, color: number, x: number, y: number, width: number, height: number) {
+	public startTextEditor(text: string, fontSize: number | string, color: number, x: number, y: number, width: number, height: number, containerized: boolean) {
 		const points = this.toScreen(x, y);
 		this.textEditor.style.color = decimToHex(color);
 		this.textEditor.style.left = `${points.x}px`;
 		this.textEditor.style.top = `${points.y}px`;
-		this.textEditor.style.width = `${width}px`;
+		if(containerized) {
+			this.textEditor.style.width = `${width}px`;
+		} else {
+			this.textEditor.style.width = 'inherit';
+		}
 		this.textEditor.style.height = `${height}px`;
 		this.textEditor.style.fontSize = `${fontSize}px`;
 		this.textEditor.style.display = 'block';

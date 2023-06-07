@@ -154,3 +154,20 @@ onBeforeRouteLeave(() => {
 })
 projectStore.startRefreshing();
 </script>
+
+<style>
+html > body textarea.textEditor {
+	position: absolute;
+	color: #000000;
+	display: none;
+	resize: none;
+	margin: 0px;
+	padding: 0px;
+	border: none !important;
+	border-width: 0px !important;
+	border-color: transparent !important;
+	background-color: transparent;
+	line-height: 2rem;
+	box-shadow: none !important;
+}
+</style>
