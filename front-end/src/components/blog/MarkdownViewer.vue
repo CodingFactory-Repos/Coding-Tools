@@ -76,12 +76,19 @@
         <div class="w-1/4"
           v-if="windowWidth >= 1024"
         >
-          <div class="h-80 px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform">
-
+          <div class="h-80 px-3 py-4 overflow-y-auto bg-transparent transition-transform h-full">
             <ul class="space-y-2 font-medium">
-              <li v-for="(item, index) in headers" :key="index">
-                <a @click.prevent="setStep(index)" :class="step == index ? 'light:bg-gray-200 dark:bg-gray-700 block py-2 pl-3 pr-4 dark:text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500' : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <h2 class="ml-3">{{ index+1 }}. {{ item }}</h2>
+              <li v-for="(item, index) in headers" :key="index" >
+                <a @click.prevent="setStep(index)" 
+                  :class="step == index ? 'hover:!bg-gray-200 dark:!bg-gray-700' : ''" 
+                  class="flex items-center p-2 rounded-lg border-solid border border-gray-300 dark:border-transparent text-black dark:text-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-black dark:text-gray-200"
+                >
+                  <div class="flex flex-row">
+                    <div class="flex self-center min-w-[25.5px] rounded-full justify-center text-gray-200" :class="step >= index ? 'bg-blue-600 dark:bg-blue-800' : 'bg-gray-500 dark:text-black '">
+                      {{ index+1 }}
+                    </div>
+                    <h2 class="ml-3" :class="step == index ? 'font-semibold' : ''"> {{ item }}</h2>
+                  </div>
                 </a>
               </li>
             </ul>
@@ -244,7 +251,8 @@ if (!props.markdown){
   onMounted( async () => {
     await getArticleById(_id.value);
     srcMarkdown.value = oneItems.value.content;
-    date.value = formatDateField(oneItems.value.date)
+    // date.value = formatDateField(oneItems.value.date)
+    date.value = oneItems.value.date
     title.value = oneItems.value.title
 
     renderMarkdown()
@@ -297,7 +305,7 @@ const renderMarkdown = () => {
                 highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value
             }
 
-            return `<pre class='hljs overflow-x-scroll'><span class=''>${lang}</span></br><code class="${lang}">${highlightedCode}</code></pre>`
+            return `<pre class='hljs overflow-x-scroll'><div class='p-2'><span class='flex justify-end italic'>${lang}</span><code class="${lang}">${highlightedCode}</code></div></pre>`
         },
     });
 
