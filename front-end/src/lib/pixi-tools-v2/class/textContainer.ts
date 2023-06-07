@@ -100,7 +100,7 @@ export class TextContainer extends PluginContainer {
 		if (this.isEditing) {
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
-			this.textGraphic.text = this._viewport.textEditor.value;
+			this.textGraphic.text = this._viewport.textEditor.innerText;
 			console.log(this._viewport.textEditor)
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();

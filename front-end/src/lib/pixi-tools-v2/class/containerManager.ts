@@ -383,6 +383,12 @@ export class ContainerManager {
 					width: this._selectedContainers[0].mainContainer.width,
 					height: this._selectedContainers[0].mainContainer.height,
 				};
+			} else if(this._selectedContainers[0] instanceof TextContainer) {
+				this._selectedContainers[0].getBounds();
+				return {
+					width: this._selectedContainers[0].width,
+					height: this._selectedContainers[0].height,
+				};
 			} else {
 				return {
 					width: this._selectedContainers[0].width,
