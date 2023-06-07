@@ -156,7 +156,7 @@ projectStore.startRefreshing();
 </script>
 
 <style>
-html > body textarea.textEditor {
+html > body div.textEditor {
 	position: absolute;
 	color: #000000;
 	display: none;
@@ -167,7 +167,7 @@ html > body textarea.textEditor {
 	border-width: 0px !important;
 	border-color: transparent !important;
 	background-color: transparent;
-	line-height: 2rem;
+	line-height: 1rem;
 	box-shadow: none !important;
 }
 </style>
