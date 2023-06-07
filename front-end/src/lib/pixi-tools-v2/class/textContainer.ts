@@ -11,7 +11,6 @@ import {
 } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 import { TextArea } from '../model/template';
-import { GenericContainer } from './genericContainer';
 
 export class TextContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -111,7 +110,17 @@ export class TextContainer extends PluginContainer {
 		if (this.isEditing) {
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
-			this.textGraphic.text = this._viewport.textEditor.innerText.replace('/n', '').trim();
+
+			const data = this._viewport.textEditor.innerHTML.replaceAll('</div>', '</div>,').split(',')
+				.map((txt) => {
+					if(txt === '<div><br></div>') {
+						return "\n";
+					} else {
+						return txt.replace('<div>', '').replace('</div>', '').replace('<br>', '') + "\n"
+					}
+				}).join('');
+
+			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
 		}

@@ -115,7 +115,7 @@ export class ViewportUI extends Viewport {
 
 		if(text !== undefined && text !== '' && unicode !== 10) {
 			this.textEditor.classList.remove('blank');
-		} else {
+		} else if(text.trim().length === 0) {
 			this.textEditor.classList.add('blank');
 		}
 
@@ -143,7 +143,8 @@ export class ViewportUI extends Viewport {
 		this.textEditor.style.padding = `${padding}px`;
 		
 		if(text !== undefined && text !== '') {
-			this.textEditor.innerText = text;
+			const perLine = text.split('\n').map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`).join('');
+			this.textEditor.innerHTML = perLine;
 			this.textEditor.classList.remove('blank');
 		} else {
 			this.textEditor.classList.add('blank');
