@@ -20,9 +20,11 @@
             </div>
         </div>
 		</div>
-		<div v-for="language in TagList" @click="showCoursesByLanguage(language)" >
-			<h5>{{ language }}</h5>
-		</div>	
+		<select  v-model="selectedOption" @change="showCoursesByLanguage(selectedOption)">
+			<option value="" disabled selected>Sélectionnez une option</option>
+			<option v-for="language in TagList" :value="language" :key="language" >{{ language }}</option>
+		</select>
+	
 		<div class="text-center flex items-center justify-center max-w-full h-full">
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 				<div
@@ -69,6 +71,7 @@ import AddCourse from './AddCourse.vue'
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 
+let selectedOption='';
 const startYears = ref(new Date().getFullYear());
 const endYears = ref(new Date().getFullYear() + 1);
 const TagList = ref([]);
@@ -85,6 +88,7 @@ const user = computed(() => authStore.user);
 const userRole = computed(() => user.value?.role);
 
 function showCoursesByLanguage(language){
+	console.log(language);
 	coursesFiltered.value = [];
 	currentYearsCourses.forEach(element =>{
 		if(element.language.toUpperCase() == language){

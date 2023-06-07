@@ -47,7 +47,7 @@ export default {
     methods: {
         AddCourses(){ 
             const course = useCoursStore();
-            let newCourse  = {
+             this.newCourse  = {
                 tag: this.tag,
                 classTag: '',
                 picture: this.picture,
