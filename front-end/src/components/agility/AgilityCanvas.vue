@@ -150,5 +150,8 @@ onBeforeRouteLeave(() => {
 	}
 
 	document.removeEventListener('fullscreenchange', onFullscreenChange);
+	projectStore.stopRefreshing();
 })
+
+projectStore.startRefreshing();
 </script>
