@@ -31,7 +31,9 @@
 					class="infoLayout_title text-xs !text-opacity-50 text-dark-primary dark-primary dark:text-dark-font"
 					>Prix : </span
 				><br />
-				<span class="text-l text-dark-primary dark:text-dark-font"> {{ selectedItem.price }}€ </span>
+				<span class="text-l text-dark-primary dark:text-dark-font">
+					{{ selectedItem.price }}€
+				</span>
 			</li>
 			<li>
 				<span
@@ -61,17 +63,17 @@
 				</span>
 			</li>
 		</ul>
-		<Comments :equipmentId="selectedItem._id"/>
+		<Comments :equipmentId="selectedItem._id" />
+		<Pdf :item="selectedItem" />
 	</div>
 </template>
 <script>
-
-import Comments from './Comments.vue'
+import Comments from './Comments.vue';
+import Pdf from './DraftPdf.vue';
 
 export default {
 	props: ['selectedItem'],
 	created() {
-		console.log('qwack created', this.selectedItem);
 		this.$emit('getId');
 	},
 	methods: {
@@ -79,10 +81,9 @@ export default {
 			this.$emit('close');
 		},
 	},
-	components:{
-		Comments
+	components: {
+		Comments,
+		Pdf,
 	},
-	
 };
-
 </script>
