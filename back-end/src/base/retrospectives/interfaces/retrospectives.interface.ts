@@ -1,17 +1,26 @@
 import { ObjectId } from 'mongodb';
-import { User } from 'src/base/users/interfaces/users.interface';
 
 export interface Retrospective {
 	_id?: ObjectId;
+	slug?: string;
 	title: string;
-	creatorName: string;
-	createdAt: Date;
-	participants: Array<User>;
+	creator?: string;
+	createdAt?: Date;
+	participants?: Array<string>;
 	postits: Array<Postit>;
-	endedAt: Date;
+	endedAt?: Date;
+	isRetroEnded?: boolean;
+	isLocked?: boolean;
+	isTimerRunning?: boolean;
+	timerInterval?: NodeJS.Timer;
+	timePassed?: number;
 }
 
-interface Postit {
-	example: string;
-	// À définir;
+export interface Postit {
+	id?: string;
+	user?: string; // to see
+	value?: string;
+	type?: number;
+	visible?: boolean;
+	sylable?: string;
 }

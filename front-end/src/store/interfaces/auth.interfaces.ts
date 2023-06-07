@@ -1,4 +1,4 @@
-import { DeepPartial } from "@/interfaces/advanced-types.interface";
+import { DeepPartial } from '@/interfaces/advanced-types.interface';
 
 export interface AuthStore {
 	isAuth: boolean;
@@ -34,7 +34,7 @@ export type TempAuthUSer = Partial<UserCreds>;
 export enum Roles {
 	USER = 1,
 	PRODUCT_OWNER = 2,
-  PEDAGOGUE = 3,
+	PEDAGOGUE = 3,
 }
 
 export interface User {
@@ -44,14 +44,6 @@ export interface User {
 	profile?: UserProfile;
 	schoolProfile?: UserSchoolProfile;
 	businessProfile?: UserBusinessProfile;
-	events?: {
-		id: string;
-		title: string;
-	}[];
-	myArticles?: {
-		id: string;
-		title: string;
-	}[];
 }
 
 export interface UserProfile {

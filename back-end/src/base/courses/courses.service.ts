@@ -14,4 +14,7 @@ export class CoursesService {
 
 	// Business logic methods goes there...
 	// Define your own methods
+	async getAllCourses() {
+		return await this.coursesRepository.getAllCourses();
+	}
 }

@@ -5,28 +5,26 @@
 			tabindex="-1"
 			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[70] w-full inset-0 h-full justify-center items-center flex"
 		>
-			<div class="relative p-4 w-full h-auto" :class="`${modalSizeClasses[size]}`">
+			<div class="flex flex-col relative p-4 m-4 w-full h-auto rounded-lg shadow bg-light-primary dark:bg-dark-tertiary" :class="`${modalSizeClasses[size]}`">
 				<!-- Modal content -->
-				<div class="relative rounded-lg shadow bg-light-primary dark:bg-dark-tertiary p-4">
 
-					<button @click="closeModal" type="button" class="absolute right-2 top-2 bg-transparent hover:bg-light-secondary dark:hover:bg-dark-secondary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-						<SvgCross class="!fill-red-500"/>
-					</button>
+				<button @click="closeModal" type="button" class="absolute right-2 top-2 bg-transparent hover:bg-light-secondary dark:hover:bg-dark-secondary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+					<SvgCross class="!fill-red-500"/>
+				</button>
 
-					<!-- Modal header -->
-					<div class="rounded-t flex justify-between items-center" :class="$slots.header ? 'border-b border-light-secondary dark:border-dark-highlight' : ''">
-						<slot name="header" />
-					</div>
+				<!-- Modal header -->
+				<div class="rounded-t flex justify-between items-center" :class="$slots.header ? 'border-b border-light-secondary dark:border-dark-highlight' : ''">
+					<slot name="header" />
+				</div>
 
-					<!-- Modal body -->
-					<div :class="$slots.footer ? '!py-6' : ''">
-						<slot name="body" id="body" />
-					</div>
+				<!-- Modal body -->
+				<div :class="$slots.footer ? '!py-6 grow' : ''">
+					<slot name="body" id="body" />
+				</div>
 
-					<!-- Modal footer -->
-					<div v-if="$slots.footer" class="pt-6 rounded-b border-t border-light-secondary dark:border-dark-highlight">
-						<slot name="footer" />
-					</div>
+				<!-- Modal footer -->
+				<div v-if="$slots.footer" class="pt-6 rounded-b border-t border-light-secondary dark:border-dark-highlight">
+					<slot name="footer" />
 				</div>
 			</div>
 		</div>
@@ -43,7 +41,7 @@ defineProps({
 		default: 'center',
 	},
 	size: {
-		type: String as PropType<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'>,
+		type: String as PropType<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full'>,
 		default: '2xl',
 	},
 })
@@ -61,6 +59,7 @@ const modalSizeClasses = {
 	'5xl': 'max-w-5xl',
 	'6xl': 'max-w-6xl',
 	'7xl': 'max-w-7xl',
+	'full': 'w-screens p-4 !m-0 min-h-screen justify-between'
 }
 
 function closeModal() {

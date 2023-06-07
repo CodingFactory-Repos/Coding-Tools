@@ -6,7 +6,6 @@ import { config } from '@/config/config';
 import { join } from 'path';
 import { ServiceError } from '@/common/decorators/catch.decorator';
 
-
 @Injectable()
 export class AppService {
 	getHello(): string {
@@ -23,10 +22,10 @@ export class AppService {
 			writeStream.end();
 
 			return `${config.app.base}/${context}/images/${fileName}`;
-		} catch(err) {
-			if(err instanceof Error) {
+		} catch (err) {
+			if (err instanceof Error) {
 				NestLogger.error(err.message);
-				throw new ServiceError('BAD_REQUEST', "Could not process the file");
+				throw new ServiceError('BAD_REQUEST', 'Could not process the file');
 			}
 		}
 	}

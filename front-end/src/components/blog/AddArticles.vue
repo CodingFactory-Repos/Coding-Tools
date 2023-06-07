@@ -1,10 +1,11 @@
 <template>
-	<div class="margin text-center p-6 bg-light-primary border border-gray-200 rounded-lg shadow-md">
+	<div class="text-center max-w-full w-4/5 m-auto h-full">
+		<h2 class="text-3xl font-bold pt-5 text-gray-900">Nouvel article</h2>
 		<form @submit.prevent="addArticle">
-			<div class="grid gap-6 mb-6 md:grid-cols-2">
+			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 				<div>
 					<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Title</label
+						>Titre</label
 					>
 					<div class="relative mb-6">
 						<input
@@ -20,7 +21,7 @@
 					<label
 						for="countries"
 						class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Select an option</label
+						>Type</label
 					>
 					<div class="relative mb-6">
 						<select
@@ -28,58 +29,41 @@
 							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							v-model="type"
 						>
-							<option value="" selected disabled>Select type</option>
+							<option value="" selected disabled>Sélectionner un type</option>
 							<option value="Infos">Infos</option>
-							<option value="Tuto">Tuto</option>
-							<option value="Evenement">Evenement</option>
+							<option value="Tuto">Tutoriel</option>
+							<option value="Evenement">Événement</option>
 						</select>
 					</div>
 				</div>
 			</div>
+
 			<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
 				>Description</label
 			>
-			<div class="mb-6">
-				<div v-for="(description, index) in descriptions" :key="index">
-					<div class="relative mb-6 flex">
-						<textarea
-							type="text"
-							v-model="description.value"
-							rows="1"
-							class="p-2.5 w-4/5 text-sm text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-							placeholder="Enter text or image url"
-						/>
-
-						<select
-							v-model="description.type"
-							class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-						>
-							<option value="text">Text</option>
-							<option value="image">Image</option>
-						</select>
-						<button
-							v-if="descriptions.length > 1"
-							type="button"
-							@click="removeDescription(index)"
-							class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 mt-2 mb-2 ml-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-						>
-							X
-						</button>
-					</div>
+			<div class="mb-6 relative z-10">
+				<div class="relative mb-6 flex">
+					<mavon-editor
+						language="fr"
+						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						v-model="descriptions"
+					/>
 				</div>
 			</div>
-			<button
-				type="button"
-				class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-				@click="addDescription"
-			>
-				Add Description
-			</button>
+			<div class="h-10 mb-6">
+				<datepicker
+					v-model="date"
+					:full-month-name="true"
+					placeholder="YYYY-MM-DD"
+					:typeable="true"
+					class="vuejs3-datepicker w-[300px] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+				/>
+			</div>
 
-			<div class="grid gap-6 mb-6 md:grid-cols-2">
+			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 				<div>
 					<label for="picture" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Picture</label
+						>Image</label
 					>
 					<div class="relative mb-6">
 						<input
@@ -112,62 +96,41 @@
 					type="submit"
 					class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
 				>
-					Create
+					Créer
 				</button>
 			</div>
 		</form>
 	</div>
 </template>
 
-<style scoped>
-.margin {
-	width: fit-content;
-}
-</style>
-
 <script lang="ts" setup>
 // Post the data to the API
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
+import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
-import { objectTypeIndexer } from '@babel/types';
+
+// use router
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 // use the store
 const articleStore = useArticleStore();
-const items = computed(() => articleStore.items);
-const idArticle = computed(() => articleStore.idArticle);
-
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
 
 // form data
 const title = ref('');
-const descriptions = ref([{ type: 'text', value: '' }]);
 const picture = ref('');
+const descriptions = ref('...');
 const tags = ref('');
 const type = ref('');
-
-// Function to add description object to the array
-const addDescription = () => {
-	descriptions.value.push({ type: 'text', value: '' });
-};
-
-// Function to remove description object from the array
-const removeDescription = (index: number) => {
-	descriptions.value.splice(index, 1);
-};
+const date = ref(new Date());
 
 // Function to post the data to the API
 const addArticle = async () => {
 	// add verification if all the fields are filled
-	if (
-		!title.value ||
-		!picture.value ||
-		!tags.value ||
-		!type.value ||
-		!descriptions.value[0].value
-	) {
+	if (!title.value || !picture.value || !tags.value || !type.value || !descriptions.value) {
 		Swal.fire({
 			title: 'You have to fill all the fields',
 			text: 'Please fill all the fields to create a new article',
@@ -180,22 +143,15 @@ const addArticle = async () => {
 	}
 
 	let data = {
+		owner: authStore.user._id,
 		title: title.value,
 		descriptions: descriptions.value,
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
+		status: 'validated',
+		date: date.value.toString(),
 	};
-
-	//reset the form
-
-	title.value = '';
-	descriptions.value = [{ type: 'text', value: '' }];
-	picture.value = '';
-	tags.value = '';
-	type.value = '';
-
-	// reload the page
 
 	Swal.fire({
 		title: 'Your article has been created',
@@ -207,13 +163,23 @@ const addArticle = async () => {
 		if (result.isConfirmed) {
 			// post the data
 			await articleStore.addArticle(data);
-			// add article in user database
-
-			await authStore.addArticleToUser(idArticle.value);
-
-			// reload the page
-			location.reload();
+			// redirect to the article page
+			router.push('/app/blog');
 		}
 	});
+
+	//reset the form
+	title.value = '';
+	descriptions.value = '...';
+	picture.value = '';
+	tags.value = '';
+	type.value = '';
+	date.value = new Date();
 };
 </script>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>
