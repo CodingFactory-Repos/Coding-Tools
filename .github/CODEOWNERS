@@ -26,6 +26,7 @@
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
 /back-end/src/base/articles/articles.module.ts @Maghwyn
 /back-end/src/base/articles/articles.service.ts @Maghwyn
+/back-end/src/base/articles/events/ @Loule95450
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
@@ -120,6 +121,11 @@
 /front-end/src/api/scrum-req.ts @Kevw94 @Maghwyn
 /front-end/src/api/user-req.ts @Maghwyn @Kevw94
 /front-end/src/App.vue @TheoLandemaine @Maghwyn
+/front-end/src/assets/images/ @Loule95450 @Maghwyn
+/front-end/src/assets/images/CodingToolsFavicon.png @TheoLandemaine
+/front-end/src/assets/images/CodingToolsLogo.png @TheoLandemaine
+/front-end/src/assets/images/left.svg @TheoLandemaine
+/front-end/src/assets/images/right.svg @TheoLandemaine
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/assets/styles/components/add-ideas.css @Maghwyn @AyakorK
 /front-end/src/assets/styles/components/common/pop-up.css @Maghwyn @AyakorK
@@ -165,6 +171,7 @@
 /front-end/src/components/common/svg/DeleteLogo.vue @Maghwyn
 /front-end/src/components/common/svg/ExpandArrow.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Home.vue @Maghwyn @Kevw94
+/front-end/src/components/common/svg/LightBulb.vue @Loule95450
 /front-end/src/components/common/svg/Shrink.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgCrown.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/SvgThreeDot.vue @Maghwyn @Kevw94
@@ -190,12 +197,6 @@
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/config/config.ts @Maghwyn
-/front-end/src/images/ @Loule95450 @Maghwyn
-/front-end/src/images/CodingToolsFavicon.png @TheoLandemaine
-/front-end/src/images/CodingToolsLogo.png @TheoLandemaine
-/front-end/src/images/image-attractive-960x540.jpg @Maghwyn @Kevw94
-/front-end/src/images/left.svg @TheoLandemaine
-/front-end/src/images/right.svg @TheoLandemaine
 /front-end/src/interfaces/advanced-types.interface.ts @Loule95450 @Maghwyn
 /front-end/src/layout/app/AppLayout.vue @Maghwyn @Loule95450
 /front-end/src/layout/app/DrawerLayout.vue @Maghwyn @AyakorK
@@ -295,6 +296,7 @@
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
+/front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/views/OrganisationView.vue @Maghwyn
