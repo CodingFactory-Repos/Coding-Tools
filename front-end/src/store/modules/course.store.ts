@@ -11,6 +11,7 @@ export const useCoursStore = defineStore('course', {
 				{
 					_id: '',
 					tag: '',
+                    classTag: '',
 					picture: '',
                     language:'',
 				    createdAt: null,
@@ -25,6 +26,7 @@ export const useCoursStore = defineStore('course', {
             oneItems: {
                 _id: '',
 					tag: '',
+                    classTag: '',
 					picture: '',
                     language:'',
 				    createdAt: null,

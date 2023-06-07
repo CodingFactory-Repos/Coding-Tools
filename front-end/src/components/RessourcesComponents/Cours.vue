@@ -1,6 +1,9 @@
 <template>
-
+	
 	<div>
+		<div v-if="userRole === Roles.USER">
+			<h1>ELEVE</h1>
+		</div>
 		<div class="flex items-center justify-center">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
                 @click="startYears-- && endYears--; getCurrentYearsCours(); ">←</button>
@@ -63,8 +66,8 @@ import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCoursStore } from '@/store/modules/course.store';
 import AddCourse from './AddCourse.vue'
-import { elements } from 'chart.js';
-import { el } from 'date-fns/locale';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { Roles } from '@/store/interfaces/auth.interfaces';
 
 const startYears = ref(new Date().getFullYear());
 const endYears = ref(new Date().getFullYear() + 1);
@@ -75,21 +78,21 @@ const showModal = ref(false)
 const coursesFiltered = ref([])
 // Use the openHouses store
 const courseStore = useCoursStore();
+const authStore = useAuthStore();
 // Create a reactive variable to store the articles
 const items = computed(() => courseStore.items);
+const user = computed(() => authStore.user);
+const userRole = computed(() => user.value?.role);
 
 function showCoursesByLanguage(language){
-	 coursesFiltered.value = [];
+	coursesFiltered.value = [];
 	currentYearsCourses.forEach(element =>{
 		if(element.language.toUpperCase() == language){
 			coursesFiltered.value.push(element);
 		}
 	})
-	console.log(coursesFiltered.value);
-}
+};
 
-// Display the modal
-//const showModal = ref(false);
 function getCurrentYearsCours(){
 	currentYearsCourses = [];
 	const coursesList = items.value;
@@ -102,19 +105,16 @@ function getCurrentYearsCours(){
 	})
 	getAllTagCourse();
 	coursesFiltered.value = currentYearsCourses;
-	console.log(currentYearsCourses);
-}
+};
 
 function getAllTagCourse() {
 	TagList.value = [];
-	//const coursesList = items.value;
 	currentYearsCourses.forEach(element =>{
 		if(!TagList.value.includes(element.language.toUpperCase())){
 			TagList.value.push(element.language.toUpperCase());
 		}
 	})
-	console.log(TagList);
-}
+};
 
 // Get the router
 const router = useRouter();
@@ -130,17 +130,13 @@ onMounted(async() => {
 	await getCourses();
 });
 
-	// materialStore.getMaterials();
-
 // Function to open the openHouse page
 const openCourse = (id: string) => {
-	console.log(id);
 	router.push(`/app/ressource/courses/${id}`);
 };
 
 // Function to format the date
 const formatDate = (date) => {
-	console.log(date);
 	const options = {
 		month: 'long',
 		day: 'numeric',

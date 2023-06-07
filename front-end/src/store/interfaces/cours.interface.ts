@@ -7,7 +7,7 @@ export interface CoursesStore {
 export interface Course {
 	_id?: string;
 	tag: string;
-	classId?: string;
+	classTag: string;
 	picture: string;
     language: string;
     createdAt: Date;

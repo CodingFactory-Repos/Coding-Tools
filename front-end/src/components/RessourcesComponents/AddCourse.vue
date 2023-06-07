@@ -32,6 +32,7 @@ export default {
     data() {
         return {
             tag: '',
+            classTag: '',
             picture: '',
             language: '',
             createdAt: new Date(),
@@ -48,7 +49,7 @@ export default {
             const course = useCoursStore();
             let newCourse  = {
                 tag: this.tag,
-                classId: '',
+                classTag: '',
                 picture: this.picture,
                 language: this.language,
                 createdAt: this.createdAt,
@@ -59,10 +60,7 @@ export default {
                 site: '',
                 teacherId: '',
             }
-            console.log(newCourse);
             course.addCourse(this.newCourse);
-            console.log(course);
-
         }
     }
 }
