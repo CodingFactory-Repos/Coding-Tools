@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 import { ArticlesRepository } from 'src/base/articles/articles.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events'
+import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events';
 
 @Injectable()
 export class ArticlesService {
@@ -17,28 +17,24 @@ export class ArticlesService {
 
 	// Function to add an article
 	async addArticle(queryArticle) {
-
-		queryArticle.status = 'Pending'
+		queryArticle.status = 'Pending';
 
 		// send mail logic
-		if(queryArticle.type == 'Tuto'){
-			
+		if (queryArticle.type == 'Tuto') {
 			// request to get all PO/Pedagos
-			const mailTargets = await this.usersRepository.findMany(
-				{
-					'role' :  { $in : [2, 3] }
-				},
-			)
+			const mailTargets = await this.usersRepository.findMany({
+				role: { $in: [2, 3] },
+			});
 
 			// format mails for recipients
-			const recipientsMails: { Email : string }[] = mailTargets
-			.map(item => item.profile.email)
-			.map(mail => {
-				return { Email : mail }
-			})
-			
+			const recipientsMails: { Email: string }[] = mailTargets
+				.map((item) => item.profile.email)
+				.map((mail) => {
+					return { Email: mail };
+				});
+
 			// emit mail
-			this.newTutorialEmitter.newTutorialMail(recipientsMails)
+			this.newTutorialEmitter.newTutorialMail(recipientsMails);
 		}
 
 		return await this.articlesRepository.createArticle(queryArticle);
@@ -76,6 +72,7 @@ export class ArticlesService {
 	// add like to the array of likes in article in the database
 	async addLike(id, queryLike) {
 		const update = { $push: { likes: queryLike } };
+		console.log('addLike', queryLike);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
@@ -83,6 +80,7 @@ export class ArticlesService {
 	// remove like from the array of likes in article in the database
 	async removeLike(id, queryLike) {
 		const update = { $pull: { likes: queryLike } };
+		console.log('removeLike', queryLike);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}

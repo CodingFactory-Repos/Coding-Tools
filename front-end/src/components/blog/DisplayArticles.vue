@@ -22,10 +22,15 @@
 				<div v-if="activeTab === tab.id">
 					<h2 class="text-3xl font-bold pt-5 text-gray-900 dark:text-white">{{ tab.label }}</h2>
 					<div class="flex items-center justify-center p-5">
-						<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 							<div v-for="item in filteredItems(tab.id)" :key="item._id">
-								<div v-if="item.type != 'Tuto' || (item.type == 'Tuto' && (item.status == 'Accepted' || user.role == 2 || user.role == 3))"
-									class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+								<div
+									v-if="
+										item.type != 'Tuto' ||
+										(item.type == 'Tuto' &&
+											(item.status == 'Accepted' || user.role == 2 || user.role == 3))
+									"
+									class="max-w-md flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 								>
 									<CardArticle :item="item" />
 								</div>
@@ -74,6 +79,7 @@ const getArticles = async () => {
 };
 
 const tabs = ref([
+	{ id: 'all', label: 'Tous' },
 	{ id: 'infos', label: 'Infos' },
 	{ id: 'tutos', label: 'Tutoriels' },
 	{ id: 'events', label: 'Événements' },
@@ -81,7 +87,7 @@ const tabs = ref([
 	{ id: 'participate', label: 'Participations' },
 ]);
 
-const activeTab = ref('infos');
+const activeTab = ref('all');
 
 const tabClass = (tab) => {
 	return {
@@ -112,6 +118,13 @@ const filteredItems = (tabId) => {
 				(item) =>
 					item.participants &&
 					item.participants.some((participant) => participant.id === user.value._id),
+			);
+		case 'all':
+			return items.value.filter(
+				(item) =>
+					item.type === 'Infos' ||
+					item.type === 'Evenement' ||
+					(item.type === 'Tuto' && item.status === 'Accepted'),
 			);
 		default:
 			return [];

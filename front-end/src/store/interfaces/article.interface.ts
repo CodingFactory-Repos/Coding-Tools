@@ -16,13 +16,17 @@ export interface Article {
 	status?: string;
 	content?: string;
 	participants?: Participants[];
-	likes?: {
-		id: string;
-	}[];
-	dislikes?: {
-		id: string;
-	}[];
+	likes?: Likes[];
+	dislikes?: Dislikes[];
 	comments?: Comments[];
+}
+
+export interface Likes {
+	id: string;
+}
+
+export interface Dislikes {
+	id: string;
 }
 
 export interface Participants {
