@@ -34,6 +34,7 @@ export class ViewportUI extends Viewport {
 	public mouse: Point;
 	public selectionBoxActive = false;
 	public activeFrameNumber = null;
+	public textEditor: HTMLTextAreaElement;
 
 	public readonly activeFrames: Array<number> = reactive([]);
 	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
@@ -56,6 +57,14 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
+		const canvasWrapper = document.getElementById("viewport");
+		this.textEditor = document.createElement('textarea');
+		this.textEditor.style.position = 'absolute';
+		this.textEditor.style.color = '#000000';
+		this.textEditor.style.display = 'none';
+		this.textEditor.style.backgroundColor = 'transparent';
+		canvasWrapper.appendChild(this.textEditor);
+		
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
 
@@ -96,6 +105,22 @@ export class ViewportUI extends Viewport {
 				this.socketPlugin.pruneDestroyedElements();
 			}
 		});
+	}
+
+	public startTextEditor(text: string, x: number, y: number, width: number, height: number) {
+		const points = this.toScreen(x, y);
+		this.textEditor.style.left = `${points.x}px`;
+		this.textEditor.style.top = `${points.y}px`;
+		this.textEditor.style.width = `${width}px`;
+		this.textEditor.style.height = `${height}px`;
+		this.textEditor.style.display = 'block';
+		this.textEditor.value = text;
+		this.textEditor.focus();
+	}
+
+	public endTextEditor() {
+		this.textEditor.style.display = 'none';
+		this.textEditor.blur();
 	}
 
 	public changeGridTheme(isDark: boolean) {
