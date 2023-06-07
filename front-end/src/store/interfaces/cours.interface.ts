@@ -15,8 +15,8 @@ export interface Course {
     periodEnd: Date;
     presence:[];
 	project:[];
-    site: String;
-    teacherId?: String;
+    site: string;
+    teacherId?: string;
 }
 
 
