@@ -1,5 +1,5 @@
 
-import { TextStyle, Text } from 'pixi.js';
+import { TextStyle, Text, Rectangle } from 'pixi.js';
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
@@ -38,10 +38,11 @@ export class TextArea extends ModelGraphics {
 		this.color = properties.color;
 		this.alpha = properties.alpha;
 
-		this.text = 'Exemple de texte';
+		this.text = undefined ?? '';
 		this.textStyle = new TextStyle({
 			fill: this.color,
 			fontSize: 14,
+			padding: 5,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
 		this.textSprite.eventMode = "static";
@@ -60,8 +61,8 @@ export class TextArea extends ModelGraphics {
 	public draw(bounds: Partial<ElementBounds>) {
 		const { x, y } = bounds;
 		this.position.set(x, y);
-		this.textStyle.fill = this.color;		
-		this.textSprite.position.set(0, 0);
+		this.textStyle.fill = this.color;
+		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
 
 		this.clear();
 		this.beginFill(this.color, 0);

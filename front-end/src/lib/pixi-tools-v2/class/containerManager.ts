@@ -140,6 +140,8 @@ export class ContainerManager {
 			}
 		}
 
+		this.viewport.textEditor.innerHTML = '';
+
 		for(let n = 0; n < this._selectedContainers.length; n++) {
 			const ctn = this._selectedContainers[n];
 

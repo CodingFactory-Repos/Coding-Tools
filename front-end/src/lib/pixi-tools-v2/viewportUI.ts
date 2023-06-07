@@ -11,7 +11,7 @@ import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types
 import { reactive, shallowReactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
-import { ElementPosition } from './types/pixi-container';
+import { ElementPosition, ElementSize } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
 import { decimToHex } from './utils/colorsConvertor';
 
@@ -61,6 +61,7 @@ export class ViewportUI extends Viewport {
 		const canvasWrapper = document.getElementById("viewport");
 		this.textEditor = document.createElement('div');
 		this.textEditor.contentEditable = 'true';
+		this.textEditor.setAttribute('data-placeholder', 'Type something if you want to add some text');
 		this.textEditor.classList.add("textEditor");
 		this.textEditor.addEventListener("input", this.updateTextAreaBounds.bind(this));
 		canvasWrapper.appendChild(this.textEditor);
@@ -107,68 +108,46 @@ export class ViewportUI extends Viewport {
 		});
 	}
 
-	public updateTextAreaBounds() {
-		console.log({ width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight })
-		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
+	public updateTextAreaBounds(e: Event) {
+		const target = e.target as HTMLDivElement;
+		const text = target.innerText;
+		const unicode = text.charCodeAt(0);
 
-		if (this.border) {
-			this.border.draw({
-				...size,
-				x: this.border.x,
-				y: this.border.y,
-				scale: this.scaled,
-			});
+		if(text !== undefined && text !== '' && unicode !== 10) {
+			this.textEditor.classList.remove('blank');
+		} else {
+			this.textEditor.classList.add('blank');
 		}
 
-		if (!this._isHiddenUI) {
-			if (this.resizeHandles?.length > 0) {
-				this.updateResizeHandles(
-					{
-						...size,
-						x: this.border.x,
-						y: this.border.y,
-					},
-					true,
-				);
-			}
-
-			if (this.bezierHandles?.length > 0) {
-				this.updateBezierHandles(
-					{
-						...size,
-						x: this.border.x,
-						y: this.border.y,
-					},
-					true,
-				);
-			}
-
-			if (this.bezierCurveHandles?.length > 0) {
-				this.updateBezierCurveHandle(
-					{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
-					{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
-					true,
-				);
-			}
-
-			if (this.resizeHitAreas?.length > 0) {
-				this.updateResizeHitAreas({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-				});
-			}
-		}
+		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
+		this.updateUI(size);
 	}
 
-	public startTextEditor(text: string, fontSize: number | string, color: number, x: number, y: number, width: number, height: number, containerized: boolean) {
+	public startTextEditor(
+		text: string,
+		fontSize: number | string,
+		color: number,
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		padding: number,
+		containerized: boolean
+	) {
 		const points = this.toScreen(x, y);
 		this.textEditor.style.color = decimToHex(color);
 		this.textEditor.style.left = `${points.x}px`;
 		this.textEditor.style.top = `${points.y}px`;
 		this.textEditor.style.fontSize = `${fontSize}px`;
 		this.textEditor.style.display = 'block';
-		this.textEditor.innerText = text;
+		this.textEditor.style.padding = `${padding}px`;
+		
+		if(text !== undefined && text !== '') {
+			this.textEditor.innerText = text;
+			this.textEditor.classList.remove('blank');
+		} else {
+			this.textEditor.classList.add('blank');
+		}
 		
 		if(containerized) {
 			this.textEditor.style.maxWidth = `${width}px`;
@@ -178,6 +157,9 @@ export class ViewportUI extends Viewport {
 			this.textEditor.style.height = `fit-content`;
 		}
 		this.textEditor.focus();
+		this.textEditor.click();
+		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
+		this.updateUI(size);
 	}
 
 	public endTextEditor() {
@@ -229,53 +211,57 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if (this.border) {
-				this.border.draw({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-					scale: this.scaled,
-				});
-			}
+			this.updateUI(size);
+		}
+	}
 
-			if (!this._isHiddenUI) {
-				if (this.resizeHandles?.length > 0) {
-					this.updateResizeHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+	private updateUI(size: ElementSize) {
+		if (this.border) {
+			this.border.draw({
+				...size,
+				x: this.border.x,
+				y: this.border.y,
+				scale: this.scaled,
+			});
+		}
 
-				if (this.bezierHandles?.length > 0) {
-					this.updateBezierHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
-
-				if (this.bezierCurveHandles?.length > 0) {
-					this.updateBezierCurveHandle(
-						{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
-						{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
-						true,
-					);
-				}
-
-				if (this.resizeHitAreas?.length > 0) {
-					this.updateResizeHitAreas({
+		if (!this._isHiddenUI) {
+			if (this.resizeHandles?.length > 0) {
+				this.updateResizeHandles(
+					{
 						...size,
 						x: this.border.x,
 						y: this.border.y,
-					});
-				}
+					},
+					true,
+				);
+			}
+
+			if (this.bezierHandles?.length > 0) {
+				this.updateBezierHandles(
+					{
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					},
+					true,
+				);
+			}
+
+			if (this.bezierCurveHandles?.length > 0) {
+				this.updateBezierCurveHandle(
+					{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
+					{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
+					true,
+				);
+			}
+
+			if (this.resizeHitAreas?.length > 0) {
+				this.updateResizeHitAreas({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				});
 			}
 		}
 	}

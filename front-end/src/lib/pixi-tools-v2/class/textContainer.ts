@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
+import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
@@ -77,6 +77,16 @@ export class TextContainer extends PluginContainer {
 
 		this.children[0].on('pointerdown', this.startEditing.bind(this));
 
+		if (!remote) {
+			const eventBoundary = new EventBoundary(this);
+			const fakeEvent = new FederatedPointerEvent(eventBoundary);
+			fakeEvent.global = this._viewport.mouse;
+			fakeEvent.originalEvent = fakeEvent;
+			fakeEvent.originalEvent.shiftKey = false;
+			this.emit('pointerdown', fakeEvent);
+			this.children[0].emit('pointerdown', fakeEvent);
+		}
+
 		// if (!remote && viewport.socketPlugin) {
 		// 	viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 		// }
@@ -88,9 +98,10 @@ export class TextContainer extends PluginContainer {
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } =  this.textGraphic;
 			const fontSize = this.textGraphic.textStyle.fontSize;
+			const padding = this.textGraphic.textStyle.padding;
 			//@ts-ignore
-			const containerized = this.parent.typeId === 'generic';
-			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height, containerized);
+			const containerized = this?.parent?.typeId === 'generic';
+			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height, padding, containerized);
 		}
 	}
 
@@ -100,8 +111,7 @@ export class TextContainer extends PluginContainer {
 		if (this.isEditing) {
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
-			this.textGraphic.text = this._viewport.textEditor.innerText;
-			console.log(this._viewport.textEditor)
+			this.textGraphic.text = this._viewport.textEditor.innerText.replace('/n', '').trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
 		}
