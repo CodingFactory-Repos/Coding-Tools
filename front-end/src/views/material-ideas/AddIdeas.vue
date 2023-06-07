@@ -12,14 +12,7 @@
 				/>
 				<!-- Add item on click -->
 				<button
-					class="button btn-add 
-                    dark:text-dark-font 
-                    dark:disabled:bg-dark-tertiary
-                    dark:disabled:text-dark-icon
-                    dark:bg-dark-tertiary
-                    disabled:bg-light-tertiary disabled:text-light-font 
-                    font-bold 
-                    text-dark-primary bg-light-tertiary"
+					class="button btn-add dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary disabled:text-light-font font-bold text-dark-primary bg-light-tertiary"
 					@click="openPopUp = true"
 					:disabled="title === ''"
 				>
@@ -87,18 +80,8 @@ export default {
 		},
 	},
 	methods: {
-		// addItem() {
-		// 	if (this.newItem !== '') {
-        //         console.log(this.newItem);
-		// 		this.items.push({ text: this.newItem, completed: false }); //check if input field is empty, if not empty then push [input] into array [items] and mark not completed [checkbox: unchecked]
-        //         this.title = "";
-		// 	}
-            
-		// },
 		async deleteItem(index, event) {
-			console.log(event);
 			event.stopPropagation();
-			console.log(index);
 			await http.delete('/ideasequipments/' + index);
 			this.getBdd();
 
@@ -106,11 +89,10 @@ export default {
 		},
 		closePopup() {
 			this.openPopUp = false;
-            this.title = "";
+			this.title = '';
 		},
 		closeInfo() {
 			this.infoState = '';
-			console.log('clode');
 		},
 		async getBdd() {
 			const { title, price, motiv, link, motivations } = this;
@@ -119,16 +101,8 @@ export default {
 			this.items = items || [];
 		},
 
-		// async getId(id){
-		//     await http.get("/ideaequipment/:id")
-		//     console.log("id requête : ", id)
-		// },
-
 		openInfo(item) {
-			console.log(item.title);
 			this.selectedItem = item;
-			// const id = this.selectedItem
-			console.log('selectedItem : id ', this.selectedItem);
 			this.infoState = this.selectedItem;
 		},
 	},
