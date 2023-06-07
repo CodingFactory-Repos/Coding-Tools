@@ -67,7 +67,7 @@ import SvgDownload from '@/components/common/svg/Download.vue';
 import Add from '@/components/common/svg/Add.vue';
 import Chart from '@/components/common/svg/Chart.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-import CodingToolsLogo from '@/images/CodingToolsLogo.png';
+import CodingToolsLogo from '@/assets/images/CodingToolsLogo.png';
 import LightBulb from '@/components/common/svg/LightBulb.vue';
 import { http } from '@/api/network/axios';
 import { Material } from '@/store/interfaces/material.interface';
