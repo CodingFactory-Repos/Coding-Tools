@@ -116,10 +116,10 @@
 /front-end/src/ @Loule95450 @Maghwyn
 /front-end/src/api/ @Maghwyn
 /front-end/src/api/agility-req.ts @Loule95450 @Maghwyn
+/front-end/src/api/auth-req.ts @Maghwyn @Loule95450
 /front-end/src/api/material-req.ts @Kevw94 @Maghwyn
 /front-end/src/api/network/ @Maghwyn
 /front-end/src/api/scrum-req.ts @Kevw94 @Maghwyn
-/front-end/src/api/user-req.ts @Maghwyn @Kevw94
 /front-end/src/App.vue @TheoLandemaine @Maghwyn
 /front-end/src/assets/images/ @Loule95450 @Maghwyn
 /front-end/src/assets/images/CodingToolsFavicon.png @TheoLandemaine
@@ -185,12 +185,14 @@
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
 /front-end/src/components/retrospective/CreatePostit.vue @Loule95450 @Maghwyn @Kevw94
-/front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
+/front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/Postit.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/UpdatePostit.vue @Loule95450 @Maghwyn @Kevw94
-/front-end/src/components/retrospective/utils/ @Maghwyn
+/front-end/src/components/retrospective/utils/ @AyakorK @Maghwyn
+/front-end/src/components/retrospective/utils/NavInfosRetro.vue @Maghwyn
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
+/front-end/src/components/retrospective/utils/SideBarParticipants.vue @Maghwyn
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
