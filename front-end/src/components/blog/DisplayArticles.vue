@@ -24,7 +24,7 @@
 					<div class="flex items-center justify-center p-5">
 						<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div v-for="item in filteredItems(tab.id)" :key="item._id">
-								<div
+								<div v-if="item.type != 'Tuto' || (item.type == 'Tuto' && (item.status == 'Accepted' || user.role == 2 || user.role == 3))"
 									class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 								>
 									<CardArticle :item="item" />

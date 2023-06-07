@@ -1,5 +1,11 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
+	<ModalOverlay v-if="showCommentModal" @close="closeCommentModal" size="2xl">
+		<template #body>
+			<AddComment />
+		</template>
+	</ModalOverlay>
+
 	<div class="relative">
 		<div class="codeLab text-gray-900 dark:text-white">
 			<div
@@ -194,6 +200,49 @@
 				Next
 			</button>
 		</div>
+
+		<div v-if="!props.markdown">
+			<button
+				type="button"
+				@click="openCommentModal"
+				class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+			>
+				<Comment />
+			</button>
+		</div>
+		<div>
+			<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
+				<header class="mb-2">
+					<h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+						{{ comment.title }}
+					</h3>
+				</header>
+				<div class="flex items-center mb-4 space-x-4">
+					<img
+						class="w-10 h-10 rounded-full"
+						:src="
+							comment.picture
+								? comment.picture
+								: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
+						"
+						alt=""
+					/>
+					<div class="font-medium dark:text-white">
+						<p class="text-gray-900 dark:text-white">
+							{{ comment.firstName }} {{ comment.lastName }}
+						</p>
+						<p class="text-xs text-gray-500 dark:text-gray-400">{{ comment.email }}</p>
+					</div>
+				</div>
+				<footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
+					<p>Écrit le {{ formatDate(comment.date) }}</p>
+				</footer>
+
+				<p class="mb-2 font-light text-gray-500 dark:text-gray-400">
+					{{ comment.descriptions }}
+				</p>
+			</article>
+		</div>
 	</div>
 </template>
 
@@ -202,6 +251,9 @@ import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
+import Comment from '../common/svg/Comment.vue';
+import AddComment from '@/components/blog/AddComment.vue';
+import ModalOverlay from '@/components/common/Modal.vue';
 
 const props = defineProps({
 	markdown: {
@@ -217,6 +269,17 @@ const props = defineProps({
 // get store
 const articleStore = useArticleStore();
 const oneItems = computed(() => articleStore.oneItems);
+
+const showCommentModal = ref(false);
+const openCommentModal = () => (showCommentModal.value = true);
+const closeCommentModal = () => (showCommentModal.value = false);
+const formatDate = (date: Date) => {
+	// transform date to string
+	const newDate = date.toString();
+	const dateSplited = newDate.split('T')[0].split('-').reverse().join('/');
+	const timeSplited = newDate.split('T')[1].split('.')[0];
+	return `${dateSplited} à ${timeSplited}`;
+};
 
 const windowWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -242,7 +305,7 @@ if (!props.markdown) {
 	onMounted(async () => {
 		await getArticleById(_id.value);
 		srcMarkdown.value = oneItems.value.content;
-		date.value = formatDate(oneItems.value.date);
+		date.value = formatDateField(oneItems.value.date);
 		title.value = oneItems.value.title;
 		description.value = oneItems.value.descriptions;
 
@@ -250,7 +313,7 @@ if (!props.markdown) {
 	});
 }
 
-const formatDate = (date) => {
+const formatDateField = (date) => {
 	// transform date to string
 	let tempDate;
 
