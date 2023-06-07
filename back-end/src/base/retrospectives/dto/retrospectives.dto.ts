@@ -30,24 +30,21 @@ export class RetrospectiveDTO {
 
 	@IsNotEmpty()
 	@IsNumber()
-	optionTemplate: number
+	optionTemplate: number;
 
 	@IsOptional()
 	@IsString()
 	@Length(8, 127)
 	creator: string;
 
-
 	@IsOptional()
 	@IsDate()
 	createdAt: Date;
 
-
 	@IsOptional()
 	@IsArray()
-	@IsString({each: true})
+	@IsString({ each: true })
 	participants: Array<string>;
-
 
 	@IsObject()
 	@Type(() => PostitsDTO)
@@ -82,7 +79,6 @@ export class PostitDTO {
 	@IsString()
 	id: string;
 
-
 	@IsNotEmpty()
 	@IsString()
 	@Length(8, 127)
@@ -112,18 +108,17 @@ class PostitsDTO {
 	@ValidateNested({ each: true })
 	@Type(() => PostitDTO)
 	@IsArray()
-	1: Array<PostitDTO>
+	1: Array<PostitDTO>;
 
 	@IsOptional()
 	@ValidateNested({ each: true })
 	@Type(() => PostitDTO)
 	@IsArray()
-	2: Array<PostitDTO>
+	2: Array<PostitDTO>;
 
 	@IsOptional()
 	@ValidateNested({ each: true })
 	@Type(() => PostitDTO)
 	@IsArray()
-	3: Array<PostitDTO>
-
+	3: Array<PostitDTO>;
 }
