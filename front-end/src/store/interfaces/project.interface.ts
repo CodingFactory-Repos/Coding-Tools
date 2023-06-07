@@ -4,11 +4,13 @@ import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { FederatedPointerEvent } from 'pixi.js';
 import { LitteralBlueprintTypes } from '@/store/interfaces/agility.interface';
+import { ContainerTypeId } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface ProjectStore {
 	scene: Scene;
 	canvas: HTMLCanvasElement;
 	deferredGeometry: LiteralGeometryTypes;
+	deferredContainer: ContainerTypeId;
 	deferredBlueprint: LitteralBlueprintTypes;
 	default: boolean;
 	selectionBox: SelectionBox;
