@@ -13,6 +13,7 @@ import {
 
 import { ObjectId } from 'mongodb';
 import { Postit } from '../interfaces/retrospectives.interface';
+import { CourseDTO } from '@/base/courses/dto/coures.dto';
 
 export class RetrospectiveDTO {
 	@IsOptional()
@@ -75,6 +76,11 @@ export class RetrospectiveDTO {
 	@IsOptional()
 	@IsNumber()
 	timePassed: number;
+
+	@IsObject()
+	@ValidateNested()
+	@Type(() => CourseDTO)
+	associatedCourse: CourseDTO;
 }
 
 export class PostitDTO {

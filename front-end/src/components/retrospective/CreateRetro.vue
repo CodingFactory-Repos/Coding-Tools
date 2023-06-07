@@ -21,18 +21,20 @@
 		</div>
 		<div class="w-full flex grow gap-3 flex-wrap">
 			<Overlay v-model:active="active" :fullSize="false">
-				<ChooseTemplate />
+				<ChooseTemplate :allCourses="allCourses"/>
 			</Overlay>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import Overlay from '@/components/retrospective/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import { http } from '@/api/network/axios';
+import { useCourseStore } from '@/store/course.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { Roles } from '@/store/interfaces/auth.interfaces';
 
 export default defineComponent({
 	components: {
@@ -41,9 +43,13 @@ export default defineComponent({
 		ChooseTemplate,
 	},
 	setup() {
+		const courseStore = useCourseStore();
+		const authStore = useAuthStore();
 		const active = ref(false);
 		const displayTemplate = ref(false);
-		const isPO = ref(false); // Ajout de la variable isPO
+		const isPO = computed(() => authStore.user.role === Roles.USER ? false : true);
+		const allCourses = computed(() => courseStore.allCourses);
+
 
 		const chooseTemplate = () => {
 			active.value = true;
@@ -54,29 +60,13 @@ export default defineComponent({
 			}
 		};
 
-		onMounted(async() => {
-			await isProductOwner();
-		})
-		const isProductOwner = async () => {
-			// Je vois avec Louis ce qu'il veut faire parce que pas compris, bref
-			// Utiliser une fonction fléchée
-			try {
-				const response = await http.get(`/calls/is_product_owner/`);
-				// TODO: Ici, il faut définir la valeur de isPO
-				// this.isPO = response.data.isPO;
-				isPO.value = true;
-			} catch (error) {
-				console.error(error);
-				// this.isPO = false;
-				isPO.value = true;
-			}
-		};
 
 		return {
 			chooseTemplate,
 			displayTemplate,
 			active,
-			isPO: true,
+			isPO,
+			allCourses
 		};
 	},
 });
