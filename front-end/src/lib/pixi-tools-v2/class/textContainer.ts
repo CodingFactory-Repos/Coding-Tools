@@ -32,7 +32,7 @@ export class TextContainer extends PluginContainer {
 	public tabNumberContext: number;
 	public frameNumber: number;
 	public isEditing = false;
-	private _viewport: ViewportUI
+	private _viewport: ViewportUI;
 	private _isSelected = false;
 
 	static registerContainer(
@@ -86,7 +86,7 @@ export class TextContainer extends PluginContainer {
 		if (!this.isEditing && this._isSelected) {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
-			const { x, y, width, height, text, color } =  this.textGraphic;
+			const { x, y, width, height, text, color } = this.textGraphic;
 			const fontSize = this.textGraphic.textStyle.fontSize;
 			//@ts-ignore
 			const containerized = this.parent.typeId === 'generic';
@@ -101,9 +101,12 @@ export class TextContainer extends PluginContainer {
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
 			this.textGraphic.text = this._viewport.textEditor.value;
-			console.log(this._viewport.textEditor)
+			console.log(this._viewport.textEditor);
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
+			if (this._viewport.textEditor.value.length == 0) {
+				this.destroy();
+			}
 		}
 	}
 
