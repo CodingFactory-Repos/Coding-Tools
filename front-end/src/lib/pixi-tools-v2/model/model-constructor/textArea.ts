@@ -38,14 +38,14 @@ export class TextArea extends ModelGraphics {
 		this.color = properties.color;
 		this.alpha = properties.alpha;
 
-		this.text = undefined ?? '';
+		this.text = properties.text ?? '';
 		this.textStyle = new TextStyle({
 			fill: this.color,
 			fontSize: 14,
 			padding: 5,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
-		this.textSprite.eventMode = "static";
+		this.textSprite.eventMode = properties.eventMode;
 		this.addChild(this.textSprite);
 		this.updateText();
 
@@ -65,7 +65,7 @@ export class TextArea extends ModelGraphics {
 		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
 
 		this.clear();
-		this.beginFill(this.color, 0);
+		this.beginFill(null, 0);
 		if (this.borderWidth > 0) {
 			this.lineStyle(this.borderWidth, this.borderColor, 1);
 		}

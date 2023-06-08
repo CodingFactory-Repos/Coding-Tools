@@ -33,6 +33,7 @@ export class TextContainer extends PluginContainer {
 	public isEditing = false;
 	private _viewport: ViewportUI
 	private _isSelected = false;
+	private _created: boolean;
 
 	static registerContainer(
 		viewport: ViewportUI,
@@ -84,6 +85,9 @@ export class TextContainer extends PluginContainer {
 			fakeEvent.originalEvent.shiftKey = false;
 			this.emit('pointerdown', fakeEvent);
 			this.children[0].emit('pointerdown', fakeEvent);
+
+			// Created is a one time use.
+			this._created = true;
 		}
 
 		// if (!remote && viewport.socketPlugin) {
@@ -123,6 +127,18 @@ export class TextContainer extends PluginContainer {
 			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
+
+			// This need to be canceled if the input text is empty, add a blocking condition.
+			if(this._created) {
+				this._created = false;
+				if (this._viewport.socketPlugin) {
+					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
+				}
+			} else {
+				if (this._viewport.socketPlugin) {
+					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
+				}
+			}
 		}
 	}
 

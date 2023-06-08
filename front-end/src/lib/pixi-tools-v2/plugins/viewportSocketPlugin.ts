@@ -35,6 +35,7 @@ interface CanvasSocketEvents {
 		serializedChild: SerializedContainer,
 	) => void;
 	'ws-element-colorized': (uuid: string, serializedColor: SerializedColorimetry) => void;
+	'ws-text-updated': (uuid: string, serialized: SerializedContainer) => void;
 }
 
 export interface CanvasSocketOptions {
@@ -85,6 +86,10 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.on('ws-line-updated', (uuid, serializedControl) => {
 			this.socketManager.updateLineControls(uuid, serializedControl);
 		});
+
+		this.on('ws-text-updated', (uuid, serializedContainer) => {
+			this.socketManager.updateText(uuid, serializedContainer);
+		})
 
 		this.on('ws-element-colorized', (uuid, serializedColorimetry) => {
 			this.socketManager.updateColorimetry(uuid, serializedColorimetry);
