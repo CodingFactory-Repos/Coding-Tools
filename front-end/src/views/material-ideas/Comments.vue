@@ -24,6 +24,7 @@
 				<button
 					class="font-bold bg-light-icon rounded-lg text-sm focus:outline-none dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary dark:disabled:border-dark-icon bg-light-tertiary text-dark-primary disabled:text-light-font border-2 border-dark-font disabled:border-light-font items-center gap-2"
 					:disabled="comment === ''"
+					type="submit"
 				>
 					Envoyer
 				</button>
@@ -38,13 +39,19 @@ import { http } from '@/api/network/axios';
 import { useUserStore } from '@/store/modules/user.store';
 import { computed, watch } from 'vue';
 
+import { manager } from '@/api/network/socket.io';
+
 import { useAuthStore } from '@/store/modules/auth.store';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
 
+// const socket = manager.socket('/material');
+
 const user = computed(() => authStore.user);
 const userId = computed(() => user.value._id);
+
+const socket = manager.socket('/ideasEquipements');
 
 export default {
 	props: ['equipmentId'],
@@ -53,12 +60,29 @@ export default {
 			items: [],
 			comment: '', //item before adding into array
 			userId,
+			socket: null,
 		};
 	},
 	watch: {
 		equipmentId: function () {
 			this.getComments();
 		},
+	},
+	created() {
+		socket.auth = { roomId: this.equipmentId };
+		socket.connect();
+		socket.on('comment-added', (data) => {
+			console.log('comment-added');
+			console.log(data);
+			this.items = data
+		});
+
+		this.getComments();
+
+	},
+
+	unmounted() {
+		socket.disconnect();
 	},
 
 	methods: {
@@ -69,16 +93,14 @@ export default {
 				comment,
 				equipmentId,
 			});
+			socket.emit('add-comment', items)
 			this.items = items || [];
 			this.comment = '';
 		},
 		async getComments() {
-			console.log('getComments()');
 			const { comment, equipmentId, userId } = this;
 			const body = { comment, equipmentId, userId };
 			const { data: items } = await http.get(`/ideascomments/equipment/${equipmentId}`, body);
-			console.log('oui');
-			console.log({ data: items });
 			this.items = items || [];
 		},
 		formatDate(date) {
@@ -91,9 +113,6 @@ export default {
 			};
 			return new Date(date).toLocaleString('fr-FR', options);
 		},
-	},
-	async created() {
-		this.getComments();
 	},
 };
 </script>
