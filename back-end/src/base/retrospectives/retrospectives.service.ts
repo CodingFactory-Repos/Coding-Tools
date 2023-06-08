@@ -24,9 +24,24 @@ export class RetrospectivesService {
 	) {}
 
 	async newRetrospective(retrospective: RetrospectiveDTO, userId: ObjectId) {
-		const date = new Date();
 		const user = await this.usersRepository.findOne({ _id: userId });
-		if (user === null) return;
+		if (user === null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'You do not have the rights to access this ressource.',
+			);
+
+
+		const queryRetro = { "associatedCourse._id": retrospective.associatedCourse._id}
+		const isCoursesAlreadyAsignated = await this.retrospectivesRepository.findOne(queryRetro);
+
+		if (isCoursesAlreadyAsignated !== null)
+			throw new ServiceError(
+				'UNAUTHORIZED',
+				'This course is already assigned.',
+			);
+
+		const date = new Date();
 
 		retrospective.createdAt = date;
 		retrospective.creator = user.profile.email;
@@ -44,14 +59,19 @@ export class RetrospectivesService {
 		if (tryGetCurrentRetro) return tryGetCurrentRetro;
 	}
 
-	async getAllRetro(userId: ObjectId) {
+	async getRetrosByUser(userId: ObjectId) {
 		const user = await this.usersRepository.findOne({ _id: userId });
 		if (user === null) return;
 
 		const query = {
 			$or: [{ creator: user.profile?.email }, { participants: { $in: [user.profile?.email] } }],
 		};
-		const allRetro = await this.retrospectivesRepository.findAll(query);
+		const retroByUser = await this.retrospectivesRepository.findAll(query);
+		return retroByUser;
+	}
+
+	async getAllRetro() {
+		const allRetro = await this.retrospectivesRepository.findAll({});
 		return allRetro;
 	}
 
@@ -163,6 +183,7 @@ export class RetrospectivesService {
 			const update = {
 				$pull: { allowedPeers: userTarget._id, participants: userTarget.profile.email },
 			};
+
 			await this.retrospectivesRepository.updateOneRetrospective(query, update);
 
 			const inviteQuery = { userId: userTarget._id, retroId: roomId };

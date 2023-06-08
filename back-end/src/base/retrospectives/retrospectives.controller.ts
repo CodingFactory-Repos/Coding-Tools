@@ -6,6 +6,8 @@ import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.se
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
+import { RoleValidator } from '@/common/guards/role.guard';
+import { Roles } from '../users/interfaces/users.interface';
 import {
 	PostitDTO,
 	ProjectRetroInvitationVerificationDTO,
@@ -25,16 +27,28 @@ export class RetrospectivesController {
 	}
 
 	@Post('/newRetro')
-	@UseGuards(JwtAuthGuard)
-	async newRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: RetrospectiveDTO) {
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
+	async newRetro(
+		@Jwt() userId: ObjectId,
+		@Res() res: Response,
+		@Body() body: RetrospectiveDTO
+		) {
 		const retrospective = await this.retrospectivesService.newRetrospective(body, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}
 
-	@Get('/allRetros')
+	@Get('/retrosByUser')
 	@UseGuards(JwtAuthGuard)
-	async allRetros(@Res() res: Response, @Jwt() userId: ObjectId) {
-		const retros = await this.retrospectivesService.getAllRetro(userId);
+	async getRetrosByUser(@Res() res: Response, @Jwt() userId: ObjectId) {
+		const retros = await this.retrospectivesService.getRetrosByUser(userId);
+
+		return res.status(200).json({ retrospectives: retros });
+	}
+
+	@Get('/allRetros')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PEDAGOGUE))
+	async getAllRetros(@Res() res: Response) {
+		const retros = await this.retrospectivesService.getAllRetro();
 
 		return res.status(200).json({ retrospectives: retros });
 	}
@@ -92,8 +106,6 @@ export class RetrospectivesController {
 		@Body() body: RetroUserEmailDTO,
 		@Res() res: Response,
 	) {
-		console.log('body', body);
-
 		await this.retrospectivesService.removeUserAccessToRetro(body.userEmail, roomId, userId);
 		return res.status(201).json({ status: 'ok' });
 	}

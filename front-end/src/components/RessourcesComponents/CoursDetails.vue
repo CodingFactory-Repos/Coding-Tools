@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">{{ oneItems.title }}</h1>
+			<h1 class="text-4xl font-bold">{{ oneItems.tag }}</h1>
 		</div>
 		<img
 			class="cover h-72 w-screen object-cover object-center"
@@ -15,14 +15,20 @@
 		<div class="pt-3 pb-2">
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ oneItems.description }}</span
+				>{{ oneItems.periodStart }}</span
+			>
+		</div>
+		<div class="pt-3 pb-2">
+			<span
+				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+				>{{ oneItems.periodEnd }}</span
 			>
 		</div>
 		<button
 			type="button"
 			@click="
 				() => {
-					router.push('/app/ressource/openhouse');
+					router.push('/app/ressource/cours');
 				}
 			"
 		>
@@ -32,12 +38,12 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue';
-import { useOpenHouseStore } from '@/store/modules/openHouse.store';
+import { useCoursStore } from '@/store/modules/course.store';
 import { useRouter } from 'vue-router';
 
 // get store
-const openHouses = useOpenHouseStore();
-const oneItems = computed(() => openHouses.oneItems);
+const course = useCoursStore();
+const oneItems = computed(() => course.oneItems);
 
 const router = useRouter();
 
@@ -49,13 +55,13 @@ const _id = computed(() => {
 });
 
 // get openHouse by id
-const getOpenHouseById = async (_id: string) => {
-	await openHouses.getOpenHouseById(_id);
+const getCourseById = async (_id: string) => {
+	await course.getCourseById(_id);
 };
 
 // fetch openHouse data on mounted
-onMounted(async() => {
-	await getOpenHouseById(_id.value);
+onMounted(async () => {
+	await getCourseById(_id.value);
 });
 </script>
 <style scoped>

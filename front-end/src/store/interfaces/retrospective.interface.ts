@@ -1,9 +1,12 @@
+import { Course } from './course.interface'
+
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>;
 	tempMovingPostit: Postit;
 	currentRetro: Retrospective;
 	userCursors: Array<UserCursor>;
-	allRetros: Array<Retrospective>;
+	retrosByUser: Array<Retrospective>;
+  allRetros: Array<Retrospective>;
 	isSideBar: boolean;
 	inputSearch: string;
 	dateSearch?: number;
@@ -24,7 +27,7 @@ export interface RetrospectiveStore {
 	updateFromSocket?: (this: RetrospectiveStore, postit: Postit) => void;
 	updateUserCursor?: (this: RetrospectiveStore, userCursor: UserCursor) => void;
 	removeCursor?: (this: RetrospectiveStore, user: UserDisconnect) => void;
-	getAllRetros?: (this: RetrospectiveStore) => Promise<void>;
+	getRetrosByUser?: (this: RetrospectiveStore) => Promise<void>;
 	participantJoin?: (this: RetrospectiveStore, email: string) => Promise<void>;
 	participantLeave?: (this: RetrospectiveStore, user: UserDisconnect) => Promise<void>;
 	tryToggleSideBar?: (this: RetrospectiveStore) => void;
@@ -49,6 +52,7 @@ export interface Retrospective {
 	timerInterval?: NodeJS.Timer;
 	timePassed?: number;
 	allowedPeers?: Array<string>;
+	associatedCourse?: Course;
 }
 
 export interface Postits {
