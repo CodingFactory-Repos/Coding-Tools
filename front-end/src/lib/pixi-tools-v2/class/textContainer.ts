@@ -221,7 +221,6 @@ export class TextContainer extends PluginContainer {
 			}
 		}
 
-		console.log(cloned)
 		return cloned;
 	}
 
