@@ -204,7 +204,7 @@ export const impactMapping = (
 					},
 				],
 			},
-			{
+			{ //! FirstQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -236,7 +236,7 @@ export const impactMapping = (
 					},
 				],
 			},
-			{
+			{ //! SecondQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -268,7 +268,7 @@ export const impactMapping = (
 					},
 				],
 			},
-			{
+			{ //! ThirdQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -300,7 +300,7 @@ export const impactMapping = (
 					},
 				],
 			},
-			{
+			{ //! FourthQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
