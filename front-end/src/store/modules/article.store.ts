@@ -1,4 +1,10 @@
-import { Article, ArticleStore, Participants } from '../interfaces/article.interface';
+import {
+	Article,
+	ArticleStore,
+	Dislikes,
+	Likes,
+	Participants,
+} from '../interfaces/article.interface';
 import { defineStore } from 'pinia';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
@@ -13,10 +19,13 @@ export const useArticleStore = defineStore('article', {
 					date: '',
 					title: '',
 					descriptions: '',
+					content: '',
 					picture: '',
 					tags: '',
 					type: '',
 					status: '',
+					likes: [],
+					dislikes: [],
 				},
 			],
 			oneItems: {
@@ -105,45 +114,47 @@ export const useArticleStore = defineStore('article', {
 		}),
 
 		// add like to the array of likes in article in the database
-		addLike: withErrorHandler(async function (id: string, like) {
-			const response = await http.put(`/articles/like/${id}`, like);
-			const items = response.data;
+		addLike: withErrorHandler(async function (id: string, like: Likes) {
+			await http.put(`/articles/like/${id}`, like);
+
+			console.log(like);
 
 			const index = this.items.findIndex((el) => el._id === id);
-			this.items[index] = items;
+			this.items[index].likes.push(like);
 
 			return true;
 		}),
 
-		// remove like from the array of likes in article in the database
-		removeLike: withErrorHandler(async function (id: string, like) {
-			const response = await http.put(`/articles/removeLike/${id}`, like);
-			const items = response.data;
+		// remove like to the array of likes in article in the database
+		removeLike: withErrorHandler(async function (id: string, like: Likes) {
+			await http.put(`/articles/removeLike/${id}`, like);
+
+			console.log(like);
 
 			const index = this.items.findIndex((el) => el._id === id);
-			this.items[index] = items;
+			const indexLike = this.items[index].likes.findIndex((el) => el.id === like);
+			this.items[index].likes.splice(indexLike, 1);
 
 			return true;
 		}),
 
-		// add Dislike to the array of Dislikes in article in the database
-		addDislike: withErrorHandler(async function (id: string, dislike) {
-			const response = await http.put(`/articles/dislike/${id}`, dislike);
-			const items = response.data;
+		// add dislike to the array of dislike in article in the database
+		addDislike: withErrorHandler(async function (id: string, dislike: Dislikes) {
+			await http.put(`/articles/dislike/${id}`, dislike);
 
 			const index = this.items.findIndex((el) => el._id === id);
-			this.items[index] = items;
+			this.items[index].dislikes.push(dislike);
 
 			return true;
 		}),
 
-		// remove Dislike from the array of Dislikes in article in the database
-		removeDislike: withErrorHandler(async function (id: string, dislike) {
-			const response = await http.put(`/articles/removeDislike/${id}`, dislike);
-			const items = response.data;
+		// remove dislike to the array of dislike in article in the database
+		removeDislike: withErrorHandler(async function (id: string, dislike: Dislikes) {
+			await http.put(`/articles/removeDislike/${id}`, dislike);
 
 			const index = this.items.findIndex((el) => el._id === id);
-			this.one[index] = items;
+			const indexDislike = this.items[index].dislikes.findIndex((el) => el.id === dislike);
+			this.items[index].dislikes.splice(indexDislike, 1);
 
 			return true;
 		}),

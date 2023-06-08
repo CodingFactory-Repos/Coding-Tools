@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 import { ArticlesRepository } from 'src/base/articles/articles.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
-import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events'
+import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events';
 
 @Injectable()
 export class ArticlesService {
@@ -17,30 +17,30 @@ export class ArticlesService {
 
 	// Function to add an article
 	async addArticle(queryArticle) {
+		console.log(queryArticle);
+		queryArticle.status = 'Pending';
 
-		queryArticle.status = 'Pending'
-		queryArticle.updatedAt = new Date()
+		queryArticle.owner = new ObjectId(queryArticle.owner);
+		queryArticle.date = new Date(queryArticle.date);
+		queryArticle.updatedAt = new Date();
 
 		// send mail logic
 		// trigger event to send mail to POs/Pedagos
-		if(queryArticle.type == 'Tuto'){
-			
+		if (queryArticle.type == 'Tuto') {
 			// request to get all POs/Pedagos
-			const mailTargets = await this.usersRepository.findMany(
-				{
-					'role' :  { $in : [2, 3] }
-				},
-			)
+			const mailTargets = await this.usersRepository.findMany({
+				role: { $in: [2, 3] },
+			});
 
 			// format mails for recipients
-			const recipientsMails: { Email : string }[] = mailTargets
-			.map(item => item.profile.email)
-			.map(mail => {
-				return { Email : mail }
-			})
-			
+			const recipientsMails: { Email: string }[] = mailTargets
+				.map((item) => item.profile.email)
+				.map((mail) => {
+					return { Email: mail };
+				});
+
 			// emit mail
-			this.newTutorialEmitter.newTutorialMail(recipientsMails)
+			this.newTutorialEmitter.newTutorialMail(recipientsMails);
 		}
 
 		return await this.articlesRepository.createArticle(queryArticle);
@@ -58,8 +58,9 @@ export class ArticlesService {
 
 	// Function to update an article
 	async updateArticle(id, queryArticle) {
-
-		queryArticle.updatedAt = new Date()
+		queryArticle.$set = queryArticle.$set || {};
+		queryArticle.$set.date = new Date(queryArticle.$set.date);
+		queryArticle.$set.updatedAt = new Date();
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
 	}
