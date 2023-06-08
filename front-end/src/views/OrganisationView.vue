@@ -37,7 +37,7 @@
         </div>
         <Modal v-if="backlogForm==true" @close="backlogForm = false">
             <template #body>
-                <StoriesForm  :courseId="this.courseId" @close="backlogForm = false; this.getBacklog(); console.log('Story de backlog créée.');"/>
+                <StoriesForm  :courseId="this.courseId" @close="backlogForm = false; this.getBacklog();"/>
             </template>
         </Modal>
     </div>  
@@ -115,7 +115,6 @@ export default {
         },
         getBacklog: withErrorHandler(async function () {
             http.get(`/stories/course/${this.courseId}`).then((response) => {
-                console.log(response.data);
                 this.backlog = response.data;
             });
         }),
