@@ -42,18 +42,6 @@
 					}"
 				/>
 			</IconButton>
-			<div>
-				<IconButton class="h-fit" type="button" @click="createFrame">
-					<SvgFrame
-						width="22"
-						height="22"
-						class="!fill-gray-400"
-						:class="{
-							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
-						}"
-					/>
-				</IconButton>
-			</div>
 			<div class="relative flex items-center justify-center z-10">
 				<IconButton class="h-fit" type="button" @click="toggleGeometryPopUp">
 					<SvgShape
@@ -99,7 +87,9 @@
 					</IconButton>
 				</div>
 			</div>
+
 			<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
+
 			<IconButton class="h-fit" type="button" @click="onContextMenu">
 				<SvgDownload
 					width="22"
@@ -134,7 +124,20 @@
 				/>
 			</IconButton>
 			<ColorPickerOption position="bottom-[-330px] left-[30px]" />
+			<div v-if="isTextAreaEdited">
+				<IconButton class="h-fit" type="button">
+					<SvgFrame
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{
+							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+						}"
+					/>
+				</IconButton>
+			</div>
 		</div>
+
 		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
 		<ManageUser v-if="isOwner && isManagerModalOpen" @close="closeManagerModal" />
 		<BlueprintModal v-if="isBlueprintModalOpen" @close="closeBlueprintModal" />
@@ -260,6 +263,14 @@ const openBlueprintModal = () => {
 };
 const closeBlueprintModal = () => {
 	isBlueprintModalOpen.value = false;
+};
+
+const isTextAreaEdited = ref(true);
+const openTextAreaEdited = () => {
+	isTextAreaEdited.value = true;
+};
+const closeTextAreaEdited = () => {
+	isTextAreaEdited.value = false;
 };
 
 const showGeometryPopUp = ref(false);
