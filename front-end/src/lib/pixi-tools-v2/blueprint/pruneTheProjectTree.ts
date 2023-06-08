@@ -32,7 +32,7 @@ export const pruneTheProjectTree = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xff00ff,
+				color: 0xffffff,
 				alpha: 0,
 				borderWidth: 0,
 				borderColor: 0x000000,

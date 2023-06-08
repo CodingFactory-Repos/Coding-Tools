@@ -54,7 +54,7 @@ export const useProjectStore = defineStore('project', {
 				const { x, y } = cloneContainer.getBounds();
 				cloneContainer.position.set(-x, -y);
 
-				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width: height, height: width, backgroundAlpha: 0 });
+				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width, height, backgroundAlpha: 0 });
 				renderer.render(cloneContainer);
 
 				const canvas = renderer.view;
