@@ -1,39 +1,41 @@
 <template>
     <div v-show="showProject">
-        <button @click="this.showProject = false" class="back-button fixed pl-1.5 w-[2.5em] h-[2.5em] top-4 left-36 rounded-lg bg-[#24292E] hover:bg-[#24292E99] shadow gradiant">
-            <svg class="back-button" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
+        <button @click="this.showProject = false" class="back-button fixed pl-1.5 w-[2.5em] h-[2.5em] top-4 left-36 rounded-lg bg-light-primary dark:bg-dark-tertiary">
+            <svg class="fill:dark-primary" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
         </button>
         <h1 class="font-bold dark:text-[#9ca3af] text-[#213547] ml-32 mt-3">Planning</h1> 
     </div>
     <div class="mx-auto p-4 rounded-lg bg-light-primary dark:bg-dark-secondary text-left mt-10 ml-12 mr-12 w-11/12">
-        <div v-show="this.showProject == ''">
+        <div v-show="this.showProject == false">
             <h1 class="text-6xl font-bold dark:text-dark-font text-gray-800">Organisation</h1>
-            <div class="actualSprint marg block w-96 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Sprint sélectionné:<br/>
+            <div class="mt-4 actualSprint block w-96 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-light-secondary dark:bg-dark-tertiary focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Sprint sélectionné:<br/>
                 <select id="select" @change="setCourseId($event)" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                     <option>Sélectionnez un Sprint</option>
                     <option v-for="course in courses"  :value=course._id>{{ course.tag }}</option>
                 </select>
             </div>
-            <div class="rounded-lg w-full h-fit flex flex-col gap-3 bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
+            <div class="rounded-lg mt-4 w-full h-fit flex flex-col gap-3 bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <div class="inline-block">
-                    <ButtonIcon class="h-1/2" @click="this.backlogForm=true;">
-                        <SvgEdit class="!fill-light-primary"/>
-                    </ButtonIcon>
+                    <button @click="this.backlogForm=true;" class="back-button pl-[0.425rem] w-[2.5em] h-[2.5em] rounded-lg bg-light-primary dark:bg-dark-highlight">
+                        <svg class="button" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512"><path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384v38.6C310.1 219.5 256 287.4 256 368c0 59.1 29.1 111.3 73.7 143.3c-3.2 .5-6.4 .7-9.7 .7H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128zm48 96a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm16 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v48H368c-8.8 0-16 7.2-16 16s7.2 16 16 16h48v48c0 8.8 7.2 16 16 16s16-7.2 16-16V384h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H448V304z"/></svg>
+                    </button>
                     <span class="ml-2 text-3xl font-bold dark:text-dark-font text-gray-800">Backlog de la semaine</span>
 
                 </div>
-                <div v-if="this.backlog.length==0" class="text-1xl font-bold dark:text-dark-font text-gray-800">Vous n'avez pas de backlog de défini. Voulez-vous uploader un fichier PDF?</div>
+                <div v-if="this.backlog.length==0" class="text-1xl font-bold dark:text-dark-font text-gray-800 m-0">
+                    <p>Vous n'avez pas de backlog de défini. Voulez-vous uploader un fichier PDF?</p>
+                </div>
                 <div v-else class="flex flex-wrap">
                     <div class="backlog" v-if="courseId != ''" v-for="story in this.backlog">
                         <BacklogItem @deleteStory="deleteStory" :as="story.as" :iWant="story.iWant" :soThat="story.soThat" :acceptationCriteria="story.acceptationCriteria" :valeur="story.value" :_id="story._id"/>
                     </div>
                 </div>
             </div>
-            <div class="w-full h-fit flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
+            <div class="w-full mt-4 h-fit flex flex-col gap-3 rounded-lg bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <h2 class="text-2xl font-bold dark:text-dark-font">Groupes d'élèves de ce sprint</h2>
                 <div class="groups">
-                    <div class="iconeGroupe" v-for="groupe in groups">
-                        <span style="font-size:20px;" v-for="student in groupe.group">{{ student }}<br/></span>
+                    <div class="iconeGroupe !bg-white dark:!bg-dark-highlight" v-for="groupe in groups">
+                        <span style="font-size:20px;" class="dark:text-white text-[#213547]" v-for="student in groupe.group">{{ student }}<br/></span>
                         <div style="position:absolute;left:10px;bottom:10px;">
                             <button @click="openProject(groupe.group)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le projet</button>
                         </div>
@@ -148,7 +150,7 @@ export default {
             this.selectedGroup = [...group];
             this.selectedIDs = this.groups2[this.groups.indexOf(group)];
             console.log('G1: ',this.selectedGroup);
-            console.log('G2: ',this.selectIDs);
+            console.log('G2: ',this.selectedIDs);
         },
         getBacklog: withErrorHandler(async function () {
             http.get(`/stories/course/${this.courseId}`).then((response) => {
