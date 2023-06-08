@@ -39,7 +39,6 @@
 		"class-validator": "^0.14.0",
 		"cookie-parser": "^1.4.6",
 		"dotenv": "^16.1.0",
-		"express-serve-static-core": "^0.1.1",
 		"mongo-dot-notation": "^3.1.0",
 		"mongodb": "^5.5.0",
 		"node-mailjet": "^6.0.2",
@@ -48,7 +47,6 @@
 		"pug": "^3.0.2",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^5.0.1",
-		"sharp": "^0.32.1",
 		"rxjs": "^7.8.1",
 		"sharp": "^0.32.1",
 		"socket.io": "^4.6.1"
