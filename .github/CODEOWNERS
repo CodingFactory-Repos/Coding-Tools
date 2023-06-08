@@ -46,7 +46,6 @@
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/courses/courses.service.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
@@ -134,6 +133,7 @@
 /front-end/src/assets/styles/components/add-ideas.css @Maghwyn @AyakorK
 /front-end/src/assets/styles/components/common/pop-up.css @Maghwyn @AyakorK
 /front-end/src/components/ @Kevw94 @Maghwyn
+/front-end/src/components/account/ @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountProfile.vue @Maghwyn
@@ -159,7 +159,6 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
-/front-end/src/components/blog/ @Maghwyn
 /front-end/src/components/blog/AddArticles.vue @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/AddComment.vue @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/ShowArticle.vue @Maghwyn @TheoLandemaine
@@ -192,21 +191,20 @@
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
+/front-end/src/components/retrospective/Board.vue @Maghwyn @Kevw94
 /front-end/src/components/retrospective/CreatePostit.vue @Loule95450 @Maghwyn @Kevw94
-/front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/Postit.vue @Maghwyn @AyakorK
 /front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
+/front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94
 /front-end/src/components/retrospective/UpdatePostit.vue @Loule95450 @Maghwyn @Kevw94
-/front-end/src/components/retrospective/utils/ @AyakorK @Maghwyn
-/front-end/src/components/retrospective/utils/NavInfosRetro.vue @Maghwyn
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
-/front-end/src/components/retrospective/utils/SideBarParticipants.vue @Maghwyn
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/RollCallComponents/ @AyakorK @Iagomorph
 /front-end/src/components/RollCallComponents/QrCode.vue @AyakorK @Maghwyn
 /front-end/src/composables/ @Kevw94 @Maghwyn
+/front-end/src/composables/useSocketRetro.ts @Maghwyn
 /front-end/src/config/config.ts @Maghwyn
 /front-end/src/interfaces/advanced-types.interface.ts @Loule95450 @Maghwyn
 /front-end/src/layout/app/AppLayout.vue @Maghwyn @Loule95450
@@ -259,10 +257,8 @@
 /front-end/src/lib/pixi-tools/scene.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools/types/pixi-tools-core.ts @Maghwyn @Loule95450
 /front-end/src/lib/README.md @Loule95450
-/front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
-/front-end/src/store/ @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
@@ -317,7 +313,6 @@
 /front-end/src/views/RollCall.vue @AyakorK @Loule95450
 /front-end/src/views/ShowArticleView.vue @TheoLandemaine
 /front-end/src/views/SprintsView.vue @Maghwyn @Loule95450 @Kevw94
-/front-end/src/vite-env.d.ts @Maghwyn
 /front-end/tailwind.config.cjs @Maghwyn @TheoLandemaine
 /front-end/tsconfig.json @Loule95450 @Maghwyn
 /front-end/tsconfig.node.json @Loule95450 @Maghwyn
