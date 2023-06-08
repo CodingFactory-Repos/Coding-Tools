@@ -14,6 +14,7 @@ export class CronService {
 
 	@Cron('0 18 * * 1-5')
 	async handleCron() {
+		if (process.env.NODE_ENV !== 'production') return;
 		const courses = await this.callsRepository.getActualCourses();
 		const periods = ['arrival', 'departure'];
 

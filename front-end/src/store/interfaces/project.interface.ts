@@ -16,11 +16,16 @@ export interface ProjectStore {
 	immersion: boolean;
 	viewportDefaultPos: ViewportDefaultPosition;
 	selectedFrameNumber: number;
+	pdfViewerOpen: boolean;
+	refreshPdfViewer: number;
+	timerId: NodeJS.Timeout;
 
 	getZoom?: () => number;
 	getFrames?: () => Array<number>;
 	getSelected?: () => Array<CanvasContainer>;
 
+	startRefreshing?: () => void;
+	stopRefreshing?: () => void;
 	toggleImmersion?: () => void;
 	removeGeometryEvent?: () => void;
 	enableSelectionBox?: (destroy?: boolean) => void;
@@ -39,4 +44,23 @@ export interface ProjectStore {
 export interface ViewportDefaultPosition {
 	scale?: { x: number; y: number };
 	pos?: { x: number; y: number };
+}
+
+export interface FramedPDF {
+	id: string,
+	order: number,
+	random?: number,
+	base64: string,
+	dimension: {
+		width: number,
+		height: number,
+	}
+}
+
+export interface DraggableUpdatePayload {
+	moved: {
+		element: FramedPDF,
+		newIndex: number,
+		oldIndex: number,
+	}
 }
