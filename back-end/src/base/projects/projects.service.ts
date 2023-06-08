@@ -20,7 +20,14 @@ export class ProjectsService {
 		return await this.projectsRepository.getProjectByCourseOrCreator(id);
 	}
 
-	// Function to add an article
+	async getProjectByGroupMember(id) {
+		return await this.projectsRepository.getProjectByGroupMember(id);
+	}
+
+	async getProjectByCourseAndMembers(courseId, userId) {
+		return await this.projectsRepository.getProjectByCourseAndMembers(courseId, userId);
+	}
+
 	async createProject(query) {
 		return await this.projectsRepository.createProject(query);
 	}

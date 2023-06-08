@@ -29,6 +29,18 @@ export class ProjectsRepository {
 		return this.stories.find({ $or: [{ course: id }, { creator: id }] }).toArray();
 	}
 
+	//New method to query by user in group member array
+	async getProjectByGroupMember(id) {
+		id = new ObjectId(id);
+		return this.stories.find({ group: { $elemMatch: { $eq: id } } }).toArray();
+	}
+
+	async getProjectByCourseAndMembers(courseId, userId) {
+		courseId = new ObjectId(courseId);
+		userId = new ObjectId(userId);
+		return this.stories.findOne({ $and: [{course: courseId}, {group: { $elemMatch: { $eq: userId }} }] });
+	}
+
 	async updateOneProject(
 		query: Filter<Project>,
 		update: Partial<Project> | UpdateFilter<Project>,
