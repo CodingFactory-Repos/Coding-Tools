@@ -27,7 +27,7 @@
 		"jspdf": "^2.5.1",
 		"jszip": "^3.10.1",
 		"markdown-it": "^13.0.1",
-		"marked": "^5.0.4",
+		"marked": "^5.0.5",
 		"mavon-editor": "^3.0.1",
 		"pdfmake": "^0.2.7",
 		"pinia": "^2.1.3",
