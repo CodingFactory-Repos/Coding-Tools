@@ -1,4 +1,3 @@
-
 import { TextStyle, Text } from 'pixi.js';
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
@@ -44,7 +43,7 @@ export class TextArea extends ModelGraphics {
 			fontSize: 14,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
-		this.textSprite.eventMode = "static";
+		this.textSprite.eventMode = 'static';
 		this.addChild(this.textSprite);
 		this.updateText();
 
@@ -60,7 +59,7 @@ export class TextArea extends ModelGraphics {
 	public draw(bounds: Partial<ElementBounds>) {
 		const { x, y } = bounds;
 		this.position.set(x, y);
-		this.textStyle.fill = this.color;		
+		this.textStyle.fill = this.color;
 		this.textSprite.position.set(0, 0);
 
 		this.clear();
