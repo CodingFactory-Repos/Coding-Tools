@@ -1,9 +1,15 @@
 <template>
-	<div class="wrapper">
-		<form class="materialsIdeas-form" @submit.prevent="addItem" autocomplete="off">
-			<h1 class="text-dark-secondary dark:text-dark-font text-center">Suggestion de matériel</h1>
+	<div class="flex-1 flex justify-center items-flex-start w-full">
+		<form
+			class="lg:m-25 py-10 px-20 text-left py-16 px-5 rounded-lg"
+			@submit.prevent="addItem"
+			autocomplete="off"
+		>
+			<h1 class="pb-5 text-dark-secondary dark:text-dark-font text-center">
+				Suggestion de matériel
+			</h1>
 			<!-- to add new item into the list -->
-			<div class="task">
+			<div class="w-full mt-30 h-10 text-sm flex">
 				<input
 					type="text"
 					class="bg-light-secondary border text-dark-primary sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
@@ -12,7 +18,7 @@
 				/>
 				<!-- Add item on click -->
 				<button
-					class="button btn-add dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary disabled:text-light-font font-bold text-dark-primary bg-light-tertiary"
+					class="shrink-0 ml-2.5 rounded-lg p-2.5 dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary disabled:text-light-font font-bold text-dark-primary bg-light-tertiary"
 					@click="openPopUp = true"
 					:disabled="title === ''"
 				>
@@ -21,19 +27,21 @@
 			</div>
 
 			<!-- Show added items in list view-->
-			<ul class="task-list">
+			<ul class="rounded-sm block">
 				<li
-					class="task-list-item bg-light-tertiary dark:bg-dark-tertiary"
+					class="shadow w-full flex items-center mt-2.5 rounded-md mb-3 p-2.5 justify-between bg-light-tertiary dark:bg-dark-tertiary"
 					v-for="item in items"
 					@click="openInfo(item)"
 				>
-					<span class="text-black dark:text-dark-font">{{ item.title }}</span>
+					<span class="grow-2 font-bold font-large text-black dark:text-dark-font">{{
+						item.title
+					}}</span>
 					<!-- create devis on click-->
 
 					<!-- delete item on click-->
 					<button
 						@click="(event) => deleteItem(item._id, event)"
-						class="button btn-delete text-dark-icon dark:text-dark-font"
+						class="p-2.5 rounded-lg float-right text-dark-icon dark:text-dark-font"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
