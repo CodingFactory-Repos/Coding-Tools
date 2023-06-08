@@ -10,6 +10,7 @@ export const dragAttachedLines = (
 	container: GenericContainer | FramedContainer,
 	socketPlugin: ViewportSocketPlugin,
 	overideGeometry?: Partial<ElementBounds>,
+	preventEmit = false,
 ) => {
 	if (container?.linkedLinesUUID?.length > 0) {
 		const containerUUID = container.uuid;
@@ -109,7 +110,9 @@ export const dragAttachedLines = (
 				line.draw();
 			}
 
-			socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
+			if(!preventEmit) {
+				socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
+			}
 		}
 	}
 };

@@ -122,7 +122,7 @@ export class ViewportUI extends Viewport {
 
 		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
 		this.updateUI(size);
-		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size);
+		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size, true);
 	}
 
 	public startTextEditor(

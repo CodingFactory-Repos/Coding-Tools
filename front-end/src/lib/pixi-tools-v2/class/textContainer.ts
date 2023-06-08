@@ -11,6 +11,7 @@ import {
 } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 import { TextArea } from '../model/template';
+import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 export class TextContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -89,10 +90,6 @@ export class TextContainer extends PluginContainer {
 			// Created is a one time use.
 			this._created = true;
 		}
-
-		// if (!remote && viewport.socketPlugin) {
-		// 	viewport.socketPlugin.emit('ws-element-added', this.serializeData());
-		// }
 	}
 
 	public startEditing() {
@@ -112,6 +109,10 @@ export class TextContainer extends PluginContainer {
 		this._isSelected = false;
 
 		if (this.isEditing) {
+			const size = {
+				width: this._viewport.textEditor.offsetWidth,
+				height: this._viewport.textEditor.offsetHeight
+			};
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
 
@@ -137,6 +138,8 @@ export class TextContainer extends PluginContainer {
 			} else {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
+					//@ts-ignore
+					dragAttachedLines(this, this._viewport.socketPlugin, size);
 				}
 			}
 		}
