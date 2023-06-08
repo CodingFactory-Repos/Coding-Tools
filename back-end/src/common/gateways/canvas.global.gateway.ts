@@ -189,10 +189,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 	}
 
 	@SubscribeMessage('update-text')
-	handleTextUpdated(
-		client: AuthSocket,
-		data: { uuid: string; serialized: SerializedContainer },
-	) {
+	handleTextUpdated(client: AuthSocket, data: { uuid: string; serialized: SerializedContainer }) {
 		client.to(client.roomId).emit('text-updated', data.uuid, data.serialized);
 
 		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };

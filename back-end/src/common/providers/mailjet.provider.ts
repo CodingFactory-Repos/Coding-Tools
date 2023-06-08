@@ -92,10 +92,10 @@ export class MailjetListeners {
 			recipients: [{ Email: email }],
 			args: { senderFirstName, senderLastName, projectTitle, url },
 		});
-  }
+	}
 
-  @OnEvent(Events.newTutorial)
-	async handleNewTutorial (payload: MailjetNewTutorial) {
+	@OnEvent(Events.newTutorial)
+	async handleNewTutorial(payload: MailjetNewTutorial) {
 		const emails = payload.email;
 
 		this.mailjetService.sendUniversalEmail({
