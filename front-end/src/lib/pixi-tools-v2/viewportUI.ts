@@ -205,7 +205,7 @@ export class ViewportUI extends Viewport {
 		this.zoomPlugin.updateZoomScale();
 
 		if (this.manager.isActive) {
-			const size = this.manager.getSelectedSize();
+			let size = this.manager.getSelectedSize();
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
@@ -217,6 +217,14 @@ export class ViewportUI extends Viewport {
 			} else if (this._isHiddenUI) {
 				this._isHiddenUI = false;
 				this.toggleUIVisibilty(true);
+			}
+
+			if(this.textEditor.style.display === "block") {
+				const points = this.toScreen(size.x, size.y);
+				this.textEditor.style.transform = `scale(${this.scaled})`;
+				this.textEditor.style.left = `${points.x}px`;
+				this.textEditor.style.top = `${points.y}px`;
+				size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
 			}
 
 			this.updateUI(size);

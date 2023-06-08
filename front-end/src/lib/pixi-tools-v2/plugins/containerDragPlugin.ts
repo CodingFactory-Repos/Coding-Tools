@@ -210,7 +210,6 @@ export class DragPlugin {
 					}
 				}
 
-				console.log(parent.typeId);
 				dragAttachedLines(parent, this.viewport.socketPlugin);
 			}
 
