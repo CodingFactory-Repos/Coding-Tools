@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import livre_java from '@/images/livre_java.jpg';
-import macbook from '@/images/macbook.png';
-import adaptateur from '@/images/adaptateur.png';
-import arduino from '@/images/arduino.png';
-import projecteur from '@/images/projecteur.png';
-import raspi from '@/images/raspi.png';
+import livre_java from '@/assets/images/livre_java.jpg';
+import macbook from '@/assets/images/macbook.png';
+import adaptateur from '@/assets/images/adaptateur.png';
+import arduino from '@/assets/images/arduino.png';
+import projecteur from '@/assets/images/projecteur.png';
+import raspi from '@/assets/images/raspi.png';
 
 export default {
 	data() {
