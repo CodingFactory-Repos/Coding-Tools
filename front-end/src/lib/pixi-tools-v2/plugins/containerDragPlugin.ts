@@ -6,7 +6,7 @@ import { ViewportUI } from '../viewportUI';
 import type { InitialGraphicLineState, InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
-import { LineBezier } from '../model/template';
+import { LineBezier, TextArea } from '../model/template';
 import { TextContainer } from '../class/textContainer';
 
 type FrameIntersect = {
@@ -64,6 +64,7 @@ export class DragPlugin {
 
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
+			console.log(element.typeId)
 			element.cursor = 'grabbing';
 			if (element instanceof LineBezier) {
 				this.initialGraphicsState.push({
@@ -132,6 +133,15 @@ export class DragPlugin {
 						element.child.startControl.y = data.startControl.y + dy;
 						element.child.endControl.x = data.endControl.x + dx;
 						element.child.endControl.y = data.endControl.y + dy;
+					}
+				}
+
+				console.log(element.child instanceof TextArea === true)
+				if (element.child instanceof TextArea) {
+					const frame = element.child.parent?.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						element.child.x = element.child.x + dx;
+						element.child.y = element.child.y + dy;
 					}
 				}
 
