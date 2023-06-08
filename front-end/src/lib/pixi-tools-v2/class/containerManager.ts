@@ -28,7 +28,7 @@ export class ContainerManager {
 	// No time to fix this, the reactive cause pixi to lose context and cause errors.
 	// But at the same time, we need the reactivity, it's very annoying.
 	public selectedContainers: Array<CanvasContainer> = reactive([]);
-	private _selectedContainers: Array<CanvasContainer> = [];
+	public _selectedContainers: Array<CanvasContainer> = [];
 	public isEditingContainerProperties = false;
 	private controlActive = false;
 	private copiedElements: Array<SerializedContainer> = [];

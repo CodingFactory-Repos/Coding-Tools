@@ -14,6 +14,7 @@ import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSoc
 import { ElementPosition, ElementSize } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
 import { decimToHex } from './utils/colorsConvertor';
+import { dragAttachedLines } from './utils/dragAttachedLines';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -121,6 +122,7 @@ export class ViewportUI extends Viewport {
 
 		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
 		this.updateUI(size);
+		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size);
 	}
 
 	public startTextEditor(
