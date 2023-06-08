@@ -17,7 +17,6 @@ export class ArticlesService {
 
 	// Function to add an article
 	async addArticle(queryArticle) {
-		console.log(queryArticle);
 		queryArticle.status = 'Pending';
 
 		queryArticle.owner = new ObjectId(queryArticle.owner);
@@ -123,6 +122,4 @@ export class ArticlesService {
 	async updateManyArticles(query, updateParams) {
 		return await this.articlesRepository.updateMany(query, updateParams);
 	}
-	// Business logic methods goes there...
-	// Define your own methods
 }

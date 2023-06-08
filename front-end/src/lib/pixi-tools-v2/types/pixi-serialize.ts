@@ -7,7 +7,7 @@ import {
 	ElementPosition,
 } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame' | 'line';
+export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text';
 export type GraphicTypeId =
 	| 'rectangle'
 	| 'circle'
@@ -16,7 +16,10 @@ export type GraphicTypeId =
 	| 'polygon'
 	| 'bezier'
 	| 'tree'
-	| 'ellipse';
+	| 'ellipse'
+	| 'textarea'
+	| 'stickyNote';
+
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
@@ -95,6 +98,7 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	borderColor?: number;
 	arrowHead?: boolean;
 	dashed?: boolean;
+	text?: string;
 }
 
 export interface SerializedLineGraphic {

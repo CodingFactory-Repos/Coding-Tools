@@ -1,4 +1,4 @@
-import { Circle, LineBezier } from '../model/template';
+import { Circle, LineBezier, TextArea } from '../model/template';
 import { ModelGraphics } from '../types/pixi-class';
 import { SerializedGraphicProperties } from '../types/pixi-serialize';
 
@@ -59,6 +59,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 
 		if (model.borderWidth !== undefined) properties.borderWidth = model.borderWidth;
 		if (model.borderColor !== undefined) properties.borderColor = model.borderColor;
+		if (model instanceof TextArea) properties.text = model.text;
 
 		return {
 			uuid: model.uuid,
