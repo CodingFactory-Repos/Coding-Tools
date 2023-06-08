@@ -85,6 +85,14 @@ const formattedTimeLeft = computed(() => {
 
 watch(timeLeftComp, newValue => {
 	if (newValue === 0) {
+
+		const playAlarm = async () => {
+	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
+    const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
+    const alarm = new Audio(audio.default)
+    alarm.play()
+}
+
 		retroStore.isRetroFinished = true;
 		retroStore.currentRetro.isRetroEnded = true
 		pause();
@@ -124,11 +132,6 @@ const lockRetro = () => {
 	socketRetro.socket.emit("lock-retro", retroStore.currentRetro.isLocked)
 }
 
-const playAlarm = async () => {
-	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
-    const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
-    const alarm = new Audio(audio.default)
-    alarm.play()
-}
+
 
 </script>
