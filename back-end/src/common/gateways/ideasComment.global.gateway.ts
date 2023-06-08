@@ -15,7 +15,6 @@ import {
 	MaterialSocket,
 	MaterialAuthMiddleware,
 } from '@/common/middlewares/socket.ideasComment.middleware';
-// import { MaterialsRepository } from '@/base/materials/materials.repository';
 import { IdeasCommentsRepository } from '@/base/ideasComments/ideasComments.repository';
 import { IdeaComment } from '@/base/ideasComments/interfaces/ideasComments.interface';
 
@@ -33,8 +32,6 @@ export class IdeasCommentGateway
 	constructor(
 		@Inject(forwardRef(() => IdeasCommentsRepository))
 		private ideasCommentsRepository: IdeasCommentsRepository,
-		// @Inject(forwardRef(() => UsersRepository))
-		// private usersRepository: UsersRepository,
 		private readonly jwtService: JwtService,
 	) {}
 	@WebSocketServer() server: Server;
