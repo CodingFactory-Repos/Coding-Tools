@@ -6,20 +6,30 @@ export interface ArticleStore {
 
 export interface Article {
 	_id?: string;
+	owner: string;
+	date: string;
 	title: string;
-	descriptions: {
-		type: string;
-		value: string;
-	}[];
+	descriptions: string;
 	picture: string;
 	tags: string;
 	type: string;
-	participants?: {
-		firstName: string;
-		lastName: string;
-		email: string;
+	status: string;
+	content?: string;
+	participants?: Participants[];
+	likes?: {
+		id: string;
+	}[];
+	dislikes?: {
+		id: string;
 	}[];
 	comments?: Comments[];
+}
+
+export interface Participants {
+	id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
 }
 
 export interface Comments {
@@ -27,8 +37,7 @@ export interface Comments {
 	firstName: string;
 	lastName: string;
 	title: string;
-	descriptions: {
-		value: string;
-	}[];
+	descriptions: string;
 	date: Date;
+	picture?: string;
 }

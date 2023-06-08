@@ -6,6 +6,7 @@ export interface Course {
 	_id?: ObjectId;
 	title: string;
 	language: string;
+	classId: ObjectId;
 	createdAt: Date;
 	productOwner?: User;
 	academicYear?: AcademicYear;

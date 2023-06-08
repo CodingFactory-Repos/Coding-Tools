@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
+import { CronService } from 'src/cron/cron.service';
 
 import { DatabaseModule } from 'src/external-modules/database/mongo.module';
 import { AuthModule } from 'src/auth/auth.module';
@@ -17,11 +18,15 @@ import { CoursesModule } from 'src/base/courses/courses.module';
 import { EquipmentsLoanModule } from 'src/base/equipmentsLoan/equipmentsLoan.module';
 import { GroupsModule } from 'src/base/groups/groups.module';
 import { IdeasEquipmentsModule } from 'src/base/ideasEquipments/ideasEquipments.module';
+import { IdeasCommentsModule } from 'src/base/ideasComments/ideasComments.module';
 import { MaterialsModule } from 'src/base/materials/materials.module';
 import { OpenHousesModule } from 'src/base/openHouses/openHouses.module';
 import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
 import { SprintsModule } from 'src/base/sprints/sprints.module';
+import { ChatModule } from '@/external-modules/chat/chat.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Module({
 	imports: [
@@ -39,13 +44,16 @@ import { SprintsModule } from 'src/base/sprints/sprints.module';
 		EquipmentsLoanModule,
 		GroupsModule,
 		IdeasEquipmentsModule,
+		IdeasCommentsModule,
 		MaterialsModule,
 		OpenHousesModule,
 		ProjectsModule,
 		RetrospectivesModule,
 		SprintsModule,
+		ChatModule,
+		ScheduleModule.forRoot(),
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, CronService],
 })
 export class AppModule {}

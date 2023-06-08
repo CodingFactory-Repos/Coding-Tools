@@ -83,6 +83,9 @@ let selectedGroupId = []
 let refCourseId = ref('');
 
 export default {
+
+    name: 'OrganisationView',
+    default: () => [],
 	data() {
 		return {
             courses,
@@ -142,8 +145,8 @@ export default {
             this.showProject = true;
             this.selectedGroupName = [...group];
             this.selectedGroupId = this.groups2[index];
-            console.log('Groupname: '+this.selectedGroupName)
-            console.log('Group IDs: '+this.selectedGroupId)
+            console.log('Groupname: ' + this.selectedGroupName)
+            console.log('Group IDs: ' + this.selectedGroupId)
         },
   
         setCourseId(event) {
@@ -165,7 +168,6 @@ export default {
         }
 	},
 };
-
 </script>
 
 <style>

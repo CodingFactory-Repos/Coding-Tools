@@ -16,3 +16,4 @@ import { CoursesRepository } from '../courses/courses.repository';
     exports: [GroupsService, GroupsRepository],
 })
 export class GroupsModule {}
+

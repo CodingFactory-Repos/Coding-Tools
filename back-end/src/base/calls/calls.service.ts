@@ -4,7 +4,11 @@ import { CallsRepository } from 'src/base/calls/calls.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 import { ObjectId } from 'mongodb';
 import { JwtService } from '@nestjs/jwt';
-import { CourseIdObject, StudentIdObject } from '@/base/calls/interfaces/calls.interface';
+import {
+	CourseIdObject,
+	MessageObject,
+	StudentIdObject,
+} from '@/base/calls/interfaces/calls.interface';
 
 @Injectable()
 export class CallsService {
@@ -35,12 +39,17 @@ export class CallsService {
 	}
 
 	async generateUrl(jwt: string) {
-		return `https://1b68-2a01-cb00-e91-b600-2d60-c9db-21f5-24f.eu.ngrok.io/calls/presence/` + jwt;
+		// TODO: Change this to the real url in the environment variables
+		return `https://backend-codingtools.loule.me/calls/presence/` + jwt;
 	}
 
 	async getActualCourse(userId: ObjectId) {
 		const actualCourse = await this.callsRepository.getActualCourse(userId);
 		return actualCourse;
+	}
+
+	async getMessage(actualCourse, userId: ObjectId) {
+		return await this.callsRepository.getMessage(actualCourse, userId);
 	}
 	async getStudentList(courseId: CourseIdObject) {
 		const studentIdList = await this.callsRepository.getStudentIdList(courseId.courseId);
@@ -109,7 +118,15 @@ export class CallsService {
 		return this.callsRepository.getGroups(courseId.courseId);
 	}
 
+	getMessages(courseId: CourseIdObject) {
+		return this.callsRepository.getMessages(courseId.courseId);
+	}
+
 	async joinGroup(courseId: CourseIdObject, groupId: string, studentId: ObjectId) {
 		return this.callsRepository.joinGroup(courseId.courseId, groupId, studentId);
+	}
+
+	async saveMessage(userId: ObjectId, courseId: CourseIdObject, message: MessageObject) {
+		return this.callsRepository.saveMessage(userId, courseId.courseId, message);
 	}
 }
