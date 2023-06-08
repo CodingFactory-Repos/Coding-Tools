@@ -2,7 +2,7 @@
 <template>
 	<div class="boxShadow w-full">
 		<img
-			class="object-cover h-48 w-full rounded-t-lg"
+			class="object-cover h-48 w-96 rounded-t-lg"
 			:src="
 				item.picture && item.picture != ''
 					? item.picture
@@ -45,7 +45,8 @@
 		<div class="pt-3 pb-2" v-else>
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ item.date }}
+			>
+				{{ new Date(item.date).toLocaleDateString('fr-FR') }}
 			</span>
 		</div>
 		<div class="pt-2 pb-5">

@@ -87,21 +87,15 @@
 			alt=""
 		/>
 		<div class="text-center pt-4 relative">
-			<div v-if="oneItems.type == 'Evenement'">
-				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
-				</h1>
-			</div>
-			<div v-else>
-				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
-				</h1>
-			</div>
+			<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+				{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
+			</h1>
 			<div class="pt-3 pb-2">
 				<span
 					class="bg-blue-100 text-blue-800 text-l font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-					>{{ oneItems.type }}</span
 				>
+					{{ new Date(oneItems.date).toLocaleDateString('fr-FR') }}
+				</span>
 			</div>
 		</div>
 

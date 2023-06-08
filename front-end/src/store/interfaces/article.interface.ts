@@ -7,7 +7,7 @@ export interface ArticleStore {
 export interface Article {
 	_id?: string;
 	owner: string;
-	date: string;
+	date: Date;
 	title: string;
 	descriptions: string;
 	picture: string;

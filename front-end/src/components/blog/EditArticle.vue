@@ -255,7 +255,7 @@ const editArticle = async () => {
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
-		date: date.value.toString(),
+		date: date.value,
 	};
 
 	// Call update article function

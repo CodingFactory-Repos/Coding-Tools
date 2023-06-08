@@ -16,12 +16,12 @@
 		</div>
 
 		<div class="mt-8 md:mt-10">
-			<div class="flex justify-center space-x-2 md:space-x-4">
+			<div v-if="windowWidth >= 1024" class="flex justify-center space-x-2 md:space-x-4">
 				<button v-for="tab in tabs" :key="tab.id" :class="tabClass(tab)" @click="changeTab(tab.id)">
 					{{ tab.label }}
 				</button>
 			</div>
-			<!-- <div v-else class="flex justify-center space-x-2 md:space-x-4">
+			<div v-else class="flex justify-center space-x-2 md:space-x-4">
 				<select
 					v-model="activeTab"
 					class="block w-full md:w-auto bg-white text-black border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
@@ -30,7 +30,7 @@
 						{{ tab.label }}
 					</option>
 				</select>
-			</div> -->
+			</div>
 
 			<div v-for="tab in tabs" :key="tab.id">
 				<div v-if="activeTab === tab.id">
@@ -126,14 +126,18 @@ const changeTab = (tabId) => {
 // Filter items based on the active tab
 const filteredItems = (tabId) => {
 	const sortedItems = items.value.sort((a, b) => {
-		return new Date(a.date).getTime() - new Date(b.date).getTime();
+		return new Date(b.date).getTime() - new Date(a.date).getTime();
 	});
 
 	switch (tabId) {
 		case 'infos':
 			return sortedItems.filter((item) => item.type === 'Infos');
 		case 'tutos':
-			return sortedItems.filter((item) => item.type === 'Tuto');
+			if (user.value.role === 2 || user.value.role === 3) {
+				return sortedItems.filter((item) => item.type === 'Tuto');
+			} else {
+				return sortedItems.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
+			}
 		case 'events':
 			return sortedItems.filter((item) => item.type === 'Evenement');
 		case 'liked':

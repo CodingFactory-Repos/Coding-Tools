@@ -17,7 +17,11 @@ export class ArticlesService {
 
 	// Function to add an article
 	async addArticle(queryArticle) {
+		console.log(queryArticle);
 		queryArticle.status = 'Pending';
+
+		queryArticle.owner = new ObjectId(queryArticle.owner);
+		queryArticle.date = new Date(queryArticle.date);
 		queryArticle.updatedAt = new Date();
 
 		// send mail logic
@@ -54,7 +58,9 @@ export class ArticlesService {
 
 	// Function to update an article
 	async updateArticle(id, queryArticle) {
-		queryArticle.updatedAt = new Date();
+		queryArticle.$set = queryArticle.$set || {};
+		queryArticle.$set.date = new Date(queryArticle.$set.date);
+		queryArticle.$set.updatedAt = new Date();
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
 	}

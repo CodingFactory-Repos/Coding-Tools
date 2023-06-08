@@ -276,7 +276,7 @@ const addArticle = async () => {
 		tags: tags.value,
 		type: type.value,
 		status: status.value,
-		date: date.value.toString(),
+		date: date.value,
 		likes: [],
 		dislikes: [],
 	};
