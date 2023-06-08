@@ -1,5 +1,5 @@
 import { cwd } from 'process';
-import { Response } from 'express-serve-static-core';
+import { Response } from 'express';
 import { join, resolve } from 'path';
 import {
 	Controller,
