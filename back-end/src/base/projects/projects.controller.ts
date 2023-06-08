@@ -25,6 +25,18 @@ export class ProjectsController {
 		return res.status(201).json(project);
 	}
 
+	@Get('/exists/:courseId/:userId')
+	async doesProjectExist(@Req() req: Request, @Res() res: Response) {
+		const project = await this.projectsService.getProjectByCourseAndMembers(req.params.courseId, req.params.userId);
+		return res.status(201).json(project !== null);
+	}
+
+	@Get('/groupMember/:id')
+	async getProjectByGroupMember(@Req() req: Request, @Res() res: Response) {
+		const project = await this.projectsService.getProjectByGroupMember(req.params.id);
+		return res.status(201).json(project);
+	}
+
 	@Post('/create')
 	async addProject(@Req() req: Request, @Res() res: Response) {
 		req.body.course = new ObjectId(req.body.course);
