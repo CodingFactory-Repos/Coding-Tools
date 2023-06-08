@@ -232,6 +232,10 @@ export class CallsRepository {
 			return { message: 'You cannot scan outside of school hours', error: 'Scan out of time' };
 		}
 
+		if (user.role !== 1) {
+			return { message: 'User is not a student', error: 'User is not a student' };
+		}
+
 		// Update the call with the student's presence
 		await this.db.collection('calls').updateOne(
 			{ course: courseObjectId, period: period[periodIndex] },
