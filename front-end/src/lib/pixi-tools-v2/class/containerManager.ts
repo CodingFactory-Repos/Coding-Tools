@@ -330,6 +330,8 @@ export class ContainerManager {
 		if (container instanceof LineContainer) {
 			this.bezierManipulationPlugin.attach(container);
 		} else {
+			if (container instanceof TextContainer && container.isNew) return;
+
 			this.resizePlugin.attach(container);
 			this.dragPlugin.attach(container);
 

@@ -34,7 +34,7 @@ export class TextContainer extends PluginContainer {
 	public isEditing = false;
 	private _viewport: ViewportUI
 	private _isSelected = false;
-	private _created: boolean;
+	public isNew: boolean;
 
 	static registerContainer(
 		viewport: ViewportUI,
@@ -84,11 +84,10 @@ export class TextContainer extends PluginContainer {
 			fakeEvent.global = this._viewport.mouse;
 			fakeEvent.originalEvent = fakeEvent;
 			fakeEvent.originalEvent.shiftKey = false;
+			// isNew is a one time use.
+			this.isNew = true;
 			this.emit('pointerdown', fakeEvent);
 			this.children[0].emit('pointerdown', fakeEvent);
-
-			// Created is a one time use.
-			this._created = true;
 		}
 	}
 
@@ -130,8 +129,8 @@ export class TextContainer extends PluginContainer {
 			this._viewport.endTextEditor();
 
 			// This need to be canceled if the input text is empty, add a blocking condition.
-			if(this._created) {
-				this._created = false;
+			if(this.isNew) {
+				this.isNew = false;
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 				}
