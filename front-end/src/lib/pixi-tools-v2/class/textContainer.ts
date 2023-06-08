@@ -124,7 +124,7 @@ export class TextContainer extends PluginContainer {
 			};
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
-			if (this._viewport.textEditor.textContent?.trim()?.length== 0) {
+			if (this._viewport.textEditor.textContent?.trim()?.length === 0) {
 				this.destroy();
 			}
 
