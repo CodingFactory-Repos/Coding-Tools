@@ -19,11 +19,13 @@ export class ArticlesService {
 	async addArticle(queryArticle) {
 
 		queryArticle.status = 'Pending'
+		queryArticle.updatedAt = new Date()
 
 		// send mail logic
+		// trigger event to send mail to POs/Pedagos
 		if(queryArticle.type == 'Tuto'){
 			
-			// request to get all PO/Pedagos
+			// request to get all POs/Pedagos
 			const mailTargets = await this.usersRepository.findMany(
 				{
 					'role' :  { $in : [2, 3] }
@@ -56,6 +58,9 @@ export class ArticlesService {
 
 	// Function to update an article
 	async updateArticle(id, queryArticle) {
+
+		queryArticle.updatedAt = new Date()
+
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
 	}
 
