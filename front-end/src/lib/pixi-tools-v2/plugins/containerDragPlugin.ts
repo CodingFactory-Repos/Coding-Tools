@@ -64,7 +64,6 @@ export class DragPlugin {
 
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
-			console.log(element.typeId)
 			element.cursor = 'grabbing';
 			if (element instanceof LineBezier) {
 				this.initialGraphicsState.push({
