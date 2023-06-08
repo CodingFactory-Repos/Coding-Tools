@@ -1,7 +1,7 @@
 <template>
     <div v-show="showProject">
         <button @click="this.showProject = false" class="back-button fixed pl-1.5 w-[2.5em] h-[2.5em] top-4 left-36 rounded-lg bg-light-primary dark:bg-dark-tertiary">
-            <svg class="fill:dark-primary" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
+            <svg class="fill-[#9CA3AF] dark:hover:fill-white hover:fill-[#5C5F73]" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
         </button>
         <h1 class="font-bold dark:text-[#9ca3af] text-[#213547] ml-32 mt-3">Planning</h1> 
     </div>
@@ -16,8 +16,8 @@
             </div>
             <div class="rounded-lg mt-4 w-full h-fit flex flex-col gap-3 bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <div class="inline-block">
-                    <button @click="this.backlogForm=true;" class="back-button pl-[0.425rem] w-[2.5em] h-[2.5em] rounded-lg bg-light-primary dark:bg-dark-highlight">
-                        <svg class="button" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512"><path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384v38.6C310.1 219.5 256 287.4 256 368c0 59.1 29.1 111.3 73.7 143.3c-3.2 .5-6.4 .7-9.7 .7H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128zm48 96a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm16 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v48H368c-8.8 0-16 7.2-16 16s7.2 16 16 16h48v48c0 8.8 7.2 16 16 16s16-7.2 16-16V384h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H448V304z"/></svg>
+                    <button @click="this.backlogForm=true;" class="fill-[#9CA3AF] dark:hover:fill-white hover:fill-[#5C5F73] pl-[0.425rem] w-[2.5em] h-[2.5em] rounded-lg bg-light-primary dark:bg-dark-highlight">
+                        <svg class="" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 576 512"><path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384v38.6C310.1 219.5 256 287.4 256 368c0 59.1 29.1 111.3 73.7 143.3c-3.2 .5-6.4 .7-9.7 .7H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128zm48 96a144 144 0 1 1 0 288 144 144 0 1 1 0-288zm16 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v48H368c-8.8 0-16 7.2-16 16s7.2 16 16 16h48v48c0 8.8 7.2 16 16 16s16-7.2 16-16V384h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H448V304z"/></svg>
                     </button>
                     <span class="ml-2 text-3xl font-bold dark:text-dark-font text-gray-800">Backlog de la semaine</span>
 
@@ -37,7 +37,7 @@
                     <div class="iconeGroupe !bg-white dark:!bg-dark-highlight" v-for="groupe in groups">
                         <span style="font-size:20px;" class="dark:text-white text-[#213547]" v-for="student in groupe.group">{{ student }}<br/></span>
                         <div style="position:absolute;left:10px;bottom:10px;">
-                            <button @click="openProject(groupe.group)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le projet</button>
+                            <button @click="openProject(groupe, groups.indexOf(groupe))" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le projet</button>
                         </div>
                     </div>
                 </div>
@@ -80,8 +80,10 @@ import ButtonIcon from '@/components/common/buttons/Icon.vue';
 import SvgEdit from '@/components/common/svg/Edit.vue';
 import StoriesForm from '@/components/scrum/StoriesForm.vue';
 import Modal from '@/components/common/Modal.vue';
+import { ref } from 'vue';
 import BacklogItem from '@/components/scrum/BacklogItem.vue';
 
+let isPO = false;
 let courseId = '';
 let courses = [];
 let studentList = [];
@@ -92,6 +94,9 @@ let selectedGroup = []
 let selectedIDs = [];
 let selectedCourse = ''
 let backlog = [];
+let title = ''
+let description = ''
+let group = []
 
 export default {
 
@@ -111,6 +116,9 @@ export default {
             selectedIDs,
             backlog,
             backlogForm: false,
+			title,
+            description,
+            group,
 		};
 	},
     components: {
@@ -144,13 +152,31 @@ export default {
                 });
 			});
         }),
+        doesProjectExist: withErrorHandler(async function (memberId) {
+            console.log('memberId: '+memberId);
+			http.get(`/projects/exists/647c52b75ff3fe137cf303aa/${memberId}`).then((response) => {
+                console.log('createdproject:',response.data);
+                if(response.data == false){//Si false (projet n'existe pas), on le crée
+                    this.createProject();
+                }else{//Sinon, on l'ouvre
 
-        openProject(group) {
+                }
+			});
+        }),
+        openProject(groupe, number) {
             this.showProject = true;
-            this.selectedGroup = [...group];
-            this.selectedIDs = this.groups2[this.groups.indexOf(group)];
-            console.log('G1: ',this.selectedGroup);
-            console.log('G2: ',this.selectedIDs);
+            this.selectedGroup = [...groupe.group]
+            console.log('Index: ',this.groups.indexOf(groupe))
+            console.log('groupe: ', groupe);
+            console.log('groups', this.groups);
+            this.selectedIDs = this.groups2[this.groups.indexOf(groupe)].group;
+            console.log('Selected group Name : ',this.selectedGroup);
+            console.log('Selected group Ids: ', this.selectedIDs);
+            console.log(number)
+            this.title = 'Groupe ' + (number + 1);            
+            console.log(this.titleRef)
+            this.group = this.selectedIDs;
+            this.doesProjectExist(this.selectedIDs[0]);
         },
         getBacklog: withErrorHandler(async function () {
             http.get(`/stories/course/${this.courseId}`).then((response) => {
@@ -173,11 +199,38 @@ export default {
             this.getStudentList();
             this.getBacklog();
         },
+
         deleteStory(id) {
             http.delete(`/stories/delete/${id}`).then((response) => {
                 this.getBacklog();
             });
         },
+
+        createProject() {
+			console.log("createProject");
+			http.post('/projects/create', {
+				title: this.title,
+                group: this.group,
+                course: this.courseId,
+                description: ''
+			}).then((res) => {
+				console.log(res);
+			});
+		},
+
+        async isProductOwner() {
+			try {
+				http.get(`/calls/is_product_owner/`)
+                .then((res) => { //Si user est PO, entre ici
+                    this.isPO = res.data.isPO;
+                    //
+                });
+			} catch (error) { //Si user est étudiant, entre ici
+				console.error(error);
+				this.isPO = false;
+                //
+			}
+		}
 	},
 };
 </script>

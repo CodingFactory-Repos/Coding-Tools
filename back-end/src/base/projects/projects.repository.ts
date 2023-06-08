@@ -37,7 +37,6 @@ export class ProjectsRepository {
 
 	async getProjectByCourseAndMembers(courseId, userId) {
 		courseId = new ObjectId(courseId);
-		userId = new ObjectId(userId);
 		return this.stories.findOne({ $and: [{course: courseId}, {group: { $elemMatch: { $eq: userId }} }] });
 	}
 
