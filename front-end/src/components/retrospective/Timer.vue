@@ -85,18 +85,9 @@ const formattedTimeLeft = computed(() => {
 
 watch(timeLeftComp, newValue => {
 	if (newValue === 0) {
-
-		const playAlarm = async () => {
-	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
-    const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
-    const alarm = new Audio(audio.default)
-    alarm.play()
-}
-
 		retroStore.isRetroFinished = true;
 		retroStore.currentRetro.isRetroEnded = true
 		pause();
-		playAlarm();
 		socketRetro.socket.emit('end-currentRetro')
 	} else {
 		retroStore.isRetroFinished = false;
@@ -104,11 +95,28 @@ watch(timeLeftComp, newValue => {
 })
 
 const startTimer = () => {
+
+	const playAlarm = async () => {
+	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
+    const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
+    const alarm = new Audio(audio.default)
+    alarm.play()
+}
+
 	retroStore.currentRetro.isTimerRunning = true;
 	socketRetro.socket.emit('start-timer')
 	retroStore.currentRetro.timerInterval = setInterval(() => {
 		retroStore.currentRetro.timePassed += 1
 		socketRetro.socket.emit('progess-timer', timePassed.value)
+
+		if (timeLeftComp.value === 0) {
+			pause();
+			playAlarm();
+			retroStore.isRetroFinished = true;
+			retroStore.currentRetro.isRetroEnded = true;
+			socketRetro.socket.emit('end-currentRetro');
+		}
+
 	}, 1000);
 
 };
