@@ -124,6 +124,8 @@ export class TextContainer extends PluginContainer {
 			};
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
+			if (this._viewport.textEditor.value.length == 0) {
+				this.destroy();
 
 			const data = this._viewport.textEditor.innerHTML
 				.replaceAll('</div>', '</div>,')

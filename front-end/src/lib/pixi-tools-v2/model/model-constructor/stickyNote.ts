@@ -6,7 +6,7 @@ import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
-export class TextArea extends ModelGraphics {
+export class StickyNote extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
@@ -20,12 +20,13 @@ export class TextArea extends ModelGraphics {
 	public textStyle: TextStyle;
 
 	static registerGraphic(attributes: SerializedGraphic) {
-		return new TextArea(attributes);
+		return new StickyNote(attributes);
 	}
 
 	constructor(attributes: SerializedGraphic) {
 		super();
 
+		//TODO Thomas - Draw rectangle in here, Add font size gestionnary en font-style.
 		const { uuid, typeId, bounds, properties } = attributes;
 
 		this.uuid = uuid;
@@ -37,16 +38,16 @@ export class TextArea extends ModelGraphics {
 		this.color = properties.color;
 		this.alpha = properties.alpha;
 
-		this.text = properties.text ?? '';
+		this.text = 'Exemple de texte';
 		this.textStyle = new TextStyle({
 			fill: this.color,
 			fontSize: 14,
-			padding: 5,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
-
-		this.textSprite.eventMode = properties.eventMode;
+		this.textSprite.eventMode = 'static';
+		this.drawRect(0, 0, this.width, this.height);
 		this.addChild(this.textSprite);
+
 		this.updateText();
 
 		this.draw(bounds);
@@ -62,11 +63,10 @@ export class TextArea extends ModelGraphics {
 		const { x, y } = bounds;
 		this.position.set(x, y);
 		this.textStyle.fill = this.color;
-		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
-
+		this.textSprite.position.set(0, 0);
 
 		this.clear();
-		this.beginFill(null, 0);
+		this.beginFill(this.color, 0);
 		if (this.borderWidth > 0) {
 			this.lineStyle(this.borderWidth, this.borderColor, 1);
 		}

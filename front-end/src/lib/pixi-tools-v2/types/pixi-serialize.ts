@@ -17,7 +17,9 @@ export type GraphicTypeId =
 	| 'bezier'
 	| 'tree'
 	| 'ellipse'
-	| 'textarea';
+	| 'textarea'
+	| 'stickyNote';
+
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
