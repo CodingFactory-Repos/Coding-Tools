@@ -121,6 +121,10 @@ const routes: Array<RouteRecordRaw> = [
 						path: ':id',
 						component: () => import('../views/NewRetrospective.vue'),
 					},
+					{
+						path: 'accept-invitation',
+						component: () => import('../views/RetrospectiveInvitation.vue'),
+					},
 				],
 			},
 			{
@@ -164,6 +168,14 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: 'openhouse/:id',
 						component: () => import('../views/OpenHousesDetails.vue'),
+					},
+					{
+						path: 'cours',
+						component: () => import('../views/CourseView.vue'),
+					},
+					{
+						path: 'courses/:id',
+						component: () => import('../views/CoursDetailsView.vue'),
 					},
 				],
 			},
