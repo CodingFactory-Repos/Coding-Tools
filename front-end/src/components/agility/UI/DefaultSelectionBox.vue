@@ -72,7 +72,12 @@ import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import pdfMake from 'pdfmake/build/pdfmake';
+import { elements } from 'chart.js';
+import { ClientRequest } from 'http';
+import { createPdf } from 'pdfmake/build/pdfmake';
+import * as _ from 'pdfmake/build/vfs_fonts.js';
+
+const fonts =  globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
 
 const projectStore = useProjectStore();
 
@@ -153,12 +158,9 @@ const exportToPdf = () => {
   if (childImages.value.length === 0) return;
   
   const styles = {
-	first: {
-		marginBottom: 25
-	},
-	second: {
-    	marginLeft: 160,
-		marginBottom: 25
+    image: {
+      alignment: 'center',
+      marginBottom: 25,
     },
   };
 
@@ -168,16 +170,23 @@ const exportToPdf = () => {
   };
 
   for (let n = 0; n < childImages.value.length; n++) {
-    if (childImages.value[n].dimension.width > 520) {
+    if (childImages.value[n].isBlueprint == true) {
       data.content.push({
-		style: 'first',
+        style: 'image',
         image: childImages.value[n].base64,
         width: 520,
         height: 300,
       });
+    } else if (childImages.value[n].dimension.width > 520) {
+      data.content.push({
+        style: 'image',
+        image: childImages.value[n].base64,
+        width: 520,
+        height: childImages.value[n].dimension.height,
+      });
     } else {
       data.content.push({
-        style: 'second',
+        style: 'image',
         image: childImages.value[n].base64,
         width: childImages.value[n].dimension.width,
         height: childImages.value[n].dimension.height,
@@ -185,6 +194,8 @@ const exportToPdf = () => {
     }
   }
 
-  const pdfGenerator = pdfMake.createPdf(data).open();
+  // @ts-ignore
+  const pdfGenerator = createPdf(data, null, null, fonts).open();
 };
+
 </script>

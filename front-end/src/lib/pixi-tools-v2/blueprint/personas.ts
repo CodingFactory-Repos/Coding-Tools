@@ -56,6 +56,7 @@ export const personas = (
 			isAttachedToFrame: false,
 			frameNumber: frameNumber,
 			disabled: false,
+			isBlueprint: true,
 		},
 		childs: [
 			{

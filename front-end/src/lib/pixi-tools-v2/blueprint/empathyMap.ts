@@ -54,6 +54,7 @@ export const empathyMap = (
 			isAttachedToFrame: false,
 			frameNumber: frameNumber,
 			disabled: false,
+			isBlueprint: true,
 		},
 		childs: [
 			{

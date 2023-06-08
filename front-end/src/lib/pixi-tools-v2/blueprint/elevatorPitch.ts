@@ -43,6 +43,7 @@ export const elavatorPitch = (
 			isAttachedToFrame: false,
 			frameNumber: frameNumber,
 			disabled: false,
+			isBlueprint: true,
 		},
 		childs: [],
 	};
