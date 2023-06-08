@@ -26,10 +26,10 @@
             <div class="w-full h-fit flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <h2 class="text-2xl font-bold dark:text-dark-font">Groupes d'élèves de ce sprint</h2>
                 <div class="groups">
-                    <div class="iconeGroupe" v-for="group in groups">
-                        <span class="text-gray-800" style="font-size:20px;" v-for="student in group">{{ student }}<br/></span>
+                    <div class="iconeGroupe" v-for="groupe in groups">
+                        <span class="text-gray-800" style="font-size:20px;" v-for="student in groupe.group">{{ student }}<br/></span>
                         <div style="position:absolute;left:10px;bottom:10px;">
-                            <button @click="openProject(group)" class="rounded-lg hover:bg-stone-300">Ouvrir le projet</button>
+                            <button @click="openProject(groupe.group)" class="rounded-lg hover:bg-stone-300">Ouvrir le projet</button>
                         </div>
                     </div>
                 </div>
@@ -96,11 +96,11 @@ export default {
         getStudentList: withErrorHandler(async function () {
 			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
 				this.studentList = response.data.studentList;
-                this.groups.forEach(group => { //Pour chaque groupe
-                    group.forEach(student => { //Pour chaque élève du groupe
+                this.groups.forEach(groupe => { //Pour chaque groupe
+                    groupe.group.forEach(student => { //Pour chaque élève du groupe
                         this.studentList.forEach(user => { //On compare avec tous les élèves
                             if(student == user._id) {
-                                group[group.indexOf(student)] = (user.profile.firstName +' '+ user.profile.lastName);
+                                groupe.group[groupe.group.indexOf(student)] = (user.profile.firstName +' '+ user.profile.lastName);
                             }
                         }); 
                     });
