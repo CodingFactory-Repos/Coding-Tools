@@ -17,6 +17,22 @@
 						v-model="this.language"
 						placeholder="Language :"
 					/><br />
+					<div class="mb-4">
+						<label for="file" class="block text-sm font-medium text-gray-700">Fichier :</label>
+						<input type="file" id="file" ref="fileInput" @change="handleFileChange" multiple />
+						<ul class="mt-4 space-y-2">
+							<li v-for="file in uploadedFiles" :key="file.name" class="flex items-center">
+								<button
+									type="button"
+									class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+									@click="removeFile(index)"
+								>
+									X
+								</button>
+								<span class="text-gray-700">{{ file.name }}</span>
+							</li>
+						</ul>
+					</div>
 					<div class="flex justify-center mt-6">
 						<button
 							class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -57,9 +73,21 @@ export default {
 			project: [],
 			site: '',
 			teacherId: '',
+			uploadedFiles: [],
 		};
 	},
 	methods: {
+		handleFileChange(event) {
+			const files = event.target.files;
+
+			// Mettez à jour la liste uploadedFiles avec les informations des fichiers téléchargés
+			for (let i = 0; i < files.length; i++) {
+				this.uploadedFiles.push(files[i]);
+			}
+		},
+		removeFile(index) {
+			this.uploadedFiles.splice(index, 1);
+		},
 		AddCourses() {
 			const course = useCoursStore();
 			this.newCourse = {
