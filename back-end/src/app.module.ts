@@ -25,6 +25,7 @@ import { ProjectsModule } from 'src/base/projects/projects.module';
 import { RetrospectivesModule } from 'src/base/retrospectives/retrospectives.module';
 import { ChatModule } from '@/external-modules/chat/chat.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { StoriesModule } from 'src/base/stories/stories.module';
 
 @Module({
 	imports: [
@@ -49,6 +50,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 		RetrospectivesModule,
 		ChatModule,
 		ScheduleModule.forRoot(),
+		StoriesModule
 	],
 	controllers: [AppController],
 	providers: [AppService, CronService],
