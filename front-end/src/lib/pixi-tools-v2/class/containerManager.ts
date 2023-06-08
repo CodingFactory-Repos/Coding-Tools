@@ -395,6 +395,8 @@ export class ContainerManager {
 				return {
 					width: this._selectedContainers[0].width,
 					height: this._selectedContainers[0].height,
+					x: this._selectedContainers[0].textGraphic.x,
+					y: this._selectedContainers[0].textGraphic.y,
 				};
 			} else {
 				return {
