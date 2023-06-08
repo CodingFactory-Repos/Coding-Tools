@@ -154,3 +154,35 @@ onBeforeRouteLeave(() => {
 })
 projectStore.startRefreshing();
 </script>
+
+<style lang="scss">
+html > body div.textEditor {
+	position: absolute;
+	color: #000000;
+	display: none;
+	resize: none;
+	margin: 0px;
+	padding: 0px;
+	border: none !important;
+	border-width: 0px !important;
+	border-color: transparent !important;
+	background-color: transparent;
+	line-height: 1rem;
+	box-shadow: none !important;
+	transform-origin: left 0px;
+
+	&:focus-visible {
+		outline: none;
+	}
+
+	&.blank::before {
+		content: attr(data-placeholder);
+		font-size: 14px;
+		font-kerning: auto;
+		overflow-wrap: break-word;
+		white-space: pre-wrap;
+		color: rgb(160, 160, 160);
+		font-weight: normal;
+	}
+}
+</style>
