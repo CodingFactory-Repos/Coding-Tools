@@ -11,7 +11,6 @@ import { useUserStore } from '@/store/modules/user.store';
 import { onMounted } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import Chart from 'chart.js';
-import { result } from 'lodash-es';
 
 console.log(useUserStore());
 const createCharts = async () => {
@@ -33,17 +32,6 @@ const createCharts = async () => {
 
 	const categoryCount = countCategories(types);
 
-	const participants = await articleStore.getParticipants(articleStore.items[0]._id);
-	console.log(participants);
-
-	// Récupérer les participants pour le premier article
-	if (articles.values.length > 0) {
-		const articleId = articles.values[0]._id;
-		articleStore.getParticipants(articleId).then((participants) => {
-			console.log(participants);
-			// Utilisez les participants récupérés comme vous le souhaitez
-		});
-	}
 	const ctx1 = document.getElementById('chart1').getContext('2d');
 	new Chart(ctx1, {
 		type: 'doughnut',

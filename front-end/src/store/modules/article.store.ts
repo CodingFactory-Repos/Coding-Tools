@@ -99,7 +99,7 @@ export const useArticleStore = defineStore('article', {
 		}),
 
 		getParticipants: withErrorHandler(async function (id: string) {
-			const response = await http.get(`/articles/participants/${id}`);
+			const response = await http.get(`/articles/participant/${id}`);
 			const participants = response.data.map((participant) => participant._id);
 			return participants;
 		}),

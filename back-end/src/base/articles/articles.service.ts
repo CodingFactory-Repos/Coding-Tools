@@ -35,6 +35,28 @@ export class ArticlesService {
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
 
+	async getArticleWithMostParticipants() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$project: {
+						_id: 1,
+						participants: 1,
+						numParticipants: { $size: '$participants' },
+					},
+				},
+				{
+					$sort: { numParticipants: -1 },
+				},
+				{
+					$limit: 5,
+				},
+			])
+			.toArray();
+
+		return res;
+	}
+
 	// remove participant from the array of participants in article in the database
 	async removeParticipant(id, queryParticipant) {
 		const update = { $pull: { participants: queryParticipant } };

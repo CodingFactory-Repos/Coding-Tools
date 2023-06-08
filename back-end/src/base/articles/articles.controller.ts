@@ -37,6 +37,18 @@ export class ArticlesController {
 		});
 	}
 
+	@Get('/participant/:id')
+	async getArticleWithMostParticipants(@Req() req: Request, @Res() res: Response) {
+		try {
+			const articleId = await this.articlesService.getArticleWithMostParticipants();
+			return res.status(201).json(articleId);
+		} catch (error) {
+			return res.status(500).json({
+				message: "Erreur lors de la récupération de l'article avec le plus de participants.",
+			});
+		}
+	}
+
 	// remove participant from the array of participants in article in the database
 	@Put('/removeParticipant/:id')
 	removeParticipant(@Req() req: Request, @Res() res: Response) {
