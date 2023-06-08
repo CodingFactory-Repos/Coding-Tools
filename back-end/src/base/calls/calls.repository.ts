@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Db, Filter, FindOneAndUpdateOptions, InferIdType, ObjectId } from 'mongodb';
+import { Db, Filter, FindOneAndUpdateOptions, InferIdType, ObjectId, WithId } from 'mongodb';
 import { AbsencesParams, Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 import { ServiceError } from '@/common/decorators/catch.decorator';
@@ -822,5 +822,40 @@ export class CallsRepository {
 			};
 		}
 		return createPDF();
+	}
+
+	async getActualCourseGroup(userId: ObjectId) {
+		// RELOU DE DEVOIR FAIRE ÇA MAIS TOUT EST LIÉ AVEC LE PREMIER RETURN DU ACTUALGROUP AVEC SEULEMENT L'ID, ET JE SUIS BLOQUÉ POUR LA SUITE AU NIVEAU DU FRONT...
+		const actualDate = new Date();
+
+		const user = await this.db.collection('users').findOne({ _id: userId });
+		if (!user) {
+			throw new ServiceError('NOT_FOUND', 'User not found');
+		}
+
+		const query = {
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		};
+
+		switch (user.role) {
+			case Roles.STUDENT:
+				query['classId'] = await this.getStudentClassId(userId);
+				break;
+			case Roles.PRODUCT_OWNER:
+				query['teacherId'] = userId;
+				break;
+			case Roles.PEDAGOGUE:
+				return null;
+			default:
+				throw new Error(`Unknown user role: ${user.role}`);
+		}
+
+		const actualCourse = await this.db.collection('courses').findOne(query);
+		console.log("actual", actualCourse);
+
+
+		// La base n'est pas typée, j'ai besoin de tout en front donc voilà
+		return actualCourse ?? null;
 	}
 }

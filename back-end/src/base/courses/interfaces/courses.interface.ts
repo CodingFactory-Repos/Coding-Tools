@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { AcademicYear, User } from 'src/base/users/interfaces/users.interface';
 import { Retrospective } from 'src/base/retrospectives/interfaces/retrospectives.interface';
+import { CanvasRoom } from '@/base/canvasRoom/interfaces/canvasRoom.interface';
 
 export interface Course {
 	_id?: ObjectId;
@@ -12,9 +13,13 @@ export interface Course {
     periodStart: Date;
     periodEnd: Date;
     presence:[];
-	project:[];
+	projects: Array<ObjectId>;
     site: string;
     teacherId?: ObjectId;
+	isLocked?: boolean;
+	groups?: Array<Group>
+	retro: ObjectId
+	trellos?: Array<any> // WAITING FOR TRELLO
 	/*
 		productOwner?: User;
 	academicYear?: AcademicYear;
@@ -26,4 +31,9 @@ export interface Course {
 export interface Call {
 	example: string;
 	// to be changed;
+}
+
+export interface Group {
+	id: ObjectId;
+	group: Array<ObjectId>;
 }

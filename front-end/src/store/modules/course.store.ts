@@ -3,10 +3,12 @@ import { defineStore } from 'pinia';
 import { withErrorHandler } from '@/utils/storeHandler';
 import {createCourse, getCourses, getCoursesById} from '@/api/ressource-req';
 import { isEmpty } from '@/utils/string.helper';
+import { tryGetAllCourses } from '@/api/courses-req';
 
 export const useCoursStore = defineStore('course', {
 	state: (): CoursesStore => {
 		return {
+			allCourses: [],
 			items: [
 				{
 					_id: '',
@@ -23,20 +25,7 @@ export const useCoursStore = defineStore('course', {
                     teacherId: ''
 				},
 			],
-            oneItems: {
-                _id: '',
-					tag: '',
-                    classTag: '',
-					picture: '',
-                    language:'',
-				    createdAt: null,
-					periodStart:null,
-                    periodEnd: null,
-					presence: [],
-					project: [],
-                    site:'',
-                    teacherId: ''
-            },
+            oneItems: {},
 		idCourses: "",
         }
 	},
@@ -52,19 +41,23 @@ export const useCoursStore = defineStore('course', {
 		}),
         getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
+			this.oneItems = response.data.courseById;
+
 			return true;
 		}),
         addCourse: withErrorHandler(async function (
 			this: CoursesStore,
 			course: Course,
 		) {
-			const res = await createCourse(course); 
+			const res = await createCourse(course);
 			if (res.status !== 200) return false;
 			this.items.push(res.data);
 			return true;
 		}),
+		async getAllCourses(this: CoursesStore) {
+			const resp = await tryGetAllCourses();
+			if (resp.status === 200) this.allCourses = resp.data.courses;
+		},
 	},
-  
+
 });

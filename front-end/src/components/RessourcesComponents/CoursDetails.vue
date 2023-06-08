@@ -1,13 +1,13 @@
 <template>
-	<div>
+	<div v-if="Object.keys(course.oneItems).length > 0">
 		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">{{ oneItems.tag }}</h1>
+			<h1 class="text-4xl font-bold">{{ courseById.tag }}</h1>
 		</div>
 		<img
 			class="cover h-72 w-screen object-cover object-center"
 			:src="
-				oneItems.picture && oneItems.picture != ''
-					? oneItems.picture
+				courseById.picture && courseById.picture != ''
+					? courseById.picture
 					: 'https://cdn.discordapp.com/attachments/894865078824890408/1073218625718198342/Fof04PpacAQePOW.png'
 			"
 			alt=""
@@ -15,13 +15,13 @@
 		<div class="pt-3 pb-2">
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ oneItems.periodStart }}</span
+				>{{ courseById.periodStart }}</span
 			>
 		</div>
 		<div class="pt-3 pb-2">
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ oneItems.periodEnd }}</span
+				>{{ courseById.periodEnd }}</span
 			>
 		</div>
 		<button
@@ -34,16 +34,36 @@
 		>
 			Retour
 		</button>
+		<div class="flex bg-slate-300 w-full gap-4 justify-center">
+			<div v-for="canva in canvas">
+				<button
+					@click="goToProject(canva)"
+					class="text-black"
+				>
+					{{ canva.meta.title }}
+				</button>
+			</div>
+		</div>
+		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4">
+				<button
+					@click="goToRetro(retro)"
+					class="text-black"
+				>
+					{{ retro.title }}
+				</button>
+		</div>
 	</div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useCoursStore } from '@/store/modules/course.store';
 import { useRouter } from 'vue-router';
 
 // get store
 const course = useCoursStore();
-const oneItems = computed(() => course.oneItems);
+const courseById = computed(() => course.oneItems.course);
+const retro = computed(() => course.oneItems.retro);
+const canvas = computed(() => course.oneItems.projects);
 
 const router = useRouter();
 
@@ -63,6 +83,15 @@ const getCourseById = async (_id: string) => {
 onMounted(() => {
 	getCourseById(_id.value);
 });
+
+const goToProject = (canva) => {
+	router.push(`/app/agility/project/${canva._id}`)
+};
+
+const goToRetro = (retro) => {
+	router.push(`/app/retrospective/${retro.slug}`)
+}
+
 </script>
 <style scoped>
 .display {

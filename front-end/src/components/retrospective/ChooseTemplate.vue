@@ -92,6 +92,7 @@ export default defineComponent({
 				timerInterval: null,
 				timePassed: 0,
 				associatedCourse: props.allCourses[selectedCourse.value],
+				allowedPeers: [],
 			}
 
 			const createdRetro = await retrospectiveStore.createNewRetro(retro)
