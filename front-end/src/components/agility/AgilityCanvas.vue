@@ -169,6 +169,7 @@ html > body div.textEditor {
 	background-color: transparent;
 	line-height: 1rem;
 	box-shadow: none !important;
+	transform-origin: left 0px;
 
 	&:focus-visible {
 		outline: none;

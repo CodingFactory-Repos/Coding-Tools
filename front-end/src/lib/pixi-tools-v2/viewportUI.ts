@@ -143,6 +143,7 @@ export class ViewportUI extends Viewport {
 		this.textEditor.style.fontSize = `${fontSize}px`;
 		this.textEditor.style.display = 'block';
 		this.textEditor.style.padding = `${padding}px`;
+		this.textEditor.style.transform = `scale(${this.scaled})`;
 		
 		if(text !== undefined && text !== '') {
 			const perLine = text.split('\n').map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`).join('');
