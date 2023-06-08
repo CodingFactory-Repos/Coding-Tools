@@ -1,4 +1,10 @@
 <template>
+    <div v-show="showProject">
+        <button @click="this.showProject = false" class="back-button fixed pl-1.5 w-[2.5em] h-[2.5em] top-4 left-36 rounded-lg bg-[#24292E] hover:bg-[#24292E99] shadow gradiant">
+            <svg class="back-button" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
+        </button>
+        <h1 class="font-bold dark:text-[#9ca3af] text-[#213547] ml-32 mt-3">Planning</h1> 
+    </div>
     <div class="mx-auto p-4 rounded-lg bg-light-primary dark:bg-dark-secondary text-left mt-10 ml-12 mr-12 w-11/12">
         <div v-show="this.showProject == ''">
             <h1 class="text-6xl font-bold dark:text-dark-font">Organisation</h1>
@@ -27,10 +33,10 @@
             <div class="w-full h-fit flex flex-col gap-3 rounded-lg bg-light-primary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <h2 class="text-2xl font-bold dark:text-dark-font">Plannings de ce sprint</h2>
                 <div class="groups">
-                    <div class="iconeGroupe" v-for="group in groups">
-                        <span style="font-size:20px;" v-for="student in group">{{ student }}<br/></span>
+                    <div class="iconeGroupe" v-for="groupe in groups">
+                        <span style="font-size:20px;" v-for="student in groupe.group">{{ student }}<br/></span>
                         <div style="position:absolute;left:10px;bottom:10px;">
-                            <button @click="openProject(group)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le projet</button>
+                            <button @click="openProject(groupe.group)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le projet</button>
                         </div>
                     </div>
                 </div>
@@ -54,7 +60,7 @@
             </div>
             </div>
             <button class="p-2 button-add-members hover:bg-light-secondary dark:hover:bg-dark-tertiary gradiant relative right-4 bg-[#24292E] hover:bg-[#24292E99] shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" width="1.5em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" height="1.5em" width="1.5em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
             </button>
             </div>
         </div>
@@ -106,11 +112,11 @@ export default {
         getStudentList: withErrorHandler(async function () {
 			http.get(`/calls/student_list/${this.courseId}`).then((response) => {
 				this.studentList = response.data.studentList;
-                this.groups.forEach(group => { //Pour chaque groupe
-                    group.forEach(student => { //Pour chaque élève du groupe
+                this.groups.forEach(groupe => { //Pour chaque groupe
+                    groupe.group.forEach(student => { //Pour chaque élève du groupe
                         this.studentList.forEach(user => { //On compare avec tous les élèves
                             if(student == user._id) {
-                                group[group.indexOf(student)] = (user.profile.firstName +' '+ user.profile.lastName);
+                                groupe.group[groupe.group.indexOf(student)] = (user.profile.firstName +' '+ user.profile.lastName);
                             }
                         }); 
                     });
@@ -196,8 +202,12 @@ button {
     height: 20px;
 }
 
-svg {
-    fill:#ffffff;
+.back-button {
+    fill:#9CA3AF;
+}
+
+.back-button:hover {
+    fill:#FFF;
 }
 
 .button-add-members {
