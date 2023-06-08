@@ -144,6 +144,7 @@ import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
 import MarkdownViewer from './MarkdownViewer.vue';
+import MarkdownItClass from '@toycode/markdown-it-class';
 
 // use router
 const router = useRouter();
@@ -167,9 +168,21 @@ const mavonOptions = ref({
 	table: true,
 });
 
-// Function to render the markdown
+// create renderMarkdown method
 const renderMarkdown = () => {
 	const md = new MarkdownIt();
+
+	md.use(MarkdownItClass, {
+		h1: 'text-4xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h2: 'text-3xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h3: 'text-2xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h4: 'text-xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h5: 'text-lg mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h6: 'text-base mt-5 mb-2 font-bold text-gray-500 dark:text-white',
+		img: 'max-w-[25rem] m-auto h-auto mt-7 mb-7',
+		p: 'text-gray-900 mt-2 mb-2 dark:text-white',
+	});
+
 	return md.render(content.value);
 };
 

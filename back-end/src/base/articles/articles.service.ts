@@ -72,7 +72,6 @@ export class ArticlesService {
 	// add like to the array of likes in article in the database
 	async addLike(id, queryLike) {
 		const update = { $push: { likes: queryLike } };
-		console.log('addLike', queryLike);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
@@ -80,7 +79,6 @@ export class ArticlesService {
 	// remove like from the array of likes in article in the database
 	async removeLike(id, queryLike) {
 		const update = { $pull: { likes: queryLike } };
-		console.log('removeLike', queryLike);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}

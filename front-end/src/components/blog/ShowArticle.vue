@@ -106,7 +106,12 @@
 		</div>
 
 		<div class="pt-2 pb-5 pr-40 pl-40 text-left">
-			<div v-html="renderMarkdown()" class="markdown-preview text-gray-900 dark:text-white"></div>
+			<p class="markdown-preview text-gray-900 dark:text-white">
+				{{ oneItems.descriptions ? oneItems.descriptions : 'Pas de description spécifiée' }}
+			</p>
+		</div>
+		<div class="markdown-content pt-2 pb-5 pr-40 pl-40 text-left">
+			<div v-html="renderMarkdown()" class="text-gray-900 dark:text-white"></div>
 		</div>
 		<div class="pt-5">
 			<button
@@ -226,12 +231,25 @@ import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
 import Comment from '../common/svg/Comment.vue';
+import MarkdownItClass from '@toycode/markdown-it-class';
 
 let markdown = ref('');
 
 // create renderMarkdown method
 const renderMarkdown = () => {
 	const md = new MarkdownIt();
+
+	md.use(MarkdownItClass, {
+		h1: 'text-4xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h2: 'text-3xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h3: 'text-2xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h4: 'text-xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h5: 'text-lg mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h6: 'text-base mt-5 mb-2 font-bold text-gray-500 dark:text-white',
+		img: 'max-w-[25rem] m-auto h-auto mt-7 mb-7',
+		p: 'text-gray-900 mt-2 mb-2 dark:text-white',
+	});
+
 	return md.render(markdown.value);
 };
 
@@ -262,7 +280,7 @@ const _id = computed(() => {
 // get article by id
 const getArticleById = async (_id: string) => {
 	await articleStore.getArticleById(_id);
-	markdown.value = oneItems.value.descriptions;
+	markdown.value = oneItems.value.content;
 };
 
 const formatDate = (date: Date) => {
@@ -352,7 +370,8 @@ const isFinish = () => {
 	display: none;
 }
 
-.markdown-preview img {
-	width: 100px; /* ajustez la taille de l'image selon vos besoins */
+.red-background {
+	background-color: red !important;
+	font-size: 15em !important;
 }
 </style>

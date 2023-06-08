@@ -12,7 +12,7 @@
 						<input
 							type="text"
 							id="title"
-							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							placeholder="Enter Title"
 							v-model="title"
 						/>
@@ -27,7 +27,7 @@
 					<div class="relative mb-6">
 						<select
 							id="countries"
-							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							v-model="type"
 							@change="changeType(type)"
 						>
@@ -63,7 +63,7 @@
 						type="file"
 						accept=".md"
 						@change="handleFileChange"
-						class="block w-30 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+						class="block w-full sm:w-30 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 						id="file_input"
 					/>
 				</div>
@@ -78,7 +78,7 @@
 						v-model="content"
 						:toolbars="mavonOptions"
 						language="fr"
-						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						class="p-2.5 w-full text-sm z-1 text-gray-900 bg-white rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 						defaultOpen="true"
 					/>
 				</div>
@@ -90,7 +90,7 @@
 					:full-month-name="true"
 					placeholder="YYYY-MM-DD"
 					:typeable="true"
-					class="vuejs3-datepicker w-[300px] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					class="vuejs3-datepicker w-full sm:w-[300px] text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
 				/>
 			</div>
 
@@ -102,7 +102,7 @@
 					<div class="relative mb-6">
 						<input
 							type="text"
-							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							id="picture"
 							v-model="picture"
 							placeholder="Enter picture link"
@@ -116,7 +116,7 @@
 					<div class="relative mb-6">
 						<input
 							type="text"
-							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+							class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							id="tags"
 							v-model="tags"
 							placeholder="Enter tags"
@@ -159,6 +159,7 @@ import datepicker from 'vuejs3-datepicker';
 import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
 import MarkdownViewer from './MarkdownViewer.vue';
+import MarkdownItClass from '@toycode/markdown-it-class';
 
 // Define the options for the mavon editor
 const mavonOptions = ref({
@@ -182,6 +183,17 @@ const mavonOptions = ref({
 // Function to render the markdown
 const renderMarkdown = () => {
 	const md = new MarkdownIt();
+	md.use(MarkdownItClass, {
+		h1: 'text-4xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h2: 'text-3xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h3: 'text-2xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h4: 'text-xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h5: 'text-lg mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h6: 'text-base mt-5 mb-2 font-bold text-gray-500 dark:text-white',
+		img: 'max-w-[25rem] m-auto h-auto mt-7 mb-7',
+		p: 'text-gray-900 mt-2 mb-2 dark:text-white',
+	});
+
 	return md.render(content.value);
 };
 
@@ -211,7 +223,6 @@ const changeType = (value: string) => {
 	} else {
 		status.value = 'validated';
 	}
-	console.log(type.value);
 };
 
 // Function to watch the content of the file
@@ -266,6 +277,8 @@ const addArticle = async () => {
 		type: type.value,
 		status: status.value,
 		date: date.value.toString(),
+		likes: [],
+		dislikes: [],
 	};
 
 	// post the data

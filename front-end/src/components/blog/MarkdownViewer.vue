@@ -79,8 +79,8 @@
 					<div
 						:class="
 							windowWidth >= 1024
-								? 'flex flex-col items-center w-3/4'
-								: 'flex flex-col items-center w-4/4'
+								? 'flex flex-col items-center w-4/5 relative '
+								: 'flex flex-col items-center w-5/5'
 						"
 					>
 						<div v-if="props.preview === false">
@@ -102,24 +102,58 @@
 								</div>
 							</div>
 						</div>
+
+						<div class="content">
+							<button
+								v-if="step > 0"
+								@click="step = step -= 1"
+								class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white"
+							>
+								Back
+							</button>
+							<button
+								v-else
+								class="scale-0 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white"
+							>
+								Back
+							</button>
+							<button
+								v-if="step < formatedArray.length - 1"
+								@click="step = step = step += 1"
+								class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none"
+							>
+								Next
+							</button>
+						</div>
 					</div>
 
-					<div class="w-1/4" v-if="windowWidth >= 1024">
-						<div
-							class="h-80 px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 transition-transform"
-						>
-							<ul class="space-y-2 font-medium">
+					<div class="w-1/5" v-if="windowWidth >= 1024">
+						<div class="h-auto px-3 py-4 overflow-y-auto transition-transform">
+							<ul class="text-sm">
 								<li v-for="(item, index) in headers" :key="index">
 									<a
 										@click.prevent="setStep(index)"
-										:class="
-											step == index
-												? 'light:bg-gray-200 dark:bg-gray-700 block py-2 pl-3 pr-4 dark:text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500'
-												: 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'
-										"
-										class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+										:class="{
+											'block text-black hover:text-black bg-gray-100 dark:bg-transparent dark:border-gray-500':
+												step >= index,
+											'shadow-md font-bold hover:text-black dark:shadow-gray-600': step == index,
+											'block text-gray-400 hover:text-gray-400 hover:bg-transparent dark:text-white dark:border-gray-700 dark:hover:bg-transparent':
+												step < index,
+										}"
+										class="flex flex-row items-center cursor-pointer p-2 mb-2 rounded-lg border border-gray-300 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
 									>
-										<h2 class="ml-3">{{ index + 1 }}. {{ item }}</h2>
+										<div class="ml-3">
+											<h2
+												:class="{
+													'font-bold': step == index,
+													'bg-gray-400': step < index,
+												}"
+												class="inline-block leading-8 w-8 h-8 bg-blue-600 text-white text-center rounded-full"
+											>
+												{{ index + 1 }}
+											</h2>
+										</div>
+										<span class="ml-3"> {{ item }}</span>
 									</a>
 								</li>
 							</ul>
@@ -173,7 +207,7 @@
 							:class="
 								step == index
 									? 'light:bg-gray-100 dark:bg-gray-700 block py-2 pl-3 pr-4 dark:text-white bg-blue-700 rounded bg-transparent text-blue-700 p-0 dark:text-blue-500'
-									: 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'
+									: 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent  p-0 dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent dark:border-gray-700'
 							"
 							class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
 						>
@@ -183,31 +217,19 @@
 				</ul>
 			</div>
 		</aside>
+	</div>
 
-		<div>
-			<button
-				v-if="step > 0"
-				@click="step = step -= 1"
-				class="backBtn py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white"
-			>
-				Back
-			</button>
-			<button
-				v-if="step < formatedArray.length - 1"
-				@click="step = step = step += 1"
-				class="nextBtn text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none"
-			>
-				Next
-			</button>
-		</div>
+	<div v-if="props.preview === false">
+		<hr class="my-5" />
 
-		<div v-if="!props.markdown">
+		<div v-if="!props.markdown" class="text-center w-full">
 			<button
 				type="button"
 				@click="openCommentModal"
-				class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				class="text-blue-700 m-auto flex flex-row items-center hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
 			>
-				<Comment />
+				<Add class="!fill-blue-600" />
+				<span class="ml-2"> Ajouter un commentaire </span>
 			</button>
 		</div>
 		<div>
@@ -251,9 +273,10 @@ import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
-import Comment from '../common/svg/Comment.vue';
+import Add from '../common/svg/Add.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
+import MarkdownItClass from '@toycode/markdown-it-class';
 
 const props = defineProps({
 	markdown: {
@@ -360,8 +383,19 @@ const renderMarkdown = () => {
 				highlightedCode = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
 			}
 
-			return `<pre class='hljs overflow-x-scroll'><span class=''>${lang}</span></br><code class="${lang}">${highlightedCode}</code></pre>`;
+			return `<pre class='hljs overflow-x-scroll'><div class='p-2'><span class='flex justify-end italic'>${lang}</span><code class="${lang}">${highlightedCode}</code></div></pre>`;
 		},
+	});
+
+	md.use(MarkdownItClass, {
+		h1: 'text-4xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h2: 'text-3xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h3: 'text-2xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h4: 'text-xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h5: 'text-lg mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h6: 'text-base mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		img: 'max-w-[25rem] m-auto h-auto mt-7 mb-7',
+		p: 'text-gray-900 mt-2 mb-2 dark:text-white',
 	});
 
 	renderedMarkdown.value = md.render(srcMarkdown.value);
@@ -379,7 +413,7 @@ const renderMarkdown = () => {
 	lines.forEach((line) => {
 		if (line.startsWith('<h1>')) {
 			formatedArray.value[indexArray.value].push({ value: line });
-		} else if (line.startsWith('<h2>')) {
+		} else if (line.startsWith('<h2')) {
 			if (firstSection.value) {
 				firstSection.value = false;
 				formatedArray.value[indexArray.value].push({ value: line });
@@ -431,6 +465,14 @@ const setStep = (i) => {
 	font-size: 17px;
 }
 
+.content {
+	position: absolute;
+	bottom: 0;
+	width: 80%;
+	display: flex;
+	justify-content: space-between;
+}
+/*
 .backBtn {
 	position: absolute;
 	bottom: 5%;
@@ -440,9 +482,9 @@ const setStep = (i) => {
 .nextBtn {
 	position: absolute;
 	bottom: 5%;
-	right: 35%;
+	right: 30%;
 }
-
+*/
 .selected {
 	border: 3px grey;
 }

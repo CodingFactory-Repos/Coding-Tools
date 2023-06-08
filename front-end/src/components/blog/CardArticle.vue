@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div class="boxShadow">
+	<div class="boxShadow w-full">
 		<img
-			class="object-cover h-48 w-96 rounded-t-lg"
+			class="object-cover h-48 w-full rounded-t-lg"
 			:src="
 				item.picture && item.picture != ''
 					? item.picture
@@ -45,7 +45,7 @@
 		<div class="pt-3 pb-2" v-else>
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ item.type }}
+				>{{ item.date }}
 			</span>
 		</div>
 		<div class="pt-2 pb-5">
@@ -150,7 +150,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
@@ -213,15 +213,11 @@ const userId = {
 	id: user._id,
 };
 
-console.log(props.item.likes.some((like) => like.id === user._id));
-
 // Function to add a like to an article and update the store
 const addLike = async (id: string) => {
 	if (isLiked.value) {
-		console.log('remove like');
 		await articleStore.removeLike(id, userId);
 	} else {
-		console.log('add like');
 		await articleStore.addLike(id, userId);
 		await articleStore.removeDislike(id, userId);
 	}
@@ -284,12 +280,6 @@ const openArticle = (id: string) => {
 const openTutorial = (id: string) => {
 	router.push(`/app/blog/tutorial/${id}`);
 };
-
-// ...
-
-onMounted(() => {
-	console.log('isLiked', isLiked.value);
-});
 </script>
 
 <style scoped lang="scss">
