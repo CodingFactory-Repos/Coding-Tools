@@ -8,7 +8,6 @@
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/.gitignore @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
-/back-end/package-lock.json @Maghwyn @Loule95450
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
@@ -147,12 +146,12 @@
 /front-end/src/components/agility/modals/ @Maghwyn
 /front-end/src/components/agility/modals/Blueprint.vue @Maghwyn
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
-/front-end/src/components/agility/UI/ @Kevw94 @Maghwyn
+/front-end/src/components/agility/UI/ @Maghwyn
+/front-end/src/components/agility/UI/CanvasLoader.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
-/front-end/src/components/agility/UI/ColorPickerOption.vue @Maghwyn
-/front-end/src/components/agility/UI/DefaultSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/UI/MiroSelectionBox.vue @Maghwyn
+/front-end/src/components/agility/UI/SceneUI.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/UI/ShareProject.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/UI/ToolsEditor.vue @Maghwyn
 /front-end/src/components/auth/ @Loule95450 @Maghwyn
@@ -215,7 +214,6 @@
 /front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/blueprint/personas.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/ @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Kevw94
@@ -227,14 +225,15 @@
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/tree.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/model/model-ui-constructor/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/plugins/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/bezierManipulationPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/containerBezierLinkPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/types/ @Maghwyn
+/front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-ui.ts @Kevw94 @Maghwyn
@@ -245,7 +244,6 @@
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/utils/uniqueId.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/viewportUI.ts @Maghwyn
 /front-end/src/lib/pixi-tools/docs/assets/css/index.css @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/js/index.js @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/media/favicon.ico @Loule95450
