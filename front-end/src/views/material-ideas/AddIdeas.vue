@@ -125,6 +125,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/styles/components/add-ideas.css';
-@import '../../assets/styles/components/common/pop-up.css';
+@import '@/styles/pop-up-backdrop.css';
 </style>
