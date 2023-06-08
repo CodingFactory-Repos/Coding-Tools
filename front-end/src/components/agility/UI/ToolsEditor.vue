@@ -184,8 +184,7 @@ import SvgRectangle from '@/components/common/svg/Rectangle.vue';
 import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
-import { Geometry } from 'pixi.js';
-import { ContainerTypeId } from '../../../lib/pixi-tools-v2/types/pixi-serialize';
+import { ContainerTypeId } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();

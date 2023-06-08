@@ -98,6 +98,7 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	borderColor?: number;
 	arrowHead?: boolean;
 	dashed?: boolean;
+	text?: string;
 }
 
 export interface SerializedLineGraphic {

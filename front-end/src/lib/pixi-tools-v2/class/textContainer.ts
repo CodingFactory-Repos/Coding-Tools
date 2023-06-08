@@ -1,4 +1,4 @@
-import { Container, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
+import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
@@ -11,7 +11,7 @@ import {
 } from '../types/pixi-serialize';
 import { ViewportUI } from '../viewportUI';
 import { TextArea } from '../model/template';
-import { GenericContainer } from './genericContainer';
+import { dragAttachedLines } from '../utils/dragAttachedLines';
 
 export class TextContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -34,6 +34,7 @@ export class TextContainer extends PluginContainer {
 	public isEditing = false;
 	private _viewport: ViewportUI;
 	private _isSelected = false;
+	public isNew: boolean;
 
 	static registerContainer(
 		viewport: ViewportUI,
@@ -77,9 +78,17 @@ export class TextContainer extends PluginContainer {
 
 		this.children[0].on('pointerdown', this.startEditing.bind(this));
 
-		// if (!remote && viewport.socketPlugin) {
-		// 	viewport.socketPlugin.emit('ws-element-added', this.serializeData());
-		// }
+		if (!remote) {
+			const eventBoundary = new EventBoundary(this);
+			const fakeEvent = new FederatedPointerEvent(eventBoundary);
+			fakeEvent.global = this._viewport.mouse;
+			fakeEvent.originalEvent = fakeEvent;
+			fakeEvent.originalEvent.shiftKey = false;
+			// isNew is a one time use.
+			this.isNew = true;
+			this.emit('pointerdown', fakeEvent);
+			this.children[0].emit('pointerdown', fakeEvent);
+		}
 	}
 
 	public startEditing() {
@@ -88,9 +97,20 @@ export class TextContainer extends PluginContainer {
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } = this.textGraphic;
 			const fontSize = this.textGraphic.textStyle.fontSize;
+			const padding = this.textGraphic.textStyle.padding;
 			//@ts-ignore
-			const containerized = this.parent.typeId === 'generic';
-			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height, containerized);
+			const containerized = this?.parent?.typeId === 'generic';
+			this._viewport.startTextEditor(
+				text,
+				fontSize,
+				color,
+				x,
+				y,
+				width,
+				height,
+				padding,
+				containerized,
+			);
 		}
 	}
 
@@ -98,14 +118,43 @@ export class TextContainer extends PluginContainer {
 		this._isSelected = false;
 
 		if (this.isEditing) {
+			const size = {
+				width: this._viewport.textEditor.offsetWidth,
+				height: this._viewport.textEditor.offsetHeight,
+			};
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
-			this.textGraphic.text = this._viewport.textEditor.value;
-			console.log(this._viewport.textEditor);
-			this.textGraphic.updateText();
-			this._viewport.endTextEditor();
 			if (this._viewport.textEditor.value.length == 0) {
 				this.destroy();
+
+			const data = this._viewport.textEditor.innerHTML
+				.replaceAll('</div>', '</div>,')
+				.split(',')
+				.map((txt) => {
+					if (txt === '<div><br></div>') {
+						return '\n';
+					} else {
+						return txt.replace('<div>', '').replace('</div>', '').replace('<br>', '') + '\n';
+					}
+				})
+				.join('');
+
+			this.textGraphic.text = data.trim();
+			this.textGraphic.updateText();
+			this._viewport.endTextEditor();
+
+			// This need to be canceled if the input text is empty, add a blocking condition.
+			if (this.isNew) {
+				this.isNew = false;
+				if (this._viewport.socketPlugin) {
+					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
+				}
+			} else {
+				if (this._viewport.socketPlugin) {
+					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
+					//@ts-ignore
+					dragAttachedLines(this, this._viewport.socketPlugin, size);
+				}
 			}
 		}
 	}

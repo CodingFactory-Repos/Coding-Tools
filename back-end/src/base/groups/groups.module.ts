@@ -15,4 +15,3 @@ import { GroupsController } from 'src/base/groups/groups.controller';
 	exports: [GroupsService, GroupsRepository],
 })
 export class GroupsModule {}
-

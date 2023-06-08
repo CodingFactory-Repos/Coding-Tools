@@ -126,7 +126,6 @@ class PostitsDTO {
 	3: Array<PostitDTO>;
 }
 
-
 export class ProjectRetroInvitationVerificationDTO {
 	@IsString()
 	@Length(32)

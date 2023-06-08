@@ -15,7 +15,6 @@ export class RetrospectivesEventEmitter {
 		projectTitle: string,
 		token: string,
 	) {
-
 		this.eventEmitter.emit(
 			Events.retroInvitationRequest,
 			new MailjetRetrospectivesInvitationRequest(

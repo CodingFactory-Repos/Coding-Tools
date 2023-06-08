@@ -41,21 +41,26 @@ export const useProjectStore = defineStore('project', {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
 		getImages(this: ProjectStore) {
-			if(!this.pdfViewerOpen) return [];
+			if (!this.pdfViewerOpen) return [];
 			this.refreshPdfViewer;
 
 			const frames = this.scene?.viewport?.childFrames || [];
 			const len = frames.length;
 
 			const reactiveImages: Array<FramedPDF> = [];
-			for(let n = 0; n < len; n++) {
+			for (let n = 0; n < len; n++) {
 				const container = frames[n];
 				const { width, height } = container;
 				const cloneContainer = container.cloneToContainer();
 				const { x, y } = cloneContainer.getBounds();
 				cloneContainer.position.set(-x, -y);
 
-				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width: height, height: width, backgroundAlpha: 0 });
+				const renderer = new Renderer({
+					resolution: devicePixelRatio + 1,
+					width: height,
+					height: width,
+					backgroundAlpha: 0,
+				});
 				renderer.render(cloneContainer);
 
 				const canvas = renderer.view;
@@ -68,7 +73,7 @@ export const useProjectStore = defineStore('project', {
 					dimension: {
 						width: Math.floor(width),
 						height: Math.floor(height),
-					}
+					},
 				});
 
 				cloneContainer.destroy();
@@ -76,7 +81,7 @@ export const useProjectStore = defineStore('project', {
 			}
 
 			return reactiveImages;
-		}
+		},
 	},
 	actions: {
 		startRefreshing(this: ProjectStore) {

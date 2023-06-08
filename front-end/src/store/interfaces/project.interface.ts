@@ -49,20 +49,20 @@ export interface ViewportDefaultPosition {
 }
 
 export interface FramedPDF {
-	id: string,
-	order: number,
-	random?: number,
-	base64: string,
+	id: string;
+	order: number;
+	random?: number;
+	base64: string;
 	dimension: {
-		width: number,
-		height: number,
-	}
+		width: number;
+		height: number;
+	};
 }
 
 export interface DraggableUpdatePayload {
 	moved: {
-		element: FramedPDF,
-		newIndex: number,
-		oldIndex: number,
-	}
+		element: FramedPDF;
+		newIndex: number;
+		oldIndex: number;
+	};
 }

@@ -1,11 +1,20 @@
-import { Controller, Get, Res, UseFilters, Post, Req, Delete, Param, UseGuards } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Res,
+	UseFilters,
+	Post,
+	Req,
+	Delete,
+	Param,
+	UseGuards,
+} from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceError, ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { IdeasCommentsService } from 'src/base/ideasComments/ideasComments.service';
 import { ObjectId } from 'mongodb';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-
 
 @Controller('ideascomments')
 @UseFilters(ServiceErrorCatcher)
@@ -30,10 +39,10 @@ export class IdeasCommentsController {
 	async deleteMaterial(@Param() id: string, @Res() res: Response) {
 		try {
 			const query = { _id: new ObjectId(id) };
-			const ideasComments = await this.ideasCommentsService.deleteIdeaComment(query)
+			const ideasComments = await this.ideasCommentsService.deleteIdeaComment(query);
 			return res.status(200).json(ideasComments);
-		} catch(err) {
-			throw new ServiceError('BAD_REQUEST', 'Invalid parameter url')
+		} catch (err) {
+			throw new ServiceError('BAD_REQUEST', 'Invalid parameter url');
 		}
 	}
 }
