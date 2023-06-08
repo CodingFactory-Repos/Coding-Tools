@@ -13,7 +13,7 @@ export interface Course {
     periodEnd: Date;
     presence:[];
 	project:[];
-    site: String;
+    site: string;
     teacherId?: ObjectId;
 	/*
 		productOwner?: User;
