@@ -16,9 +16,8 @@ import {
 	MaterialAuthMiddleware,
 } from '@/common/middlewares/socket.ideasComment.middleware';
 // import { MaterialsRepository } from '@/base/materials/materials.repository';
-import { UsersRepository } from '@/base/users/users.repository';
 import { IdeasCommentsRepository } from '@/base/ideasComments/ideasComments.repository';
-import { ObjectId } from 'mongodb';
+import { IdeaComment } from '@/base/ideasComments/interfaces/ideasComments.interface';
 
 @UseFilters(WSServiceErrorCatcher)
 @WebSocketGateway({
@@ -55,7 +54,7 @@ export class IdeasCommentGateway
 	}
 
 	@SubscribeMessage('add-comment')
-	async addComment(client: MaterialSocket, data: any) {
+	async addComment(client: MaterialSocket, data: IdeaComment) {
 
 		this.items.unshift(data);
 
