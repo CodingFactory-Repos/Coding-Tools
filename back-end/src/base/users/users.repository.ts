@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Filter, UpdateFilter, FindOneAndUpdateOptions, FindOptions, Db } from 'mongodb';
-import { User } from '@/base/users/interfaces/users.interface';
-
+import { User } from './interfaces/users.interface';
 @Injectable()
 export class UsersRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
@@ -34,8 +33,10 @@ export class UsersRepository {
 		const options = { projection: { _id: 1 } };
 		return this.users.findOne(query, options);
 	}
-
 	async findMany(query: Filter<User>, options: FindOptions<User> = undefined) {
 		return this.users.find(query, options).toArray();
+	}
+	async getAllUsers() {
+		return this.users.find().toArray();
 	}
 }

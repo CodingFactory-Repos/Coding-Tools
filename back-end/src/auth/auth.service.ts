@@ -63,21 +63,18 @@ export class AuthService {
 		};
 
 		const allowedUser = await this.allowedStudentsRepository.findOne({ email: email });
-		if(allowedUser !== null) {
+		if (allowedUser !== null) {
 			newUser.profile.firstName = allowedUser.firstName;
 			newUser.profile.lastName = allowedUser.lastName;
 			newUser.schoolProfile = { groupName: allowedUser.group };
-		} else if(this.allowedEmailDomain.test(email)) {
-			const [lfn, lln] = email
-				.replace(this.allowedEmailDomain, "")
-				.replace("-", " ")
-				.split(".");
+		} else if (this.allowedEmailDomain.test(email)) {
+			const [lfn, lln] = email.replace(this.allowedEmailDomain, '').replace('-', ' ').split('.');
 			const firstName = capitalizeString(lfn.toLowerCase());
 			const lastName = lln.toUpperCase();
 
 			newUser.profile.firstName = firstName;
 			newUser.profile.lastName = lastName;
-			newUser.schoolProfile = { groupName: "unknown" };
+			newUser.schoolProfile = { groupName: 'unknown' };
 		}
 
 		//! This will send a validation email to the admin.
@@ -85,7 +82,7 @@ export class AuthService {
 		if (user.role === Roles.PRODUCT_OWNER) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupProductOwner(email);
-		} else if(user.role === Roles.STUDENT && allowedUser === null) {
+		} else if (user.role === Roles.STUDENT && allowedUser === null) {
 			newUser.requireAdminValidation = true;
 			this.authEventEmitter.signupUnallowedUser(email);
 		}

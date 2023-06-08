@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 
 import { ArticlesRepository } from 'src/base/articles/articles.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
+import { NewTutorialEmitter } from '@/base/articles/events/newTutorial.events'
 
 @Injectable()
 export class ArticlesService {
@@ -11,10 +12,35 @@ export class ArticlesService {
 		@Inject(forwardRef(() => ArticlesRepository))
 		private usersRepository: UsersRepository,
 		private articlesRepository: ArticlesRepository,
+		private newTutorialEmitter: NewTutorialEmitter,
 	) {}
 
 	// Function to add an article
 	async addArticle(queryArticle) {
+
+		queryArticle.status = 'Pending'
+
+		// send mail logic
+		if(queryArticle.type == 'Tuto'){
+			
+			// request to get all PO/Pedagos
+			const mailTargets = await this.usersRepository.findMany(
+				{
+					'role' :  { $in : [2, 3] }
+				},
+			)
+
+			// format mails for recipients
+			const recipientsMails: { Email : string }[] = mailTargets
+			.map(item => item.profile.email)
+			.map(mail => {
+				return { Email : mail }
+			})
+			
+			// emit mail
+			this.newTutorialEmitter.newTutorialMail(recipientsMails)
+		}
+
 		return await this.articlesRepository.createArticle(queryArticle);
 	}
 
@@ -26,6 +52,11 @@ export class ArticlesService {
 	// Function to get an article by its id
 	async getArticleById(id) {
 		return await this.articlesRepository.getArticleById(id);
+	}
+
+	// Function to update an article
+	async updateArticle(id, queryArticle) {
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
 	}
 
 	// add participant to the array of participants in article in the database
@@ -42,11 +73,44 @@ export class ArticlesService {
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
 
+	// add like to the array of likes in article in the database
+	async addLike(id, queryLike) {
+		const update = { $push: { likes: queryLike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove like from the array of likes in article in the database
+	async removeLike(id, queryLike) {
+		const update = { $pull: { likes: queryLike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// add dislike to the array of dislikes in article in the database
+	async addDislike(id, queryDislike) {
+		const update = { $push: { dislikes: queryDislike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove dislike from the array of dislikes in article in the database
+	async removeDislike(id, queryDislike) {
+		const update = { $pull: { dislikes: queryDislike } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
 	// add comment
 	async addComment(id, queryComment) {
 		const update = { $push: { comments: queryComment } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// delete article
+	async deleteArticle(id) {
+		return await this.articlesRepository.deleteOneArticle(id);
 	}
 
 	// Business logic methods goes there...
