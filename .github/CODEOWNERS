@@ -27,7 +27,7 @@
 /back-end/src/base/articles/articles.module.ts @Maghwyn
 /back-end/src/base/articles/articles.service.ts @Maghwyn
 /back-end/src/base/articles/events/ @Loule95450
-/back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/boards/interfaces/boards.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/calls/calls.module.ts @Loule95450 @Maghwyn
@@ -257,8 +257,10 @@
 /front-end/src/lib/pixi-tools/scene.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools/types/pixi-tools-core.ts @Maghwyn @Loule95450
 /front-end/src/lib/README.md @Loule95450
+/front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
+/front-end/src/store/ @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
@@ -313,6 +315,7 @@
 /front-end/src/views/RollCall.vue @AyakorK @Loule95450
 /front-end/src/views/ShowArticleView.vue @TheoLandemaine
 /front-end/src/views/SprintsView.vue @Maghwyn @Loule95450 @Kevw94
+/front-end/src/vite-env.d.ts @Maghwyn
 /front-end/tailwind.config.cjs @Maghwyn @TheoLandemaine
 /front-end/tsconfig.json @Loule95450 @Maghwyn
 /front-end/tsconfig.node.json @Loule95450 @Maghwyn
