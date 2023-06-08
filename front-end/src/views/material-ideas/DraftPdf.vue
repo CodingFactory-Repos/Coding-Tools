@@ -27,7 +27,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import CodingToolsLogo from '@/images/CodingToolsLogo.png';
 import { useUserStore } from '@/store/modules/user.store';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
 
