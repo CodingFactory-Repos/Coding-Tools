@@ -93,6 +93,7 @@ export default {
 				comment,
 				equipmentId,
 			});
+			console.log(items)
 			socket.emit('add-comment', items)
 			this.items = items || [];
 			this.comment = '';
