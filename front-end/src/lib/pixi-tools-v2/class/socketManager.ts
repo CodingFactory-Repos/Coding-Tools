@@ -154,6 +154,8 @@ export class SocketManager extends Manager {
 				}
 			} else if (element instanceof GenericContainer) {
 				element.updateTreeBounds(serializedBounds);
+			} else if (element instanceof TextContainer) {
+				element.updateTreeBounds(serializedBounds);
 			}
 
 			element.emit('moved', null);
