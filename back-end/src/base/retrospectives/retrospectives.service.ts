@@ -10,7 +10,6 @@ import { ServiceError } from '@/common/decorators/catch.decorator';
 import { RetrospectivesRoomInvitationRepository } from './retrospectivesRoomInvitation.repository';
 import { RetrospectivesEventEmitter } from './events/retrospectives.events';
 import { RetrospectiveGateway } from '@/common/gateways/retrospective.global.gateway';
-import { Roles } from '../users/interfaces/users.interface';
 
 @Injectable()
 export class RetrospectivesService {

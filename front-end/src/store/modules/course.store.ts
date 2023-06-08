@@ -2,7 +2,6 @@ import { CoursesStore, Course } from '../interfaces/cours.interface';
 import { defineStore } from 'pinia';
 import { withErrorHandler } from '@/utils/storeHandler';
 import {createCourse, getCourses, getCoursesById} from '@/api/ressource-req';
-import { isEmpty } from '@/utils/string.helper';
 
 export const useCoursStore = defineStore('course', {
 	state: (): CoursesStore => {
@@ -44,7 +43,6 @@ export const useCoursStore = defineStore('course', {
 		//get courses in the database
 		getCourse: withErrorHandler(async function () {
 			const response = await getCourses();
-		//	console.log(response.data);
 			const items = response.data;
 			this.items = items;
             console.log(this.items);

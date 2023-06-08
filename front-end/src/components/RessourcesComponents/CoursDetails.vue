@@ -37,7 +37,7 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useCoursStore } from '@/store/modules/course.store';
 import { useRouter } from 'vue-router';
 
@@ -60,8 +60,8 @@ const getCourseById = async (_id: string) => {
 };
 
 // fetch openHouse data on mounted
-onMounted(() => {
-	getCourseById(_id.value);
+onMounted(async () => {
+	await getCourseById(_id.value);
 });
 </script>
 <style scoped>
