@@ -12,6 +12,32 @@ export class ProjectsService {
 		private projectsRepository: ProjectsRepository,
 	) {}
 
-	// Business logic methods goes there...
-	// Define your own methods
+	async getProject() {
+		return await this.projectsRepository.getProject();
+	}
+
+	async getProjectByCourseOrCreator(id) {
+		return await this.projectsRepository.getProjectByCourseOrCreator(id);
+	}
+
+	// Function to add an article
+	async createProject(query) {
+		return await this.projectsRepository.createProject(query);
+	}
+
+	async updateProject(query, update) {
+		return await this.projectsRepository.updateOneProject(query, update);
+	}
+
+	async getProjectById(id) {
+		return await this.projectsRepository.getProjectById(id);
+	}
+
+	async getProjectByCourseId(id) {
+		return await this.projectsRepository.getProjectByCourseId(id);
+	}
+
+	async deleteProjectById(id) {
+		return await this.projectsRepository.deleteOneProject(id);
+	}
 }
