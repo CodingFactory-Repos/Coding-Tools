@@ -6,6 +6,5 @@ import { LineBezier } from './model-constructor/lineBezier';
 import { Tree } from './model-constructor/tree';
 import { Ellipse } from './model-constructor/ellipse';
 import { TextArea } from './model-constructor/textArea';
-import { StickyNote } from './model-constructor/stickyNote';
 
-export { Rectangle, Circle, Triangle, Polygon, LineBezier, Tree, Ellipse, TextArea, StickyNote };
+export { Rectangle, Circle, Triangle, Polygon, LineBezier, Tree, Ellipse, TextArea};
