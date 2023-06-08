@@ -38,7 +38,7 @@
 			<div v-for="canva in canvas">
 				<button
 					@click="goToProject(canva)"
-					class="text-black"
+					class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
 				>
 					{{ canva.meta.title }}
 				</button>
@@ -47,7 +47,7 @@
 		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4">
 				<button
 					@click="goToRetro(retro)"
-					class="text-black"
+					class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
 				>
 					{{ retro.title }}
 				</button>
