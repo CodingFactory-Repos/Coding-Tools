@@ -1,159 +1,199 @@
 <template>
-<div class="bg-blue-100 ">
-	<div class="w-full h-full flex gap-3 px-5 py-2 overflow-auto">
-		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
-			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
-				STORIES
-			</span>
-<!--
-		<draggable
-			class="h-full w-full flex flex-col gap-2 overflow-auto"
-			v-model="stories"
-			group="columns"
-			@end="handleDragEnd"
-		>
-		  <div v-for="storyData in stories" :key="storyData.id">
-			<div @click="openModal(storyData)">
-			  {{ storyData}}
-			  <span class="inline-block w-2 h-2 rounded-full" :style="{ backgroundColor: storyData.color }"></span>
-			  {{ storyData.title }}
-			</div>
-		  </div>
-		</draggable>-->
-		
-		
-		<div class="w-full h-12 p-3">
-	  <span @click="createCard('stories')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
-   		Add a STORY
- 	  </span>
-    </div>
-		</div>
-		
-		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
-			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
-				TODO
-			</span>
-			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
-				<div v-for="todoData in todo" :key="todoData.id">
-					<div @click="openModal(todoData)">
-						{{ todoData  }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
-			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
-				IN PROGRESS
-			</span>
-			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
-				<div v-for="inProgressData in inProgress" :key="inProgressData.id">
-					<div @click="openModal(inProgressData)">
-						{{ inProgressData }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
-			<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
-				DONE
-			</span>
-			<div class="h-full w-full flex flex-col gap-2 overflow-auto">
-				<div v-for="doneData in done" :key="doneData.id">
-					<div @click="openModal(doneData)">
-						{{ doneData }}
-					</div>
-				</div>
-			</div>
-		</div>
-	
-<ModalOverlay v-if="showModal" @close="closeModal" size="lg">
-		<template #body>
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2" for="Stories">Title :</label>
-    <input v-model="form.title" type="text" id="Stories" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-  </div>
+	<div class="bg-blue-100 ">
+		<div class="w-full h-full flex gap-3 px-5 py-2 overflow-auto">
+			<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+				<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+					STORIES
+				</span>
+				
+				<!--<Draggable :list="stories" itemKey="id" class="list-group flex flex-col gap-4">
+					<template #item="{ element }">
+						<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center bg-gray-100">
+							{{ element.title }}
+							{{ element.description }}
+						</span>
+					</template>
+				</Draggable> -->
 
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2" for="acceptanceCriteria">Description :</label>
-    <textarea v-model="form.description" id="acceptanceCriteria" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-  </div>
-</template>
+				<Draggable :list="stories" group="board" itemKey="id" @end="handleDragEnd" class="list-group flex flex-col gap-4" @mousseenter="dest('test')">
+					<template #item="{ element }">
+			 			<div
+							class="py-4 text-lg border-b border-gray-400 text-black w-full text-center bg-gray-100"
+							draggable="true" @dragstart="handleDragStart(element)" >
+							{{ element.title }}
+							{{ element.description }}
+			  			</div>
+					</template>
+				</Draggable>
 
-<template #footer>
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="submitForm(form)">
-    Soumettre
-  </button>
-</template>
+				<Draggable :list="inProgress" group="board" itemKey="id" @end="handleDragEnd" class="list-group flex flex-col gap-4 h-full">
+					<template #item="{ element }">
+						<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center bg-gray-100">
+						{{ element.title }}
+						{{ element.description }}
+						</span>
+					</template>
+				</Draggable>
 
-	</ModalOverlay>
-</div>
-
-
-	 <div>
-	  <div class="column" id="dod-column">
-		<h2>DOD</h2>
-		<ul>
-		  <li v-for="item in dodList" :key="item.id">
-			<div class="post-it" @click="editItem(item)">{{ item.content }}</div>
-		  </li>
-		</ul>
-
-		<div class="add-post-it">
-		  <input type="text" v-model="newDodItem" placeholder="Add new item">
-		  <button @click="addItem('dod')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">Add a DOD</button>
-		</div>
-	  </div>
+				<Draggable :list="todo" group="board" itemKey="id" @end="handleDragEnd" class="list-group flex flex-col gap-4">
+					<template #item="{ element }">
+						<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center bg-gray-100">
+						{{ element.title }}
+						{{ element.description }}
+						</span>
+					</template>
+				</Draggable>
   
-	  <div class="column" id="dof-column">
-		<h2>DOF</h2>
-		<ul>
-		  <li v-for="item in dofList" :key="item.id">
-			<div class="post-it" @click="editItem(item)">{{ item.content }}</div>
-		  </li>
-		</ul>
-		<div class="add-post-it">
-		  <input type="text" v-model="newDofItem" placeholder="Add new item">
-		  <span @click="addItem('dof')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">Add a DOF
-		  </span>
+				<Draggable :list="done" group="board" itemKey="id" @end="handleDragEnd" class="list-group flex flex-col gap-4">
+					<template #item="{ element }">
+						<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center bg-gray-100">
+						{{ element.title }}
+						{{ element.description }}
+						</span>
+					</template>
+				</Draggable>
+  
+				
+				<!--<li v-for="item in storiesList" :key="item.id">
+						<div class="post-it" @click="editItem(item)">{{ item.content }}
+						</div>
+				</li> -->
+		
+				<div class="w-full h-12 p-3">
+					<span @click="openForm" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
+						Add a STORY
+					</span>
+				</div>
+				
+			</div> 
+
+
+			
+		
+			<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+				<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+					TODO
+				</span>
+				<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+					<div v-for="todoData in todo" :key="todoData.id">
+						<div @click="openModal(todoData)">
+							{{ todoData  }}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+				<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+					IN PROGRESS
+				</span>
+				<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+					<div v-for="inProgressData in inProgress" :key="inProgressData.id">
+						<div @click="openModal(inProgressData)">
+							{{ inProgressData }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="h-full w-1/4 flex flex-col gap-2 bg-white border border-gray-400">
+				<span class="py-4 text-lg border-b border-gray-400 text-black w-full text-center">
+					DONE
+				</span>
+				<div class="h-full w-full flex flex-col gap-2 overflow-auto">
+					<div v-for="doneData in done" :key="doneData.id">
+						<div @click="openModal(doneData)">
+							{{ doneData }}
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			<ModalOverlay v-if="showModal" @close="closeModal" size="lg">
+				<template #body>
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="Stories">
+							Title :
+						</label>
+						<input   v-model="form.title" 
+						class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"	id="title" type="text"	placeholder="Enter the title" />
+
+					</div>
+
+					<div class="mb-4">
+    					<label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+     						 Description:
+   						</label>
+   						<textarea  v-model="form.description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description"
+     					placeholder="Enter the description" >
+						</textarea>
+ 					</div>
+					
+					<!--<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="acceptanceCriteria">
+							Description :</label>
+
+						<textarea
+						class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description"	placeholder="Enter the description">
+					    </textarea> 
+					</div>  -->
+				</template>
+
+				<template #footer>
+					<!--<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="submitForm(form)">
+						Soumettre
+					</button> -->
+					<button @click="submitForm()" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
+						Soumettre
+					</button>
+				</template>
+			</ModalOverlay>
 		</div>
 
-	
-	  </div>
-	</div> 
+		<div>
+			<div class="column" id="dod-column">
+				<h2>DOD</h2>
+				<ul>
+					<li v-for="item in dodList" :key="item.id">
+						<div class="post-it" @click="editItem(item)">{{ item.content }}
+						</div>
+					</li>
+				</ul>
 
-</div>
+				<div class="add-post-it">
+					<input type="text" v-model="newDodItem" placeholder="Add new item">
+					<button @click="addItem('dod')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
+						Add a DOD
+					</button>
+				</div>
+			</div>
+  
+			<div class="column" id="dof-column">
+				<h2>DOF</h2>
+				<ul>
+					<li v-for="item in dofList" :key="item.id">
+						<div class="post-it" @click="editItem(item)">{{ item.content }}
+						</div>
+					</li>
+				</ul>
+
+				<div class="add-post-it">
+					<input type="text" v-model="newDofItem" placeholder="Add new item">
+					<span @click="addItem('dof')" class="w-full h-full border border-dashed border-blue-400 flex items-center justify-center text-blue-400 font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out cursor-pointer">
+						Add a DOF
+					</span>
+				</div>
+	 	 	</div>
+		</div>
+  </div>
 </template>
-
-
-<!--
-	<div class="mb-4">
-				<label class="block text-gray-700 text-sm font-bold mb-2" for="Stories ">Title :</label>
-				<input v-model="form.title" type="text" id="Stories " class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-			</div>
-			
-			<div class="mb-4">
-				<label class="block text-gray-700 text-sm font-bold mb-2" for="acceptanceCriteria">Description :</label>
-				<textarea v-model="form.description" id="acceptanceCriteria" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-			</div>
-		</template>
-		<template #footer>
-			<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="submitForm(form)">
-				Soumettre
-			</button>
-		</template> -->
-	
-
-
-
 
 
 <script lang="ts" setup>
 import ModalOverlay from '@/components/common/Modal.vue';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { http } from '@/api/network/axios';
-import { reactive,onMounted, ref } from 'vue';
-import { defineComponent } from 'vue';
-
+import { reactive, ref } from 'vue';
+import Draggable from 'vuedraggable';
 
 export interface ScrumCard {
   id: string;
@@ -164,23 +204,92 @@ export interface ScrumCard {
   color: string;
 }
 
-const stories = ref<ScrumCard[]>([])
-
-const handleDragEnd = (event) => {
-      const { newIndex, oldIndex } = event;
-      const item = stories.value.splice(oldIndex, 1)[0];
-      stories.value.splice(newIndex, 0, item);
-}
-
-
-
 defineProps<{
 	semaine: number,
 	stories: Array<ScrumCard>,
-	todo: Array<ScrumCard>,
 	inProgress: Array<ScrumCard>,
+	todo: Array<ScrumCard>,
 	done: Array<ScrumCard>,
 }>()
+
+
+const stories = ref<ScrumCard[]>([]);
+const inProgress = ref<ScrumCard[]>([]);
+const todo = ref<ScrumCard[]>([]);
+const done = ref<ScrumCard[]>([]);
+
+const inprogress = reactive([]);
+
+ 
+//const handleDragEnd = (event) => {
+//const { newIndex, oldIndex } = event;
+//	const item = stories.value.splice(oldIndex, 1)[0];
+	//stories.value.splice(newIndex, 0, item);
+  //};
+
+  const dest =function(test){
+	console.log(test);
+
+  }
+  const handleDragEnd = (event) => {
+  
+  
+  	
+  const { newIndex, oldIndex, from, to } = event;
+  console.log(event);
+  console.log(newIndex);
+  
+ 
+  if (from === 'stories' && to === 'inProgress') {
+    const item = stories.value.splice(oldIndex, 1)[0];
+    inProgress.value.splice(newIndex, 0, item);
+  } else if (from === 'inProgress' && to === 'todo') {
+    const item = inProgress.value.splice(oldIndex, 1)[0];
+    todo.value.splice(newIndex, 0, item);
+  } else if (from === 'todo' && to === 'done') {
+    const item = todo.value.splice(oldIndex, 1)[0];
+    done.value.splice(newIndex, 0, item);
+  } else if (from === 'done' && to === 'todo') {
+    const item = done.value.splice(oldIndex, 1)[0];
+    todo.value.splice(newIndex, 0, item);
+  }
+};
+
+
+  const handleDragStart = (card) => {
+	config.draggedItem = card;
+  };
+  
+
+  const dragStart = (fromColumnIndex, cardIndex) => {
+  config.draggedItem = { fromColumnIndex, cardIndex };
+};
+
+const dragOver = (toColumnIndex, event) => {
+  event.preventDefault();
+};
+
+const drop = (toColumnIndex, event) => {
+  event.preventDefault();
+  const { draggedItem } = config;
+  if (draggedItem) {
+    const { fromColumnIndex, cardIndex } = draggedItem;
+    const fromColumn = columns[fromColumnIndex];
+    const toColumn = columns[toColumnIndex];
+
+    const card = fromColumn.cards.splice(cardIndex, 1)[0];
+    toColumn.cards.push(card);
+
+    config.draggedItem = null;
+  }
+};
+
+  //const handleDragEnd = ({ newIndex, oldIndex }) => {
+	//const item = stories.splice(oldIndex, 1)[0];
+	//stories.splice(newIndex, 0, item);
+  //};
+  
+  
 
 const dod = reactive([]);
 const dof = reactive([]);
@@ -193,7 +302,7 @@ const form = reactive({
 	updated: undefined
 })
 const addToDod = () => {
-  const newDodItem = 'Nouveau critère DOD';
+const newDodItem = 'Nouveau critère DOD';
   dod.push(newDodItem);
 };
 
@@ -201,12 +310,6 @@ const addToDof = () => {
   const newDofItem = 'Nouveau critère DOF';
   dof.push(newDofItem);
 };
-
-const createCard = (value: string) => {
-    form.title = 'Editer le titre';
-    form.description = 'Editer la description';
-    showModal.value = true;
-}
 
 const config = reactive({
   draggedItem: null,
@@ -234,11 +337,13 @@ const closeModal = () => {
 }
 
 const columns = reactive([
-  { title: 'STORIES', cards: [] },
-  { title: 'TODO', cards: [] },
-  { title: 'IN PROGRESS', cards: [] },
-  { title: 'DONE', cards: [] },
+  { title: 'STORIES', cards: [],id:0  },
+  { title: 'TODO', cards: [],id:1 },
+  { title: 'IN PROGRESS', cards: [],id:2 },
+  { title: 'DONE', cards: [],id:3 },
+
 ]);
+
 
 
 const openForm = () => {
@@ -247,7 +352,7 @@ const openForm = () => {
     showModal.value = true;
   };
 
-const submitForm = withErrorHandler(async function(form: Partial<ScrumCard>) {
+const submitForm = withErrorHandler(async function() {
 	
 	if (form.title && form.description) {
 	  const newCard: ScrumCard = {
@@ -262,7 +367,9 @@ const submitForm = withErrorHandler(async function(form: Partial<ScrumCard>) {
 	  closeModal();
 	} else {
 	  console.log("Veuillez remplir tous les champs.");
+	  return;
 	}
+	
 	
 
 	if(form.id) {
@@ -274,35 +381,14 @@ const submitForm = withErrorHandler(async function(form: Partial<ScrumCard>) {
 	}
 })
 
-const dragStart = (fromColumnIndex, cardIndex) => {
-  config.draggedItem = { fromColumnIndex, cardIndex };
-};
-
-const dragOver = (toColumnIndex, event) => {
-  event.preventDefault();
-};
-
-const drop = (toColumnIndex, event) => {
-  event.preventDefault();
-  const { draggedItem } = config;
-  if (draggedItem) {
-    const { fromColumnIndex, cardIndex } = draggedItem;
-    const fromColumn = columns[fromColumnIndex];
-    const toColumn = columns[toColumnIndex];
-
-    const card = fromColumn.cards.splice(cardIndex, 1)[0];
-    toColumn.cards.push(card);
-
-    config.draggedItem = null;
-  }
-};
 
 
-const dodList = ref([]);
+  const dodList = ref([]);
   const dofList = ref([]);
   const newDodItem = ref('');
   const newDofItem = ref('');
   
+
   const addItem = (column) => {
 	if (column === 'dod') {
 	  if (newDodItem.value.trim() !== '') {
@@ -327,6 +413,13 @@ const dodList = ref([]);
 	console.log('Editing item:', item);
   };
 
+
+
+  
+
+
+
+
   </script> 
 
   
@@ -350,13 +443,11 @@ const dodList = ref([]);
   background-color: #fff;
   cursor: pointer;
 }
+
+
+
+
 </style>
 
-  
- 
 
-  
-  
-  
-  
-  
+ 
