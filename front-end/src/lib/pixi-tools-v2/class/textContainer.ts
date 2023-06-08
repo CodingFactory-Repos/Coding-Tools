@@ -1,4 +1,4 @@
-import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
+import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions, Text } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
@@ -213,8 +213,15 @@ export class TextContainer extends PluginContainer {
 			const clonedChild = element.clone();
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
+
+			for (let n = 0; n < this.children[0].children.length; n++) {
+				const clonedText = new Text(this.children[0].text, this.children[0].textSprite.style);
+				clonedText.position.copyFrom(this.children[0].textSprite.position);
+				clonedChild.addChild(clonedText);
+			}
 		}
 
+		console.log(cloned)
 		return cloned;
 	}
 
