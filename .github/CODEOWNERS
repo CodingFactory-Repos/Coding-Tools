@@ -33,9 +33,12 @@
 /back-end/src/base/calls/calls.module.ts @Loule95450 @Maghwyn
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/canvasRoom/ @Kevw94 @Maghwyn
+/back-end/src/base/canvasRoom/canvasRoom.controller.ts @Maghwyn @Kevw94
+/back-end/src/base/canvasRoom/canvasRoom.module.ts @Maghwyn @Kevw94
+/back-end/src/base/canvasRoom/canvasRoom.repository.ts @Maghwyn @Kevw94
 /back-end/src/base/CanvasRoom/CanvasRoom.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/canvasRoom.service.ts @Maghwyn
-/back-end/src/base/canvasRoom/canvasRoomInvitation.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/canvasRoom/canvasRoomInvitation.repository.ts @Loule95450 @Maghwyn
 /back-end/src/base/canvasRoom/dto/canvasRoom.dto.ts @Maghwyn
 /back-end/src/base/canvasRoom/events/ @Loule95450 @Maghwyn
 /back-end/src/base/canvasRoom/interfaces/ @Loule95450 @Maghwyn
@@ -131,8 +134,9 @@
 /front-end/src/assets/styles/components/add-ideas.css @Maghwyn @AyakorK
 /front-end/src/assets/styles/components/common/pop-up.css @Maghwyn @AyakorK
 /front-end/src/components/ @Kevw94 @Maghwyn
-/front-end/src/components/account/AccountForm.vue @Maghwyn @Kevw94
-/front-end/src/components/account/AccountHeader.vue @Maghwyn @Kevw94
+/front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
+/front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
+/front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
 /front-end/src/components/agility/ @AyakorK @Maghwyn
@@ -155,6 +159,7 @@
 /front-end/src/components/auth/forgot/ResetPassword.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/ModalLogout.vue @Maghwyn @Kevw94
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
+/front-end/src/components/blog/ @Maghwyn
 /front-end/src/components/blog/AddArticles.vue @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/AddComment.vue @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/ShowArticle.vue @Maghwyn @TheoLandemaine
@@ -218,9 +223,11 @@
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/ellipse.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/tree.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
@@ -252,8 +259,10 @@
 /front-end/src/lib/pixi-tools/scene.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools/types/pixi-tools-core.ts @Maghwyn @Loule95450
 /front-end/src/lib/README.md @Loule95450
+/front-end/src/main.ts @Maghwyn
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
+/front-end/src/store/ @Maghwyn
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
@@ -308,6 +317,7 @@
 /front-end/src/views/RollCall.vue @AyakorK @Loule95450
 /front-end/src/views/ShowArticleView.vue @TheoLandemaine
 /front-end/src/views/SprintsView.vue @Maghwyn @Loule95450 @Kevw94
+/front-end/src/vite-env.d.ts @Maghwyn
 /front-end/tailwind.config.cjs @Maghwyn @TheoLandemaine
 /front-end/tsconfig.json @Loule95450 @Maghwyn
 /front-end/tsconfig.node.json @Loule95450 @Maghwyn
