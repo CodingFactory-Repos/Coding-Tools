@@ -30,3 +30,7 @@ export interface UserProfileList {
 export interface UserCanvasList extends UserProfileList {
 	pending?: boolean;
 }
+
+export interface UserRetroList extends UserProfileList {
+	pending?: boolean;
+}
