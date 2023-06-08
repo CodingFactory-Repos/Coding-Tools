@@ -89,7 +89,7 @@ export class CronService {
 		const query = {
 			type: 'Tuto',
 			status: "Pending",
-			date: { $lt : dateMinusTwoWeeks.toISOString() },
+			updatedAt: { $lt : dateMinusTwoWeeks },
 		}
 
 		// fields updated
@@ -99,5 +99,4 @@ export class CronService {
 
 		await this.articlesService.updateManyArticles(query, updateParams)
 	}
-
 }
