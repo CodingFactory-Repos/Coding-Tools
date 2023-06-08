@@ -135,6 +135,36 @@
 						}"
 					/>
 				</IconButton>
+				<IconButton class="h-fit" type="button">
+					<SvgFrame
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{
+							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+						}"
+					/>
+				</IconButton>
+				<IconButton class="h-fit" type="button">
+					<SvgFrame
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{
+							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+						}"
+					/>
+				</IconButton>
+				<IconButton class="h-fit" type="button">
+					<SvgFrame
+						width="22"
+						height="22"
+						class="!fill-gray-400"
+						:class="{
+							'!fill-selected-icon dark:!fill-selected-icon': selectedGeometry === 'framebox',
+						}"
+					/>
+				</IconButton>
 			</div>
 		</div>
 
