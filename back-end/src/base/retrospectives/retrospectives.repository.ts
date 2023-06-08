@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, FindOptions } from 'mongodb';
 
 import { Retrospective } from 'src/base/retrospectives/interfaces/retrospectives.interface';
 
@@ -37,6 +37,10 @@ export class RetrospectivesRepository {
 	async retrospectiveExist(query: Filter<Retrospective>) {
 		const options = { projection: { _id: 1 } };
 		return this.retrospectives.findOne(query, options);
+	}
+
+	async findAll(query: Filter<Retrospective>, options: FindOptions<Document> = undefined) {
+		return this.retrospectives.find(query, options).toArray();
 	}
 	// Mongo repo for the retrospectives collection
 }

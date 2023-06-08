@@ -3,11 +3,20 @@
 		<div class="text-center pt-4">
 			<h1 class="text-4xl mb-2 font-bold tracking-tight text-gray-900 dark:text-white">Blog</h1>
 			<button
+				v-if="activeTab != 'tutos'"
 				type="submit"
 				@click="redirectNewArticle"
 				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
-				<span class="text-white">Create article</span>
+				<span class="text-white">Créer un article</span>
+			</button>
+			<button
+				v-else
+				type="submit"
+				@click="redirectNewArticle"
+				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
+			>
+				<span class="text-white">Create tutorial</span>
 			</button>
 		</div>
 
@@ -24,7 +33,7 @@
 					<div class="flex items-center justify-center p-5">
 						<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div v-for="item in filteredItems(tab.id)" :key="item._id">
-								<div
+								<div v-if="item.type != 'Tuto' || (item.type == 'Tuto' && (item.status == 'Accepted' || user.role == 2 || user.role == 3))"
 									class="max-w-sm flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 								>
 									<CardArticle :item="item" />
@@ -65,7 +74,8 @@ const items = computed(() => {
 
 // Redirect the user to the article's creation page
 const redirectNewArticle = () => {
-	router.push('/app/blog/new');
+	if (activeTab.value == 'tutos') router.push('/app/blog/new/tutorial');
+	else router.push('/app/blog/new');
 };
 
 // Fetch the articles
@@ -75,9 +85,10 @@ const getArticles = async () => {
 
 const tabs = ref([
 	{ id: 'infos', label: 'Infos' },
-	{ id: 'tutos', label: 'Tutorials' },
-	{ id: 'events', label: 'Events' },
+	{ id: 'tutos', label: 'Tutoriels' },
+	{ id: 'events', label: 'Événements' },
 	{ id: 'liked', label: 'Likes' },
+	{ id: 'participate', label: 'Participations' },
 ]);
 
 const activeTab = ref('infos');
@@ -105,6 +116,12 @@ const filteredItems = (tabId) => {
 		case 'liked':
 			return items.value.filter(
 				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+			);
+		case 'participate':
+			return items.value.filter(
+				(item) =>
+					item.participants &&
+					item.participants.some((participant) => participant.id === user.value._id),
 			);
 		default:
 			return [];

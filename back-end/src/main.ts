@@ -1,7 +1,6 @@
 import { Logger as NestLogger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
-
 // Check environement configuration
 import 'src/config/env.validator';
 import { config } from 'src/config/config';
@@ -10,7 +9,6 @@ import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
 
 //! Proxy settings, production only
-// import { NestExpressApplication } from '@nestjs/platform-express';
 // <NestExpressApplication>
 // app.set('trust proxy', 1);
 
@@ -19,7 +17,6 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		bufferLogs: true,
 	});
-
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,
@@ -30,6 +27,7 @@ async function bootstrap() {
 	);
 
 	app.use(cookieParser());
+
 	app.enableCors(corsOptionsDelegate);
 	//! versioning, production only
 	// app.enableVersioning({
@@ -37,8 +35,8 @@ async function bootstrap() {
 	// 	defaultVersion: '1',
 	// 	prefix: 'api/v',
 	// });
-
 	await app.listen(PORT);
+
 	return app.getUrl();
 }
 

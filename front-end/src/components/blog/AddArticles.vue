@@ -1,11 +1,11 @@
 <template>
 	<div class="text-center max-w-full w-4/5 m-auto h-full">
-		<h2 class="text-3xl font-bold pt-5 text-gray-900">Create Article</h2>
+		<h2 class="text-3xl font-bold pt-5 text-gray-900">Nouvel article</h2>
 		<form @submit.prevent="addArticle">
 			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 				<div>
 					<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Title</label
+						>Titre</label
 					>
 					<div class="relative mb-6">
 						<input
@@ -21,7 +21,7 @@
 					<label
 						for="countries"
 						class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Select an option</label
+						>Type</label
 					>
 					<div class="relative mb-6">
 						<select
@@ -29,10 +29,10 @@
 							class="form-control w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 							v-model="type"
 						>
-							<option value="" selected disabled>Select type</option>
+							<option value="" selected disabled>Sélectionner un type</option>
 							<option value="Infos">Infos</option>
-							<option value="Tuto">Tuto</option>
-							<option value="Evenement">Evenement</option>
+							<option value="Tuto">Tutoriel</option>
+							<option value="Evenement">Événement</option>
 						</select>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
 			<div class="grid gap-6 mb-6 md:grid-cols-2 justify-items-center">
 				<div>
 					<label for="picture" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-						>Picture</label
+						>Image</label
 					>
 					<div class="relative mb-6">
 						<input
@@ -96,7 +96,7 @@
 					type="submit"
 					class="text-gray-900 bg-light-primary border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
 				>
-					Create
+					Créer
 				</button>
 			</div>
 		</form>
@@ -149,6 +149,7 @@ const addArticle = async () => {
 		picture: picture.value,
 		tags: tags.value,
 		type: type.value,
+		status: 'validated',
 		date: date.value.toString(),
 	};
 

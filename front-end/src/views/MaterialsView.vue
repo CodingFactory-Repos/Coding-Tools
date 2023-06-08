@@ -2,29 +2,51 @@
 	<div class="container mx-5">
 		<div class="ButtonsContainer">
 			<div
-				v-if="userRole === Roles.PEDAGOGUE"
-				class="w-full flex bg-light-primary dark:bg-dark-secondary h-12 border-b dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
+				v-if="userRole === Roles.PRODUCT_OWNER || userRole === Roles.PEDAGOGUE"
+				class="w-full max-w-[235px] flex bg-light-primary dark:bg-dark-secondary border-b rounded-lg dark:border-darker-primary gap-4 py-1 px-3 items-center justify-between h-[53px]"
 			>
 				<div class="grow flex h-full gap-1 items-center">
-					<IconButton class="h-fit" type="button" @click="createPDF">
-						<SvgDownload width="22" height="22" class="!fill-gray-400" />
+					<IconButton type="button" @click="router.push('/app/ideas')">
+						<LightBulb width="22" height="22" class="!fill-gray-400" />
 					</IconButton>
+
 					<hr class="h-2/3 w-px bg-light-tertiary dark:bg-dark-highlight border-none" />
 
-					<IconButton type="button" @click="showModal = true">
-						<Add width="22" height="22" class="!fill-gray-400" />
-					</IconButton>
-					<IconButton type="button" @click="showGraph">
-						<!-- Put the color in blue when graphComponent is true-->
-						<Chart width="22" height="22" :isActive="graphComponent" />
-					</IconButton>
+					<div v-if="userRole === Roles.PEDAGOGUE">
+						<IconButton class="h-fit" type="button" @click="createPDF">
+							<SvgDownload width="22" height="22" class="!fill-gray-400" />
+						</IconButton>
+
+						<IconButton type="button" @click="showModal = true">
+							<Add width="22" height="22" class="!fill-gray-400" />
+						</IconButton>
+						<IconButton type="button" @click="router.push('/app/materialsDashboard')">
+							<Chart width="22" height="22" />
+						</IconButton>
+						<IconButton
+							type="button"
+							class="relative inline-flex items-center text-sm font-medium text-center text-white rounded-lg"
+							@click="showNotificationCenter"
+						>
+							<Bell width="22" height="22" class="!fill-gray-400" />
+							<span class="sr-only">Notifications</span>
+							<div
+								class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900"
+							>
+								{{ reservation.length }}
+							</div>
+						</IconButton>
+					</div>
 				</div>
 			</div>
 			<Modal v-if="showModal" @close="showModal = false">
 				<template #body>
-					<ButtonsMaterials />
+					<ButtonsMaterials @close="showModal = false" />
 				</template>
 			</Modal>
+			<div v-if="notificationCenter">
+				<ApprouvalCenter :users="users" :reservation="reservation" />
+			</div>
 			<!-- <h2 class="text-2xl font-bold dark:text-dark-font">List of all materials</h2> -->
 			<div class="cards mt-5" v-if="materialsComponent">
 				<ListMaterials />
@@ -37,31 +59,43 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import Modal from '@/components/common/Modal.vue';
 import ListMaterials from '@/components/materials/ListMaterials.vue';
 import ButtonsMaterials from '@/components/materials/ButtonsMaterials.vue';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import SvgDownload from '@/components/common/svg/Download.vue';
 import Add from '@/components/common/svg/Add.vue';
 import Chart from '@/components/common/svg/Chart.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
-import CodingToolsLogo from '@/images/CodingToolsLogo.png';
+import CodingToolsLogo from '@/assets/images/CodingToolsLogo.png';
+import LightBulb from '@/components/common/svg/LightBulb.vue';
 import { http } from '@/api/network/axios';
 import { Material } from '@/store/interfaces/material.interface';
 import ChartMaterials from '@/components/materials/ChartMaterials.vue';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { useAuthStore } from '@/store/modules/auth.store';
+import Bell from '@/components/common/svg/Bell.vue';
+import ApprouvalCenter from '@/components/materials/ApprouvalCenter.vue';
+import { useMaterialStore } from '@/store/modules/material.store';
+import { useRouter } from 'vue-router';
+
+// This file will register globalThis.pdfMake.vfs, the documentation does not explicity define the behavior
+// Unless you want to change the font, you don't need to assign pdfmake.vfs = globalThis.pdfMake.vfs.
+// It will work either way with the import below, enjoy.
+import 'pdfmake/build/vfs_fonts.js';
+import { createPdf } from 'pdfmake/build/pdfmake';
 
 const showModal = ref(false);
+const router = useRouter();
+const notificationCenter = ref(false);
 const graphComponent = ref(false);
 const materialsComponent = ref(true);
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
 const userRole = computed(() => user.value?.role);
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+const materialStore = useMaterialStore();
+const reservation = computed(() => materialStore.pendingMaterials);
+const users = ref([]);
 let base64Image = null;
 
 fetch(CodingToolsLogo)
@@ -77,9 +111,18 @@ fetch(CodingToolsLogo)
 		console.error("Erreur lors du chargement de l'image :", error);
 	});
 
-const showGraph = () => {
-	graphComponent.value = !graphComponent.value;
-	materialsComponent.value = !materialsComponent.value;
+onMounted(() => {
+	materialStore.getPendingMaterials().then(() => {
+		reservation.value.forEach((res1) => {
+			materialStore.getUserById(res1.borrowingHistory.borrowingUser).then((res) => {
+				users.value.push(res);
+			});
+		});
+	});
+});
+
+const showNotificationCenter = () => {
+	notificationCenter.value = !notificationCenter.value;
 };
 
 function createPDF() {
@@ -157,7 +200,7 @@ function createPDF() {
 				},
 			},
 		};
-		pdfMake.createPdf(docDefinition).open();
+		createPdf(docDefinition).open();
 	});
 }
 </script>

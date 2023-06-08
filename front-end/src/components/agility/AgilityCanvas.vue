@@ -23,6 +23,7 @@ import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
 import { LineContainer } from '../../lib/pixi-tools-v2/class/lineContainer';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { config } from '@/config/config';
 
 const route = useRoute();
 const projectStore = useProjectStore();
@@ -50,14 +51,14 @@ onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
 
 	const socketOptions: CanvasSocketOptions = {
-		uri: "ws://localhost:8010",
+		uri: config.socket.url,
 		roomId: roomId.value,
 		options: {
-			transports: ["websocket"],
+			transports: ['websocket'],
 			withCredentials: true,
-			path: '/socket.io'
+			path: '/socket.io',
 		},
-	}
+	};
 
 	// 84 represent the offset height due to tabs
 	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, isDark.value, socketOptions);
@@ -149,5 +150,8 @@ onBeforeRouteLeave(() => {
 	}
 
 	document.removeEventListener('fullscreenchange', onFullscreenChange);
+	projectStore.stopRefreshing();
 })
+
+projectStore.startRefreshing();
 </script>

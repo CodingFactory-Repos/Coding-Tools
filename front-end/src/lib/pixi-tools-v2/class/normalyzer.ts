@@ -61,6 +61,11 @@ export class Normalizer {
 				borderWidth: 0,
 				borderColor: 0x000000,
 			};
+
+			if (Graphic === LineBezier) {
+				attributes.properties.arrowHead = true;
+				attributes.properties.dashed = false;
+			}
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
@@ -96,13 +101,8 @@ export class Normalizer {
 		}
 
 		if (!attributes.properties) {
-			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
-			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1;
-
 			attributes.properties = {
 				cursor: 'pointer',
-				frameNumber,
 				eventMode: PixiEventMode.STATIC,
 				isAttachedToFrame: false,
 				tabNumberContext: tabContext ?? -1,
@@ -110,11 +110,19 @@ export class Normalizer {
 			};
 		}
 
+		if (attributes.properties?.frameNumber === undefined) {
+			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
+			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
+			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1
+
+			attributes.properties.frameNumber = frameNumber;
+		}
+
 		if (childs !== undefined) {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
 
-				if (childTypeId === 'generic' || childTypeId === 'frame') {
+				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line') {
 					const containerChildren = this.container(
 						viewport,
 						element as SerializedContainer,

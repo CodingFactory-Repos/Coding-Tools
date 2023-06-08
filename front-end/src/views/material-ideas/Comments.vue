@@ -55,7 +55,6 @@ export default {
 			userId,
 		};
 	},
-
 	watch: {
 		equipmentId: function () {
 			this.getComments();

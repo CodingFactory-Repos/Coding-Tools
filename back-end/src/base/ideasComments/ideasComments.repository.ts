@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId, Timestamp } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { IdeaComment } from 'src/base/ideasComments/interfaces/ideasComments.interface';
 
