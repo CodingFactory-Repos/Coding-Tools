@@ -2,7 +2,15 @@ import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
 import { TextContainer } from '../class/textContainer';
-import { Circle, Rectangle, Triangle, LineBezier, Tree, Ellipse, TextArea } from '../model/template';
+import {
+	Circle,
+	Rectangle,
+	Triangle,
+	LineBezier,
+	Tree,
+	Ellipse,
+	TextArea,
+} from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas

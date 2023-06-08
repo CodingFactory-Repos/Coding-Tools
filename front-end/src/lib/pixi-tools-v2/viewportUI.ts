@@ -60,14 +60,14 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
-		const canvasWrapper = document.getElementById("viewport");
+		const canvasWrapper = document.getElementById('viewport');
 		this.textEditor = document.createElement('div');
 		this.textEditor.contentEditable = 'true';
 		this.textEditor.setAttribute('data-placeholder', 'Type something if you want to add some text');
-		this.textEditor.classList.add("textEditor");
-		this.textEditor.addEventListener("input", this.updateTextAreaBounds.bind(this));
+		this.textEditor.classList.add('textEditor');
+		this.textEditor.addEventListener('input', this.updateTextAreaBounds.bind(this));
 		canvasWrapper.appendChild(this.textEditor);
-		
+
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
 
@@ -115,9 +115,9 @@ export class ViewportUI extends Viewport {
 		const text = target.innerText;
 		const unicode = text.charCodeAt(0);
 
-		if(text !== undefined && text !== '' && unicode !== 10) {
+		if (text !== undefined && text !== '' && unicode !== 10) {
 			this.textEditor.classList.remove('blank');
-		} else if(text.trim().length === 0) {
+		} else if (text.trim().length === 0) {
 			this.textEditor.classList.add('blank');
 		}
 
@@ -135,7 +135,7 @@ export class ViewportUI extends Viewport {
 		width: number,
 		height: number,
 		padding: number,
-		containerized: boolean
+		containerized: boolean,
 	) {
 		const points = this.toScreen(x, y);
 		this.textEditor.style.color = decimToHex(color);
@@ -145,16 +145,19 @@ export class ViewportUI extends Viewport {
 		this.textEditor.style.display = 'block';
 		this.textEditor.style.padding = `${padding}px`;
 		this.textEditor.style.transform = `scale(${this.scaled})`;
-		
-		if(text !== undefined && text !== '') {
-			const perLine = text.split('\n').map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`).join('');
+
+		if (text !== undefined && text !== '') {
+			const perLine = text
+				.split('\n')
+				.map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`)
+				.join('');
 			this.textEditor.innerHTML = perLine;
 			this.textEditor.classList.remove('blank');
 		} else {
 			this.textEditor.classList.add('blank');
 		}
-		
-		if(containerized) {
+
+		if (containerized) {
 			this.textEditor.style.maxWidth = `${width}px`;
 			this.textEditor.style.maxHeight = `${height}px`;
 		} else {
@@ -277,7 +280,11 @@ export class ViewportUI extends Viewport {
 			const visibleBounds = this.getVisibleBounds();
 
 			for (const element of this.children) {
-				if (element instanceof GenericContainer || element instanceof FramedContainer || element instanceof TextContainer) {
+				if (
+					element instanceof GenericContainer ||
+					element instanceof FramedContainer ||
+					element instanceof TextContainer
+				) {
 					if (element.getLocalBounds().intersects(visibleBounds)) {
 						this.onScreenChildren.push(element);
 					}

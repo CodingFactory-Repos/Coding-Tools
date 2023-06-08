@@ -56,7 +56,7 @@ export class SocketManager extends Manager {
 		this.canvasSocket.on('element-added', (container: SerializedContainer) => {
 			const ctn = Normalizer.container(this.viewport, container, true);
 			if (ctn === undefined) return;
-			console.log(ctn.uuid)
+			console.log(ctn.uuid);
 			this.viewport.addChild(ctn);
 
 			if (ctn instanceof LineContainer) {

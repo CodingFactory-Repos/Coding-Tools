@@ -64,7 +64,7 @@ export class ContainerManager {
 
 	private _copyDeepElements() {
 		this.copiedElements = [];
-		for(let n = 0; n < this._selectedContainers.length; n++) {
+		for (let n = 0; n < this._selectedContainers.length; n++) {
 			const container = this._selectedContainers[n];
 			const data = container.serializeData();
 			delete data.uuid;
@@ -76,7 +76,7 @@ export class ContainerManager {
 				delete data.background.uuid;
 				data.background.properties.eventMode = PixiEventMode.STATIC;
 
-				for(let i = 0; i < data.childs.length; i++) {
+				for (let i = 0; i < data.childs.length; i++) {
 					const child = data.childs[i] as SerializedContainer;
 					delete child.uuid;
 					delete child.properties.frameNumber;
@@ -86,18 +86,18 @@ export class ContainerManager {
 					}
 
 					if (child?.childs) {
-						for(let x = 0; x < child.childs.length; x++) {
+						for (let x = 0; x < child.childs.length; x++) {
 							const subChild = child.childs[x];
 							delete subChild.uuid;
 						}
 					}
 				}
 			} else {
-				for(let i = 0; i < data.childs.length; i++) {
+				for (let i = 0; i < data.childs.length; i++) {
 					const child = data.childs[i] as SerializedGraphic;
 					delete child.uuid;
-					child.bounds.x = child.bounds.x + (child.bounds.width / 4);
-					child.bounds.y = child.bounds.y - (child.bounds.height / 4);
+					child.bounds.x = child.bounds.x + child.bounds.width / 4;
+					child.bounds.y = child.bounds.y - child.bounds.height / 4;
 				}
 			}
 
@@ -109,7 +109,7 @@ export class ContainerManager {
 		this.deselectAll();
 		this.detachPlugins();
 
-		for(let n = 0; n < this.copiedElements.length; n++) {
+		for (let n = 0; n < this.copiedElements.length; n++) {
 			const elementData = this.copiedElements[n];
 			const container = Normalizer.container(this.viewport, elementData);
 			this.viewport.addChild(container);
@@ -120,7 +120,7 @@ export class ContainerManager {
 			this._selectedContainers.push(container);
 		}
 
-		if(this._selectedContainers.length > 1) {
+		if (this._selectedContainers.length > 1) {
 			this.wrapWithTemporaryParent();
 		} else {
 			this.drawBorder(this._selectedContainers[0]);
@@ -133,16 +133,18 @@ export class ContainerManager {
 			this.wrappedContainer.restoreStateContext();
 		}
 
-		const textContainer = this._selectedContainers.filter((ctn) => ctn instanceof TextContainer) as unknown as Array<TextContainer>;
-		for(let n = 0; n < textContainer.length; n++) {
-			if(textContainer[n].isEditing) {
+		const textContainer = this._selectedContainers.filter(
+			(ctn) => ctn instanceof TextContainer,
+		) as unknown as Array<TextContainer>;
+		for (let n = 0; n < textContainer.length; n++) {
+			if (textContainer[n].isEditing) {
 				return;
 			}
 		}
 
 		this.viewport.textEditor.innerHTML = '';
 
-		for(let n = 0; n < this._selectedContainers.length; n++) {
+		for (let n = 0; n < this._selectedContainers.length; n++) {
 			const ctn = this._selectedContainers[n];
 
 			if (!(ctn instanceof LineContainer)) {
@@ -202,7 +204,7 @@ export class ContainerManager {
 		this.viewport.destroyBezierHandles();
 		this.viewport.destroyResizeHitArea();
 		this.viewport.destroyBezierCurveHandle();
-		for(let n = 0; n < this._selectedContainers.length; n++) {
+		for (let n = 0; n < this._selectedContainers.length; n++) {
 			this.handleDeselectTextContainer(this._selectedContainers[n]);
 		}
 		this.selectedContainers.length = 0;
@@ -275,7 +277,7 @@ export class ContainerManager {
 		}
 
 		this.viewport.destroyBorder();
-		for(let n = 0; n < this._selectedContainers.length; n++) {
+		for (let n = 0; n < this._selectedContainers.length; n++) {
 			this.handleDeselectTextContainer(this._selectedContainers[n]);
 		}
 		this.selectedContainers.length = 0;
@@ -283,7 +285,7 @@ export class ContainerManager {
 	}
 
 	private handleDeselectTextContainer(container: Container) {
-		if(!container.destroyed && container instanceof TextContainer) {
+		if (!container.destroyed && container instanceof TextContainer) {
 			container.endEditing();
 		}
 	}
@@ -335,9 +337,10 @@ export class ContainerManager {
 			this.resizePlugin.attach(container);
 			this.dragPlugin.attach(container);
 
-			if (container instanceof FramedContainer
-					|| container instanceof GenericContainer
-					|| container instanceof TextContainer
+			if (
+				container instanceof FramedContainer ||
+				container instanceof GenericContainer ||
+				container instanceof TextContainer
 			) {
 				this.bezierPlugin.attach(container);
 			}
@@ -387,7 +390,7 @@ export class ContainerManager {
 					width: this._selectedContainers[0].mainContainer.width,
 					height: this._selectedContainers[0].mainContainer.height,
 				};
-			} else if(this._selectedContainers[0] instanceof TextContainer) {
+			} else if (this._selectedContainers[0] instanceof TextContainer) {
 				this._selectedContainers[0].getBounds();
 				return {
 					width: this._selectedContainers[0].width,

@@ -89,7 +89,7 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 		this.on('ws-text-updated', (uuid, serializedContainer) => {
 			this.socketManager.updateText(uuid, serializedContainer);
-		})
+		});
 
 		this.on('ws-element-colorized', (uuid, serializedColorimetry) => {
 			this.socketManager.updateColorimetry(uuid, serializedColorimetry);

@@ -147,7 +147,12 @@ export class DragPlugin {
 					}
 				}
 
-				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle' && element.child.typeId !== 'textarea') continue;
+				if (
+					element.child.typeId !== 'rectangle' &&
+					element.child.typeId !== 'circle' &&
+					element.child.typeId !== 'textarea'
+				)
+					continue;
 
 				const parent = element.child.parent as CanvasContainer;
 				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
@@ -205,7 +210,7 @@ export class DragPlugin {
 					}
 				}
 
-				console.log(parent.typeId)
+				console.log(parent.typeId);
 				dragAttachedLines(parent, this.viewport.socketPlugin);
 			}
 

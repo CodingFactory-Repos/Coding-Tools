@@ -1,5 +1,4 @@
-
-import { TextStyle, Text, Rectangle } from 'pixi.js';
+import { TextStyle, Text } from 'pixi.js';
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';

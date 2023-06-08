@@ -32,7 +32,7 @@ export class TextContainer extends PluginContainer {
 	public tabNumberContext: number;
 	public frameNumber: number;
 	public isEditing = false;
-	private _viewport: ViewportUI
+	private _viewport: ViewportUI;
 	private _isSelected = false;
 	public isNew: boolean;
 
@@ -95,12 +95,22 @@ export class TextContainer extends PluginContainer {
 		if (!this.isEditing && this._isSelected) {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
-			const { x, y, width, height, text, color } =  this.textGraphic;
+			const { x, y, width, height, text, color } = this.textGraphic;
 			const fontSize = this.textGraphic.textStyle.fontSize;
 			const padding = this.textGraphic.textStyle.padding;
 			//@ts-ignore
 			const containerized = this?.parent?.typeId === 'generic';
-			this._viewport.startTextEditor(text, fontSize, color, x, y, width, height, padding, containerized);
+			this._viewport.startTextEditor(
+				text,
+				fontSize,
+				color,
+				x,
+				y,
+				width,
+				height,
+				padding,
+				containerized,
+			);
 		}
 	}
 
@@ -110,26 +120,29 @@ export class TextContainer extends PluginContainer {
 		if (this.isEditing) {
 			const size = {
 				width: this._viewport.textEditor.offsetWidth,
-				height: this._viewport.textEditor.offsetHeight
+				height: this._viewport.textEditor.offsetHeight,
 			};
 			this.isEditing = false;
 			this.textGraphic.textSprite.visible = true;
 
-			const data = this._viewport.textEditor.innerHTML.replaceAll('</div>', '</div>,').split(',')
+			const data = this._viewport.textEditor.innerHTML
+				.replaceAll('</div>', '</div>,')
+				.split(',')
 				.map((txt) => {
-					if(txt === '<div><br></div>') {
-						return "\n";
+					if (txt === '<div><br></div>') {
+						return '\n';
 					} else {
-						return txt.replace('<div>', '').replace('</div>', '').replace('<br>', '') + "\n"
+						return txt.replace('<div>', '').replace('</div>', '').replace('<br>', '') + '\n';
 					}
-				}).join('');
+				})
+				.join('');
 
 			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
 
 			// This need to be canceled if the input text is empty, add a blocking condition.
-			if(this.isNew) {
+			if (this.isNew) {
 				this.isNew = false;
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());

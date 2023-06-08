@@ -110,7 +110,7 @@ export const dragAttachedLines = (
 				line.draw();
 			}
 
-			if(!preventEmit) {
+			if (!preventEmit) {
 				socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
 			}
 		}

@@ -124,7 +124,7 @@ export class Normalizer {
 		if (attributes.properties?.frameNumber === undefined) {
 			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1
+			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1;
 
 			attributes.properties.frameNumber = frameNumber;
 		}
@@ -150,7 +150,11 @@ export class Normalizer {
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
-		if (Container === GenericContainer || Container === LineContainer || Container === TextContainer)
+		if (
+			Container === GenericContainer ||
+			Container === LineContainer ||
+			Container === TextContainer
+		)
 			return Container.registerContainer(viewport, attributes, children, remote);
 		else if (Container === FramedContainer)
 			return Container.registerContainer(
