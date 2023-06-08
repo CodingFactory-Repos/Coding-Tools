@@ -15,6 +15,7 @@ import { ElementPosition, ElementSize } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
 import { decimToHex } from './utils/colorsConvertor';
 import { dragAttachedLines } from './utils/dragAttachedLines';
+import { TextContainer } from './class/textContainer';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -276,7 +277,7 @@ export class ViewportUI extends Viewport {
 			const visibleBounds = this.getVisibleBounds();
 
 			for (const element of this.children) {
-				if (element instanceof GenericContainer || element instanceof FramedContainer) {
+				if (element instanceof GenericContainer || element instanceof FramedContainer || element instanceof TextContainer) {
 					if (element.getLocalBounds().intersects(visibleBounds)) {
 						this.onScreenChildren.push(element);
 					}
