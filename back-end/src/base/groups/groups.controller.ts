@@ -16,16 +16,4 @@ export class GroupsController {
     index(@Res() res: Response) {
         return res.status(201).json({ status: 'ok' });
     }
-
-	@Get('/:courseId/:groupId')
-	@UseGuards(JwtAuthGuard)
-	async updateGroupStudents(
-	  @Jwt() userId: ObjectId,
-	  @Param('groupId') groupId: number,
-	  @Param('courseId') courseId: string, // <-- Change the type to string
-	  @Res() res: Response
-	) {
-	  const message = await this.groupsService.getGroup(new ObjectId(courseId), groupId, userId);
-	  return res.status(201).json({ array: message });
-	}
 }

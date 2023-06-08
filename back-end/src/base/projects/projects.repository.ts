@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { Project } from 'src/base/projects/interfaces/projects.interface';
 
@@ -9,10 +9,6 @@ export class ProjectsRepository {
 
 	get projects() {
 		return this.db.collection<Project>('projects');
-	}
-
-	async createProject(query: Project) {
-		return this.projects.insertOne(query);
 	}
 
 	async updateOneproject(query: Filter<Project>, update: Partial<Project> | UpdateFilter<Project>) {
@@ -35,4 +31,27 @@ export class ProjectsRepository {
 		const options = { projection: { _id: 1 } };
 		return this.projects.findOne(query, options);
 	}
+
+	// async createProject(query: Project) {
+	// 	const { equipmentId, userId } = query;
+	// 	await this.projects.insertOne({
+	// 		...query,
+	// 		projectId: new ObjectId(projectId),
+	// 		userId: new ObjectId(userId),
+	// 		date: new Date(),
+	// 	});
+	// 	return this.projects
+	// 		.aggregate([
+	// 			{ $match: { equipmentId: new ObjectId(equipmentId) } },
+	// 			{
+	// 				$lookup: {
+	// 					from: 'users',
+	// 					localField: 'userId',
+	// 					foreignField: '_id',
+	// 					as: 'user',
+	// 				},
+	// 			},
+	// 		])
+	// 		.toArray();
+	// }
 }

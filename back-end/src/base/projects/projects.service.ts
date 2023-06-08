@@ -14,4 +14,8 @@ export class ProjectsService {
 
 	// Business logic methods goes there...
 	// Define your own methods
+
+	// async createProject(query){
+	// 	return await this.projectsRepository.createProject(query);
+	// }
 }
