@@ -71,7 +71,7 @@ export const useArticleStore = defineStore('article', {
 			const response = await http.get('/articles');
 			const items = response.data;
 			this.items = items;
-			return true;
+			return items;
 		}),
 
 		//get article by id from the database
@@ -96,6 +96,12 @@ export const useArticleStore = defineStore('article', {
 			const oneItems = response.data;
 			this.oneItems = oneItems;
 			return true;
+		}),
+
+		getParticipants: withErrorHandler(async function (id: string) {
+			const response = await http.get(`/articles/participants/${id}`);
+			const participants = response.data.map((participant) => participant._id);
+			return participants;
 		}),
 
 		addComment: withErrorHandler(async function (id: string, comment) {
