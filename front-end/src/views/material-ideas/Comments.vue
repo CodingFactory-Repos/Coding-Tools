@@ -4,7 +4,7 @@
 			>Commentaires :
 		</span>
 		<form action="" class="flex flex-col" @submit.prevent="postBdd">
-			<ul class="ideas-comments__messages border-2 border-dark-font rounded-lg mb-4 mt-2">
+			<ul class="py-2.5 border border-dark-font rounded-lg mb-4 mt-2">
 				<li class="px-4" v-for="item in items">
 					<span class="text-xs !text-opacity-50 text-dark-primary dark-primary dark:text-dark-font">
 						{{ item.user[0].profile.firstName }} {{ item.user[0].profile.lastName }} -
@@ -15,14 +15,14 @@
 				</li>
 			</ul>
 			<div class="flex">
-				<input
+				<textarea
 					class="bg-light-secondary border text-dark-primary sm:text-sm rounded-lg block w-full p-2.5 placeholder-gray-400 mr-4"
-					type="text"
 					placeholder="Ajouter un commentaire"
 					v-model="comment"
+					rows="2"
 				/>
 				<button
-					class="font-bold bg-light-icon rounded-lg text-sm focus:outline-none dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary dark:disabled:border-dark-icon bg-light-tertiary text-dark-primary disabled:text-light-font border-2 border-dark-font disabled:border-light-font items-center gap-2"
+					class="rounded-lg p-2.5 font-bold bg-light-icon rounded-lg text-sm focus:outline-none dark:text-dark-font dark:disabled:bg-dark-tertiary dark:disabled:text-dark-icon dark:bg-dark-tertiary disabled:bg-light-tertiary dark:disabled:border-dark-icon bg-light-tertiary text-dark-primary disabled:text-light-font border border-dark-font disabled:border-light-font items-center gap-2"
 					:disabled="comment === ''"
 				>
 					Envoyer
