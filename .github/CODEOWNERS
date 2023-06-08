@@ -43,6 +43,7 @@
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
 /back-end/src/base/courses/courses.repository.ts @Maghwyn @Loule95450
+/back-end/src/base/courses/courses.service.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
@@ -126,7 +127,7 @@
 /front-end/src/assets/images/CodingToolsLogo.png @TheoLandemaine
 /front-end/src/assets/images/left.svg @TheoLandemaine
 /front-end/src/assets/images/right.svg @TheoLandemaine
-/front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
+/front-end/src/assets/imgs/retrospectiveImgs/ @TheoLandemaine
 /front-end/src/assets/styles/components/add-ideas.css @Maghwyn @AyakorK
 /front-end/src/assets/styles/components/common/pop-up.css @Maghwyn @AyakorK
 /front-end/src/components/ @Kevw94 @Maghwyn
