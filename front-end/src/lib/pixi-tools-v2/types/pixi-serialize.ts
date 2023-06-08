@@ -1,4 +1,4 @@
-import { EventMode, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
+import { EventMode, TextStyleAlign, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
 import {
 	AttachedContainer,
 	ElementBounds,
@@ -104,6 +104,7 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	fontStyle?: TextStyleFontStyle;
 	fontFamily?: string | string[];
 	fontPadding?: number;
+	fontAlign?: TextStyleAlign;
 }
 
 export interface SerializedLineGraphic {

@@ -66,6 +66,7 @@ export const modelSerializer = (model: ModelGraphics) => {
 			properties.fontWeight = model.textStyle.fontWeight;
 			properties.fontFamily = model.textStyle.fontFamily;
 			properties.fontPadding = model.textStyle.padding;
+			properties.fontAlign = model.textStyle.align;
 		}
 
 		return {
