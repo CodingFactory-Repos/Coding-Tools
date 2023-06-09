@@ -232,6 +232,10 @@ export class CallsRepository {
 			return { message: 'You cannot scan outside of school hours', error: 'Scan out of time' };
 		}
 
+		if (user.role !== 1) {
+			return { message: 'User is not a student', error: 'User is not a student' };
+		}
+
 		// Update the call with the student's presence
 		await this.db.collection('calls').updateOne(
 			{ course: courseObjectId, period: period[periodIndex] },
@@ -321,6 +325,8 @@ export class CallsRepository {
 			case Roles.PRODUCT_OWNER:
 				query['teacherId'] = userId;
 				break;
+			case Roles.PEDAGOGUE:
+				return null;
 			default:
 				throw new Error(`Unknown user role: ${user.role}`);
 		}
@@ -333,6 +339,20 @@ export class CallsRepository {
 			students: userId,
 		});
 		return studentClass ? studentClass._id : null;
+	}
+
+	async getMessage(actualCourse, userId) {
+		if (!actualCourse) {
+			const user = await this.db.collection('users').findOne({ _id: userId });
+			if (!user) {
+				throw new ServiceError('NOT_FOUND', 'User not found');
+			}
+			if (user.role === Roles.STUDENT) {
+				return "Vous n'avez aucun cours aujourd'hui";
+			} else if (user.role === Roles.PEDAGOGUE) {
+				return "Vous n'avez aucun cours en tant que pédagogue";
+			}
+		}
 	}
 
 	async getStudentIdList(courseId: string) {
@@ -442,9 +462,7 @@ export class CallsRepository {
 				},
 			},
 		);
-		return {
-			message: 'Groups updated successfully',
-		};
+		return 'successUpdate';
 	}
 
 	shuffle(array: Array<ObjectId>, actualGroups: Array<ObjectId>) {
@@ -488,6 +506,7 @@ export class CallsRepository {
 				},
 			},
 		);
+		return 'successEmpty';
 	}
 
 	async getGroups(courseId: string) {
@@ -596,7 +615,7 @@ export class CallsRepository {
 		});
 
 		if (userAlreadyInGroup) {
-			throw new ServiceError('BAD_REQUEST', 'User already in this group');
+			return 'alreadyInGroup';
 		}
 
 		let isReplaced = false;
@@ -609,7 +628,7 @@ export class CallsRepository {
 		});
 
 		if (!isReplaced) {
-			throw new ServiceError('BAD_REQUEST', 'This group is already full');
+			return 'full';
 		}
 
 		let isPresent = false;
@@ -647,9 +666,7 @@ export class CallsRepository {
 
 		await this.joiningGroup(courseObjectId, actualDate, course, groupId, newGroup);
 
-		return {
-			message: 'User joined group successfully',
-		};
+		return 'successJoin';
 	}
 	async joiningGroup(courseObjectId, actualDate, course, groupId, newGroup) {
 		await this.checkWeekEnd();

@@ -8,9 +8,12 @@ import { ArticlesRepository } from 'src/base/articles/articles.repository';
 import { ArticlesService } from 'src/base/articles/articles.service';
 import { ArticlesController } from 'src/base/articles/articles.controller';
 
+import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
+import { NewTutorialEmitter } from './events/newTutorial.events';
+
 @Module({
-	imports: [DatabaseModule, forwardRef(() => AuthModule)],
-	providers: [ArticlesService, ArticlesRepository, UsersRepository],
+	imports: [DatabaseModule, MailjetModule, forwardRef(() => AuthModule)],
+	providers: [ArticlesService, ArticlesRepository, UsersRepository, NewTutorialEmitter],
 	controllers: [ArticlesController],
 	exports: [ArticlesService, ArticlesRepository],
 })

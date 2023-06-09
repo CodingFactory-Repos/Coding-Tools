@@ -37,6 +37,7 @@ export const useCoursStore = defineStore('course', {
 				teacherId: '',
 			},
 			idCourses: '',
+			uploadedFiles: [],
 		};
 	},
 	actions: {
