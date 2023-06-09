@@ -24,7 +24,6 @@
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
 /back-end/src/base/articles/articles.module.ts @Maghwyn
-/back-end/src/base/articles/articles.service.ts @Maghwyn
 /back-end/src/base/articles/events/ @Loule95450
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/boards/boards.repository.ts @Maghwyn @Loule95450
@@ -46,7 +45,7 @@
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
 /back-end/src/base/courses/courses.module.ts @Maghwyn @Kevw94
 /back-end/src/base/courses/dto/coures.dto.ts @AyakorK
-/back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @AyakorK
+/back-end/src/base/courses/interfaces/courses.interface.ts @AyakorK @Maghwyn
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
 /back-end/src/base/groups/ @Kevw94 @Maghwyn
 /back-end/src/base/groups/groups.module.ts @Maghwyn
@@ -136,10 +135,9 @@
 /front-end/src/assets/images/right.svg @TheoLandemaine
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/components/ @Kevw94 @Maghwyn
-/front-end/src/components/account/ @Kevw94 @Maghwyn
+/front-end/src/components/account/ @Maghwyn
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
-/front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
 /front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
@@ -163,8 +161,6 @@
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
 /front-end/src/components/blog/ @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/AddTutorial.vue @Maghwyn
-/front-end/src/components/blog/CardArticle.vue @Maghwyn
-/front-end/src/components/blog/DisplayArticles.vue @Maghwyn
 /front-end/src/components/blog/MarkdownViewer.vue @Maghwyn
 /front-end/src/components/common/ @Kevw94 @Maghwyn
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
