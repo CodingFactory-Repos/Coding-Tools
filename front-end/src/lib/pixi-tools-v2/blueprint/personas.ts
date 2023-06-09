@@ -5,11 +5,30 @@ import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
 import { PixiEventMode } from '../types/pixi-enums';
 
+export interface PersonaBuilder {
+	profile: {
+		name: string;
+		age: string;
+		professionalBackground: string;
+		personalSituation: string;
+		motivation: string;
+		bio: string;
+		verbatism: string;
+	}
+	goals: Array<string>;
+	needs: Array<string>;
+	skills: Array<string>;
+	challenges: Array<string>;
+	difficulties: Array<string>;
+	commentary: string;
+}
+
 export const personas = (
 	viewport: ViewportUI,
 	point: Point,
 	width: number,
 	height: number,
+	personaBuilder: PersonaBuilder,
 ): Partial<SerializedContainer> => {
 	const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);

@@ -24,7 +24,6 @@ export const pruneTheProjectTree = (
 	const endY = point.y + height / 2;
 
 	const centerX = modifiedWidth / 2;
-	const foliageWidth = modifiedWidth * 0.9;
 	const foliageHeight = height * 0.7;
 
 	const fontSize = 20;
@@ -34,6 +33,7 @@ export const pruneTheProjectTree = (
 	const nearFutureText = "Futur proche";
 	const futureText = "Futur";
 	const textHeightOffset = height * 0.025;
+	const lineWidth = 4;
 
 	const tempText = new Text('', {
 		fontSize: fontSize,
@@ -60,8 +60,8 @@ export const pruneTheProjectTree = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xffffff,
-				alpha: 0,
+				color: 0xf00fff,
+				alpha: 0.3,
 				borderWidth: 0,
 				borderColor: 0x000000,
 			},
@@ -167,10 +167,10 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + firstLineOffset + 2 + firstLineOffset, y: endY },
-							end: { x: endX - firstLineOffset + 2 - firstLineOffset, y: endY },
-							startControl: { x: startX + firstLineOffset + 2 + firstLineOffset, y: startY + firstLineOffset * 1.5 },
-							endControl: { x: endX - firstLineOffset + 2 - firstLineOffset, y: startY + firstLineOffset * 1.5 },
+							start: { x: startX + firstLineOffset + (lineWidth / 2) + firstLineOffset, y: endY - (lineWidth / 2) },
+							end: { x: endX - firstLineOffset + (lineWidth / 2) - firstLineOffset, y: endY - (lineWidth / 2) },
+							startControl: { x: startX + firstLineOffset + (lineWidth / 2) + firstLineOffset, y: startY + firstLineOffset * 1.5 - (lineWidth / 2) },
+							endControl: { x: endX - firstLineOffset + (lineWidth / 2) - firstLineOffset, y: startY + firstLineOffset * 1.5 - (lineWidth / 2) },
 						},
 					},
 				],
@@ -197,10 +197,10 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: endX - modifiedWidth + 2 + firstLineOffset, y: endY },
-							end: { x: endX + 2 - firstLineOffset, y: endY },
-							startControl: { x: startX + 2 + firstLineOffset, y: startY },
-							endControl: { x: startX + modifiedWidth + 2 - firstLineOffset, y: startY },
+							start: { x: endX - modifiedWidth + (lineWidth / 2) + firstLineOffset, y: endY - (lineWidth / 2)},
+							end: { x: endX + (lineWidth / 2) - firstLineOffset, y: endY - (lineWidth / 2)},
+							startControl: { x: startX + (lineWidth / 2) + firstLineOffset, y: startY - (lineWidth / 2)},
+							endControl: { x: startX + modifiedWidth + (lineWidth / 2) - firstLineOffset, y: startY - (lineWidth / 2)},
 						},
 					},
 				],

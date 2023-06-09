@@ -80,24 +80,7 @@ import PersonaBuilderGoalAndNeed from '@/components/agility/persona/BuilderGoalA
 import BuilderChallengesAndDifficulties from '@/components/agility/persona/BuilderChallengesAndDifficulties.vue';
 import BuilderSkillsAndCommentary from '@/components/agility/persona/BuilderSkillsAndCommentary.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-
-export interface PersonaBuilder {
-	profile: {
-		name: string;
-		age: string;
-		professionalBackground: string;
-		personalSituation: string;
-		motivation: string;
-		bio: string;
-		verbatism: string;
-	}
-	goals: Array<string>;
-	needs: Array<string>;
-	skills: Array<string>;
-	challenges: Array<string>;
-	difficulties: Array<string>;
-	commentary: string;
-}
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
 
 const persona = reactive({
 	profile: {},
