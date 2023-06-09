@@ -62,7 +62,7 @@ export default defineComponent({
 			// Utiliser une fonction fléchée
 			try {
 				const response = await http.get(`/calls/is_product_owner/`);
-				// TODO: Ici, il faut définir la valeur de isPO
+				// TODO: Kevin - Ici, il faut définir la valeur de isPO (Kevin met en anglais ton commentaire sinon baston)
 				// this.isPO = response.data.isPO;
 				isPO.value = true;
 			} catch (error) {

@@ -1,5 +1,72 @@
+<template>
+  <div class="relative">
+    <IconButton class="h-fit" :class="btnStyle" type="button" @click="toggleTextAreaEditor">
+      <div class="w-[22px] h-[22px] rounded-full border border-[#9ca3af]"></div>
+    </IconButton>
+    <div class="absolute z-10  flex justify-between mt-4" :class="position" v-if="isTextAreaEdited">
+      <div class="modal-body">
+        <div class="flex mb-2">
+          <button
+            :class="{ 'bg-blue-500 text-white': isBold }"
+            @click="toggleBold"
+            class="bg-gray-300 hover:bg-gray-400 text-black-800 font-semibold py-2 px-4 rounded mr-2"
+          >
+            Bold
+          </button>
+          <button
+            :class="{ 'bg-blue-500 text-white': isItalic }"
+            @click="toggleItalic"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mr-2"
+          >
+            Italic
+          </button>
+		   <button
+            :class="{ 'bg-blue-500 text-white': isItalic }"
+            @click="toggleItalic"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mr-2"
+          >
+            Italic
+          </button>
+		   <button
+            :class="{ 'bg-blue-500 text-white': isItalic }"
+            @click="toggleItalic"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mr-2"
+          >
+            Italic
+          </button>
+        </div>
+        <div class="flex mb-2">
+          <label class="mr-2">Police :</label>
+          <select v-model="fontFamily" class="bg-white border border-gray-300 rounded px-2 py-1">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+          </select>
+        </div>
+        <div class="flex mb-2">
+          <label class="mr-2">Taille :</label>
+          <select v-model="fontSize" class="bg-white border border-gray-300 rounded px-2 py-1">
+            <option value="12px">Petit</option>
+            <option value="16px">Moyen</option>
+            <option value="20px">Grand</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
+
+defineProps<{
+	position: string;
+	btnStyle?: string;
+}>()
 import { ref, computed, watch } from 'vue';
+
+
+import IconButton from '@/components/common/buttons/Icon.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
@@ -7,96 +74,17 @@ import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useThemeStore } from '@/store/modules/theme.store';
 import { TextContainer } from '@/lib/pixi-tools-v2/class/textContainer';
 
-interface TextAreaEditor {
-	font_size: number;
-}
 
-defineProps<{
-	position: string;
-}>();
-
+const isTextAreaEdited = ref(false);
 const projectStore = useProjectStore();
-const themeStore = useThemeStore();
-const isDark = computed(() => themeStore.theme);
 
-//! It's hard to watch an array of object without using deep, but deep is too exaustive there.
-const selectedContainers = computed(() => projectStore.getSelected);
-//! This is used to trigger the watch, that's its sole purpose.
-const selectedUUID = computed(() => selectedContainers.value.map((ctn) => ctn.uuid));
 
-const colorPickerOpen = ref(false);
-const color = ref();
+const toggleTextAreaEditor = () => {
+	isTextAreaEdited.value = !isTextAreaEdited.value;
+	console.log(isTextAreaEdited.value );
+}
 
-const changeColor = (col: ColorPickerUpdate) => {
-	if (col.hex === '' || col.hex === '#') return;
-	color.value = col.hex;
-
-	const len = selectedContainers.value.length;
-	for (let n = 0; n < len; n++) {
-		const graphic = selectedContainers.value[n].getGraphicChildren()[0];
-		graphic.color = hexToDecim(col.hex);
-		graphic.alpha = col?.rgba?.a ?? 1;
-		graphic.draw({
-			x: graphic.x,
-			y: graphic.y,
-			width: graphic.width,
-			height: graphic.height,
-			//@ts-ignore
-			radius: graphic.radius,
-		});
-
-		if (projectStore.scene.viewport.socketPlugin) {
-			const parent = graphic.parent;
-			// TODO: Thomas, remove this when readuy for the live editing
-			if (parent instanceof TextContainer) continue;
-			if (parent instanceof GenericContainer || parent instanceof LineContainer) {
-				projectStore.scene.viewport.socketPlugin.emit(
-					'ws-element-colorized',
-					parent.uuid,
-					parent.serializedColorimetry(),
-				);
-			} else {
-				const frame = parent.parent as FramedContainer;
-				projectStore.scene.viewport.socketPlugin.emit(
-					'ws-element-colorized',
-					frame.uuid,
-					frame.serializedColorimetry(),
-				);
-			}
-		}
-	}
-};
-
-const toggleColorPicker = () => {
-	colorPickerOpen.value = !colorPickerOpen.value;
-};
-
-watch(colorPickerOpen, (val) => {
+watch(isTextAreaEdited, (val) => {
 	projectStore.scene.viewport.manager.isEditingContainerProperties = val;
-});
-
-watch(selectedUUID, () => {
-	colorPickerOpen.value = false;
-	const len = selectedContainers.value.length;
-	if (len === 0 || len > 1) {
-		color.value = undefined;
-	} else {
-		const graphic = selectedContainers.value[0].getGraphicChildren()[0];
-
-		// TODO: The librarby doesn't seem to convert hex with opacity, it's a bit.. unfortunate.
-		color.value = addOpacityToHex(decimToHex(graphic.color), graphic.alpha);
-	}
-});
+})
 </script>
-
-<style lang="scss">
-.hu-color-picker {
-	width: fit-content !important;
-}
-
-.multicolor {
-	background: linear-gradient(217deg, rgba(255, 0, 0, 1), rgba(255, 0, 0, 0) 70.71%),
-		linear-gradient(127deg, rgba(0, 255, 0, 1), rgba(0, 255, 0, 0) 70.71%),
-		linear-gradient(336deg, rgba(0, 0, 255, 1), rgba(0, 0, 255, 0) 70.71%);
-}
-</style>

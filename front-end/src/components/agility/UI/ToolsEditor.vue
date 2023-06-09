@@ -10,7 +10,7 @@
 				background="gradiant"
 				class="h-9"
 			>
-				<SvgArrows class="fill-white-icon dark:fill-white-icon" />
+			<SvgArrows class="fill-white-icon dark:fill-white-icon" />
 			</DefaultButton>
 		</div>
 		<div class="grow flex h-full gap-1 items-center">
@@ -171,6 +171,7 @@
 		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
 		<ManageUser v-if="isOwner && isManagerModalOpen" @close="closeManagerModal" />
 		<BlueprintModal v-if="isBlueprintModalOpen" @close="closeBlueprintModal" />
+		<TextAreaEditor v-if="isTextAreaEdited" @close="openTextAreaEdited"></TextAreaEditor>
 		<div class="flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button" @click="openManagerModal" v-if="isOwner">
 				<SvgGear width="22" height="22" class="!fill-gray-400" />
@@ -195,6 +196,7 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
 import { DownloadType, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
+import TextAreaEditor from '@/components/agility/UI/TextAreaEditor.vue';
 import BlueprintModal from '@/components/agility/modals/Blueprint.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
 import ShareProject from '@/components/agility/UI/ShareProject.vue';
