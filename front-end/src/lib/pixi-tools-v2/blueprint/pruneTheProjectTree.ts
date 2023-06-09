@@ -1,4 +1,4 @@
-import { Point } from 'pixi.js';
+import { Point, Text, TextMetrics } from 'pixi.js';
 import { FramedContainer } from '../class/framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
 import { ViewportUI } from '../viewportUI';
@@ -15,15 +15,43 @@ export const pruneTheProjectTree = (
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
 
-	const startX = point.x - width / 2;
+	const firstLineOffset = width * 0.2;
+	const modifiedWidth = width + firstLineOffset * 2;
+
+	const startX = point.x - modifiedWidth / 2;
 	const startY = point.y - height / 2;
-	const endX = point.x + width / 2;
+	const endX = point.x + modifiedWidth / 2;
 	const endY = point.y + height / 2;
 
-	const centerX = width / 2;
-	const firstLineOffset = width * 0.2;
-	const foliageWidth = width * 0.9;
+	const centerX = modifiedWidth / 2;
+	const foliageWidth = modifiedWidth * 0.9;
 	const foliageHeight = height * 0.7;
+
+	const fontSize = 20;
+	const fontFamily = 'Arial';
+	const fontWeight = 'bold';
+	const currentText = "Actuel";
+	const nearFutureText = "Futur proche";
+	const futureText = "Futur";
+	const textHeightOffset = height * 0.025;
+
+	const tempText = new Text('', {
+		fontSize: fontSize,
+		fontFamily: fontFamily,
+		fontWeight: fontWeight,
+	});
+
+	const { width: currentTextWidth } = TextMetrics.measureText(currentText, tempText.style);
+	const { width: nearFutureTextWidth } = TextMetrics.measureText(nearFutureText, tempText.style);
+	const { width: futureTextWidth } = TextMetrics.measureText(futureText, tempText.style);
+
+	let maxLength: number;
+	const diff = Math.abs(((height - modifiedWidth) / modifiedWidth) * 100) / 100;
+	if (height < modifiedWidth) {
+		maxLength = (height * (1 + Math.min(diff, 0.1))) / 2;
+	} else {
+		maxLength = Math.min(width, height) / 2;
+	}
 
 	return {
 		typeId: 'frame',
@@ -40,7 +68,7 @@ export const pruneTheProjectTree = (
 			bounds: {
 				x: point.x - centerX,
 				y: point.y - height / 2,
-				width,
+				width: modifiedWidth,
 				height,
 			},
 		},
@@ -57,7 +85,7 @@ export const pruneTheProjectTree = (
 				PRUNE THE TREE [SQUELETON]
 			 *******************************/
 
-			{
+			{ //! Folliage
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
@@ -79,16 +107,16 @@ export const pruneTheProjectTree = (
 							borderColor: 0x000000,
 						},
 						bounds: {
-							x: point.x - foliageWidth / 2,
-							y: point.y - width * 0.3,
-							radius: width * 0.3,
-							width: foliageWidth,
+							x: point.x - (maxLength * 1.125),
+							y: point.y - foliageHeight / 1.75,
+							radius: modifiedWidth * 0.3,
+							width: maxLength * 2.25,
 							height: foliageHeight,
 						},
 					},
 				],
 			},
-			{
+			{ //! Tree
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
@@ -111,13 +139,13 @@ export const pruneTheProjectTree = (
 						bounds: {
 							x: startX,
 							y: startY,
-							width: width,
+							width: modifiedWidth,
 							height: height,
 						},
 					},
 				],
 			},
-			{
+			{ //! small arc
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -139,15 +167,15 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + firstLineOffset + 2, y: endY },
-							end: { x: endX - firstLineOffset + 2, y: endY },
-							startControl: { x: startX + firstLineOffset + 2, y: startY + firstLineOffset * 1.5 },
-							endControl: { x: endX - firstLineOffset + 2, y: startY + firstLineOffset * 1.5 },
+							start: { x: startX + firstLineOffset + 2 + firstLineOffset, y: endY },
+							end: { x: endX - firstLineOffset + 2 - firstLineOffset, y: endY },
+							startControl: { x: startX + firstLineOffset + 2 + firstLineOffset, y: startY + firstLineOffset * 1.5 },
+							endControl: { x: endX - firstLineOffset + 2 - firstLineOffset, y: startY + firstLineOffset * 1.5 },
 						},
 					},
 				],
 			},
-			{
+			{ //! big arc
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -169,10 +197,202 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: endX - width + 2, y: endY },
-							end: { x: endX + 2, y: endY },
-							startControl: { x: startX + 2, y: startY },
-							endControl: { x: startX + width + 2, y: startY },
+							start: { x: endX - modifiedWidth + 2 + firstLineOffset, y: endY },
+							end: { x: endX + 2 - firstLineOffset, y: endY },
+							startControl: { x: startX + 2 + firstLineOffset, y: startY },
+							endControl: { x: startX + modifiedWidth + 2 - firstLineOffset, y: startY },
+						},
+					},
+				],
+			},
+			{ //! First current Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: currentText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: startX + (firstLineOffset * 2) + firstLineOffset / 2 - currentTextWidth / 2,
+							y: endY - textHeightOffset,
+						},
+					},
+				],
+			},
+			{ //! Second current Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: currentText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: endX - (firstLineOffset * 2) - firstLineOffset / 2 - currentTextWidth / 2,
+							y: endY - textHeightOffset,
+						},
+					},
+				],
+			},
+			{ //! First near-future Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: nearFutureText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: startX + firstLineOffset + firstLineOffset / 2 - nearFutureTextWidth / 2,
+							y: endY - textHeightOffset,
+						},
+					},
+				],
+			},
+			{ //! Second near-future Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: nearFutureText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: endX - firstLineOffset - firstLineOffset / 2 - nearFutureTextWidth / 2,
+							y: endY - textHeightOffset,
+						},
+					},
+				],
+			},
+			{ //! First future Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: futureText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: startX + firstLineOffset / 2 - futureTextWidth / 2,
+							y: endY - textHeightOffset,
+						},
+					},
+				],
+			},
+			{ //! Second future Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'none',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: true,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'none',
+							color: 0xffffff,
+							alpha: 1,
+							text: futureText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: "normal",
+							fontFamily: fontFamily,
+							fontPadding: 0,
+						},
+						bounds: {
+							x: endX - firstLineOffset / 2 - futureTextWidth / 2,
+							y: endY - textHeightOffset,
 						},
 					},
 				],
