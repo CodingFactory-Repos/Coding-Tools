@@ -21,10 +21,9 @@ import { CanvasRoomRepository } from '../canvasRoom/canvasRoom.repository';
 		UsersRepository,
 		CoursesRepository,
 		RetrospectivesRepository,
-		CanvasRoomRepository
+		CanvasRoomRepository,
 	],
 	controllers: [GroupsController],
 	exports: [GroupsService, GroupsRepository],
 })
 export class GroupsModule {}
-
