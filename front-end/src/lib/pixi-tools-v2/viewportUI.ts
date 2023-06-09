@@ -219,7 +219,7 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if(this.textEditor.style.display === "block") {
+			if (this.textEditor.style.display === 'block') {
 				const points = this.toScreen(size.x, size.y);
 				this.textEditor.style.transform = `scale(${this.scaled})`;
 				this.textEditor.style.left = `${points.x}px`;

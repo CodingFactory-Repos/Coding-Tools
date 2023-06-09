@@ -28,11 +28,7 @@ export class RetrospectivesController {
 
 	@Post('/newRetro')
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
-	async newRetro(
-		@Jwt() userId: ObjectId,
-		@Res() res: Response,
-		@Body() body: RetrospectiveDTO
-		) {
+	async newRetro(@Jwt() userId: ObjectId, @Res() res: Response, @Body() body: RetrospectiveDTO) {
 		const retrospective = await this.retrospectivesService.newRetrospective(body, userId);
 		return res.status(201).json({ slug: retrospective.slug });
 	}

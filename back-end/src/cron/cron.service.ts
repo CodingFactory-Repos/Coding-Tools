@@ -80,23 +80,22 @@ export class CronService {
 	}
 
 	@Cron('0 6 * * *')
-	async handleAutoTutoValidation(){
-
+	async handleAutoTutoValidation() {
 		// date two weeks ago
 		const dateMinusTwoWeeks = new Date(Date.now() - 12096e5);
 
 		// select params
 		const query = {
 			type: 'Tuto',
-			status: "Pending",
-			updatedAt: { $lt : dateMinusTwoWeeks },
-		}
+			status: 'Pending',
+			updatedAt: { $lt: dateMinusTwoWeeks },
+		};
 
 		// fields updated
 		const updateParams = {
-			status: 'Accepted'
-		}
+			status: 'Accepted',
+		};
 
-		await this.articlesService.updateManyArticles(query, updateParams)
+		await this.articlesService.updateManyArticles(query, updateParams);
 	}
 }
