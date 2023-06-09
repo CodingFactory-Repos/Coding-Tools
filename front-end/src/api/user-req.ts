@@ -32,3 +32,7 @@ export const apiTryFetchUserListByRoomRetro = (roomId: string, user: string) => 
 		`/users/roomRetro?id=${roomId}&user=${user}`,
 	);
 };
+
+export const getAllUsers = () => {
+	return http.get<Array<User>>('/users');
+};

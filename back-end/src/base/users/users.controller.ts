@@ -77,4 +77,10 @@ export class UsersController {
 
 		return res.status(200).json({ status: 'ok', users });
 	}
+
+	@Get('')
+	async getAllUsers(@Res() res: Response) {
+		const users = await this.usersService.getAllUsers();
+		return res.status(200).json({ users });
+	}
 }

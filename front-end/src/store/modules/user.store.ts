@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-
 import { pick } from '@/utils/object.helper';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { KeysRequired } from '@/interfaces/advanced-types.interface';
@@ -9,6 +8,7 @@ import {
 	tryGetClassProfileList,
 	trySaveUserProfile,
 	tryGetRelatedUserProfile,
+	getAllUsers,
 } from '@/api/user-req';
 
 const userStoreDefaultState = (): UserStore => ({
@@ -17,6 +17,7 @@ const userStoreDefaultState = (): UserStore => ({
 	uploadWaitingList: [],
 	relatedProfiles: [],
 	relatedUserProfile: {},
+	users: [],
 });
 
 export const useUserStore = defineStore('user', {
@@ -56,5 +57,12 @@ export const useUserStore = defineStore('user', {
 				keys?.length ? pick(userStoreDefaultState(), keys) : userStoreDefaultState(), // if no keys provided, reset all
 			);
 		},
+		getAllUsers: withErrorHandler(async function () {
+			const response = await getAllUsers();
+			const items = response.data;
+			this.users = items;
+			console.log(this.users);
+			return true;
+		}),
 	},
 });

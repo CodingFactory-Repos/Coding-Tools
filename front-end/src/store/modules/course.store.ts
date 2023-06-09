@@ -44,10 +44,8 @@ export const useCoursStore = defineStore('course', {
 		//get courses in the database
 		getCourse: withErrorHandler(async function () {
 			const response = await getCourses();
-			//	console.log(response.data);
 			const items = response.data;
 			this.items = items;
-			console.log(this.items);
 			return true;
 		}),
 		getCourseById: withErrorHandler(async function (id: string) {

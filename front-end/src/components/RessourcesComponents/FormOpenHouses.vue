@@ -14,7 +14,7 @@
 						<input type="text" v-model="town" placeholder="town :" /><br />
 					</div>
 					<textarea placeholder="Description :" v-model="description"></textarea><br />
-					<participant :participants="participants" @clear="clearParticipants" />
+					<addParticipant :participants="participants" @clear="clearParticipants" />
 					<input type="file" @change="onFileSelected" /><br />
 					<button type="submit">Submit</button>
 				</form>
@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import addParticipant from '@/components/RessourcesComponents/NewParticipant.vue';
+import activity from '@/components/RessourcesComponents/NewActivity.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import { ref } from 'vue';
 import { http } from '@/api/network/axios';
@@ -31,7 +33,7 @@ import { http } from '@/api/network/axios';
 const showMetaModal = ref(false);
 
 const openMetaModal = () => (showMetaModal.value = true);
-const closeMetaModal = () => (showMetaModal.value = false);
+const closeMetaModal = () => closeForm();
 
 let title = '';
 let date = '';
@@ -74,6 +76,12 @@ const addOpenHouses = function () {
 	closeMetaModal();
 };
 
+const closeForm = function () {
+	showMetaModal.value = false;
+	clearParticipants();
+	clearActivitys();
+};
+
 const onFileSelected = function (event) {
 	console.log(event);
 };
@@ -81,7 +89,8 @@ const onFileSelected = function (event) {
 const clearParticipants = function () {
 	participants.splice(0, participants.length);
 };
-//	 },
 
-//}
+const clearActivitys = function () {
+	Activities.splice(0, Activities.length);
+};
 </script>

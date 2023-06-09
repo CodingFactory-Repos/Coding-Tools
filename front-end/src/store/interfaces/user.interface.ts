@@ -7,6 +7,7 @@ export interface UserStore {
 	uploadWaitingList: Array<boolean>;
 	relatedProfiles: Array<UserProfileList>;
 	relatedUserProfile: IRelatedUserProfile;
+	users: Array<User>;
 
 	saveProfile?: (this: UserStore) => Promise<boolean | undefined>;
 	uploadFinished?: (this: UserStore) => boolean;

@@ -54,7 +54,7 @@ const getOpenHouseById = async (_id: string) => {
 };
 
 // fetch openHouse data on mounted
-onMounted(async() => {
+onMounted(async () => {
 	await getOpenHouseById(_id.value);
 });
 </script>

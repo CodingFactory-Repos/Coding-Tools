@@ -249,8 +249,6 @@ export class UsersService {
 		return users ?? [];
 	}
 
-
-
 	//  RETRO SECTION SEARCH
 	async getUserListOnRoomRetro(roomId: string, user: string) {
 		if (
@@ -365,5 +363,9 @@ export class UsersService {
 			.toArray();
 
 		return users ?? [];
+	}
+
+	async getAllUsers() {
+		return await this.usersRepository.getAllUsers();
 	}
 }
