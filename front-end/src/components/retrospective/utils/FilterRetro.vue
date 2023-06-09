@@ -40,14 +40,14 @@ import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { computed, ref } from 'vue';
 
 const props = defineProps({
-	allRetros: { type: Object, required: true }
+	retrosByUser: { type: Object, required: true }
 })
 const dateChoosed = ref(0);
 const retroStore = useRetrospectiveStore();
 const searchInput = ref("");
 
 const rangeDate = computed(() => {
-	const datesRetro = props.allRetros.map(item => new Date(item.createdAt).getFullYear());
+	const datesRetro = props.retrosByUser.map(item => new Date(item.createdAt).getFullYear());
 
 	const minDate = Math.min(...datesRetro);
 	const maxDate = Math.max(...datesRetro)

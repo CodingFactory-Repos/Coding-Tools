@@ -172,13 +172,10 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import { http } from '@/api/network/axios';
 import BorrowHistoryMaterials from '@/components/materials/BorrowHistoryMaterials.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
-import { Material } from '@/store/interfaces/material.interface';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
-import { withErrorHandler } from '@/utils/storeHandler';
 import Modal from '@/components/common/Modal.vue';
 import ImagePicker from '@/components/materials/ImagePicker.vue';
 import Swal from 'sweetalert2';
