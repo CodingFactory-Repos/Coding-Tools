@@ -110,11 +110,7 @@ const startTimer = () => {
 		socketRetro.socket.emit('progess-timer', timePassed.value)
 
 		if (timeLeftComp.value === 0) {
-			pause();
 			playAlarm();
-			retroStore.isRetroFinished = true;
-			retroStore.currentRetro.isRetroEnded = true;
-			socketRetro.socket.emit('end-currentRetro');
 		}
 
 	}, 1000);
