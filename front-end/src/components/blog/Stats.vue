@@ -32,6 +32,17 @@ const createCharts = async () => {
 
 	const categoryCount = countCategories(types);
 
+	const articleWithMostParticipants = await articleStore.getArticleWithMostParticipants();
+
+	const topCreators = await articleStore.getTopCreateur();
+
+	const topParticipants = await articleStore.getTopParticipant();
+
+	// Display the results in console
+	console.log(articleWithMostParticipants);
+	console.log(topCreators);
+	console.log(topParticipants);
+
 	const ctx1 = document.getElementById('chart1').getContext('2d');
 	new Chart(ctx1, {
 		type: 'doughnut',

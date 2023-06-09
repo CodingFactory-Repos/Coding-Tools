@@ -37,16 +37,22 @@ export class ArticlesController {
 		});
 	}
 
-	@Get('/participant/:id')
+	@Get('/stats/participant')
 	async getArticleWithMostParticipants(@Req() req: Request, @Res() res: Response) {
-		try {
-			const articleId = await this.articlesService.getArticleWithMostParticipants();
-			return res.status(201).json(articleId);
-		} catch (error) {
-			return res.status(500).json({
-				message: "Erreur lors de la récupération de l'article avec le plus de participants.",
-			});
-		}
+		const articleId = await this.articlesService.getArticleWithMostParticipants();
+		return res.status(201).json(articleId);
+	}
+
+	@Get('/stats/topcreateur')
+	async getTopCreateur(@Req() req: Request, @Res() res: Response) {
+		const articleId = await this.articlesService.getTopCreateur();
+		return res.status(201).json(articleId);
+	}
+
+	@Get('/stats/topparticipant')
+	async getTopParticipant(@Req() req: Request, @Res() res: Response) {
+		const articleId = await this.articlesService.getTopParticipant();
+		return res.status(201).json(articleId);
 	}
 
 	// remove participant from the array of participants in article in the database

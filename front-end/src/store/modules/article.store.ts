@@ -104,6 +104,28 @@ export const useArticleStore = defineStore('article', {
 			return participants;
 		}),
 
+		getArticleWithMostParticipants: withErrorHandler(async function () {
+			const response = await http.get('articles/stats/participant');
+			const participants = response.data.map((participant) => participant._id);
+			return participants;
+		}),
+
+		getTopCreateur: withErrorHandler(async function () {
+			try {
+				const response = await http.get('/articles/stats/topcreateur');
+				const topCreators = Array.isArray(response.data) ? response.data : [];
+				console.log(topCreators);
+			} catch (error) {
+				console.error(error);
+			}
+		}),
+
+		getTopParticipant: withErrorHandler(async function () {
+			const response = await http.get('articles/stats/topparticipant');
+			const topParticipants = response.data;
+			console.log(topParticipants);
+		}),
+
 		addComment: withErrorHandler(async function (id: string, comment) {
 			const response = await http.put(`/articles/comment/${id}`, comment);
 			const oneItems = response.data;

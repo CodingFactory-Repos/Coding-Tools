@@ -39,6 +39,11 @@ export class ArticlesService {
 		const res = await this.articlesRepository.articles
 			.aggregate([
 				{
+					$match: {
+						participants: { $exists: true, $ne: [] },
+					},
+				},
+				{
 					$project: {
 						_id: 1,
 						participants: 1,
@@ -53,7 +58,55 @@ export class ArticlesService {
 				},
 			])
 			.toArray();
+		return res;
+	}
 
+	async getTopCreateur() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$unwind: '$owner',
+				},
+				{
+					$group: {
+						_id: '$owner',
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$sort: { count: -1 },
+				},
+				{
+					$limit: 10,
+				},
+			])
+			.toArray();
+		return res;
+	}
+
+	async getTopParticipant() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$match: { type: 'Evenement' },
+				},
+				{
+					$unwind: '$participants',
+				},
+				{
+					$group: {
+						_id: '$participants.id',
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$sort: { count: -1 },
+				},
+				{
+					$limit: 10,
+				},
+			])
+			.toArray();
 		return res;
 	}
 
