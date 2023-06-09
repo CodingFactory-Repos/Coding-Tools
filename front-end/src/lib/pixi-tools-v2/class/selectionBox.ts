@@ -80,7 +80,11 @@ export class SelectionBox extends Graphics {
 		for (const element of this.viewport.children) {
 			if (!element.visible) continue;
 
-			if (element instanceof GenericContainer || element instanceof FramedContainer || element instanceof TextContainer) {
+			if (
+				element instanceof GenericContainer ||
+				element instanceof FramedContainer ||
+				element instanceof TextContainer
+			) {
 				if (element.getBounds().intersects(selectionBounds)) {
 					selectedChildren.push(element);
 				}

@@ -1,13 +1,4 @@
-import {
-	Controller,
-	Get,
-	Post,
-	Res,
-	Req,
-	UseFilters,
-	UseGuards,
-	Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Res, Req, UseFilters, UseGuards, Param } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { CoursesService } from 'src/base/courses/courses.service';
@@ -29,15 +20,14 @@ export class CoursesController {
 	@Get('/allCourses')
 	async getAllCourses(@Res() res: Response) {
 		const courses = await this.coursesService.getAllCourses();
-		return res.status(200).json({ status: 'ok', courses })
+		return res.status(200).json({ status: 'ok', courses });
 	}
 
 	@Get('/:id')
-	async getCoursesById(@Req() req: Request, @Res() res: Response, @Param('id') courseId: string){
-		const courseById = await this.coursesService.getCoursesById(courseId)
+	async getCoursesById(@Req() req: Request, @Res() res: Response, @Param('id') courseId: string) {
+		const courseById = await this.coursesService.getCoursesById(courseId);
 		return res.status(200).json({ status: 'ok', courseById });
 	}
-
 
 	@Post('/create')
 	async createCourse(@Req() req: Request, @Res() res: Response) {
@@ -50,8 +40,4 @@ export class CoursesController {
 		const courses = await this.coursesService.getAllCourses();
 		return res.status(200).json(courses);
 	}
-
 }
-
-
-
