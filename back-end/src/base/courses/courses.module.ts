@@ -17,7 +17,7 @@ import { RetrospectivesRepository } from '../retrospectives/retrospectives.repos
 		CoursesRepository,
 		UsersRepository,
 		CanvasRoomRepository,
-		RetrospectivesRepository
+		RetrospectivesRepository,
 	],
 	controllers: [CoursesController],
 	exports: [CoursesService, CoursesRepository],

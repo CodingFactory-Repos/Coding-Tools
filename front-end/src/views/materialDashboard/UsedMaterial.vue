@@ -19,9 +19,7 @@ export default {
 		};
 	},
 	async created() {
-		console.log('usedList created');
 		const { data: items } = await http.get(`/materials/usedList`);
-		console.log(items);
 		this.datas = items;
 	},
 	components: { BarChart },
