@@ -33,7 +33,7 @@ export class CoursesController {
 	}
 
 	@Get('/:id')
-	async getCoursesByI(@Req() req: Request, @Res() res: Response, @Param('id') courseId: string){
+	async getCoursesById(@Req() req: Request, @Res() res: Response, @Param('id') courseId: string){
 		const courseById = await this.coursesService.getCoursesById(courseId)
 		return res.status(200).json({ status: 'ok', courseById });
 	}
