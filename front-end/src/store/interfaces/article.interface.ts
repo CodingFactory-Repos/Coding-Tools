@@ -30,13 +30,14 @@ export interface Dislikes {
 }
 
 export interface Participants {
-	id: string;
+	_id: string;
 	firstName: string;
 	lastName: string;
 	email: string;
 }
 
 export interface Comments {
+	_id: string;
 	email: string;
 	firstName: string;
 	lastName: string;

@@ -182,13 +182,17 @@
 	</div>
 
 	<div>
-		<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
+		<article
+			v-for="comment in oneItems.comments"
+			:key="comment.title"
+			class="m-2 p-3 bg-white rounded-lg dark:bg-gray-800 relative"
+		>
 			<header class="mb-2">
 				<h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
 					{{ comment.title }}
 				</h3>
 			</header>
-			<div class="flex items-center mb-4 space-x-4">
+			<div class="flex items-center mb-4 space-x-2">
 				<img
 					class="w-10 h-10 rounded-full"
 					:src="
@@ -198,6 +202,7 @@
 					"
 					alt=""
 				/>
+				<!-- <UserCircle class="logo rounded-full text-gray-500" /> -->
 				<div class="font-medium dark:text-white">
 					<p class="text-gray-900 dark:text-white">
 						{{ comment.firstName }} {{ comment.lastName }}
@@ -212,6 +217,16 @@
 			<p class="mb-2 font-light text-gray-500 dark:text-gray-400">
 				{{ comment.descriptions }}
 			</p>
+
+			<div v-if="oneItems.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+				<button
+					type="button"
+					@click="removeComment(oneItems._id, comment)"
+					class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+				>
+					<DeleteLogo />
+				</button>
+			</div>
 		</article>
 	</div>
 </template>
@@ -226,6 +241,8 @@ import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
 import Comment from '../common/svg/Comment.vue';
 import MarkdownItClass from '@toycode/markdown-it-class';
+// import UserCircle from '../common/svg/UserCircle.vue';
+import DeleteLogo from '../common/svg/DeleteLogo.vue';
 
 let markdown = ref('');
 
@@ -301,7 +318,7 @@ const participationEvent = (id) => {
 		firstName: user.value.profile.firstName,
 		lastName: user.value.profile.lastName,
 		email: user.value.profile.email,
-		id: user.value._id,
+		_id: user.value._id,
 	};
 
 	if (isParticipant) {
@@ -354,6 +371,35 @@ const isFinish = () => {
 	const now = new Date();
 	return date < now;
 };
+
+// function to delete an article
+const removeComment = (articleId, comment) => {
+	const removedComment = {
+		_id: comment._id,
+		title: comment.title,
+		descriptions: comment.descriptions,
+		date: comment.date,
+		email: comment.email,
+		firstName: comment.firstName,
+		lastName: comment.lastName,
+		picture: comment.picture,
+	};
+
+	Swal.fire({
+		title: 'Are you sure you want to delete this article ?',
+		text: "You won't be able to revert this!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes, delete it!',
+	}).then((result) => {
+		if (result.isConfirmed) {
+			articleStore.removeComment(articleId, removedComment);
+			Swal.fire('Deleted!', 'Your article has been deleted.', 'success');
+		}
+	});
+};
 </script>
 
 <style scoped>
@@ -364,8 +410,8 @@ const isFinish = () => {
 	display: none;
 }
 
-.red-background {
-	background-color: red !important;
-	font-size: 15em !important;
+.logo {
+	width: 3rem !important;
+	height: auto !important;
 }
 </style>
