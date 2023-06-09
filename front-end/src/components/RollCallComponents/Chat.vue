@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="chatbox w-1/4 max-h-[400px] bg-transparent flex flex-col fixed bottom-1 right-2 z-100 overscroll-none"
-		v-if="courseId == undefined"
+		v-if="courseId != undefined"
 	>
 		<div class="chatbox_messages h-[400px] overflow-y-scroll flex flex-col-reverse mb-8">
 			<chat-multi-message
@@ -97,9 +97,6 @@ import axios, { AxiosError } from 'axios';
 import { manager } from '@/api/network/socket.io';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
-// import { createPicker } from 'picmo';
-// import { NativeRenderer } from 'picmo';
-// import { createPopup } from '@picmo/popup-picker';
 import EmojiPicker from 'vue3-emoji-picker';
 import 'vue3-emoji-picker/css';
 
