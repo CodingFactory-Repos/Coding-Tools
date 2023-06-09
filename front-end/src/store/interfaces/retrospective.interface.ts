@@ -1,13 +1,12 @@
 import { Course } from './cours.interface';
 
-
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>;
 	tempMovingPostit: Postit;
 	currentRetro: Retrospective;
 	userCursors: Array<UserCursor>;
 	retrosByUser: Array<Retrospective>;
-  allRetros: Array<Retrospective>;
+	allRetros: Array<Retrospective>;
 	isSideBar: boolean;
 	inputSearch: string;
 	dateSearch?: number;
