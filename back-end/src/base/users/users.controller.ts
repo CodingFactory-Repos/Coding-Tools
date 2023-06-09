@@ -65,4 +65,16 @@ export class UsersController {
 		const users = await this.usersService.getUserListOnRoom(roomId, user);
 		return res.status(200).json({ status: 'ok', users });
 	}
+
+	@Get('roomRetro')
+	@UseGuards(JwtAuthGuard)
+	async getUsersListOnRoomRetro(
+		@Query('id') roomId: string,
+		@Query('user') user: string,
+		@Res() res: Response,
+	) {
+		const users = await this.usersService.getUserListOnRoomRetro(roomId, user);
+
+		return res.status(200).json({ status: 'ok', users });
+	}
 }

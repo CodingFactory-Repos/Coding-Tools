@@ -82,13 +82,25 @@ export class MailjetListeners {
 		});
 	}
 
-	@OnEvent(Events.newTutorial)
+	@OnEvent(Events.retroInvitationRequest)
+	async handleRetroInvitationRequest(payload: MailjetCanvasInvitationRequest) {
+		const { email, senderFirstName, senderLastName, projectTitle, token } = payload;
+		const url = `${config.app.redirect}/app/retrospective/accept-invitation?token=${token}`;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MailjetTemplate.retroInvitationRequest,
+			recipients: [{ Email: email }],
+			args: { senderFirstName, senderLastName, projectTitle, url },
+		});
+  }
+
+  @OnEvent(Events.newTutorial)
 	async handleNewTutorial (payload: MailjetNewTutorial) {
 		const emails = payload.email;
 
 		this.mailjetService.sendUniversalEmail({
 			templateId: MailjetTemplate.newTutorial,
 			recipients: emails,
-		})
+		});
 	}
 }
