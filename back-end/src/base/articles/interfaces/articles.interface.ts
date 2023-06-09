@@ -15,7 +15,7 @@ export interface Article {
 	type: number;
 	participants?: Array<User>;
 	eventDate?: Date;
-	status: string,
+	status: string;
 }
 
 export interface Commentary {

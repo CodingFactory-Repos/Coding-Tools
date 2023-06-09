@@ -45,8 +45,8 @@ export class AppController {
 				],
 			}),
 		)
-		// @ts-ignore
-		file: any,
+		file: // @ts-ignore
+		any,
 		@Param('context') context: string,
 		@Res() res: Response,
 	) {
