@@ -135,9 +135,10 @@
 /front-end/src/assets/images/right.svg @TheoLandemaine
 /front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/components/ @Kevw94 @Maghwyn
-/front-end/src/components/account/ @Maghwyn
+/front-end/src/components/account/ @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
+/front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
 /front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
@@ -315,6 +316,7 @@
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/ @Maghwyn
+/front-end/src/views/material-ideas/Comments.vue @Maghwyn @AyakorK
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
