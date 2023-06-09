@@ -5,7 +5,6 @@
 		value="count"
 		caption=""
 		title="Nombre de macs par campus"
-		class=""
 	/>
 </template>
 <script>
