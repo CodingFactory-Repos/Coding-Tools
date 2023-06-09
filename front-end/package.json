@@ -15,6 +15,7 @@
 		"@imengyu/vue3-context-menu": "^1.2.10",
 		"@picmo/popup-picker": "^5.8.4",
 		"@pixi/graphics-smooth": "^1.1.0",
+		"@toycode/markdown-it-class": "^1.2.4",
 		"@vitejs/plugin-vue-jsx": "^3.0.1",
 		"@vuepic/vue-datepicker": "^5.1.2",
 		"@vueuse/core": "^10.1.2",
