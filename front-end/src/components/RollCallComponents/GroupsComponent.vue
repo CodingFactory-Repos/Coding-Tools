@@ -34,13 +34,15 @@
 	</div>
 	<div v-if="isPO" class="flex justify-center p-4 space-x-4">
 		<button
-			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded"
+			:disabled="isGroupLocked"
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded disabled:hover:bg-[#A1A1AA] disabled:cursor-not-allowed"
 			@click="createRandomGroups"
 		>
 			Create Random Groups
 		</button>
 		<button
-			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded"
+			:disabled="isGroupLocked"
+			class="py-2 px-4 bg-blue-500 hover:bg-blue-700 dark:text-white font-bold rounded disabled:hover:bg-[#A1A1AA] disabled:cursor-not-allowed"
 			@click="emptyGroups"
 		>
 			Empty Groups
@@ -70,6 +72,7 @@
 
 <script lang="ts">
 import { http } from '@/api/network/axios';
+import router from '@/router';
 import { withErrorHandler } from '@/utils/storeHandler';
 import Swal from 'sweetalert2';
 
@@ -241,7 +244,22 @@ export default {
 			}).then(async (result) => {
 				if (result.isConfirmed) {
 					this.isGroupLocked = true;
-					await http.get(`/groups/lock/${this.courseId}`);
+					const resp = await http.get(`/groups/lock/${this.courseId}`);
+					if (resp.status == 200) {
+						Swal.fire({
+							title: 'Congrats ! Your week has been created !',
+							icon: 'success',
+							confirmButtonColor: '#3085d6',
+							showCancelButton: false,
+							confirmButtonText: 'Go to my course',
+							width: 'auto'
+						}).then((res) => {
+							if (res.isConfirmed) {
+								router.push(`/app/ressource/courses/${this.courseId}`)
+							}
+						})
+					}
+
 				}
 			});
 

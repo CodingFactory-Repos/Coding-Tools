@@ -12,7 +12,6 @@ import { Response,Request } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { CoursesService } from 'src/base/courses/courses.service';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
-import { ObjectId } from 'mongodb';
 
 @Controller('courses')
 @UseFilters(ServiceErrorCatcher)

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Db, Filter, FindOneAndUpdateOptions, InferIdType, ObjectId, WithId } from 'mongodb';
+import { Db, Filter, FindOneAndUpdateOptions, InferIdType, ObjectId } from 'mongodb';
 import { AbsencesParams, Call } from 'src/base/calls/interfaces/calls.interface';
 import { Course } from '@/base/courses/interfaces/courses.interface';
 import { ServiceError } from '@/common/decorators/catch.decorator';
@@ -852,7 +852,6 @@ export class CallsRepository {
 		}
 
 		const actualCourse = await this.db.collection('courses').findOne(query);
-		console.log("actual", actualCourse);
 
 
 		// La base n'est pas typée, j'ai besoin de tout en front donc voilà

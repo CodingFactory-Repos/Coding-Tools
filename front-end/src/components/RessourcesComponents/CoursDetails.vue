@@ -34,7 +34,7 @@
 		>
 			Retour
 		</button>
-		<div class="flex bg-slate-300 w-full gap-4 justify-center">
+		<div class="flex bg-slate-300 w-full gap-4 justify-center" v-if="canvas.length > 0">
 			<div v-for="canva in canvas">
 				<button
 					@click="goToProject(canva)"
@@ -44,7 +44,7 @@
 				</button>
 			</div>
 		</div>
-		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4">
+		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4" v-if="retro">
 				<button
 					@click="goToRetro(retro)"
 					class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"

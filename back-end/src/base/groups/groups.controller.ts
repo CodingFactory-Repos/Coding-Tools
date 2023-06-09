@@ -22,9 +22,9 @@ export class GroupsController {
 	@Get('lock/:id')
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async lockGroup(@Res() res: Response, @Param('id') courseId: string, @Jwt() userId: ObjectId) {
-		const lockGroup = await this.groupsService.lockGroup(courseId, userId);
+		await this.groupsService.lockGroup(courseId, userId);
 
-		return res.status(201).json({ status: 'ok' });
+		return res.status(200).json({ status: 'ok' });
 	}
 
 }

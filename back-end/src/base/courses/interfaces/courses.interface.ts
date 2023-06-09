@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { AcademicYear, User } from 'src/base/users/interfaces/users.interface';
 import { Retrospective } from 'src/base/retrospectives/interfaces/retrospectives.interface';
-import { CanvasRoom } from '@/base/canvasRoom/interfaces/canvasRoom.interface';
 
 export interface Course {
 	_id?: ObjectId;
