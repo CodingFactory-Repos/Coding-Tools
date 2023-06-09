@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { Course } from 'src/base/courses/interfaces/courses.interface';
 
@@ -33,6 +33,11 @@ export class CoursesRepository {
 
 	async findOne(query: Filter<Course>, options: FindOneAndUpdateOptions = undefined) {
 		return this.courses.findOne(query, options);
+	}
+
+	async getCourseById(id) {
+		id = new ObjectId(id);
+		return this.courses.findOne({ '_id': id });
 	}
 
 	async courseExist(query: Filter<Course>) {

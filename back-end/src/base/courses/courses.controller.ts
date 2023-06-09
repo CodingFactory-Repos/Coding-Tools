@@ -1,5 +1,5 @@
-import { Controller, Get, Res, UseFilters, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Res, Req, UseFilters, UseGuards } from '@nestjs/common';
+import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { CoursesService } from 'src/base/courses/courses.service';
@@ -15,5 +15,11 @@ export class CoursesController {
 	async index(@Res() res: Response) {
 		const courses = await this.coursesService.getAllCourses();
 		return res.status(200).json(courses);
+	}
+
+	@Get('/:id/')
+	async getCourseById(@Req() req: Request, @Res() res: Response) {
+		const course = await this.coursesService.getCourseById(req.params.id);
+		return res.status(201).json(course);
 	}
 }

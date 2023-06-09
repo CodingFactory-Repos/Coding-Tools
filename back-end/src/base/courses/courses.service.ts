@@ -17,4 +17,8 @@ export class CoursesService {
 	async getAllCourses() {
 		return await this.coursesRepository.getAllCourses();
 	}
+
+	async getCourseById(id) {
+		return await this.coursesRepository.getCourseById(id);
+	}
 }
