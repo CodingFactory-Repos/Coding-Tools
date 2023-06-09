@@ -48,7 +48,7 @@
 <script lang="ts" setup>
 import { onUnmounted, ref } from 'vue';
 import FormField from '@/components/common/FormField.vue';
-import { PersonaBuilder } from '@/components/agility/modals/Persona.vue';
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
 import SvgAdd from '@/components/common/svg/Add.vue';
 
 const emits = defineEmits<{
@@ -86,7 +86,7 @@ onUnmounted(() => {
 	const sanitizedDifficulties = difficultiesBuilder.value.filter((data) => data !== '' && data !== undefined);
 
 	emits('unmounted', {
-		skills: sanitizedChallenges,
+		challenges: sanitizedChallenges,
 		difficulties: sanitizedDifficulties
 	});
 })

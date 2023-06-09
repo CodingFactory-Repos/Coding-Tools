@@ -101,7 +101,7 @@
 <script lang="ts" setup>
 import { reactive, onUnmounted } from 'vue';
 import FormField from '@/components/common/FormField.vue';
-import { PersonaBuilder } from '@/components/agility/modals/Persona.vue';
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
 
 const emits = defineEmits<{
 	(e: 'unmounted', builder: Partial<PersonaBuilder>)
