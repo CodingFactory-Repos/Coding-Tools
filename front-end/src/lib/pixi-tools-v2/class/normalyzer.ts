@@ -1,4 +1,4 @@
-import { Circle, LineBezier, Rectangle } from '../model/template';
+import { Circle, LineBezier, Rectangle, TextArea } from '../model/template';
 import { ViewportUI } from '../viewportUI';
 
 import { ContainerType, GeometryTypes, PixiEventMode } from '../types/pixi-enums';
@@ -14,6 +14,7 @@ import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
 import { LineContainer } from './lineContainer';
+import { TextContainer } from './textContainer';
 
 export class Normalizer {
 	static graphic(data: Partial<SerializedGraphic>, position?: ElementPosition) {
@@ -28,6 +29,16 @@ export class Normalizer {
 					x: position.x - radius,
 					y: position.y - radius,
 					radius,
+				};
+			} else if (Graphic === TextArea) {
+				const width = 100; // Need to find a solution rather than hardcoded
+				const height = 40; // Need to find a solution rather than hardcoded
+
+				attributes.bounds = {
+					x: position.x - width / 2,
+					y: position.y - height / 2,
+					width,
+					height,
 				};
 			} else {
 				const width = 200; // Need to find a solution rather than hardcoded
@@ -113,7 +124,7 @@ export class Normalizer {
 		if (attributes.properties?.frameNumber === undefined) {
 			const allFrames = viewport.children.filter((ctn) => ctn instanceof FramedContainer);
 			const frameNumbers = allFrames.map((frame) => frame.frameNumber);
-			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1
+			const frameNumber = attr.typeId === 'frame' ? lowestNumberFinder(frameNumbers) : -1;
 
 			attributes.properties.frameNumber = frameNumber;
 		}
@@ -122,7 +133,7 @@ export class Normalizer {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
 
-				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line') {
+				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line' || childTypeId === 'text') {
 					const containerChildren = this.container(
 						viewport,
 						element as SerializedContainer,
@@ -139,7 +150,11 @@ export class Normalizer {
 		}
 
 		attributes.uuid = attributes.uuid ?? generateUniqueId();
-		if (Container === GenericContainer || Container === LineContainer)
+		if (
+			Container === GenericContainer ||
+			Container === LineContainer ||
+			Container === TextContainer
+		)
 			return Container.registerContainer(viewport, attributes, children, remote);
 		else if (Container === FramedContainer)
 			return Container.registerContainer(
