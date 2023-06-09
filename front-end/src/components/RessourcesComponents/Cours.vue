@@ -1,30 +1,47 @@
 <template>
-	
 	<div>
 		<div v-if="userRole === Roles.USER">
 			<h1>ELEVE</h1>
 		</div>
 		<div class="flex items-center justify-center">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
-                @click="startYears-- && endYears--; getCurrentYearsCours(); ">←</button>
-            <span class="text-2xl font-bold">{{ startYears }} - {{ endYears }}</span>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
-                @click="startYears++ && endYears++; getCurrentYearsCours();">→</button>
-        </div>
+			<button
+				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
+				@click="
+					startYears-- && endYears--;
+					getCurrentYearsCours();
+				"
+			>
+				←
+			</button>
+			<span class="text-2xl font-bold">{{ startYears }} - {{ endYears }}</span>
+			<button
+				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
+				@click="
+					startYears++ && endYears++;
+					getCurrentYearsCours();
+				"
+			>
+				→
+			</button>
+		</div>
 		<div>
 			<div class="flex items-center justify-center">
-            <div class="flex items-center justify-center">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    @click="showModal = true">+</button>
-                <AddCourse v-if="showModal" @close="showModal = false" />
-            </div>
-        </div>
+				<div class="flex items-center justify-center">
+					<button
+						class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+						@click="showModal = true"
+					>
+						+
+					</button>
+					<AddCourse v-if="showModal" @close="showModal = false" />
+				</div>
+			</div>
 		</div>
-		<select  v-model="selectedOption" @change="showCoursesByLanguage()">
+		<select v-model="selectedOption" @change="showCoursesByLanguage()">
 			<option value="">Tous les cours</option>
-			<option v-for="language in TagList" :value="language" :key="language" >{{ language }}</option>
+			<option v-for="language in TagList" :value="language" :key="language">{{ language }}</option>
 		</select>
-	
+
 		<div class="text-center flex items-center justify-center max-w-full h-full">
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 				<div
@@ -67,18 +84,18 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCoursStore } from '@/store/modules/course.store';
-import AddCourse from './AddCourse.vue'
+import AddCourse from './AddCourse.vue';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 
-let selectedOption='';
+let selectedOption = '';
 const startYears = ref(new Date().getFullYear());
 const endYears = ref(new Date().getFullYear() + 1);
 const TagList = ref([]);
 let currentYearsCourses = [];
-const showModal = ref(false)
+const showModal = ref(false);
 // let coursesFiltered = [];
-const coursesFiltered = ref([])
+const coursesFiltered = ref([]);
 // Use the openHouses store
 const courseStore = useCoursStore();
 const authStore = useAuthStore();
@@ -87,41 +104,41 @@ const items = computed(() => courseStore.items);
 const user = computed(() => authStore.user);
 const userRole = computed(() => user.value?.role);
 
-function showCoursesByLanguage(){
+function showCoursesByLanguage() {
 	console.log(selectedOption);
 	coursesFiltered.value = [];
-	currentYearsCourses.forEach(element =>{
-		if(element.language.toUpperCase() == selectedOption){
+	currentYearsCourses.forEach((element) => {
+		if (element.language.toUpperCase() == selectedOption) {
 			coursesFiltered.value.push(element);
-		}else if(selectedOption == ""){
+		} else if (selectedOption == '') {
 			coursesFiltered.value.push(element);
 		}
-	})
-};
+	});
+}
 
-function getCurrentYearsCours(){
-	currentYearsCourses = [];  //vider le tableau current years
-	const coursesList = items.value;   // list de tous les cours
-	coursesList.forEach(element =>{
-		const dateStart = new Date(element.periodStart).getFullYear();   //verif date
+function getCurrentYearsCours() {
+	currentYearsCourses = []; //vider le tableau current years
+	const coursesList = items.value; // list de tous les cours
+	coursesList.forEach((element) => {
+		const dateStart = new Date(element.periodStart).getFullYear(); //verif date
 		const dateEnd = new Date(element.periodEnd).getFullYear();
-		if(dateStart>=startYears.value && dateEnd<=endYears.value){   
-			currentYearsCourses.push(element);   //ajouter cours si date correspond
+		if (dateStart >= startYears.value && dateEnd <= endYears.value) {
+			currentYearsCourses.push(element); //ajouter cours si date correspond
 		}
-	})
-	getAllTagCourse();  //récuperer tous les matieres des currents years cours
+	});
+	getAllTagCourse(); //récuperer tous les matieres des currents years cours
 	showCoursesByLanguage();
 	//coursesFiltered.value = currentYearsCourses;   //afficher les cours
-};
+}
 
 function getAllTagCourse() {
 	TagList.value = [];
-	currentYearsCourses.forEach(element =>{
-		if(!TagList.value.includes(element.language.toUpperCase())){
+	currentYearsCourses.forEach((element) => {
+		if (!TagList.value.includes(element.language.toUpperCase())) {
 			TagList.value.push(element.language.toUpperCase());
 		}
-	})
-};
+	});
+}
 
 // Get the router
 const router = useRouter();
@@ -133,7 +150,7 @@ const getCourses = async () => {
 };
 
 // Call the getArticles method when the component is created
-onMounted(async() => {
+onMounted(async () => {
 	await getCourses();
 });
 
