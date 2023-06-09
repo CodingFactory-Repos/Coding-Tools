@@ -22,7 +22,7 @@
 			type="button"
 			@click="
 				() => {
-					$router.push('/app/ressource/openhouse');
+					router.push('/app/ressource/openhouse');
 				}
 			"
 		>
@@ -33,10 +33,13 @@
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue';
 import { useOpenHouseStore } from '@/store/modules/openHouse.store';
+import { useRouter } from 'vue-router';
 
 // get store
 const openHouses = useOpenHouseStore();
 const oneItems = computed(() => openHouses.oneItems);
+
+const router = useRouter();
 
 // get id from url
 const _id = computed(() => {
