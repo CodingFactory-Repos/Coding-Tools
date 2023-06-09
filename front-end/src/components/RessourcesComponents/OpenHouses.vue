@@ -68,7 +68,6 @@ import { useRouter } from 'vue-router';
 import { useOpenHouseStore } from '@/store/modules/openHouse.store';
 import FormOpenHouse from './FormOpenHouses.vue';
 
-
 // Use the openHouses store
 const openHousesStore = useOpenHouseStore();
 // Create a reactive variable to store the articles

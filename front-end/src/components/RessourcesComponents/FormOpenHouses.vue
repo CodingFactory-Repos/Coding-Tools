@@ -7,14 +7,14 @@
 					<input type="text" name="title" v-model="title" placeholder="Title :" /><br />
 					<input type="datetime-local" v-model="date" /><br />
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
-					<activity :Activities="Activities"></activity>
+					<activity :Activities="Activities" />
 					<div>
 						<input type="text" v-model="street" placeholder="street :" /><br />
 						<input type="text" v-model="zipCode" placeholder="zip code :" /><br />
 						<input type="text" v-model="town" placeholder="town :" /><br />
 					</div>
 					<textarea placeholder="Description :" v-model="description"></textarea><br />
-					<participant :participants="participants" @clear="clearParticipants"></participant>
+					<participant :participants="participants" @clear="clearParticipants" />
 					<input type="file" @change="onFileSelected" /><br />
 					<button type="submit">Submit</button>
 				</form>

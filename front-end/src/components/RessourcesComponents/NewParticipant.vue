@@ -5,10 +5,10 @@
 		<div v-show="showParticipant">
 			<input type="text" placeholder="name :" v-model="name" @input="searchUser" />
 			<!--input = name et lance recherche de correspondance-->
-			<p v-for="user in userList" @click="selectUser(user)">{{ user }}</p>
+			<p v-for="user in userList" @click="selectUser(user)" :key="user._id">{{ user }}</p>
 			<br />
 		</div>
-		<p v-for="user in participants">{{ user }}</p>
+		<p v-for="user in participants" :key="user.name">{{ user }}</p>
 		<br />
 		<!--afficher les participants ajouter-->
 	</div>
