@@ -149,11 +149,7 @@ const addEmoji = (selection) => {
 };
 
 const displayEmoji = () => {
-	if (showEmoji.value == false) {
-		showEmoji.value = true;
-	} else {
-		showEmoji.value = false;
-	}
+	showEmoji.value = !showEmoji.value;
 };
 
 const addMessage = (msg: Object) => {
