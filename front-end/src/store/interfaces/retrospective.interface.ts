@@ -1,14 +1,17 @@
+import { Course } from './course.interface'
+
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>;
 	tempMovingPostit: Postit;
-	currentRetro: Retrospective;
-	userCursors: Array<UserCursor>;
-	allRetros: Array<Retrospective>;
-	isSideBar: boolean;
-	inputSearch: string;
-	dateSearch?: number;
-	isRetroFinished?: boolean;
-	isPostitVisible?: boolean;
+	currentRetro: Retrospective
+	userCursors: Array<UserCursor>
+	retrosByUser: Array<Retrospective>
+	isSideBar: boolean
+	inputSearch: string
+	dateSearch?: number
+	isRetroFinished?: boolean
+	isPostitVisible?: boolean
+	isLoading?: boolean
 
 	createNewRetro?: (this: RetrospectiveStore, retro: Retrospective) => Promise<Retrospective>;
 	getCurrentRetro?: (this: RetrospectiveStore, slug: string) => Promise<void>;
@@ -23,7 +26,7 @@ export interface RetrospectiveStore {
 	updateFromSocket?: (this: RetrospectiveStore, postit: Postit) => void;
 	updateUserCursor?: (this: RetrospectiveStore, userCursor: UserCursor) => void;
 	removeCursor?: (this: RetrospectiveStore, user: UserDisconnect) => void;
-	getAllRetros?: (this: RetrospectiveStore) => Promise<void>;
+	getRetrosByUser?: (this: RetrospectiveStore) => Promise<void>;
 	participantJoin?: (this: RetrospectiveStore, email: string) => Promise<void>;
 	participantLeave?: (this: RetrospectiveStore, user: UserDisconnect) => Promise<void>;
 	tryToggleSideBar?: (this: RetrospectiveStore) => void;
@@ -47,6 +50,8 @@ export interface Retrospective {
 	isTimerRunning?: boolean;
 	timerInterval?: NodeJS.Timer;
 	timePassed?: number;
+	allowedPeers?: Array<string>;
+	associatedCourse?: Course;
 }
 
 export interface Postits {
