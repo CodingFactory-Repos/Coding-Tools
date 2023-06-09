@@ -27,10 +27,12 @@
 			<PrivateSection />
 		</div>
 	</div>
-	<div v-else>
-		<CanvasLoader :loading="isLoading">
-		</CanvasLoader>
-	</div>
+	<template v-else>
+		<div>
+			<CanvasLoader :loading="isLoading">
+			</CanvasLoader>
+		</div>
+	</template>
 </template>
 
 <script lang="ts" setup>

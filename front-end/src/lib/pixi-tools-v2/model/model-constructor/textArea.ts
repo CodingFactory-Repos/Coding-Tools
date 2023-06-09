@@ -38,10 +38,14 @@ export class TextArea extends ModelGraphics {
 		this.alpha = properties.alpha;
 
 		this.text = properties.text ?? '';
+		console.log(properties)
 		this.textStyle = new TextStyle({
 			fill: this.color,
-			fontSize: 14,
-			padding: 5,
+			fontSize: properties.fontSize ?? 14,
+			fontStyle: properties.fontStyle ?? TextStyle.defaultStyle.fontStyle,
+			fontWeight: properties.fontWeight ?? TextStyle.defaultStyle.fontWeight,
+			fontFamily: properties.fontFamily ?? TextStyle.defaultStyle.fontFamily,
+			padding: properties.fontPadding ?? 5,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
 

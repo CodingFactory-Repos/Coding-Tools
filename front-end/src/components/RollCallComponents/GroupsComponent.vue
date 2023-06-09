@@ -2,13 +2,13 @@
 	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x h-100">
 		<div
 			v-for="(group, index) in groups"
-			:key="index"
+			:key="group.id"
 			class="dark:bg-[#343a40] hover:bg-gray-100 dark:hover:bg-gray-600 bg-[#ffff] text-gray-700 dark:text-gray-100 shadow rounded-lg flex flex-col"
 		>
 			<h2 class="p-2 rounded-t-lg font-bold text-center">Group {{ index + 1 }}</h2>
 			<div class="flex-grow">
 				<div
-					v-for="(student, sIndex) in group"
+					v-for="(student, sIndex) in group.group"
 					:key="sIndex"
 					class="flex flex-row items-center p-2 border-b"
 				>
@@ -25,7 +25,7 @@
 			<div v-if="!isPO" class="flex justify-center items-center p-4">
 				<button
 					class="py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded"
-					@click="joinGroup(index)"
+					@click="joinGroup(group.id)"
 				>
 					Join Group {{ index + 1 }}
 				</button>
@@ -103,7 +103,6 @@ export default {
 		setNumberArrays: withErrorHandler(async function () {
 			try {
 				await http.get(`/calls/array_generator/${this.studentList}/${this.courseId}`);
-				await this.getGroups();
 			} catch (error) {
 				this.displaySwalGroup(error);
 			}
@@ -111,14 +110,18 @@ export default {
 		getGroups: withErrorHandler(async function () {
 			try {
 				const response = await http.get(`/calls/get_groups/${this.courseId}`);
-				this.groups = response.data.array;
+				const groups = response.data.array;
+				this.groups = [];
+				groups.forEach((group) => {
+					this.groups.push(group);
+				});
 			} catch (error) {
 				this.displaySwalGroup(error);
 			}
 		}),
-		joinGroup: withErrorHandler(async function (index: number) {
+		joinGroup: withErrorHandler(async function (groupId: string) {
 			try {
-				const response = await http.get(`/calls/join_group/${this.courseId}/${index}`);
+				const response = await http.get(`/calls/join_group/${this.courseId}/${groupId}`);
 				this.displaySwalGroup(response.data.status);
 				await this.getGroups();
 			} catch (error) {
@@ -195,7 +198,7 @@ export default {
 			try {
 				this.isPO = await http.get(`/calls/is_product_owner/`);
 			} catch (error) {
-				this.displaySwalGroup(error);
+				console.log(error);
 			}
 		}),
 	},

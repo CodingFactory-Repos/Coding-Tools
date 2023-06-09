@@ -19,9 +19,14 @@ export class ArticlesService {
 	async addArticle(queryArticle) {
 		queryArticle.status = 'Pending';
 
+		queryArticle.owner = new ObjectId(queryArticle.owner);
+		queryArticle.date = new Date(queryArticle.date);
+		queryArticle.updatedAt = new Date();
+
 		// send mail logic
+		// trigger event to send mail to POs/Pedagos
 		if (queryArticle.type == 'Tuto') {
-			// request to get all PO/Pedagos
+			// request to get all POs/Pedagos
 			const mailTargets = await this.usersRepository.findMany({
 				role: { $in: [2, 3] },
 			});
@@ -52,6 +57,10 @@ export class ArticlesService {
 
 	// Function to update an article
 	async updateArticle(id, queryArticle) {
+		queryArticle.$set = queryArticle.$set || {};
+		queryArticle.$set.date = new Date(queryArticle.$set.date);
+		queryArticle.$set.updatedAt = new Date();
+
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, queryArticle);
 	}
 
@@ -109,6 +118,8 @@ export class ArticlesService {
 		return await this.articlesRepository.deleteOneArticle(id);
 	}
 
-	// Business logic methods goes there...
-	// Define your own methods
+	// updates many articles at a time (used for cron task)
+	async updateManyArticles(query, updateParams) {
+		return await this.articlesRepository.updateMany(query, updateParams);
+	}
 }

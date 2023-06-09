@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div class="boxShadow">
+	<div class="boxShadow w-full">
 		<img
 			class="object-cover h-48 w-96 rounded-t-lg"
 			:src="
@@ -28,10 +28,25 @@
 				<Edit class="!fill-light-primary" />
 			</button>
 		</div>
-		<div class="pt-3 pb-2">
+		<div class="pt-3 pb-2" v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)">
+			<span
+				v-if="item.status == 'Accepted'"
+				class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+			>
+				Accepté
+			</span>
+			<span
+				v-else
+				class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+			>
+				En attente
+			</span>
+		</div>
+		<div class="pt-3 pb-2" v-else>
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ item.type }}
+			>
+				{{ new Date(item.date).toLocaleDateString('fr-FR') }}
 			</span>
 		</div>
 		<div class="pt-2 pb-5">
@@ -41,18 +56,19 @@
 				</h5>
 			</a>
 			<p
-				v-html="renderMarkdown()"
 				class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
-			></p>
+			>
+				{{ item.descriptions ? item.descriptions : 'Pas de description spécifiée' }}
+			</p>
 		</div>
-		<div class="pt-2 pb-5 flex flex-row justify-center items-center">
+		<div class="pt-2 pb-5 flex flex-row justify-around items-center">
 			<button
 				type="button"
 				@click="addLike(item._id)"
 				class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center mr-2 dark:text-blue-500"
 			>
 				<div v-if="item.likes" class="flex flex-row justify-center items-center">
-					<div v-if="hasUserLiked">
+					<div v-if="isLiked">
 						<SolidLike />
 					</div>
 					<div v-else>
@@ -84,54 +100,61 @@
 			<button
 				type="button"
 				@click="addDislike(item._id)"
-				class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center ml-2 dark:text-blue-500"
+				class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center mr-2 dark:text-blue-500"
 			>
 				<div v-if="item.dislikes" class="flex flex-row justify-center items-center">
-					<span v-if="item.dislikes.length > 0" class="mr-2">{{ item.dislikes.length }}</span>
-
-					<div v-if="hasUserDisliked">
+					<div v-if="isDisliked">
 						<SolidDislike />
 					</div>
 					<div v-else>
 						<OutlineDislike />
 					</div>
+
+					<span v-if="item.dislikes.length > 0" class="ml-2">{{ item.dislikes.length }}</span>
 				</div>
 				<div v-else>
 					<OutlineDislike />
 				</div>
 			</button>
-
 		</div>
+
 		<!-- Validation -->
-		<div v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)" class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary">
-			<div
-				class=""
-				:class="item.status == 'Accepted' ? 'status open' : 'status in-progress'"
-			>
-				{{ item.status == 'Accepted' ? 'Accepté' : 'En attente' }}
-			</div>
-			<div class="flex flex-col space-y-2">
-				<button v-if="item.status != 'Accepted'" @click="updateStatus(item._id, 'Accepted')" class="border-solid border rounded-lg px-2 border-green-400 py-1 bg-green-400 dark:bg-transparent">
-					Accepter
+		<div
+			v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)"
+			class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary"
+		>
+			<div class="flex flex-row space-x-2">
+				<button
+					v-if="item.status != 'Accepted'"
+					@click="updateStatus(item._id, 'Accepted')"
+					class="text-green-700 border border-green-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-green-500"
+				>
+					<Validate />
 				</button>
-				<button v-else @click="updateStatus(item._id, 'Pending')" class="border-solid border rounded-lg px-2 border-yellow-400 bg-yellow-400 dark:bg-transparent py-1">
-					Suspendre
+				<button
+					v-else
+					@click="updateStatus(item._id, 'Pending')"
+					class="text-yellow-400 border border-yellow-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-yellow-500"
+				>
+					<Pause class="!fill-yellow-400" />
 				</button>
-				<button v-if="item.status != 'Accepted'" @click="deleteArticle(item._id)" class="border-solid border rounded-lg p-1 border-red-500 bg-red-400 dark:bg-transparent">
-					Refuser
+				<button
+					v-if="item.status != 'Accepted'"
+					@click="deleteArticle(item._id)"
+					class="text-red-700 border border-red-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-red-500"
+				>
+					<Cross class="!fill-red-700" />
 				</button>
 			</div>
 		</div>
 	</div>
-	
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
-import MarkdownIt from 'markdown-it';
 import Swal from 'sweetalert2';
 
 import OutlineLike from '@/components/common/svg/OutlineLike.vue';
@@ -140,18 +163,13 @@ import OutlineDislike from '@/components/common/svg/OutlineDislike.vue';
 import SolidDislike from '@/components/common/svg/SolidDislike.vue';
 import DeleteLogo from '@/components/common/svg/DeleteLogo.vue';
 import Edit from '@/components/common/svg/Edit.vue';
+import Validate from '@/components/common/svg/Validate.vue';
+import Cross from '@/components/common/svg/Cross.vue';
+import Pause from '@/components/common/svg/Pause.vue';
 
 const props = defineProps<{
 	item: any;
 }>();
-
-let markdown = ref('');
-
-// create renderMarkdown method
-const renderMarkdown = () => {
-	const md = new MarkdownIt();
-	return md.render(markdown.value);
-};
 
 // get store
 const articleStore = useArticleStore();
@@ -161,43 +179,20 @@ const user = authStore.user;
 
 const router = useRouter();
 
-// Fetch the articles
+const isLiked = computed(() => {
+	return props.item.likes.some((like) => like.id === user._id);
+});
+
+const isDisliked = computed(() => {
+	return props.item.dislikes.some((dislike) => dislike.id === user._id);
+});
+
+// Function to fetch all articles
 const getArticles = async () => {
 	await articleStore.getArticle();
-	if (props.item.descriptions.length > 60) {
-		markdown.value = props.item.descriptions.substring(0, 60);
-		markdown.value += '...';
-	} else {
-		markdown.value = props.item.descriptions;
-	}
 };
 
-const addLike = async (id: string) => {
-	const like = {
-		id: user._id,
-	};
-
-	if (hasUserLiked.value) {
-		await articleStore.removeLike(id, like);
-	} else {
-		await articleStore.addLike(id, like);
-		await articleStore.removeDislike(id, like);
-	}
-};
-
-const addDislike = async (id: string) => {
-	const dislike = {
-		id: user._id,
-	};
-
-	if (hasUserDisliked.value) {
-		await articleStore.removeDislike(id, dislike);
-	} else {
-		await articleStore.addDislike(id, dislike);
-		await articleStore.removeLike(id, dislike);
-	}
-};
-
+// Function to delete an article
 const deleteArticle = async (id: string) => {
 	Swal.fire({
 		title: 'Are you sure to delete this article ?',
@@ -214,33 +209,31 @@ const deleteArticle = async (id: string) => {
 	});
 };
 
-const editArticle = async (id: string) => {
-	router.push(`/app/blog/edit/${id}`);
+// locate user id in likes array
+const userId = {
+	id: user._id,
 };
 
-// Check if the user has liked the item
-const hasUserLiked = computed(() => {
-	return props.item.likes.some((like) => like.id === user._id);
-});
-
-const hasUserDisliked = computed(() => {
-	return props.item.dislikes.some((dislike) => dislike.id === user._id);
-});
-
-// Call the getArticles method when the component is created
-onMounted(() => {
-	getArticles();
-});
-
-// function to check if user is participant
-const openArticle = (id: string) => {
-	router.push(`/app/blog/${id}`);
+// Function to add a like to an article and update the store
+const addLike = async (id: string) => {
+	if (isLiked.value) {
+		await articleStore.removeLike(id, userId);
+	} else {
+		await articleStore.addLike(id, userId);
+		await articleStore.removeDislike(id, userId);
+	}
 };
 
-const openTutorial = (id: string) => {
-	router.push(`/app/blog/tutorial/${id}`);
+const addDislike = async (id: string) => {
+	if (isDisliked.value) {
+		await articleStore.removeDislike(id, userId);
+	} else {
+		await articleStore.addDislike(id, userId);
+		await articleStore.removeLike(id, userId);
+	}
 };
 
+// Function to update the status of an article
 const updateStatus = async (id, status) => {
 	Swal.fire({
 		title: 'Validez votre choix',
@@ -251,20 +244,18 @@ const updateStatus = async (id, status) => {
 		cancelButtonText: 'Non',
 	}).then(async (result) => {
 		if (result.isConfirmed) {
-
 			// get article
 			const oneItems = computed(() => articleStore.oneItems);
-			await articleStore.getArticleById(id)
+			await articleStore.getArticleById(id);
 			const articleToEdit = ref(oneItems.value);
 
 			// edit fields
-			delete articleToEdit.value._id
+			delete articleToEdit.value._id;
 
-			if (status == "Pending") {
-				articleToEdit.value.status = 'Pending'
-			}
-			else {
-				articleToEdit.value.status = 'Accepted'
+			if (status == 'Pending') {
+				articleToEdit.value.status = 'Pending';
+			} else {
+				articleToEdit.value.status = 'Accepted';
 			}
 
 			// post the data
@@ -274,7 +265,22 @@ const updateStatus = async (id, status) => {
 			await getArticles();
 		}
 	});
-}
+};
+
+// Function to open the edit page
+const editArticle = async (id: string) => {
+	router.push(`/app/blog/edit/${id}`);
+};
+
+// function to open an article
+const openArticle = (id: string) => {
+	router.push(`/app/blog/${id}`);
+};
+
+// Function to open a tutorial
+const openTutorial = (id: string) => {
+	router.push(`/app/blog/tutorial/${id}`);
+};
 </script>
 
 <style scoped lang="scss">
@@ -287,15 +293,15 @@ const updateStatus = async (id, status) => {
 
 .status {
 	&.open:before {
-		background-color: #94E185;
-		border-color: #78D965;
-		box-shadow: 0px 0px 4px 1px #94E185;
+		background-color: #94e185;
+		border-color: #78d965;
+		box-shadow: 0px 0px 4px 1px #94e185;
 	}
 
 	&.in-progress:before {
-		background-color: #FFC182;
-		border-color: #FFB161;
-		box-shadow: 0px 0px 4px 1px #FFC182;
+		background-color: #ffc182;
+		border-color: #ffb161;
+		box-shadow: 0px 0px 4px 1px #ffc182;
 	}
 
 	&:before {
@@ -308,5 +314,4 @@ const updateStatus = async (id, status) => {
 		border-radius: 7px;
 	}
 }
-
 </style>

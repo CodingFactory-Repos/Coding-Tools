@@ -6,7 +6,7 @@ import { ViewportUI } from '../viewportUI';
 import type { InitialGraphicLineState, InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
-import { LineBezier } from '../model/template';
+import { LineBezier, TextArea } from '../model/template';
 import { TextContainer } from '../class/textContainer';
 
 type FrameIntersect = {
@@ -135,6 +135,15 @@ export class DragPlugin {
 					}
 				}
 
+				console.log(element.child instanceof TextArea === true)
+				if (element.child instanceof TextArea) {
+					const frame = element.child.parent?.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						element.child.x = element.child.x + dx;
+						element.child.y = element.child.y + dy;
+					}
+				}
+
 				const newX = element.x + dx;
 				const nexY = element.y + dy;
 				element.child.position.set(newX, nexY);
@@ -210,7 +219,6 @@ export class DragPlugin {
 					}
 				}
 
-				console.log(parent.typeId);
 				dragAttachedLines(parent, this.viewport.socketPlugin);
 			}
 

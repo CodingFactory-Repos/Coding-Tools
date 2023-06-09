@@ -21,17 +21,20 @@
 		</div>
 		<div class="w-full flex grow gap-3 flex-wrap">
 			<Overlay v-model:active="active" :fullSize="false">
-				<ChooseTemplate />
+				<ChooseTemplate :allCourses="allCourses"/>
 			</Overlay>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, ref, onMounted } from 'vue';
 import Overlay from '@/components/retrospective/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
+import { useCourseStore } from '@/store/course.store';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { Roles } from '@/store/interfaces/auth.interfaces';
 import { http } from '@/api/network/axios';
 
 export default defineComponent({
@@ -41,9 +44,12 @@ export default defineComponent({
 		ChooseTemplate,
 	},
 	setup() {
+		const courseStore = useCourseStore();
+		const authStore = useAuthStore();
 		const active = ref(false);
 		const displayTemplate = ref(false);
-		const isPO = ref(false); // Ajout de la variable isPO
+		const isPO = computed(() => authStore.user.role === Roles.USER ? false : true);
+		const allCourses = computed(() => courseStore.allCourses);
 
 		const chooseTemplate = () => {
 			active.value = true;
@@ -57,6 +63,7 @@ export default defineComponent({
 		onMounted(async() => {
 			await isProductOwner();
 		})
+
 		const isProductOwner = async () => {
 			// Je vois avec Louis ce qu'il veut faire parce que pas compris, bref
 			// Utiliser une fonction fléchée
@@ -76,7 +83,8 @@ export default defineComponent({
 			chooseTemplate,
 			displayTemplate,
 			active,
-			isPO: true,
+			isPO,
+			allCourses
 		};
 	},
 });
