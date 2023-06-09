@@ -3,7 +3,7 @@ import { FramedContainer } from '../class/framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
 import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
-import { PixiEventMode } from '../types/pixi-enums';
+import { PixiEventMode, TypeBlueprint } from '../types/pixi-enums';
 
 export const elavatorPitch = (
 	viewport: ViewportUI,
@@ -44,6 +44,7 @@ export const elavatorPitch = (
 			frameNumber: frameNumber,
 			disabled: false,
 			isBlueprint: true,
+			typeBlueprint: TypeBlueprint.ELEVATOR_PITCH,
 		},
 		childs: [],
 	};

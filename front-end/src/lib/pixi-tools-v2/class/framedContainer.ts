@@ -46,6 +46,7 @@ export class FramedContainer extends PluginContainer {
 	public isAttachedToFrame: boolean;
 	public frameNumber: number;
 	public isBlueprint: boolean;
+	public typeBlueprint: number;
 
 	static registerContainer(
 		viewport: ViewportUI,
@@ -77,6 +78,7 @@ export class FramedContainer extends PluginContainer {
 		this.isAttachedToFrame = properties.isAttachedToFrame;
 		this.frameNumber = properties.frameNumber;
 		this.isBlueprint = properties.isBlueprint;
+		this.typeBlueprint = properties.typeBlueprint ?? 0;
 		this.absMinX = anchors.absMinX;
 		this.absMinY = anchors.absMinY;
 		this.absMaxX = anchors.absMaxX;
@@ -295,6 +297,7 @@ export class FramedContainer extends PluginContainer {
 				frameNumber: this.frameNumber,
 				disabled: this.disabled,
 				isBlueprint: this.isBlueprint,
+				typeBlueprint: this.typeBlueprint,
 			},
 			childs: genericContainerSerialized,
 		};

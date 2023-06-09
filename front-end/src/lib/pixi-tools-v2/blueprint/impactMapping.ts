@@ -3,7 +3,7 @@ import { FramedContainer } from '../class/framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
 import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
-import { PixiEventMode } from '../types/pixi-enums';
+import { PixiEventMode, TypeBlueprint } from '../types/pixi-enums';
 
 export const impactMapping = (
 	viewport: ViewportUI,
@@ -57,6 +57,7 @@ export const impactMapping = (
 			frameNumber: frameNumber,
 			disabled: false,
 			isBlueprint: true,
+			typeBlueprint: TypeBlueprint.IMPACT_MAPPING,
 		},
 		childs: [
 			{

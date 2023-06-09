@@ -85,3 +85,21 @@ export enum PixiEventMode {
 	STATIC = 'static',
 	DYNAMIC = 'dynamic',
 }
+
+export enum TypeBlueprint {
+	EMPATHY_MAP = 1,
+	PERSONA = 2,
+	IMPACT_MAPPING = 3,
+	PRUNE_THE_PROJECT_TREE = 4,
+	ELEVATOR_PITCH = 5,	
+}
+
+export const TypeBlueprintText = {
+	"0": "Null",
+	"1": "Empathy Map",
+	"2": "Persona",
+	"3": "Impact mapping",
+	"4": "Prune the project tree",
+	"5": "Elevator pitch",
+} as const;
+

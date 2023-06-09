@@ -108,6 +108,7 @@ export class Normalizer {
 				tabNumberContext: tabContext ?? -1,
 				disabled: false,
 				isBlueprint: false,
+				typeBlueprint: 0,
 			};
 		}
 

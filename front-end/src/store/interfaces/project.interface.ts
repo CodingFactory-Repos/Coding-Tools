@@ -51,6 +51,7 @@ export interface FramedPDF {
 	order: number,
 	base64: string,
 	isBlueprint: boolean,
+	typeBlueprint: number,
 	dimension: {
 		width: number,
 		height: number,

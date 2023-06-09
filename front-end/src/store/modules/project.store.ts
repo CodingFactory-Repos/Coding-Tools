@@ -49,7 +49,7 @@ export const useProjectStore = defineStore('project', {
 			const reactiveImages: Array<FramedPDF> = [];
 			for(let n = 0; n < len; n++) {
 				const container = frames[n];
-				const { width, height, isBlueprint } = container;
+				const { width, height, isBlueprint, typeBlueprint } = container;
 				const cloneContainer = container.cloneToContainer();
 				const { x, y } = cloneContainer.getBounds();
 				cloneContainer.position.set(-x, -y);
@@ -64,6 +64,7 @@ export const useProjectStore = defineStore('project', {
 					id: container.uuid,
 					order: n + 1,
 					isBlueprint,
+					typeBlueprint,
 					base64: imageData,
 					dimension: {
 						width: Math.floor(width),

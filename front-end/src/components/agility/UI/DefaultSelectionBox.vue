@@ -76,6 +76,7 @@ import { elements } from 'chart.js';
 import { ClientRequest } from 'http';
 import { createPdf } from 'pdfmake/build/pdfmake';
 import * as _ from 'pdfmake/build/vfs_fonts.js';
+import { TypeBlueprintText } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 const fonts =  globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
 
@@ -162,6 +163,9 @@ const exportToPdf = () => {
       alignment: 'center',
       marginBottom: 25,
     },
+    text: {
+      alignment: 'center',
+    },
   };
 
   const data = {
@@ -171,8 +175,35 @@ const exportToPdf = () => {
 
   for (let n = 0; n < childImages.value.length; n++) {
     if (childImages.value[n].isBlueprint == true) {
-      data.content.push({
-        style: 'image',
+		if(childImages.value[n].typeBlueprint == 1){
+			data.content.push({
+				style: 'text',
+				text: TypeBlueprintText["1"]
+	  		})
+		}else if(childImages.value[n].typeBlueprint == 2){
+			data.content.push({
+				style: 'text',
+				text: TypeBlueprintText["2"]
+	  		})
+		}else if(childImages.value[n].typeBlueprint == 3){
+			data.content.push({
+				style: 'text',
+				text: TypeBlueprintText["3"]
+	  		})
+		}else if(childImages.value[n].typeBlueprint == 4){
+			data.content.push({
+				style: 'text',
+				text: TypeBlueprintText["4"]
+	  		})
+		}else if(childImages.value[n].typeBlueprint == 5){
+			data.content.push({
+				style: 'text',
+				text: TypeBlueprintText["5"]
+	  		})
+		}else {
+		}
+	  data.content.push({
+		style: 'image',
         image: childImages.value[n].base64,
         width: 520,
         height: 300,
@@ -197,5 +228,4 @@ const exportToPdf = () => {
   // @ts-ignore
   const pdfGenerator = createPdf(data, null, null, fonts).open();
 };
-
 </script>

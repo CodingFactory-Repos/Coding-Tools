@@ -88,6 +88,7 @@ export interface SerializedContainerProperties
 	frameNumber?: number;
 	disabled: boolean;
 	isBlueprint?: boolean;
+	typeBlueprint?: number;
 }
 
 export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
