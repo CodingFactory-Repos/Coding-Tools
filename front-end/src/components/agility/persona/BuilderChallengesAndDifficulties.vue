@@ -1,7 +1,12 @@
 <template>
 	<div class="flex flex-row gap-4 w-2/3 h-full items-start justify-start overflow-y-scroll max-h-[550px]">
 		<div class="flex flex-col gap-4 w-full">
-			<h2 class="w-full text-center text-xl font-bold">Persona skills</h2>
+			<h2 class="w-full text-center text-xl font-bold">
+				Persona skills -
+				<span :class="{ 'text-red-600': challengesBuilder.length === 5 }">
+					{{ challengesBuilder.length }} / 5
+				</span>
+			</h2>
 			<FormField
 				v-for="(value, index) in challengesBuilder"
 				:limit="true"
@@ -15,14 +20,21 @@
 					@input="(e) => writeChallenge(e, index)"
 				/>
 			</FormField>
-			<div @click="addNewChallenge"
+			<div
+				v-if="challengesBuilder.length < 5"
+				@click="addNewChallenge"
 				class="cursor-pointer flex gap-3 justify-center items-center bg-transparent w-full outline-none border border-[#6B7280] hover:border-[#1C64F2] number-border py-1.5 px-2 rounded text-black dark:text-white border-dashed"
 			>
 				<SvgAdd class="!fill-white" width="20" height="20"/> Add a new challenge
 			</div>
 		</div>
 		<div class="flex flex-col gap-4 w-full">
-			<h2 class="w-full text-center text-xl font-bold">Persona difficulties</h2>
+			<h2 class="w-full text-center text-xl font-bold">
+				Persona difficulties -
+				<span :class="{ 'text-red-600': difficultiesBuilder.length === 5 }">
+					{{ difficultiesBuilder.length }} / 5
+				</span>
+			</h2>
 			<FormField
 				v-for="(value, index) in difficultiesBuilder"
 				:limit="true"
@@ -36,7 +48,9 @@
 					@input="(e) => writeDifficulty(e, index)"
 				/>
 			</FormField>
-			<div @click="addNewDifficulty"
+			<div
+				v-if="difficultiesBuilder.length < 5"
+				@click="addNewDifficulty"
 				class="cursor-pointer flex gap-3 justify-center items-center bg-transparent w-full outline-none border border-[#6B7280] hover:border-[#1C64F2] number-border py-1.5 px-2 rounded text-black dark:text-white border-dashed"
 			>
 				<SvgAdd class="!fill-white" width="20" height="20"/> Add a new difficulty

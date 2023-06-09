@@ -1,7 +1,12 @@
 <template>
 	<div class="flex flex-row gap-4 w-2/3 h-full items-start justify-start overflow-y-scroll max-h-[550px]">
 		<div class="flex flex-col gap-4 w-full">
-			<h2 class="w-full text-center text-xl font-bold">Persona goals</h2>
+			<h2 class="w-full text-center text-xl font-bold">
+				Persona goals -
+				<span :class="{ 'text-red-600': goalsBuilder.length === 5 }">
+					{{ goalsBuilder.length }} / 5
+				</span>
+			</h2>
 			<FormField
 				v-for="(value, index) in goalsBuilder"
 				:limit="true"
@@ -15,14 +20,21 @@
 					@input="(e) => writeGoal(e, index)"
 				/>
 			</FormField>
-			<div @click="addNewGoal"
+			<div
+				v-if="goalsBuilder.length < 5"
+				@click="addNewGoal"
 				class="cursor-pointer flex gap-3 justify-center items-center bg-transparent w-full outline-none border border-[#6B7280] hover:border-[#1C64F2] number-border py-1.5 px-2 rounded text-black dark:text-white border-dashed"
 			>
 				<SvgAdd class="!fill-white" width="20" height="20"/> Add a new goal
 			</div>
 		</div>
 		<div class="flex flex-col gap-4 w-full">
-			<h2 class="w-full text-center text-xl font-bold">Persona needs</h2>
+			<h2 class="w-full text-center text-xl font-bold">
+				Persona needs -
+				<span :class="{ 'text-red-600': needsBuilder.length === 5 }">
+					{{ needsBuilder.length }} / 5
+				</span>
+			</h2>
 			<FormField
 				v-for="(value, index) in needsBuilder"
 				:limit="true"
@@ -36,7 +48,9 @@
 					@input="(e) => writeNeed(e, index)"
 				/>
 			</FormField>
-			<div @click="addNewNeed"
+			<div
+				v-if="needsBuilder.length < 5"
+				@click="addNewNeed"
 				class="cursor-pointer flex gap-3 justify-center items-center bg-transparent w-full outline-none border border-[#6B7280] hover:border-[#1C64F2] number-border py-1.5 px-2 rounded text-black dark:text-white border-dashed"
 			>
 				<SvgAdd class="!fill-white" width="20" height="20"/> Add a new need
