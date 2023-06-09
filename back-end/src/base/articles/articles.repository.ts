@@ -25,7 +25,8 @@ export class ArticlesRepository {
 
 	// Function to add an article
 	async createArticle(query: Article) {
-		return this.articles.insertOne(query);
+		this.articles.insertOne(query);
+		return this.articles.findOne(query);
 	}
 
 	// Function to delete an article

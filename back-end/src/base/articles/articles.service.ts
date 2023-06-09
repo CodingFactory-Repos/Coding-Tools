@@ -19,6 +19,9 @@ export class ArticlesService {
 	async addArticle(queryArticle) {
 		queryArticle.status = 'Pending';
 
+		// add new object id to id
+		queryArticle._id = new ObjectId();
+
 		queryArticle.owner = new ObjectId(queryArticle.owner);
 		queryArticle.date = new Date(queryArticle.date);
 		queryArticle.updatedAt = new Date();
@@ -76,9 +79,6 @@ export class ArticlesService {
 	async removeParticipant(id, queryParticipant) {
 		queryParticipant._id = new ObjectId(queryParticipant._id);
 		const update = { $pull: { participants: queryParticipant } };
-
-		console.log('queryParticipant._id', queryParticipant._id);
-		console.log('update', update);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}

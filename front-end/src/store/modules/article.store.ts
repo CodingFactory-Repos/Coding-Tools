@@ -67,9 +67,11 @@ export const useArticleStore = defineStore('article', {
 	actions: {
 		//add article to store and to the database
 		addArticle: withErrorHandler(async function (this: ArticleStore, article: Article) {
-			const res = await http.post('/articles/add', article);
-			const idArticle = res.data.id;
-			this.idArticle = idArticle;
+			await http.post('/articles/add', article);
+
+			this.items.push(article);
+
+			return true;
 		}),
 
 		//get article from the database
@@ -184,9 +186,11 @@ export const useArticleStore = defineStore('article', {
 
 		// delete article from the database
 		deleteArticle: withErrorHandler(async function (id: string) {
-			const response = await http.delete(`/articles/delete/${id}`);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
+			await http.delete(`/articles/delete/${id}`);
+
+			const index = this.items.findIndex((el) => el._id === id);
+			this.items.splice(index, 1);
+
 			return true;
 		}),
 	},

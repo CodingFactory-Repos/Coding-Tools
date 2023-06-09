@@ -30,7 +30,7 @@ export class ArticlesController {
 	@Post('/add')
 	async addArticle(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addArticle(req.body);
-		return res.status(201).json({ article, id: article.insertedId });
+		return res.status(201).json({ article });
 	}
 
 	@Get('/:id')
