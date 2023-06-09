@@ -12,9 +12,10 @@
 <script lang="ts" setup>
 import CreateRetro from '@/components/retrospective/CreateRetro.vue';
 import PassedRetrospectives from '@/components/retrospective/PassedRetrospectives.vue'
-import { useCourseStore } from '@/store/course.store';
+import { useCoursStore } from '@/store/modules/course.store';
 
-const courseStore = useCourseStore();
+
+const courseStore = useCoursStore();
 courseStore.getAllCourses()
 
 </script>

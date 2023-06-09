@@ -12,9 +12,13 @@ export interface Course {
     periodStart: Date;
     periodEnd: Date;
     presence:[];
-	project:[];
+	projects: Array<ObjectId>;
     site: string;
     teacherId?: ObjectId;
+	isLocked?: boolean;
+	groups?: Array<Group>
+	retro: ObjectId
+	trellos?: Array<any> // WAITING FOR TRELLO
 	/*
 		productOwner?: User;
 	academicYear?: AcademicYear;
@@ -26,4 +30,9 @@ export interface Course {
 export interface Call {
 	example: string;
 	// to be changed;
+}
+
+export interface Group {
+	id: ObjectId;
+	group: Array<ObjectId>;
 }

@@ -16,6 +16,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	canvas: null,
 	default: true,
 	deferredGeometry: null,
+	deferredContainer: null,
 	deferredBlueprint: null,
 	selectionBox: null,
 	onFullscreen: false,
@@ -40,21 +41,26 @@ export const useProjectStore = defineStore('project', {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
 		getImages(this: ProjectStore) {
-			if(!this.pdfViewerOpen) return [];
+			if (!this.pdfViewerOpen) return [];
 			this.refreshPdfViewer;
 
 			const frames = this.scene?.viewport?.childFrames || [];
 			const len = frames.length;
 
 			const reactiveImages: Array<FramedPDF> = [];
-			for(let n = 0; n < len; n++) {
+			for (let n = 0; n < len; n++) {
 				const container = frames[n];
 				const { width, height } = container;
 				const cloneContainer = container.cloneToContainer();
 				const { x, y } = cloneContainer.getBounds();
 				cloneContainer.position.set(-x, -y);
 
-				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width: height, height: width, backgroundAlpha: 0 });
+				const renderer = new Renderer({
+					resolution: devicePixelRatio + 1,
+					width: height,
+					height: width,
+					backgroundAlpha: 0,
+				});
 				renderer.render(cloneContainer);
 
 				const canvas = renderer.view;
@@ -67,7 +73,7 @@ export const useProjectStore = defineStore('project', {
 					dimension: {
 						width: Math.floor(width),
 						height: Math.floor(height),
-					}
+					},
 				});
 
 				cloneContainer.destroy();
@@ -75,7 +81,7 @@ export const useProjectStore = defineStore('project', {
 			}
 
 			return reactiveImages;
-		}
+		},
 	},
 	actions: {
 		startRefreshing(this: ProjectStore) {
@@ -112,6 +118,14 @@ export const useProjectStore = defineStore('project', {
 
 			const scene = toRaw(this.scene);
 			scene.viewport.on('pointerup', this.createBlueprint);
+		},
+		setTextEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor) {
+			this.default = false;
+			this.canvas.classList.toggle(cursor);
+			this.removeGeometryEvent();
+
+			const scene = toRaw(this.scene);
+			scene.viewport.on('pointerup', this.createGeometry);
 		},
 		removeGeometryEvent(this: ProjectStore) {
 			// We remove all the event related to pointerup if they exist.
@@ -155,7 +169,7 @@ export const useProjectStore = defineStore('project', {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
 			const data: Partial<SerializedContainer> = {
-				typeId: 'generic',
+				typeId: this.deferredContainer,
 				childs: [
 					{
 						typeId: this.deferredGeometry,
@@ -174,6 +188,7 @@ export const useProjectStore = defineStore('project', {
 			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
+			this.deferredContainer = null;
 			this.default = true;
 		},
 		createBlueprint(this: ProjectStore, event: FederatedPointerEvent) {

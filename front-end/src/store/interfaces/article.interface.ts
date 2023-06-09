@@ -7,32 +7,37 @@ export interface ArticleStore {
 export interface Article {
 	_id?: string;
 	owner: string;
-	date: string;
+	date: Date;
 	title: string;
 	descriptions: string;
 	picture: string;
 	tags: string;
 	type: string;
-	status: string;
+	status?: string;
 	content?: string;
 	participants?: Participants[];
-	likes?: {
-		id: string;
-	}[];
-	dislikes?: {
-		id: string;
-	}[];
+	likes?: Likes[];
+	dislikes?: Dislikes[];
 	comments?: Comments[];
 }
 
-export interface Participants {
+export interface Likes {
 	id: string;
+}
+
+export interface Dislikes {
+	id: string;
+}
+
+export interface Participants {
+	_id: string;
 	firstName: string;
 	lastName: string;
 	email: string;
 }
 
 export interface Comments {
+	_id: string;
 	email: string;
 	firstName: string;
 	lastName: string;
