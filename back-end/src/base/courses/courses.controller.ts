@@ -42,4 +42,10 @@ export class CoursesController {
 		const courses = await this.coursesService.getAllCourses();
 		return res.status(200).json(courses);
 	}
+
+	@Get('/allCourses')
+	async getAllCourses(@Res() res: Response) {
+		const courses = await this.coursesService.getAllCourses();
+		return res.status(200).json({ status: 'ok', courses })
+	}
 }

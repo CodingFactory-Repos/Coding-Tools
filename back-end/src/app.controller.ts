@@ -1,5 +1,5 @@
 import { cwd } from 'process';
-import { Response } from 'express-serve-static-core';
+import { Response } from 'express';
 import { join, resolve } from 'path';
 import {
 	Controller,
@@ -46,7 +46,7 @@ export class AppController {
 			}),
 		)
 		// @ts-ignore
-		file: Express.Multer.File,
+		file: any,
 		@Param('context') context: string,
 		@Res() res: Response,
 	) {
