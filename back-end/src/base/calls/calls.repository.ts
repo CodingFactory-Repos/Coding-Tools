@@ -224,10 +224,9 @@ export class CallsRepository {
 				message: 'User already registered',
 			};
 		}
-
 		if (
-			(date.getHours() < 8 && date.getMinutes() < 30) ||
-			(date.getHours() > 17 && date.getMinutes() > 30)
+			(date.getHours() <= 8 && date.getMinutes() <= 30) ||
+			(date.getHours() >= 17 && date.getMinutes() >= 30)
 		) {
 			return { message: 'You cannot scan outside of school hours', error: 'Scan out of time' };
 		}
@@ -257,7 +256,7 @@ export class CallsRepository {
 	}
 
 	getDate(date) {
-		return new Date(date.getFullYear(), date.getMonth() + 1, date.getDay() + 1);
+		return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 	}
 	isStudentLate(period, timeOfScan) {
 		const fakeDate = new Date(

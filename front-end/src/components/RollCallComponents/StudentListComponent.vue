@@ -47,6 +47,7 @@ import { withErrorHandler } from '@/utils/storeHandler';
 
 let courseId = '';
 let studentList = [];
+let studentListInterval = null;
 
 export default {
 	name: 'StudentList',
@@ -61,8 +62,13 @@ export default {
 	},
 	mounted() {
 		this.getCourseId();
+		studentListInterval = setInterval(() => {
+			this.getStudentList();
+		}, 5000);
 	},
-
+	unmounted() {
+		clearInterval(studentListInterval);
+	},
 	methods: {
 		getCourseId: withErrorHandler(async function () {
 			http.get(`/calls/actual_course/`).then((response) => {

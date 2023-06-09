@@ -96,7 +96,6 @@ export class RetrospectivesService {
 
 	async sendRetroInvitation(targetId: string, roomId: string, userId: ObjectId) {
 		try {
-
 			if (!roomId || roomId === 'null' || roomId === 'undefined') {
 				throw new ServiceError('BAD_REQUEST', 'Invalid room');
 			}
@@ -122,16 +121,14 @@ export class RetrospectivesService {
 
 			const roomObjectId = roomId;
 			const invitationQuery = { retroId: roomObjectId, userId: targetObjectId };
-			const invitationExist = await this.retroRoomInvitationRepository.retrospectivesRoomInvitationExist(
-				invitationQuery,
-			);
+			const invitationExist =
+				await this.retroRoomInvitationRepository.retrospectivesRoomInvitationExist(invitationQuery);
 			if (invitationExist !== null)
 				throw new ServiceError('BAD_REQUEST', 'User invitation was already sent');
 
-
 			const retroQuery = { slug: roomObjectId, participants: { $in: [user.profile.email] } };
 			const project = await this.retrospectivesRepository.findOne(retroQuery, {
-				projection: { 'title': 1 },
+				projection: { title: 1 },
 			});
 			if (!project) throw new ServiceError('BAD_REQUEST', 'Invalid payload');
 
@@ -143,7 +140,6 @@ export class RetrospectivesService {
 				userId: targetObjectId,
 				token,
 			});
-
 
 			await this.retrospectivesEventEmitter.invitationRequest(
 				targetUser.profile.email,
@@ -161,7 +157,7 @@ export class RetrospectivesService {
 	async verifyRetroInvitation(token: string, userId: ObjectId) {
 		const query = { userId, token };
 		const update = { $set: { expireAt: new Date() } };
-		const userInvited = await this.usersRepository.findOne({_id: userId})
+		const userInvited = await this.usersRepository.findOne({ _id: userId });
 		const invitation =
 			await this.retroRoomInvitationRepository.findOneAndUpdateRetrospectivesRoomInvitation(
 				query,
@@ -173,23 +169,25 @@ export class RetrospectivesService {
 
 		await this.retrospectivesRepository.updateOneRetrospective(
 			{ slug: invitation.value.retroId },
-			{ $push: { allowedPeers: userInvited._id} },
+			{ $push: { allowedPeers: userInvited._id } },
 		);
 		return invitation.value.retroId;
 	}
 
 	async removeUserAccessToRetro(targetEmail: string, roomId: string, userId: ObjectId) {
 		try {
-			const userTarget = await this.usersRepository.findOne({'profile.email': targetEmail})
-			const userCreator = await this.usersRepository.findOne({_id: userId})
+			const userTarget = await this.usersRepository.findOne({ 'profile.email': targetEmail });
+			const userCreator = await this.usersRepository.findOne({ _id: userId });
 
 			const query = { slug: roomId, creator: userCreator.profile.email };
-			const update = { $pull: { allowedPeers: userTarget._id , participants: userTarget.profile.email} };
+			const update = {
+				$pull: { allowedPeers: userTarget._id, participants: userTarget.profile.email },
+			};
+
 			await this.retrospectivesRepository.updateOneRetrospective(query, update);
 
 			const inviteQuery = { userId: userTarget._id, retroId: roomId };
 			await this.retroRoomInvitationRepository.deleteOneRetrospectivesRoomInvitation(inviteQuery);
-
 
 			this.retrospectiveGateway.server.to(userTarget._id.toString()).emit('accessRetro-lost');
 		} catch (err) {

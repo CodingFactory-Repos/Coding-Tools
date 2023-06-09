@@ -8,7 +8,7 @@ import { MailjetNewTutorial } from '@/base/articles/events/newTutorial.events.re
 export class NewTutorialEmitter {
 	constructor(private eventEmitter: EventEmitter2) {}
 
-	async newTutorialMail (email: Array<{ Email: string }>) {
-		this.eventEmitter.emit( Events.newTutorial, new MailjetNewTutorial(email));
+	async newTutorialMail(email: Array<{ Email: string }>) {
+		this.eventEmitter.emit(Events.newTutorial, new MailjetNewTutorial(email));
 	}
 }

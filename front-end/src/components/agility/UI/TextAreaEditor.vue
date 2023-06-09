@@ -1,58 +1,19 @@
-<template>
-	<div class="relative" v-if="selectedUUID.length > 0">
-		<IconButton class="h-fit" :class="btnStyle" type="button" @click="toggleColorPicker">
-			<div
-				class="w-[22px] h-[22px] rounded-full border border-[#9ca3af]"
-				:class="{ 'multicolor': color === undefined }"
-				:style="{ background: color }"
-			></div>
-		</IconButton>
-		<div
-			class="absolute z-10"
-			:class="position"
-			v-if="colorPickerOpen"
-		>
-			<ColorPicker
-				:theme="isDark ? 'dark' : 'light'"
-				:color="color"
-				@changeColor="changeColor"
-			/>
-		</div>
-	</div>
-</template>
-
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { ColorPicker } from 'vue-color-kit';
-
-import IconButton from '@/components/common/buttons/Icon.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
 import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useThemeStore } from '@/store/modules/theme.store';
 import { TextContainer } from '@/lib/pixi-tools-v2/class/textContainer';
-import { hexToDecim, addOpacityToHex, decimToHex } from '@/lib/pixi-tools-v2/utils/colorsConvertor';
 
-interface ColorPickerUpdate {
-	hex: string;
-	hsv: {
-		h: number;
-		s: number;
-		v: number;
-	};
-	rgba: {
-		a: number;
-		b: number;
-		g: number;
-		r: number;
-	}
+interface TextAreaEditor {
+	font_size: number;
 }
 
 defineProps<{
 	position: string;
-	btnStyle?: string;
-}>()
+}>();
 
 const projectStore = useProjectStore();
 const themeStore = useThemeStore();
@@ -67,11 +28,11 @@ const colorPickerOpen = ref(false);
 const color = ref();
 
 const changeColor = (col: ColorPickerUpdate) => {
-	if(col.hex === '' || col.hex === '#') return;
+	if (col.hex === '' || col.hex === '#') return;
 	color.value = col.hex;
 
 	const len = selectedContainers.value.length;
-	for(let n = 0; n < len; n++) {
+	for (let n = 0; n < len; n++) {
 		const graphic = selectedContainers.value[n].getGraphicChildren()[0];
 		graphic.color = hexToDecim(col.hex);
 		graphic.alpha = col?.rgba?.a ?? 1;
@@ -82,42 +43,42 @@ const changeColor = (col: ColorPickerUpdate) => {
 			height: graphic.height,
 			//@ts-ignore
 			radius: graphic.radius,
-		})
+		});
 
-		if(projectStore.scene.viewport.socketPlugin) {
+		if (projectStore.scene.viewport.socketPlugin) {
 			const parent = graphic.parent;
 			// TODO: Thomas, remove this when readuy for the live editing
-			if(parent instanceof TextContainer) continue;
-			if(parent instanceof GenericContainer || parent instanceof LineContainer) {
+			if (parent instanceof TextContainer) continue;
+			if (parent instanceof GenericContainer || parent instanceof LineContainer) {
 				projectStore.scene.viewport.socketPlugin.emit(
 					'ws-element-colorized',
 					parent.uuid,
 					parent.serializedColorimetry(),
-				)
+				);
 			} else {
 				const frame = parent.parent as FramedContainer;
 				projectStore.scene.viewport.socketPlugin.emit(
 					'ws-element-colorized',
 					frame.uuid,
 					frame.serializedColorimetry(),
-				)
+				);
 			}
 		}
 	}
-}
+};
 
 const toggleColorPicker = () => {
 	colorPickerOpen.value = !colorPickerOpen.value;
-}
+};
 
 watch(colorPickerOpen, (val) => {
 	projectStore.scene.viewport.manager.isEditingContainerProperties = val;
-})
+});
 
 watch(selectedUUID, () => {
 	colorPickerOpen.value = false;
 	const len = selectedContainers.value.length;
-	if(len === 0 || len > 1) {
+	if (len === 0 || len > 1) {
 		color.value = undefined;
 	} else {
 		const graphic = selectedContainers.value[0].getGraphicChildren()[0];
@@ -125,7 +86,7 @@ watch(selectedUUID, () => {
 		// TODO: The librarby doesn't seem to convert hex with opacity, it's a bit.. unfortunate.
 		color.value = addOpacityToHex(decimToHex(graphic.color), graphic.alpha);
 	}
-})
+});
 </script>
 
 <style lang="scss">
@@ -134,9 +95,8 @@ watch(selectedUUID, () => {
 }
 
 .multicolor {
-	background:
-		linear-gradient(217deg, rgba(255,0,0,1), rgba(255,0,0,0) 70.71%),
-		linear-gradient(127deg, rgba(0,255,0,1), rgba(0,255,0,0) 70.71%),
-		linear-gradient(336deg, rgba(0,0,255,1), rgba(0,0,255,0) 70.71%);
+	background: linear-gradient(217deg, rgba(255, 0, 0, 1), rgba(255, 0, 0, 0) 70.71%),
+		linear-gradient(127deg, rgba(0, 255, 0, 1), rgba(0, 255, 0, 0) 70.71%),
+		linear-gradient(336deg, rgba(0, 0, 255, 1), rgba(0, 0, 255, 0) 70.71%);
 }
 </style>

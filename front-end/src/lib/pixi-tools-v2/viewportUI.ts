@@ -11,8 +11,11 @@ import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types
 import { reactive, shallowReactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
-import { ElementPosition } from './types/pixi-container';
+import { ElementPosition, ElementSize } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
+import { decimToHex } from './utils/colorsConvertor';
+import { dragAttachedLines } from './utils/dragAttachedLines';
+import { TextContainer } from './class/textContainer';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -34,6 +37,7 @@ export class ViewportUI extends Viewport {
 	public mouse: Point;
 	public selectionBoxActive = false;
 	public activeFrameNumber = null;
+	public textEditor: HTMLDivElement;
 
 	public readonly activeFrames: Array<number> = reactive([]);
 	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
@@ -55,6 +59,14 @@ export class ViewportUI extends Viewport {
 		if (socketOptions) {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
+
+		const canvasWrapper = document.getElementById('viewport');
+		this.textEditor = document.createElement('div');
+		this.textEditor.contentEditable = 'true';
+		this.textEditor.setAttribute('data-placeholder', 'Type something if you want to add some text');
+		this.textEditor.classList.add('textEditor');
+		this.textEditor.addEventListener('input', this.updateTextAreaBounds.bind(this));
+		canvasWrapper.appendChild(this.textEditor);
 
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
@@ -98,6 +110,71 @@ export class ViewportUI extends Viewport {
 		});
 	}
 
+	public updateTextAreaBounds(e: Event) {
+		const target = e.target as HTMLDivElement;
+		const text = target.innerText;
+		const unicode = text.charCodeAt(0);
+
+		if (text !== undefined && text !== '' && unicode !== 10) {
+			this.textEditor.classList.remove('blank');
+		} else if (text.trim().length === 0) {
+			this.textEditor.classList.add('blank');
+		}
+
+		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
+		this.updateUI(size);
+		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size, true);
+	}
+
+	public startTextEditor(
+		text: string,
+		fontSize: number | string,
+		color: number,
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		padding: number,
+		containerized: boolean,
+	) {
+		const points = this.toScreen(x, y);
+		this.textEditor.style.color = decimToHex(color);
+		this.textEditor.style.left = `${points.x}px`;
+		this.textEditor.style.top = `${points.y}px`;
+		this.textEditor.style.fontSize = `${fontSize}px`;
+		this.textEditor.style.display = 'block';
+		this.textEditor.style.padding = `${padding}px`;
+		this.textEditor.style.transform = `scale(${this.scaled})`;
+
+		if (text !== undefined && text !== '') {
+			const perLine = text
+				.split('\n')
+				.map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`)
+				.join('');
+			this.textEditor.innerHTML = perLine;
+			this.textEditor.classList.remove('blank');
+		} else {
+			this.textEditor.classList.add('blank');
+		}
+
+		if (containerized) {
+			this.textEditor.style.maxWidth = `${width}px`;
+			this.textEditor.style.maxHeight = `${height}px`;
+		} else {
+			this.textEditor.style.width = `fit-content`;
+			this.textEditor.style.height = `fit-content`;
+		}
+		this.textEditor.focus();
+		this.textEditor.click();
+		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
+		this.updateUI(size);
+	}
+
+	public endTextEditor() {
+		this.textEditor.style.display = 'none';
+		this.textEditor.blur();
+	}
+
 	public changeGridTheme(isDark: boolean) {
 		this.grid.color = isDark ? 0x27282d : 0xd9d9d9;
 		this.drawGrid();
@@ -128,7 +205,7 @@ export class ViewportUI extends Viewport {
 		this.zoomPlugin.updateZoomScale();
 
 		if (this.manager.isActive) {
-			const size = this.manager.getSelectedSize();
+			let size = this.manager.getSelectedSize();
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
@@ -142,53 +219,65 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if (this.border) {
-				this.border.draw({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-					scale: this.scaled,
-				});
+			if(this.textEditor.style.display === "block") {
+				const points = this.toScreen(size.x, size.y);
+				this.textEditor.style.transform = `scale(${this.scaled})`;
+				this.textEditor.style.left = `${points.x}px`;
+				this.textEditor.style.top = `${points.y}px`;
+				size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
 			}
 
-			if (!this._isHiddenUI) {
-				if (this.resizeHandles?.length > 0) {
-					this.updateResizeHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+			this.updateUI(size);
+		}
+	}
 
-				if (this.bezierHandles?.length > 0) {
-					this.updateBezierHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+	private updateUI(size: ElementSize) {
+		if (this.border) {
+			this.border.draw({
+				...size,
+				x: this.border.x,
+				y: this.border.y,
+				scale: this.scaled,
+			});
+		}
 
-				if (this.bezierCurveHandles?.length > 0) {
-					this.updateBezierCurveHandle(
-						{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
-						{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
-						true,
-					);
-				}
-
-				if (this.resizeHitAreas?.length > 0) {
-					this.updateResizeHitAreas({
+		if (!this._isHiddenUI) {
+			if (this.resizeHandles?.length > 0) {
+				this.updateResizeHandles(
+					{
 						...size,
 						x: this.border.x,
 						y: this.border.y,
-					});
-				}
+					},
+					true,
+				);
+			}
+
+			if (this.bezierHandles?.length > 0) {
+				this.updateBezierHandles(
+					{
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					},
+					true,
+				);
+			}
+
+			if (this.bezierCurveHandles?.length > 0) {
+				this.updateBezierCurveHandle(
+					{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
+					{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
+					true,
+				);
+			}
+
+			if (this.resizeHitAreas?.length > 0) {
+				this.updateResizeHitAreas({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				});
 			}
 		}
 	}
@@ -199,7 +288,11 @@ export class ViewportUI extends Viewport {
 			const visibleBounds = this.getVisibleBounds();
 
 			for (const element of this.children) {
-				if (element instanceof GenericContainer || element instanceof FramedContainer) {
+				if (
+					element instanceof GenericContainer ||
+					element instanceof FramedContainer ||
+					element instanceof TextContainer
+				) {
 					if (element.getLocalBounds().intersects(visibleBounds)) {
 						this.onScreenChildren.push(element);
 					}
