@@ -106,7 +106,11 @@ export const useArticleStore = defineStore('article', {
 
 		getArticleWithMostParticipants: withErrorHandler(async function () {
 			const response = await http.get('articles/stats/participant');
-			const participants = response.data.map((participant) => participant._id);
+			const participants = response.data.map((participant) => ({
+				_id: participant._id,
+				title: participant.title,
+				nombreparticipant: participant.numParticipants,
+			}));
 			return participants;
 		}),
 

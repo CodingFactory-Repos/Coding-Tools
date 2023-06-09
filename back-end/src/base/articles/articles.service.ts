@@ -46,6 +46,7 @@ export class ArticlesService {
 				{
 					$project: {
 						_id: 1,
+						title: 1,
 						participants: 1,
 						numParticipants: { $size: '$participants' },
 					},
