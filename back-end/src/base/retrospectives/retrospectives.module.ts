@@ -9,13 +9,17 @@ import { RetrospectivesService } from 'src/base/retrospectives/retrospectives.se
 import { RetrospectivesController } from 'src/base/retrospectives/retrospectives.controller';
 import { RetrospectiveGateway } from '@/common/gateways/retrospective.global.gateway';
 import { JwtService } from '@nestjs/jwt';
+import { RetrospectivesRoomInvitationRepository } from './retrospectivesRoomInvitation.repository';
+import { RetrospectivesEventEmitter } from './events/retrospectives.events';
 
 @Module({
 	imports: [DatabaseModule, forwardRef(() => AuthModule)],
 	providers: [
 		JwtService,
 		RetrospectivesService,
+		RetrospectivesEventEmitter,
 		RetrospectivesRepository,
+		RetrospectivesRoomInvitationRepository,
 		UsersRepository,
 		RetrospectiveGateway,
 	],
