@@ -31,7 +31,6 @@ export class CoursesController {
 		});
 	}
 
-
 	@Post('/create')
 	async createCourse(@Req() req: Request, @Res() res: Response) {
 		await this.coursesService.createCourse(req.body).then((course) => {
@@ -44,6 +43,3 @@ export class CoursesController {
 		return res.status(200).json(courses);
 	}
 }
-
-
-

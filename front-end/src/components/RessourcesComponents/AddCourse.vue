@@ -56,54 +56,75 @@
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
 import { useCoursStore } from '@/store/modules/course.store';
+import Swal from 'sweetalert2';
 
 export default {
-	name: 'AddCourses',
 	data() {
 		return {
 			tag: '',
-			classTag: '',
-			picture: '',
-			language: '',
-			createdAt: new Date(),
 			periodStart: null,
 			periodEnd: null,
-			presence: [],
-			project: [],
-			site: '',
-			teacherId: '',
+			picture: '',
+			language: '',
 			uploadedFiles: [],
 		};
 	},
 	methods: {
 		handleFileChange(event) {
 			const files = event.target.files;
-
-			// Mettez à jour la liste uploadedFiles avec les informations des fichiers téléchargés
-			for (let i = 0; i < files.length; i++) {
-				this.uploadedFiles.push(files[i]);
-			}
+			this.uploadedFiles = Array.from(files);
 		},
 		removeFile(index) {
 			this.uploadedFiles.splice(index, 1);
 		},
-		AddCourses() {
-			const course = useCoursStore();
-			this.newCourse = {
-				tag: this.tag,
-				classTag: '',
-				picture: this.picture,
-				language: this.language,
-				createdAt: this.createdAt,
-				periodStart: this.periodStart,
-				periodEnd: this.periodEnd,
-				presence: [],
-				project: [],
-				site: '',
-				teacherId: '',
-			};
-			course.addCourse(this.newCourse);
+		async AddCourses() {
+			// Vérifier si tous les champs sont remplis
+			if (!this.tag || !this.periodStart || !this.periodEnd || !this.picture || !this.language) {
+				Swal.fire({
+					title: 'Vous devez remplir tous les champs',
+					text: 'Veuillez remplir tous les champs pour ajouter un nouveau cours',
+					icon: 'error',
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'OK',
+				});
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append('tag', this.tag);
+			formData.append('periodStart', this.periodStart);
+			formData.append('periodEnd', this.periodEnd);
+			formData.append('picture', this.picture);
+			formData.append('language', this.language);
+			this.uploadedFiles.forEach((file) => {
+				formData.append('uploadedFiles', file);
+			});
+
+			Swal.fire({
+				title: 'Votre cours a été ajouté',
+				icon: 'success',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'OK',
+			}).then(async (result) => {
+				if (result.isConfirmed) {
+					// Ajouter le cours
+					await useCoursStore.addCourse(formData);
+					// Rediriger vers la page des cours
+					this.$emit('close');
+				}
+			});
+
+			// Réinitialiser les champs
+			this.tag = '';
+			this.periodStart = null;
+			this.periodEnd = null;
+			this.picture = '';
+			this.language = '';
+			this.uploadedFiles = [];
 		},
 	},
 };
@@ -117,6 +138,7 @@ export default {
 	transform: translate(-50%, -50%);
 	background-color: white;
 	border: 1px solid black;
+	color: black;
 	padding: 20px;
 	z-index: 1000;
 	border-radius: 0.375rem;
