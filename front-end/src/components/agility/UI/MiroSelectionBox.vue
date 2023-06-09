@@ -112,7 +112,6 @@
 				:style="drawerOpen ? 'width: 550px;' : 'width: 0;' "
 			>
 				<div class="h-full w-full overflow-y-scroll pb-16">
-					{{ childImages.length }}
 					<Draggable :list="childImages" itemKey="id" class="list-group" @start="dragging = true" @end="dragging = false" @change="handleListChange">
 						<template #item="{ element }">
 							<div class="list-group-item flex flex-col gap-2 relative p-3 pl-[2.75rem] hover:bg-dark-tertiary cursor-pointer">
@@ -135,7 +134,7 @@
 						text-style="text-black dark:text-white font-bold text-sm"
 						background="bg-light-secondary hover:bg-light-tertiary dark:bg-dark-tertiary"
 						class="w-32 min-w-[8rem]"
-						@click="exportToPdf()"
+						@click="generatePdf()"
 					/>
 				</div>
 			</div>
@@ -188,7 +187,9 @@ import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
-import pdfMake from 'pdfmake/build/pdfmake';
+import * as _ from 'pdfmake/build/vfs_fonts.js';
+import { exportToPdf} from '@/lib/pixi-tools-v2/utils/generatePdf';
+
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
@@ -274,47 +275,9 @@ const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
 
-const exportToPdf = () => {
-	if(childImages.value.length === 0) return;
-	const data = { 
-		// defaultStyle: {margin: [0, 0]},
-		content:[] 
-	};
-	// const data = { content: [] };
-	for(let n = 0; n < childImages.value.length; n++) {
-		if(childImages.value[n].dimension.width > 816){
-			data.content.push({
-				image: childImages.value[n].base64,
-				width: 520,
-				height: 300,
-			})
-		} else {
-			data.content.push({
-				image: childImages.value[n].base64,
-				width: childImages.value[n].dimension.width,
-				height: childImages.value[n].dimension.height,
-			})
-
-		}
-	}
-
-	const pdfGenerator = pdfMake.createPdf(data) //.open()
-	pdfGenerator.open()
-
-	// pdfGenerator.getBuffer((buffer: any) => {
-
-	// });
-}
-
-const savePdf = (buffer: any, fileName: string) => {
-	const blob = new Blob([buffer], { type: "application/pdf" });
-	const url = URL.createObjectURL(blob);
-	const link = document.createElement("a");
-	link.href = url;
-	link.download = fileName;
-	link.click();
-	URL.revokeObjectURL(url);
-}
+const generatePdf = () => {
+    exportToPdf(childImages.value);
+  };
 
 const setDefaultMode = () => {
 	projectStore.default = true;

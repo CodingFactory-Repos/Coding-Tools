@@ -51,7 +51,7 @@
 						text-style="text-black dark:text-white font-bold text-sm"
 						background="bg-light-secondary hover:bg-light-tertiary dark:bg-dark-tertiary"
 						class="w-32 min-w-[8rem]"
-						@click="exportToPdf()"
+						@click="generatePdf()"
 					/>
 				</div>
 			</div>
@@ -61,7 +61,6 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import Draggable from 'vuedraggable';
@@ -72,11 +71,8 @@ import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import { elements } from 'chart.js';
-import { ClientRequest } from 'http';
-import { createPdf } from 'pdfmake/build/pdfmake';
 import * as _ from 'pdfmake/build/vfs_fonts.js';
-import { TypeBlueprintText } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { exportToPdf} from '@/lib/pixi-tools-v2/utils/generatePdf';
 
 const fonts =  globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
 
@@ -155,77 +151,8 @@ const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
 
-const exportToPdf = () => {
-  if (childImages.value.length === 0) return;
-  
-  const styles = {
-    image: {
-      alignment: 'center',
-      marginBottom: 25,
-    },
-    text: {
-      alignment: 'center',
-    },
+
+const generatePdf = () => {
+    exportToPdf(childImages.value);
   };
-
-  const data = {
-    content: [],
-    styles: styles
-  };
-
-  for (let n = 0; n < childImages.value.length; n++) {
-    if (childImages.value[n].isBlueprint == true) {
-		if(childImages.value[n].typeBlueprint == 1){
-			data.content.push({
-				style: 'text',
-				text: TypeBlueprintText["1"]
-	  		})
-		}else if(childImages.value[n].typeBlueprint == 2){
-			data.content.push({
-				style: 'text',
-				text: TypeBlueprintText["2"]
-	  		})
-		}else if(childImages.value[n].typeBlueprint == 3){
-			data.content.push({
-				style: 'text',
-				text: TypeBlueprintText["3"]
-	  		})
-		}else if(childImages.value[n].typeBlueprint == 4){
-			data.content.push({
-				style: 'text',
-				text: TypeBlueprintText["4"]
-	  		})
-		}else if(childImages.value[n].typeBlueprint == 5){
-			data.content.push({
-				style: 'text',
-				text: TypeBlueprintText["5"]
-	  		})
-		}else {
-		}
-	  data.content.push({
-		style: 'image',
-        image: childImages.value[n].base64,
-        width: 520,
-        height: 300,
-      });
-    } else if (childImages.value[n].dimension.width > 520) {
-      data.content.push({
-        style: 'image',
-        image: childImages.value[n].base64,
-        width: 520,
-        height: childImages.value[n].dimension.height,
-      });
-    } else {
-      data.content.push({
-        style: 'image',
-        image: childImages.value[n].base64,
-        width: childImages.value[n].dimension.width,
-        height: childImages.value[n].dimension.height,
-      });
-    }
-  }
-
-  // @ts-ignore
-  const pdfGenerator = createPdf(data, null, null, fonts).open();
-};
 </script>
