@@ -44,9 +44,12 @@
 /back-end/src/base/CanvasRoom/interfaces/CanvasRoom.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
+/back-end/src/base/courses/courses.module.ts @Maghwyn @Kevw94
 /back-end/src/base/courses/dto/coures.dto.ts @AyakorK
-/back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn
+/back-end/src/base/courses/interfaces/courses.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
+/back-end/src/base/groups/ @Kevw94 @Maghwyn
+/back-end/src/base/groups/groups.module.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/ideasComments/ideasComments.module.ts @Maghwyn @AyakorK
@@ -191,7 +194,7 @@
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK
 /front-end/src/components/RessourcesComponents/Cours.vue @Maghwyn
-/front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK
+/front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
 /front-end/src/components/RessourcesComponents/OpenHousesDetails.vue @Maghwyn
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/Board.vue @Maghwyn @Kevw94
@@ -264,14 +267,12 @@
 /front-end/src/lib/README.md @Loule95450
 /front-end/src/router/guard.ts @Maghwyn
 /front-end/src/router/index.ts @Loule95450 @Maghwyn
-/front-end/src/store/course.store.ts @AyakorK
 /front-end/src/store/interfaces/ @Kevw94 @Maghwyn
 /front-end/src/store/interfaces/agility.interface.ts @Maghwyn
 /front-end/src/store/interfaces/article.interface.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/auth.interfaces.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/interfaces/axios.interface.ts @Maghwyn
-/front-end/src/store/interfaces/cours.interface.ts @AyakorK
-/front-end/src/store/interfaces/course.interface.ts @AyakorK
+/front-end/src/store/interfaces/cours.interface.ts @AyakorK @Kevw94
 /front-end/src/store/interfaces/openhouse.store.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
@@ -281,7 +282,7 @@
 /front-end/src/store/modules/ @AyakorK @Maghwyn
 /front-end/src/store/modules/article.store.ts @Maghwyn @TheoLandemaine
 /front-end/src/store/modules/auth.store.ts @Maghwyn @TheoLandemaine
-/front-end/src/store/modules/course.store.ts @AyakorK
+/front-end/src/store/modules/course.store.ts @AyakorK @Kevw94
 /front-end/src/store/modules/material.store.ts @Kevw94 @Maghwyn
 /front-end/src/store/modules/project.store.ts @Maghwyn
 /front-end/src/store/modules/template.store.ts @Maghwyn
