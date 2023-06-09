@@ -20,9 +20,7 @@ export default {
 		};
 	},
 	async created() {
-		console.log('created nb material chart');
 		const { data: items } = await http.get(`/materials/macs`);
-		console.log(items);
 		this.datas = items;
 	},
 	components: { DoughnutChart },

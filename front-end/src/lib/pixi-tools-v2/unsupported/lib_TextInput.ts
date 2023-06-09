@@ -226,7 +226,6 @@ export default class LibraryTextInput extends StaticGraphics {
 
 	_setState(state: string) {
 		this.state = state;
-		console.log(this.state);
 		this._updateBox();
 		if (this._substituted) this._updateSubstitution();
 	}

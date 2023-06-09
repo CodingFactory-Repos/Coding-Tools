@@ -547,7 +547,6 @@ export class CallsRepository {
 		return course.groups;
 	}
 
-
 	async saveMessage(userId: ObjectId, courseId: string, message: any) {
 		const courseObjectId = new ObjectId(courseId);
 		const userObjectId = new ObjectId(userId);
@@ -621,7 +620,7 @@ export class CallsRepository {
 		}
 		const groups = course.groups;
 		let groupToJoin = null;
-		const groupIdToJoin = new ObjectId(groupId['groupId'])
+		const groupIdToJoin = new ObjectId(groupId['groupId']);
 		groups.map((group) => {
 			if (new ObjectId(group.id).equals(groupIdToJoin)) {
 				groupToJoin = group;
@@ -851,7 +850,6 @@ export class CallsRepository {
 		}
 
 		const actualCourse = await this.db.collection('courses').findOne(query);
-
 
 		// La base n'est pas typée, j'ai besoin de tout en front donc voilà
 		return actualCourse ?? null;

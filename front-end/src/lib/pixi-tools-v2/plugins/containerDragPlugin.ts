@@ -135,7 +135,6 @@ export class DragPlugin {
 					}
 				}
 
-				console.log(element.child instanceof TextArea === true)
 				if (element.child instanceof TextArea) {
 					const frame = element.child.parent?.parent?.parent;
 					if (frame instanceof FramedContainer) {

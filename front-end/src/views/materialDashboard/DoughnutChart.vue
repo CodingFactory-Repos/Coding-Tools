@@ -76,7 +76,6 @@ export default {
 		},
 	},
 	async created() {
-		console.log('created doug chart');
 		this.getValues();
 	},
 };
