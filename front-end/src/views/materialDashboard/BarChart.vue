@@ -1,5 +1,7 @@
 <template>
-	<div class="col-span-2 rounded-lg bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md">
+	<div
+		class="col-span-2 my-5 sm:my-0 rounded-lg bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md"
+	>
 		<h2 class="text-dark-primary dark:text-light-primary">{{ this.title }}</h2>
 		<Bar id="my-chart-id" :options="chartOptions" :data="chartData" class="" />
 	</div>
