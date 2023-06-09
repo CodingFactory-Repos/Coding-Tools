@@ -9,7 +9,7 @@ import {
 	LineBezier,
 	Tree,
 	Ellipse,
-	TextArea
+	TextArea,
 } from '../model/template';
 
 export const GeometryTypes = {

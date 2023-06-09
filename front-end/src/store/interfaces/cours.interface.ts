@@ -2,10 +2,10 @@ import { ProjectMeta } from './agility.interface';
 import { Retrospective } from './retrospective.interface';
 
 export interface CoursesStore {
-	allCourses: Array<Course>,
+	allCourses: Array<Course>;
 	items: Array<Course>;
 	idCourses: string;
-    oneItems: CourseById;
+	oneItems: CourseById;
 }
 
 export interface Course {
@@ -13,16 +13,15 @@ export interface Course {
 	tag: string;
 	classTag: string;
 	picture: string;
-    language: string;
-    createdAt: Date;
-    periodStart: Date;
-    periodEnd: Date;
-    presence:[];
-	project:[];
-    site: string;
-    teacherId?: string;
+	language: string;
+	createdAt: Date;
+	periodStart: Date;
+	periodEnd: Date;
+	presence: [];
+	project: [];
+	site: string;
+	teacherId?: string;
 }
-
 
 export interface CourseById {
 	course?: Course;

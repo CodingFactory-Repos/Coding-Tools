@@ -96,7 +96,6 @@ export default defineComponent({
 			}
 
 			const createdRetro = await retrospectiveStore.createNewRetro(retro)
-			console.log("createRetro", createdRetro);
 
 			if (createdRetro) {
 				router.push(`/app/retrospective/${createdRetro.slug}`);

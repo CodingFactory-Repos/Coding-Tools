@@ -79,21 +79,20 @@ function handleSocketEvents(socket: Socket) {
 
 	// @@@@@@@@@@@ END TIMER SECTION @@@@@@@@@
 
-	socket.on("update-visibility", (postits: Postits) => {
-		retrospectiveStore.setSocketVisibility(postits)
-	})
-
+	socket.on('update-visibility', (postits: Postits) => {
+		retrospectiveStore.setSocketVisibility(postits);
+	});
 
 	socket.on('accessRetro-lost', () => {
 		Swal.fire({
-			title: "Your access has been removed",
+			title: 'Your access has been removed',
 			showDenyButton: false,
 			showCancelButton: false,
 			showConfirmButton: false,
-			width: "auto",
+			width: 'auto',
 			allowOutsideClick: false,
-			allowEscapeKey: false
-		})
+			allowEscapeKey: false,
+		});
 		socket.disconnect();
 
 		const timer = setTimeout(() => {

@@ -1,8 +1,7 @@
 import { CoursesStore, Course } from '../interfaces/cours.interface';
 import { defineStore } from 'pinia';
 import { withErrorHandler } from '@/utils/storeHandler';
-import {createCourse, getCourses, getCoursesById} from '@/api/ressource-req';
-import { isEmpty } from '@/utils/string.helper';
+import { createCourse, getCourses, getCoursesById } from '@/api/ressource-req';
 import { tryGetAllCourses } from '@/api/courses-req';
 
 export const useCoursStore = defineStore('course', {
@@ -13,21 +12,21 @@ export const useCoursStore = defineStore('course', {
 				{
 					_id: '',
 					tag: '',
-                    classTag: '',
+					classTag: '',
 					picture: '',
-                    language:'',
-				    createdAt: null,
-					periodStart:null,
-                    periodEnd: null,
+					language: '',
+					createdAt: null,
+					periodStart: null,
+					periodEnd: null,
 					presence: [],
 					project: [],
-                    site:'',
-                    teacherId: ''
+					site: '',
+					teacherId: '',
 				},
 			],
-            oneItems: {},
-		idCourses: "",
-        }
+			oneItems: {},
+			idCourses: '',
+		};
 	},
 	actions: {
 		//get courses in the database
@@ -35,19 +34,15 @@ export const useCoursStore = defineStore('course', {
 			const response = await getCourses();
 			const items = response.data;
 			this.items = items;
-            console.log(this.items);
 			return true;
 		}),
-        getCourseById: withErrorHandler(async function (id: string) {
+		getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
 			this.oneItems = response.data.courseById;
 
 			return true;
 		}),
-        addCourse: withErrorHandler(async function (
-			this: CoursesStore,
-			course: Course,
-		) {
+		addCourse: withErrorHandler(async function (this: CoursesStore, course: Course) {
 			const res = await createCourse(course);
 			if (res.status !== 200) return false;
 			this.items.push(res.data);
@@ -58,5 +53,4 @@ export const useCoursStore = defineStore('course', {
 			if (resp.status === 200) this.allCourses = resp.data.courses;
 		},
 	},
-
 });

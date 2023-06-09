@@ -12,7 +12,7 @@ export class CoursesService {
 		@Inject(forwardRef(() => CanvasRoomRepository))
 		private coursesRepository: CoursesRepository,
 		private retrospectiveRepository: RetrospectivesRepository,
-		private canvasRoomRepository: CanvasRoomRepository
+		private canvasRoomRepository: CanvasRoomRepository,
 	) {}
 
 	// Business logic methods goes there...
@@ -23,15 +23,17 @@ export class CoursesService {
 	}
 
 	async getCoursesById(courseId: string) {
-		const courses = await this.coursesRepository.findOne({_id: new ObjectId(courseId)});
-		const retro = await this.retrospectiveRepository.findOne({_id: new ObjectId(courses.retro)})
-		const canvas = await this.canvasRoomRepository.findManyCanvasRoom({_id: {$in: courses.projects}})
+		const courses = await this.coursesRepository.findOne({ _id: new ObjectId(courseId) });
+		const retro = await this.retrospectiveRepository.findOne({ _id: new ObjectId(courses.retro) });
+		const canvas = await this.canvasRoomRepository.findManyCanvasRoom({
+			_id: { $in: courses.projects },
+		});
 
 		return {
 			course: courses,
 			retro: retro,
-			projects: canvas
-		}
+			projects: canvas,
+		};
 	}
 
 	async createCourse(query) {
