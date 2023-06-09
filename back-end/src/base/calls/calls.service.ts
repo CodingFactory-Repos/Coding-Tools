@@ -44,7 +44,11 @@ export class CallsService {
 	}
 
 	async getActualCourse(userId: ObjectId) {
-		const actualCourse = await this.callsRepository.getActualCourse(userId);
+		return await this.callsRepository.getActualCourse(userId);
+	}
+  
+	async getActualCourseGroup(userId: ObjectId) {
+		const actualCourse = await this.callsRepository.getActualCourseGroup(userId);
 		return actualCourse;
 	}
 

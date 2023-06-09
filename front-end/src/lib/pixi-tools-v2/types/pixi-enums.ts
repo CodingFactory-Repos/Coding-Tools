@@ -1,7 +1,16 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
-import { Circle, Rectangle, Triangle, LineBezier, Tree, Ellipse } from '../model/template';
+import { TextContainer } from '../class/textContainer';
+import {
+	Circle,
+	Rectangle,
+	Triangle,
+	LineBezier,
+	Tree,
+	Ellipse,
+	TextArea
+} from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
@@ -13,6 +22,7 @@ export const GeometryTypes = {
 	bezier: LineBezier,
 	tree: Tree,
 	ellipse: Ellipse,
+	textarea: TextArea,
 
 	//! BROKEN DON'T USE
 	//polygon: Polygon, // Bugged
@@ -26,6 +36,7 @@ export const ContainerType = {
 	generic: GenericContainer,
 	frame: FramedContainer,
 	line: LineContainer,
+	text: TextContainer,
 } as const;
 
 export enum ResizeHandle {

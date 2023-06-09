@@ -18,5 +18,5 @@ export enum MailjetTemplate {
 	dailyAbsence = 4842752,
 	canvasInvitationRequest = 4841661,
 	newTutorial = 4861713,
-	retroInvitationRequest = 4861164
+	retroInvitationRequest = 4861164,
 }
