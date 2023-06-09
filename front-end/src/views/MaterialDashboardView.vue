@@ -1,7 +1,7 @@
 <template>
 	<div class="py-8">
-		<h1 class="text-dark-primary dark:text-light-primary text-center">Inventory Dashboard</h1>
-		<div class="grid grid-cols-3 gap-6 py-10 px-20">
+		<h1 class="text-dark-primary dark:text-light-primary text-center">Dashboard de l'inventaire</h1>
+		<div class="sm:grid sm:grid-cols-3 grid-cols-1 px-3 py-5 sm:gap-6 lg:py-10 lg:px-20">
 			<DataOlderMaterials ref="bar" />
 			<DataNbMaterials ref="doughnut" />
 			<DataStatusMaterials ref="doughnut" />
