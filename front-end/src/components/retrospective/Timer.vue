@@ -100,7 +100,7 @@ const startTimer = () => {
 	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
     const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
     const alarm = new Audio(audio.default)
-    alarm.play()
+    alarm.play().catch(err => console.log(err));
 }
 
 	retroStore.currentRetro.isTimerRunning = true;
@@ -110,7 +110,7 @@ const startTimer = () => {
 		socketRetro.socket.emit('progess-timer', timePassed.value)
 
 		if (timeLeftComp.value === 0) {
-			playAlarm();
+			playAlarm().catch(err => console.log(err));
 		}
 
 	}, 1000);
