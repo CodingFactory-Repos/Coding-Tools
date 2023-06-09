@@ -95,6 +95,13 @@ export class ArticlesController {
 		return res.status(201).json(article);
 	}
 
+	// remove comment
+	@Put('/removeComment/:id')
+	async removeComment(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.removeComment(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
 	// delete article
 	@Delete('/delete/:id')
 	async deleteArticle(@Req() req: Request, @Res() res: Response) {

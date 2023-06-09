@@ -34,7 +34,7 @@ export class ArticlesRepository {
 	}
 
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
-		this.articles.updateOne(query, update);
+		await this.articles.updateOne(query, update);
 		return this.articles.findOne(query);
 	}
 
@@ -55,8 +55,8 @@ export class ArticlesRepository {
 		return this.articles.findOne(query, options);
 	}
 
-	async updateMany(query: Filter<Article>, update: Partial<Article>){
-		return this.articles.updateMany(query, {$set : update})
+	async updateMany(query: Filter<Article>, update: Partial<Article>) {
+		return this.articles.updateMany(query, { $set: update });
 	}
 	// Mongo repo for the articles collection
 }

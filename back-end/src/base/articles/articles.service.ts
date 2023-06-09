@@ -17,7 +17,6 @@ export class ArticlesService {
 
 	// Function to add an article
 	async addArticle(queryArticle) {
-		console.log(queryArticle);
 		queryArticle.status = 'Pending';
 
 		queryArticle.owner = new ObjectId(queryArticle.owner);
@@ -67,6 +66,7 @@ export class ArticlesService {
 
 	// add participant to the array of participants in article in the database
 	async addParticipant(id, queryParticipant) {
+		queryParticipant._id = new ObjectId(queryParticipant._id);
 		const update = { $push: { participants: queryParticipant } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
@@ -74,13 +74,18 @@ export class ArticlesService {
 
 	// remove participant from the array of participants in article in the database
 	async removeParticipant(id, queryParticipant) {
+		queryParticipant._id = new ObjectId(queryParticipant._id);
 		const update = { $pull: { participants: queryParticipant } };
+
+		console.log('queryParticipant._id', queryParticipant._id);
+		console.log('update', update);
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
 
 	// add like to the array of likes in article in the database
 	async addLike(id, queryLike) {
+		queryLike.id = new ObjectId(queryLike.id);
 		const update = { $push: { likes: queryLike } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
@@ -88,6 +93,7 @@ export class ArticlesService {
 
 	// remove like from the array of likes in article in the database
 	async removeLike(id, queryLike) {
+		queryLike.id = new ObjectId(queryLike.id);
 		const update = { $pull: { likes: queryLike } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
@@ -95,6 +101,7 @@ export class ArticlesService {
 
 	// add dislike to the array of dislikes in article in the database
 	async addDislike(id, queryDislike) {
+		queryDislike.id = new ObjectId(queryDislike.id);
 		const update = { $push: { dislikes: queryDislike } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
@@ -102,6 +109,7 @@ export class ArticlesService {
 
 	// remove dislike from the array of dislikes in article in the database
 	async removeDislike(id, queryDislike) {
+		queryDislike.id = new ObjectId(queryDislike.id);
 		const update = { $pull: { dislikes: queryDislike } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
@@ -109,7 +117,16 @@ export class ArticlesService {
 
 	// add comment
 	async addComment(id, queryComment) {
+		queryComment._id = new ObjectId();
 		const update = { $push: { comments: queryComment } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove comment
+	async removeComment(id, queryComment) {
+		queryComment._id = new ObjectId(queryComment._id);
+		const update = { $pull: { comments: queryComment } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
