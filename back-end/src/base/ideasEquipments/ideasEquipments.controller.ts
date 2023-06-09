@@ -30,8 +30,8 @@ export class IdeasEquipmentsController {
 			const query = { _id: new ObjectId(req.params.id) };
 			const ideasEquipments = await this.ideasEquipmentsService.deleteIdeaEquipment(query);
 			return res.status(200).json(ideasEquipments);
-		} catch(err) {
-			throw new ServiceError('BAD_REQUEST', 'Invalid parameter url')
+		} catch (err) {
+			throw new ServiceError('BAD_REQUEST', 'Invalid parameter url');
 		}
 	}
 }

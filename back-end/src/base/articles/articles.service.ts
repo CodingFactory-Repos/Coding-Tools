@@ -140,6 +140,4 @@ export class ArticlesService {
 	async updateManyArticles(query, updateParams) {
 		return await this.articlesRepository.updateMany(query, updateParams);
 	}
-	// Business logic methods goes there...
-	// Define your own methods
 }

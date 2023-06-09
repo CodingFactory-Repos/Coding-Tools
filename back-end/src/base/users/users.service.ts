@@ -249,8 +249,6 @@ export class UsersService {
 		return users ?? [];
 	}
 
-
-
 	//  RETRO SECTION SEARCH
 	async getUserListOnRoomRetro(roomId: string, user: string) {
 		if (

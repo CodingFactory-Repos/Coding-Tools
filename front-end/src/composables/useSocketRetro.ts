@@ -102,6 +102,25 @@ function handleSocketEvents(socket: Socket) {
 			clearTimeout(timer);
 		}, 5000);
 	});
+
+	socket.on('accessRetro-lost', () => {
+		Swal.fire({
+			title: 'Your access has been removed',
+			showDenyButton: false,
+			showCancelButton: false,
+			showConfirmButton: false,
+			width: 'auto',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+		});
+		socket.disconnect();
+
+		const timer = setTimeout(() => {
+			Swal.close();
+			window.location.pathname = '/app/retrospective';
+			clearTimeout(timer);
+		}, 5000);
+	});
 }
 
 export const socketRetro: { socket: Socket } = {
