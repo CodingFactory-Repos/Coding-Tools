@@ -2,7 +2,7 @@
 	<div class="w-full h-full flex flex-col gap-0">
 		<AgilitySceneUI :room-id="roomId">
 			<ToolsEditorUI v-if="!immersion"/>
-			<div class="flex w-full h-full relative">
+			<div class="flex w-full h-full relative" id="viewport">
 				<DefaultSelectionBoxUI v-if="!immersion"/>
 				<MiroSelectionBox v-else/>
 				<slot></slot>

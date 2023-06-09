@@ -22,7 +22,6 @@ export const tryUpdateParticipants = async (participants: Retrospective) => {
 	await http.post('/retrospectives/participants', participants);
 };
 
-
 export const apiTrySendRetroInvitation = (userId: string, roomId: string) => {
 	return http.post(`/retrospectives/invitation/${roomId}`, { userId });
 };
@@ -37,4 +36,4 @@ export const apiTryRemoveRetroUserAccess = (userEmail: string, roomId: string) =
 
 export const apiTryGetAllRetro = async () => {
 	return http.get('/retrospectives/allRetros');
-}
+};

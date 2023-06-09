@@ -6,7 +6,9 @@ import { RetrospectivesRoomInvitation } from './interfaces/retrospectivesRoomInv
 @Injectable()
 export class RetrospectivesRoomInvitationRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {
-		const collection = this.db.collection<RetrospectivesRoomInvitation>('retrospectives-room-invitation');
+		const collection = this.db.collection<RetrospectivesRoomInvitation>(
+			'retrospectives-room-invitation',
+		);
 		collection.createIndex({ expireAt: 1 }, { expireAfterSeconds: 0 });
 	}
 
