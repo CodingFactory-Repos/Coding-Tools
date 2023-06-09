@@ -19,7 +19,7 @@
 		<template #body>
 			<div class="flex flex-col w-full h-[400px] overflow-y-scroll gap-2 pt-2 ">
 				<template v-if="filteredUser.length > 0">
-					<ShareToUserCard
+					<ShareRetroToUser
 						v-for="(user, index) in filteredUser"
 						:key="`user_${index}`"
 						:user="user"
@@ -41,9 +41,14 @@ import { useRoute } from 'vue-router';
 import ModalOverlay from '@/components/common/Modal.vue';
 import FormField from '@/components/common/FormField.vue';
 import { withErrorHandler } from '@/utils/storeHandler';
-import { apiTryFetchUserListByRoom } from '@/api/user-req';
+import { apiTryFetchUserListByRoomRetro } from '@/api/user-req';
 import { UserCanvasList } from '@/store/interfaces/user.interface';
-import ShareToUserCard from '@/components/agility/cards/ShareToUser.vue';
+import ShareRetroToUser from '@/components/retrospective/utils/ShareRetroToUser.vue';
+
+const props = defineProps({
+	currentRetro: { type: Object, required: true }
+})
+
 
 const route = useRoute();
 const userInput = ref<string>("");
@@ -64,7 +69,7 @@ const beforeModalClose = () => {
 }
 
 const fetchQueryUser =  withErrorHandler(async function(user: string) {
-	const res = await apiTryFetchUserListByRoom(roomId.value, user);
+	const res = await apiTryFetchUserListByRoomRetro(roomId.value, user);
 	if(res.data.status === 'ok') {
 		filteredUser.value = res.data.users;
 	}

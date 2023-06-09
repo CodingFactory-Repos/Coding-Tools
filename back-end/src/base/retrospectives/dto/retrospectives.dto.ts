@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
-	IsDate,
 	IsNotEmpty,
 	IsNumber,
 	IsObject,
@@ -14,6 +13,7 @@ import {
 
 import { ObjectId } from 'mongodb';
 import { Postit } from '../interfaces/retrospectives.interface';
+import { CourseDTO } from '@/base/courses/dto/coures.dto';
 
 export class RetrospectiveDTO {
 	@IsOptional()
@@ -38,7 +38,7 @@ export class RetrospectiveDTO {
 	creator: string;
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	createdAt: Date;
 
 	@IsOptional()
@@ -46,12 +46,16 @@ export class RetrospectiveDTO {
 	@IsString({ each: true })
 	participants: Array<string>;
 
+	@IsOptional()
+	@IsArray()
+	allowedPeers: Array<ObjectId>;
+
 	@IsObject()
 	@Type(() => PostitsDTO)
 	postits: Array<Postit>;
 
 	@IsOptional()
-	@IsDate()
+	@IsString()
 	endedAt: Date;
 
 	@IsOptional()
@@ -72,6 +76,11 @@ export class RetrospectiveDTO {
 	@IsOptional()
 	@IsNumber()
 	timePassed: number;
+
+	@IsObject()
+	@ValidateNested()
+	@Type(() => CourseDTO)
+	associatedCourse: CourseDTO;
 }
 
 export class PostitDTO {
@@ -121,4 +130,22 @@ class PostitsDTO {
 	@Type(() => PostitDTO)
 	@IsArray()
 	3: Array<PostitDTO>;
+}
+
+
+export class ProjectRetroInvitationVerificationDTO {
+	@IsString()
+	@Length(32)
+	token: string;
+}
+
+export class RetroUserIdDTO {
+	@IsString()
+	@Length(24)
+	userId: string;
+}
+
+export class RetroUserEmailDTO {
+	@IsString()
+	userEmail: string;
 }
