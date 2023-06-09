@@ -105,6 +105,9 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	fontFamily?: string | string[];
 	fontPadding?: number;
 	fontAlign?: TextStyleAlign;
+	wordWrap?: boolean;
+	wordWrapWidth?: number;
+	breakWords?: boolean;
 }
 
 export interface SerializedLineGraphic {

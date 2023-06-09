@@ -46,6 +46,9 @@ export class TextArea extends ModelGraphics {
 			fontFamily: properties.fontFamily ?? TextStyle.defaultStyle.fontFamily,
 			align: properties.fontAlign ?? TextStyle.defaultStyle.align,
 			padding: properties.fontPadding ?? 5,
+			wordWrap: properties.wordWrap ?? TextStyle.defaultStyle.wordWrap,
+			wordWrapWidth: properties.wordWrapWidth ?? TextStyle.defaultStyle.wordWrapWidth,
+			breakWords: properties.breakWords ?? TextStyle.defaultStyle.breakWords,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
 
