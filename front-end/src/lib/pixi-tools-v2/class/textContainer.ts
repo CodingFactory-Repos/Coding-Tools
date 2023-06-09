@@ -129,12 +129,10 @@ export class TextContainer extends PluginContainer {
 			}
 
 			const data = this._viewport.textEditor.innerHTML
-				.replaceAll('<div><br></div>', '\n')
 				.replaceAll('<br></div>', '\n')
 				.replaceAll('</div>', '\n')
 				.replaceAll('<br>', '\n')
-				.replaceAll('<div>', '')
-				.replaceAll('</div>', '</div>,')
+				.replaceAll('<div>', '');
 
 			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
