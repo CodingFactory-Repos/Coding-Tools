@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded-lg bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md">
+	<div class="rounded-lg my-5 sm:my-0 bg-light-tertiary dark:bg-dark-tertiary p-8 shadow-md">
 		<h2 class="text-dark-primary dark:text-light-primary">{{ this.title }}</h2>
 		<Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" class="" />
 	</div>
