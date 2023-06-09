@@ -62,8 +62,6 @@ export default {
 				let alreadyInList = false;
 				if (userName.toUpperCase().includes(this.name.toUpperCase()) && this.name != '') {
 					this.participants.forEach((participant) => {
-						console.log(participant);
-						console.log(userName);
 						if (participant == userName) {
 							alreadyInList = true;
 						}
@@ -73,7 +71,6 @@ export default {
 					}
 				}
 			});
-			console.log(this.userList);
 		},
 
 		getUsers() {
@@ -106,8 +103,6 @@ export default {
 			this.name = '';
 			this.userList = [];
 			this.showNewParticipant();
-			console.log(user);
-			console.log(this.participants);
 		},
 	},
 };

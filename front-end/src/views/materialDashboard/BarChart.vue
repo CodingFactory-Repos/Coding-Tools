@@ -55,7 +55,6 @@ export default {
 	},
 	methods: {
 		getValues() {
-			console.log(this.data);
 			const { labels, data } = this.data.reduce(
 				(acc, element) => {
 					const { [this.label]: label, [this.value]: value } = element;
