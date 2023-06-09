@@ -94,8 +94,8 @@ export class MailjetListeners {
 		});
   }
 
-  @OnEvent(Events.newTutorial)
-	async handleNewTutorial (payload: MailjetNewTutorial) {
+	@OnEvent(Events.newTutorial)
+	async handleNewTutorial(payload: MailjetNewTutorial) {
 		const emails = payload.email;
 
 		this.mailjetService.sendUniversalEmail({
