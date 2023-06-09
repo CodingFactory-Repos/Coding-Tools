@@ -80,13 +80,13 @@ const onUserInput = () => {
 		userInput.value = userInput.value.substring(0,50);
 
 	clearTimeout(timer);
-	timer = setTimeout(() => {
+	timer = setTimeout(async () => {
 		clearTimeout(timer);
 		timer = undefined;
 
 		const user = userInput.value.trim().toLowerCase().replace(/ /g, '');
-		if(user !== '') {
-			fetchQueryUser(user);
+		if (user !== '') {
+			await fetchQueryUser(user);
 		} else {
 			filteredUser.value = [];
 		}

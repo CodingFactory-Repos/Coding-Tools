@@ -80,8 +80,8 @@ const getCourseById = async (_id: string) => {
 };
 
 // fetch openHouse data on mounted
-onMounted(() => {
-	getCourseById(_id.value);
+onMounted(async () => {
+	await getCourseById(_id.value);
 });
 
 const goToProject = (canva) => {
