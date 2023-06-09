@@ -1,9 +1,10 @@
 import {
 	createRetro,
 	newPostit,
-	tryGetAllRetro,
+	tryGetRetrosByUser,
 	tryGetCurrentRetro,
 	tryUpdateParticipants,
+	apiTryGetAllRetro,
 } from '@/api/retrospective-req';
 import { defineStore } from 'pinia';
 import {
@@ -16,18 +17,20 @@ import {
 } from './interfaces/retrospective.interface';
 import { socketRetro } from '@/composables/useSocketRetro';
 import { useAuthStore } from './modules/auth.store';
+import Swal from 'sweetalert2';
 
 const retrospectiveDefaultState = (): RetrospectiveStore => ({
 	privatePostit: [],
 	tempMovingPostit: {},
 	currentRetro: {},
 	userCursors: [],
-	allRetros: [],
+	retrosByUser: [],
 	isSideBar: false,
 	inputSearch: '',
 	dateSearch: 0,
 	isRetroFinished: false,
 	isPostitVisible: false,
+	isLoading: true,
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -35,12 +38,27 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 	state: (): RetrospectiveStore => retrospectiveDefaultState(),
 	actions: {
 		async createNewRetro(this: RetrospectiveStore, retro: Retrospective) {
-			const resp = await createRetro(retro);
-			if (resp.status === 201) return resp.data;
+			try {
+				const resp = await createRetro(retro);
+				if (resp.status === 201) return resp.data;
+			} catch (err) {
+				console.log("error", err.response.data.error);
+
+				Swal.fire({
+					icon: "error",
+					title: "Ooooops",
+					text: `${err.response.data.error}`
+				});
+			}
 		},
 		async getCurrentRetro(slug: string) {
 			const resp = await tryGetCurrentRetro(slug);
-			if (resp.status === 201) this.currentRetro = resp.data.currentRetro;
+			if (resp.status === 201) {
+				this.currentRetro = resp.data.currentRetro;
+				setTimeout(() => {
+					this.isLoading = false;
+				}, 1000);
+			}
 		},
 		async createPrivatePostit(this: RetrospectiveStore, privatePostit: Postit) {
 			const resp = await newPostit(privatePostit);
@@ -135,9 +153,14 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 			const findCursor = this.userCursors.findIndex((cursor) => cursor.clientId === user.id);
 			this.userCursors.splice(findCursor, 1);
 		},
+		async getRetrosByUser(this: RetrospectiveStore) {
+			const resp = await tryGetRetrosByUser();
+			this.retrosByUser = resp.data.retrospectives;
+		},
 		async getAllRetros(this: RetrospectiveStore) {
-			const resp = await tryGetAllRetro();
-			this.allRetros = resp.data.retrospectives;
+			const resp = await apiTryGetAllRetro();
+			// I KNOW THI COULD BE IMPLEMENTED IN A BETTER WAY
+			this.retrosByUser = resp.data.retrospectives;
 		},
 		async participantJoin(this: RetrospectiveStore, email: string) {
 			const isUserHere = this.currentRetro.participants.findIndex((el) => el === email);
