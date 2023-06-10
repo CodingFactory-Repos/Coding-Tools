@@ -6,6 +6,7 @@ import { AgilityTemplateMeta } from '@/store/interfaces/agility.interface';
 import { Status } from '@/store/interfaces/axios.interface';
 import { AxiosResponse } from 'axios';
 import { UserCanvasList } from '@/store/interfaces/user.interface';
+import { BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 export const apiTryGetTemplatesMeta = () => {
 	// Call
@@ -15,35 +16,35 @@ export const apiTryGetTemplatesMeta = () => {
 			status: 'ok',
 			metaTemplates: [
 				{
-					key: 'something',
+					key: BlueprintKey.IMPACT_MAPPING,
 					url: '/impact_mapping.webp',
 					name: 'impact mapping',
 					isNew: true,
 					type: 'impactmapping',
 				},
 				{
-					key: 'something',
-					url: '/persona.webp',
-					name: 'personas',
-					isNew: true,
-					type: 'personas',
-				},
-				{
-					key: 'something',
+					key: BlueprintKey.EMPATHY_MAP,
 					url: '/empathy_map.webp',
 					name: 'empathy map',
 					isNew: true,
 					type: 'empathymap',
 				},
 				{
-					key: 'something',
+					key: BlueprintKey.PERSONA,
+					url: '/persona.webp',
+					name: 'personas',
+					isNew: true,
+					type: 'personas',
+				},
+				{
+					key: BlueprintKey.PRUNE_THE_PROJECT_TREE,
 					url: '/prune_the_project_tree.webp',
 					name: 'prune the project tree',
 					isNew: true,
 					type: 'prunetheprojecttree',
 				},
 				{
-					key: 'something',
+					key: BlueprintKey.ELEVATOR_PITCH,
 					url: '/elevator_pitch.webp',
 					name: 'elevator pitch',
 					isNew: true,
