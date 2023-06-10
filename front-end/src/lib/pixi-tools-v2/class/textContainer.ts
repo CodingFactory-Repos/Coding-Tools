@@ -156,7 +156,6 @@ export class TextContainer extends PluginContainer {
 			} else if(!this.destroyed) {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
-					//@ts-ignore
 					dragAttachedLines(this, this._viewport.socketPlugin, size);
 				}
 			}

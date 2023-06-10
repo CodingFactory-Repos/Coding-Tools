@@ -7,7 +7,7 @@ import {
 	ElementPosition,
 } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text';
+export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text' | 'wrap';
 export type GraphicTypeId =
 	| 'rectangle'
 	| 'circle'

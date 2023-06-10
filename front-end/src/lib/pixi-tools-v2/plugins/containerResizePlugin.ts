@@ -315,7 +315,7 @@ export class ResizePlugin {
 				}
 
 				const parent = this.initialGraphicsState[n].child.parent as CanvasContainer;
-				//@ts-ignore
+
 				if (parent.typeId === 'wrap') continue;
 
 				dragAttachedLines(parent, this.viewport.socketPlugin);
