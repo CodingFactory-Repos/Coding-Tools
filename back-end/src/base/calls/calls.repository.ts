@@ -224,10 +224,9 @@ export class CallsRepository {
 				message: 'User already registered',
 			};
 		}
-
 		if (
-			(date.getHours() < 8 && date.getMinutes() < 30) ||
-			(date.getHours() > 17 && date.getMinutes() > 30)
+			(date.getHours() <= 8 && date.getMinutes() <= 30) ||
+			(date.getHours() >= 17 && date.getMinutes() >= 30)
 		) {
 			return { message: 'You cannot scan outside of school hours', error: 'Scan out of time' };
 		}
@@ -257,7 +256,7 @@ export class CallsRepository {
 	}
 
 	getDate(date) {
-		return new Date(date.getFullYear(), date.getMonth() + 1, date.getDay() + 1);
+		return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 	}
 	isStudentLate(period, timeOfScan) {
 		const fakeDate = new Date(
@@ -821,5 +820,38 @@ export class CallsRepository {
 			};
 		}
 		return createPDF();
+	}
+
+	async getActualCourseGroup(userId: ObjectId) {
+		// RELOU DE DEVOIR FAIRE ÇA MAIS TOUT EST LIÉ AVEC LE PREMIER RETURN DU ACTUALGROUP AVEC SEULEMENT L'ID, ET JE SUIS BLOQUÉ POUR LA SUITE AU NIVEAU DU FRONT...
+		const actualDate = new Date();
+
+		const user = await this.db.collection('users').findOne({ _id: userId });
+		if (!user) {
+			throw new ServiceError('NOT_FOUND', 'User not found');
+		}
+
+		const query = {
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		};
+
+		switch (user.role) {
+			case Roles.STUDENT:
+				query['classId'] = await this.getStudentClassId(userId);
+				break;
+			case Roles.PRODUCT_OWNER:
+				query['teacherId'] = userId;
+				break;
+			case Roles.PEDAGOGUE:
+				return null;
+			default:
+				throw new Error(`Unknown user role: ${user.role}`);
+		}
+
+		const actualCourse = await this.db.collection('courses').findOne(query);
+
+		// La base n'est pas typée, j'ai besoin de tout en front donc voilà
+		return actualCourse ?? null;
 	}
 }

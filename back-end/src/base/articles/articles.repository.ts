@@ -25,7 +25,8 @@ export class ArticlesRepository {
 
 	// Function to add an article
 	async createArticle(query: Article) {
-		return this.articles.insertOne(query);
+		this.articles.insertOne(query);
+		return this.articles.findOne(query);
 	}
 
 	// Function to delete an article
@@ -34,7 +35,7 @@ export class ArticlesRepository {
 	}
 
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
-		this.articles.updateOne(query, update);
+		await this.articles.updateOne(query, update);
 		return this.articles.findOne(query);
 	}
 

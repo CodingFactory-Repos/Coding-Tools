@@ -1,6 +1,7 @@
 import {
 	Article,
 	ArticleStore,
+	Comments,
 	Dislikes,
 	Likes,
 	Participants,
@@ -16,7 +17,7 @@ export const useArticleStore = defineStore('article', {
 				{
 					_id: '',
 					owner: '',
-					date: '',
+					date: new Date(),
 					title: '',
 					descriptions: '',
 					content: '',
@@ -32,7 +33,7 @@ export const useArticleStore = defineStore('article', {
 				_id: '',
 				owner: '',
 				title: '',
-				date: '',
+				date: new Date(),
 				descriptions: '',
 				picture: '',
 				tags: '',
@@ -41,7 +42,7 @@ export const useArticleStore = defineStore('article', {
 				content: '',
 				participants: [
 					{
-						id: '',
+						_id: '',
 						firstName: '',
 						lastName: '',
 						email: '',
@@ -49,6 +50,7 @@ export const useArticleStore = defineStore('article', {
 				],
 				comments: [
 					{
+						_id: '',
 						email: '',
 						firstName: '',
 						lastName: '',
@@ -65,9 +67,11 @@ export const useArticleStore = defineStore('article', {
 	actions: {
 		//add article to store and to the database
 		addArticle: withErrorHandler(async function (this: ArticleStore, article: Article) {
-			const res = await http.post('/articles/add', article);
-			const idArticle = res.data.id;
-			this.idArticle = idArticle;
+			await http.post('/articles/add', article);
+
+			this.items.push(article);
+
+			return true;
 		}),
 
 		//get article from the database
@@ -107,7 +111,8 @@ export const useArticleStore = defineStore('article', {
 		removeParticipant: withErrorHandler(async function (id: string, participant: Participants) {
 			await http.put(`/articles/removeParticipant/${id}`, participant);
 
-			const index = this.oneItems.participants.findIndex((el) => el.id === participant.id);
+			const index = this.oneItems.participants.findIndex((el) => el._id === participant._id);
+			console.log('index', index);
 			this.oneItems.participants.splice(index, 1);
 
 			return true;
@@ -116,8 +121,6 @@ export const useArticleStore = defineStore('article', {
 		// add like to the array of likes in article in the database
 		addLike: withErrorHandler(async function (id: string, like: Likes) {
 			await http.put(`/articles/like/${id}`, like);
-
-			console.log(like);
 
 			const index = this.items.findIndex((el) => el._id === id);
 			this.items[index].likes.push(like);
@@ -128,8 +131,6 @@ export const useArticleStore = defineStore('article', {
 		// remove like to the array of likes in article in the database
 		removeLike: withErrorHandler(async function (id: string, like: Likes) {
 			await http.put(`/articles/removeLike/${id}`, like);
-
-			console.log(like);
 
 			const index = this.items.findIndex((el) => el._id === id);
 			const indexLike = this.items[index].likes.findIndex((el) => el.id === like);
@@ -165,10 +166,23 @@ export const useArticleStore = defineStore('article', {
 			return true;
 		}),
 
+		// remove comment from the array of comments in article in the database
+		removeComment: withErrorHandler(async function (id: string, comment: Comments) {
+			await http.put(`/articles/removeComment/${id}`, comment);
+
+			const index = this.oneItems.comments.findIndex((el) => el._id === comment._id);
+			this.oneItems.comments.splice(index, 1);
+
+			return true;
+		}),
+
+		// delete article from the database
 		deleteArticle: withErrorHandler(async function (id: string) {
-			const response = await http.delete(`/articles/delete/${id}`);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
+			await http.delete(`/articles/delete/${id}`);
+
+			const index = this.items.findIndex((el) => el._id === id);
+			this.items.splice(index, 1);
+
 			return true;
 		}),
 	},

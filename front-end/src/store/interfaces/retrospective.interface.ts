@@ -1,4 +1,4 @@
-import { Course } from './course.interface';
+import { Course } from './cours.interface';
 
 export interface RetrospectiveStore {
 	privatePostit: Array<Postit>;

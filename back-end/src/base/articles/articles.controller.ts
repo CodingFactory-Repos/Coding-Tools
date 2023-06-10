@@ -30,7 +30,7 @@ export class ArticlesController {
 	@Post('/add')
 	async addArticle(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addArticle(req.body);
-		return res.status(201).json({ article, id: article.insertedId });
+		return res.status(201).json({ article });
 	}
 
 	@Get('/:id')
@@ -92,6 +92,13 @@ export class ArticlesController {
 	@Put('/comment/:id')
 	async addComment(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addComment(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// remove comment
+	@Put('/removeComment/:id')
+	async removeComment(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.removeComment(req.params.id, req.body);
 		return res.status(201).json(article);
 	}
 

@@ -267,22 +267,43 @@ const addArticle = async () => {
 	}
 
 	// Groups all data for sending to the API
-	let data = {
-		owner: authStore.user._id,
-		title: title.value,
-		descriptions: description.value,
-		content: content.value,
-		picture: picture.value,
-		tags: tags.value,
-		type: type.value,
-		status: status.value,
-		date: date.value,
-		likes: [],
-		dislikes: [],
-	};
+	if (type.value == 'Infos') {
+		let data = {
+			owner: authStore.user._id,
+			title: title.value,
+			descriptions: description.value,
+			content: content.value,
+			picture: picture.value,
+			tags: tags.value,
+			type: type.value,
+			status: status.value,
+			date: date.value,
+			likes: [],
+			dislikes: [],
+		};
 
-	// post the data
-	await articleStore.addArticle(data);
+		// post the data
+		await articleStore.addArticle(data);
+	} else {
+		let data = {
+			owner: authStore.user._id,
+			title: title.value,
+			descriptions: description.value,
+			content: content.value,
+			picture: picture.value,
+			tags: tags.value,
+			type: type.value,
+			status: status.value,
+			date: date.value,
+			likes: [],
+			dislikes: [],
+			participants: [],
+			comments: [],
+		};
+
+		// post the data
+		await articleStore.addArticle(data);
+	}
 
 	Swal.fire({
 		title: 'Your article has been created',

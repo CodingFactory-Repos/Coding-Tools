@@ -204,7 +204,6 @@ const deleteArticle = async (id: string) => {
 	}).then(async (result) => {
 		if (result.isConfirmed) {
 			await articleStore.deleteArticle(id);
-			window.location.reload();
 		}
 	});
 };

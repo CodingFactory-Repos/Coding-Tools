@@ -32,6 +32,28 @@
 				</select>
 			</div>
 
+			<div class="mt-5 mb-5">
+				<input
+					type="text"
+					v-model="searchQuery"
+					id="default-search"
+					class="block m-auto w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					:placeholder="
+						activeTab === 'infos'
+							? 'Rechercher une info...'
+							: activeTab === 'tutos'
+							? 'Rechercher un tutoriel..'
+							: activeTab === 'events'
+							? 'Rechercher un événement..'
+							: activeTab === 'liked'
+							? 'Rechercher un article liké..'
+							: activeTab === 'participate'
+							? 'Rechercher un article auquel vous participez..'
+							: 'Rechercher un article..'
+					"
+				/>
+			</div>
+
 			<div v-for="tab in tabs" :key="tab.id">
 				<div v-if="activeTab === tab.id">
 					<!-- <h2 class="text-2xl md:text-3xl font-bold pt-4 md:pt-5 text-gray-900 dark:text-white">
@@ -73,6 +95,9 @@ const router = useRouter();
 // Use the article store and the auth store
 const articleStore = useArticleStore();
 const authStore = useAuthStore();
+
+// Create a reactive variable to store the searchBar value
+const searchQuery = ref('');
 
 // Create a reactive variable to store the user
 const user = computed(() => authStore.user);
@@ -125,41 +150,50 @@ const changeTab = (tabId) => {
 
 // Filter items based on the active tab
 const filteredItems = (tabId) => {
+	// Sort the items by date
 	const sortedItems = items.value.sort((a, b) => {
 		return new Date(b.date).getTime() - new Date(a.date).getTime();
 	});
 
+	// Filter the items based on the searchBar value
+	const searchResult = sortedItems.filter((item) => {
+		const titleMatch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase());
+		const contentMatch = item.content.toLowerCase().includes(searchQuery.value.toLowerCase());
+		return titleMatch || contentMatch;
+	});
+
+	// Filter the items based on the active tab
 	switch (tabId) {
 		case 'infos':
-			return sortedItems.filter((item) => item.type === 'Infos');
+			return searchResult.filter((item) => item.type === 'Infos');
 		case 'tutos':
 			if (user.value.role === 2 || user.value.role === 3) {
-				return sortedItems.filter((item) => item.type === 'Tuto');
+				return searchResult.filter((item) => item.type === 'Tuto');
 			} else {
-				return sortedItems.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
+				return searchResult.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
 			}
 		case 'events':
-			return sortedItems.filter((item) => item.type === 'Evenement');
+			return searchResult.filter((item) => item.type === 'Evenement');
 		case 'liked':
-			return sortedItems.filter(
+			return searchResult.filter(
 				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
 			);
 		case 'participate':
-			return sortedItems.filter(
+			return searchResult.filter(
 				(item) =>
 					item.participants &&
-					item.participants.some((participant) => participant.id === user.value._id),
+					item.participants.some((participant) => participant._id === user.value._id),
 			);
 		case 'all':
-			return sortedItems.filter(
+			return searchResult.filter(
 				(item) =>
 					item.type === 'Infos' ||
 					item.type === 'Evenement' ||
 					(item.type === 'Tuto' && item.status === 'Accepted'),
 			);
-		default:
-			return [];
 	}
+
+	return searchResult;
 };
 
 // Call the getArticles method when the component is created

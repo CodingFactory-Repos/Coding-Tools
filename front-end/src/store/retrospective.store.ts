@@ -42,8 +42,6 @@ export const useRetrospectiveStore = defineStore('retrospective', {
 				const resp = await createRetro(retro);
 				if (resp.status === 201) return resp.data;
 			} catch (err) {
-				console.log('error', err.response.data.error);
-
 				Swal.fire({
 					icon: 'error',
 					title: 'Ooooops',

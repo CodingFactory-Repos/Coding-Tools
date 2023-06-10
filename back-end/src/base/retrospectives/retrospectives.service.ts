@@ -60,7 +60,7 @@ export class RetrospectivesService {
 		if (user === null) return;
 
 		const query = {
-			$or: [{ creator: user.profile?.email }, { participants: { $in: [user.profile?.email] } }],
+			$or: [{ creator: user.profile?.email }, { allowedPeers: { $in: [user._id] } }],
 		};
 		const retroByUser = await this.retrospectivesRepository.findAll(query);
 		return retroByUser;

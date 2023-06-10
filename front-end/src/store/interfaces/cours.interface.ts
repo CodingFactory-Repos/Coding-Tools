@@ -1,7 +1,11 @@
+import { ProjectMeta } from './agility.interface';
+import { Retrospective } from './retrospective.interface';
+
 export interface CoursesStore {
-	items: Course[];
+	allCourses: Array<Course>;
+	items: Array<Course>;
 	idCourses: string;
-	oneItems: Course;
+	oneItems: CourseById;
 }
 
 export interface Course {
@@ -17,4 +21,11 @@ export interface Course {
 	project: [];
 	site: string;
 	teacherId?: string;
+}
+
+export interface CourseById {
+	course?: Course;
+	retro?: Retrospective;
+	projects?: Array<ProjectMeta>;
+	// trellos?: Trello A Définir
 }
