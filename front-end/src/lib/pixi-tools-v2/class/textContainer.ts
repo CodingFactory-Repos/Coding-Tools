@@ -96,7 +96,18 @@ export class TextContainer extends PluginContainer {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } = this.textGraphic;
-			const { fontSize, padding, fontWeight, fontStyle, fontFamily, align, wordWrap, wordWrapWidth, breakWords, lineHeight } = this.textGraphic.textStyle;
+			const {
+				fontSize,
+				padding,
+				fontWeight,
+				fontStyle,
+				fontFamily,
+				align,
+				wordWrap,
+				wordWrapWidth,
+				breakWords,
+				lineHeight,
+			} = this.textGraphic.textStyle;
 
 			//@ts-ignore
 			const containerized = this?.parent?.typeId === 'generic';
@@ -153,7 +164,7 @@ export class TextContainer extends PluginContainer {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 				}
-			} else if(!this.destroyed) {
+			} else if (!this.destroyed) {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
 					dragAttachedLines(this, this._viewport.socketPlugin, size);

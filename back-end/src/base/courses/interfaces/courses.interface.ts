@@ -7,20 +7,19 @@ export interface Course {
 	tag: string;
 	classId?: ObjectId;
 	picture: string;
-    language: string;
-    createdAt: Date;
-    periodStart: Date;
-    periodEnd: Date;
-    presence:[];
-	project:[];
-    site: string;
-    teacherId?: ObjectId;
+	language: string;
+	createdAt: Date;
+	periodStart: Date;
+	periodEnd: Date;
+	presence: [];
+	project: [];
+	site: string;
+	teacherId?: ObjectId;
 	/*
 		productOwner?: User;
 	academicYear?: AcademicYear;
 	retrospective?: Retrospective;
 	*/
-
 }
 
 export interface Call {

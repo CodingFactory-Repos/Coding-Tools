@@ -71,7 +71,6 @@ export class TextArea extends ModelGraphics {
 		this.textStyle.fill = this.color;
 		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
 
-
 		this.clear();
 		this.beginFill(null, 0);
 		if (this.borderWidth > 0) {

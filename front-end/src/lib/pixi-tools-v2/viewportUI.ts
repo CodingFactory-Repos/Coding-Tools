@@ -1,5 +1,14 @@
 import { IViewportOptions, Viewport } from 'pixi-viewport';
-import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point, TextStyleAlign, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
+import {
+	EventBoundary,
+	FederatedPointerEvent,
+	ICanvas,
+	IRenderer,
+	Point,
+	TextStyleAlign,
+	TextStyleFontStyle,
+	TextStyleFontWeight,
+} from 'pixi.js';
 import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
@@ -18,8 +27,8 @@ import { dragAttachedLines } from './utils/dragAttachedLines';
 import { TextContainer } from './class/textContainer';
 
 export interface TextEditorOptions {
-	text: string,
-	fontSize: number | string,
+	text: string;
+	fontSize: number | string;
 	fontWeight?: TextStyleFontWeight;
 	fontStyle?: TextStyleFontStyle;
 	fontFamily?: string | string[];
@@ -28,14 +37,14 @@ export interface TextEditorOptions {
 	wordWrap?: boolean;
 	wordWrapWidth?: number;
 	breakWords?: boolean;
-	color: number,
-	x: number,
-	y: number,
-	width: number,
-	height: number,
-	padding: number,
-	containerized: boolean,
-	lineHeight: number,
+	color: number;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	padding: number;
+	containerized: boolean;
+	lineHeight: number;
 }
 
 export class ViewportUI extends Viewport {
@@ -158,14 +167,14 @@ export class ViewportUI extends Viewport {
 		this.textEditor.style.transform = `scale(${this.scaled})`;
 
 		//! This is the best solution i got since increasing the graphical size increase the lineHeight;
-		this.textEditor.style.lineHeight = `${Math.floor((options.fontSize as number)* 1.2)}px`;
+		this.textEditor.style.lineHeight = `${Math.floor((options.fontSize as number) * 1.2)}px`;
 
 		//! This doesn't match exactly between graphic/css;
-		this.textEditor.style.fontWeight = options.fontWeight === "300" ? "normal" : options.fontWeight;
+		this.textEditor.style.fontWeight = options.fontWeight === '300' ? 'normal' : options.fontWeight;
 		this.textEditor.style.fontStyle = options.fontStyle;
 		this.textEditor.style.textAlign = options.fontAlign;
 
-		if (typeof options.fontFamily !== "string") {
+		if (typeof options.fontFamily !== 'string') {
 			this.textEditor.style.fontFamily = options.fontFamily.join(', ');
 		} else {
 			this.textEditor.style.fontFamily = options.fontFamily;
@@ -198,7 +207,6 @@ export class ViewportUI extends Viewport {
 			this.textEditor.style.maxWidth = 'unset';
 			this.textEditor.style.wordBreak = 'unset';
 		}
-
 
 		this.textEditor.focus();
 		this.textEditor.click();
@@ -255,7 +263,7 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if(this.textEditor.style.display === "block") {
+			if (this.textEditor.style.display === 'block') {
 				const points = this.toScreen(size.x, size.y);
 				this.textEditor.style.transform = `scale(${this.scaled})`;
 				this.textEditor.style.left = `${points.x}px`;

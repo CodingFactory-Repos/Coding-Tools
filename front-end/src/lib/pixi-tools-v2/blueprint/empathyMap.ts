@@ -34,20 +34,22 @@ export const empathyMap = (
 	const bigFontSize = 27;
 	const fontFamily = 'Arial';
 	const bigFontWeight = 'bold';
-	const regularFontWeight = "300";
+	const regularFontWeight = '300';
 	const questionText = "Qu'est-ce qu'il/elle";
-	const thinkAndFeelText = "PENSE & RESSENT";
-	const thinkAndFeelDetailText = "Ce qui compte vraiment\nLes principales préoccupations\nInquiétudes et aspirations";
-	const seeText = "VOIT";
-	const seeDetailText = "Environnement\nCe que les amis font\nCe que le marché offre";
-	const hearText = "ENTEND";
-	const hearDetailText = "Ce que disent les amis\nCe que dit le patron\nCe que disent les influenceurs\n";
-	const sayAndDoText = "DIT & FAIT";
-	const sayAndDoDetailText = "Attitude en public\nApparence\nComportement envers les autres";
-	const painText = "SOUFFRANCE";
-	const painDetailText = "Peurs, frustrations, obstacles";
-	const valueText = "INTÉRÊT"
-	const valueDetailText =  "Désirs / besoins, mesures de succès";
+	const thinkAndFeelText = 'PENSE & RESSENT';
+	const thinkAndFeelDetailText =
+		'Ce qui compte vraiment\nLes principales préoccupations\nInquiétudes et aspirations';
+	const seeText = 'VOIT';
+	const seeDetailText = 'Environnement\nCe que les amis font\nCe que le marché offre';
+	const hearText = 'ENTEND';
+	const hearDetailText =
+		'Ce que disent les amis\nCe que dit le patron\nCe que disent les influenceurs\n';
+	const sayAndDoText = 'DIT & FAIT';
+	const sayAndDoDetailText = 'Attitude en public\nApparence\nComportement envers les autres';
+	const painText = 'SOUFFRANCE';
+	const painDetailText = 'Peurs, frustrations, obstacles';
+	const valueText = 'INTÉRÊT';
+	const valueDetailText = 'Désirs / besoins, mesures de succès';
 
 	const textGap = width * 0.005;
 	const textWidthOffset = width * 0.125;
@@ -66,24 +68,63 @@ export const empathyMap = (
 		fontWeight: bigFontWeight,
 	});
 
-	const { width: questionTextWidth, height: questionTextHeight } = TextMetrics.measureText(questionText, regularTempText.style);
-	const { width: thinkAndFeelTextWidth, height: thinkAndFeelTextHeight } = TextMetrics.measureText(thinkAndFeelText, bigTempText.style);
-	const { width: thinkAndFeelDetailTextWidth } = TextMetrics.measureText(thinkAndFeelDetailText, regularTempText.style);
+	const { width: questionTextWidth, height: questionTextHeight } = TextMetrics.measureText(
+		questionText,
+		regularTempText.style,
+	);
+	const { width: thinkAndFeelTextWidth, height: thinkAndFeelTextHeight } = TextMetrics.measureText(
+		thinkAndFeelText,
+		bigTempText.style,
+	);
+	const { width: thinkAndFeelDetailTextWidth } = TextMetrics.measureText(
+		thinkAndFeelDetailText,
+		regularTempText.style,
+	);
 
-	const { width: seeTextWidth, height: seeTextHeight } = TextMetrics.measureText(seeText, bigTempText.style);
-	const { width: seeDetailTextWidth }= TextMetrics.measureText(seeDetailText, regularTempText.style);
+	const { width: seeTextWidth, height: seeTextHeight } = TextMetrics.measureText(
+		seeText,
+		bigTempText.style,
+	);
+	const { width: seeDetailTextWidth } = TextMetrics.measureText(
+		seeDetailText,
+		regularTempText.style,
+	);
 
-	const { width: hearTextWidth, height: hearTextHeight } = TextMetrics.measureText(hearText, bigTempText.style);
-	const { width: hearDetailTextWidth } = TextMetrics.measureText(hearDetailText, regularTempText.style);
+	const { width: hearTextWidth, height: hearTextHeight } = TextMetrics.measureText(
+		hearText,
+		bigTempText.style,
+	);
+	const { width: hearDetailTextWidth } = TextMetrics.measureText(
+		hearDetailText,
+		regularTempText.style,
+	);
 
-	const { width: sayAndDoTextWidth, height: sayAndDoTextHeight } = TextMetrics.measureText(sayAndDoText, bigTempText.style);
-	const { width: sayAndDoDetailTextWidth } = TextMetrics.measureText(sayAndDoDetailText, regularTempText.style);
+	const { width: sayAndDoTextWidth, height: sayAndDoTextHeight } = TextMetrics.measureText(
+		sayAndDoText,
+		bigTempText.style,
+	);
+	const { width: sayAndDoDetailTextWidth } = TextMetrics.measureText(
+		sayAndDoDetailText,
+		regularTempText.style,
+	);
 
-	const { width: painTextWidth, height: painTextHeight } = TextMetrics.measureText(painText, bigTempText.style);
-	const { width: painDetailTextWidth } = TextMetrics.measureText(painDetailText, regularTempText.style);
+	const { width: painTextWidth, height: painTextHeight } = TextMetrics.measureText(
+		painText,
+		bigTempText.style,
+	);
+	const { width: painDetailTextWidth } = TextMetrics.measureText(
+		painDetailText,
+		regularTempText.style,
+	);
 
-	const { width: valueTextWidth, height: valueTextHeight } = TextMetrics.measureText(valueText, bigTempText.style);
-	const { width: valueDetailTextWidth } = TextMetrics.measureText(valueDetailText, regularTempText.style);
+	const { width: valueTextWidth, height: valueTextHeight } = TextMetrics.measureText(
+		valueText,
+		bigTempText.style,
+	);
+	const { width: valueDetailTextWidth } = TextMetrics.measureText(
+		valueDetailText,
+		regularTempText.style,
+	);
 
 	return {
 		typeId: 'frame',
@@ -113,7 +154,8 @@ export const empathyMap = (
 			disabled: false,
 		},
 		childs: [
-			{ //! only \ line
+			{
+				//! only \ line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -149,7 +191,8 @@ export const empathyMap = (
 					},
 				],
 			},
-			{ //! only / line
+			{
+				//! only / line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -185,7 +228,8 @@ export const empathyMap = (
 					},
 				],
 			},
-			{ //! only | line
+			{
+				//! only | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -215,7 +259,8 @@ export const empathyMap = (
 					},
 				],
 			},
-			{ //! only -- line
+			{
+				//! only -- line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -245,7 +290,8 @@ export const empathyMap = (
 					},
 				],
 			},
-			{ //! circle
+			{
+				//! circle
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
@@ -274,9 +320,9 @@ export const empathyMap = (
 					},
 				],
 			},
-//! --------------
-//! THINK & FEEL
-//! --------------
+			//! --------------
+			//! THINK & FEEL
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -298,7 +344,7 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -330,7 +376,7 @@ export const empathyMap = (
 							text: thinkAndFeelText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -362,21 +408,26 @@ export const empathyMap = (
 							text: thinkAndFeelDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: point.x - thinkAndFeelDetailTextWidth / 2,
-							y: startY + textHeightOffset + questionTextHeight + thinkAndFeelTextHeight + textGap * 2,
+							y:
+								startY +
+								textHeightOffset +
+								questionTextHeight +
+								thinkAndFeelTextHeight +
+								textGap * 2,
 						},
 					},
 				],
 			},
-//! --------------
-//! SEE
-//! --------------
+			//! --------------
+			//! SEE
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -398,7 +449,7 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -430,7 +481,7 @@ export const empathyMap = (
 							text: seeText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -462,10 +513,10 @@ export const empathyMap = (
 							text: seeDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: endX - textWidthOffset - seeDetailTextWidth / 2,
@@ -474,9 +525,9 @@ export const empathyMap = (
 					},
 				],
 			},
-//! --------------
-//! SAY & DO
-//! --------------
+			//! --------------
+			//! SAY & DO
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -498,13 +549,13 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x - questionTextWidth / 2,
-							y: (point.y - centerY + largeZone * 1.6) - textHeightOffset,
+							y: point.y - centerY + largeZone * 1.6 - textHeightOffset,
 						},
 					},
 				],
@@ -530,13 +581,19 @@ export const empathyMap = (
 							text: sayAndDoText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x - sayAndDoTextWidth / 2,
-							y: (point.y - centerY + largeZone * 1.6) - textHeightOffset + questionTextHeight + textGap,
+							y:
+								point.y -
+								centerY +
+								largeZone * 1.6 -
+								textHeightOffset +
+								questionTextHeight +
+								textGap,
 						},
 					},
 				],
@@ -562,21 +619,28 @@ export const empathyMap = (
 							text: sayAndDoDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: point.x - sayAndDoDetailTextWidth / 2,
-							y: (point.y - centerY + largeZone * 1.6) - textHeightOffset + questionTextHeight + sayAndDoTextHeight + textGap * 2,
+							y:
+								point.y -
+								centerY +
+								largeZone * 1.6 -
+								textHeightOffset +
+								questionTextHeight +
+								sayAndDoTextHeight +
+								textGap * 2,
 						},
 					},
 				],
 			},
-//! --------------
-//! HEAR
-//! --------------
+			//! --------------
+			//! HEAR
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -598,7 +662,7 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -630,7 +694,7 @@ export const empathyMap = (
 							text: hearText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -662,10 +726,10 @@ export const empathyMap = (
 							text: hearDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: startX + textWidthOffset - hearDetailTextWidth / 2,
@@ -674,9 +738,9 @@ export const empathyMap = (
 					},
 				],
 			},
-//! --------------
-//! PAIN
-//! --------------
+			//! --------------
+			//! PAIN
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -698,13 +762,13 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x - quarterWidth - questionTextWidth / 2,
-							y: endY - (smallZone / 1.5),
+							y: endY - smallZone / 1.5,
 						},
 					},
 				],
@@ -730,13 +794,13 @@ export const empathyMap = (
 							text: painText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x - quarterWidth - painTextWidth / 2,
-							y: endY - (smallZone / 1.5) + questionTextHeight + textGap,
+							y: endY - smallZone / 1.5 + questionTextHeight + textGap,
 						},
 					},
 				],
@@ -762,21 +826,21 @@ export const empathyMap = (
 							text: painDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: point.x - quarterWidth - painDetailTextWidth / 2,
-							y: endY - (smallZone / 1.5) + questionTextHeight + painTextHeight + textGap * 2,
+							y: endY - smallZone / 1.5 + questionTextHeight + painTextHeight + textGap * 2,
 						},
 					},
 				],
 			},
-//! --------------
-//! VALUE
-//! --------------
+			//! --------------
+			//! VALUE
+			//! --------------
 			{
 				typeId: 'text',
 				properties: {
@@ -798,13 +862,13 @@ export const empathyMap = (
 							text: questionText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x + quarterWidth - questionTextWidth / 2,
-							y: endY - (smallZone / 1.5),
+							y: endY - smallZone / 1.5,
 						},
 					},
 				],
@@ -830,13 +894,13 @@ export const empathyMap = (
 							text: valueText,
 							fontSize: bigFontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
 							x: point.x + quarterWidth - valueTextWidth / 2,
-							y: endY - (smallZone / 1.5) + questionTextHeight + textGap,
+							y: endY - smallZone / 1.5 + questionTextHeight + textGap,
 						},
 					},
 				],
@@ -862,14 +926,14 @@ export const empathyMap = (
 							text: valueDetailText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: point.x + quarterWidth - valueDetailTextWidth / 2,
-							y: endY - (smallZone / 1.5) + questionTextHeight + valueTextHeight + textGap * 2,
+							y: endY - smallZone / 1.5 + questionTextHeight + valueTextHeight + textGap * 2,
 						},
 					},
 				],

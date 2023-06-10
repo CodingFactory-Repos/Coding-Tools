@@ -32,10 +32,10 @@ export const impactMapping = (
 	const fontSize = 30;
 	const fontFamily = 'Arial';
 	const fontWeight = 'bold';
-	const goalText = "Objectifs";
-	const actorText = "Acteurs";
-	const impactText = "Impacts";
-	const deliText = "Délivrables";
+	const goalText = 'Objectifs';
+	const actorText = 'Acteurs';
+	const impactText = 'Impacts';
+	const deliText = 'Délivrables';
 
 	const tempText = new Text('', {
 		fontSize: fontSize,
@@ -43,18 +43,21 @@ export const impactMapping = (
 		fontWeight: fontWeight,
 	});
 
-	const { width: goalTextWidth, height: goalTextHeight } = TextMetrics.measureText(goalText, tempText.style);
+	const { width: goalTextWidth, height: goalTextHeight } = TextMetrics.measureText(
+		goalText,
+		tempText.style,
+	);
 	const { width: actorTextWidth } = TextMetrics.measureText(actorText, tempText.style);
 	const { width: impactTextWidth } = TextMetrics.measureText(impactText, tempText.style);
 	const { width: deliTextWidth } = TextMetrics.measureText(deliText, tempText.style);
 	tempText.destroy();
 
 	const textQuarterCenter = width / 8;
-	const textY = startY + ((width / 10) / 2) - goalTextHeight / 2;
-	const goalTextX = startX + textQuarterCenter - (goalTextWidth / 2);
-	const actorTextX = startX + textQuarterCenter + quarter - (actorTextWidth / 2);
-	const impactTextX = startX + textQuarterCenter + (quarter * 2) - (impactTextWidth / 2);
-	const deliTextX = startX + textQuarterCenter + (quarter * 3) - (deliTextWidth / 2);
+	const textY = startY + width / 10 / 2 - goalTextHeight / 2;
+	const goalTextX = startX + textQuarterCenter - goalTextWidth / 2;
+	const actorTextX = startX + textQuarterCenter + quarter - actorTextWidth / 2;
+	const impactTextX = startX + textQuarterCenter + quarter * 2 - impactTextWidth / 2;
+	const deliTextX = startX + textQuarterCenter + quarter * 3 - deliTextWidth / 2;
 
 	return {
 		typeId: 'frame',
@@ -84,7 +87,8 @@ export const impactMapping = (
 			disabled: false,
 		},
 		childs: [
-			{ //! first | line
+			{
+				//! first | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -114,7 +118,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! second | line
+			{
+				//! second | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -144,7 +149,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! third | line
+			{
+				//! third | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -174,7 +180,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! only -- line
+			{
+				//! only -- line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -204,7 +211,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! FirstQuarterCenter Text
+			{
+				//! FirstQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -225,7 +233,7 @@ export const impactMapping = (
 							text: goalText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -236,7 +244,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! SecondQuarterCenter Text
+			{
+				//! SecondQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -257,7 +266,7 @@ export const impactMapping = (
 							text: actorText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -268,7 +277,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! ThirdQuarterCenter Text
+			{
+				//! ThirdQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -289,7 +299,7 @@ export const impactMapping = (
 							text: impactText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -300,7 +310,8 @@ export const impactMapping = (
 					},
 				],
 			},
-			{ //! FourthQuarterCenter Text
+			{
+				//! FourthQuarterCenter Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -321,7 +332,7 @@ export const impactMapping = (
 							text: deliText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},

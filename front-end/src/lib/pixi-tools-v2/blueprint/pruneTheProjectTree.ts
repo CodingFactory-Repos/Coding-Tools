@@ -29,9 +29,9 @@ export const pruneTheProjectTree = (
 	const fontSize = 20;
 	const fontFamily = 'Arial';
 	const fontWeight = 'bold';
-	const currentText = "Actuel";
-	const nearFutureText = "Futur proche";
-	const futureText = "Futur";
+	const currentText = 'Actuel';
+	const nearFutureText = 'Futur proche';
+	const futureText = 'Futur';
 	const textHeightOffset = height * 0.025;
 	const lineWidth = 4;
 
@@ -85,7 +85,8 @@ export const pruneTheProjectTree = (
 				PRUNE THE TREE [SQUELETON]
 			 *******************************/
 
-			{ //! Folliage
+			{
+				//! Folliage
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
@@ -107,7 +108,7 @@ export const pruneTheProjectTree = (
 							borderColor: 0x000000,
 						},
 						bounds: {
-							x: point.x - (maxLength * 1.125),
+							x: point.x - maxLength * 1.125,
 							y: point.y - foliageHeight / 1.75,
 							radius: modifiedWidth * 0.3,
 							width: maxLength * 2.25,
@@ -116,7 +117,8 @@ export const pruneTheProjectTree = (
 					},
 				],
 			},
-			{ //! Tree
+			{
+				//! Tree
 				typeId: 'generic',
 				properties: {
 					cursor: 'pointer',
@@ -145,7 +147,8 @@ export const pruneTheProjectTree = (
 					},
 				],
 			},
-			{ //! small arc
+			{
+				//! small arc
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -167,15 +170,28 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: startX + firstLineOffset + (lineWidth / 2) + firstLineOffset, y: endY - (lineWidth / 2) },
-							end: { x: endX - firstLineOffset + (lineWidth / 2) - firstLineOffset, y: endY - (lineWidth / 2) },
-							startControl: { x: startX + firstLineOffset + (lineWidth / 2) + firstLineOffset, y: startY + firstLineOffset * 1.5 - (lineWidth / 2) },
-							endControl: { x: endX - firstLineOffset + (lineWidth / 2) - firstLineOffset, y: startY + firstLineOffset * 1.5 - (lineWidth / 2) },
+							start: {
+								x: startX + firstLineOffset + lineWidth / 2 + firstLineOffset,
+								y: endY - lineWidth / 2,
+							},
+							end: {
+								x: endX - firstLineOffset + lineWidth / 2 - firstLineOffset,
+								y: endY - lineWidth / 2,
+							},
+							startControl: {
+								x: startX + firstLineOffset + lineWidth / 2 + firstLineOffset,
+								y: startY + firstLineOffset * 1.5 - lineWidth / 2,
+							},
+							endControl: {
+								x: endX - firstLineOffset + lineWidth / 2 - firstLineOffset,
+								y: startY + firstLineOffset * 1.5 - lineWidth / 2,
+							},
 						},
 					},
 				],
 			},
-			{ //! big arc
+			{
+				//! big arc
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -197,15 +213,25 @@ export const pruneTheProjectTree = (
 							alpha: 1,
 						},
 						lineControl: {
-							start: { x: endX - modifiedWidth + (lineWidth / 2) + firstLineOffset, y: endY - (lineWidth / 2)},
-							end: { x: endX + (lineWidth / 2) - firstLineOffset, y: endY - (lineWidth / 2)},
-							startControl: { x: startX + (lineWidth / 2) + firstLineOffset, y: startY - (lineWidth / 2)},
-							endControl: { x: startX + modifiedWidth + (lineWidth / 2) - firstLineOffset, y: startY - (lineWidth / 2)},
+							start: {
+								x: endX - modifiedWidth + lineWidth / 2 + firstLineOffset,
+								y: endY - lineWidth / 2,
+							},
+							end: { x: endX + lineWidth / 2 - firstLineOffset, y: endY - lineWidth / 2 },
+							startControl: {
+								x: startX + lineWidth / 2 + firstLineOffset,
+								y: startY - lineWidth / 2,
+							},
+							endControl: {
+								x: startX + modifiedWidth + lineWidth / 2 - firstLineOffset,
+								y: startY - lineWidth / 2,
+							},
 						},
 					},
 				],
 			},
-			{ //! First current Text
+			{
+				//! First current Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -226,18 +252,19 @@ export const pruneTheProjectTree = (
 							text: currentText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
-							x: startX + (firstLineOffset * 2) + firstLineOffset / 2 - currentTextWidth / 2,
+							x: startX + firstLineOffset * 2 + firstLineOffset / 2 - currentTextWidth / 2,
 							y: endY - textHeightOffset,
 						},
 					},
 				],
 			},
-			{ //! Second current Text
+			{
+				//! Second current Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -258,18 +285,19 @@ export const pruneTheProjectTree = (
 							text: currentText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
 						bounds: {
-							x: endX - (firstLineOffset * 2) - firstLineOffset / 2 - currentTextWidth / 2,
+							x: endX - firstLineOffset * 2 - firstLineOffset / 2 - currentTextWidth / 2,
 							y: endY - textHeightOffset,
 						},
 					},
 				],
 			},
-			{ //! First near-future Text
+			{
+				//! First near-future Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -290,7 +318,7 @@ export const pruneTheProjectTree = (
 							text: nearFutureText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -301,7 +329,8 @@ export const pruneTheProjectTree = (
 					},
 				],
 			},
-			{ //! Second near-future Text
+			{
+				//! Second near-future Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -322,7 +351,7 @@ export const pruneTheProjectTree = (
 							text: nearFutureText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -333,7 +362,8 @@ export const pruneTheProjectTree = (
 					},
 				],
 			},
-			{ //! First future Text
+			{
+				//! First future Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -354,7 +384,7 @@ export const pruneTheProjectTree = (
 							text: futureText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},
@@ -365,7 +395,8 @@ export const pruneTheProjectTree = (
 					},
 				],
 			},
-			{ //! Second future Text
+			{
+				//! Second future Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -386,7 +417,7 @@ export const pruneTheProjectTree = (
 							text: futureText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
 						},

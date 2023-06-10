@@ -15,7 +15,7 @@ export interface PersonaBuilder {
 		motivation: string;
 		bio: string;
 		verbatism: string;
-	}
+	};
 	goals: Array<string>;
 	needs: Array<string>;
 	challenges: Array<string>;
@@ -52,27 +52,27 @@ export const personas = (
 	const regularFontSize = 17;
 	const bigFrontSize = 27;
 	const regularFontFamily = 'Arial';
-	const regularFontWeight = "300";
+	const regularFontWeight = '300';
 	const bigFontWeight = 'bold';
-	const goalsTitleText = "Objectifs";
-	const needsTitleText = "Besoins";
-	const skillsTitleText = "Compétences";
-	const difficultiesTitleText = "Difficultées";
-	const challengesTitleText = "Challenges";
-	const commentaryTitleText = "Commentaires";
+	const goalsTitleText = 'Objectifs';
+	const needsTitleText = 'Besoins';
+	const skillsTitleText = 'Compétences';
+	const difficultiesTitleText = 'Difficultées';
+	const challengesTitleText = 'Challenges';
+	const commentaryTitleText = 'Commentaires';
 
 	const lineWidth = 4;
 	const textTitleOffset = width * 0.0125;
 	const textDataOffset = width * 0.05;
 
 	const textDefinition = {
-		"age": "Age:",
-		"personalSituation": "Situation personnel:",
-		"motivation": "Motivation:",
-		"professionalBackground": "Parcours professionnel:",
-		"bio": "Biographie:",
-		"verbatism": "Verbatism:",
-	}
+		age: 'Age:',
+		personalSituation: 'Situation personnel:',
+		motivation: 'Motivation:',
+		professionalBackground: 'Parcours professionnel:',
+		bio: 'Biographie:',
+		verbatism: 'Verbatism:',
+	};
 
 	const commentaryBuildText = personaBuilder.commentary?.replaceAll('\n', '');
 	const skillsBuildText = personaBuilder.skills?.replaceAll('\n', '');
@@ -83,13 +83,15 @@ export const personas = (
 
 	const { name, ...values } = personaBuilder.profile;
 	const profileBuildName = name;
-	const profileBuildText = Object.keys(values).map((key) => {
-		if(key === "verbatism") {
-			return textDefinition[key] + " \"" + values[key] + '\"\n'
-		} else {
-			return textDefinition[key] + " " + values[key] + '\n'
-		}
-	}).join('\n');
+	const profileBuildText = Object.keys(values)
+		.map((key) => {
+			if (key === 'verbatism') {
+				return textDefinition[key] + ' "' + values[key] + '"\n';
+			} else {
+				return textDefinition[key] + ' ' + values[key] + '\n';
+			}
+		})
+		.join('\n');
 
 	return {
 		typeId: 'frame',
@@ -119,7 +121,8 @@ export const personas = (
 			disabled: false,
 		},
 		childs: [
-			{ //! First -- line
+			{
+				//! First -- line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -149,7 +152,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Section one | line
+			{
+				//! Section one | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -179,7 +183,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Section two first | line
+			{
+				//! Section two first | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -209,7 +214,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Section two second | line
+			{
+				//! Section two second | line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -239,7 +245,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Second -- line
+			{
+				//! Second -- line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -269,7 +276,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Section three -- line
+			{
+				//! Section three -- line
 				typeId: 'line',
 				properties: {
 					cursor: 'pointer',
@@ -299,7 +307,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Name text
+			{
+				//! Name text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -320,10 +329,10 @@ export const personas = (
 							text: profileBuildName,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left"
+							fontAlign: 'left',
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -332,7 +341,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Profile Text
+			{
+				//! Profile Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -353,13 +363,13 @@ export const personas = (
 							text: profileBuildText,
 							fontSize: 14,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (width * (3 / 5)) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: width * (3 / 5) - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -368,7 +378,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Needs text
+			{
+				//! Needs text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -389,10 +400,10 @@ export const personas = (
 							text: needsTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: threeFiveX + textTitleOffset,
@@ -401,7 +412,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Needs text Build
+			{
+				//! Needs text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -422,13 +434,13 @@ export const personas = (
 							text: needBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (Math.abs(endX) - Math.abs(threeFiveX)) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: Math.abs(endX) - Math.abs(threeFiveX) - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: threeFiveX + textTitleOffset,
@@ -437,7 +449,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Goals text
+			{
+				//! Goals text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -458,10 +471,10 @@ export const personas = (
 							text: goalsTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -470,7 +483,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Goals text Build
+			{
+				//! Goals text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -491,13 +505,13 @@ export const personas = (
 							text: goalBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (Math.abs(endX) - Math.abs(threeFourX)) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: Math.abs(endX) - Math.abs(threeFourX) - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -506,7 +520,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Challenges text
+			{
+				//! Challenges text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -527,10 +542,10 @@ export const personas = (
 							text: challengesTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: oneFourX + textTitleOffset,
@@ -539,7 +554,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Challenges text Build
+			{
+				//! Challenges text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -560,13 +576,13 @@ export const personas = (
 							text: challengeBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (Math.abs(threeFourX) - Math.abs(oneFourX)) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: Math.abs(threeFourX) - Math.abs(oneFourX) - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: oneFourX + textTitleOffset,
@@ -575,7 +591,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Difficulties text
+			{
+				//! Difficulties text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -596,10 +613,10 @@ export const personas = (
 							text: difficultiesTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: threeFourX + textTitleOffset,
@@ -608,7 +625,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Difficulties text Build
+			{
+				//! Difficulties text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -629,13 +647,13 @@ export const personas = (
 							text: difficultiesBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (Math.abs(endX) - Math.abs(threeFourX)) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: Math.abs(endX) - Math.abs(threeFourX) - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: threeFourX + textTitleOffset,
@@ -644,7 +662,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Skills text
+			{
+				//! Skills text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -665,10 +684,10 @@ export const personas = (
 							text: skillsTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -677,7 +696,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //! Skills text Build
+			{
+				//! Skills text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -698,13 +718,13 @@ export const personas = (
 							text: skillsBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (width / 2) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: width / 2 - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: startX + textTitleOffset,
@@ -713,7 +733,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //!  Commentary Text
+			{
+				//!  Commentary Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -734,10 +755,10 @@ export const personas = (
 							text: commentaryTitleText,
 							fontSize: bigFrontSize,
 							fontWeight: bigFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "center"
+							fontAlign: 'center',
 						},
 						bounds: {
 							x: centerX + textTitleOffset,
@@ -746,7 +767,8 @@ export const personas = (
 					},
 				],
 			},
-			{ //!  Commentary Text Build
+			{
+				//!  Commentary Text Build
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -767,13 +789,13 @@ export const personas = (
 							text: commentaryBuildText,
 							fontSize: regularFontSize,
 							fontWeight: regularFontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: regularFontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: (width / 2) - (textTitleOffset * 2),
-							breakWords: true
+							wordWrapWidth: width / 2 - textTitleOffset * 2,
+							breakWords: true,
 						},
 						bounds: {
 							x: centerX + textTitleOffset,

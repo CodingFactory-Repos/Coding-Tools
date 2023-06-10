@@ -1,7 +1,7 @@
 export interface CoursesStore {
 	items: Course[];
 	idCourses: string;
-    oneItems: Course;
+	oneItems: Course;
 }
 
 export interface Course {
@@ -9,15 +9,12 @@ export interface Course {
 	tag: string;
 	classTag: string;
 	picture: string;
-    language: string;
-    createdAt: Date;
-    periodStart: Date;
-    periodEnd: Date;
-    presence:[];
-	project:[];
-    site: string;
-    teacherId?: string;
+	language: string;
+	createdAt: Date;
+	periodStart: Date;
+	periodEnd: Date;
+	presence: [];
+	project: [];
+	site: string;
+	teacherId?: string;
 }
-
-
-

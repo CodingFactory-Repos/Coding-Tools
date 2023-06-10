@@ -18,21 +18,21 @@ export const elavatorPitch = (
 	const maxWidth = Math.min(650, width);
 	const maxHeight = Math.min(500, height);
 	const startX = point.x - maxWidth / 2;
-	const startY = point.y- maxHeight / 2;
+	const startY = point.y - maxHeight / 2;
 
 	const pitchTemplate = [
-		"Pour des (cients ciblés)...",
-		"Qui ont un (besoin client)...",
-		"Le (nom du produit)...",
-		"Est une (catégorie de marché)...",
-		"Qui apporte (un bénéfice clé)..",
-		"A la différence de (la concurrence)...",
-		"Le produit dispose d'un (critère de différence)..."
+		'Pour des (cients ciblés)...',
+		'Qui ont un (besoin client)...',
+		'Le (nom du produit)...',
+		'Est une (catégorie de marché)...',
+		'Qui apporte (un bénéfice clé)..',
+		'A la différence de (la concurrence)...',
+		"Le produit dispose d'un (critère de différence)...",
 	];
 
 	const fontSize = 23;
 	const fontFamily = 'Arial';
-	const fontWeight = "300";
+	const fontWeight = '300';
 	const textOffset = width * 0.0125;
 	const elevatorPitchText = pitchTemplate.join('\n\n');
 
@@ -64,7 +64,8 @@ export const elavatorPitch = (
 			disabled: false,
 		},
 		childs: [
-			{ //! Elvator pitch Text
+			{
+				//! Elvator pitch Text
 				typeId: 'text',
 				properties: {
 					cursor: 'pointer',
@@ -85,13 +86,13 @@ export const elavatorPitch = (
 							text: elevatorPitchText,
 							fontSize: fontSize,
 							fontWeight: fontWeight,
-							fontStyle: "normal",
+							fontStyle: 'normal',
 							fontFamily: fontFamily,
 							fontPadding: 0,
-							fontAlign: "left",
+							fontAlign: 'left',
 							wordWrap: true,
 							wordWrapWidth: maxWidth - textOffset * 2,
-							breakWords: true
+							breakWords: true,
 						},
 						bounds: {
 							x: startX + textOffset,

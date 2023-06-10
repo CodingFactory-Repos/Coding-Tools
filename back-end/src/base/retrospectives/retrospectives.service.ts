@@ -31,15 +31,11 @@ export class RetrospectivesService {
 				'You do not have the rights to access this ressource.',
 			);
 
-
-		const queryRetro = { "associatedCourse._id": retrospective.associatedCourse._id}
+		const queryRetro = { 'associatedCourse._id': retrospective.associatedCourse._id };
 		const isCoursesAlreadyAsignated = await this.retrospectivesRepository.findOne(queryRetro);
 
 		if (isCoursesAlreadyAsignated !== null)
-			throw new ServiceError(
-				'UNAUTHORIZED',
-				'This course is already assigned.',
-			);
+			throw new ServiceError('UNAUTHORIZED', 'This course is already assigned.');
 
 		const date = new Date();
 

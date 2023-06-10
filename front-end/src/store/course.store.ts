@@ -3,7 +3,7 @@ import { tryGetAllCourses } from '@/api/courses-req';
 import { CourseStore } from './interfaces/course.interface';
 
 const courseDefaultState = (): CourseStore => ({
-	allCourses: []
+	allCourses: [],
 });
 // We do not want this store to be reset.
 // defineStore<string, RetroStore> : -> Very strict
@@ -14,5 +14,5 @@ export const useCourseStore = defineStore('course', {
 			const resp = await tryGetAllCourses();
 			if (resp.status === 200) this.allCourses = resp.data.courses;
 		},
-	}
+	},
 });

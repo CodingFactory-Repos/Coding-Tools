@@ -1,15 +1,14 @@
 import { User } from './auth.interfaces';
 
 export interface CourseStore {
-	allCourses: Array<Course>,
+	allCourses: Array<Course>;
 
 	getAllCourses?: (this: CourseStore) => Promise<void>;
 }
 
-
 export interface Course {
 	_id?: string;
-	tag?: string
+	tag?: string;
 	classId?: string;
 	picture?: string;
 	language?: string;
@@ -18,5 +17,5 @@ export interface Course {
 	periodEnd?: Date;
 	presence?: Array<User>;
 	project?: Array<any>; // Don't know what it is
-	site?: string
+	site?: string;
 }
