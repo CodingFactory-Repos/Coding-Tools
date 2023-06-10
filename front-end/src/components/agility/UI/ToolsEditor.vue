@@ -196,7 +196,7 @@
 import { computed, watch, ref, toRaw } from 'vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
-import { BlueprintTypeName, DownloadType, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { BlueprintTypeName, DownloadType, LiteralGeometryTypes, BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 import BlueprintModal from '@/components/agility/modals/Blueprint.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
@@ -218,9 +218,7 @@ import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import { ContainerTypeId } from '@/lib/pixi-tools-v2/types/pixi-serialize';
-import { BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
-import { EventBoundary, FederatedPointerEvent } from 'pixi.js';
-import { Point } from 'pixi.js';
+import { EventBoundary, FederatedPointerEvent, Point } from 'pixi.js';
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
