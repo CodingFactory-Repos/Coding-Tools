@@ -34,7 +34,7 @@ import AccessUser from '@/components/agility/cards/AccessUser.vue';
 
 const route = useRoute();
 const accessUsers = ref<Array<UserCanvasList>>([]);
-const roomId = ref(route.path.match(/[^/]+$/)[0]);
+const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 
 const emit = defineEmits(['close']);
 

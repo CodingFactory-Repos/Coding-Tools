@@ -36,7 +36,7 @@ const projectLoading = computed(() => agilityStore.projectLoading);
 const project = computed(() => agilityStore.currentProject);
 
 const canvas = ref<HTMLCanvasElement>();
-const roomId = ref(route.path.match(/[^/]+$/)[0]);
+const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 const loading = ref(projectLoading.value || project.value.length > 0);
 let timeout: NodeJS.Timeout = null;
 let rawScene: Scene = null;
