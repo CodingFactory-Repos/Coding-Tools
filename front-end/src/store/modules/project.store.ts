@@ -200,13 +200,7 @@ export const useProjectStore = defineStore('project', {
 			const generateBlueprint = getAgileBlueprints[this.deferredBlueprint];
 			if (generateBlueprint === null) return;
 
-			const data = generateBlueprint(
-				scene.viewport,
-				point,
-				1200,
-				900,
-				this.personaBuilder,
-			);
+			const data = generateBlueprint(scene.viewport, point, 1200, 900, this.personaBuilder);
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());

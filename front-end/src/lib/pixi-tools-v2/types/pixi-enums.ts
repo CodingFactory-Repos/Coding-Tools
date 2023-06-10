@@ -107,9 +107,9 @@ export enum BlueprintKey {
 }
 
 export const BlueprintTypeName = {
-	"1": "impactmapping",
-	"2": "empathymap",
-	"3": "personas",
-	"4": "prunetheprojecttree",
-	"5": "elevatorpitch",
-}
+	'1': 'impactmapping',
+	'2': 'empathymap',
+	'3': 'personas',
+	'4': 'prunetheprojecttree',
+	'5': 'elevatorpitch',
+};
