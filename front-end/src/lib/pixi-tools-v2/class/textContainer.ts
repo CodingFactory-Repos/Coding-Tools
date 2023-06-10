@@ -96,13 +96,21 @@ export class TextContainer extends PluginContainer {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } = this.textGraphic;
-			const fontSize = this.textGraphic.textStyle.fontSize;
-			const padding = this.textGraphic.textStyle.padding;
+			const { fontSize, padding, fontWeight, fontStyle, fontFamily, align, wordWrap, wordWrapWidth, breakWords, lineHeight } = this.textGraphic.textStyle;
+
 			//@ts-ignore
 			const containerized = this?.parent?.typeId === 'generic';
-			this._viewport.startTextEditor(
+			this._viewport.startTextEditor({
 				text,
 				fontSize,
+				fontWeight,
+				fontStyle,
+				fontFamily,
+				fontAlign: align,
+				wordWrap,
+				lineHeight,
+				wordWrapWidth,
+				breakWords,
 				color,
 				x,
 				y,
@@ -110,7 +118,7 @@ export class TextContainer extends PluginContainer {
 				height,
 				padding,
 				containerized,
-			);
+			});
 		}
 	}
 
@@ -137,14 +145,15 @@ export class TextContainer extends PluginContainer {
 			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
+			this._viewport.textEditor.innerHTML = '';
 
 			// This need to be canceled if the input text is empty, add a blocking condition.
-			if (this.isNew) {
+			if (!this.destroyed && this.isNew) {
 				this.isNew = false;
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 				}
-			} else {
+			} else if(!this.destroyed) {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
 					//@ts-ignore
