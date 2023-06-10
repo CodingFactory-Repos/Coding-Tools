@@ -3,6 +3,7 @@ import { empathyMap } from '@/lib/pixi-tools-v2/blueprint/empathyMap';
 import { impactMapping } from '@/lib/pixi-tools-v2/blueprint/impactMapping';
 import { personas } from '@/lib/pixi-tools-v2/blueprint/personas';
 import { pruneTheProjectTree } from '@/lib/pixi-tools-v2/blueprint/pruneTheProjectTree';
+import { BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
 import { SerializedContainer } from '@/lib/pixi-tools-v2/types/pixi-serialize';
 
 export interface AgilityStore {
@@ -42,7 +43,7 @@ export interface AgilityTemplateMeta {
 }
 
 export interface AgilityTemplateMetaDetails {
-	key: string;
+	key: BlueprintKey;
 	url: string;
 	name: string;
 	isNew: boolean;

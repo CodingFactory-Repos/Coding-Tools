@@ -15,6 +15,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
 	canvas: null,
 	default: true,
+	internalLoading: true,
 	deferredGeometry: null,
 	deferredContainer: null,
 	deferredBlueprint: null,
@@ -27,6 +28,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	refreshPdfViewer: 0,
 	timerId: null,
 	personaBuilder: undefined,
+	baseTemplate: 0,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -198,13 +200,7 @@ export const useProjectStore = defineStore('project', {
 			const generateBlueprint = getAgileBlueprints[this.deferredBlueprint];
 			if (generateBlueprint === null) return;
 
-			const data = generateBlueprint(
-				scene.viewport,
-				point,
-				1200,
-				900,
-				this.personaBuilder,
-			);
+			const data = generateBlueprint(scene.viewport, point, 1200, 900, this.personaBuilder);
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
