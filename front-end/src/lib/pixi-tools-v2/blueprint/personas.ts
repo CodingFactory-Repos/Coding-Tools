@@ -86,12 +86,12 @@ export const personas = (
 	const profileBuildText = Object.keys(values)
 		.map((key) => {
 			if (key === 'verbatism') {
-				return textDefinition[key] + ' "' + values[key] + '"\n';
+				return textDefinition[key] + ' "' + values[key] + '"';
 			} else {
-				return textDefinition[key] + ' ' + values[key] + '\n';
+				return textDefinition[key] + ' ' + values[key];
 			}
 		})
-		.join('\n');
+		.join('\n\n');
 
 	return {
 		typeId: 'frame',

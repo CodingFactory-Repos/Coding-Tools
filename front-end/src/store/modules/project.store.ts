@@ -204,7 +204,7 @@ export const useProjectStore = defineStore('project', {
 				1200,
 				900,
 				this.personaBuilder,
-			) as Partial<SerializedContainer>;
+			);
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
