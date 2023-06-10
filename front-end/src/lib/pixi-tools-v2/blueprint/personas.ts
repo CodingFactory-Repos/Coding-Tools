@@ -439,7 +439,7 @@ export const personas = (
 							fontPadding: 0,
 							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: Math.abs(endX) - Math.abs(threeFiveX) - textTitleOffset * 2,
+							wordWrapWidth: Math.abs(Math.abs(endX) - Math.abs(threeFiveX)) - textTitleOffset * 2,
 							breakWords: true,
 						},
 						bounds: {
@@ -510,7 +510,7 @@ export const personas = (
 							fontPadding: 0,
 							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: Math.abs(endX) - Math.abs(threeFourX) - textTitleOffset * 2,
+							wordWrapWidth: Math.abs(Math.abs(endX) - Math.abs(threeFourX)) - textTitleOffset * 2,
 							breakWords: true,
 						},
 						bounds: {
@@ -581,7 +581,7 @@ export const personas = (
 							fontPadding: 0,
 							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: Math.abs(threeFourX) - Math.abs(oneFourX) - textTitleOffset * 2,
+							wordWrapWidth: Math.abs(Math.abs(threeFourX) - Math.abs(oneFourX)) - textTitleOffset * 2,
 							breakWords: true,
 						},
 						bounds: {
@@ -652,7 +652,7 @@ export const personas = (
 							fontPadding: 0,
 							fontAlign: 'left',
 							wordWrap: true,
-							wordWrapWidth: Math.abs(endX) - Math.abs(threeFourX) - textTitleOffset * 2,
+							wordWrapWidth: Math.abs(Math.abs(endX) - Math.abs(threeFourX)) - textTitleOffset * 2,
 							breakWords: true,
 						},
 						bounds: {
