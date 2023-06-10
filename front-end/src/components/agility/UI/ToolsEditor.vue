@@ -337,6 +337,7 @@ watch(internalLoading, (val) => {
 					const fakeEvent = new FederatedPointerEvent(eventBoundary);
 					fakeEvent.global = new Point(scene.viewport.center.x,scene.viewport.center.y);
 					projectStore.createBlueprint(fakeEvent);
+					projectStore.baseTemplate = 0;
 				}
 			}, 1500);
 		}
