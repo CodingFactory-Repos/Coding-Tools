@@ -133,7 +133,12 @@ export class Normalizer {
 			for (const element of childs) {
 				const childTypeId = element.typeId;
 
-				if (childTypeId === 'generic' || childTypeId === 'frame' || childTypeId === 'line' || childTypeId === 'text') {
+				if (
+					childTypeId === 'generic' ||
+					childTypeId === 'frame' ||
+					childTypeId === 'line' ||
+					childTypeId === 'text'
+				) {
 					const containerChildren = this.container(
 						viewport,
 						element as SerializedContainer,

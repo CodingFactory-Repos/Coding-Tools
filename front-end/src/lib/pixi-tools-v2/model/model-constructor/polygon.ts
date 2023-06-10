@@ -38,7 +38,6 @@ export class Polygon extends ModelGraphics {
 
 		const sideLength = Math.min(width, height);
 		const vertices = this.calculatePolygonVertices(sideLength, width, height);
-		// console.log(this.findPolygonCenter(vertices))
 
 		this.clear();
 		this.beginFill(this.color);

@@ -7,24 +7,23 @@ export interface Course {
 	tag: string;
 	classId?: ObjectId;
 	picture: string;
-    language: string;
-    createdAt: Date;
-    periodStart: Date;
-    periodEnd: Date;
-    presence:[];
+	language: string;
+	createdAt: Date;
+	periodStart: Date;
+	periodEnd: Date;
+	presence: [];
 	projects: Array<ObjectId>;
-    site: string;
-    teacherId?: ObjectId;
+	site: string;
+	teacherId?: ObjectId;
 	isLocked?: boolean;
-	groups?: Array<Group>
-	retro: ObjectId
-	trellos?: Array<any> // WAITING FOR TRELLO
+	groups?: Array<Group>;
+	retro: ObjectId;
+	trellos?: Array<any>; // WAITING FOR TRELLO
 	/*
 		productOwner?: User;
 	academicYear?: AcademicYear;
 	retrospective?: Retrospective;
 	*/
-
 }
 
 export interface Call {

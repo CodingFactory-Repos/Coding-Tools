@@ -5,7 +5,6 @@
 		value="count"
 		caption=""
 		title="Nombre de macs par campus"
-		class=""
 	/>
 </template>
 <script>
@@ -20,9 +19,7 @@ export default {
 		};
 	},
 	async created() {
-		console.log('created nb material chart');
 		const { data: items } = await http.get(`/materials/macs`);
-		console.log(items);
 		this.datas = items;
 	},
 	components: { DoughnutChart },
