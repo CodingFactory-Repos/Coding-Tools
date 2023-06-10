@@ -163,7 +163,6 @@ export class DragPlugin {
 					continue;
 
 				const parent = element.child.parent as CanvasContainer;
-				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
 				if (parent.typeId === 'wrap') continue;
 
 				const childBounds = element.child.getBounds();

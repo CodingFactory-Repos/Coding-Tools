@@ -15,7 +15,26 @@ export const elavatorPitch = (
 	const frameNumbers = allFrames.map((frame) => frame.frameNumber);
 	const frameNumber = lowestNumberFinder(frameNumbers);
 
-	const centerX = width / 2;
+	const maxWidth = Math.min(650, width);
+	const maxHeight = Math.min(500, height);
+	const startX = point.x - maxWidth / 2;
+	const startY = point.y - maxHeight / 2;
+
+	const pitchTemplate = [
+		'Pour des (cients ciblés)...',
+		'Qui ont un (besoin client)...',
+		'Le (nom du produit)...',
+		'Est une (catégorie de marché)...',
+		'Qui apporte (un bénéfice clé)..',
+		'A la différence de (la concurrence)...',
+		"Le produit dispose d'un (critère de différence)...",
+	];
+
+	const fontSize = 23;
+	const fontFamily = 'Arial';
+	const fontWeight = '300';
+	const textOffset = width * 0.0125;
+	const elevatorPitchText = pitchTemplate.join('\n\n');
 
 	return {
 		typeId: 'frame',
@@ -30,10 +49,10 @@ export const elavatorPitch = (
 				borderColor: 0x000000,
 			},
 			bounds: {
-				x: point.x - centerX,
-				y: point.y - height / 2,
-				width,
-				height,
+				x: startX,
+				y: startY,
+				width: maxWidth,
+				height: maxHeight,
 			},
 		},
 		properties: {
@@ -44,6 +63,44 @@ export const elavatorPitch = (
 			frameNumber: frameNumber,
 			disabled: false,
 		},
-		childs: [],
+		childs: [
+			{
+				//! Elvator pitch Text
+				typeId: 'text',
+				properties: {
+					cursor: 'pointer',
+					eventMode: 'static',
+					tabNumberContext: frameNumber,
+					isAttachedToFrame: true,
+					frameNumber: frameNumber,
+					disabled: false,
+				},
+				childs: [
+					{
+						typeId: 'textarea',
+						properties: {
+							cursor: 'pointer',
+							eventMode: 'static',
+							color: 0x000000,
+							alpha: 1,
+							text: elevatorPitchText,
+							fontSize: fontSize,
+							fontWeight: fontWeight,
+							fontStyle: 'normal',
+							fontFamily: fontFamily,
+							fontPadding: 0,
+							fontAlign: 'left',
+							wordWrap: true,
+							wordWrapWidth: maxWidth - textOffset * 2,
+							breakWords: true,
+						},
+						bounds: {
+							x: startX + textOffset,
+							y: startY + textOffset,
+						},
+					},
+				],
+			},
+		],
 	};
 };

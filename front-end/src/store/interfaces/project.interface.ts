@@ -5,6 +5,8 @@ import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { FederatedPointerEvent } from 'pixi.js';
 import { LitteralBlueprintTypes } from '@/store/interfaces/agility.interface';
 import { ContainerTypeId } from '@/lib/pixi-tools-v2/types/pixi-serialize';
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
+import { DeepPartial } from '@/interfaces/advanced-types.interface';
 
 export interface ProjectStore {
 	scene: Scene;
@@ -21,6 +23,7 @@ export interface ProjectStore {
 	pdfViewerOpen: boolean;
 	refreshPdfViewer: number;
 	timerId: NodeJS.Timeout;
+	personaBuilder: DeepPartial<PersonaBuilder>;
 
 	getZoom?: () => number;
 	getFrames?: () => Array<number>;
