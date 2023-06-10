@@ -154,7 +154,6 @@
 /front-end/src/components/agility/ @Maghwyn
 /front-end/src/components/agility/AgilityCanvasUI.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/AgilityProjectDisplay.vue @Maghwyn @AyakorK
-/front-end/src/components/agility/AgilityTemplateDisplay.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
 /front-end/src/components/agility/cards/AgilityTemplateCard.vue @Maghwyn @Kevw94
@@ -165,7 +164,6 @@
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/UI/MiroSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/SceneUI.vue @Maghwyn @Kevw94
-/front-end/src/components/agility/UI/ShareProject.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/UI/TextAreaEditor.vue @TheoLandemaine
 /front-end/src/components/agility/UI/ToolsEditor.vue @Maghwyn
 /front-end/src/components/auth/ @Loule95450 @Maghwyn
@@ -258,7 +256,6 @@
 /front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/types/pixi-enums.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/types/pixi-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
@@ -329,7 +326,7 @@
 /front-end/src/views/app/ @Loule95450 @Maghwyn
 /front-end/src/views/app/AgilityDashboard.vue @Maghwyn @AyakorK
 /front-end/src/views/app/AgilityInvitation.vue @Maghwyn @Loule95450
-/front-end/src/views/app/AgilityProject.vue @Maghwyn @AyakorK
+/front-end/src/views/app/AgilityProject.vue @Maghwyn
 /front-end/src/views/app/RelatedProfileView.vue @Maghwyn
 /front-end/src/views/calls/ @Maghwyn
 /front-end/src/views/CardArticleView.vue @TheoLandemaine
