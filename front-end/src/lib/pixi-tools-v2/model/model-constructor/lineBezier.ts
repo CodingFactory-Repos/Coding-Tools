@@ -84,7 +84,7 @@ export class LineBezier extends ModelGraphics {
 		if (this.eventMode !== 'none') {
 			this.timer = setTimeout(() => {
 				this.getBounds();
-				this.perfectPolygonLine();
+				this.calculateLineHitArea();
 			}, 100);
 		}
 	}
@@ -117,7 +117,7 @@ export class LineBezier extends ModelGraphics {
 		this.endFill();
 	}
 
-	private perfectPolygonLine() {
+	private calculateLineHitArea() {
 		const distance = 4 * 2;
 		const points = this.geometry.points;
 
