@@ -16,7 +16,7 @@ export default defineComponent({
 	async beforeRouteEnter(to, _, next) {
 		try {
 			const agilityStore = useAgilityStore();
-			const roomId = to.path.match(/[^/]+$/)[0];
+			const roomId = to.path.match(/[^/]+(?=\?)|[^/]+$/)[0];
 			const res = await agilityStore.tryGetRoomAccess(roomId);
 			if(res) {
 				agilityStore.tryGetRoomProject(roomId);
