@@ -151,16 +151,15 @@
 /front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
-/front-end/src/components/agility/ @AyakorK @Maghwyn
-/front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
+/front-end/src/components/agility/ @Maghwyn
 /front-end/src/components/agility/AgilityCanvasUI.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/AgilityProjectDisplay.vue @Maghwyn @AyakorK
+/front-end/src/components/agility/AgilityTemplateDisplay.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
 /front-end/src/components/agility/cards/AgilityTemplateCard.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/modals/ @Maghwyn
-/front-end/src/components/agility/modals/Blueprint.vue @Maghwyn
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
-/front-end/src/components/agility/UI/ @Maghwyn
 /front-end/src/components/agility/UI/CanvasLoader.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
@@ -238,15 +237,11 @@
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools-v2/ @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/personas.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/ @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/framedContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/class/textContainer.ts @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/class/textContainer.ts @TheoLandemaine @Loule95450
+/front-end/src/lib/pixi-tools-v2/model/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
@@ -256,15 +251,14 @@
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/types/pixi-class.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/types/pixi-container.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-enums.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/types/pixi-serialize.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
@@ -276,7 +270,6 @@
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/utils/uniqueId.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/viewportUI.ts @Maghwyn
 /front-end/src/lib/pixi-tools/docs/assets/css/index.css @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/js/index.js @Loule95450
 /front-end/src/lib/pixi-tools/docs/assets/media/favicon.ico @Loule95450
