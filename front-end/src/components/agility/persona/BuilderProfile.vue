@@ -69,14 +69,14 @@
 			<FormField
 				label="Verbatism of the persona"
 				:limit="true"
-				:char-limit="200"
+				:char-limit="125"
 				:char-number="personaBuilder.verbatism.length"
 			>
 				<textarea
 					v-model.trim="personaBuilder.verbatism"
 					class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
 					rows="3"
-					maxlength="200"
+					maxlength="125"
 				></textarea>
 			</FormField>
 		</div>
