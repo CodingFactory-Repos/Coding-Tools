@@ -166,7 +166,6 @@
 					/>
 				</IconButton>
 			</div>
-			{{  isBlueprintModalOpen }}
 		</div>
 
 		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
