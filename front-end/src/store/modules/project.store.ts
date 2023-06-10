@@ -15,6 +15,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
 	canvas: null,
 	default: true,
+	internalLoading: true,
 	deferredGeometry: null,
 	deferredContainer: null,
 	deferredBlueprint: null,
@@ -27,6 +28,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	refreshPdfViewer: 0,
 	timerId: null,
 	personaBuilder: undefined,
+	baseTemplate: 0,
 });
 
 export const useProjectStore = defineStore('project', {

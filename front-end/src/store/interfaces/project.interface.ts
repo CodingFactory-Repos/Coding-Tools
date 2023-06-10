@@ -1,5 +1,5 @@
 import { Scene } from '@/lib/pixi-tools-v2/scene';
-import { LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { BlueprintKey, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
 import { SelectionBox } from '@/lib/pixi-tools-v2/class/selectionBox';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { FederatedPointerEvent } from 'pixi.js';
@@ -24,6 +24,8 @@ export interface ProjectStore {
 	refreshPdfViewer: number;
 	timerId: NodeJS.Timeout;
 	personaBuilder: DeepPartial<PersonaBuilder>;
+	baseTemplate: BlueprintKey;
+	internalLoading: boolean;
 
 	getZoom?: () => number;
 	getFrames?: () => Array<number>;
