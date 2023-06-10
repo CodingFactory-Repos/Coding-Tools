@@ -105,3 +105,11 @@ export enum BlueprintKey {
 	PRUNE_THE_PROJECT_TREE = 4,
 	ELEVATOR_PITCH = 5,
 }
+
+export const BlueprintTypeName = {
+	"1": "impactmapping",
+	"2": "empathymap",
+	"3": "personas",
+	"4": "prunetheprojecttree",
+	"5": "elevatorpitch",
+}
