@@ -25,20 +25,20 @@ import { useRouter } from 'vue-router';
 
 import { useAgilityStore } from '@/store/modules/agility.store';
 import AgilityTemplateCard from '@/components/agility/cards/AgilityTemplateCard.vue';
-import { BlueprintKey } from '../../lib/pixi-tools-v2/types/pixi-enums';
+import { BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { useProjectStore } from '@/store/modules/project.store';
 
 const router = useRouter();
 const agilityStore = useAgilityStore();
+const projectStore = useProjectStore();
 const metaTemplates = computed(() => agilityStore.metaTemplates);
 
-const startNewProject = async (key: number) => {
+const startNewProject = async (key: BlueprintKey) => {
 	const roomId = await agilityStore.tryCreateNewProject();
 	if(!roomId) return;
 
-	if(key === BlueprintKey.DEFAULT) {
-		router.push(`/app/agility/project/${roomId}`);
-	} else {
-		
-	}
+	if(key !== BlueprintKey.DEFAULT)
+		projectStore.baseTemplate = key;
+	router.push(`/app/agility/project/${roomId}`);
 };
 </script>
