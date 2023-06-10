@@ -60,8 +60,8 @@ export const pruneTheProjectTree = (
 			properties: {
 				cursor: 'pointer',
 				eventMode: PixiEventMode.STATIC,
-				color: 0xf00fff,
-				alpha: 0.3,
+				color: 0xffffff,
+				alpha: 0,
 				borderWidth: 0,
 				borderColor: 0x000000,
 			},
