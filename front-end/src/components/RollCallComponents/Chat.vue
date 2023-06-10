@@ -65,7 +65,7 @@
 					placeholder="Gif"
 					:class="{
 						'w-3/12': !gifSelected,
-						'w-9/12': gifSelected,
+						'w-8/12': gifSelected,
 						'p-2': true,
 						'bg-white': true,
 						'dark:bg-gray-700': true,
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import ChatMultiMessage from './ChatMultiMessage.vue';
 import { useAuthStore } from '../../store/modules/auth.store';
-import { computed, nextTick, onMounted, onUnmounted, ref, triggerRef } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import axios, { AxiosError } from 'axios';
 import { manager } from '@/api/network/socket.io';
 import { http } from '@/api/network/axios';
