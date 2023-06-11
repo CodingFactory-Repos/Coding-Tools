@@ -154,8 +154,8 @@ const active = ref(false);
 const modalLogoutActive = ref(false);
 const isPedago = ref(false);
 
-onMounted(() => {
-	getIsPedago();
+onMounted(async () => {
+	await getIsPedago();
 });
 
 const getIsPedago = async () => {
