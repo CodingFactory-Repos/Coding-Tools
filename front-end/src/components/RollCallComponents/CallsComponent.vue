@@ -1,7 +1,9 @@
 <template>
 	<div class="flex flex-col items-center mt-2.5">
-		<!-- PUT A FRAME AROUND THE QRCODE TO MAKE IT PRETTIER -->
-		<div v-if="url" class="border-4 border-white dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 p-4">
+		<div
+			v-if="url"
+			class="border-4 border-white dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 p-4"
+		>
 			<qrcode :value="url" />
 		</div>
 		<div v-else>
@@ -69,6 +71,12 @@ export default {
 				this.getQrCode();
 			}
 			this.message = response.data.message;
+			this.isPedago(response.data.message);
+		},
+		isPedago(message) {
+			if (message.includes('pédagogue')) {
+				this.$router.push('/');
+			}
 		},
 	},
 };
