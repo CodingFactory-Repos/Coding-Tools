@@ -22,6 +22,7 @@ export class LineBezier extends ModelGraphics {
 	public hitArea: Polygon;
 	public arrowHead: boolean;
 	public dashed: boolean;
+	public lineWidth: number;
 	private timer = null;
 
 	static registerGraphic(attributes: SerializedGraphic) {
@@ -41,6 +42,7 @@ export class LineBezier extends ModelGraphics {
 		this.alpha = properties.alpha;
 		this.arrowHead = properties.arrowHead;
 		this.dashed = properties.dashed;
+		this.lineWidth = lineControl.lineWidth ?? 4;
 		this.start = lineControl.start;
 		this.end = lineControl.end;
 		this.startControl = lineControl.startControl;
@@ -52,7 +54,7 @@ export class LineBezier extends ModelGraphics {
 
 	public draw() {
 		this.clear();
-		this.lineStyle({ width: 4, color: this.color, shader: this.dashed ? shader : undefined });
+		this.lineStyle({ width: this.lineWidth, color: this.color, shader: this.dashed ? shader : undefined });
 		this.line.cap = LINE_CAP.ROUND;
 
 		const arrowSize = 10; // Adjust this value as needed
@@ -108,7 +110,7 @@ export class LineBezier extends ModelGraphics {
 		const baseY2 = arrowY - arrowSize * Math.sin(angle + angleOffset);
 
 		// Draw the triangle shape
-		this.lineStyle({ width: 4, color: this.color, join: LINE_JOIN.ROUND });
+		this.lineStyle({ width: this.lineWidth, color: this.color, join: LINE_JOIN.ROUND });
 		this.beginFill(this.color);
 		this.moveTo(arrowX, arrowY);
 		this.lineTo(baseX1, baseY1);
@@ -118,7 +120,7 @@ export class LineBezier extends ModelGraphics {
 	}
 
 	private calculateLineHitArea() {
-		const distance = 4 * 2;
+		const distance = this.lineWidth * 2;
 		const points = this.geometry.points;
 
 		const numPoints = points.length / 2;
