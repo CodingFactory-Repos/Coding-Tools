@@ -204,7 +204,7 @@ export class ResizePlugin {
 
 		if(child instanceof LineBezier) {
 			const lineWidth = (Math.min(this.container.width, this.container.height) / 100) / 2;
-			const minLineWidth = Math.max(0.5, lineWidth);
+			const minLineWidth = Math.max(0, lineWidth);
 
 			const { startControl, endControl, start, end } = this._proportionalLineScale({
 				...initialOptions,
@@ -250,7 +250,7 @@ export class ResizePlugin {
 
 		if(child instanceof LineBezier) {
 			const lineWidth = (Math.min(this.container.width, this.container.height) / 100) / 2;
-			const minLineWidth = Math.max(0.5, lineWidth);
+			const minLineWidth = Math.max(0, lineWidth);
 
 			const { startControl, endControl, start, end } = this._proportionalLineScale({
 				...initialOptions,
@@ -259,6 +259,7 @@ export class ResizePlugin {
 			})
 
 			child.start = start;
+			console.log(child.start)
 			child.end = end;
 			child.startControl = startControl;
 			child.endControl = endControl;
@@ -308,34 +309,18 @@ export class ResizePlugin {
 				const { child } = this.initialGraphicsState[n];
 				
 				if(isPastBounds) {
+					if(child instanceof LineBezier) continue;
 					const sizeAndPos = isPastLeft || isPastRight ? [child.x, child.width] : [child.y, child.height];
 					const anchor = isPastLeft ? absMinX : isPastRight ? absMaxX : isPastTop ? absMinY : absMaxY;
 
-					if(child instanceof LineBezier) {
-						const mirror = this._proportionalMirrorLinePosition(
-							anchor,
-							child.start.x,
-							child.startControl.x,
-							child.end.x,
-							child.endControl.x,
-							child.width,
-						)
-						
-						child.start.x = mirror.start;
-						child.startControl.x = mirror.startControl;
-						child.end.x = mirror.end;
-						child.endControl.x = mirror.endControl;
-						child.draw();
-					} else {
-						const mirror = this._proportionalMirrorPosition({
-							anchor: anchor,
-							childCurrentPos: sizeAndPos[0],
-							childCurrentSize: sizeAndPos[1],
-						});
-	
-						if (isPastLeft || isPastRight) child.x = mirror;
-						else child.y = mirror;
-					}
+					const mirror = this._proportionalMirrorPosition({
+						anchor: anchor,
+						childCurrentPos: sizeAndPos[0],
+						childCurrentSize: sizeAndPos[1],
+					});
+
+					if (isPastLeft || isPastRight) child.x = mirror;
+					else child.y = mirror;
 
 					continue;
 				}
