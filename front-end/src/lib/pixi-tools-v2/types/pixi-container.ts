@@ -29,7 +29,7 @@ export interface ElementDimension extends ElementSize, ElementRadius {}
 export interface ElementBounds extends ElementPosition, Partial<ElementDimension> {}
 export interface ContainerSize extends ElementSize, SerializedContainerAnchors {}
 
-export interface InitialGraphicState extends ElementBounds {
+export interface InitialGraphicState extends ElementBounds, Partial<SerializedLineGraphic> {
 	child: ModelGraphics;
 }
 

@@ -116,4 +116,5 @@ export interface SerializedLineGraphic {
 	endControl: ElementPosition;
 	start: ElementPosition;
 	end: ElementPosition;
+	lineWidth?: number;
 }

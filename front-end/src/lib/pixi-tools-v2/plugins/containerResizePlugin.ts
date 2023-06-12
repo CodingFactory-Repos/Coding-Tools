@@ -18,7 +18,8 @@ import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import type { ContainerSize, InitialGraphicState } from '../types/pixi-container';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
 import { ModelGraphics } from '../types/pixi-class';
-import { ResizeRatioMetrics, ResizeMetrics, InitialResizeOptions, ParentOrthogonalPrimeOptions, ParentPrimeOptions, ProportionScaleOptions } from '../types/pixi-resize';
+import { ResizeRatioMetrics, ResizeMetrics, InitialResizeOptions, ParentOrthogonalPrimeOptions, ParentPrimeOptions, ProportionScaleOptions, ProportionLineScaleOptions, InitialLineResizeOptions } from '../types/pixi-resize';
+import { LineBezier } from '../model/template';
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;
@@ -72,13 +73,27 @@ export class ResizePlugin {
 
 		const graphics = this.container.getGraphicChildren();
 		for (const element of graphics) {
-			this.initialGraphicsState.push({
-				child: element,
-				width: element.width,
-				height: element.height,
-				x: element.x,
-				y: element.y,
-			});
+			if(element instanceof LineBezier) {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+					start: { ...element.start },
+					end: { ...element.end },
+					startControl: { ...element.startControl },
+					endControl: { ...element.endControl },
+				});
+			} else {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+				});
+			}
 		}
 
 		const { width, height, absMinX, absMaxY, absMaxX, absMinY } = this.container;
@@ -187,21 +202,39 @@ export class ResizePlugin {
 			isShift,
 		})
 
-		const { x, y, width, height } = this._proportionalScale({
-			...initialOptions,
-			...anchor,
-			...prime,
-		});
+		if(child instanceof LineBezier) {
+			const lineWidth = (Math.min(this.container.width, this.container.height) / 100) / 2;
+			const minLineWidth = Math.max(0.5, lineWidth);
 
-		child.width = width;
-		child.height = height;
-		child.x = x;
-		child.y = y;
+			const { startControl, endControl, start, end } = this._proportionalLineScale({
+				...initialOptions,
+				...anchor,
+				...prime,
+			})
+
+			child.start = start;
+			child.end = end;
+			child.startControl = startControl;
+			child.endControl = endControl;
+			child.lineWidth = minLineWidth;
+			child.draw();
+		} else {
+			const { x, y, width, height } = this._proportionalScale({
+				...initialOptions,
+				...anchor,
+				...prime,
+			});
+	
+			child.width = width;
+			child.height = height;
+			child.x = x;
+			child.y = y;
+		}
 	}
 
 	private _orthogonalResize = (
 		child: ModelGraphics,
-		initialOptions: InitialResizeOptions,
+		initialOptions: InitialResizeOptions & InitialLineResizeOptions,
 		resizeMetrics: ResizeMetrics,
 	) => {
 		const anchor = this.handleId === ResizeHandle.T || this.handleId === ResizeHandle.L
@@ -215,45 +248,33 @@ export class ResizePlugin {
 			handleId: this.handleId,
 		})
 
-		const { x, y, width, height } = this._proportionalScale({
-			...initialOptions,
-			...anchor,
-			...prime,
-		});
+		if(child instanceof LineBezier) {
+			const lineWidth = (Math.min(this.container.width, this.container.height) / 100) / 2;
+			const minLineWidth = Math.max(0.5, lineWidth);
 
-		child.width = width;
-		child.height = height;
-		child.x = x;
-		child.y = y;
-	}
+			const { startControl, endControl, start, end } = this._proportionalLineScale({
+				...initialOptions,
+				...anchor,
+				...prime,
+			})
 
-	private _assignNewGraphicState = (isXAxis: boolean) => {
-		const newHandleId = isXAxis
-			? ResizeHandleOppositeOf[this.handleId].x
-			: ResizeHandleOppositeOf[this.handleId].y;
-		this.handleId = newHandleId;
-
-		this.initialGraphicsState.length = 0;
-		const graphics = this.container.getGraphicChildren();
-		for (const element of graphics) {
-			this.initialGraphicsState.push({
-				child: element,
-				width: element.width,
-				height: element.height,
-				x: element.x,
-				y: element.y,
-			});
-		}
-
-		const { width, height, absMinX, absMaxY, absMaxX, absMinY } = this.container;
-		this.initialContainerSize = { width, height, absMinX, absMaxY, absMaxX, absMinY };
-
-		if (this.handleId < 4) {
-			const { x, y } = this.viewport.resizeHandles[this.handleId];
-			this.initialCursorPosition = new Point(x, y);
+			child.start = start;
+			child.end = end;
+			child.startControl = startControl;
+			child.endControl = endControl;
+			child.lineWidth = minLineWidth;
+			child.draw();
 		} else {
-			const { x, y } = this.viewport.resizeHitAreas[this.handleId - 4];
-			this.initialCursorPosition = new Point(x, y);
+			const { x, y, width, height } = this._proportionalScale({
+				...initialOptions,
+				...anchor,
+				...prime,
+			});
+	
+			child.width = width;
+			child.height = height;
+			child.x = x;
+			child.y = y;
 		}
 	}
 
@@ -272,7 +293,7 @@ export class ResizePlugin {
 			const { width: initialCtnWidth, height: initialCtnHeight, absMinX, absMaxX, absMinY, absMaxY  } = this.initialContainerSize;
 			const ratioA = initialCtnHeight / initialCtnWidth;
 			const ratioB = initialCtnWidth / initialCtnHeight;
-			const initialOptions: InitialResizeOptions = {
+			const initialOptions: InitialResizeOptions & InitialLineResizeOptions = {
 				parentInitialWidth: initialCtnWidth,
 				parentInitialHeight: initialCtnHeight,
 			}
@@ -289,23 +310,51 @@ export class ResizePlugin {
 				if(isPastBounds) {
 					const sizeAndPos = isPastLeft || isPastRight ? [child.x, child.width] : [child.y, child.height];
 					const anchor = isPastLeft ? absMinX : isPastRight ? absMaxX : isPastTop ? absMinY : absMaxY;
-					const mirror = this._proportionalMirrorPosition({
-						anchor: anchor,
-						childCurrentPos: sizeAndPos[0],
-						childCurrentSize: sizeAndPos[1],
-					});
-					
-					if (isPastLeft || isPastRight) child.x = mirror;
-					else child.y = mirror;
+
+					if(child instanceof LineBezier) {
+						const mirror = this._proportionalMirrorLinePosition(
+							anchor,
+							child.start.x,
+							child.startControl.x,
+							child.end.x,
+							child.endControl.x,
+							child.width,
+						)
+						
+						child.start.x = mirror.start;
+						child.startControl.x = mirror.startControl;
+						child.end.x = mirror.end;
+						child.endControl.x = mirror.endControl;
+						child.draw();
+					} else {
+						const mirror = this._proportionalMirrorPosition({
+							anchor: anchor,
+							childCurrentPos: sizeAndPos[0],
+							childCurrentSize: sizeAndPos[1],
+						});
+	
+						if (isPastLeft || isPastRight) child.x = mirror;
+						else child.y = mirror;
+					}
+
 					continue;
 				}
 
-				const { x, y, width, height } = { ...this.initialGraphicsState[n] };
+				if (child instanceof LineBezier) {
+					const { start, end, startControl, endControl } = { ...this.initialGraphicsState[n] };
 
-				initialOptions.childInitialX = x;
-				initialOptions.childInitialY = y;
-				initialOptions.childInitialWidth = width;
-				initialOptions.childInitialHeight = height;
+					initialOptions.childInitialStart = start;
+					initialOptions.childInitialEnd = end;
+					initialOptions.childInitialStartControl = startControl;
+					initialOptions.childInitialEndControl = endControl;
+				} else {
+					const { x, y, width, height } = { ...this.initialGraphicsState[n] };
+
+					initialOptions.childInitialX = x;
+					initialOptions.childInitialY = y;
+					initialOptions.childInitialWidth = width;
+					initialOptions.childInitialHeight = height;
+				}
 
 				if(GenericResize.includes(this.handleId)) {
 					this._genericResize(child, initialOptions, {
@@ -382,6 +431,50 @@ export class ResizePlugin {
 		}
 	}
 
+	private _assignNewGraphicState = (isXAxis: boolean) => {
+		const newHandleId = isXAxis
+			? ResizeHandleOppositeOf[this.handleId].x
+			: ResizeHandleOppositeOf[this.handleId].y;
+		this.handleId = newHandleId;
+
+		this.initialGraphicsState.length = 0;
+		const graphics = this.container.getGraphicChildren();
+		for (const element of graphics) {
+			if(element instanceof LineBezier) {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+					start: { ...element.start },
+					end: { ...element.end },
+					startControl: { ...element.startControl },
+					endControl: { ...element.endControl },
+				});
+			} else {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+				});
+			}
+		}
+
+		const { width, height, absMinX, absMaxY, absMaxX, absMinY } = this.container;
+		this.initialContainerSize = { width, height, absMinX, absMaxY, absMaxX, absMinY };
+
+		if (this.handleId < 4) {
+			const { x, y } = this.viewport.resizeHandles[this.handleId];
+			this.initialCursorPosition = new Point(x, y);
+		} else {
+			const { x, y } = this.viewport.resizeHitAreas[this.handleId - 4];
+			this.initialCursorPosition = new Point(x, y);
+		}
+	}
+
 	private _endResizeTransform = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
@@ -446,11 +539,55 @@ export class ResizePlugin {
 			+anchorY.toFixed(2)
 		).toFixed(2);
 
-		// Calculate the prime width,height of the child relatively to the parent
+		// Calculate the prime width, height of the child relatively to the parent
 		const w_prime = +(childInitialWidth * r_width).toFixed(2);
 		const h_prime = +(childInitialHeight * r_height).toFixed(2);
 
 		return { x: x_prime, y: y_prime, width: w_prime, height: h_prime };
+	}
+
+	private _proportionalLineScale({
+		parentInitialWidth,
+		parentInitialHeight,
+		parentPrimeWidth,
+		parentPrimeHeight,
+		childInitialStart,
+		childInitialEnd,
+		childInitialStartControl,
+		childInitialEndControl,
+		anchorX,
+		anchorY,
+	}: ProportionLineScaleOptions) {
+		// Calculate ratio of new box size to original box size
+		const r_width = Math.max(0.1, parentPrimeWidth) / Math.max(0.1, parentInitialWidth);
+		const r_height = Math.max(0.1, parentPrimeHeight) / Math.max(0.1, parentInitialHeight);
+	
+		// Calculate the prime coordinates of the control points relatively to the parent
+		const startControlPrime = {
+			x: +(+(childInitialStartControl.x - anchorX).toFixed(2) * r_width + +anchorX.toFixed(2)).toFixed(2),
+			y: +(+(childInitialStartControl.y - anchorY).toFixed(2) * r_height + +anchorY.toFixed(2)).toFixed(2)
+		};
+		const endControlPrime = {
+			x: +(+(childInitialEndControl.x - anchorX).toFixed(2) * r_width + +anchorX.toFixed(2)).toFixed(2),
+			y: +(+(childInitialEndControl.y - anchorY).toFixed(2) * r_height + +anchorY.toFixed(2)).toFixed(2)
+		};
+	
+		// Calculate the prime coordinates of the line's start and end points relatively to the parent
+		const startPrime = {
+			x: +(+(childInitialStart.x - anchorX).toFixed(2) * r_width + +anchorX.toFixed(2)).toFixed(2),
+			y: +(+(childInitialStart.y - anchorY).toFixed(2) * r_height + +anchorY.toFixed(2)).toFixed(2)
+		};
+		const endPrime = {
+			x: +(+(childInitialEnd.x - anchorX).toFixed(2) * r_width + +anchorX.toFixed(2)).toFixed(2),
+			y: +(+(childInitialEnd.y - anchorY).toFixed(2) * r_height + +anchorY.toFixed(2)).toFixed(2)
+		};
+	
+		return {
+			startControl: startControlPrime,
+			endControl: endControlPrime,
+			start: startPrime,
+			end: endPrime,
+		};
 	}
 
 	private _proportionalMirrorPosition({ anchor, childCurrentPos, childCurrentSize }) {
@@ -459,5 +596,36 @@ export class ResizePlugin {
 		const mirror_pos = reversed_pos - childCurrentSize;
 
 		return mirror_pos;
+	}
+
+	private _proportionalMirrorLinePosition(
+		anchor: number,
+		childCurrentStart: number,
+		childCurrentStartControl: number,
+		childCurrentEnd: number,
+		childCurrentEndControl: number,
+		childCurrentSize: number
+	) {
+		const diff_start_origin = childCurrentStart - anchor;
+		const diff_end_origin = childCurrentEnd - anchor;
+		const diff_start_control_origin = childCurrentStartControl - anchor;
+		const diff_end_control_origin = childCurrentEndControl - anchor;
+
+		const reversed_start = anchor - diff_start_origin;
+		const reversed_end = anchor - diff_end_origin;
+		const reversed_start_control = anchor - diff_start_control_origin;
+		const reversed_end_control = anchor - diff_end_control_origin;
+
+		const mirror_start = reversed_start - childCurrentSize;
+		const mirror_end = reversed_end - childCurrentSize;
+		const mirror_start_control = reversed_start_control - childCurrentSize;
+		const mirror_end_control = reversed_end_control - childCurrentSize;
+
+		return {
+			start: mirror_start,
+			end : mirror_end,
+			startControl: mirror_start_control,
+			endControl: mirror_end_control,
+		};
 	}
 }
