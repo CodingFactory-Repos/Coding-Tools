@@ -124,7 +124,7 @@
 				/>
 			</IconButton>
 			<ColorPickerOption position="bottom-[-330px] left-[30px]" />
-			<div v-if="isTextAreaEdited">
+			<!-- <div v-if="isTextAreaEdited">
 				<IconButton class="h-fit" type="button">
 					<SvgFrame
 						width="22"
@@ -165,7 +165,7 @@
 						}"
 					/>
 				</IconButton>
-			</div>
+			</div> -->
 		</div>
 
 		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
