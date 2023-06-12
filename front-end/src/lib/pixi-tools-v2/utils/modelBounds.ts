@@ -22,6 +22,7 @@ export const modelBounds = (model: ModelGraphics) => {
 				endControl: model.endControl,
 				start: model.start,
 				end: model.end,
+				lineWidth: model.lineWidth,
 			},
 			bounds: {
 				x: model.x,
