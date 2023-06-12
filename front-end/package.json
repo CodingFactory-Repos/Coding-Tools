@@ -38,7 +38,7 @@
 		"pixi-viewport": "^5.0.1",
 		"pixi.js": "^7.2.4",
 		"qrcode": "^1.5.3",
-		"sass": "^1.62.1",
+		"sass": "^1.63.3",
 		"socket.io-client": "^4.6.2",
 		"sweetalert2": "^11.7.12",
 		"uuid": "^9.0.0",
