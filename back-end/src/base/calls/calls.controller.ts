@@ -129,4 +129,11 @@ export class CallsController {
 	async isProductOwner(@Jwt() userId: ObjectId, @Res() res: Response) {
 		return res.status(201).json({ isProductOwner: true });
 	}
+
+	@Get('/is_pedagogue')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PEDAGOGUE))
+	async IsPedagogue(@Jwt() userId: ObjectId, @Res() res: Response) {
+		console.log(Roles.PEDAGOGUE);
+		return res.status(201).json({ isPedagogue: true });
+	}
 }
