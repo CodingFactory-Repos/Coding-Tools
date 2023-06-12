@@ -23,7 +23,7 @@
 		"chart.js": "^4.3.0",
 		"chartjs-adapter-date-fns": "^3.0.0",
 		"date-fns": "^2.30.0",
-		"esbuild": "^0.17.19",
+		"esbuild": "^0.18.1",
 		"flowbite": "^1.6.5",
 		"highlight.js": "^11.8.0",
 		"html2pdf.js": "^0.10.1",
