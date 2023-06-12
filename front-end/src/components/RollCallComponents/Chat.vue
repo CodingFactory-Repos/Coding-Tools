@@ -13,9 +13,7 @@
 		</div>
 		<div class="chatbox_input flex-col w-full absolute bottom-2">
 			<div class="w-full">
-				<div
-					class="gif-container h-[400px] flex z-10 w-[400px] mt-64 overflow-y-scroll"
-				>
+				<div class="gif-container h-[400px] flex z-10 w-[400px] mt-64 overflow-y-scroll">
 					<div class="flex flex-wrap justify-center">
 						<img
 							v-for="gif in gifs"
@@ -27,12 +25,21 @@
 						/>
 					</div>
 				</div>
+				<div
+					ref="emojiContainer"
+					v-if="showEmoji"
+					class="place-items-start ease-in-out transition-all duration-300"
+					onfocusout="showEmoji()"
+				>
+					<EmojiPicker :native="true" class="!mr-0 !ml-0" @select="(event) => addEmoji(event)" />
+				</div>
+				<button class="emojiBtn w-1/12 h-1/12" @click="displayEmoji()" ref="emojiBtn">😄</button>
 				<input
 					v-model="newMessageText"
 					@keydown.enter="sendMessage"
 					placeholder="Envoyer un message"
 					:class="{
-						'w-9/12': !gifSelected,
+						'w-8/12': !gifSelected,
 						'w-3/12': gifSelected,
 						'p-2': true,
 						'bg-white': true,
@@ -58,7 +65,7 @@
 					placeholder="Gif"
 					:class="{
 						'w-3/12': !gifSelected,
-						'w-9/12': gifSelected,
+						'w-8/12': gifSelected,
 						'p-2': true,
 						'bg-white': true,
 						'dark:bg-gray-700': true,
@@ -90,6 +97,8 @@ import axios, { AxiosError } from 'axios';
 import { manager } from '@/api/network/socket.io';
 import { http } from '@/api/network/axios';
 import { withErrorHandler } from '@/utils/storeHandler';
+import EmojiPicker from 'vue3-emoji-picker';
+import 'vue3-emoji-picker/css';
 
 const props = defineProps<{
 	roomId: string;
@@ -105,9 +114,10 @@ const gifs = ref([]);
 const newMessageText = ref('');
 const courseId = ref();
 const count = ref();
-const hoverHint = ref(false);
 const gifSelected = ref(false);
 const searchTimeout = ref(null);
+const showEmoji = ref(false);
+const emojiContainer = ref();
 
 /* SOCKET */
 
@@ -132,6 +142,15 @@ onUnmounted(() => {
 });
 
 /* METHODS */
+
+const addEmoji = (selection) => {
+	console.log(selection.i);
+	newMessageText.value += selection.i;
+};
+
+const displayEmoji = () => {
+	showEmoji.value = !showEmoji.value;
+};
 
 const addMessage = (msg: Object) => {
 	messages.value.unshift(msg);
