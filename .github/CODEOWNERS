@@ -8,7 +8,7 @@
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/.gitignore @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
-/back-end/package-lock.json @Maghwyn @Loule95450
+/back-end/package-lock.json @Maghwyn @AyakorK
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
