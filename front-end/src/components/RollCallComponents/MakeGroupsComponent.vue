@@ -1,8 +1,8 @@
 <template>
-	<div v-if="courseId">
-		<a :href="groupUrl">
-			<button class="bg-blue-500 text-white py-2 px-4 rounded mt-4">Former les groupes</button>
-		</a>
+	<div v-if="courseId" class="mx-auto">
+		<router-link :to="groupUrl">
+			<button class="bg-blue-500 text-white py-2 px-4 rounded mt-2 mb-4">Former les groupes</button>
+		</router-link>
 	</div>
 </template>
 

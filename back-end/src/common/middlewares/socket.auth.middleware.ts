@@ -16,7 +16,7 @@ export interface AuthSocket extends Socket {
 export type SocketMiddleware = (socket: Socket, next: (err?: Error) => void) => void;
 
 export const WSAuthMiddleware = (jwtService: JwtService): SocketMiddleware => {
-	return async (socket: AuthSocket, next) => {
+	return (socket: AuthSocket, next) => {
 		try {
 			const cookies = socket.handshake.headers.cookie || '';
 			const tokenCookie = parseCookieString(cookies);
@@ -28,7 +28,7 @@ export const WSAuthMiddleware = (jwtService: JwtService): SocketMiddleware => {
 			if (!token) throw new Error('Token is undefined');
 
 			const payload = <JwtPayload>jwtService.verify(token, { secret: config.jwt.secret });
-			if (!payload?.id || !(payload?.role >= 0 && payload?.role <= 2))
+			if (!payload?.id || !(payload?.role >= 0 && payload?.role <= 3))
 				throw new Error('The jwt content is invalid');
 			payload.id = new ObjectId(payload.id);
 

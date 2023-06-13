@@ -1,12 +1,22 @@
 import { Manager, ManagerOptions, Socket } from 'socket.io-client';
 import { ViewportUI } from '../viewportUI';
-import { SerializedContainer, SerializedContainerBounds } from '../types/pixi-serialize';
+import {
+	SerializedContainer,
+	SerializedContainerBounds,
+	SerializedControl,
+	SerializedColorimetry,
+	SerializedGraphicColorimetry,
+	SerializedGraphic,
+} from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
 import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
+import { LineContainer } from './lineContainer';
+import { Rectangle, TextArea } from '../model/template';
+import { TextContainer } from './textContainer';
 
 export class SocketManager extends Manager {
 	public readonly canvasSocket: Socket;
@@ -28,9 +38,29 @@ export class SocketManager extends Manager {
 			temporaryNotification('#9e0000', '#ffffff', `${peerEmail} disconnected`);
 		});
 
+		this.canvasSocket.on('access-lost', () => {
+			temporaryNotification(
+				'#9e0000',
+				'#ffffff',
+				`The owner of the project removed your access, you will be redirected in 10 seconds`,
+				10000,
+			);
+			this.canvasSocket.disconnect();
+			this._close();
+			const timer = setTimeout(() => {
+				window.location.pathname = '/app/agility/dashboard';
+				clearTimeout(timer);
+			}, 10000);
+		});
+
 		this.canvasSocket.on('element-added', (container: SerializedContainer) => {
 			const ctn = Normalizer.container(this.viewport, container, true);
+			if (ctn === undefined) return;
 			this.viewport.addChild(ctn);
+
+			if (ctn instanceof LineContainer) {
+				this._tryAttachLineToContainer(ctn);
+			}
 		});
 
 		this.canvasSocket.on('element-deleted', (uuid: string) => {
@@ -59,6 +89,17 @@ export class SocketManager extends Manager {
 				this._updateTreeBounds(uuid, serializedBounds);
 			},
 		);
+
+		this.canvasSocket.on(
+			'line-controls-updated',
+			(uuid: string, serializedControl: SerializedControl) => {
+				this._updateLineTree(uuid, serializedControl);
+			},
+		);
+
+		this.canvasSocket.on('text-updated', (uuid: string, serialized: SerializedContainer) => {
+			this._updateTextTree(uuid, serialized);
+		});
 
 		this.canvasSocket.on(
 			'frame-children-added',
@@ -90,8 +131,15 @@ export class SocketManager extends Manager {
 		});
 
 		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			console.log(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
+			console.info(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
+
+		this.canvasSocket.on(
+			'element-colorimetry-updated',
+			(uuid: string, serializedColorimetry: SerializedColorimetry) => {
+				this._updateColorimetry(uuid, serializedColorimetry);
+			},
+		);
 	}
 
 	private _updateTreeBounds(uuid: string, serializedBounds: SerializedContainerBounds) {
@@ -105,12 +153,98 @@ export class SocketManager extends Manager {
 				}
 			} else if (element instanceof GenericContainer) {
 				element.updateTreeBounds(serializedBounds);
+			} else if (element instanceof TextContainer) {
+				element.updateTreeBounds(serializedBounds);
 			}
 
 			element.emit('moved', null);
 		} catch (err) {
 			if (err instanceof Error) {
 				console.error(err.message);
+			}
+		}
+	}
+
+	private _updateColorimetry(uuid: string, serializedColorimetry: SerializedColorimetry) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if (element instanceof FramedContainer) {
+				const background = element.children[0] as Rectangle;
+				background.color = serializedColorimetry.background.properties.color;
+				background.alpha = serializedColorimetry.background.properties.alpha;
+				background.draw({
+					x: background.x,
+					y: background.y,
+					width: background.width,
+					height: background.height,
+				});
+			} else if (element instanceof GenericContainer || element instanceof LineContainer) {
+				const childData = serializedColorimetry.childs[0] as SerializedGraphicColorimetry;
+				const child = element.getGraphicChildren()[0];
+				child.color = childData.properties.color;
+				child.alpha = childData.properties.alpha;
+				child.draw({
+					x: child.x,
+					y: child.y,
+					width: child.width,
+					height: child.height,
+					//@ts-ignore
+					radius: child.radius,
+				});
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
+	}
+
+	private _updateLineTree(uuid: string, serializedControl: SerializedControl) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if (element instanceof LineContainer) {
+				element.updateLineTree(serializedControl);
+				this._tryAttachLineToContainer(element);
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
+	}
+
+	private _updateTextTree(uuid: string, serialized: SerializedContainer) {
+		try {
+			const element = this.viewport.socketPlugin.elements[uuid];
+			if (element instanceof TextContainer) {
+				const childData = serialized.childs[0] as SerializedGraphic;
+				const childElement = this.viewport.socketPlugin.elements[childData.uuid] as TextArea;
+				childElement.text = childData.properties.text.trim();
+				childElement.updateText();
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error(err.message);
+			}
+		}
+	}
+
+	private _tryAttachLineToContainer(ctn: LineContainer) {
+		if (ctn.startContainer?.containerUUID !== undefined) {
+			const container = this.viewport.socketPlugin.elements[
+				ctn.startContainer.containerUUID
+			] as CanvasContainer;
+			if (!container.linkedLinesUUID.includes(ctn.uuid)) {
+				container.attachLine(ctn.uuid);
+			}
+		}
+
+		if (ctn.endContainer?.containerUUID !== undefined) {
+			const container = this.viewport.socketPlugin.elements[
+				ctn.endContainer.containerUUID
+			] as CanvasContainer;
+			if (!container.linkedLinesUUID.includes(ctn.uuid)) {
+				container.attachLine(ctn.uuid);
 			}
 		}
 	}
@@ -141,5 +275,17 @@ export class SocketManager extends Manager {
 		serializedChild: SerializedContainer,
 	) {
 		this.canvasSocket.emit('remove-frame-children', { uuid, serialized, serializedChild });
+	}
+
+	public updateLineControls(uuid: string, serializedControl: SerializedControl) {
+		this.canvasSocket.emit('update-line-controls', { uuid, serializedControl });
+	}
+
+	public updateColorimetry(uuid: string, serializedColorimetry: SerializedColorimetry) {
+		this.canvasSocket.emit('update-element-colorimetry', { uuid, serializedColorimetry });
+	}
+
+	public updateText(uuid: string, serialized: SerializedContainer) {
+		this.canvasSocket.emit('update-text', { uuid, serialized });
 	}
 }

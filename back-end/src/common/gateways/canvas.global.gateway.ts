@@ -15,8 +15,10 @@ import { AuthSocket, WSAuthMiddleware } from '@/common/middlewares/socket.auth.m
 import { CanvasRoomRepository } from '@/base/canvasRoom/canvasRoom.repository';
 import {
 	ElementPosition,
+	SerializedColorimetry,
 	SerializedContainer,
 	SerializedContainerBounds,
+	SerializedControl,
 } from '@/base/canvasRoom/interfaces/ws.canvasRoom.interface';
 import { UsersRepository } from '@/base/users/users.repository';
 import { ObjectId } from 'mongodb';
@@ -50,6 +52,7 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		const user = await this.usersRepository.findOne(query, projection);
 
 		client.join(client.roomId);
+		client.join(client.user.id.toString());
 		client.to(client.roomId).emit('peer-connected', user.profile.email);
 	}
 
@@ -104,6 +107,46 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
+	@SubscribeMessage('update-line-controls')
+	handleLineUpdatedControls(
+		client: AuthSocket,
+		data: { uuid: string; serializedControl: SerializedControl },
+	) {
+		client.to(client.roomId).emit('line-controls-updated', data.uuid, data.serializedControl);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ 'project.$': data.serializedControl }, { array: true });
+
+		for (const key in update['$set']) {
+			if (key.includes('uuid')) {
+				delete update['$set'][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	}
+
+	@SubscribeMessage('update-element-colorimetry')
+	handleColorimetryUpdate(
+		client: AuthSocket,
+		data: { uuid: string; serializedColorimetry: SerializedColorimetry },
+	) {
+		client
+			.to(client.roomId)
+			.emit('element-colorimetry-updated', data.uuid, data.serializedColorimetry);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ 'project.$': data.serializedColorimetry }, { array: true });
+
+		for (const key in update['$set']) {
+			if (key.includes('uuid')) {
+				delete update['$set'][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
+	}
+
 	@SubscribeMessage('add-frame-children')
 	handleChildrenFrameAdded(
 		client: AuthSocket,
@@ -143,6 +186,22 @@ export class CanvasGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
 		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 		this.canvasRoomRepository.updateOneCanvasRoom(updQuery, updUpdate);
+	}
+
+	@SubscribeMessage('update-text')
+	handleTextUpdated(client: AuthSocket, data: { uuid: string; serialized: SerializedContainer }) {
+		client.to(client.roomId).emit('text-updated', data.uuid, data.serialized);
+
+		const query = { _id: new ObjectId(client.roomId), 'project.uuid': data.uuid };
+		const update = flatten({ 'project.$': data.serialized }, { array: true });
+
+		for (const key in update['$set']) {
+			if (key.includes('uuid')) {
+				delete update['$set'][key];
+			}
+		}
+
+		this.canvasRoomRepository.updateOneCanvasRoom(query, update);
 	}
 
 	@SubscribeMessage('update-mouse-moved')

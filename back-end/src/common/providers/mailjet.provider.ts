@@ -3,8 +3,10 @@ import { OnEvent } from '@nestjs/event-emitter';
 
 import { MailjetService } from 'src/external-modules/mailjet/mailjet.service';
 import { MailjetEmail, MailjetAskToken } from 'src/auth/events/auth.events.req';
-import { Events, MaijetTemplate } from 'src/common/providers/interfaces/events.interface';
+import { Events, MailjetTemplate } from 'src/common/providers/interfaces/events.interface';
 import { config } from 'src/config/config';
+import { MailjetCanvasInvitationRequest } from '@/base/canvasRoom/events/canvasRoom.events.req';
+import { MailjetNewTutorial } from '@/base/articles/events/newTutorial.events.req';
 
 Injectable();
 export class MailjetListeners {
@@ -18,7 +20,7 @@ export class MailjetListeners {
 		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
-			templateId: MaijetTemplate.alertPedago,
+			templateId: MailjetTemplate.alertPedago,
 			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
 			args: { email },
 		});
@@ -29,7 +31,7 @@ export class MailjetListeners {
 		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
-			templateId: MaijetTemplate.alertUnallowed,
+			templateId: MailjetTemplate.alertUnallowed,
 			recipients: [{ Email: 'codingtools.factory@gmail.com', Name: 'Coding Tools' }],
 			args: { email },
 		});
@@ -40,7 +42,7 @@ export class MailjetListeners {
 		const { email } = payload;
 
 		this.mailjetService.sendUniversalEmail({
-			templateId: MaijetTemplate.accountValidated,
+			templateId: MailjetTemplate.accountValidated,
 			recipients: [{ Email: email }],
 		});
 	}
@@ -50,7 +52,7 @@ export class MailjetListeners {
 		const { email, token } = payload;
 
 		this.mailjetService.sendUniversalEmail({
-			templateId: MaijetTemplate.activationToken,
+			templateId: MailjetTemplate.activationToken,
 			recipients: [{ Email: email }],
 			args: { code: token },
 		});
@@ -62,9 +64,43 @@ export class MailjetListeners {
 		const url = `${config.app.redirect}/forgot-password?token=${token}`;
 
 		this.mailjetService.sendUniversalEmail({
-			templateId: MaijetTemplate.resetToken,
+			templateId: MailjetTemplate.resetToken,
 			recipients: [{ Email: email }],
 			args: { url },
+		});
+	}
+
+	@OnEvent(Events.canvasInvitationRequest)
+	async handleCanvasInvitationRequest(payload: MailjetCanvasInvitationRequest) {
+		const { email, senderFirstName, senderLastName, projectTitle, token } = payload;
+		const url = `${config.app.redirect}/app/agility/accept-invitation?token=${token}`;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MailjetTemplate.canvasInvitationRequest,
+			recipients: [{ Email: email }],
+			args: { senderFirstName, senderLastName, projectTitle, url },
+		});
+	}
+
+	@OnEvent(Events.retroInvitationRequest)
+	async handleRetroInvitationRequest(payload: MailjetCanvasInvitationRequest) {
+		const { email, senderFirstName, senderLastName, projectTitle, token } = payload;
+		const url = `${config.app.redirect}/app/retrospective/accept-invitation?token=${token}`;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MailjetTemplate.retroInvitationRequest,
+			recipients: [{ Email: email }],
+			args: { senderFirstName, senderLastName, projectTitle, url },
+		});
+	}
+
+	@OnEvent(Events.newTutorial)
+	async handleNewTutorial(payload: MailjetNewTutorial) {
+		const emails = payload.email;
+
+		this.mailjetService.sendUniversalEmail({
+			templateId: MailjetTemplate.newTutorial,
+			recipients: emails,
 		});
 	}
 }

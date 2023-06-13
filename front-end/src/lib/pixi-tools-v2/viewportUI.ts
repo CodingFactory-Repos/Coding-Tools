@@ -4,13 +4,18 @@ import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
 import { Border, Handle, HitArea, Grid } from './model/template-ui';
-import { ResizeHandle } from './types/pixi-enums';
+import { BezierCurveHandle, BezierHandle, ResizeHandle } from './types/pixi-enums';
 
 import type { CanvasContainer, Stage } from './types/pixi-aliases';
 import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types/pixi-ui';
-import { reactive } from 'vue';
+import { reactive, shallowReactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
+import { ElementPosition, ElementSize } from './types/pixi-container';
+import { GenericContainer } from './class/genericContainer';
+import { decimToHex } from './utils/colorsConvertor';
+import { dragAttachedLines } from './utils/dragAttachedLines';
+import { TextContainer } from './class/textContainer';
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -19,19 +24,30 @@ export class ViewportUI extends Viewport {
 	public readonly zoomPlugin: ViewportZoomPlugin;
 	public readonly socketPlugin: ViewportSocketPlugin;
 	public readonly manager: ContainerManager;
+	public readonly bezierCurveHandles: Array<Handle> = [];
 	public readonly resizeHandles: Array<Handle> = [];
 	public readonly lineHandles: Array<Handle> = [];
+	public readonly bezierHandles: Array<Handle> = [];
 	public readonly resizeHitAreas: Array<HitArea> = [];
+	public readonly onScreenChildren: Array<CanvasContainer> = [];
 	public readonly parent: Stage;
 	public readonly grid: Grid;
 	public border: Border = null;
 	public cursor: CSSStyleProperty.Cursor;
 	public mouse: Point;
 	public selectionBoxActive = false;
+	public activeFrameNumber = null;
+	public textEditor: HTMLDivElement;
 
 	public readonly activeFrames: Array<number> = reactive([]);
+	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
 
-	constructor(scene: Scene, options: IViewportOptions, socketOptions?: CanvasSocketOptions) {
+	constructor(
+		scene: Scene,
+		options: IViewportOptions,
+		isDark: boolean,
+		socketOptions?: CanvasSocketOptions,
+	) {
 		super(options);
 
 		this.drag().pinch({ percent: 2 }).wheel().decelerate();
@@ -44,12 +60,21 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
-		this.grid = new Grid({ color: 0x27282d });
+		const canvasWrapper = document.getElementById('viewport');
+		this.textEditor = document.createElement('div');
+		this.textEditor.contentEditable = 'true';
+		this.textEditor.setAttribute('data-placeholder', 'Type something if you want to add some text');
+		this.textEditor.classList.add('textEditor');
+		this.textEditor.addEventListener('input', this.updateTextAreaBounds.bind(this));
+		canvasWrapper.appendChild(this.textEditor);
+
+		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
 		this.on('zoomed', this._onViewportZoomed);
+		this.on('zoomed-end', this.getVisibleChildren);
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
@@ -62,6 +87,7 @@ export class ViewportUI extends Viewport {
 		this.on('childAdded', (child: CanvasContainer) => {
 			if (child instanceof FramedContainer) {
 				this.activeFrames.push(child.frameNumber);
+				this.childFrames.push(child);
 			}
 
 			if (this.socketPlugin) {
@@ -74,6 +100,7 @@ export class ViewportUI extends Viewport {
 				const index = this.activeFrames.indexOf(child.frameNumber);
 				if (index !== -1) {
 					this.activeFrames.splice(index, 1);
+					this.childFrames.splice(index, 1);
 				}
 			}
 
@@ -81,6 +108,76 @@ export class ViewportUI extends Viewport {
 				this.socketPlugin.pruneDestroyedElements();
 			}
 		});
+	}
+
+	public updateTextAreaBounds(e: Event) {
+		const target = e.target as HTMLDivElement;
+		const text = target.innerText;
+		const unicode = text.charCodeAt(0);
+
+		if (text !== undefined && text !== '' && unicode !== 10) {
+			this.textEditor.classList.remove('blank');
+		} else if (text.trim().length === 0) {
+			this.textEditor.classList.add('blank');
+		}
+
+		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
+		this.updateUI(size);
+		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size, true);
+	}
+
+	public startTextEditor(
+		text: string,
+		fontSize: number | string,
+		color: number,
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+		padding: number,
+		containerized: boolean,
+	) {
+		const points = this.toScreen(x, y);
+		this.textEditor.style.color = decimToHex(color);
+		this.textEditor.style.left = `${points.x}px`;
+		this.textEditor.style.top = `${points.y}px`;
+		this.textEditor.style.fontSize = `${fontSize}px`;
+		this.textEditor.style.display = 'block';
+		this.textEditor.style.padding = `${padding}px`;
+		this.textEditor.style.transform = `scale(${this.scaled})`;
+
+		if (text !== undefined && text !== '') {
+			const perLine = text
+				.split('\n')
+				.map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`)
+				.join('');
+			this.textEditor.innerHTML = perLine;
+			this.textEditor.classList.remove('blank');
+		} else {
+			this.textEditor.classList.add('blank');
+		}
+
+		if (containerized) {
+			this.textEditor.style.maxWidth = `${width}px`;
+			this.textEditor.style.maxHeight = `${height}px`;
+		} else {
+			this.textEditor.style.width = `fit-content`;
+			this.textEditor.style.height = `fit-content`;
+		}
+		this.textEditor.focus();
+		this.textEditor.click();
+		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
+		this.updateUI(size);
+	}
+
+	public endTextEditor() {
+		this.textEditor.style.display = 'none';
+		this.textEditor.blur();
+	}
+
+	public changeGridTheme(isDark: boolean) {
+		this.grid.color = isDark ? 0x27282d : 0xd9d9d9;
+		this.drawGrid();
 	}
 
 	public offWindowResized() {
@@ -108,7 +205,7 @@ export class ViewportUI extends Viewport {
 		this.zoomPlugin.updateZoomScale();
 
 		if (this.manager.isActive) {
-			const size = this.manager.getSelectedSize();
+			let size = this.manager.getSelectedSize();
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
@@ -122,33 +219,83 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if (this.border) {
-				this.border.draw({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-					scale: this.scaled,
-				});
+			if (this.textEditor.style.display === 'block') {
+				const points = this.toScreen(size.x, size.y);
+				this.textEditor.style.transform = `scale(${this.scaled})`;
+				this.textEditor.style.left = `${points.x}px`;
+				this.textEditor.style.top = `${points.y}px`;
+				size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
 			}
 
-			if (!this._isHiddenUI) {
-				if (this.resizeHandles?.length > 0) {
-					this.updateResizeHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+			this.updateUI(size);
+		}
+	}
 
-				if (this.resizeHitAreas?.length > 0) {
-					this.updateResizeHitAreas({
+	private updateUI(size: ElementSize) {
+		if (this.border) {
+			this.border.draw({
+				...size,
+				x: this.border.x,
+				y: this.border.y,
+				scale: this.scaled,
+			});
+		}
+
+		if (!this._isHiddenUI) {
+			if (this.resizeHandles?.length > 0) {
+				this.updateResizeHandles(
+					{
 						...size,
 						x: this.border.x,
 						y: this.border.y,
-					});
+					},
+					true,
+				);
+			}
+
+			if (this.bezierHandles?.length > 0) {
+				this.updateBezierHandles(
+					{
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					},
+					true,
+				);
+			}
+
+			if (this.bezierCurveHandles?.length > 0) {
+				this.updateBezierCurveHandle(
+					{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
+					{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
+					true,
+				);
+			}
+
+			if (this.resizeHitAreas?.length > 0) {
+				this.updateResizeHitAreas({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				});
+			}
+		}
+	}
+
+	public getVisibleChildren() {
+		if (this.manager.isActive) {
+			this.onScreenChildren.length = 0;
+			const visibleBounds = this.getVisibleBounds();
+
+			for (const element of this.children) {
+				if (
+					element instanceof GenericContainer ||
+					element instanceof FramedContainer ||
+					element instanceof TextContainer
+				) {
+					if (element.getLocalBounds().intersects(visibleBounds)) {
+						this.onScreenChildren.push(element);
+					}
 				}
 			}
 		}
@@ -202,6 +349,24 @@ export class ViewportUI extends Viewport {
 				handle.destroy();
 			});
 			this.resizeHandles.length = 0;
+		}
+	}
+
+	public destroyBezierHandles() {
+		if (this.bezierHandles.length) {
+			this.bezierHandles.forEach((handle) => {
+				handle.destroy();
+			});
+			this.bezierHandles.length = 0;
+		}
+	}
+
+	public destroyBezierCurveHandle() {
+		if (this.bezierCurveHandles.length) {
+			this.bezierCurveHandles.forEach((handle) => {
+				handle.destroy();
+			});
+			this.bezierCurveHandles.length = 0;
 		}
 	}
 
@@ -263,6 +428,68 @@ export class ViewportUI extends Viewport {
 			handle.zIndex = 100;
 			handle.handleId = handleId;
 			this.resizeHandles.push(handle);
+			this.addChildAt(handle, this.children.length);
+			if (this._isHiddenUI) handle.visible = false;
+		}
+	}
+
+	public createBezierHandles(x: number, y: number, width: number, height: number) {
+		const size = 5;
+		const float = 15;
+		const offset = float / this.scaled;
+
+		const top = { x: x + width / 2, y: y - offset };
+		const right = { x: x + width + offset, y: y + height / 2 };
+		const bottom = { x: x + width / 2, y: y + height + offset };
+		const left = { x: x - offset, y: y + height / 2 };
+
+		const handlePositions: Array<HandleOptions> = [
+			{ ...top, cursor: 'pointer', handleId: BezierHandle.T },
+			{ ...right, cursor: 'pointer', handleId: BezierHandle.R },
+			{ ...bottom, cursor: 'pointer', handleId: BezierHandle.B },
+			{ ...left, cursor: 'pointer', handleId: BezierHandle.L },
+		];
+
+		// TEST: for testing the handles position
+		// const color = [0xd5d5d5, 0xff00ff, 0x00ffff, 0xffff00];
+
+		for (const element of handlePositions) {
+			const { handleId, ...attr } = element;
+
+			const handle = new Handle({
+				...attr,
+				radius: size,
+				scale: this.scaled,
+				alpha: 0.5,
+			});
+			handle.zIndex = 100;
+			handle.handleId = handleId;
+			this.bezierHandles.push(handle);
+			this.addChildAt(handle, this.children.length);
+			if (this._isHiddenUI) handle.visible = false;
+		}
+	}
+
+	public createBezierCurveHandle(start: ElementPosition, end: ElementPosition) {
+		const size = 5;
+
+		const handlePositions: Array<HandleOptions> = [
+			{ ...start, cursor: 'pointer', handleId: BezierCurveHandle.P1 },
+			{ ...end, cursor: 'pointer', handleId: BezierCurveHandle.P2 },
+		];
+
+		for (const element of handlePositions) {
+			const { handleId, ...attr } = element;
+
+			const handle = new Handle({
+				...attr,
+				radius: size,
+				scale: this.scaled,
+				alpha: 1,
+			});
+			handle.zIndex = 100;
+			handle.handleId = handleId;
+			this.bezierCurveHandles.push(handle);
 			this.addChildAt(handle, this.children.length);
 			if (this._isHiddenUI) handle.visible = false;
 		}
@@ -353,6 +580,37 @@ export class ViewportUI extends Viewport {
 		}
 	}
 
+	public updateBezierHandles(attr: Partial<GraphicUIProperties>, redraw: boolean) {
+		const scale = this.scaled;
+		const float = 15;
+		const offset = Math.max(1, float / scale);
+
+		const { x, y, width, height } = attr;
+
+		const top = { x: x + width / 2, y: y - offset };
+		const right = { x: x + width + offset, y: y + height / 2 };
+		const bottom = { x: x + width / 2, y: y + height + offset };
+		const left = { x: x - offset, y: y + height / 2 };
+
+		const positions = [{ ...top }, { ...right }, { ...bottom }, { ...left }];
+
+		for (let n = 0; n < this.bezierHandles.length; n++) {
+			if (redraw) this.bezierHandles[n].draw({ ...positions[n], scale: scale });
+			else this.bezierHandles[n].position.set(positions[n].x, positions[n].y);
+		}
+	}
+
+	public updateBezierCurveHandle(start: ElementPosition, end: ElementPosition, redraw: boolean) {
+		const scale = Math.min(3, this.scaled);
+
+		const positions = [{ ...start }, { ...end }];
+
+		for (let n = 0; n < this.bezierCurveHandles.length; n++) {
+			if (redraw) this.bezierCurveHandles[n].draw({ ...positions[n], scale: scale });
+			else this.bezierCurveHandles[n].position.set(positions[n].x, positions[n].y);
+		}
+	}
+
 	public updateResizeHitAreas(attr: Partial<GraphicUIProperties>) {
 		const scale = this.scaled;
 		const size = 5 / scale;
@@ -385,7 +643,15 @@ export class ViewportUI extends Viewport {
 			element.visible = visible;
 		}
 
+		for (const element of this.bezierHandles) {
+			element.visible = visible;
+		}
+
 		for (const element of this.resizeHitAreas) {
+			element.visible = visible;
+		}
+
+		for (const element of this.bezierCurveHandles) {
 			element.visible = visible;
 		}
 	}

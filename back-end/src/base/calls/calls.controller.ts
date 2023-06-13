@@ -1,11 +1,11 @@
-import { Controller, Get, Res, UseFilters, UseGuards, Param } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, UseGuards, Param, Post, Body } from '@nestjs/common';
 import { Response } from 'express';
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
 import { CallsService } from 'src/base/calls/calls.service';
 import { JwtAuthGuard } from '@/common/guards/auth.guard';
 import { Jwt } from '@/common/decorators/jwt.decorator';
 import { ObjectId } from 'mongodb';
-import { CourseIdObject, JwtQRCode } from '@/base/calls/interfaces/calls.interface';
+import { CourseIdObject, JwtQRCode, MessageObject } from '@/base/calls/interfaces/calls.interface';
 import { RoleValidator } from '@/common/guards/role.guard';
 import { Roles } from '@/base/users/interfaces/users.interface';
 
@@ -30,7 +30,6 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok', qrcode: qrcode });
 	}
 	@Get('/presence/:jwt')
-	@UseGuards(JwtAuthGuard)
 	async presence(@Param() param: JwtQRCode, @Res() res: Response) {
 		const message = await this.callsService.updateUserPresence(param.jwt, true);
 		return res.status(201).json({ status: message });
@@ -39,7 +38,15 @@ export class CallsController {
 	@UseGuards(JwtAuthGuard)
 	async actualCourse(@Jwt() userId: ObjectId, @Res() res: Response) {
 		const actualCourse = await this.callsService.getActualCourse(userId);
-		return res.status(201).json({ status: 'ok', actualCourse: actualCourse });
+		const message = await this.callsService.getMessage(actualCourse, userId);
+		return res.status(201).json({ status: 'ok', actualCourse: actualCourse, message: message });
+	}
+	@Get('/actual_course_group')
+	@UseGuards(JwtAuthGuard)
+	async actualCourseGroup(@Jwt() userId: ObjectId, @Res() res: Response) {
+		const actualCourse = await this.callsService.getActualCourseGroup(userId);
+		const message = await this.callsService.getMessage(actualCourse._id, userId);
+		return res.status(201).json({ status: 'ok', actualCourse: actualCourse, message: message });
 	}
 
 	@Get('/student_list/:courseId')
@@ -79,6 +86,23 @@ export class CallsController {
 		return res.status(201).json({ status: message });
 	}
 
+	@Post('save_message/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async saveMessage(
+		@Jwt() userId: ObjectId,
+		@Param() courseId: CourseIdObject,
+		@Body()
+		newMessage: MessageObject,
+	) {
+		await this.callsService.saveMessage(userId, courseId, newMessage);
+	}
+
+	@Get('get_messages/:courseId')
+	@UseGuards(JwtAuthGuard)
+	async getMesssages(@Param() courseId: CourseIdObject, @Res() res: Response) {
+		const messages = await this.callsService.getMessages(courseId);
+		return res.status(201).json({ messages: messages });
+	}
 	@Get('/create_random_groups/:courseId')
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async createRandomGroups(@Param() courseId: CourseIdObject, @Res() res: Response) {
@@ -104,5 +128,12 @@ export class CallsController {
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async isProductOwner(@Jwt() userId: ObjectId, @Res() res: Response) {
 		return res.status(201).json({ isProductOwner: true });
+	}
+
+	@Get('/is_pedagogue')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PEDAGOGUE))
+	async IsPedagogue(@Jwt() userId: ObjectId, @Res() res: Response) {
+		console.log(Roles.PEDAGOGUE);
+		return res.status(201).json({ isPedagogue: true });
 	}
 }

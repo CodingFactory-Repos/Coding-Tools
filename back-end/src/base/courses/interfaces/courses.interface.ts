@@ -4,21 +4,34 @@ import { Retrospective } from 'src/base/retrospectives/interfaces/retrospectives
 
 export interface Course {
 	_id?: ObjectId;
-	title: string;
+	tag: string;
+	classId?: ObjectId;
+	picture: string;
 	language: string;
 	createdAt: Date;
-	productOwner?: User;
+	periodStart: Date;
+	periodEnd: Date;
+	presence: [];
+	projects: Array<ObjectId>;
+	site: string;
+	teacherId?: ObjectId;
+	isLocked?: boolean;
+	groups?: Array<Group>;
+	retro: ObjectId;
+	trellos?: Array<any>; // WAITING FOR TRELLO
+	/*
+		productOwner?: User;
 	academicYear?: AcademicYear;
 	retrospective?: Retrospective;
-	startedAt: Date;
-	files?: Array<string>;
-	commentaries?: Array<string>;
-	endedAt: Date;
-	call: Call;
-	siteLocation: string;
+	*/
 }
 
 export interface Call {
 	example: string;
 	// to be changed;
+}
+
+export interface Group {
+	id: ObjectId;
+	group: Array<ObjectId>;
 }

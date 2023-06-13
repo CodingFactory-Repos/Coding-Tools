@@ -1,57 +1,79 @@
 <template>
 	<div class="text-center">
 		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">Blog</h1>
+			<h1 class="text-2xl md:text-4xl mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+				Blog
+			</h1>
 			<button
 				type="submit"
-				@click="openMetaModal"
-				class="font-bold rounded-lg text-sm px-4 mt-4 py-2 focus:outline-none gap-2 bg-blue-700"
+				@click="redirectNewArticle"
+				class="absolute top-4 right-4 m-0 font-bold rounded-lg text-xs md:text-sm px-3 py-2 focus:outline-none gap-2 bg-blue-700"
 			>
-				<span class="text-white">Create article</span>
+				<span class="text-white">
+					<Add class="!fill-light-primary" />
+				</span>
 			</button>
 		</div>
 
-		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="3xl">
-			<template #body>
-				<AddArticles />
-			</template>
-		</ModalOverlay>
-
-		<div class="text-center max-w-full h-full">
-			<h2 class="text-3xl font-bold pt-5">All Articles</h2>
-
-			<!-- <div class="w-full pl-32 pr-32">
-				<ul
-					class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+		<div class="mt-8 md:mt-10">
+			<div v-if="windowWidth >= 1024" class="flex justify-center space-x-2 md:space-x-4">
+				<button v-for="tab in tabs" :key="tab.id" :class="tabClass(tab)" @click="changeTab(tab.id)">
+					{{ tab.label }}
+				</button>
+			</div>
+			<div v-else class="flex justify-center space-x-2 md:space-x-4">
+				<select
+					v-model="activeTab"
+					class="block w-full md:w-auto bg-white text-black border border-gray-300 rounded-lg px-3 py-2 focus:outline-none"
 				>
-					<li
-						v-for="type in types"
-						class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
-					>
-						<div class="flex items-center pl-3">
-							<input
-								id="vue-checkbox-list"
-								type="checkbox"
-								:value="type.value"
-								class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-							/>
-							<label
-								for="vue-checkbox-list"
-								class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-								>{{ type.value }}</label
-							>
-						</div>
-					</li>
-				</ul>
-			</div> -->
+					<option v-for="tab in tabs" :key="tab.id" :value="tab.id">
+						{{ tab.label }}
+					</option>
+				</select>
+			</div>
 
-			<div class="flex items-center justify-center p-5">
-				<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-					<div
-						v-for="item in items"
-						class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-					>
-						<CardArticle :item="item" />
+			<div class="mt-5 mb-5">
+				<input
+					type="text"
+					v-model="searchQuery"
+					id="default-search"
+					class="block m-auto w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					:placeholder="
+						activeTab === 'infos'
+							? 'Rechercher une info...'
+							: activeTab === 'tutos'
+							? 'Rechercher un tutoriel..'
+							: activeTab === 'events'
+							? 'Rechercher un événement..'
+							: activeTab === 'liked'
+							? 'Rechercher un article liké..'
+							: activeTab === 'participate'
+							? 'Rechercher un article auquel vous participez..'
+							: 'Rechercher un article..'
+					"
+				/>
+			</div>
+
+			<div v-for="tab in tabs" :key="tab.id">
+				<div v-if="activeTab === tab.id">
+					<!-- <h2 class="text-2xl md:text-3xl font-bold pt-4 md:pt-5 text-gray-900 dark:text-white">
+						{{ tab.label }}
+					</h2> -->
+					<div class="flex items-center justify-center p-2 md:p-5 mt-6">
+						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
+							<div v-for="item in filteredItems(tab.id)" :key="item._id">
+								<div
+									v-if="
+										item.type != 'Tuto' ||
+										(item.type == 'Tuto' &&
+											(item.status == 'Accepted' || user.role == 2 || user.role == 3))
+									"
+									class="max-w-md flex flex-col justify-between items-center relative bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+								>
+									<CardArticle :item="item" />
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -59,54 +81,119 @@
 	</div>
 </template>
 
-<style scoped>
-.margin {
-	width: fit-content;
-}
-</style>
-
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import AddArticles from './AddArticles.vue';
-import ModalOverlay from '@/components/common/Modal.vue';
 import CardArticle from './CardArticle.vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { useRouter } from 'vue-router';
+import Add from '../common/svg/Add.vue';
 
-// Use the article store
+// Use the router
+const router = useRouter();
+
+// Use the article store and the auth store
 const articleStore = useArticleStore();
 const authStore = useAuthStore();
 
-// Create a reactive variable to store the articles
-const items = computed(() => articleStore.items);
+// Create a reactive variable to store the searchBar value
+const searchQuery = ref('');
+
+// Create a reactive variable to store the user
 const user = computed(() => authStore.user);
 
-// Display the modal
-const showModal = ref(false);
+// Create a reactive variable to store the window's width
+const windowWidth = ref(window.innerWidth);
+window.addEventListener('resize', () => {
+	windowWidth.value = window.innerWidth;
+});
 
-// Get the router
-const router = useRouter();
+// Create a reactive variable to store the articles && sort them by date
+const items = computed(() => {
+	// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+	return articleStore.items.sort((a, b) => {
+		return new Date(a.date).getTime() - new Date(b.date).getTime();
+	});
+});
 
-const types = ref([
-	{
-		value: 'Infos',
-	},
-	{
-		value: 'Evenement',
-	},
-	{
-		value: 'Tuto',
-	},
-]);
-
-// Function to open and close the modal
-const openMetaModal = () => (showModal.value = true);
-const closeMetaModal = () => (showModal.value = false);
+// Redirect the user to the article's creation page
+const redirectNewArticle = () => {
+	router.push('/app/blog/new');
+};
 
 // Fetch the articles
 const getArticles = async () => {
 	await articleStore.getArticle();
+};
+
+const tabs = ref([
+	{ id: 'all', label: 'Tous' },
+	{ id: 'infos', label: 'Infos' },
+	{ id: 'tutos', label: 'Tutoriels' },
+	{ id: 'events', label: 'Événements' },
+	{ id: 'liked', label: 'Likes' },
+	{ id: 'participate', label: 'Participations' },
+]);
+
+const activeTab = ref('all');
+
+const tabClass = (tab) => {
+	return {
+		'text-blue-500': activeTab.value === tab.id,
+		'text-gray-500': activeTab.value !== tab.id,
+	};
+};
+
+const changeTab = (tabId) => {
+	activeTab.value = tabId;
+};
+
+// Filter items based on the active tab
+const filteredItems = (tabId) => {
+	// Sort the items by date
+	const sortedItems = items.value.sort((a, b) => {
+		return new Date(b.date).getTime() - new Date(a.date).getTime();
+	});
+
+	// Filter the items based on the searchBar value
+	const searchResult = sortedItems.filter((item) => {
+		const titleMatch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase());
+		const contentMatch = item.content.toLowerCase().includes(searchQuery.value.toLowerCase());
+		return titleMatch || contentMatch;
+	});
+
+	// Filter the items based on the active tab
+	switch (tabId) {
+		case 'infos':
+			return searchResult.filter((item) => item.type === 'Infos');
+		case 'tutos':
+			if (user.value.role === 2 || user.value.role === 3) {
+				return searchResult.filter((item) => item.type === 'Tuto');
+			} else {
+				return searchResult.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
+			}
+		case 'events':
+			return searchResult.filter((item) => item.type === 'Evenement');
+		case 'liked':
+			return searchResult.filter(
+				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+			);
+		case 'participate':
+			return searchResult.filter(
+				(item) =>
+					item.participants &&
+					item.participants.some((participant) => participant._id === user.value._id),
+			);
+		case 'all':
+			return searchResult.filter(
+				(item) =>
+					item.type === 'Infos' ||
+					item.type === 'Evenement' ||
+					(item.type === 'Tuto' && item.status === 'Accepted'),
+			);
+	}
+
+	return searchResult;
 };
 
 // Call the getArticles method when the component is created
@@ -114,3 +201,9 @@ onMounted(() => {
 	getArticles();
 });
 </script>
+
+<style scoped>
+.margin {
+	width: fit-content;
+}
+</style>

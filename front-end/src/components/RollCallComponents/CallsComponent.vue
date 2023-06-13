@@ -1,15 +1,21 @@
 <template>
-	<div class="flex flex-col items-center mt-10">
-		<qrcode v-if="url" :value="url" />
+	<div class="flex flex-col items-center mt-2.5">
+		<div
+			v-if="url"
+			class="border-4 border-white dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 p-4"
+		>
+			<qrcode :value="url" />
+		</div>
 		<div v-else>
-			<p>{{ message }}</p>
+			<div class="text-4xl text-red-700">
+				<p>{{ message }}</p>
+			</div>
 		</div>
 		<a :href="url" v-if="url" target="_blank">
-			<button class="bg-gray-500 text-black py-0.5 px-5 rounded mt-2 mb-4">Ouvrir le lien</button>
+			<button class="bg-blue-500 text-white py-1 px-10 rounded mt-6 mb-2">Ouvrir le lien</button>
 		</a>
 	</div>
 </template>
-
 
 <script lang="ts">
 import Qrcode from 'vue-qrcode';
@@ -57,15 +63,19 @@ export default {
 		getCourseId: withErrorHandler(async function () {
 			http.get(`/calls/actual_course/`).then((response) => {
 				this.courseId = response.data.actualCourse;
-				this.isThereCourse();
+				this.isThereCourse(response);
 			});
 		}),
-		isThereCourse() {
+		isThereCourse(response) {
 			if (this.courseId) {
 				this.getQrCode();
-				this.message = '';
-			} else {
-				this.message = "Vous n'avez pas de cours aujourd'hui";
+			}
+			this.message = response.data.message;
+			this.isPedago(response.data.message);
+		},
+		isPedago(message) {
+			if (message.includes('pédagogue')) {
+				this.$router.push('/');
 			}
 		},
 	},

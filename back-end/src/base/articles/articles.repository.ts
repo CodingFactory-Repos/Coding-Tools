@@ -25,11 +25,18 @@ export class ArticlesRepository {
 
 	// Function to add an article
 	async createArticle(query: Article) {
-		return this.articles.insertOne(query);
+		this.articles.insertOne(query);
+		return this.articles.findOne(query);
+	}
+
+	// Function to delete an article
+	async deleteOneArticle(id: ObjectId) {
+		return this.articles.deleteOne({ _id: new ObjectId(id) });
 	}
 
 	async updateOneArticle(query: Filter<Article>, update: Partial<Article> | UpdateFilter<Article>) {
-		return this.articles.updateOne(query, update);
+		await this.articles.updateOne(query, update);
+		return this.articles.findOne(query);
 	}
 
 	async findOneAndUpdateArticle(
@@ -47,6 +54,10 @@ export class ArticlesRepository {
 	async articleExist(query: Filter<Article>) {
 		const options = { projection: { _id: 1 } };
 		return this.articles.findOne(query, options);
+	}
+
+	async updateMany(query: Filter<Article>, update: Partial<Article>) {
+		return this.articles.updateMany(query, { $set: update });
 	}
 	// Mongo repo for the articles collection
 }

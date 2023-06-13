@@ -1,6 +1,16 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
-import { Circle, Rectangle } from '../model/template';
+import { LineContainer } from '../class/lineContainer';
+import { TextContainer } from '../class/textContainer';
+import {
+	Circle,
+	Rectangle,
+	Triangle,
+	LineBezier,
+	Tree,
+	Ellipse,
+	TextArea,
+} from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
@@ -8,8 +18,16 @@ export const GeometryTypes = {
 	rectangle: Rectangle,
 	circle: Circle,
 	framebox: Rectangle,
+	triangle: Triangle,
+	bezier: LineBezier,
+	tree: Tree,
+	ellipse: Ellipse,
+	textarea: TextArea,
+
+	//! BROKEN DON'T USE
+	//polygon: Polygon, // Bugged
+
 	// "ELLIPSE": 'ellipse',
-	// "POLYGON":'polygon',
 	// "POLYLINE": 'polyline',
 	// "MULTIPOINT": 'multipoint',
 } as const;
@@ -17,6 +35,8 @@ export const GeometryTypes = {
 export const ContainerType = {
 	generic: GenericContainer,
 	frame: FramedContainer,
+	line: LineContainer,
+	text: TextContainer,
 } as const;
 
 export enum ResizeHandle {
@@ -28,6 +48,18 @@ export enum ResizeHandle {
 	R = 5, // Right
 	B = 6, // Bottom
 	L = 7, // Left
+}
+
+export enum BezierHandle {
+	T = 0,
+	R = 1,
+	B = 2,
+	L = 3,
+}
+
+export enum BezierCurveHandle {
+	P1 = 0,
+	P2 = 1,
 }
 
 export const ResizeHandleOppositeOf = {
@@ -56,3 +88,11 @@ export enum DownloadType {
 export type GeometryTypes = typeof GeometryTypes;
 export type LiteralGeometryTypes = keyof GeometryTypes;
 export type ContainerType = typeof ContainerType;
+
+export enum PixiEventMode {
+	NONE = 'none',
+	PASSIVE = 'passive',
+	AUTO = 'auto',
+	STATIC = 'static',
+	DYNAMIC = 'dynamic',
+}
