@@ -115,13 +115,14 @@ export const useArticleStore = defineStore('article', {
 		}),
 
 		getTopCreateur: withErrorHandler(async function () {
-			try {
-				const response = await http.get('/articles/stats/topcreateur');
-				const topCreators = Array.isArray(response.data) ? response.data : [];
-				console.log(topCreators);
-			} catch (error) {
-				console.error(error);
-			}
+			const response = await http.get('/articles/stats/topcreateur');
+			const createur = response.data.map((createur) => ({
+				_id: createur._id,
+				firstName: createur.firstName,
+				lastName: createur.lastName,
+				count: createur.count,
+			}));
+			return createur;
 		}),
 
 		getTopParticipant: withErrorHandler(async function () {

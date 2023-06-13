@@ -61,7 +61,6 @@ export class ArticlesService {
 			.toArray();
 		return res;
 	}
-
 	async getTopCreateur() {
 		const res = await this.articlesRepository.articles
 			.aggregate([
@@ -71,6 +70,8 @@ export class ArticlesService {
 				{
 					$group: {
 						_id: '$owner',
+						firstName: { $first: '$owner.firstName' },
+						lastName: { $first: '$owner.lastName' },
 						count: { $sum: 1 },
 					},
 				},
@@ -96,7 +97,9 @@ export class ArticlesService {
 				},
 				{
 					$group: {
-						_id: '$participants.id',
+						_id: '$participants._id',
+						firstName: { $first: '$participants.firstName' },
+						lastName: { $first: '$participants.lastName' },
 						count: { $sum: 1 },
 					},
 				},
