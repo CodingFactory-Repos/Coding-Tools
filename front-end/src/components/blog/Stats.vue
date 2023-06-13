@@ -10,7 +10,7 @@
 import { useUserStore } from '@/store/modules/user.store';
 import { onMounted } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
-import Chart from 'chart.js';
+import { Chart } from 'chart.js/auto';
 
 console.log(useUserStore());
 const createCharts = async () => {
