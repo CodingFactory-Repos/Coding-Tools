@@ -328,7 +328,8 @@
 /front-end/src/views/app/AgilityInvitation.vue @Maghwyn @Loule95450
 /front-end/src/views/app/AgilityProject.vue @Maghwyn
 /front-end/src/views/app/RelatedProfileView.vue @Maghwyn
-/front-end/src/views/calls/ @Maghwyn
+/front-end/src/views/calls/GroupsView.vue @Maghwyn
+/front-end/src/views/calls/RollCallView.vue @Maghwyn @AyakorK
 /front-end/src/views/CardArticleView.vue @TheoLandemaine
 /front-end/src/views/CoursDetailsView.vue @AyakorK
 /front-end/src/views/CourseView.vue @AyakorK
