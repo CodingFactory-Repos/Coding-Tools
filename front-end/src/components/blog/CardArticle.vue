@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-	<div class="boxShadow w-full">
+	<div class="boxShadow w-96">
 		<img
-			class="object-cover h-48 w-96 rounded-t-lg"
+			class="object-cover h-48 w-full rounded-t-lg"
 			:src="
 				item.picture && item.picture != ''
 					? item.picture
@@ -29,20 +29,46 @@
 			</button>
 		</div>
 		<div class="pt-3 pb-2" v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)">
-			<span
-				v-if="item.status == 'Accepted'"
-				class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+			<div
+				v-if="item.status != 'Accepted'"
+				class="flex flex-row items-center justify-evenly space-x-2"
 			>
-				Accepté
-			</span>
-			<span
-				v-else
-				class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
-			>
-				En attente
-			</span>
+				<button
+					@click="updateStatus(item._id, 'Accepted')"
+					class="text-green-700 border border-green-700 focus:ring-4 focus:outline-none font-small rounded-lg text-2xs p-1 text-center inline-flex items-center dark:text-green-500"
+				>
+					<Validate />
+				</button>
+
+				<span
+					class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+				>
+					En attente
+				</span>
+
+				<button
+					@click="deleteArticle(item._id)"
+					class="text-red-700 border border-red-700 focus:ring-4 focus:outline-none font-small rounded-lg text-2xs p-1 text-center inline-flex items-center dark:text-red-500"
+				>
+					<Cross class="!fill-red-700" />
+				</button>
+			</div>
+			<div v-else class="flex flex-row items-center justify-evenly space-x-2">
+				<span
+					v-if="item.status == 'Accepted'"
+					class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+				>
+					Accepté
+				</span>
+				<button
+					@click="updateStatus(item._id, 'Pending')"
+					class="text-yellow-400 border border-yellow-400 focus:ring-4 focus:outline-none font-small rounded-lg text-2xs p-1 text-center inline-flex items-center dark:text-yellow-500"
+				>
+					<Pause class="!fill-yellow-400" />
+				</button>
+			</div>
 		</div>
-		<div class="pt-3 pb-2" v-else>
+		<div class="pt-3.5 pb-3.5" v-else>
 			<span
 				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
 			>
@@ -51,17 +77,21 @@
 		</div>
 		<div class="pt-2 pb-5">
 			<a href="#">
-				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+				<h5
+					:class="item.title.length > 40 && 'text-xl'"
+					class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white capitalize"
+				>
 					{{ item.title ? item.title : 'Pas de titre spécifié' }}
 				</h5>
 			</a>
 			<p
+				:class="item.descriptions.length > 60 && 'text-md'"
 				class="min-h-[5rem] flex flex-col justify-center items-center justify-center font-normal text-gray-700 dark:text-gray-400"
 			>
 				{{ item.descriptions ? item.descriptions : 'Pas de description spécifiée' }}
 			</p>
 		</div>
-		<div class="pt-2 pb-5 flex flex-row justify-around items-center">
+		<div class="pt-2 pb-5 flex flex-row justify-evenly items-center">
 			<button
 				type="button"
 				@click="addLike(item._id)"
@@ -116,36 +146,6 @@
 					<OutlineDislike />
 				</div>
 			</button>
-		</div>
-
-		<!-- Validation -->
-		<div
-			v-if="item.type == 'Tuto' && (user.role == 2 || user.role == 3)"
-			class="flex flex-row place-content-evenly mb-3 items-center text-dark-primary dark:text-light-primary"
-		>
-			<div class="flex flex-row space-x-2">
-				<button
-					v-if="item.status != 'Accepted'"
-					@click="updateStatus(item._id, 'Accepted')"
-					class="text-green-700 border border-green-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-green-500"
-				>
-					<Validate />
-				</button>
-				<button
-					v-else
-					@click="updateStatus(item._id, 'Pending')"
-					class="text-yellow-400 border border-yellow-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-yellow-500"
-				>
-					<Pause class="!fill-yellow-400" />
-				</button>
-				<button
-					v-if="item.status != 'Accepted'"
-					@click="deleteArticle(item._id)"
-					class="text-red-700 border border-red-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs p-2 text-center inline-flex items-center dark:text-red-500"
-				>
-					<Cross class="!fill-red-700" />
-				</button>
-			</div>
 		</div>
 	</div>
 </template>
