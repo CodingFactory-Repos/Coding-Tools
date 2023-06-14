@@ -1,5 +1,5 @@
 <template>
-	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x h-100">
+	<div class="grid grid-cols-3 gap-8 mx-auto w-3/4 max-w-2x mb-4 h-100">
 		<div
 			v-for="(group, index) in groups"
 			:key="group.id"
