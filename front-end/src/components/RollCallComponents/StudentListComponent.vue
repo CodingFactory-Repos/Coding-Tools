@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="studentList && courseId"
-		class="w-7/12 flex mx-auto md:w-6/12 mt-2.5 align-left justify-start"
+		class="w-7/12 flex mx-auto md:w-6/12 mt-2.5 mb-4 align-left justify-start"
 	>
 		<table class="text-center w-full">
 			<caption hidden>
