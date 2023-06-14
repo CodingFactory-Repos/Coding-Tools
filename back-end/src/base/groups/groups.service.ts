@@ -33,7 +33,10 @@ export class GroupsService {
 
 		//TODO: Waiting for the trello part
 		const retro = createRetroGroup(course, user);
-		course.groups.forEach(async (groups, index) => {
+		await this.deleteCourseRetro(courseId);
+		await this.emptyCourseProjects(courseId);
+		for (const groups of course.groups) {
+			const index = course.groups.indexOf(groups);
 			const projectDocument: CanvasRoom = {
 				owner: userId,
 				meta: {
@@ -57,12 +60,24 @@ export class GroupsService {
 				{ _id: new ObjectId(courseId) },
 				{ $push: { projects: canvas.insertedId } },
 			);
-		});
+		}
 
 		const newRetro = await this.retrospectiveRepository.createRetrospective(retro);
 		await this.coursesRepository.updateOneCourse(
 			{ _id: new ObjectId(courseId) },
 			{ $set: { retro: newRetro.insertedId, isLocked: true } },
+		);
+	}
+	async emptyCourseProjects(courseId: string) {
+		await this.coursesRepository.updateOneCourse(
+			{ _id: new ObjectId(courseId) },
+			{ $set: { projects: [] } },
+		);
+	}
+	async deleteCourseRetro(courseId: string) {
+		await this.coursesRepository.updateOneCourse(
+			{ _id: new ObjectId(courseId) },
+			{ $set: { retro: null } },
 		);
 	}
 }
