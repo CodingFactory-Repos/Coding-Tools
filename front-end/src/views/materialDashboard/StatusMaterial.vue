@@ -19,7 +19,6 @@ export default {
 		};
 	},
 	async created() {
-		console.log('created status');
 		const { data: items } = await http.get(`/materials/statusMacs/Hardware`);
 		this.datas = items;
 	},

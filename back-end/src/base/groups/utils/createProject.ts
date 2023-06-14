@@ -4,8 +4,7 @@ import { User } from '@/base/users/interfaces/users.interface';
 import { generateCodeToken } from '@/common/helpers/string.helper';
 import { ObjectId } from 'mongodb';
 
-
-export const createRetroGroup = (course: Course, user: User, ) => {
+export const createRetroGroup = (course: Course, user: User) => {
 	const date = new Date();
 	const slug = generateCodeToken();
 
@@ -16,7 +15,7 @@ export const createRetroGroup = (course: Course, user: User, ) => {
 		postits: {
 			1: [],
 			2: [],
-			3: []
+			3: [],
 		},
 		endedAt: null,
 		isRetroEnded: false,
@@ -31,9 +30,11 @@ export const createRetroGroup = (course: Course, user: User, ) => {
 		allowedPeers: [],
 	} as unknown as Retrospective;
 
-	retro.participants.push(user.profile.email)
-	retro.allowedPeers.push(new ObjectId(user._id))
-	course.groups.forEach((groups) => groups.group.forEach((users) => retro.allowedPeers.push(users)))
+	retro.participants.push(user.profile.email);
+	retro.allowedPeers.push(new ObjectId(user._id));
+	course.groups.forEach((groups) =>
+		groups.group.forEach((users) => retro.allowedPeers.push(users)),
+	);
 
-	return retro
-}
+	return retro;
+};
