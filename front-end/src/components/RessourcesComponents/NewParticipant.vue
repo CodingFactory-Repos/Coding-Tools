@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { useUserStore } from '@/store/modules/user.store';
-import { elements } from 'chart.js';
+
 export default {
 	data() {
 		return {
@@ -71,7 +71,6 @@ export default {
 					}
 				}
 			});
-			console.log(this.userList);
 		},
 
 		async getUsers() {
@@ -105,8 +104,6 @@ export default {
 			this.name = '';
 			this.userList = [];
 			this.showNewParticipant();
-			console.log(user);
-			console.log(this.participants);
 		},
 	},
 };

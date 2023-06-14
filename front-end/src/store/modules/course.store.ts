@@ -2,10 +2,12 @@ import { CoursesStore, Course } from '../interfaces/cours.interface';
 import { defineStore } from 'pinia';
 import { withErrorHandler } from '@/utils/storeHandler';
 import { createCourse, getCourses, getCoursesById } from '@/api/ressource-req';
+import { tryGetAllCourses } from '@/api/courses-req';
 
 export const useCoursStore = defineStore('course', {
 	state: (): CoursesStore => {
 		return {
+			allCourses: [],
 			items: [
 				{
 					_id: '',
@@ -50,8 +52,8 @@ export const useCoursStore = defineStore('course', {
 		}),
 		getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
+			this.oneItems = response.data; //.courseById;
+
 			return true;
 		}),
 		addCourse: withErrorHandler(async function (this: CoursesStore, course: Course) {

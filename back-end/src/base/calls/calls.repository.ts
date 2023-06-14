@@ -224,10 +224,9 @@ export class CallsRepository {
 				message: 'User already registered',
 			};
 		}
-
 		if (
-			(date.getHours() < 8 && date.getMinutes() < 30) ||
-			(date.getHours() > 17 && date.getMinutes() > 30)
+			(date.getHours() <= 8 && date.getMinutes() <= 30) ||
+			(date.getHours() >= 17 && date.getMinutes() >= 30)
 		) {
 			return { message: 'You cannot scan outside of school hours', error: 'Scan out of time' };
 		}
@@ -257,7 +256,7 @@ export class CallsRepository {
 	}
 
 	getDate(date) {
-		return new Date(date.getFullYear(), date.getMonth() + 1, date.getDay() + 1);
+		return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 	}
 	isStudentLate(period, timeOfScan) {
 		const fakeDate = new Date(
@@ -424,7 +423,10 @@ export class CallsRepository {
 				{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 				{
 					$set: {
-						groups: groups,
+						groups: groups.map((group) => ({
+							id: new ObjectId(),
+							group: group,
+						})),
 					},
 				},
 			);
@@ -446,8 +448,10 @@ export class CallsRepository {
 		if (!course) {
 			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
-		const actualGroups = course.groups;
-
+		const actualGroups = [];
+		course.groups.map((group) => {
+			actualGroups.push(group.group);
+		});
 		// Respect size of groups and number of groups do not change
 		if (actualGroups.length == 0) {
 			throw new ServiceError('NOT_FOUND', 'Groups not found');
@@ -458,7 +462,10 @@ export class CallsRepository {
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
 				$set: {
-					groups: groups,
+					groups: groups.map((group) => ({
+						id: new ObjectId(),
+						group: group,
+					})),
 				},
 			},
 		);
@@ -495,21 +502,27 @@ export class CallsRepository {
 		if (!course) {
 			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
-		const actualGroups = course.groups;
+		const actualGroups = [];
+		course.groups.map((group) => {
+			actualGroups.push(group.group);
+		});
 		const groups = actualGroups.map((group) => Array(group.length).fill(''));
 
 		await this.db.collection('courses').updateOne(
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
 				$set: {
-					groups: groups,
+					groups: groups.map((group) => ({
+						id: new ObjectId(),
+						group: group,
+					})),
 				},
 			},
 		);
 		return 'successEmpty';
 	}
 
-	async getGroups(courseId: string) {
+	async getGroups(courseId) {
 		const courseObjectId = new ObjectId(courseId);
 		const actualDate = new Date();
 		const course = await this.db.collection('courses').findOne({
@@ -517,18 +530,20 @@ export class CallsRepository {
 			periodStart: { $lte: actualDate },
 			periodEnd: { $gte: actualDate },
 		});
+
 		if (!course) {
 			throw new ServiceError('NOT_FOUND', 'Course not found');
 		}
-		// Transform the elements objectId in the group to the user object (to get name firstname etc...)
-		for (let i = 0; i < course.groups.length; i++) {
-			for (let j = 0; j < course.groups[i].length; j++) {
-				if (course.groups[i][j] != '') {
-					const userObjectId = new ObjectId(course.groups[i][j]);
-					course.groups[i][j] = await this.db.collection('users').findOne({ _id: userObjectId });
+
+		for (const groups of course.groups) {
+			for (let index = 0; index < groups.group.length; index++) {
+				const student = groups.group[index];
+				if (student != '') {
+					groups.group[index] = await this.db.collection('users').findOne({ _id: student });
 				}
 			}
 		}
+
 		return course.groups;
 	}
 
@@ -603,12 +618,19 @@ export class CallsRepository {
 		if (!user) {
 			throw new ServiceError('NOT_FOUND', 'User not found');
 		}
-		const group = course.groups[parseInt(groupId['groupId'])];
-		if (!group) {
+		const groups = course.groups;
+		let groupToJoin = null;
+		const groupIdToJoin = new ObjectId(groupId['groupId']);
+		groups.map((group) => {
+			if (new ObjectId(group.id).equals(groupIdToJoin)) {
+				groupToJoin = group;
+			}
+		});
+		if (!groupToJoin) {
 			throw new ServiceError('NOT_FOUND', 'Group not found');
 		}
 		// Search if he is already in the group
-		const userAlreadyInGroup = group.some((memberId) => {
+		const userAlreadyInGroup = groupToJoin.group.some((memberId) => {
 			if (memberId instanceof ObjectId) {
 				return memberId.equals(userObjectId);
 			}
@@ -619,7 +641,7 @@ export class CallsRepository {
 		}
 
 		let isReplaced = false;
-		const newGroup = group.map((user) => {
+		const newGroup = groupToJoin.group.map((user) => {
 			if (!isReplaced && user === '') {
 				isReplaced = true;
 				return userId;
@@ -634,23 +656,22 @@ export class CallsRepository {
 		let isPresent = false;
 		let ancientGroup = null;
 		let ancientGroupId = null;
-		course.groups.find((group) => {
-			group.some((memberId) => {
+		groups.map((group) => {
+			group.group.some((memberId) => {
 				if (memberId instanceof ObjectId) {
 					if (memberId.equals(userObjectId)) {
 						isPresent = true;
 						ancientGroup = group;
-						ancientGroupId = course.groups.indexOf(group);
+						ancientGroupId = ancientGroup.id;
 						return true;
 					}
-					return memberId.equals(userObjectId);
 				}
 			});
 		});
 
 		if (isPresent) {
 			// Remove him from the other group and add him to the new one
-			const updatedGroup = ancientGroup.map((member) => {
+			const updatedGroup = ancientGroup.group.map((member) => {
 				if (member instanceof ObjectId) {
 					if (member.equals(userObjectId)) {
 						return '';
@@ -660,11 +681,13 @@ export class CallsRepository {
 			});
 
 			await this.leavingGroup(courseObjectId, actualDate, course, ancientGroupId, updatedGroup);
-
-			course.groups[ancientGroupId] = updatedGroup;
+			const groupModified = groups.find((group) => {
+				return new ObjectId(group.id).equals(ancientGroupId);
+			});
+			groupModified.group = updatedGroup;
 		}
 
-		await this.joiningGroup(courseObjectId, actualDate, course, groupId, newGroup);
+		await this.joiningGroup(courseObjectId, actualDate, course, groupIdToJoin, newGroup);
 
 		return 'successJoin';
 	}
@@ -674,9 +697,9 @@ export class CallsRepository {
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
 				$set: {
-					groups: course.groups.map((group, index) => {
-						if (index == parseInt(groupId['groupId'])) {
-							return newGroup;
+					groups: course.groups.map((group) => {
+						if (new ObjectId(group.id).equals(groupId)) {
+							group.group = newGroup;
 						}
 						return group;
 					}),
@@ -690,9 +713,9 @@ export class CallsRepository {
 			{ _id: courseObjectId, periodStart: { $lte: actualDate }, periodEnd: { $gte: actualDate } },
 			{
 				$set: {
-					groups: course.groups.map((group, index) => {
-						if (index === ancientGroupId) {
-							return updatedGroup;
+					groups: course.groups.map((group) => {
+						if (new ObjectId(group.id).equals(ancientGroupId)) {
+							group.group = updatedGroup;
 						}
 						return group;
 					}),
@@ -797,5 +820,38 @@ export class CallsRepository {
 			};
 		}
 		return createPDF();
+	}
+
+	async getActualCourseGroup(userId: ObjectId) {
+		// RELOU DE DEVOIR FAIRE ÇA MAIS TOUT EST LIÉ AVEC LE PREMIER RETURN DU ACTUALGROUP AVEC SEULEMENT L'ID, ET JE SUIS BLOQUÉ POUR LA SUITE AU NIVEAU DU FRONT...
+		const actualDate = new Date();
+
+		const user = await this.db.collection('users').findOne({ _id: userId });
+		if (!user) {
+			throw new ServiceError('NOT_FOUND', 'User not found');
+		}
+
+		const query = {
+			periodStart: { $lte: actualDate },
+			periodEnd: { $gte: actualDate },
+		};
+
+		switch (user.role) {
+			case Roles.STUDENT:
+				query['classId'] = await this.getStudentClassId(userId);
+				break;
+			case Roles.PRODUCT_OWNER:
+				query['teacherId'] = userId;
+				break;
+			case Roles.PEDAGOGUE:
+				return null;
+			default:
+				throw new Error(`Unknown user role: ${user.role}`);
+		}
+
+		const actualCourse = await this.db.collection('courses').findOne(query);
+
+		// La base n'est pas typée, j'ai besoin de tout en front donc voilà
+		return actualCourse ?? null;
 	}
 }

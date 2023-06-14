@@ -12,7 +12,6 @@ export class IdeasCommentsRepository {
 	}
 
 	async getAllIdeasComments(query: IdeaComment) {
-		console.log({ query });
 		const { equipmentId } = query;
 		return await this.ideasComments
 			.aggregate([

@@ -1,4 +1,4 @@
-import { EventMode } from 'pixi.js';
+import { EventMode, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
 import {
 	AttachedContainer,
 	ElementBounds,
@@ -7,7 +7,7 @@ import {
 	ElementPosition,
 } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame' | 'line';
+export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text';
 export type GraphicTypeId =
 	| 'rectangle'
 	| 'circle'
@@ -16,7 +16,10 @@ export type GraphicTypeId =
 	| 'polygon'
 	| 'bezier'
 	| 'tree'
-	| 'ellipse';
+	| 'ellipse'
+	| 'textarea'
+	| 'stickyNote';
+
 export type InternalTypeId = 'border' | 'handle' | 'hitarea' | 'grid';
 
 export interface SerializedElement {
@@ -95,6 +98,12 @@ export interface SerializedGraphicProperties extends SerializedProperties, Eleme
 	borderColor?: number;
 	arrowHead?: boolean;
 	dashed?: boolean;
+	text?: string;
+	fontSize?: string | number;
+	fontWeight?: TextStyleFontWeight;
+	fontStyle?: TextStyleFontStyle;
+	fontFamily?: string | string[];
+	fontPadding?: number;
 }
 
 export interface SerializedLineGraphic {

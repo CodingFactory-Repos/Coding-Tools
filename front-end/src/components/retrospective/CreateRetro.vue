@@ -32,9 +32,10 @@ import { computed, defineComponent, ref } from 'vue';
 import Overlay from '@/components/retrospective/utils/Overlay.vue';
 import ChooseTemplate from './ChooseTemplate.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
-import { useCourseStore } from '@/store/course.store';
+
 import { useAuthStore } from '@/store/modules/auth.store';
 import { Roles } from '@/store/interfaces/auth.interfaces';
+import { useCoursStore } from '@/store/modules/course.store';
 
 export default defineComponent({
 	components: {
@@ -43,7 +44,7 @@ export default defineComponent({
 		ChooseTemplate,
 	},
 	setup() {
-		const courseStore = useCourseStore();
+		const courseStore = useCoursStore();
 		const authStore = useAuthStore();
 		const active = ref(false);
 		const displayTemplate = ref(false);

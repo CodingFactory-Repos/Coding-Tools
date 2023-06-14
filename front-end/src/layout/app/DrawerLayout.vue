@@ -63,14 +63,16 @@
 									}"
 								/>
 							</DrawerRouterOption>
-							<DrawerRouterOption to="/app/rollcall" name="Attendance" :fold="!active">
-								<SvgQrCode
-									:class="{
-										'fill-selected-icon dark:fill-selected-icon':
-											route.path.startsWith('/app/rollcall'),
-									}"
-								/>
-							</DrawerRouterOption>
+							<div v-if="!isPedago">
+								<DrawerRouterOption to="/app/rollcall" name="Attendance" :fold="!active">
+									<SvgQrCode
+										:class="{
+											'fill-selected-icon dark:fill-selected-icon':
+												route.path.startsWith('/app/rollcall'),
+										}"
+									/>
+								</DrawerRouterOption>
+							</div>
 							<DrawerRouterOption to="/app/retrospective" name="Retrospective" :fold="!active">
 								<SvgNote
 									:class="{
@@ -118,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useThemeStore } from '@/store/modules/theme.store';
@@ -138,6 +140,7 @@ import SvgNote from '@/components/common/svg/Note.vue';
 import SvgDark from '@/components/common/svg/Dark.vue';
 import SvgLight from '@/components/common/svg/Light.vue';
 import SvgLogout from '@/components/common/svg/Logout.vue';
+import { http } from '@/api/network/axios';
 
 const route = useRoute();
 const themeStore = useThemeStore();
@@ -149,6 +152,19 @@ const isBlacklist = computed(() => blacklist.some((rgx) => rgx.test(route.path))
 const theme = computed(() => themeStore.theme);
 const active = ref(false);
 const modalLogoutActive = ref(false);
+const isPedago = ref(false);
+
+onMounted(async () => {
+	await getIsPedago();
+});
+
+const getIsPedago = async () => {
+	try {
+		isPedago.value = await http.get(`/calls/is_pedagogue/`);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 const drawerAction = () => {
 	active.value = !active.value;

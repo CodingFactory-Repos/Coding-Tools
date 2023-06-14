@@ -1,10 +1,5 @@
-
 import { User } from '@/base/users/interfaces/users.interface';
-import {
-	IsNotEmpty,
-	IsOptional,
-	IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CourseDTO {
 	@IsOptional()
@@ -40,5 +35,5 @@ export class CourseDTO {
 	project?: Array<any>; // Don't know what it is
 
 	@IsOptional()
-	site?: string
+	site?: string;
 }

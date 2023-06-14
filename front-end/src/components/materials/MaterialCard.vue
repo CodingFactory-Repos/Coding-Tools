@@ -77,7 +77,6 @@ import Modal from '@/components/common/Modal.vue';
 import DetailsMaterials from './DetailsMaterials.vue';
 import { useAuthStore } from '@/store/modules/auth.store';
 import { useMaterialStore } from '@/store/modules/material.store';
-import { http } from '@/api/network/axios';
 import { Roles } from '@/store/interfaces/auth.interfaces';
 import { Material } from '@/store/interfaces/material.interface';
 import Swal from 'sweetalert2';

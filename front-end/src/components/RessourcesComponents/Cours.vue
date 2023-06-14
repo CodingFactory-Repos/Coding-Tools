@@ -95,7 +95,6 @@ const endYears = ref(new Date().getFullYear() + 1);
 const TagList = ref([]);
 let currentYearsCourses = [];
 const showModal = ref(false);
-// let coursesFiltered = [];
 const coursesFiltered = ref([]);
 // Use the openHouses store
 const courseStore = useCoursStore();

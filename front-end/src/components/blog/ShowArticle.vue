@@ -6,7 +6,7 @@
 		</template>
 	</ModalOverlay>
 
-	<div>
+	<div class="text-center">
 		<ModalOverlay v-if="showModal" @close="closeMetaModal" size="2xl">
 			<template #header>
 				<h2 class="text-lg font-medium text-gray-900 dark:text-white">
@@ -87,25 +87,24 @@
 			alt=""
 		/>
 		<div class="text-center pt-4 relative">
-			<div v-if="oneItems.type == 'Evenement'">
-				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
-				</h1>
-			</div>
-			<div v-else>
-				<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-					{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
-				</h1>
-			</div>
+			<h1 class="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+				{{ oneItems.title ? oneItems.title : 'Pas de titre spécifié' }}
+			</h1>
 			<div class="pt-3 pb-2">
 				<span
 					class="bg-blue-100 text-blue-800 text-l font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-					>{{ oneItems.type }}</span
 				>
+					{{ new Date(oneItems.date).toLocaleDateString('fr-FR') }}
+				</span>
 			</div>
 		</div>
 
-		<div class="pt-2 pb-5 text-center">
+		<div class="pt-2 pb-5 pr-40 pl-40 text-left">
+			<p class="markdown-preview text-gray-900 dark:text-white">
+				{{ oneItems.descriptions ? oneItems.descriptions : 'Pas de description spécifiée' }}
+			</p>
+		</div>
+		<div class="markdown-content pt-2 pb-5 pr-40 pl-40 text-left">
 			<div v-html="renderMarkdown()" class="text-gray-900 dark:text-white"></div>
 		</div>
 		<div class="pt-5">
@@ -183,13 +182,17 @@
 	</div>
 
 	<div>
-		<article v-for="comment in oneItems.comments" :key="comment.title" class="p-5">
+		<article
+			v-for="comment in oneItems.comments"
+			:key="comment.title"
+			class="m-2 p-3 bg-white rounded-lg dark:bg-gray-800 relative"
+		>
 			<header class="mb-2">
 				<h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
 					{{ comment.title }}
 				</h3>
 			</header>
-			<div class="flex items-center mb-4 space-x-4">
+			<div class="flex items-center mb-4 space-x-2">
 				<img
 					class="w-10 h-10 rounded-full"
 					:src="
@@ -199,6 +202,7 @@
 					"
 					alt=""
 				/>
+				<!-- <UserCircle class="logo rounded-full text-gray-500" /> -->
 				<div class="font-medium dark:text-white">
 					<p class="text-gray-900 dark:text-white">
 						{{ comment.firstName }} {{ comment.lastName }}
@@ -213,6 +217,16 @@
 			<p class="mb-2 font-light text-gray-500 dark:text-gray-400">
 				{{ comment.descriptions }}
 			</p>
+
+			<div v-if="oneItems.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+				<button
+					type="button"
+					@click="removeComment(oneItems._id, comment)"
+					class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs p-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+				>
+					<DeleteLogo />
+				</button>
+			</div>
 		</article>
 	</div>
 </template>
@@ -226,12 +240,27 @@ import AddComment from '@/components/blog/AddComment.vue';
 import Swal from 'sweetalert2';
 import MarkdownIt from 'markdown-it';
 import Comment from '../common/svg/Comment.vue';
+import MarkdownItClass from '@toycode/markdown-it-class';
+// import UserCircle from '../common/svg/UserCircle.vue';
+import DeleteLogo from '../common/svg/DeleteLogo.vue';
 
 let markdown = ref('');
 
 // create renderMarkdown method
 const renderMarkdown = () => {
 	const md = new MarkdownIt();
+
+	md.use(MarkdownItClass, {
+		h1: 'text-4xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h2: 'text-3xl mt-5 mb-2 border-b border-gray-300 font-bold text-gray-900 dark:text-white',
+		h3: 'text-2xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h4: 'text-xl mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h5: 'text-lg mt-5 mb-2  font-bold text-gray-900 dark:text-white',
+		h6: 'text-base mt-5 mb-2 font-bold text-gray-500 dark:text-white',
+		img: 'max-w-[25rem] m-auto h-auto mt-7 mb-7',
+		p: 'text-gray-900 mt-2 mb-2 dark:text-white',
+	});
+
 	return md.render(markdown.value);
 };
 
@@ -262,7 +291,7 @@ const _id = computed(() => {
 // get article by id
 const getArticleById = async (_id: string) => {
 	await articleStore.getArticleById(_id);
-	markdown.value = oneItems.value.descriptions;
+	markdown.value = oneItems.value.content;
 };
 
 const formatDate = (date: Date) => {
@@ -289,7 +318,7 @@ const participationEvent = (id) => {
 		firstName: user.value.profile.firstName,
 		lastName: user.value.profile.lastName,
 		email: user.value.profile.email,
-		id: user.value._id,
+		_id: user.value._id,
 	};
 
 	if (isParticipant) {
@@ -342,6 +371,35 @@ const isFinish = () => {
 	const now = new Date();
 	return date < now;
 };
+
+// function to delete an article
+const removeComment = (articleId, comment) => {
+	const removedComment = {
+		_id: comment._id,
+		title: comment.title,
+		descriptions: comment.descriptions,
+		date: comment.date,
+		email: comment.email,
+		firstName: comment.firstName,
+		lastName: comment.lastName,
+		picture: comment.picture,
+	};
+
+	Swal.fire({
+		title: 'Are you sure you want to delete this article ?',
+		text: "You won't be able to revert this!",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes, delete it!',
+	}).then((result) => {
+		if (result.isConfirmed) {
+			articleStore.removeComment(articleId, removedComment);
+			Swal.fire('Deleted!', 'Your article has been deleted.', 'success');
+		}
+	});
+};
 </script>
 
 <style scoped>
@@ -350,5 +408,10 @@ const isFinish = () => {
 }
 .display-none {
 	display: none;
+}
+
+.logo {
+	width: 3rem !important;
+	height: auto !important;
 }
 </style>
