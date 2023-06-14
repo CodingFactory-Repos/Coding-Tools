@@ -189,8 +189,13 @@ export const useArticleStore = defineStore('article', {
 
 		getTopParticipant: withErrorHandler(async function () {
 			const response = await http.get('articles/stats/topparticipant');
-			const topParticipants = response.data;
-			console.log(topParticipants);
+			const topParticipants = response.data.map((topParticipants) => ({
+				_id: topParticipants._id,
+				firstName: topParticipants.firstName,
+				lastName: topParticipants.lastName,
+				count: topParticipants.count,
+			}));
+			return topParticipants;
 		}),
 
 		addComment: withErrorHandler(async function (id: string, comment) {
