@@ -69,9 +69,26 @@
 </template>
 <script>
 import { http } from '@/api/network/axios';
+import { useUserStore } from '@/store/modules/user.store';
+import { computed } from 'vue';
+
+import { useAuthStore } from '@/store/modules/auth.store';
+
+const authStore = useAuthStore();
+const userStore = useUserStore();
+
+const user = computed(() => authStore.user);
+const userId = computed(() => user.value._id);
+
+console.log(userId);
+
 export default {
 	props: ['title'],
-
+	data() {
+		return {
+			userId,
+		};
+	},
 	methods: {
 		async postBdd() {
 			await http.post('/ideasequipments/add', {
@@ -80,6 +97,7 @@ export default {
 				desc: this.desc,
 				link: this.link,
 				motiv: this.motiv,
+				user: this.userId,
 			});
 			this.$emit('close');
 			this.$emit('validation');
