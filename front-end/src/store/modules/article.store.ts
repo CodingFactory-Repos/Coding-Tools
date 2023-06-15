@@ -16,7 +16,11 @@ export const useArticleStore = defineStore('article', {
 			items: [
 				{
 					_id: '',
-					owner: '',
+					owner: {
+						_id: '',
+						firstName: '',
+						lastName: '',
+					},
 					date: new Date(),
 					title: '',
 					descriptions: '',
@@ -31,7 +35,11 @@ export const useArticleStore = defineStore('article', {
 			],
 			oneItems: {
 				_id: '',
-				owner: '',
+				owner: {
+					_id: '',
+					firstName: '',
+					lastName: '',
+				},
 				title: '',
 				date: new Date(),
 				descriptions: '',
@@ -92,9 +100,11 @@ export const useArticleStore = defineStore('article', {
 
 		//update article in the database
 		updateArticle: withErrorHandler(async function (id: string, article: Article) {
-			const response = await http.put(`/articles/update/${id}`, article);
-			const oneItems = response.data;
-			this.oneItems = oneItems;
+			await http.put(`/articles/update/${id}`, article);
+
+			const index = this.items.findIndex((el) => el._id === id);
+			this.items[index] = article;
+
 			return true;
 		}),
 
