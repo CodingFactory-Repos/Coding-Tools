@@ -6,7 +6,7 @@ export interface ArticleStore {
 
 export interface Article {
 	_id?: string;
-	owner: string;
+	owner: Owner;
 	date: Date;
 	title: string;
 	descriptions: string;
@@ -34,6 +34,12 @@ export interface Participants {
 	firstName: string;
 	lastName: string;
 	email: string;
+}
+
+export interface Owner {
+	_id: string;
+	firstName: string;
+	lastName: string;
 }
 
 export interface Comments {

@@ -266,10 +266,16 @@ const addArticle = async () => {
 		return;
 	}
 
+	const owner = {
+		_id: authStore?.user?._id,
+		firstName: authStore?.user?.profile?.firstName,
+		lastName: authStore?.user?.profile?.lastName,
+	};
+
 	// Groups all data for sending to the API
 	if (type.value == 'Infos') {
 		let data = {
-			owner: authStore.user._id,
+			owner: owner,
 			title: title.value,
 			descriptions: description.value,
 			content: content.value,
@@ -286,7 +292,7 @@ const addArticle = async () => {
 		await articleStore.addArticle(data);
 	} else {
 		let data = {
-			owner: authStore.user._id,
+			owner: owner,
 			title: title.value,
 			descriptions: description.value,
 			content: content.value,

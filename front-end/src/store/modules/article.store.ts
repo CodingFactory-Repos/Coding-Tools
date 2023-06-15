@@ -16,7 +16,11 @@ export const useArticleStore = defineStore('article', {
 			items: [
 				{
 					_id: '',
-					owner: '',
+					owner: {
+						_id: '',
+						firstName: '',
+						lastName: '',
+					},
 					date: new Date(),
 					title: '',
 					descriptions: '',
@@ -31,7 +35,11 @@ export const useArticleStore = defineStore('article', {
 			],
 			oneItems: {
 				_id: '',
-				owner: '',
+				owner: {
+					_id: '',
+					firstName: '',
+					lastName: '',
+				},
 				title: '',
 				date: new Date(),
 				descriptions: '',

@@ -336,7 +336,7 @@ if (!props.markdown) {
 		date.value = oneItems.value.date;
 		title.value = oneItems.value.title;
 		description.value = oneItems.value.descriptions;
-		let tempUser = await materialStore.getUserById(oneItems.value.owner);
+		let tempUser = await materialStore.getUserById(oneItems.value.owner._id);
 
 		// format for captital letters
 		user.value =

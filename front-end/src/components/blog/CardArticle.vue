@@ -10,7 +10,7 @@
 			"
 			alt=""
 		/>
-		<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 left-2">
+		<div v-if="item.owner._id === user._id || user.role === 2" class="absolute top-2 left-2">
 			<button
 				type="button"
 				@click="deleteArticle(item._id)"
@@ -19,7 +19,7 @@
 				<DeleteLogo />
 			</button>
 		</div>
-		<div v-if="item.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+		<div v-if="item.owner._id === user._id || user.role === 2" class="absolute top-2 right-2">
 			<button
 				type="button"
 				@click="editArticle(item._id)"
