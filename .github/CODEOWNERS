@@ -132,10 +132,11 @@
 /front-end/src/ @Loule95450 @Maghwyn
 /front-end/src/api/ @Maghwyn
 /front-end/src/api/agility-req.ts @Loule95450 @Maghwyn
+/front-end/src/api/auth-req.ts @Maghwyn @Loule95450
 /front-end/src/api/courses-req.ts @AyakorK
 /front-end/src/api/material-req.ts @Kevw94 @Maghwyn
-/front-end/src/api/network/ @Maghwyn
 /front-end/src/api/ressource-req.ts @AyakorK
+/front-end/src/api/retrospective-req.ts @Maghwyn @Loule95450
 /front-end/src/api/scrum-req.ts @Kevw94 @Maghwyn
 /front-end/src/api/user-req.ts @Maghwyn @Kevw94
 /front-end/src/App.vue @TheoLandemaine @Maghwyn
