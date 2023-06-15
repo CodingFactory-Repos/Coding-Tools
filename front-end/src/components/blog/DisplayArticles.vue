@@ -13,6 +13,13 @@
 					<Add class="!fill-light-primary" />
 				</span>
 			</button>
+			<button
+				type="submit"
+				@click="router.push('/app/blog/stats')"
+				class="font-bold rounded-lg text-xs md:text-sm px-3 py-2 focus:outline-none gap-2 bg-blue-700"
+			>
+				<span class="text-white"> Voir les statistiques </span>
+			</button>
 		</div>
 
 		<div class="mt-8 md:mt-10">

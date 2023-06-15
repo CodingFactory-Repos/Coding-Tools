@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import Stats from '@/components/blog/Stats.vue';
+import Stats from '@/components/blog/StatsArticles.vue';
 </script>

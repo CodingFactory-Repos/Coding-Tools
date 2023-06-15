@@ -1,30 +1,37 @@
 <template>
-	<div class="w-full">
-		<h1 class="w-full text-center mb-8">Stats des répartitions d'articles</h1>
-		<div class="w-full relative block">
-			<canvas id="chart1" width="300" height="300"></canvas>
+	<div class="w-full h-auto grid grid-cols-2 gap-10 m-5">
+		<div class="flex flex-col items-center">
+			<h1 class="text-3xl text-black mb-5 dark:text-white">Nombres d'articles par type</h1>
+			<div class="border border-gray-500 p-3 rounded-xl dark:border-white">
+				<canvas id="chart1" width="300" height="300"></canvas>
+			</div>
 		</div>
-		<h1 class="w-full text-center mt-12 mb-8">
-			Stats des événements qui ont connu le plus de participation
-		</h1>
-		<div class="w-full relative block">
-			<canvas id="chart2" width="300" height="300"></canvas>
+		<div class="flex flex-col items-center">
+			<h1 class="text-3xl text-black mb-5 dark:text-white">
+				Événements avec le plus de participants
+			</h1>
+			<div class="border border-gray-500 p-3 rounded-xl dark:border-white">
+				<canvas id="chart2" width="300" height="300"></canvas>
+			</div>
 		</div>
-		<h1 class="w-full text-center mt-12 mb-8">
-			Top 10 des étudiants qui créent le plus d'articles
-		</h1>
-		<div class="w-full relative block">
-			<canvas id="chart3" width="300" height="300"></canvas>
+		<div class="flex flex-col items-center">
+			<h1 class="text-3xl text-black mb-5 dark:text-white">
+				Étudiants ayant créé le plus d'articles
+			</h1>
+			<div class="border border-gray-500 p-3 rounded-xl dark:border-white">
+				<canvas id="chart3" width="300" height="300"></canvas>
+			</div>
 		</div>
-		<h1 class="w-full text-center mt-12 mb-8">Top 10 des étudiants qui participent le plus</h1>
-		<div class="w-full relative block">
-			<canvas id="chart4" width="300" height="300"></canvas>
+		<div class="flex flex-col items-center">
+			<h1 class="text-3xl text-black mb-5 dark:text-white">Étudiants participant aux évènements</h1>
+			<div class="border border-gray-500 p-3 rounded-xl dark:border-white">
+				<canvas id="chart4" width="300" height="300"></canvas>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from '@/store/modules/user.store';
 import { onMounted } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
 import {
@@ -54,9 +61,6 @@ ChartJS.register(
 
 const createCharts = async () => {
 	const articleStore = useArticleStore();
-	const userStore = useUserStore();
-	const articles = userStore.myArticles;
-	const users = userStore.relatedProfiles;
 	const articles2 = articleStore.getArticle();
 	const response = await articles2;
 	const types = response.map((article) => article.type);
@@ -70,16 +74,14 @@ const createCharts = async () => {
 	}
 
 	const categoryCount = countCategories(types);
-	console.log(categoryCount);
 
 	const articleWithMostParticipants = await articleStore.getArticleWithMostParticipants();
 	const articleData = articleWithMostParticipants.map((article) => ({
 		title: article.title,
 		participants: article.nombreparticipant,
 	}));
-	console.log(articleWithMostParticipants);
 
-	const ctx1 = document.getElementById('chart1').getContext('2d');
+	const ctx1 = (document.getElementById('chart1') as HTMLCanvasElement).getContext('2d');
 	new ChartJS(ctx1, {
 		type: 'doughnut',
 		data: {
@@ -89,9 +91,9 @@ const createCharts = async () => {
 					label: "Nombre d'articles",
 					data: Object.values(categoryCount),
 					backgroundColor: [
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
-						'rgba(75, 192, 75, 0.6)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
+						'rgba(75, 192, 75, 1)',
 					],
 					borderColor: 'rgba(75, 192, 192, 1)',
 					borderWidth: 1,
@@ -114,7 +116,7 @@ const createCharts = async () => {
 		},
 	});
 
-	const ctx2 = document.getElementById('chart2').getContext('2d');
+	const ctx2 = (document.getElementById('chart2') as HTMLCanvasElement).getContext('2d');
 	new ChartJS(ctx2, {
 		type: 'doughnut',
 		data: {
@@ -124,11 +126,11 @@ const createCharts = async () => {
 					label: 'Nombre de participants',
 					data: articleData.map((article) => article.participants),
 					backgroundColor: [
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
-						'rgba(75, 192, 75, 0.6)',
-						'rgba(255, 159, 64, 0.6)',
-						'rgba(54, 162, 235, 0.6)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
+						'rgba(75, 192, 75, 1)',
+						'rgba(255, 159, 64, 1)',
+						'rgba(54, 162, 235, 1)',
 					],
 					borderColor: 'rgba(75, 192, 192, 1)',
 					borderWidth: 1,
@@ -159,9 +161,7 @@ const createCharts = async () => {
 		return `${firstName} ${lastName} (${count} articles créés)`;
 	});
 
-	console.log(formattedCreators);
-
-	const ctx3 = document.getElementById('chart3').getContext('2d');
+	const ctx3 = (document.getElementById('chart3') as HTMLCanvasElement).getContext('2d');
 	new ChartJS(ctx3, {
 		type: 'doughnut',
 		data: {
@@ -173,16 +173,16 @@ const createCharts = async () => {
 						return parseInt(creator.substring(countIndex, creator.length - 14));
 					}), // Count
 					backgroundColor: [
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
-						'rgba(75, 192, 75, 0.6)',
-						'rgba(255, 159, 64, 0.6)',
-						'rgba(54, 162, 235, 0.6)',
-						'rgba(255, 99, 132, 0.6)',
-						'rgba(153, 102, 255, 0.6)',
-						'rgba(255, 206, 86, 0.6)',
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
+						'rgba(75, 192, 75, 1)',
+						'rgba(255, 159, 64, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 99, 132, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
 					],
 					borderColor: 'rgba(75, 192, 192, 1)',
 					borderWidth: 1,
@@ -213,9 +213,7 @@ const createCharts = async () => {
 		return `${firstName} ${lastName} ${count}`;
 	});
 
-	console.log(formattedParticipants);
-
-	const ctx4 = document.getElementById('chart4').getContext('2d');
+	const ctx4 = (document.getElementById('chart4') as HTMLCanvasElement).getContext('2d');
 	new ChartJS(ctx4, {
 		type: 'doughnut',
 		data: {
@@ -224,16 +222,16 @@ const createCharts = async () => {
 				{
 					data: formattedParticipants.map((participant) => participant.split(' ')[2]), // Count
 					backgroundColor: [
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
-						'rgba(75, 192, 75, 0.6)',
-						'rgba(255, 159, 64, 0.6)',
-						'rgba(54, 162, 235, 0.6)',
-						'rgba(255, 99, 132, 0.6)',
-						'rgba(153, 102, 255, 0.6)',
-						'rgba(255, 206, 86, 0.6)',
-						'rgba(75, 192, 192, 0.6)',
-						'rgba(192, 75, 75, 0.6)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
+						'rgba(75, 192, 75, 1)',
+						'rgba(255, 159, 64, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 99, 132, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(192, 75, 75, 1)',
 					],
 					borderColor: 'rgba(75, 192, 192, 1)',
 					borderWidth: 1,
