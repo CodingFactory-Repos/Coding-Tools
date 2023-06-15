@@ -70,7 +70,7 @@
 <script>
 import { http } from '@/api/network/axios';
 import { useUserStore } from '@/store/modules/user.store';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 import { useAuthStore } from '@/store/modules/auth.store';
 

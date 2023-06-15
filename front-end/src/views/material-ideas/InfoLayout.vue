@@ -86,8 +86,6 @@ export default {
 	props: ['selectedItem'],
 
 	created() {
-		const [user] = this.selectedItem.user;
-
 		this.$emit('getId');
 	},
 	methods: {

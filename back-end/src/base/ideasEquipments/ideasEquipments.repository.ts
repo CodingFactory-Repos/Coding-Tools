@@ -12,7 +12,6 @@ export class IdeasEquipmentsRepository {
 	}
 
 	async getAllIdeasEquipments() {
-		// return this.ideasEquipments.find().toArray();
 		return await this.ideasEquipments
 			.aggregate([
 				{
