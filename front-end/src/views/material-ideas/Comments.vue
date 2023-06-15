@@ -74,11 +74,10 @@ export default {
 		socket.on('comment-added', (data) => {
 			console.log('comment-added');
 			console.log(data);
-			this.items = data
+			this.items = data;
 		});
 
 		this.getComments();
-
 	},
 
 	unmounted() {
@@ -93,8 +92,8 @@ export default {
 				comment,
 				equipmentId,
 			});
-			console.log(items)
-			socket.emit('add-comment', items)
+			console.log(items);
+			socket.emit('add-comment', items);
 			this.items = items || [];
 			this.comment = '';
 		},
