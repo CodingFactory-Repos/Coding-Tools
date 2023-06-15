@@ -18,8 +18,8 @@ import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import type { ContainerSize, InitialGraphicState } from '../types/pixi-container';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
 import { ModelGraphics } from '../types/pixi-class';
-import { ResizeRatioMetrics, ResizeMetrics, InitialResizeOptions, ParentOrthogonalPrimeOptions, ParentPrimeOptions, ProportionScaleOptions, ProportionLineScaleOptions, InitialLineResizeOptions } from '../types/pixi-resize';
-import { LineBezier } from '../model/template';
+import { ResizeRatioMetrics, ResizeMetrics, InitialResizeOptions, ParentOrthogonalPrimeOptions, ParentPrimeOptions, ProportionScaleOptions, ProportionLineScaleOptions, InitialLineResizeOptions, InitialTextResizeOptions } from '../types/pixi-resize';
+import { LineBezier, TextArea } from '../model/template';
 
 export class ResizePlugin {
 	protected readonly viewport: ViewportUI;
@@ -84,6 +84,16 @@ export class ResizePlugin {
 					end: { ...element.end },
 					startControl: { ...element.startControl },
 					endControl: { ...element.endControl },
+				});
+			} else if (element instanceof TextArea) {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+					fontSize: element.textSprite.style.fontSize,
+					fontPadding: element.textSprite.style.padding
 				});
 			} else {
 				this.initialGraphicsState.push({
@@ -181,7 +191,7 @@ export class ResizePlugin {
 
 	private _genericResize = (
 		child: ModelGraphics,
-		initialOptions: InitialResizeOptions,
+		initialOptions: InitialResizeOptions & InitialLineResizeOptions & InitialTextResizeOptions,
 		resizeMetrics: ResizeRatioMetrics,
 		isShift: boolean,
 	) => {
@@ -202,6 +212,8 @@ export class ResizePlugin {
 			isShift,
 		})
 
+		const parent = child.parent.parent.parent;
+
 		if(child instanceof LineBezier) {
 			const lineWidth = (Math.min(this.container.width, this.container.height) / 100) / 2;
 			const minLineWidth = Math.max(0, lineWidth);
@@ -218,6 +230,16 @@ export class ResizePlugin {
 			child.endControl = endControl;
 			child.lineWidth = minLineWidth;
 			child.draw();
+		} else if (child instanceof TextArea && !(parent instanceof FramedContainer)) {
+			const newWidth = initialOptions.childInitialWidth + resizeMetrics.dx;
+			const newFontSize = parseInt(initialOptions.fontSize as string) * newWidth / initialOptions.childInitialWidth;
+			const newPadding = initialOptions.fontPadding * newWidth / initialOptions.childInitialWidth;
+			child.textSprite.style.fontSize = newFontSize;
+			child.textSprite.style.padding = newPadding;
+			child.draw({
+				x: child.x,
+				y: child.y
+			});
 		} else {
 			const { x, y, width, height } = this._proportionalScale({
 				...initialOptions,
@@ -259,7 +281,6 @@ export class ResizePlugin {
 			})
 
 			child.start = start;
-			console.log(child.start)
 			child.end = end;
 			child.startControl = startControl;
 			child.endControl = endControl;
@@ -294,7 +315,7 @@ export class ResizePlugin {
 			const { width: initialCtnWidth, height: initialCtnHeight, absMinX, absMaxX, absMinY, absMaxY  } = this.initialContainerSize;
 			const ratioA = initialCtnHeight / initialCtnWidth;
 			const ratioB = initialCtnWidth / initialCtnHeight;
-			const initialOptions: InitialResizeOptions & InitialLineResizeOptions = {
+			const initialOptions: InitialResizeOptions & InitialLineResizeOptions & InitialTextResizeOptions = {
 				parentInitialWidth: initialCtnWidth,
 				parentInitialHeight: initialCtnHeight,
 			}
@@ -309,7 +330,7 @@ export class ResizePlugin {
 				const { child } = this.initialGraphicsState[n];
 				
 				if(isPastBounds) {
-					if(child instanceof LineBezier) continue;
+					if(child instanceof LineBezier || child instanceof TextArea) continue;
 					const sizeAndPos = isPastLeft || isPastRight ? [child.x, child.width] : [child.y, child.height];
 					const anchor = isPastLeft ? absMinX : isPastRight ? absMaxX : isPastTop ? absMinY : absMaxY;
 
@@ -333,12 +354,14 @@ export class ResizePlugin {
 					initialOptions.childInitialStartControl = startControl;
 					initialOptions.childInitialEndControl = endControl;
 				} else {
-					const { x, y, width, height } = { ...this.initialGraphicsState[n] };
+					const { x, y, width, height, fontSize, fontPadding } = { ...this.initialGraphicsState[n] };
 
 					initialOptions.childInitialX = x;
 					initialOptions.childInitialY = y;
 					initialOptions.childInitialWidth = width;
 					initialOptions.childInitialHeight = height;
+					initialOptions.fontSize = fontSize;
+					initialOptions.fontPadding = fontPadding;
 				}
 
 				if(GenericResize.includes(this.handleId)) {
@@ -436,6 +459,16 @@ export class ResizePlugin {
 					end: { ...element.end },
 					startControl: { ...element.startControl },
 					endControl: { ...element.endControl },
+				});
+			} else if (element instanceof TextArea) {
+				this.initialGraphicsState.push({
+					child: element,
+					width: element.width,
+					height: element.height,
+					x: element.x,
+					y: element.y,
+					fontSize: element.textSprite.style.fontSize,
+					fontPadding: element.textSprite.style.padding
 				});
 			} else {
 				this.initialGraphicsState.push({
