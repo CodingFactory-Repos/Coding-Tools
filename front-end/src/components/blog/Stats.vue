@@ -1,9 +1,25 @@
 <template>
-	<div>
-		<canvas id="chart1"></canvas>
-		<canvas id="chart2"></canvas>
-		<canvas id="chart3"></canvas>
-		<canvas id="chart4"></canvas>
+	<div class="w-full">
+		<h1 class="w-full text-center mb-8">Stats des répartitions d'articles</h1>
+		<div class="w-full relative block">
+			<canvas id="chart1" width="300" height="300"></canvas>
+		</div>
+		<h1 class="w-full text-center mt-12 mb-8">
+			Stats des événements qui ont connu le plus de participation
+		</h1>
+		<div class="w-full relative block">
+			<canvas id="chart2" width="300" height="300"></canvas>
+		</div>
+		<h1 class="w-full text-center mt-12 mb-8">
+			Top 10 des étudiants qui créent le plus d'articles
+		</h1>
+		<div class="w-full relative block">
+			<canvas id="chart3" width="300" height="300"></canvas>
+		</div>
+		<h1 class="w-full text-center mt-12 mb-8">Top 10 des étudiants qui participent le plus</h1>
+		<div class="w-full relative block">
+			<canvas id="chart4" width="300" height="300"></canvas>
+		</div>
 	</div>
 </template>
 
@@ -11,13 +27,31 @@
 import { useUserStore } from '@/store/modules/user.store';
 import { onMounted } from 'vue';
 import { useArticleStore } from '@/store/modules/article.store';
-import { Chart, DoughnutController, LinearScale, ArcElement } from 'chart.js';
+import {
+	Chart as ChartJS,
+	Title,
+	Tooltip,
+	Legend,
+	BarElement,
+	CategoryScale,
+	ArcElement,
+	LinearScale,
+	TimeScale,
+	DoughnutController,
+} from 'chart.js';
+import 'chartjs-adapter-date-fns';
+ChartJS.register(
+	ArcElement,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend,
+	TimeScale,
+	DoughnutController,
+);
 
-Chart.register(DoughnutController);
-Chart.register(ArcElement);
-Chart.register(LinearScale);
-
-console.log(useUserStore());
 const createCharts = async () => {
 	const articleStore = useArticleStore();
 	const userStore = useUserStore();
@@ -36,6 +70,7 @@ const createCharts = async () => {
 	}
 
 	const categoryCount = countCategories(types);
+	console.log(categoryCount);
 
 	const articleWithMostParticipants = await articleStore.getArticleWithMostParticipants();
 	const articleData = articleWithMostParticipants.map((article) => ({
@@ -45,7 +80,7 @@ const createCharts = async () => {
 	console.log(articleWithMostParticipants);
 
 	const ctx1 = document.getElementById('chart1').getContext('2d');
-	new Chart(ctx1, {
+	new ChartJS(ctx1, {
 		type: 'doughnut',
 		data: {
 			labels: Object.keys(categoryCount),
@@ -78,8 +113,9 @@ const createCharts = async () => {
 			},
 		},
 	});
+
 	const ctx2 = document.getElementById('chart2').getContext('2d');
-	new Chart(ctx2, {
+	new ChartJS(ctx2, {
 		type: 'doughnut',
 		data: {
 			labels: articleData.map((article) => article.title),
@@ -126,7 +162,7 @@ const createCharts = async () => {
 	console.log(formattedCreators);
 
 	const ctx3 = document.getElementById('chart3').getContext('2d');
-	new Chart(ctx3, {
+	new ChartJS(ctx3, {
 		type: 'doughnut',
 		data: {
 			labels: formattedCreators.map((creator) => creator.split(' ')[0]), // Premiers prénoms
@@ -176,7 +212,7 @@ const createCharts = async () => {
 	console.log(formattedParticipants);
 
 	const ctx4 = document.getElementById('chart4').getContext('2d');
-	new Chart(ctx4, {
+	new ChartJS(ctx4, {
 		type: 'doughnut',
 		data: {
 			labels: formattedParticipants.map((participant) => participant.split(' ')[0]), // Premiers prénoms
