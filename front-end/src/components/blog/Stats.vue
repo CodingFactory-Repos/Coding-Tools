@@ -153,10 +153,10 @@ const createCharts = async () => {
 	const topCreators = await articleStore.getTopCreateur();
 
 	const formattedCreators = topCreators.slice(0, 10).map((creator) => {
-		const firstNames = (creator.firstName || []).filter(Boolean).join(' ');
-		const lastNames = (creator.lastName || []).filter(Boolean).join(' ');
+		const firstName = creator.firstName || '';
+		const lastName = creator.lastName || '';
 		const count = creator.count;
-		return `${firstNames} ${lastNames} ${count}`;
+		return `${firstName} ${lastName} (${count} articles créés)`;
 	});
 
 	console.log(formattedCreators);
@@ -165,10 +165,13 @@ const createCharts = async () => {
 	new ChartJS(ctx3, {
 		type: 'doughnut',
 		data: {
-			labels: formattedCreators.map((creator) => creator.split(' ')[0]), // Premiers prénoms
+			labels: formattedCreators.map((creator) => creator), // Noms complets
 			datasets: [
 				{
-					data: formattedCreators.map((creator) => creator.split(' ')[2]), // Count
+					data: formattedCreators.map((creator) => {
+						const countIndex = creator.lastIndexOf('(') + 1;
+						return parseInt(creator.substring(countIndex, creator.length - 14));
+					}), // Count
 					backgroundColor: [
 						'rgba(75, 192, 192, 0.6)',
 						'rgba(192, 75, 75, 0.6)',
@@ -201,6 +204,7 @@ const createCharts = async () => {
 			},
 		},
 	});
+
 	const topParticipants = await articleStore.getTopParticipant();
 	const formattedParticipants = topParticipants.slice(0, 10).map((participant) => {
 		const firstName = participant.firstName || '';
