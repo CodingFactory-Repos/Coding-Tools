@@ -15,10 +15,11 @@ export interface Article {
 	type: string;
 	status?: string;
 	content?: string;
-	participants?: Participants[];
 	likes?: Likes[];
 	dislikes?: Dislikes[];
+	participants?: Participants[];
 	comments?: Comments[];
+	documents?: Documents[];
 }
 
 export interface Likes {
@@ -45,4 +46,10 @@ export interface Comments {
 	descriptions: string;
 	date: Date;
 	picture?: string;
+}
+
+export interface Documents {
+	_id: string;
+	name: string;
+	link: string;
 }

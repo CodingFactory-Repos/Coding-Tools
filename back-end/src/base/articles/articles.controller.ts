@@ -102,6 +102,20 @@ export class ArticlesController {
 		return res.status(201).json(article);
 	}
 
+	// add document
+	@Put('/document/:id')
+	async addDocument(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.addDocument(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// remove document
+	@Put('/removeDocument/:id')
+	async removeDocument(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.removeDocument(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
 	// delete article
 	@Delete('/delete/:id')
 	async deleteArticle(@Req() req: Request, @Res() res: Response) {

@@ -284,6 +284,26 @@ const addArticle = async () => {
 
 		// post the data
 		await articleStore.addArticle(data);
+	} else if (tags.value.toUpperCase() == 'JPO') {
+		let data = {
+			owner: authStore.user._id,
+			title: title.value,
+			descriptions: description.value,
+			content: content.value,
+			picture: picture.value,
+			tags: tags.value,
+			type: type.value,
+			status: status.value,
+			date: date.value,
+			likes: [],
+			dislikes: [],
+			participants: [],
+			comments: [],
+			documents: [],
+		};
+
+		// post the data
+		await articleStore.addArticle(data);
 	} else {
 		let data = {
 			owner: authStore.user._id,
