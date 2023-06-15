@@ -1,25 +1,27 @@
 <template>
-	<button
-		class="text-dark-highlight dark:text-light-font rounded-lg pt-7 flex justify-center items-center"
-		@click="generatePdf"
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="16"
-			height="16"
-			fill="currentColor"
-			class="mr-2"
-			viewBox="0 0 16 16"
+	<div>
+		<button
+			class="text-sm !text-opacity-60 text-dark-primary dark:text-light-primary flex w-full items-center justify-center pt-2.5"
+			@click="generatePdf"
 		>
-			<path
-				d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-			/>
-			<path
-				d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-			/>
-		</svg>
-		<p class="ml-2">Télécharcher un draft de devis</p>
-	</button>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				fill="currentColor"
+				class="mr-2"
+				viewBox="0 0 16 16"
+			>
+				<path
+					d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
+				/>
+				<path
+					d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
+				/>
+			</svg>
+			<p class="ml-2">Télécharcher toutes les suggestions</p>
+		</button>
+	</div>
 </template>
 
 <script>
@@ -41,6 +43,7 @@ import { createPdf } from 'pdfmake/build/pdfmake';
 import * as _ from 'pdfmake/build/vfs_fonts.js';
 const fonts = globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
 
+
 const date = new Date().toLocaleDateString();
 let base64Image = null;
 fetch(CodingToolsLogo)
@@ -57,7 +60,8 @@ fetch(CodingToolsLogo)
 	});
 
 export default {
-	props: ['item'],
+	props: ['items'],
+
 	methods: {
 		generatePdf() {
 			const docDefinition = {
@@ -76,32 +80,35 @@ export default {
 						alignment: 'right',
 					},
 					{
-						text: `Récapitulatif pour l'achat d'un ${this.item.title}`,
-						margin: [0, 0, 0, 10],
+						text: `Récapitulatif des propositions de matériel`,
+						margin: [0, 0, 0, 20],
 					},
 					{
-						text: `Date de création du devis : ${date}`,
+						text: `Date de création du récapitulatif : ${date}`,
 					},
 					{
-						text: `Devis créer par : ${user.value.profile.firstName} ${user.value.profile.lastName}`,
+						text: `Récapitulatif créer par : ${user.value.profile.firstName} ${user.value.profile.lastName}`,
 					},
 					{
 						style: 'tableBody',
 						widths: 'auto',
 						margin: [0, 10, 0, 0],
 						table: {
-							widths: ['auto', '*', 50],
+							widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto'],
 							body: [
 								[
 									{ style: 'tableHeader', text: 'Nom' },
+									{ style: 'tableHeader', text: 'Proposé par' },
 									{ style: 'tableHeader', text: 'Description' },
+									{ style: 'tableHeader', text: 'Lien' },
+									{ style: 'tableHeader', text: 'Motivations' },
 									{ style: 'tableHeader', text: 'Prix' },
 								],
-								[
-									{ style: 'tableBody', text: this.item.title, margin: [15, 5] },
-									{ style: 'tableBody', text: this.item.desc, margin: 5 },
-									{ style: 'tableBody', text: `${this.item.price} €`, margin: 5 },
-								],
+								...this.items.map(({ desc, link, motiv, price, title, user }) => {
+									const [data] = user;
+									console.log([title, data.profile.firstName, desc, link, motiv, `${price} €`]);
+									return [title, data.profile.firstName, desc, link, motiv, `${price} €`];
+								}),
 							],
 						},
 					},
@@ -120,7 +127,8 @@ export default {
 					},
 				},
 			};
-			createPdf(docDefinition, null, null, fonts).download(`devis_${this.item.title}`);
+			console.log(docDefinition);
+			createPdf(docDefinition, null, null, fonts).download(`Suggestions_equipement`);
 		},
 	},
 };
