@@ -33,6 +33,9 @@
 /back-end/src/base/calls/calls.module.ts @Loule95450 @Maghwyn
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/canvasRoom/ @Kevw94 @Maghwyn
+/back-end/src/base/canvasRoom/canvasRoom.controller.ts @Maghwyn @Kevw94
+/back-end/src/base/canvasRoom/canvasRoom.module.ts @Maghwyn @Kevw94
+/back-end/src/base/canvasRoom/canvasRoom.repository.ts @Maghwyn @Kevw94
 /back-end/src/base/CanvasRoom/CanvasRoom.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/canvasRoom.service.ts @Maghwyn
 /back-end/src/base/canvasRoom/canvasRoomInvitation.repository.ts @Loule95450 @Maghwyn
@@ -57,7 +60,7 @@
 /back-end/src/base/ideasComments/ideasComments.repository.ts @Maghwyn @AyakorK
 /back-end/src/base/ideasComments/interfaces/ideasComments.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450
+/back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450 @Heloise-lelez
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/dto/materials.dto.ts @Maghwyn @AyakorK
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @AyakorK
@@ -146,8 +149,10 @@
 /front-end/src/components/ @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
+/front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
+/front-end/src/components/agility/ @Maghwyn
 /front-end/src/components/agility/AgilityCanvasUI.vue @Maghwyn @Loule95450
 /front-end/src/components/agility/AgilityProjectDisplay.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
@@ -332,7 +337,8 @@
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
-/front-end/src/views/material-ideas/ @Loule95450 @Maghwyn
+/front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
+/front-end/src/views/material-ideas/Comments.vue @Maghwyn @RuKaSuu @Loule95450
 /front-end/src/views/material-ideas/DraftPdf.vue @Loule95450
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
