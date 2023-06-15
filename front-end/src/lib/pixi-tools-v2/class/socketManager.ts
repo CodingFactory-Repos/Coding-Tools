@@ -15,7 +15,7 @@ import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { LineContainer } from './lineContainer';
-import { Rectangle, TextArea } from '../model/template';
+import { LineBezier, Rectangle, TextArea } from '../model/template';
 import { TextContainer } from './textContainer';
 
 export class SocketManager extends Manager {
@@ -152,6 +152,8 @@ export class SocketManager extends Manager {
 					this._updateTreeBounds(container.uuid, container as SerializedContainerBounds);
 				}
 			} else if (element instanceof GenericContainer) {
+				element.updateTreeBounds(serializedBounds);
+			} else if (element instanceof LineContainer) {
 				element.updateTreeBounds(serializedBounds);
 			} else if (element instanceof TextContainer) {
 				element.updateTreeBounds(serializedBounds);
