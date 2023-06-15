@@ -193,6 +193,15 @@ export class SocketManager extends Manager {
 					//@ts-ignore
 					radius: child.radius,
 				});
+			} else if(element instanceof TextContainer) {
+				const childData = serializedColorimetry.childs[0] as SerializedGraphicColorimetry;
+				const child = element.getGraphicChildren()[0] as TextArea;
+				child.color = childData.properties.color;
+				child.alpha = childData.properties.alpha;
+				child.draw({
+					x: child.x,
+					y: child.y
+				})
 			}
 		} catch (err) {
 			if (err instanceof Error) {
