@@ -132,6 +132,7 @@ export class DragPlugin {
 						element.child.startControl.y = data.startControl.y + dy;
 						element.child.endControl.x = data.endControl.x + dx;
 						element.child.endControl.y = data.endControl.y + dy;
+						continue;
 					}
 				}
 
