@@ -1,8 +1,8 @@
 <template>
-	<div class="w-full flex flex-col gap-4 h-full justify-start items-start mx-5 mt-16 mb-4" v-if="allRetros.length > 0">
+	<div class="w-full flex flex-col gap-4 h-full justify-start items-start mx-5 mt-16 mb-4" v-if="retrosByUser.length > 0">
 		<h1 class="text-2xl font-bold text-[#5c5f73] dark:text-dark-font">Your Retrospectives</h1>
 		<div class="w-full">
-			<FilterRetro :allRetros="allRetros"/>
+			<FilterRetro :retrosByUser="retrosByUser"/>
 		</div>
 		<div class="flex gap-4 flex-col" v-if="isSearchInput === '' && isDateInput === 0">
 			<div
@@ -42,14 +42,16 @@ import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { computed, onMounted } from 'vue';
 import RetroCard from './utils/RetroCard.vue';
 import FilterRetro from './utils/FilterRetro.vue';
+import { useAuthStore } from '@/store/modules/auth.store';
+import { Roles } from '@/store/interfaces/auth.interfaces';
 
-
+const authStore = useAuthStore();
 const retroStore = useRetrospectiveStore();
-const allRetros = computed(() => retroStore.allRetros)
+const retrosByUser = computed(() => retroStore.retrosByUser)
 const retrospectivesByYear = computed(() => {
 	const groupedRetros = {};
 
-	allRetros.value.forEach(retro => {
+	retrosByUser.value.forEach(retro => {
 		const year = new Date(retro.createdAt).getFullYear()
 		if (!groupedRetros[year]) {
 			groupedRetros[year] = [];
@@ -66,7 +68,7 @@ const retrospectivesByYear = computed(() => {
 
 const isSearchInput = computed(() => retroStore.inputSearch);
 const isDateInput = computed(() => retroStore.dateSearch);
-const retroFiltered = computed(() => allRetros.value.filter((el) => {
+const retroFiltered = computed(() => retrosByUser.value.filter((el) => {
 	if (isSearchInput.value !== "") {
 		if (isDateInput.value !== 0) {
 		return (
@@ -91,7 +93,11 @@ const retroFiltered = computed(() => allRetros.value.filter((el) => {
 	))
 
 onMounted(() => {
-	retroStore.getAllRetros();
+	if (authStore.user.role === Roles.PEDAGOGUE) {
+		retroStore.getAllRetros()
+	} else {
+		retroStore.getRetrosByUser();
+	}
 })
 
 </script>

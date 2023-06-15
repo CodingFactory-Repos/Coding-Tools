@@ -8,6 +8,14 @@
 			<label for="Ajouter un titre" class="text-[#5c5f73]" >Ajouter un titre</label>
 			<input class="text-[#5c5f73]" type="text" name="title" v-model="titleRetro" />
 		</div>
+		<div class="container-select">
+			<label for="Ajouter un titre" class="text-[#5c5f73]" >Associez la rétro à un cours</label>
+			<select class="text-black" v-model="selectedCourse">
+				<option v-for="(item, key) in allCourses" :value="key">
+					{{ item.tag }}
+				</option>
+			</select>
+		</div>
 		<div class="container-desc">
 			<h2 class="text-[#5c5f73]">Choisissez un template</h2>
 		</div>
@@ -38,14 +46,36 @@
 import { useRetrospectiveStore } from '@/store/retrospective.store';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Course } from '@/store/interfaces/course.interface';
+import Swal from 'sweetalert2';
+
 
 export default defineComponent({
-	setup() {
+	props: {
+		allCourses: { type: Array<Course>, required: true },
+	},
+	setup(props) {
 		const retrospectiveStore = useRetrospectiveStore();
 		const titleRetro = ref('');
 		const router = useRouter();
+		const selectedCourse = ref('')
+
 		const newRetro = async (option: number) => {
-			//TODO: add prevent from null data
+			if (titleRetro.value === "" || selectedCourse.value === "") {
+				Swal.fire({
+					title: "Ooooops",
+					text: "You have to fill the inputs if you want to create a new retro",
+					icon: 'warning',
+					showCancelButton: false,
+					cancelButtonColor: '',
+					focusConfirm: false,
+					cancelButtonText: 'Cancel',
+					confirmButtonColor: 'red',
+					confirmButtonText: 'I understand',
+					reverseButtons: true,
+				})
+				return;
+			}
 			const retro = {
 				title: titleRetro.value,
 				optionTemplate: option,
@@ -60,9 +90,13 @@ export default defineComponent({
 				isLocked: false,
 				isTimerRunning: false,
 				timerInterval: null,
-				timePassed: 0
+				timePassed: 0,
+				associatedCourse: props.allCourses[selectedCourse.value],
+				allowedPeers: [],
 			}
+
 			const createdRetro = await retrospectiveStore.createNewRetro(retro)
+
 			if (createdRetro) {
 				router.push(`/app/retrospective/${createdRetro.slug}`);
 			}
@@ -71,6 +105,7 @@ export default defineComponent({
 		return {
 			titleRetro,
 			newRetro,
+			selectedCourse,
 		};
 	},
 });
@@ -102,6 +137,14 @@ input {
 		flex-direction: column;
 
 		input {
+			border: 1px solid #062a79;
+			border-radius: 8px;
+		}
+	}
+	&-select {
+		display: flex;
+		flex-direction: column;
+		select {
 			border: 1px solid #062a79;
 			border-radius: 8px;
 		}

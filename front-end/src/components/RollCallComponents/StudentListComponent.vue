@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="studentList && courseId"
-		class="w-7/12 flex mx-auto md:w-6/12 mt-2.5 align-left justify-start"
+		class="w-7/12 flex mx-auto md:w-6/12 mt-2.5 mb-4 align-left justify-start"
 	>
 		<table class="text-center w-full">
 			<caption hidden>
@@ -47,6 +47,7 @@ import { withErrorHandler } from '@/utils/storeHandler';
 
 let courseId = '';
 let studentList = [];
+let studentListInterval = null;
 
 export default {
 	name: 'StudentList',
@@ -61,8 +62,13 @@ export default {
 	},
 	mounted() {
 		this.getCourseId();
+		studentListInterval = setInterval(() => {
+			this.getStudentList();
+		}, 5000);
 	},
-
+	unmounted() {
+		clearInterval(studentListInterval);
+	},
 	methods: {
 		getCourseId: withErrorHandler(async function () {
 			http.get(`/calls/actual_course/`).then((response) => {

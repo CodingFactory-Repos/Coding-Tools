@@ -3,10 +3,14 @@ import { Cron } from '@nestjs/schedule';
 import { CallsRepository } from '@/base/calls/calls.repository';
 import { AbsencesParams } from '@/base/calls/interfaces/calls.interface';
 import { MailjetTemplate } from 'src/common/providers/interfaces/events.interface';
+import { ArticlesService } from '@/base/articles/articles.service';
 
 @Injectable()
 export class CronService {
-	constructor(private readonly callsRepository: CallsRepository) {}
+	constructor(
+		private readonly callsRepository: CallsRepository,
+		private readonly articlesService: ArticlesService,
+	) {}
 
 	@Cron('0 18 * * 1-5')
 	async handleCron() {
@@ -73,5 +77,25 @@ export class CronService {
 		};
 
 		await this.callsRepository.sendEmail(dailyAbsencesParams);
+	}
+
+	@Cron('0 6 * * *')
+	async handleAutoTutoValidation() {
+		// date two weeks ago
+		const dateMinusTwoWeeks = new Date(Date.now() - 12096e5);
+
+		// select params
+		const query = {
+			type: 'Tuto',
+			status: 'Pending',
+			updatedAt: { $lt: dateMinusTwoWeeks },
+		};
+
+		// fields updated
+		const updateParams = {
+			status: 'Accepted',
+		};
+
+		await this.articlesService.updateManyArticles(query, updateParams);
 	}
 }

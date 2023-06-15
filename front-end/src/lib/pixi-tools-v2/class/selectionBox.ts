@@ -5,6 +5,7 @@ import { FramedContainer } from './framedContainer';
 import { ViewportUI } from '../viewportUI';
 
 import type { CanvasContainer } from '../types/pixi-aliases';
+import { TextContainer } from './textContainer';
 
 export class SelectionBox extends Graphics {
 	protected readonly nativeDragPlugin: Drag;
@@ -79,7 +80,11 @@ export class SelectionBox extends Graphics {
 		for (const element of this.viewport.children) {
 			if (!element.visible) continue;
 
-			if (element instanceof GenericContainer || element instanceof FramedContainer) {
+			if (
+				element instanceof GenericContainer ||
+				element instanceof FramedContainer ||
+				element instanceof TextContainer
+			) {
 				if (element.getBounds().intersects(selectionBounds)) {
 					selectedChildren.push(element);
 				}

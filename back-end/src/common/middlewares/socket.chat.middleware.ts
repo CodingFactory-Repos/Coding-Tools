@@ -27,7 +27,7 @@ export const ChatAuthMiddleware = (jwtService: JwtService): ChatMiddleware => {
 			if (!chatToken) throw new Error('Token is undefined');
 
 			const chatPayload = <JwtPayload>jwtService.verify(chatToken, { secret: config.jwt.secret });
-			if (!chatPayload?.id || !(chatPayload?.role >= 0 && chatPayload?.role <= 2))
+			if (!chatPayload?.id || !(chatPayload?.role >= 0 && chatPayload?.role <= 3))
 				throw new Error('The jwt content is invalid');
 			chatPayload.id = new ObjectId(chatPayload.id);
 

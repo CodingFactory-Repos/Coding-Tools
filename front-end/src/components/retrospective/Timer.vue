@@ -95,11 +95,24 @@ watch(timeLeftComp, newValue => {
 })
 
 const startTimer = () => {
+
+	const playAlarm = async () => {
+	// possible que l'audio soit importé de manière dynamique, afin de pouvoir le modifier ultérieurement.
+    const audio = await import(`@/assets/audio/retrospectiveAudio/bell_1.wav`)
+    const alarm = new Audio(audio.default)
+    alarm.play().catch(err => console.log(err));
+}
+
 	retroStore.currentRetro.isTimerRunning = true;
 	socketRetro.socket.emit('start-timer')
 	retroStore.currentRetro.timerInterval = setInterval(() => {
 		retroStore.currentRetro.timePassed += 1
 		socketRetro.socket.emit('progess-timer', timePassed.value)
+
+		if (timeLeftComp.value === 0) {
+			playAlarm().catch(err => console.log(err));
+		}
+
 	}, 1000);
 
 };
@@ -122,5 +135,7 @@ const lockRetro = () => {
 	retroStore.currentRetro.isLocked = !retroStore.currentRetro.isLocked;
 	socketRetro.socket.emit("lock-retro", retroStore.currentRetro.isLocked)
 }
+
+
 
 </script>
