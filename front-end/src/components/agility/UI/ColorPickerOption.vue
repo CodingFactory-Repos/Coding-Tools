@@ -86,9 +86,7 @@ const changeColor = (col: ColorPickerUpdate) => {
 
 		if(projectStore.scene.viewport.socketPlugin) {
 			const parent = graphic.parent;
-			// TODO: Thomas, remove this when readuy for the live editing
-			if(parent instanceof TextContainer) continue;
-			if(parent instanceof GenericContainer || parent instanceof LineContainer) {
+			if(parent instanceof GenericContainer || parent instanceof LineContainer || parent instanceof TextContainer) {
 				projectStore.scene.viewport.socketPlugin.emit(
 					'ws-element-colorized',
 					parent.uuid,
