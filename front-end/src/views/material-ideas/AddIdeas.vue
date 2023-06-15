@@ -25,6 +25,7 @@
 					Ajouter
 				</button>
 			</div>
+			<IdeasPdf :items="items" />
 
 			<!-- Show added items in list view-->
 			<ul class="rounded-sm block">
@@ -67,6 +68,7 @@
 import { http } from '@/api/network/axios';
 import PopUp from './PopUp.vue';
 import InfoLayout from './InfoLayout.vue';
+import IdeasPdf from './IdeasPdf.vue';
 
 export default {
 	data() {
@@ -120,6 +122,7 @@ export default {
 	components: {
 		PopUp,
 		InfoLayout,
+		IdeasPdf,
 	},
 };
 </script>
