@@ -66,7 +66,7 @@ export class TextArea extends ModelGraphics {
 	}
 
 	public draw(bounds: Partial<ElementBounds>) {
-		const { x, y } = bounds;
+		const { x, y, width, height } = bounds;
 		this.position.set(x, y);
 		this.textStyle.fill = this.color;
 		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
@@ -78,6 +78,9 @@ export class TextArea extends ModelGraphics {
 		}
 		this.drawRect(0, 0, this.width, this.height);
 		this.endFill();
+
+		this.width = width ?? this.width;
+		this.height = height ?? this.height;
 	}
 
 	public serialized() {
