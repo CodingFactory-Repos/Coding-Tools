@@ -1,9 +1,11 @@
 <template>
     <ScrumMainPO v-if="this.isPO == true"/>
+    <ScrumMainStudent v-else/>
 </template>
 
 <script lang="ts">
 import ScrumMainPO from '@/components/scrum/ScrumMainPO.vue';
+import ScrumMainStudent from '@/components/scrum/ScrumMainStudent.vue';
 import { http } from '@/api/network/axios';
 
 export default {
@@ -17,6 +19,7 @@ export default {
 	},
     components: {
         ScrumMainPO,
+        ScrumMainStudent,
     },
 
 	mounted() {

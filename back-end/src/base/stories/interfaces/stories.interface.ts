@@ -4,13 +4,13 @@ import { User } from '@/base/users/interfaces/users.interface';
 
 export interface Story {
 	_id: ObjectId;
-	board?: Board;
+	board?: ObjectId;
 	course?: ObjectId;
 	project?: ObjectId;
 	title: string;
 	description?: string;
 	attributedTo?: User;
-	column: string;
+	column?: string;
 	value?: number;
 	as?: string;
 	iWant?: string;

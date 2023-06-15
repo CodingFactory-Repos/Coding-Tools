@@ -317,6 +317,7 @@ export class CallsRepository {
 			periodStart: { $lte: actualDate },
 			periodEnd: { $gte: actualDate },
 		};
+		console.log(query);
 
 		switch (user.role) {
 			case Roles.STUDENT:

@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-
+import { ObjectId } from 'mongodb';
 import { StoriesRepository } from 'src/base/stories/stories.repository';
 import { UsersRepository } from 'src/base/users/users.repository';
 
@@ -21,8 +21,8 @@ export class StoriesService {
 		return await this.storiesRepository.createStory(query);
 	}
 
-	async updateStory(query, update) {
-		return await this.storiesRepository.updateOneStory(query, update);
+	async updateStory(id, queryStory) {
+		return await this.storiesRepository.updateOneStory({ _id: new ObjectId(id) }, queryStory);
 	}
 
 	async getStoryById(id) {
@@ -32,6 +32,11 @@ export class StoriesService {
 	async getStoryByCourseId(id) {
 		return await this.storiesRepository.getStoryByCourseId(id);
 	}
+
+	async getStoryByBoardId(id) {
+		return await this.storiesRepository.getStoryByBoardId(id);
+	}
+
 
 	async deleteStoryById(id) {
 		return await this.storiesRepository.deleteOneStory(id);

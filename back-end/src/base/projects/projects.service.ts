@@ -32,8 +32,8 @@ export class ProjectsService {
 		return await this.projectsRepository.createProject(query);
 	}
 
-	async updateProject(query, update) {
-		return await this.projectsRepository.updateOneProject(query, update);
+	async updateProject(id, update) {
+		return await this.projectsRepository.updateOneProject(id, update);
 	}
 
 	async getProjectById(id) {

@@ -24,11 +24,9 @@ export class StoriesRepository {
 		return this.stories.findOne({ _id: id });
 	}
 
-	async updateOneStory(
-		query: Filter<Story>,
-		update: Partial<Story> | UpdateFilter<Story>,
-	) {
-		return this.stories.updateOne(query, update);
+	async updateOneStory(query: Filter<Story>, update: Partial<Story> | UpdateFilter<Story>) {
+		this.stories.updateOne(query, update);
+		return this.stories.findOne(query);
 	}
 
 	async findOneAndUpdateStory(
@@ -46,6 +44,10 @@ export class StoriesRepository {
 	async getStoryByCourseId(id: ObjectId) {
 		id = new ObjectId(id);
 		return this.stories.find({ course: id }).toArray();
+	}
+
+	async getStoryByBoardId(id: ObjectId) {
+		return this.stories.find({ board: id }).toArray();
 	}
 
 	async deleteOneStory(id: ObjectId) {
