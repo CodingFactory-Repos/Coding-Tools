@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { IdeaEquipment } from 'src/base/ideasEquipments/interfaces/ideasEquipments.interface';
 
@@ -12,11 +12,27 @@ export class IdeasEquipmentsRepository {
 	}
 
 	async getAllIdeasEquipments() {
-		return this.ideasEquipments.find().toArray();
+		// return this.ideasEquipments.find().toArray();
+		return await this.ideasEquipments
+			.aggregate([
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'user',
+						foreignField: '_id',
+						as: 'user',
+					},
+				},
+			])
+			.toArray();
 	}
 
 	async createIdeaEquipment(query: IdeaEquipment) {
-		return this.ideasEquipments.insertOne(query);
+		const { user } = query;
+		return this.ideasEquipments.insertOne({
+			...query,
+			user: new ObjectId(user),
+		});
 	}
 
 	async updateOneIdeaEquipment(

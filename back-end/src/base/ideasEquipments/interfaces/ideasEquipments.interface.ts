@@ -8,5 +8,5 @@ export interface IdeaEquipment {
 	motivation: string;
 	link: string;
 	price: string;
-	user: User;
+	user: ObjectId;
 }
