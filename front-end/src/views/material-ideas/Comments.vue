@@ -60,7 +60,6 @@ export default {
 			this.getComments();
 		},
 	},
-
 	methods: {
 		async postBdd() {
 			const { comment, equipmentId, userId } = this;
