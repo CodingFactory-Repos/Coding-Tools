@@ -1,6 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { User } from '../../users/interfaces/users.interface';
-
 export interface IdeaEquipment {
 	_id?: ObjectId;
 	name: string;
