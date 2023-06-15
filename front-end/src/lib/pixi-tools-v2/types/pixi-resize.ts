@@ -20,6 +20,11 @@ export interface InitialLineResizeOptions extends InitialParentResizeOptions {
 	childInitialEndControl?: ElementPosition;
 }
 
+export interface InitialTextResizeOptions extends InitialParentResizeOptions {
+	fontSize?: string | number;
+	fontPadding?: number;
+}
+
 export interface PrimeOptions {
 	parentPrimeWidth: number;
 	parentPrimeHeight: number;
