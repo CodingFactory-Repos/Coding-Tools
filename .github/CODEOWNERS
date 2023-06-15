@@ -59,8 +59,8 @@
 /back-end/src/base/ideasComments/ideasComments.module.ts @RuKaSuu @Maghwyn
 /back-end/src/base/ideasComments/ideasComments.repository.ts @Maghwyn @AyakorK
 /back-end/src/base/ideasComments/interfaces/ideasComments.interface.ts @Maghwyn @AyakorK
-/back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @Maghwyn @Loule95450 @Heloise-lelez
+/back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Loule95450 @Heloise-lelez
+/back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @RuKaSuu @Maghwyn @Loule95450
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
 /back-end/src/base/materials/dto/materials.dto.ts @Maghwyn @AyakorK
 /back-end/src/base/materials/interfaces/materials.interface.ts @Maghwyn @AyakorK
@@ -338,8 +338,9 @@
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
-/front-end/src/views/material-ideas/Comments.vue @Maghwyn @RuKaSuu @Loule95450
+/front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
 /front-end/src/views/material-ideas/DraftPdf.vue @Loule95450
+/front-end/src/views/material-ideas/IdeasPdf.vue @RuKaSuu
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
