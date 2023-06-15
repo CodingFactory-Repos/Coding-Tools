@@ -1,8 +1,5 @@
 <template>
 	<div v-if="Object.keys(course.oneItems).length > 0">
-		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">{{ courseById.tag }}</h1>
-		</div>
 		<img
 			class="cover h-72 w-screen object-cover object-center"
 			:src="
@@ -12,28 +9,73 @@
 			"
 			alt=""
 		/>
-		<div class="pt-3 pb-2">
-			<span
-				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ courseById.periodStart }}</span
-			>
+		<div class="text-center pt-4">
+			<h1 class="text-4xl font-bold">{{ courseById.tag }}</h1>
 		</div>
-		<div class="pt-3 pb-2">
-			<span
-				class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
-				>{{ courseById.periodEnd }}</span
-			>
+		<div class="cours-detail bg-grey-800 mb-5">
+			<div class="corps-enseignant">
+				<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Corps enseignant du cours</h4>
+
+				<ul class="space-y-2">
+					<li v-for="teacher in courseById.teachers" :key="teacher.id">
+						<img
+							:src="teacher.profilePicture"
+							alt="Profile Picture"
+							class="w-8 h-8 rounded-full mr-2"
+						/>
+						<span class="text-white-800 text-lg mb-5">{{ teacher.name }}</span>
+					</li>
+				</ul>
+
+				<div class="detail-actions">
+					<div class="corps-ensaignant">
+						<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Détails et actions</h4>
+						<ul class="space-y-2">
+							<li>
+								<h4 class="text-2xl font-bold mb-2">Annuaire</h4>
+								<p class="text-blue-500 underline cursor-pointer">
+									Afficher tout les membres de votre cours
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="contenu-cours">
+				<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
+				<ul class="space-y-4">
+					<li v-for="course in courses" :key="course.id">
+						<div class="course-item" :class="{ open: course.open }" @click="toggleCourse(course)">
+							<h5 class="text-xl font-semibold">{{ course.title }}</h5>
+							<p class="text-gray-600">{{ course.description }}</p>
+						</div>
+						<div v-if="course.open" class="course-files">
+							<ul class="space-y-2">
+								<li v-for="file in course.files" :key="file.id">
+									<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+				<h4 class="text-2xl font-bold mb-2 mt-3 border-b border-gray-300">Groupes</h4>
+				<ul class="space-y-4">
+					<li v-for="groupe in groupes" :key="groupe.id">
+						<div class="course-item" :class="{ open: groupe.open }" @click="toggleGroupe(groupe)">
+							<h5 class="text-xl font-semibold">{{ groupe.title }}</h5>
+							<p class="text-gray-600">{{ groupe.description }}</p>
+						</div>
+						<div v-if="groupe.open" class="course-files">
+							<ul class="space-y-2">
+								<li v-for="file in groupe.files" :key="file.id">
+									<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<button
-			type="button"
-			@click="
-				() => {
-					router.push('/app/ressource/cours');
-				}
-			"
-		>
-			Retour
-		</button>
 		<div class="flex bg-slate-300 w-full gap-4 justify-center" v-if="canvas.length > 0">
 			<div v-for="canva in canvas">
 				<button
@@ -45,14 +87,24 @@
 			</div>
 		</div>
 		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4" v-if="retro">
-				<button
-					@click="goToRetro(retro)"
-					class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
-				>
-					{{ retro.title }}
-				</button>
+			<button
+				@click="goToRetro(retro)"
+				class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
+			>
+				{{ retro.title }}
+			</button>
 		</div>
 	</div>
+	<button
+		type="button"
+		@click="
+			() => {
+				router.push('/app/ressource/cours');
+			}
+		"
+	>
+		Retour
+	</button>
 </template>
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue';
@@ -85,13 +137,12 @@ onMounted(async () => {
 });
 
 const goToProject = (canva) => {
-	router.push(`/app/agility/project/${canva._id}`)
+	router.push(`/app/agility/project/${canva._id}`);
 };
 
 const goToRetro = (retro) => {
-	router.push(`/app/retrospective/${retro.slug}`)
-}
-
+	router.push(`/app/retrospective/${retro.slug}`);
+};
 </script>
 <style scoped>
 .display {
