@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+// import pdfMake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
 import CodingToolsLogo from '@/assets/images/CodingToolsLogo.png';
 import { useUserStore } from '@/store/modules/user.store';
 import { computed } from 'vue';
@@ -39,7 +39,10 @@ const userStore = useUserStore();
 const user = computed(() => authStore.user);
 const userId = computed(() => user.value._id);
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { createPdf } from 'pdfmake/build/pdfmake';
+import * as _ from 'pdfmake/build/vfs_fonts.js';
+const fonts = globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
+
 
 const date = new Date().toLocaleDateString();
 let base64Image = null;
@@ -125,7 +128,7 @@ export default {
 				},
 			};
 			console.log(docDefinition);
-			pdfMake.createPdf(docDefinition).download(`Suggestions_equipement`);
+			createPdf(docDefinition, null, null, fonts).download(`Suggestions_equipement`);
 		},
 	},
 };
