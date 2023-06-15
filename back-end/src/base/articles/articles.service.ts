@@ -22,7 +22,7 @@ export class ArticlesService {
 		// add new object id to id
 		queryArticle._id = new ObjectId();
 
-		queryArticle.owner = new ObjectId(queryArticle.owner);
+		queryArticle.owner._id = new ObjectId(queryArticle.owner._id);
 		queryArticle.date = new Date(queryArticle.date);
 		queryArticle.updatedAt = new Date();
 

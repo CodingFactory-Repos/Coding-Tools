@@ -89,8 +89,8 @@
 								class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 							>
 								<h2>{{ description }}</h2>
-                <p>Publié le : {{ formatDate(date)}}</p>
-                <p>Par : {{ user }}</p>
+								<p>Publié le : {{ formatDate(date) }}</p>
+								<p>Par : {{ user }}</p>
 							</div>
 						</div>
 
@@ -336,13 +336,15 @@ if (!props.markdown) {
 		date.value = oneItems.value.date;
 		title.value = oneItems.value.title;
 		description.value = oneItems.value.descriptions;
-    let tempUser = await materialStore.getUserById(oneItems.value.owner)
+		let tempUser = await materialStore.getUserById(oneItems.value.owner._id);
 
-    // format for captital letters
-    user.value = 
-      tempUser.profile.firstName.charAt(0).toUpperCase() + tempUser.profile.firstName.slice(1)
-      + ' ' 
-      + tempUser.profile.lastName.charAt(0).toUpperCase() + tempUser.profile.lastName.slice(1)
+		// format for captital letters
+		user.value =
+			tempUser.profile.firstName.charAt(0).toUpperCase() +
+			tempUser.profile.firstName.slice(1) +
+			' ' +
+			tempUser.profile.lastName.charAt(0).toUpperCase() +
+			tempUser.profile.lastName.slice(1);
 
 		renderMarkdown();
 	});
@@ -363,7 +365,7 @@ const step = ref(0);
 const title = ref('Your title here');
 const date = ref('The date it was uploaded');
 const description = ref('Your description here');
-const user = ref('Vous')
+const user = ref('Vous');
 
 // visuals
 const open = ref(false);
