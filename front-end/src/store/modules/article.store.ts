@@ -87,7 +87,7 @@ export const useArticleStore = defineStore('article', {
 			const response = await http.get('/articles');
 			const items = response.data;
 			this.items = items;
-			return true;
+			return items;
 		}),
 
 		//get article by id from the database
@@ -168,6 +168,44 @@ export const useArticleStore = defineStore('article', {
 			this.items[index].dislikes.splice(indexDislike, 1);
 
 			return true;
+		}),
+
+		getParticipants: withErrorHandler(async function (id: string) {
+			const response = await http.get(`/articles/participant/${id}`);
+			const participants = response.data.map((participant) => participant._id);
+			return participants;
+		}),
+
+		getArticleWithMostParticipants: withErrorHandler(async function () {
+			const response = await http.get('articles/stats/participant');
+			const participants = response.data.map((participant) => ({
+				_id: participant._id,
+				title: participant.title,
+				nombreparticipant: participant.numParticipants,
+			}));
+			return participants;
+		}),
+
+		getTopCreateur: withErrorHandler(async function () {
+			const response = await http.get('/articles/stats/topcreateur');
+			const createur = response.data.map((createur) => ({
+				_id: createur._id,
+				firstName: createur.firstName,
+				lastName: createur.lastName,
+				count: createur.count,
+			}));
+			return createur;
+		}),
+
+		getTopParticipant: withErrorHandler(async function () {
+			const response = await http.get('articles/stats/topparticipant');
+			const topParticipants = response.data.map((topParticipants) => ({
+				_id: topParticipants._id,
+				firstName: topParticipants.firstName,
+				lastName: topParticipants.lastName,
+				count: topParticipants.count,
+			}));
+			return topParticipants;
 		}),
 
 		addComment: withErrorHandler(async function (id: string, comment) {
