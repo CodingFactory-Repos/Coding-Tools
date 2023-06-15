@@ -110,7 +110,6 @@ export class BezierPlugin {
 		);
 
 		if (retrieved) {
-			this.lineBezier.color = 0xff00ff;
 			const { x, y, width, height } = closestElement.bounds;
 			const rectangleEdgePoints = [
 				{ x: x + width / 2, y: y, id: BezierHandle.T },
@@ -155,7 +154,6 @@ export class BezierPlugin {
 				this.lineContainer.attachContainer(closestElement.container.uuid, 'end', closestPoint.id);
 			}
 		} else {
-			this.lineBezier.color = 0xffffff;
 			this.lineBezier.end = point;
 
 			const lineLength = getLengthFromPoints(this.lineBezier.start, this.lineBezier.end);
