@@ -39,7 +39,6 @@ export const useCoursStore = defineStore('course', {
 		getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
 			this.oneItems = response.data.courseById;
-
 			return true;
 		}),
 		addCourse: withErrorHandler(async function (this: CoursesStore, course: Course) {

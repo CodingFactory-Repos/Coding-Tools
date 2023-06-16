@@ -11,16 +11,39 @@ export interface CoursesStore {
 export interface Course {
 	_id?: string;
 	tag: string;
-	classTag: string;
+	classId: string;
 	picture: string;
 	language: string;
 	createdAt: Date;
 	periodStart: Date;
 	periodEnd: Date;
-	presence: [];
-	project: [];
-	site: string;
+	presence: Array<any>;
+	site: string | null;
 	teacherId?: string;
+	groups: Array<Group>;
+	isLocked: boolean;
+	messages: Array<Message>;
+	projects: Array<string>;
+	retro: string;
+}
+
+export interface Group {
+	id: string;
+	group: Array<string>;
+}
+
+export interface Message {
+	userId: string;
+	message: {
+		newMessage: {
+			type: string;
+			text: string;
+			sender_id: number;
+			sender_name: string;
+			date: string;
+		};
+	};
+	date: Date;
 }
 
 export interface CourseById {
