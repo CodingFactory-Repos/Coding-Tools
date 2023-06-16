@@ -52,12 +52,13 @@ export const useCoursStore = defineStore('course', {
 		}),
 		getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
-			this.oneItems = response.data; //.courseById;
-
+			this.oneItems = response.data;
+			console.log(this.oneItems);
 			return true;
 		}),
 		addCourse: withErrorHandler(async function (this: CoursesStore, course: Course) {
 			const res = await createCourse(course);
+			console.log(res.data);
 			if (res.status !== 200) return false;
 			this.items.push(res.data);
 			return true;

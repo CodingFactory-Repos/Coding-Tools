@@ -22,6 +22,7 @@ export interface Course {
 	project: [];
 	site: string;
 	teacherId?: string;
+	files: string;
 }
 
 export interface CourseById {

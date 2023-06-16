@@ -33,6 +33,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 					],
 					description: '',
 					project: '',
+					files: '',
 				},
 			],
 			oneItems: {
@@ -61,6 +62,7 @@ export const useOpenHouseStore = defineStore('openhouse', {
 				],
 				description: '',
 				project: '',
+				files: '',
 			},
 			idOpenHouse: '',
 		};

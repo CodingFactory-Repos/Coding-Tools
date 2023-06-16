@@ -1,8 +1,11 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
 	<div>
-		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">Journée Porte Ouverte</h1>
+		<div>
+			<div class="text-center pt-4">
+				<h1 class="text-4xl font-bold">Journée Porte Ouverte</h1>
+			</div>
+			<FormOpenHouse />
 		</div>
 		<div class="text-center flex items-center justify-center max-w-full h-full">
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -58,7 +61,6 @@
 				</div>
 			</div>
 		</div>
-		<FormOpenHouse />
 	</div>
 </template>
 

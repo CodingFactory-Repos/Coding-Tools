@@ -57,6 +57,7 @@ const _id = computed(() => {
 // get openHouse by id
 const getCourseById = async (_id: string) => {
 	await course.getCourseById(_id);
+	console.log(oneItems.value);
 };
 
 // fetch openHouse data on mounted

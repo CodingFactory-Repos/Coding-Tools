@@ -8,8 +8,20 @@
 			<div class="modal-body">
 				<form class="w-full max-w-sm">
 					<input type="text" name="title" v-model="tag" placeholder="Title :" /><br />
-					<input type="datetime-local" v-model="periodStart" /><br />
-					<input type="datetime-local" v-model="periodEnd" /><br />
+					<div>
+						<VueDatePicker
+							placeholder="debut"
+							v-model="periodStart"
+							:format="dateFormat"
+							:language="datePickerLanguage"
+						/>
+						<VueDatePicker
+							placeholder="fin"
+							v-model="periodEnd"
+							:format="dateFormat"
+							:language="datePickerLanguage"
+						/>
+					</div>
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
 					<input
 						type="text"
@@ -26,8 +38,8 @@
 					</ul>
 					<div class="mb-4">
 						<label for="file" class="block text-sm font-medium text-gray-700">Fichier :</label>
-						<input type="file" id="file" ref="fileInput" @change="handleFileChange" multiple />
-						<ul class="mt-4 space-y-2">
+						<input type="file" id="file" ref="fileInput" @change="onFileSelected" />
+						<!--ul class="mt-4 space-y-2">
 							<li v-for="file in uploadedFiles" :key="file.name" class="flex items-center">
 								<button
 									type="button"
@@ -38,7 +50,7 @@
 								</button>
 								<span class="text-gray-700">{{ file.name }}</span>
 							</li>
-						</ul>
+						</ul-->
 					</div>
 					<div class="flex justify-center mt-6">
 						<button
@@ -63,12 +75,16 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
 import { useCoursStore } from '@/store/modules/course.store';
 import Swal from 'sweetalert2';
+import { http } from '@/api/network/axios';
 
 export default {
 	name: 'AddCourses',
+	components: {
+		VueDatePicker,
+	},
 	emits: ['close'],
 	data() {
 		return {
@@ -86,11 +102,16 @@ export default {
 			languages: [],
 			languageSuggest: [],
 			showSuggest: false,
-			uploadedFiles: [],
+			//uploadedFiles: [],
+			dateFormat: 'yyyy-MM-dd HH:mm',
+			datePickerLanguage: 'fr', // Langue du date picker
+			selectedFile: null,
+			base64String: '',
 		};
 	},
 	methods: {
-		async AddCourses() {
+		async AddCourses(event) {
+			event.preventDefault();
 			// Vérifier si tous les champs sont remplis
 			if (!this.tag || !this.periodStart || !this.periodEnd || !this.picture || !this.language) {
 				Swal.fire({
@@ -110,9 +131,9 @@ export default {
 			formData.append('periodEnd', this.periodEnd);
 			formData.append('picture', this.picture);
 			formData.append('language', this.language);
-			this.uploadedFiles.forEach((file) => {
-				formData.append('uploadedFiles', file);
-			});
+			//this.uploadedFiles.forEach((file) => {
+			formData.append('files', this.selectedFile);
+			//	});
 
 			Swal.fire({
 				title: 'Votre cours a été ajouté',
@@ -123,7 +144,11 @@ export default {
 			}).then(async (result) => {
 				if (result.isConfirmed) {
 					// Ajouter le cours
-					await useCoursStore.addCourse(formData);
+					//	await useCoursStore.addCourse(formData);
+					http.post('/courses/create', formData).catch((error) => {
+						console.log(error);
+						this.$emit('addnew');
+					});
 					// Rediriger vers la page des cours
 					this.$emit('close');
 				}
@@ -184,6 +209,22 @@ export default {
 
 		close() {
 			this.$emit('close');
+		},
+
+		onFileSelected(event) {
+			this.selectedFile = event.target.files[0];
+			this.convertToBase64();
+		},
+
+		convertToBase64() {
+			if (this.selectedFile) {
+				const reader = new FileReader();
+				reader.onload = (event) => {
+					let result = event.target.result;
+					this.base64String = result.toString();
+				};
+				reader.readAsDataURL(this.selectedFile);
+			}
 		},
 	},
 };
