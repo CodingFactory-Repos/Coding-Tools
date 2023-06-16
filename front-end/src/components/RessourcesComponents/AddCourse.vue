@@ -103,7 +103,21 @@ export default {
 				teacherId: '',
 				files: this.base64String,
 			};
-			course.addCourse(this.newCourse);
+
+			Swal.fire({
+				title: 'Votre cours a été ajouté',
+				icon: 'success',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'OK',
+			}).then(async (result) => {
+				if (result.isConfirmed) {
+					// Ajouter le cours
+					course.addCourse(this.newCourse);
+				}
+			});
+			// Rediriger vers la page des cours
+			this.$emit('close');
 		},
 		onFileSelected(event) {
 			this.selectedFile = event.target.files[0];
