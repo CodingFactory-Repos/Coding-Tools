@@ -219,12 +219,12 @@
 /front-end/src/components/RessourcesComponents/Ressources.vue @Maghwyn @AyakorK @Loule95450
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/CreatePostit.vue @Kevw94 @Loule95450
-/front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
 /front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94 @Loule95450
 /front-end/src/components/retrospective/UpdatePostit.vue @AyakorK @Loule95450
 /front-end/src/components/retrospective/utils/ @Maghwyn
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
+/front-end/src/components/retrospective/utils/RetroCard.vue @Maghwyn @Kevw94
 /front-end/src/components/retrospective/utils/ShareRetro.vue @AyakorK
 /front-end/src/components/retrospective/utils/ShareRetroToUser.vue @AyakorK
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
