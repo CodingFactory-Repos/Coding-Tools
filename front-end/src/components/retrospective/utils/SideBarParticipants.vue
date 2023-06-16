@@ -12,7 +12,7 @@
 			</button>
 		</div>
 		<div class="flex flex-col overflow-y-scroll overflow-x-hidden items-center gap-1">
-			<div v-for="(participant, index) in participants" class="text-black h-full break-all flex w-full justify-between" :key="index">
+			<div v-for="(participant, index) in participants" class="text-black h-full break-all flex w-full justify-between dark:text-white" :key="index">
 				<div >
 					{{ participant }}
 				</div>

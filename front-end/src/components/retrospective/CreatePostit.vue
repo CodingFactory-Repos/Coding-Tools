@@ -1,6 +1,6 @@
 <template>
 	<div class="w-11 bg-slate-700 h-48 w-48 ">
-		<div class="w-full h-full flex justify-center items-center bg-gray-50 relative  cursor-grab postit:buttons-visible">
+		<div class="w-full h-full flex justify-center items-center bg-gray-50 relative  cursor-grab postit:buttons-visible shadow-lg">
 			<textarea
 				v-model="postitValue"
 				id="message"
