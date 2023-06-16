@@ -166,7 +166,7 @@ export class SocketManager extends Manager {
 		try {
 			const element = this.viewport.socketPlugin.elements[uuid];
 			if (element instanceof FramedContainer) {
-				const background = element.children[0] as Rectangle;
+				const background = element.mainContainer.children[0] as Rectangle;
 				background.color = serializedColorimetry.background.properties.color;
 				background.alpha = serializedColorimetry.background.properties.alpha;
 				background.draw({
