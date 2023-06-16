@@ -16,6 +16,10 @@ export class ProjectsService {
 		return await this.projectsRepository.getProject();
 	}
 
+	async addMember(id, query) {
+		return await this.projectsRepository.addMember(id, query);
+	}
+
 	async getProjectByCourseOrCreator(id) {
 		return await this.projectsRepository.getProjectByCourseOrCreator(id);
 	}
@@ -32,8 +36,8 @@ export class ProjectsService {
 		return await this.projectsRepository.createProject(query);
 	}
 
-	async updateProject(query, update) {
-		return await this.projectsRepository.updateOneProject(query, update);
+	async updateProject(id, update) {
+		return await this.projectsRepository.updateOneProject(id, update);
 	}
 
 	async getProjectById(id) {

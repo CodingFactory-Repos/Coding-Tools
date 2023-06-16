@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseFilters, Post, Req, Put, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Get, Res, UseFilters, Post, Req, Put, UseGuards, Delete, Patch } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { ServiceErrorCatcher } from 'src/common/decorators/catch.decorator';
@@ -19,6 +19,12 @@ export class ProjectsController {
 		return res.status(201).json(project);
 	}
 
+	@Post('/addMember/:id')
+	async addMember(@Req() req: Request, @Res() res: Response) {
+		const project = await this.projectsService.addMember(req.params.id, req.body);
+		return res.status(201).json(project);
+	}
+
 	@Get('/courseOrCreator/:id')
 	async getProjectByCourseOrCreator(@Req() req: Request, @Res() res: Response) {
 		const project = await this.projectsService.getProjectByCourseOrCreator(req.params.id);
@@ -28,7 +34,7 @@ export class ProjectsController {
 	@Get('/exists/:courseId/:userId')
 	async doesProjectExist(@Req() req: Request, @Res() res: Response) {
 		const project = await this.projectsService.getProjectByCourseAndMembers(req.params.courseId, req.params.userId);
-		return res.status(201).json(project !== null);
+		return res.status(201).json(project);
 	}
 
 	@Get('/groupMember/:id')
@@ -50,6 +56,12 @@ export class ProjectsController {
 		return res.status(201).json(project);
 	}
 
+	@Get('/get_project/:courseId/:userId')
+	async getProjectByCourseAndMembers(@Req() req: Request, @Res() res: Response) {
+		const project = await this.projectsService.getProjectByCourseAndMembers(req.params.courseId, req.params.userId);
+		return res.status(201).json(project);
+	}
+
 	@Get('/course/:id')
 	async getProjectByCourseId(@Req() req: Request, @Res() res: Response) {
 		const project = await this.projectsService.getProjectByCourseId(req.params.id);
@@ -64,7 +76,8 @@ export class ProjectsController {
 
 	@Put('/update/:id')
 	async updateProject(@Req() req: Request, @Res() res: Response) {
-		const project = await this.projectsService.updateProject(req.params.id, req.body);
+		const update = { $set: req.body };
+		const project = await this.projectsService.updateProject(req.params.id, update);
 		return res.status(201).json(project);
 	}
 }

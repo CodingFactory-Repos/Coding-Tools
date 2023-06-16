@@ -8,7 +8,7 @@ export class StoriesRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
 	get stories() {
-		return this.db.collection<Story>('Stories');
+		return this.db.collection<Story>('stories');
 	}
 
 	async getStory() {
@@ -24,11 +24,9 @@ export class StoriesRepository {
 		return this.stories.findOne({ _id: id });
 	}
 
-	async updateOneStory(
-		query: Filter<Story>,
-		update: Partial<Story> | UpdateFilter<Story>,
-	) {
-		return this.stories.updateOne(query, update);
+	async updateOneStory(query: Filter<Story>, update: Partial<Story> | UpdateFilter<Story>) {
+		this.stories.updateOne(query, update);
+		return this.stories.findOne(query);
 	}
 
 	async findOneAndUpdateStory(
@@ -41,5 +39,19 @@ export class StoriesRepository {
 
 	async findOne(query: Filter<Story>, options: FindOneAndUpdateOptions = undefined) {
 		return this.stories.findOne(query, options);
+	}
+
+	async getStoryByCourseId(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.stories.find({ course: id }).toArray();
+	}
+
+	async getStoryByBoardId(id: ObjectId) {
+		return this.stories.find({ board: id }).toArray();
+	}
+
+	async deleteOneStory(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.stories.deleteOne({ _id: id });
 	}
 }

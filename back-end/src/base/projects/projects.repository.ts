@@ -12,40 +12,45 @@ export class ProjectsRepository {
 	}
 
 	async getProject() {
-		return this.stories.find().toArray();
+		return this.projects.find().toArray();
+	}
+
+	async addMember(id, query) {
+		
+		id = new ObjectId(id);
+		this.projects.updateOne({ _id: id }, { $push: { group: query.userId } }).then((result) => {
+			return result;
+		});
 	}
 
 	async createProject(query: Project) {
-		return this.stories.insertOne(query);
+		return this.projects.insertOne(query);
 	}
 
 	async getProjectById(id: ObjectId) {
 		id = new ObjectId(id);
-		return this.stories.findOne({ _id: id });
+		return this.projects.findOne({ _id: id });
 	}
 
 	async getProjectByCourseOrCreator(id) {
 		id = new ObjectId(id);
-		return this.stories.find({ $or: [{ course: id }, { creator: id }] }).toArray();
+		return this.projects.find({ $or: [{ course: id }, { creator: id }] }).toArray();
 	}
 
 	//New method to query by user in group member array
 	async getProjectByGroupMember(id) {
-		id = new ObjectId(id);
-		return this.stories.find({ group: { $elemMatch: { $eq: id } } }).toArray();
+		let query = { group: { $elemMatch: { $eq: id } } };
+		return this.projects.find(query).toArray();
 	}
 
 	async getProjectByCourseAndMembers(courseId, userId) {
 		courseId = new ObjectId(courseId);
-		userId = new ObjectId(userId);
-		return this.stories.findOne({ $and: [{course: courseId}, {group: { $elemMatch: { $eq: userId }} }] });
+		return this.projects.findOne({ $and: [{course: courseId}, {group: { $elemMatch: { $eq: userId }} }] });
 	}
 
-	async updateOneProject(
-		query: Filter<Project>,
-		update: Partial<Project> | UpdateFilter<Project>,
-	) {
-		return this.stories.updateOne(query, update);
+	async updateOneProject(id, update: Partial<Project>) {
+		let query = { _id: new ObjectId(id) };
+		return this.projects.updateOne(query, update);
 	}
 
 	async findOneAndUpdateProject(
@@ -62,11 +67,11 @@ export class ProjectsRepository {
 
 	async getProjectByCourseId(id: ObjectId) {
 		id = new ObjectId(id);
-		return this.stories.find({ course: id }).toArray();
+		return this.projects.find({ course: id }).toArray();
 	}
 
 	async deleteOneProject(id: ObjectId) {
 		id = new ObjectId(id);
-		return this.stories.deleteOne({ _id: id });
+		return this.projects.deleteOne({ _id: id });
 	}
 }

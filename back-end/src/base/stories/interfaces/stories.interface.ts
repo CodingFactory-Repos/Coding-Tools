@@ -1,19 +1,19 @@
 import { ObjectId } from 'mongodb';
 import { Board } from '@/base/boards/interfaces/boards.interface';
-import { Course } from '@/base/courses/interfaces/courses.interface';
 import { User } from '@/base/users/interfaces/users.interface';
 
 export interface Story {
 	_id: ObjectId;
-	board?: Board;
-	course?: Course;
+	board?: ObjectId;
+	course?: ObjectId;
+	project?: ObjectId;
 	title: string;
 	description?: string;
 	attributedTo?: User;
-	column: string;
+	column?: string;
 	value?: number;
 	as?: string;
-	Iwant?: string;
+	iWant?: string;
 	soThat?: string;
 	acceptanceCriteria?: string;	
 }
