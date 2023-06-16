@@ -25,7 +25,6 @@ import { GenericContainer } from './class/genericContainer';
 import { decimToHex } from './utils/colorsConvertor';
 import { dragAttachedLines } from './utils/dragAttachedLines';
 import { TextContainer } from './class/textContainer';
-import { MovedEvent } from 'pixi-viewport/dist/types';
 
 export interface TextEditorOptions {
 	text: string;
