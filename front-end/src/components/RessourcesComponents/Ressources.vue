@@ -1,41 +1,70 @@
 <template>
-	<div>
-		<div class="text-center pt-4">
-			<h1 class="text-4xl font-bold">Ressources</h1>
-		</div>
-		<div class="flex justify-center items-center space-x-4">
+	<div class="h-full">
+		<div class="flex flex-row justify-evenly items-center space-x-4 h-full">
 			<div
-				class="w-40 h-40 bg-blue-500 rounded-lg p-4 text-center cursor-pointer"
-				@click="openOpenHouses()"
+				class="max-w-sm h-64 flex flex-col items-left justify-between p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 			>
-				<div class="text-white text-4xl">
-					<svg class="w-12 h-12 mx-auto" viewBox="0 0 24 24">
+				<a href="#">
+					<h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+						Journée Porte Ouverte
+					</h5>
+				</a>
+				<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+					Retrouvez les differentes dates de Journée Porte Ouverte de l'ESIEE-IT avec les documents
+					associés à ces dernières.
+				</p>
+				<button
+					@click="openOpenHouses()"
+					class="inline-flex w-fit items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				>
+					JPO
+					<svg
+						aria-hidden="true"
+						class="w-4 h-4 ml-2 -mr-1"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
 						<path
-							fill="currentColor"
-							d="M12 6a1 1 0 0 1 .707.293l4 4A1 1 0 0 1 17 12v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 0-2 0v4a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-6a1 1 0 0 1 .293-.707l4-4A1 1 0 0 1 12 6z"
-						/>
-						<path
-							fill="currentColor"
-							d="M9 16a1 1 0 0 0 2 0v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 2 0v-6a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v6z"
+							fill-rule="evenodd"
+							d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+							clip-rule="evenodd"
 						/>
 					</svg>
-				</div>
-				<div class="text-white text-lg mt-2">Open House</div>
+				</button>
 			</div>
 
 			<div
-				class="w-40 h-40 bg-green-500 rounded-lg p-4 text-center cursor-pointer"
-				@click="openCours()"
+				class="max-w-sm flex flex-col items-left justify-between h-64 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 			>
-				<div class="text-white text-4xl">
-					<svg class="w-12 h-12 mx-auto" viewBox="0 0 24 24">
+				<a href="#">
+					<h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+						Cours
+					</h5>
+				</a>
+				<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+					Retrouvez les différents cours de la coding factory, trier par année et par matière. Vous
+					y trouverez également les groupes de chaque sprint, avec des documents associés.
+				</p>
+				<button
+					@click="openCours()"
+					class="inline-flex w-fit items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				>
+					Cours
+					<svg
+						aria-hidden="true"
+						class="w-4 h-4 ml-2 -mr-1"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
 						<path
-							fill="currentColor"
-							d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13H7v2h6V7zm0 4H7v2h6v-2zm0 4H7v2h6v-2z"
+							fill-rule="evenodd"
+							d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+							clip-rule="evenodd"
 						/>
 					</svg>
-				</div>
-				<div class="text-white text-lg mt-2">Cours</div>
+				</button>
 			</div>
 		</div>
 	</div>

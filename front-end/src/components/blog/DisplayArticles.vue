@@ -13,6 +13,13 @@
 					<Add class="!fill-light-primary" />
 				</span>
 			</button>
+			<button
+				type="submit"
+				@click="router.push('/app/blog/stats')"
+				class="font-bold rounded-lg text-xs md:text-sm px-3 py-2 focus:outline-none gap-2 bg-blue-700"
+			>
+				<span class="text-white"> Voir les statistiques </span>
+			</button>
 		</div>
 
 		<div class="mt-8 md:mt-10">
@@ -56,9 +63,6 @@
 
 			<div v-for="tab in tabs" :key="tab.id">
 				<div v-if="activeTab === tab.id">
-					<!-- <h2 class="text-2xl md:text-3xl font-bold pt-4 md:pt-5 text-gray-900 dark:text-white">
-						{{ tab.label }}
-					</h2> -->
 					<div class="flex items-center justify-center p-2 md:p-5 mt-6">
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
 							<div v-for="item in filteredItems(tab.id)" :key="item._id">
@@ -74,6 +78,15 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div
+						v-if="
+							(filteredItems(tab.id).length < 1 || !filteredItems(tab.id).length) &&
+							searchQuery.length > 0
+						"
+						class="flex flex-col justify-center items-center h-auto"
+					>
+						<h1 class="text-2xl font-bold text-gray-900 dark:text-white">Aucun article trouvé</h1>
 					</div>
 				</div>
 			</div>

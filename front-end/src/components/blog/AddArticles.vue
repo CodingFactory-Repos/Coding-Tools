@@ -266,10 +266,16 @@ const addArticle = async () => {
 		return;
 	}
 
+	const owner = {
+		_id: authStore?.user?._id,
+		firstName: authStore?.user?.profile?.firstName,
+		lastName: authStore?.user?.profile?.lastName,
+	};
+
 	// Groups all data for sending to the API
 	if (type.value == 'Infos') {
 		let data = {
-			owner: authStore.user._id,
+			owner: owner,
 			title: title.value,
 			descriptions: description.value,
 			content: content.value,
@@ -284,9 +290,29 @@ const addArticle = async () => {
 
 		// post the data
 		await articleStore.addArticle(data);
-	} else {
+	} else if (tags.value.toUpperCase() == 'JPO') {
 		let data = {
 			owner: authStore.user._id,
+			title: title.value,
+			descriptions: description.value,
+			content: content.value,
+			picture: picture.value,
+			tags: tags.value,
+			type: type.value,
+			status: status.value,
+			date: date.value,
+			likes: [],
+			dislikes: [],
+			participants: [],
+			comments: [],
+			documents: [],
+		};
+
+		// post the data
+		await articleStore.addArticle(data);
+	} else {
+		let data = {
+			owner: owner,
 			title: title.value,
 			descriptions: description.value,
 			content: content.value,

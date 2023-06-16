@@ -17,6 +17,7 @@ const userStoreDefaultState = (): UserStore => ({
 	uploadWaitingList: [],
 	relatedProfiles: [],
 	relatedUserProfile: {},
+	myArticles: [],
 });
 
 export const useUserStore = defineStore('user', {

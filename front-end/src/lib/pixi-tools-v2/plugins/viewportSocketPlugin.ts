@@ -100,7 +100,7 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 		this.socketManager._close();
 	}
 
-	public trackElementByUUID(container: GenericContainer | FramedContainer | LineContainer) {
+	public trackElementByUUID(container: CanvasContainer | LineContainer) {
 		if (container instanceof FramedContainer) {
 			this.elements[container.uuid] = container;
 
