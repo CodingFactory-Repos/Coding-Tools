@@ -7,7 +7,6 @@ import { config } from 'src/config/config';
 
 import { AppModule } from 'src/app.module';
 import { corsOptionsDelegate } from 'src/config/cors';
-import * as bodyParser from 'body-parser';
 
 //! Proxy settings, production only
 // <NestExpressApplication>
@@ -28,7 +27,7 @@ async function bootstrap() {
 	);
 
 	app.use(cookieParser());
-	app.use(bodyParser.json({ limit: '50mb' }));
+
 	app.enableCors(corsOptionsDelegate);
 	//! versioning, production only
 	// app.enableVersioning({

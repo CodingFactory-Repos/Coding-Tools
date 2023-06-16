@@ -7,15 +7,15 @@
 					<input type="text" name="title" v-model="title" placeholder="Title :" /><br />
 					<input type="datetime-local" v-model="date" /><br />
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
-					<activity :Activities="Activities" />
+					<activity :Activities="Activities"></activity>
 					<div>
 						<input type="text" v-model="street" placeholder="street :" /><br />
 						<input type="text" v-model="zipCode" placeholder="zip code :" /><br />
 						<input type="text" v-model="town" placeholder="town :" /><br />
 					</div>
 					<textarea placeholder="Description :" v-model="description"></textarea><br />
-					<addParticipant :participants="participants" @clear="clearParticipants" />
-					<input type="file" accept="application/pdf" @change="onFileSelected" /><br />
+					<participant :participants="participants" @clear="clearParticipants"></participant>
+					<input type="file" @change="onFileSelected" /><br />
 					<button type="submit">Submit</button>
 				</form>
 			</template>
@@ -24,17 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import addParticipant from '@/components/RessourcesComponents/NewParticipant.vue';
-import activity from '@/components/RessourcesComponents/NewActivity.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import { ref } from 'vue';
 import { http } from '@/api/network/axios';
-import Swal from 'sweetalert2';
 
 const showMetaModal = ref(false);
 
 const openMetaModal = () => (showMetaModal.value = true);
-const closeMetaModal = () => closeForm();
+const closeMetaModal = () => (showMetaModal.value = false);
 
 let title = '';
 let date = '';
@@ -45,29 +42,13 @@ let description = '';
 let picture = '';
 let participants = [];
 let Activities = [];
-let selectedFile = null;
-let base64String = '';
 
-const addOpenHouses = async function () {
-	// Vérifier si tous les champs sont remplis
-	if (!title || !date || !street || !zipCode || !town) {
-		Swal.fire({
-			title: 'Vous devez remplir tous les champs',
-			text: 'Veuillez remplir tous les champs pour ajouter une nouvelle JPO',
-			icon: 'error',
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'OK',
-		});
-		return;
-	}
-
+const addOpenHouses = function () {
 	let adress = {
 		street: street,
 		zipCode: zipCode,
 		city: town,
 	};
-
 	http
 		.post('/openhouses/create', {
 			title: title,
@@ -77,7 +58,6 @@ const addOpenHouses = async function () {
 			adress: adress,
 			description: description,
 			participants: participants,
-			files: base64String,
 		})
 		.catch((error) => {
 			console.log(error);
@@ -94,33 +74,14 @@ const addOpenHouses = async function () {
 	closeMetaModal();
 };
 
-const closeForm = function () {
-	showMetaModal.value = false;
-	clearParticipants();
-	clearActivitys();
-};
-
 const onFileSelected = function (event) {
-	selectedFile = event.target.files[0];
-	convertToBase64();
-};
-
-const convertToBase64 = function () {
-	if (selectedFile) {
-		const reader = new FileReader();
-		reader.onload = (event) => {
-			let result = event.target.result;
-			base64String = result.toString();
-		};
-		reader.readAsDataURL(selectedFile);
-	}
+	console.log(event);
 };
 
 const clearParticipants = function () {
 	participants.splice(0, participants.length);
 };
+//	 },
 
-const clearActivitys = function () {
-	Activities.splice(0, Activities.length);
-};
+//}
 </script>

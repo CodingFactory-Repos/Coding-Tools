@@ -22,26 +22,10 @@ export const useCoursStore = defineStore('course', {
 					project: [],
 					site: '',
 					teacherId: '',
-					files: '',
 				},
 			],
-			oneItems: {
-				_id: '',
-				tag: '',
-				classTag: '',
-				picture: '',
-				language: '',
-				createdAt: null,
-				periodStart: null,
-				periodEnd: null,
-				presence: [],
-				project: [],
-				site: '',
-				teacherId: '',
-				files: '',
-			},
+			oneItems: {},
 			idCourses: '',
-			//uploadedFiles: [],
 		};
 	},
 	actions: {
@@ -54,16 +38,18 @@ export const useCoursStore = defineStore('course', {
 		}),
 		getCourseById: withErrorHandler(async function (id: string) {
 			const response = await getCoursesById(id);
-			this.oneItems = response.data;
-			console.log(this.oneItems);
+			this.oneItems = response.data.courseById;
 			return true;
 		}),
 		addCourse: withErrorHandler(async function (this: CoursesStore, course: Course) {
 			const res = await createCourse(course);
-			console.log(res.data);
 			if (res.status !== 200) return false;
 			this.items.push(res.data);
 			return true;
 		}),
+		async getAllCourses(this: CoursesStore) {
+			const resp = await tryGetAllCourses();
+			if (resp.status === 200) this.allCourses = resp.data.courses;
+		},
 	},
 });

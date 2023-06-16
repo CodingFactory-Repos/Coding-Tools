@@ -5,29 +5,29 @@
 		<div v-show="showParticipant">
 			<input type="text" placeholder="name :" v-model="name" @input="searchUser" />
 			<!--input = name et lance recherche de correspondance-->
-			<p v-for="(user, id) in userList" @click="selectUser(user)" :key="id">{{ user }}</p>
+			<p v-for="user in userList" @click="selectUser(user)">{{ user }}</p>
 			<br />
 		</div>
-		<p v-for="user in participants" :key="user.name">{{ user }}</p>
+		<p v-for="user in participants">{{ user }}</p>
 		<br />
 		<!--afficher les participants ajouter-->
 	</div>
 </template>
 
 <script lang="ts">
-import { useUserStore } from '@/store/modules/user.store';
-
+import { http } from '@/api/network/axios';
 export default {
 	data() {
 		return {
+			firstName: '',
+			lastName: '',
 			name: '',
 			usersNames: [],
 			userList: [],
-			userName: '', // valeur du get peut changer d'objet a string
+			userName: { firstName: '', lastName: '' }, // valeur du get peut changer d'objet a string
 			showParticipant: false,
 		};
 	},
-	// eslint-disable-next-line vue/order-in-components
 	props: {
 		participants: {
 			//props participants a envoyer pour le form
@@ -52,49 +52,48 @@ export default {
 			}
 		},
 
-		async searchUser() {
+		searchUser() {
 			//recherche de participant
-			//this.$emit('clear');
+			// this.$emit('clear');
 			this.userList = [];
-			await this.getUsers(); // recuperer les users de la bdd
-			console.log(this.usersNames);
+			this.getUsers(); // recuperer les users de la bdd
 			this.usersNames.forEach((element) => {
+				const userName = element.firstName + ' ' + element.lastName;
 				let alreadyInList = false;
-				if (element.toUpperCase().includes(this.name.toUpperCase()) && this.name != '') {
+				if (userName.toUpperCase().includes(this.name.toUpperCase()) && this.name != '') {
 					this.participants.forEach((participant) => {
-						if (participant == element) {
+						if (participant == userName) {
 							alreadyInList = true;
 						}
 					});
 					if (!alreadyInList) {
-						this.userList.push(element.toUpperCase());
+						this.userList.push(userName);
 					}
 				}
 			});
 		},
 
-		async getUsers() {
-			this.usersNames = [];
-			const userStore = useUserStore();
-			await userStore.getAllUsers();
-			const usersList = userStore.users;
-			const test = Object.keys(usersList);
-			const testArray = test.map((key) => ({ key, value: usersList[key] }));
-			testArray.forEach((element) => {
-				element.value.forEach((user) => {
-					this.userName = user.profile.firstName + ' ' + user.profile.lastName;
+		getUsers() {
+			http.get('http://localhost:8010/openhouses/users').then((response) => {
+				this.users = response.data;
+				this.users.forEach((element) => {
+					this.userName = {
+						firstName: element.profile.firstName,
+						lastName: element.profile.lastName,
+					};
 					if (!this.userCheckList()) {
-						this.usersNames.push(this.userName.toUpperCase());
+						this.usersNames.push(this.userName);
 					}
 				});
 			});
-			console.log(this.usersNames);
 		},
 		userCheckList() {
 			let alreadyInList = false;
 			this.usersNames.forEach((element) => {
-				if (element == this.userName.toUpperCase()) {
-					alreadyInList = true;
+				if (element.lastName == this.userName.lastName) {
+					if (element.firstName == this.userName.firstName) {
+						alreadyInList = true;
+					}
 				}
 			});
 			return alreadyInList;

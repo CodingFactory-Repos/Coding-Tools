@@ -5,8 +5,7 @@ export interface CoursesStore {
 	allCourses: Array<Course>;
 	items: Array<Course>;
 	idCourses: string;
-	oneItems: Course;
-	//uploadedFiles: File[];
+	oneItems: CourseById;
 }
 
 export interface Course {
@@ -26,7 +25,6 @@ export interface Course {
 	messages: Array<Message>;
 	projects: Array<string>;
 	retro: string;
-	files: string;
 }
 
 export interface Group {
@@ -50,7 +48,7 @@ export interface Message {
 
 export interface CourseById {
 	course?: Course;
-	//retro?: Retrospective;
-	//projects?: Array<ProjectMeta>;
+	retro?: Retrospective;
+	projects?: Array<ProjectMeta>;
 	// trellos?: Trello A Définir
 }

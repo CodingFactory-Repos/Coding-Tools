@@ -26,14 +26,12 @@ export class CoursesController {
 	@Get('/:id')
 	async getCoursesById(@Req() req: Request, @Res() res: Response, @Param('id') courseId: string) {
 		const courseById = await this.coursesService.getCoursesById(courseId);
-		console.log(courseById);
-		return res.status(200).json(courseById);
+		return res.status(200).json({ status: 'ok', courseById });
 	}
 
 	@Post('/create')
 	async createCourse(@Req() req: Request, @Res() res: Response) {
 		await this.coursesService.createCourse(req.body).then((course) => {
-			console.log(course);
 			res.status(200).json(course);
 		});
 	}

@@ -10,7 +10,6 @@ export interface OpenHouse {
 	address: string;
 	group: Group;
 	participants: Array<User>;
-	files: string;
 	description: string;
 	project: Project;
 }

@@ -23,9 +23,6 @@ export class CourseDTO {
 	createdAt?: Date;
 
 	@IsOptional()
-	files?: string;
-
-	@IsOptional()
 	periodStart?: Date;
 
 	@IsOptional()
