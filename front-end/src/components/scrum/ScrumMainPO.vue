@@ -8,7 +8,7 @@
     <div class="mx-auto p-4 rounded-lg bg-light-primary dark:bg-dark-secondary text-left mt-10 ml-12 mr-12 w-11/12">
         <div v-show="this.showMain">
             <h1 class="text-6xl font-bold dark:text-dark-font text-gray-800">Organisation Scrum</h1>
-            <div class="mt-4 actualSprint block w-96 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-light-secondary dark:bg-dark-tertiary focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Sprint sélectionné:<br/>
+            <div class="mt-4 actualSprint block w-96 p-4 pl-10 text-sm text-gray-900 rounded-lg bg-light-secondary dark:bg-dark-tertiary focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Sprint sélectionné:<br/>
                 <select id="select" @change="setCourseId($event)" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                     <option>Sélectionnez un Sprint</option>
                     <option v-for="course in courses"  :value=course._id>{{ course.tag }}</option>
@@ -34,7 +34,7 @@
             <div class="w-full mt-4 h-fit flex flex-col gap-3 rounded-lg bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start" v-if="courseId != ''">
                 <h2 class="text-2xl font-bold dark:text-dark-font">Groupes d'élèves de ce sprint</h2>
                 <div class="groups">
-                    <div class="iconeGroupe !bg-white dark:!bg-dark-highlight" v-for="groupe in groups">
+                    <div class="iconeGroupe bg-light-tertiary dark:bg-[#5C5F73] rounded-lg px-4 py-2 flex flex-col overflow-y-auto text-dark dark:text-white mr-4 mb-2 overflow-y-auto shadow-lg" v-for="groupe in groups">
                         <div v-if="showStudentsInGroups">
                             <span style="font-size:20px;" class="dark:text-white text-[#213547]" v-for="student in groupe.group">{{ student }}<br/></span>
                             <div style="position:absolute;left:10px;bottom:10px;">
@@ -67,12 +67,9 @@
                 </div>
             </div>
             </div>
-            <button @click="this.addMemberForm=true;" class="p-2 button-add-members hover:bg-light-secondary dark:hover:bg-dark-tertiary gradiant relative right-4 bg-[#24292E] hover:bg-[#24292E99] shadow">
-                <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" height="1.5em" width="1.5em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-            </button>
             </div>
             <div class="flex flex-column w-full my-4">
-                <div v-for="board in boards" class="iconeGroupe !bg-white dark:!bg-dark-highlight">
+                <div v-for="board in boards" class="iconeGroupe  bg-light-tertiary  dark:bg-[#5C5F73] rounded-lg px-4 py-2 flex flex-col overflow-y-auto text-dark dark:text-white mr-4 mb-2 overflow-y-auto shadow-lg">
                     <span style="font-size:20px;" class="dark:text-white text-[#213547]">{{ board.title }}<br/></span>
                     <div style="position:absolute;left:10px;bottom:10px;">
                     <button @click="openBoard(board.title, board._id)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir la board</button>
@@ -325,9 +322,9 @@ export default {
 .iconeGroupe {
     min-width: 260px;
     width: 20%;
-    height: 200px;
+    height: auto;
+    min-height: 180px;
     position: relative;
-    background-color: #f0f0f0;
     border-radius: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -342,8 +339,8 @@ export default {
     margin: 10px;
 }
 .actualSprint {
-    width: fit-content;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     background-color: #f0f0f0;
     border-radius: 10px;
     font-size: 20px;
