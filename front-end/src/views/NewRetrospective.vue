@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div
-			class="privateSection h-full bg-slate-500 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
+			class="privateSection h-full bg-slate-300 flex items-center justify-center flex-wrap overflow-y-scroll gap-6 p-4"
 			@dragenter.prevent
 			@dragover.prevent
 			@drop="dropPostit()"
