@@ -116,6 +116,8 @@ export class Normalizer {
 				isAttachedToFrame: false,
 				tabNumberContext: tabContext ?? -1,
 				disabled: false,
+				isBlueprint: false,
+				typeBlueprint: 0,
 			};
 		}
 
