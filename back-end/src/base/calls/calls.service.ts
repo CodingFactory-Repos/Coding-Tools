@@ -56,6 +56,10 @@ export class CallsService {
 		return this.callsRepository.getStudentList(courseId.courseId, studentIdList);
 	}
 
+	async getAllStudents() {
+		return await this.callsRepository.getAllStudents();
+	}
+
 	async getStudentIdentity(userId: ObjectId) {
 		return await this.callsRepository.getStudentIdentity(userId);
 	}

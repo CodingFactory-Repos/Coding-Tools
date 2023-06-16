@@ -16,6 +16,10 @@ export class ProjectsService {
 		return await this.projectsRepository.getProject();
 	}
 
+	async addMember(id, query) {
+		return await this.projectsRepository.addMember(id, query);
+	}
+
 	async getProjectByCourseOrCreator(id) {
 		return await this.projectsRepository.getProjectByCourseOrCreator(id);
 	}

@@ -3,7 +3,7 @@
         <button @click="this.showProject = false; this.showMain = true;" class="back-button fixed pl-1.5 w-[2.5em] h-[2.5em] top-4 left-36 rounded-lg bg-light-primary dark:bg-dark-tertiary">
             <svg class="fill-[#9CA3AF] dark:hover:fill-white hover:fill-[#5C5F73]" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg> 
         </button>
-        <h1 class="font-bold dark:text-[#9ca3af] text-[#213547] ml-32 mt-3">Planning</h1> 
+        <h1 class="font-bold dark:text-[#9ca3af] text-[#213547] ml-32 mt-3">Groupe de projet</h1> 
     </div>
     <div class="mx-auto p-4 rounded-lg bg-light-primary dark:bg-dark-secondary text-left mt-10 ml-12 mr-12 w-11/12">
         <div v-show="this.showMain">
@@ -23,11 +23,11 @@
 
                 </div>
                 <div v-if="this.backlog.length==0" class="text-1xl font-bold dark:text-dark-font text-gray-800 m-0">
-                    <p>Vous n'avez pas de backlog de défini. Voulez-vous uploader un fichier PDF?</p>
+                    <p>Vous n'avez pas de backlog de défini. Appuyez sur le bouton pour commencer.</p>
                 </div>
                 <div v-else class="flex flex-wrap">
                     <div class="backlog" v-if="courseId != ''" v-for="story in this.backlog">
-                        <BacklogItem @deleteStory="deleteStory" :as="story.as" :iWant="story.iWant" :soThat="story.soThat" :acceptationCriteria="story.acceptationCriteria" :valeur="story.value" :_id="story._id"/>
+                        <BacklogItem @deleteStory="deleteStory" :as="story.as" :iWant="story.iWant" :soThat="story.soThat" :acceptationCriteria="story.acceptationCriteria" :valeur="story.value" :_id="story._id" :options="true"/>
                     </div>
                 </div>
             </div>
@@ -256,7 +256,6 @@ export default {
         console.log('Selected group Ids: ', this.selectedIDs);
         console.log(number)
         this.title = 'Groupe ' + (number + 1);            
-        console.log(this.titleRef)
         this.group = this.selectedIDs;
         this.doesProjectExist(this.selectedIDs[0]);
     },

@@ -15,6 +15,14 @@ export class ProjectsRepository {
 		return this.projects.find().toArray();
 	}
 
+	async addMember(id, query) {
+		
+		id = new ObjectId(id);
+		this.projects.updateOne({ _id: id }, { $push: { group: query.userId } }).then((result) => {
+			return result;
+		});
+	}
+
 	async createProject(query: Project) {
 		return this.projects.insertOne(query);
 	}
@@ -31,8 +39,8 @@ export class ProjectsRepository {
 
 	//New method to query by user in group member array
 	async getProjectByGroupMember(id) {
-		id = new ObjectId(id);
-		return this.projects.find({ group: { $elemMatch: { $eq: id } } }).toArray();
+		let query = { group: { $elemMatch: { $eq: id } } };
+		return this.projects.find(query).toArray();
 	}
 
 	async getProjectByCourseAndMembers(courseId, userId) {

@@ -1,6 +1,6 @@
 <template>
 	<div class="mb-5"></div>
-	<form @submit.prevent="updateProject(this.projectId)">
+	<form @submit.prevent="submitForm(this.projectId)">
 		<div class="form-group relative z-0 w-full mb-6">
 			<label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>Titre</label
@@ -33,7 +33,13 @@
 
 		<div class="mb-5"></div>
 		<!-- Put the button in the center -->
-		<Button
+		<Button v-if="this.createProject == true"
+			type="submit"
+			class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none gap-2 gradiant"
+		>
+			Créer un groupe de projet
+		</Button>
+		<Button v-else
 			type="submit"
 			class="text-white font-bold rounded-lg text-l px-4 py-2 focus:outline-none gap-2 gradiant"
 		>
@@ -45,6 +51,7 @@
 <script lang="ts">
 import { ref } from 'vue';
 import { http } from '@/api/network/axios';
+import { createPdf } from 'pdfmake/build/pdfmake';
 
 
 const titleRef = ref('');
@@ -57,9 +64,11 @@ export default {
         projectId: String,
         initialTitle: String,
         initialDescription: String,
+		creatorId: String,
+		createProject: Boolean,
     },
     mounted() {
-        this.setInputTextToInitValues();
+        if(this.createProject == true){this.setInputTextToInitValues();}
     },
 	data() {
 		return {
@@ -71,7 +80,14 @@ export default {
 		console.log(props);
 	},
 	methods: {
-		updateProject(projectId) {
+		submitForm() {
+			if (this.createProject) {
+				this.createNewProject();
+			} else {
+				this.updateProject();
+			}
+		},
+		updateProject() {
 			console.log("updateProject");
 			const self = this;
 			http.put(`/projects/update/${this.projectId}`, {
@@ -83,9 +99,22 @@ export default {
                 self.$emit('doesProjectExist')
 			});
         },
+		createNewProject() {
+			console.log("createProject");
+			const self = this;
+			http.post('/projects/create', {
+				title: this.title,
+				description: this.description,
+				creator: this.creatorId,
+				group: [this.creatorId],
+			}).then((res) => {
+				console.log(res);
+				self.$emit('close');
+			});
+		},
         setInputTextToInitValues() {
-            titleRef.value = this.initialTitle;
-            descriptionRef.value = this.initialDescription;
+            this.title = '';
+            this.description = '';
         }
 	}
 };

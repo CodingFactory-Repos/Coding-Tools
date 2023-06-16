@@ -19,6 +19,12 @@ export class ProjectsController {
 		return res.status(201).json(project);
 	}
 
+	@Post('/addMember/:id')
+	async addMember(@Req() req: Request, @Res() res: Response) {
+		const project = await this.projectsService.addMember(req.params.id, req.body);
+		return res.status(201).json(project);
+	}
+
 	@Get('/courseOrCreator/:id')
 	async getProjectByCourseOrCreator(@Req() req: Request, @Res() res: Response) {
 		const project = await this.projectsService.getProjectByCourseOrCreator(req.params.id);

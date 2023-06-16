@@ -49,6 +49,13 @@ export class CallsController {
 		return res.status(201).json({ status: 'ok', studentList: studentList });
 	}
 
+	@Get('/student_array')
+	@UseGuards(JwtAuthGuard)
+	async studentArray(@Jwt() @Res() res: Response) {
+		const studentArray = await this.callsService.getAllStudents();
+		return studentArray;
+	}
+
 	@Get('/get_groups/:courseId')
 	@UseGuards(JwtAuthGuard)
 	async updateGroupStudents(@Param() courseId: CourseIdObject, @Res() res: Response) {
