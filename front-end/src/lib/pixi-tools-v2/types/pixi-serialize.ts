@@ -92,12 +92,15 @@ export interface SerializedContainerProperties
 	disabled: boolean;
 }
 
-export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
+export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry, SerializedTextGraphic {
 	rotation?: number;
 	borderWidth?: number;
 	borderColor?: number;
 	arrowHead?: boolean;
 	dashed?: boolean;
+}
+
+export interface SerializedTextGraphic {
 	text?: string;
 	fontSize?: string | number;
 	fontWeight?: TextStyleFontWeight;
@@ -116,4 +119,5 @@ export interface SerializedLineGraphic {
 	endControl: ElementPosition;
 	start: ElementPosition;
 	end: ElementPosition;
+	lineWidth?: number;
 }
