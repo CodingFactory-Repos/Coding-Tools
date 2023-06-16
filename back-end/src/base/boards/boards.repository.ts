@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db } from 'mongodb';
+import { Filter, UpdateFilter, FindOneAndUpdateOptions, Db, ObjectId } from 'mongodb';
 
 import { Board } from 'src/base/boards/interfaces/boards.interface';
 
@@ -9,6 +9,15 @@ export class BoardsRepository {
 
 	get boards() {
 		return this.db.collection<Board>('boards');
+	}
+
+	async getBoards() {
+		return this.boards.find().toArray();
+	}
+
+	async getBoardByProjectId(id: ObjectId) {
+		id = new ObjectId(id);
+		return this.boards.find({ project: id }).toArray();
 	}
 
 	async createBoard(query: Board) {
@@ -34,5 +43,9 @@ export class BoardsRepository {
 	async boardExist(query: Filter<Board>) {
 		const options = { projection: { _id: 1 } };
 		return this.boards.findOne(query, options);
+	}
+
+	async deleteOneBoard(id: ObjectId) {
+		return this.boards.deleteOne({ _id: new ObjectId(id) });
 	}
 }
