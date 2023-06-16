@@ -210,6 +210,22 @@ export class ArticlesService {
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
 	}
 
+	// add document
+	async addDocument(id, queryDocument) {
+		queryDocument._id = new ObjectId();
+		const update = { $push: { documents: queryDocument } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	// remove document
+	async removeDocument(id, queryDocument) {
+		queryDocument._id = new ObjectId(queryDocument._id);
+		const update = { $pull: { documents: queryDocument } };
+
+		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
 	// delete article
 	async deleteArticle(id) {
 		return await this.articlesRepository.deleteOneArticle(id);

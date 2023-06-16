@@ -1,6 +1,5 @@
 <template>
-	<div class="w-full flex flex-col gap-4 h-full justify-start items-start mx-5 mt-16 mb-4" v-if="retrosByUser.length > 0">
-		<h1 class="text-2xl font-bold text-[#5c5f73] dark:text-dark-font">Your Retrospectives</h1>
+	<div class="w-full flex flex-col gap-4 h-full justify-start items-start mx-5 mt-10 mb-4" v-if="retrosByUser.length > 0">
 		<div class="w-full">
 			<FilterRetro :retrosByUser="retrosByUser"/>
 		</div>
