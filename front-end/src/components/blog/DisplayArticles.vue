@@ -61,7 +61,7 @@
 				/>
 			</div>
 
-			<div v-for="tab in tabs" :key="tab.id">
+			<div v-for="(tab, index) in tabs" :key="`artcile_${index}`">
 				<div v-if="activeTab === tab.id">
 					<div class="flex items-center justify-center p-2 md:p-5 mt-6">
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
@@ -79,11 +79,12 @@
 							</div>
 						</div>
 					</div>
-					<div
-						v-if="
+
+					<!-- v-if="
 							(filteredItems(tab.id).length < 1 || !filteredItems(tab.id).length) &&
 							searchQuery.length > 0
-						"
+						" -->
+					<div
 						class="flex flex-col justify-center items-center h-auto"
 					>
 						<h1 class="text-2xl font-bold text-gray-900 dark:text-white">Aucun article trouvé</h1>
@@ -125,7 +126,7 @@ window.addEventListener('resize', () => {
 const items = computed(() => {
 	// eslint-disable-next-line vue/no-side-effects-in-computed-properties
 	return articleStore.items.sort((a, b) => {
-		return new Date(a.date).getTime() - new Date(b.date).getTime();
+		return +a.date - +b.date;
 	});
 });
 
@@ -158,53 +159,57 @@ const changeTab = (tabId) => {
 
 // Filter items based on the active tab
 const filteredItems = (tabId) => {
-	// Sort the items by date
-	const sortedItems = items.value.sort((a, b) => {
-		return new Date(b.date).getTime() - new Date(a.date).getTime();
-	});
+	try {
+		// Sort the items by date
+		const sortedItems = items.value.sort((a, b) => {
+			return +b.date - +a.date
+		});
 
-	// Filter the items based on the searchBar value
-	const searchResult = sortedItems.filter((item) => {
-		const titleMatch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase());
-		const contentMatch = item.content.toLowerCase().includes(searchQuery.value.toLowerCase());
-		return titleMatch || contentMatch;
-	});
+		// Filter the items based on the searchBar value
+		const searchResult = sortedItems.filter((item) => {
+			const titleMatch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase());
+			const contentMatch = item.content.toLowerCase().includes(searchQuery.value.toLowerCase());
+			return titleMatch || contentMatch;
+		});
 
-	// Filter the items based on the active tab
-	switch (tabId) {
-		case 'infos':
-			return searchResult.filter((item) => item.type === 'Infos');
-		case 'tutos':
-			if (user.value.role === 2 || user.value.role === 3) {
-				return searchResult.filter((item) => item.type === 'Tuto');
-			} else {
-				return searchResult.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
-			}
-		case 'events':
-			return searchResult.filter((item) => item.type === 'Evenement');
-		case 'liked':
-			return searchResult.filter(
-				(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
-			);
-		case 'participate':
-			return searchResult.filter(
-				(item) =>
-					item.participants &&
-					item.participants.some((participant) => participant._id === user.value._id),
-			);
-		case 'all':
-			return searchResult.filter(
-				(item) =>
-					item.type === 'Infos' ||
-					item.type === 'Evenement' ||
-					(item.type === 'Tuto' && item.status === 'Accepted'),
-			);
+		// Filter the items based on the active tab
+		switch (tabId) {
+			case 'infos':
+				return searchResult.filter((item) => item.type === 'Infos');
+			case 'tutos':
+				if (user.value.role === 2 || user.value.role === 3) {
+					return searchResult.filter((item) => item.type === 'Tuto');
+				} else {
+					return searchResult.filter((item) => item.type === 'Tuto' && item.status === 'Accepted');
+				}
+			case 'events':
+				return searchResult.filter((item) => item.type === 'Evenement');
+			case 'liked':
+				return searchResult.filter(
+					(item) => item.likes && item.likes.some((like) => like.id === user.value._id),
+				);
+			case 'participate':
+				return searchResult.filter(
+					(item) =>
+						item.participants &&
+						item.participants.some((participant) => participant._id === user.value._id),
+				);
+			case 'all':
+				return searchResult.filter(
+					(item) =>
+						item.type === 'Infos' ||
+						item.type === 'Evenement' ||
+						(item.type === 'Tuto' && item.status === 'Accepted'),
+				);
+		}
+
+		return searchResult;
+	} catch(err) {
+		return [];
 	}
-
-	return searchResult;
 };
 
-// Call the getArticles method when the component is created
+//Call the getArticles method when the component is created
 onMounted(async () => {
 	await articleStore.getArticle();
 });
