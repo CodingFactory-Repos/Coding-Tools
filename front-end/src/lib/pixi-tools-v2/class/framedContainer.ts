@@ -245,6 +245,9 @@ export class FramedContainer extends PluginContainer {
 		for (const element of this.mainContainer.children) {
 			if (element instanceof Rectangle) {
 				const clonedChild = element.clone();
+				clonedChild.alpha = element.alpha;
+				clonedChild.width = element.width;
+				clonedChild.height = element.height;
 				clonedChild.position.copyFrom(element.position);
 				cloned.addChild(clonedChild);
 			} else if (!(element instanceof FramedContainer)) {

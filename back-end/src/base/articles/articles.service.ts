@@ -22,7 +22,7 @@ export class ArticlesService {
 		// add new object id to id
 		queryArticle._id = new ObjectId();
 
-		queryArticle.owner = new ObjectId(queryArticle.owner);
+		queryArticle.owner._id = new ObjectId(queryArticle.owner._id);
 		queryArticle.date = new Date(queryArticle.date);
 		queryArticle.updatedAt = new Date();
 
@@ -73,6 +73,85 @@ export class ArticlesService {
 		const update = { $push: { participants: queryParticipant } };
 
 		return await this.articlesRepository.updateOneArticle({ _id: new ObjectId(id) }, update);
+	}
+
+	async getArticleWithMostParticipants() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$match: {
+						participants: { $exists: true, $ne: [] },
+					},
+				},
+				{
+					$project: {
+						_id: 1,
+						title: 1,
+						participants: 1,
+						numParticipants: { $size: '$participants' },
+					},
+				},
+				{
+					$sort: { numParticipants: -1 },
+				},
+				{
+					$limit: 5,
+				},
+			])
+			.toArray();
+		return res;
+	}
+	async getTopCreateur() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$unwind: '$owner',
+				},
+				{
+					$group: {
+						_id: '$owner',
+						firstName: { $first: '$owner.firstName' },
+						lastName: { $first: '$owner.lastName' },
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$sort: { count: -1 },
+				},
+				{
+					$limit: 10,
+				},
+			])
+			.toArray();
+		return res;
+	}
+
+	async getTopParticipant() {
+		const res = await this.articlesRepository.articles
+			.aggregate([
+				{
+					$match: { type: 'Evenement' },
+				},
+				{
+					$unwind: '$participants',
+				},
+				{
+					$group: {
+						_id: '$participants._id',
+						firstName: { $first: '$participants.firstName' },
+						lastName: { $first: '$participants.lastName' },
+						count: { $sum: 1 },
+					},
+				},
+				{
+					$sort: { count: -1 },
+				},
+				{
+					$limit: 10,
+				},
+			])
+			.toArray();
+		return res;
 	}
 
 	// remove participant from the array of participants in article in the database

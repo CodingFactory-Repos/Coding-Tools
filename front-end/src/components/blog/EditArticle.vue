@@ -246,9 +246,15 @@ const editArticle = async () => {
 		return;
 	}
 
+	const owner = {
+		_id: authStore.user._id,
+		firstName: authStore.user.profile.firstName,
+		lastName: authStore.user.profile.lastName,
+	};
+
 	// Groups all data for sending to the API
 	let data = {
-		owner: authStore.user._id,
+		owner: owner,
 		title: title.value,
 		descriptions: descriptions.value,
 		content: content.value,

@@ -1,40 +1,33 @@
 <template>
 	<div class="flex flex-col gap-4 w-2/3 h-full items-start justify-start overflow-y-scroll max-h-[550px]">
 		<div class="flex flex-col gap-4 w-full">
-			<h2 class="w-full text-center text-xl font-bold">Persona skills</h2>
 			<FormField
-				v-for="(value, index) in skillsBuilder"
+				label="What are the skills of the persona ?"
 				:limit="true"
-				:char-limit="80"
-				:char-number="value.length"
-				:key="`goals_${index}`"
+				:char-limit="300"
+				:char-number="refSkills.length"
 			>
-				<input
-					maxlength="80"
-					class="bg-transparent w-full outline-none border border-[#6B7280] number-border py-1.5 px-2 rounded text-black dark:text-white"
-					@input="(e) => writeSkill(e, index)"
-				/>
+				<textarea
+					v-model.trim="refSkills"
+					class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
+					rows="4"
+					maxlength="300"
+				></textarea>
 			</FormField>
-			<div @click="addNewSkill"
-				class="cursor-pointer flex gap-3 justify-center items-center bg-transparent w-full outline-none border border-[#6B7280] hover:border-[#1C64F2] number-border py-1.5 px-2 rounded text-black dark:text-white border-dashed"
-			>
-				<SvgAdd class="!fill-white" width="20" height="20"/> Add a new skill
-			</div>
 		</div>
-
 
 		<div class="flex flex-col gap-4 w-full">
 			<FormField
 				label="Additional commentary"
 				:limit="true"
-				:char-limit="200"
-				:char-number="commentary.length"
+				:char-limit="300"
+				:char-number="refCommentary.length"
 			>
 				<textarea
-					v-model.trim="commentary"
+					v-model.trim="refCommentary"
 					class="bg-transparent w-full outline-none shadow-none ring-offset-0 focus:ring-0 resize-none rounded text-black dark:text-white"
-					rows="3"
-					maxlength="200"
+					rows="4"
+					maxlength="300"
 				></textarea>
 			</FormField>
 		</div>
@@ -44,8 +37,7 @@
 <script lang="ts" setup>
 import { onUnmounted, ref } from 'vue';
 import FormField from '@/components/common/FormField.vue';
-import { PersonaBuilder } from '@/components/agility/modals/Persona.vue';
-import SvgAdd from '@/components/common/svg/Add.vue';
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
 
 const emits = defineEmits<{
 	(e: 'unmounted', builder: Partial<PersonaBuilder>)
@@ -56,24 +48,13 @@ const props = defineProps<{
 	commentary: Partial<PersonaBuilder["commentary"]>
 }>();
 
-const skillsBuilder = ref(props.skills ?? ['']);
-const commentary = ref(props.commentary ?? '');
-
-const addNewSkill = () => {
-	skillsBuilder.value.push('');
-}
-
-const writeSkill = (e: Event, index: number) => {
-	const target = e.target as HTMLInputElement;
-	skillsBuilder.value[index] = target.value?.trim();
-}
+const refSkills = ref(props.skills ?? '');
+const refCommentary = ref(props.commentary ?? '');
 
 onUnmounted(() => {
-	const sanitizedSkills = skillsBuilder.value.filter((data) => data !== '' && data !== undefined);
-
 	emits('unmounted', {
-		skills: sanitizedSkills,
-		commentary: commentary.value,
+		skills: refSkills.value,
+		commentary: refCommentary.value,
 	});
 })
 </script>
