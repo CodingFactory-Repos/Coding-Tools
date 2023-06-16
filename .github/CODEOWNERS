@@ -35,7 +35,7 @@
 /back-end/src/base/calls/interfaces/calls.interface.ts @Maghwyn @AyakorK
 /back-end/src/base/canvasRoom/ @Kevw94 @Maghwyn
 /back-end/src/base/canvasRoom/canvasRoom.controller.ts @Maghwyn @Kevw94
-/back-end/src/base/canvasRoom/canvasRoom.module.ts @Maghwyn @Kevw94
+/back-end/src/base/canvasRoom/canvasRoom.module.ts @Maghwyn
 /back-end/src/base/canvasRoom/canvasRoom.repository.ts @Maghwyn @Kevw94
 /back-end/src/base/CanvasRoom/CanvasRoom.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/canvasRoom.service.ts @Maghwyn
@@ -98,7 +98,6 @@
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
 /back-end/src/common/gateways/chat.global.gateway.ts @Maghwyn @AyakorK
 /back-end/src/common/gateways/ideasComment.global.gateway.ts @RuKaSuu
-/back-end/src/common/gateways/retrospective.global.gateway.ts @Maghwyn
 /back-end/src/common/guards/auth.guard.ts @Maghwyn
 /back-end/src/common/guards/role.guard.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/string.helper.ts @Loule95450 @Maghwyn
@@ -253,28 +252,27 @@
 /front-end/src/lib/pixi-tools-v2/model/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/ellipse.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/textArea.ts @Maghwyn @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/tree.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/plugins/ @Loule95450 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @Kevw94
-/front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/plugins/viewportSocketPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/types/pixi-enums.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/types/pixi-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/unsupported/textarea_html.ts @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/utils/ @Loule95450 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/colorsConvertor.ts @TheoLandemaine
-/front-end/src/lib/pixi-tools-v2/utils/modelBounds.ts @Maghwyn @Kevw94
+/front-end/src/lib/pixi-tools-v2/utils/modelBounds.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/modelSerializer.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
