@@ -21,7 +21,19 @@
 						:language="datePickerLanguage"
 					/>
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
-					<input type="text" name="language" v-model="language" placeholder="Language :" /><br />
+					<input
+						type="text"
+						name="language"
+						v-model="language"
+						placeholder="Language :"
+						@input="searchLanguage"
+						autocomplete="off"
+					/>
+					<ul v-if="showSuggest">
+						<li v-for="suggest in languageSuggest" :key="suggest" @click="selectSuggest(suggest)">
+							{{ suggest }}
+						</li>
+					</ul>
 					<input type="file" id="file" ref="fileInput" @change="onFileSelected" />
 					<div class="flex justify-center mt-6">
 						<button
@@ -133,6 +145,41 @@ export default {
 				};
 				reader.readAsDataURL(this.selectedFile);
 			}
+		},
+
+		searchLanguage() {
+			//recherche de toutes les matieres
+			this.showSuggest = true;
+			this.getAllTagCourse();
+			this.languageSuggest = [];
+			this.languages.forEach((element) => {
+				let alreadyInList = false;
+				if (element.toUpperCase().includes(this.language.toUpperCase()) && this.language != '') {
+					this.languageSuggest.forEach((languageInList) => {
+						if (languageInList == element.toUpperCase()) {
+							alreadyInList = true;
+						}
+					});
+					if (!alreadyInList) {
+						this.languageSuggest.push(element.toUpperCase());
+					}
+				}
+			});
+		},
+
+		getAllTagCourse() {
+			this.languages = []; //reset la list
+			const courseStore = useCoursStore();
+			const course = courseStore.items;
+			course.forEach((element) => {
+				if (!this.languages.includes(element.language)) {
+					this.languages.push(element.language);
+				}
+			});
+		},
+
+		selectSuggest(suggest) {
+			this.language = suggest;
 		},
 	},
 };
