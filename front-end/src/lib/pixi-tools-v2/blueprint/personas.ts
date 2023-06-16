@@ -3,7 +3,8 @@ import { FramedContainer } from '../class/framedContainer';
 import { lowestNumberFinder } from '../utils/numberFinder';
 import { ViewportUI } from '../viewportUI';
 import { SerializedContainer } from '../types/pixi-serialize';
-import { PixiEventMode } from '../types/pixi-enums';
+
+import { PixiEventMode, TypeBlueprint } from '../types/pixi-enums';
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
 
 export interface PersonaBuilder {
@@ -119,6 +120,8 @@ export const personas = (
 			isAttachedToFrame: false,
 			frameNumber: frameNumber,
 			disabled: false,
+			isBlueprint: true,
+			typeBlueprint: TypeBlueprint.PERSONA,
 		},
 		childs: [
 			{

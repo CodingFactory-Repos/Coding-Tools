@@ -112,13 +112,12 @@
 				:style="drawerOpen ? 'width: 550px;' : 'width: 0;' "
 			>
 				<div class="h-full w-full overflow-y-scroll pb-16">
-					{{ childImages.length }}
 					<Draggable :list="childImages" itemKey="id" class="list-group" @start="dragging = true" @end="dragging = false" @change="handleListChange">
 						<template #item="{ element }">
 							<div class="list-group-item flex flex-col gap-2 relative p-3 pl-[2.75rem] hover:bg-dark-tertiary cursor-pointer">
 								<span class="absolute top-2 left-[1rem] text-white font-bold text-lg">{{ element.order }}</span>
 								<div class="border-2 border-dark-highlight rounded-lg overflow-hidden w-full h-36">
-									<img :src="element.base64" class="w-full h-full object-fit">
+									<img :src="element.base64" class="w-full h-full object-fit" :alt="`image_frame_${element.id}`">
 								</div>
 								<div class="flex items-center justify-center">
 									<span class="text-xs text-white font-bold bg-[#85397c] px-3 py-0.5 rounded-lg">
@@ -135,6 +134,7 @@
 						text-style="text-black dark:text-white font-bold text-sm"
 						background="bg-light-secondary hover:bg-light-tertiary dark:bg-dark-tertiary"
 						class="w-32 min-w-[8rem]"
+						@click="generatePdf()"
 					/>
 				</div>
 			</div>
@@ -187,6 +187,9 @@ import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
+import * as _ from 'pdfmake/build/vfs_fonts.js';
+import { exportToPdf} from '@/lib/pixi-tools-v2/utils/generatePdf';
+
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
@@ -271,6 +274,10 @@ const increaseZoom = () => {
 const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
+
+const generatePdf = () => {
+    exportToPdf(childImages.value);
+  };
 
 const setDefaultMode = () => {
 	projectStore.default = true;
