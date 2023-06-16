@@ -74,6 +74,7 @@ export const useArticleStore = defineStore('article', {
 						_id: '',
 						name: '',
 						link: '',
+						//file: '',
 					},
 				],
 			},
