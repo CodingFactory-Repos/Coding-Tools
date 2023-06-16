@@ -24,24 +24,24 @@
 			</h2>
 		</div>
 		<div class="contenu-cours">
-			<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
-			<ul class="space-y-4">
+			<h4 class="ml-2 text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
+			<ul class="space-y-4 ml-9">
 				<li v-for="course in courses" :key="course.id">
 					<div class="course-item" :class="{ open: course.open }" @click="toggleCourse(course)">
-						<h5 class="text-xl font-semibold">{{ course.title }}</h5>
+						<div class="flex items-center">
+							<a :href="course.files[0].url" target="_blank" class="flex items-center">
+								<Book class="mr-2" />
+								<h5 class="text-xl font-semibold">{{ course.title }}</h5>
+							</a>
+						</div>
 						<p class="text-gray-600">{{ course.description }}</p>
-					</div>
-					<div v-if="course.open" class="course-files bg-gray-100 p-4">
-						<ul class="space-y-2">
-							<li v-for="file in course.files" :key="file.id">
-								<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
-							</li>
-						</ul>
 					</div>
 				</li>
 			</ul>
-			<h4 class="text-2xl font-bold mb-2 mt-3 border-b border-gray-300">Groupes</h4>
-			<ul class="space-y-4">
+			<h4 class="ml-2 text-2xl font-bold mb-2 mt-3 border-b border-gray-300">
+				Groupes (Dashboard)
+			</h4>
+			<ul class="space-y-4 ml-9">
 				<li v-for="(canva, index) in canvas" :key="canva.id">
 					<h2 class="text-xl font-semibold">Groupe {{ index + 1 }}</h2>
 					<button
@@ -53,22 +53,29 @@
 					</button>
 				</li>
 			</ul>
+			<h4 class="ml-2 text-2xl font-bold mb-2 mt-3 border-b border-gray-300">Rétro</h4>
+			<ul class="space-y-4 ml-9">
+				<div class="contenu-cours" v-if="retro">
+					<button
+						@click="goToRetro(retro)"
+						class="flex justify-center items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded"
+					>
+						<Clipboard class="mr-2" />
+						{{ retro.title }}
+					</button>
+				</div>
+			</ul>
 		</div>
 	</div>
 	<div class="flex w-full gap-4 justify-center mt-4">
-		<div class="contenu-cours" v-if="retro">
-			<h4 class="text-2xl font-bold mb-2 border-b border-gray-300 text-gray-900 dark:text-white">
-				Contenu du cours
-			</h4>
-			<div class="flex justify-center">
-				<button
-					@click="goToRetro(retro)"
-					class="flex justify-center items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded"
-				>
-					<Clipboard class="mr-2" />
-					{{ retro.title }}
-				</button>
-			</div>
+		<div class="flex justify-center">
+			<button
+				@click="returnToCourse"
+				class="flex justify-center items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 mb-3 rounded"
+			>
+				<ArrowLeft class="mr-2" />
+				Retour
+			</button>
 		</div>
 	</div>
 </template>
@@ -76,8 +83,11 @@
 import { computed, onMounted } from 'vue';
 import { useCoursStore } from '@/store/modules/course.store';
 import { useRouter } from 'vue-router';
+
 import Board from '@/components/common/svg/Board.vue';
 import Clipboard from '@/components/common/svg/Clipboard.vue';
+import ArrowLeft from '@/components/common/svg/ArrowLeft.vue';
+import Book from '@/components/common/svg/Book.vue';
 
 // get store
 const course = useCoursStore();
@@ -90,35 +100,28 @@ const router = useRouter();
 const courses = [
 	{
 		id: 1,
-		title: 'Cours 1',
-		description: 'Description du cours 1',
+		title: 'Backlog',
+		description: 'Backlog de la semaine',
 		open: false,
 		files: [
-			{ id: 1, name: 'Fichier 1', url: '#' },
-			{ id: 2, name: 'Fichier 2', url: '#' },
-			{ id: 3, name: 'Fichier 3', url: '#' },
+			{
+				id: 1,
+				name: 'Fichier 1',
+				url: 'https://cdn.discordapp.com/attachments/892146093872259113/1119231010777870388/BacklogPGP-1.pdf',
+			},
 		],
 	},
 	{
 		id: 2,
-		title: 'Cours 2',
-		description: 'Description du cours 2',
+		title: 'Image',
+		description: 'PHP',
 		open: false,
 		files: [
-			{ id: 4, name: 'Fichier 4', url: '#' },
-			{ id: 5, name: 'Fichier 5', url: '#' },
-			{ id: 6, name: 'Fichier 6', url: '#' },
-		],
-	},
-	{
-		id: 3,
-		title: 'Cours 3',
-		description: 'Description du cours 3',
-		open: false,
-		files: [
-			{ id: 7, name: 'Fichier 7', url: '#' },
-			{ id: 8, name: 'Fichier 8', url: '#' },
-			{ id: 9, name: 'Fichier 9', url: '#' },
+			{
+				id: 2,
+				name: 'Fichier 4',
+				url: 'https://cdn.discordapp.com/attachments/892146093872259113/1119231656885239930/K8DkEqSzlXEAAAAASUVORK5CYII.png',
+			},
 		],
 	},
 ];
@@ -149,12 +152,20 @@ onMounted(async () => {
 	await getCourseById(_id.value);
 });
 
+const toggleCourse = (course) => {
+	course.open = !course.open;
+};
+
 const goToProject = (canva) => {
 	router.push(`/app/agility/project/${canva._id}`);
 };
 
 const goToRetro = (retro) => {
 	router.push(`/app/retrospective/${retro.slug}`);
+};
+
+const returnToCourse = () => {
+	router.push(`/app/ressource/cours/`);
 };
 </script>
 <style scoped>

@@ -292,7 +292,7 @@ const addArticle = async () => {
 		await articleStore.addArticle(data);
 	} else if (tags.value.toUpperCase() == 'JPO') {
 		let data = {
-			owner: authStore.user._id,
+			owner: owner,
 			title: title.value,
 			descriptions: description.value,
 			content: content.value,
