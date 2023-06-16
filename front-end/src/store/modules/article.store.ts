@@ -3,6 +3,7 @@ import {
 	ArticleStore,
 	Comments,
 	Dislikes,
+	Documents,
 	Likes,
 	Participants,
 } from '../interfaces/article.interface';
@@ -66,6 +67,13 @@ export const useArticleStore = defineStore('article', {
 						descriptions: '',
 						picture: '',
 						date: new Date(),
+					},
+				],
+				documents: [
+					{
+						_id: '',
+						name: '',
+						link: '',
 					},
 				],
 			},
@@ -220,6 +228,25 @@ export const useArticleStore = defineStore('article', {
 
 			const index = this.oneItems.comments.findIndex((el) => el._id === comment._id);
 			this.oneItems.comments.splice(index, 1);
+
+			return true;
+		}),
+
+		// add document to the array of documents in article in the database
+		addDocument: withErrorHandler(async function (id: string, document) {
+			await http.put(`/articles/document/${id}`, document);
+
+			this.oneItems.documents.push(document);
+
+			return true;
+		}),
+
+		// remove document from the array of documents in article in the database
+		removeDocument: withErrorHandler(async function (id: string, document: Documents) {
+			await http.put(`/articles/removeDocument/${id}`, document);
+
+			const index = this.oneItems.documents.findIndex((el) => el._id === document._id);
+			this.oneItems.documents.splice(index, 1);
 
 			return true;
 		}),
