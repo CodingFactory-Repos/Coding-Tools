@@ -144,7 +144,7 @@ const link = ref('');
 // Function to post the data to the API
 const addDocument = async (id) => {
 	// add verification if all the fields are filled
-	if (!name.value || !link.value || !base64String) {
+	if (!name.value || !link.value) {
 		Swal.fire({
 			title: 'You have to fill all the fields',
 			text: 'Please fill all the fields to add a new document',
