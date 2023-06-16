@@ -17,7 +17,7 @@
 		</div>
 
         <div class="form-group relative z-0 w-full mb-6">
-			<label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+			<label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 				>Description</label
 			>
 			<input
@@ -51,7 +51,6 @@
 <script lang="ts">
 import { ref } from 'vue';
 import { http } from '@/api/network/axios';
-import { createPdf } from 'pdfmake/build/pdfmake';
 
 
 const titleRef = ref('');
