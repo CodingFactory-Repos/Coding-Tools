@@ -2,27 +2,38 @@
 	<div class="modal">
 		<div class="modal-overlay" @click="$emit('close')"></div>
 		<div class="modal-container">
-			<h3
-				class="text-xl pb-2 font-medium leading-6 text-gray-900 dark:text-white flex justify-center mb-3"
-			>
+			<h3 class="text-xl pb-2 font-medium leading-6 text-gray-900 flex justify-center mb-3">
 				Ajouter un cours
 			</h3>
-			<div class="modal-body text-gray-900 dark:text-white">
-				<form class="w-full max-w-sm">
-					<input type="text" name="title" v-model="tag" placeholder="Title :" /><br />
+			<div class="modal-body">
+				<form class="grid gap-6 my-6 md:grid-cols-2 justify-items-center">
+					<input
+						type="text"
+						name="title"
+						v-model="tag"
+						placeholder="Title :"
+						class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					/>
 					<VueDatePicker
 						placeholder="debut"
 						v-model="periodStart"
 						:format="dateFormat"
 						:language="datePickerLanguage"
+						class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					/>
 					<VueDatePicker
 						placeholder="fin"
 						v-model="periodEnd"
 						:format="dateFormat"
 						:language="datePickerLanguage"
+						class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					/>
-					<input type="url" placeholder="picture link" v-model="picture" /><br />
+					<input
+						type="url"
+						placeholder="picture link"
+						v-model="picture"
+						class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					/>
 					<input
 						type="text"
 						name="language"
@@ -30,23 +41,30 @@
 						placeholder="Language :"
 						@input="searchLanguage"
 						autocomplete="off"
+						class="form-control w-full sm:w-[300px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					/>
 					<ul v-if="showSuggest">
 						<li v-for="suggest in languageSuggest" :key="suggest" @click="selectSuggest(suggest)">
 							{{ suggest }}
 						</li>
 					</ul>
-					<input type="file" id="file" ref="fileInput" @change="onFileSelected" />
+					<input
+						type="file"
+						id="file"
+						ref="fileInput"
+						@change="onFileSelected"
+						class="block w-full sm:w-30 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+					/>
 					<div class="flex justify-center mt-6">
 						<button
-							class="px-4 py-2 text-gray-900 dark:text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+							class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
 							type="button"
 							@click="$emit('close')"
 						>
 							Fermer
 						</button>
 						<button
-							class="ml-4 px-4 py-2 text-gray-900 dark:text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+							class="ml-4 px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
 							type="submit"
 							@click="AddCourses"
 						>
