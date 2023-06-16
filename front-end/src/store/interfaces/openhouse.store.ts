@@ -24,4 +24,5 @@ export interface OpenHouse {
 	}[];
 	description: string;
 	project: string;
+	files: string;
 }

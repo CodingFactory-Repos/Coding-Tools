@@ -1,30 +1,46 @@
 <template>
 	<div>
-		<div class="bg-dark-primary bg-opacity-50 dark:bg-opacity-60 fixed inset-0 z-[60]" @click="closeModal"/>
+		<div
+			class="bg-dark-primary bg-opacity-50 dark:bg-opacity-60 fixed inset-0 z-[60]"
+			@click="closeModal"
+		></div>
 		<div
 			tabindex="-1"
 			class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[70] w-full inset-0 h-full justify-center items-center flex"
 		>
-			<div class="flex flex-col relative p-4 m-4 w-full h-auto rounded-lg shadow bg-light-primary dark:bg-dark-tertiary" :class="`${modalSizeClasses[size]}`">
+			<div
+				class="flex flex-col relative p-4 m-4 w-full h-auto rounded-lg shadow bg-light-primary dark:bg-dark-tertiary"
+				:class="`${modalSizeClasses[size]}`"
+			>
 				<!-- Modal content -->
 
-				<button @click="closeModal" type="button" class="absolute right-2 top-2 bg-transparent hover:bg-light-secondary dark:hover:bg-dark-secondary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-					<SvgCross class="!fill-red-500"/>
+				<button
+					@click="closeModal"
+					type="button"
+					class="absolute right-2 top-2 bg-transparent hover:bg-light-secondary dark:hover:bg-dark-secondary rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+				>
+					<SvgCross class="!fill-red-500" />
 				</button>
 
 				<!-- Modal header -->
-				<div class="rounded-t flex justify-between items-center" :class="$slots.header ? 'border-b border-light-secondary dark:border-dark-highlight' : ''">
-					<slot name="header" />
+				<div
+					class="rounded-t flex justify-between items-center"
+					:class="$slots.header ? 'border-b border-light-secondary dark:border-dark-highlight' : ''"
+				>
+					<slot name="header"></slot>
 				</div>
 
 				<!-- Modal body -->
 				<div :class="$slots.footer ? '!py-6 grow' : ''">
-					<slot name="body" id="body" />
+					<slot name="body" id="body"></slot>
 				</div>
 
 				<!-- Modal footer -->
-				<div v-if="$slots.footer" class="pt-6 rounded-b border-t border-light-secondary dark:border-dark-highlight">
-					<slot name="footer" />
+				<div
+					v-if="$slots.footer"
+					class="pt-6 rounded-b border-t border-light-secondary dark:border-dark-highlight"
+				>
+					<slot name="footer"></slot>
 				</div>
 			</div>
 		</div>
@@ -37,14 +53,26 @@ import SvgCross from '@/components/common/svg/Cross.vue';
 
 defineProps({
 	position: {
-		type: String as PropType<'bottom-left' | 'bottom-right' | 'bottom-center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center' | 'center-right'>,
+		type: String as PropType<
+			| 'bottom-left'
+			| 'bottom-right'
+			| 'bottom-center'
+			| 'top-left'
+			| 'top-center'
+			| 'top-right'
+			| 'center-left'
+			| 'center'
+			| 'center-right'
+		>,
 		default: 'center',
 	},
 	size: {
-		type: String as PropType<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full'>,
+		type: String as PropType<
+			'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | 'full'
+		>,
 		default: '2xl',
 	},
-})
+});
 
 const emit = defineEmits(['close']);
 const modalSizeClasses = {
@@ -59,10 +87,10 @@ const modalSizeClasses = {
 	'5xl': 'max-w-5xl',
 	'6xl': 'max-w-6xl',
 	'7xl': 'max-w-7xl',
-	'full': 'w-screens p-4 !m-0 min-h-screen justify-between'
-}
+	full: 'w-screens p-4 !m-0 min-h-screen justify-between',
+};
 
 function closeModal() {
-	emit('close')
+	emit('close');
 }
 </script>

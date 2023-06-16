@@ -364,4 +364,8 @@ export class UsersService {
 
 		return users ?? [];
 	}
+
+	async getAllUsers() {
+		return await this.usersRepository.getAllUsers();
+	}
 }

@@ -12,6 +12,7 @@ export interface Course {
 	periodStart: Date;
 	periodEnd: Date;
 	presence: [];
+	files: string;
 	projects: Array<ObjectId>;
 	site: string;
 	teacherId?: ObjectId;

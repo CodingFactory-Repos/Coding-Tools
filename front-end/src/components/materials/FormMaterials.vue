@@ -64,7 +64,7 @@ const description = ref('');
 const returnDate = ref('');
 const emit = defineEmits(['close']);
 
-const borrorwingMaterial = async (identifiant: string) =>{
+const borrorwingMaterial = async (identifiant: string) => {
 	const response = await materialStore.borrowMaterial(identifiant, {
 		borrowingDate: new Date(borrowingDate.value),
 		borrowingUser: props.userId,
