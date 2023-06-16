@@ -114,9 +114,7 @@ export class ContainerManager {
 			const container = Normalizer.container(this.viewport, elementData);
 			this.viewport.addChild(container);
 
-			//@ts-ignore
 			this.selectedContainers.push(container);
-			//@ts-ignore
 			this._selectedContainers.push(container);
 		}
 

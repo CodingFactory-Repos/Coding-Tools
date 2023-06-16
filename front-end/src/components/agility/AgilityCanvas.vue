@@ -36,8 +36,8 @@ const projectLoading = computed(() => agilityStore.projectLoading);
 const project = computed(() => agilityStore.currentProject);
 
 const canvas = ref<HTMLCanvasElement>();
-const roomId = ref(route.path.match(/[^/]+$/)[0]);
-const loading = ref(projectLoading.value || project.value.length > 0);
+const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
+const loading = computed(() => projectLoading.value || projectStore.internalLoading);
 let timeout: NodeJS.Timeout = null;
 let rawScene: Scene = null;
 
@@ -98,7 +98,7 @@ const autoFillProject = async () => {
 
 		await processBatchesWithDelay();
 		linkLines();
-		loading.value = false;
+		projectStore.internalLoading = false;
 	}
 }
 
@@ -128,6 +128,7 @@ const linkLines = () => {
 
 watch(projectLoading, val => {
 	if(!val) {
+		projectStore.internalLoading = true;
 		autoFillProject();
 	}
 }, { immediate: true })

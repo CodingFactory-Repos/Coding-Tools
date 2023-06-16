@@ -122,6 +122,9 @@ export class GenericContainer extends PluginContainer {
 
 		for (const element of this.children) {
 			const clonedChild = element.clone();
+			clonedChild.alpha = element.alpha;
+			clonedChild.width = element.width;
+			clonedChild.height = element.height;
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
 		}

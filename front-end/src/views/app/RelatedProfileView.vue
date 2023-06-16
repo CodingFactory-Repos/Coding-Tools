@@ -61,7 +61,7 @@ watch(route, val => {
 	if(val.path === "/app/account") return;
 
 	try {
-		const id = val.path.match(/[^/]+$/)[0];
+		const id = val.path.match(/[^/]+(?=\?)|[^/]+$/)[0];
 		userId.value = id;
 		userStore.getRelatedUserProfile(id);
 	} catch(err) {
