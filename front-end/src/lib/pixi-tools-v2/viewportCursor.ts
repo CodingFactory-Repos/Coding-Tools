@@ -92,8 +92,8 @@ export class ViewportCursor extends Viewport {
 	}
 
 	getRandomSoftColor() {
-		var softColors = ["#F5A9A9", "#F5D0A9", "#F5F6CE", "#D0F5A9", "#A9F5A9", "#A9F5F2", "#A9D0F5", "#A9A9F5", "#D0A9F5", "#F5A9F2"];
-		var randomIndex = Math.floor(Math.random() * softColors.length);
+		const softColors = ["#F5A9A9", "#F5D0A9", "#F5F6CE", "#D0F5A9", "#A9F5A9", "#A9F5F2", "#A9D0F5", "#A9A9F5", "#D0A9F5", "#F5A9F2"];
+		const randomIndex = Math.floor(Math.random() * softColors.length);
 		return hexToDecim(softColors[randomIndex]);
 	}
 
