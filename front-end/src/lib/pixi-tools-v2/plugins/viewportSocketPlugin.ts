@@ -3,7 +3,6 @@ import { ManagerOptions } from 'socket.io-client';
 
 import { ViewportUI } from '../viewportUI';
 import { CanvasContainer } from '../types/pixi-aliases';
-import { ElementPosition } from '../types/pixi-container';
 import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
@@ -23,7 +22,6 @@ interface CanvasSocketEvents {
 	'ws-element-updated': (uuid: string, serializedBounds: SerializedContainerBounds) => void;
 	'ws-line-updated': (uuid: string, serializedBounds: SerializedControl) => void;
 	'ws-element-modified': () => void;
-	'ws-mouse-moved': (position: ElementPosition) => void;
 	'ws-frame-child-added': (
 		uuid: string,
 		uuidChild: string,
@@ -69,10 +67,6 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 
 		this.on('ws-element-updated', (uuid, serializedBounds) => {
 			this.socketManager.updateElementBounds(uuid, serializedBounds);
-		});
-
-		this.on('ws-mouse-moved', (position) => {
-			this.socketManager.updateMouseMoved(position);
 		});
 
 		this.on('ws-frame-child-added', (uuid, uuidChild, serialized) => {

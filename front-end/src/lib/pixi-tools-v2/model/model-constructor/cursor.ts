@@ -1,4 +1,4 @@
-import { TextStyle, Text } from 'pixi.js';
+import { LINE_CAP, LINE_JOIN, TextStyle, Text } from 'pixi.js';
 import { ModelGraphics } from '../../types/pixi-class';
 import { ElementBounds } from '../../types/pixi-container';
 import { GraphicTypeId, SerializedGraphic } from '../../types/pixi-serialize';
@@ -6,12 +6,13 @@ import { modelBounds } from '../../utils/modelBounds';
 import { modelColorimetry } from '../../utils/modelColorimetry';
 import { modelSerializer } from '../../utils/modelSerializer';
 
-export class TextArea extends ModelGraphics {
+export class Cursor extends ModelGraphics {
 	public readonly uuid: string;
 	public readonly typeId: GraphicTypeId;
 	public cursor: CSSStyleProperty.Cursor;
 	public borderWidth: number;
 	public borderColor: number;
+	public radius: number;
 	public color: number;
 
 	public text: string;
@@ -20,7 +21,7 @@ export class TextArea extends ModelGraphics {
 	public textStyle: TextStyle;
 
 	static registerGraphic(attributes: SerializedGraphic) {
-		return new TextArea(attributes);
+		return new Cursor(attributes);
 	}
 
 	constructor(attributes: SerializedGraphic) {
@@ -31,56 +32,51 @@ export class TextArea extends ModelGraphics {
 		this.uuid = uuid;
 		this.typeId = typeId as GraphicTypeId;
 		this.eventMode = properties.eventMode;
-		this.borderWidth = properties.borderWidth;
-		this.borderColor = properties.borderColor;
 		this.cursor = properties.cursor;
 		this.color = properties.color;
 		this.alpha = properties.alpha;
 
-		this.text = properties.text ?? '';
+		this.text = properties.text ?? 'unknown';
 		this.textStyle = new TextStyle({
-			fill: this.color,
-			fontSize: properties.fontSize ?? 14,
-			fontStyle: properties.fontStyle ?? TextStyle.defaultStyle.fontStyle,
-			fontWeight: properties.fontWeight ?? TextStyle.defaultStyle.fontWeight,
-			fontFamily: properties.fontFamily ?? TextStyle.defaultStyle.fontFamily,
-			align: properties.fontAlign ?? TextStyle.defaultStyle.align,
-			padding: properties.fontPadding ?? 5,
-			wordWrap: properties.wordWrap ?? TextStyle.defaultStyle.wordWrap,
-			wordWrapWidth: properties.wordWrapWidth ?? TextStyle.defaultStyle.wordWrapWidth,
-			breakWords: properties.breakWords ?? TextStyle.defaultStyle.breakWords,
+			fill: 0x000000,
+			fontSize: 12,
+			padding: 3,
 		});
 		this.textSprite = new Text(this.text, this.textStyle);
-
 		this.textSprite.eventMode = properties.eventMode;
 		this.addChild(this.textSprite);
-		this.updateText();
 
 		this.draw(bounds);
-	}
-
-	public updateText() {
-		if (this.textSprite) {
-			this.textSprite.text = this.text;
-		}
 	}
 
 	public draw(bounds: Partial<ElementBounds>) {
 		const { x, y, width, height } = bounds;
 		this.position.set(x, y);
-		this.textStyle.fill = this.color;
-		this.textSprite.position.set(this.textStyle.padding, this.textStyle.padding);
+		this.textStyle.fill = 0x000000;
+		this.textSprite.position.set(10 + this.textStyle.padding, 15 + this.textStyle.padding);
 
 		this.clear();
-		this.beginFill(null, 0);
-		if (this.borderWidth > 0) {
-			this.lineStyle(this.borderWidth, this.borderColor, 1);
-		}
-		this.drawRect(0, 0, this.width, this.height);
-		this.endFill();
+		this.lineStyle({ width: 3, color: this.color, join: LINE_JOIN.ROUND });
+		this.line.cap = LINE_CAP.ROUND;
+		this.beginFill(this.color);
+		
+		const angle = Math.PI / 4; // 45 degrees in radians
+		const halfDiagonal = Math.sqrt(width * width + height * height) / 2;
+		const centerX = width / 2;
+		const centerY = height / 2;
+		const startX = centerX - Math.cos(angle) * halfDiagonal;
+		const startY = centerY + Math.sin(angle) * halfDiagonal;
+		const endX = centerX + Math.cos(angle) * halfDiagonal;
+		const endY = centerY + Math.sin(angle) * halfDiagonal;
+	  
+		this.moveTo(startX, startY);
+		this.lineTo(centerX, centerY);
+		this.lineTo(endX, endY);
+		this.lineTo(startX, startY);
 
-		this.width = width ?? this.width;
-		this.height = height ?? this.height;
+	this.drawRect(this.textSprite.x, this.textSprite.y + 1, this.textSprite.width, this.textSprite.height - 2);
+		this.endFill();
+		this.endFill();
 	}
 
 	public serialized() {

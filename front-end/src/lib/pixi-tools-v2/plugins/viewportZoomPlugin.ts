@@ -1,9 +1,10 @@
 import { reactive } from 'vue';
 import { ContainerManager } from '../class/containerManager';
 import { ViewportUI } from '../viewportUI';
+import { ViewportCursor } from '../viewportCursor';
 
 export class ViewportZoomPlugin {
-	protected readonly viewport: ViewportUI;
+	protected readonly viewport: ViewportUI | ViewportCursor;
 	protected readonly manager: ContainerManager;
 	protected readonly MAX_ZOOM: number;
 	protected readonly MIN_ZOOM: number;
@@ -14,7 +15,7 @@ export class ViewportZoomPlugin {
 	protected CURRENT_STEP: number;
 	public ZOOM = reactive({ value: 0 });
 
-	constructor(viewport: ViewportUI, manager: ContainerManager) {
+	constructor(viewport: ViewportUI | ViewportCursor, manager?: ContainerManager) {
 		this.viewport = viewport;
 		this.manager = manager;
 
@@ -63,21 +64,23 @@ export class ViewportZoomPlugin {
 	}
 
 	public updateZoomStep(value: -1 | 1) {
-		const isInBounds = value + this.CURRENT_STEP <= this.MAX_STEP && value + this.CURRENT_STEP >= 0;
-		if (!isInBounds) return;
+		if(this.viewport instanceof ViewportUI) {
+			const isInBounds = value + this.CURRENT_STEP <= this.MAX_STEP && value + this.CURRENT_STEP >= 0;
+			if (!isInBounds) return;
 
-		const gotoStep = value > 0 ? this.NEXT_STEP : this.PREV_STEP;
+			const gotoStep = value > 0 ? this.NEXT_STEP : this.PREV_STEP;
 
-		let scale = this.MIN_ZOOM;
-		for (let n = 0; n < gotoStep; n++) {
-			scale *= this.MULTIPLICATOR;
+			let scale = this.MIN_ZOOM;
+			for (let n = 0; n < gotoStep; n++) {
+				scale *= this.MULTIPLICATOR;
+			}
+
+			const point = this.manager.getSelectedCenter();
+			if (point) this.viewport.center = point;
+
+			this.viewport.setZoom(scale, true);
+			this.viewport.emit('zoomed', null);
+			this.viewport.drawGrid();
 		}
-
-		const point = this.manager.getSelectedCenter();
-		if (point) this.viewport.center = point;
-
-		this.viewport.setZoom(scale, true);
-		this.viewport.emit('zoomed', null);
-		this.viewport.drawGrid();
 	}
 }
