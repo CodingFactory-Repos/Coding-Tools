@@ -80,11 +80,11 @@
 						</div>
 					</div>
 
-					<!-- v-if="
+					<div
+						v-if="
 							(filteredItems(tab.id).length < 1 || !filteredItems(tab.id).length) &&
 							searchQuery.length > 0
-						" -->
-					<div
+						"
 						class="flex flex-col justify-center items-center h-auto"
 					>
 						<h1 class="text-2xl font-bold text-gray-900 dark:text-white">Aucun article trouvé</h1>
