@@ -78,14 +78,12 @@ import Bell from '@/components/common/svg/Bell.vue';
 import ApprouvalCenter from '@/components/materials/ApprouvalCenter.vue';
 import { useMaterialStore } from '@/store/modules/material.store';
 import { useRouter } from 'vue-router';
-import pdfMakeFonts from '@/utils/pdfMakeFonts';
 
 // This file will register globalThis.pdfMake.vfs, the documentation does not explicity define the behavior
 // Unless you want to change the font, you don't need to assign pdfmake.vfs = globalThis.pdfMake.vfs.
 // It will work either way with the import below, enjoy.
 import { createPdf } from 'pdfmake/build/pdfmake';
-import * as _ from 'pdfmake/build/vfs_fonts.js';
-const fonts = globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
+import { vfs } from '@/utils/pdfMake_vfs';
 
 const showModal = ref(false);
 const router = useRouter();
@@ -203,7 +201,7 @@ function createPDF() {
 				},
 			},
 		};
-		createPdf(docDefinition, null, null, fonts).open();
+		createPdf(docDefinition, null, null, vfs).open();
 	});
 }
 </script>

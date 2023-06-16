@@ -40,4 +40,10 @@ export class CoursesController {
 		const courses = await this.coursesService.getAllCourses();
 		return res.status(200).json(courses);
 	}
+
+	@Get('/:id/')
+	async getCourseById(@Req() req: Request, @Res() res: Response) {
+		const course = await this.coursesService.getCourseById(req.params.id);
+		return res.status(201).json(course);
+	}
 }
