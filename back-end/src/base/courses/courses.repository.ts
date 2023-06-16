@@ -35,11 +35,6 @@ export class CoursesRepository {
 		return this.courses.findOne(query, options);
 	}
 
-	async getCourseById(id) {
-		id = new ObjectId(id);
-		return this.courses.findOne({ '_id': id });
-	}
-
 	async courseExist(query: Filter<Course>) {
 		const options = { projection: { _id: 1 } };
 		return this.courses.findOne(query, options);

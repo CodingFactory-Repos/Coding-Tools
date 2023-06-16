@@ -7,7 +7,7 @@ import { Project } from 'src/base/projects/interfaces/projects.interface';
 export class ProjectsRepository {
 	constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
-	get stories() {
+	get projects() {
 		return this.db.collection<Project>('projects');
 	}
 
@@ -58,11 +58,11 @@ export class ProjectsRepository {
 		update: Partial<Project>,
 		options: FindOneAndUpdateOptions = undefined,
 	) {
-		return this.stories.findOneAndUpdate(query, update, options);
+		return this.projects.findOneAndUpdate(query, update, options);
 	}
 
 	async findOne(query: Filter<Project>, options: FindOneAndUpdateOptions = undefined) {
-		return this.stories.findOne(query, options);
+		return this.projects.findOne(query, options);
 	}
 
 	async getProjectByCourseId(id: ObjectId) {

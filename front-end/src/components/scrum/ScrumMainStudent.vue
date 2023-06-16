@@ -229,7 +229,7 @@ export default {
         http.get(`/calls/actual_course`).then((response) => {
             this.courseId = response.data.actualCourse;
             http.get('/courses/'+response.data.actualCourse).then((response) => {
-                this.actualCourse = response.data;
+                this.actualCourse = response.data.courseById.course;
                 this.setCourseId();
             })
             console.log('Actual course: ',this.actualCourse);
