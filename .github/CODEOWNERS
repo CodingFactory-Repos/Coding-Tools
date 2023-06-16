@@ -327,6 +327,7 @@
 /front-end/src/utils/filterInvalidProperties.ts @Maghwyn
 /front-end/src/utils/mergeObjects.ts @Maghwyn
 /front-end/src/utils/object.helper.ts @Maghwyn @Loule95450
+/front-end/src/utils/pdfMake_vfs.ts @Maghwyn
 /front-end/src/utils/string.helper.ts @Maghwyn @Loule95450
 /front-end/src/views/ @AyakorK @Maghwyn
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
