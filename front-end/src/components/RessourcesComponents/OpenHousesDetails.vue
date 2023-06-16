@@ -21,7 +21,7 @@
 							</div>
 						</div>
 						<label for="title" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-							>Commentaire</label
+							>Lien</label
 						>
 						<div class="mb-6">
 							<input
@@ -29,10 +29,10 @@
 								v-model="link"
 								rows="1"
 								class="p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-								placeholder="Écrire un commentaire..."
+								placeholder="Entrer un lien"
 							/>
 						</div>
-
+						<!--input type="file" id="file" ref="fileInput" @change="onFileSelected" /-->
 						<div>
 							<button
 								type="submit"
@@ -134,6 +134,9 @@ const closeDocumentModal = () => {
 	addDocumentModal.value = false;
 };
 
+let selectedFile = null;
+let base64String = '';
+
 // form data
 const name = ref('');
 const link = ref('');
@@ -141,7 +144,7 @@ const link = ref('');
 // Function to post the data to the API
 const addDocument = async (id) => {
 	// add verification if all the fields are filled
-	if (!name.value || !link.value) {
+	if (!name.value || !link.value || !base64String) {
 		Swal.fire({
 			title: 'You have to fill all the fields',
 			text: 'Please fill all the fields to add a new document',
@@ -156,11 +159,13 @@ const addDocument = async (id) => {
 	let data = {
 		name: name.value,
 		link: link.value,
+		file: base64String,
 	};
 
 	//reset the form
 	name.value = '';
 	link.value = '';
+	base64String = '';
 
 	Swal.fire({
 		title: 'Your document has been added',
@@ -174,6 +179,22 @@ const addDocument = async (id) => {
 			closeDocumentModal();
 		}
 	});
+};
+
+const onFileSelected = function (event) {
+	selectedFile = event.target.files[0];
+	convertToBase64();
+};
+
+const convertToBase64 = function () {
+	if (selectedFile) {
+		const reader = new FileReader();
+		reader.onload = (event) => {
+			let result = event.target.result;
+			base64String = result.toString();
+		};
+		reader.readAsDataURL(selectedFile);
+	}
 };
 
 const deleteDocument = async (id, document) => {
