@@ -195,8 +195,10 @@
 /front-end/src/components/common/Modal.vue @Loule95450 @Maghwyn @RuKaSuu
 /front-end/src/components/common/svg/ @Loule95450 @Maghwyn
 /front-end/src/components/common/svg/Abstract.vue @Maghwyn @Kevw94
+/front-end/src/components/common/svg/ArrowLeft.vue @Ptitbapt
 /front-end/src/components/common/svg/Bell.vue @Maghwyn @AyakorK
 /front-end/src/components/common/svg/Board.vue @Ptitbapt
+/front-end/src/components/common/svg/Book.vue @Ptitbapt
 /front-end/src/components/common/svg/Clipboard.vue @Ptitbapt
 /front-end/src/components/common/svg/Cloud.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Comment.vue @Maghwyn
@@ -220,7 +222,7 @@
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
-/front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK @Ptitbapt
+/front-end/src/components/RessourcesComponents/AddCourse.vue @Ptitbapt
 /front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
 /front-end/src/components/RessourcesComponents/OpenHouses.vue @Loule95450 @Maghwyn
 /front-end/src/components/RessourcesComponents/OpenHousesDetails.vue @Maghwyn @Ptitbapt
