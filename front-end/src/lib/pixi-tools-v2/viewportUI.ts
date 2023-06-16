@@ -47,6 +47,15 @@ export interface TextEditorOptions {
 	lineHeight: number;
 }
 
+export interface ViewportBounds {
+	x: number;
+	y: number;
+	mouseX: number;
+	mouseY: number;
+	scaleX: number;
+	scaleY: number;
+}
+
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
 	private _isHiddenUI = false;
@@ -71,6 +80,7 @@ export class ViewportUI extends Viewport {
 
 	public readonly activeFrames: Array<number> = reactive([]);
 	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
+	public viewportBounds = reactive<Partial<ViewportBounds>>({});
 
 	constructor(
 		scene: Scene,
@@ -100,6 +110,8 @@ export class ViewportUI extends Viewport {
 
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
@@ -108,10 +120,9 @@ export class ViewportUI extends Viewport {
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
-
-			if (this.socketPlugin) {
-				this.socketPlugin.emit('ws-mouse-moved', this.mouse);
-			}
+			const worldPos = this.toWorld(e.global);
+			this.viewportBounds.mouseX = worldPos.x;
+			this.viewportBounds.mouseY = worldPos.y;
 		});
 
 		this.on('childAdded', (child: CanvasContainer) => {
@@ -242,6 +253,8 @@ export class ViewportUI extends Viewport {
 	}
 
 	private _onViewportMoved() {
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 		this.drawGrid();
 	}
 
@@ -273,6 +286,11 @@ export class ViewportUI extends Viewport {
 
 			this.updateUI(size);
 		}
+
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
+		this.viewportBounds.scaleX = this.scale.x;
+		this.viewportBounds.scaleY = this.scale.y;
 	}
 
 	private updateUI(size: ElementSize) {

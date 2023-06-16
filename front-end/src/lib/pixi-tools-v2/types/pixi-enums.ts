@@ -73,6 +73,9 @@ export const ResizeHandleOppositeOf = {
 	[ResizeHandle.L]: { x: ResizeHandle.R, y: null },
 };
 
+export const GenericResize = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.LB];
+export const OrthogonalResize = [ResizeHandle.T, ResizeHandle.B, ResizeHandle.R, ResizeHandle.L];
+
 export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
 export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];
 export const TopWall = [ResizeHandle.LB, ResizeHandle.RB, ResizeHandle.B];
