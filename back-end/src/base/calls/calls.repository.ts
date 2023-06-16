@@ -328,6 +328,7 @@ export class CallsRepository {
 			periodStart: { $lte: actualDate },
 			periodEnd: { $gte: actualDate },
 		};
+		console.log(query);
 
 		switch (user.role) {
 			case Roles.STUDENT:
@@ -391,6 +392,18 @@ export class CallsRepository {
 
 		return studentList;
 	}
+
+
+	async getAllStudents() {
+		const studentList = await this.db
+		.collection('users')
+		.find({ role: 1 })
+		.project({ _id: 1, 'profile.firstName': 1, 'profile.lastName': 1 })
+		.toArray();
+
+		return studentList;
+	}
+
 	async getStudentIdentity(userId: ObjectId) {
 		const userObjectId = new ObjectId(userId);
 		return await this.db.collection('users').findOne({ _id: userObjectId });
