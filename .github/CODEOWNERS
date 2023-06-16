@@ -223,6 +223,7 @@
 /front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK @Ptitbapt
 /front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
 /front-end/src/components/RessourcesComponents/OpenHouses.vue @Loule95450 @Maghwyn
+/front-end/src/components/RessourcesComponents/OpenHousesDetails.vue @Maghwyn @Ptitbapt
 /front-end/src/components/RessourcesComponents/Ressources.vue @Loule95450 @Maghwyn
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/CreatePostit.vue @Kevw94 @Loule95450
