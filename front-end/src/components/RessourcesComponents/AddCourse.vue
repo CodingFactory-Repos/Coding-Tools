@@ -77,7 +77,7 @@ export default {
 			project: [],
 			site: '',
 			teacherId: '',
-            languages: [],
+			languages: [],
 			languageSuggest: [],
 			showSuggest: false,
 			dateFormat: 'yyyy-MM-dd HH:mm',
