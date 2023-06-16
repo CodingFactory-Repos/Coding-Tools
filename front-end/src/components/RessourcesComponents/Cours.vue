@@ -1,11 +1,8 @@
 <template>
 	<div>
-		<div v-if="userRole === Roles.USER">
-			<h1>ELEVE</h1>
-		</div>
 		<div class="flex items-center justify-center">
 			<button
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"
+				class="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded-full mr-4"
 				@click="
 					startYears-- && endYears--;
 					getCurrentYearsCours();
@@ -13,9 +10,11 @@
 			>
 				←
 			</button>
-			<span class="text-2xl font-bold">{{ startYears }} - {{ endYears }}</span>
+			<span class="text-2xl font-bold text-gray-900 dark:text-white"
+				>{{ startYears }} - {{ endYears }}</span
+			>
 			<button
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-4"
+				class="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded-full ml-4"
 				@click="
 					startYears++ && endYears++;
 					getCurrentYearsCours();
@@ -28,7 +27,7 @@
 			<div class="flex items-center justify-center">
 				<div class="flex items-center justify-center">
 					<button
-						class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+						class="bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded-full"
 						@click="showModal = true"
 					>
 						+
@@ -46,7 +45,7 @@
 			<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 				<div
 					v-for="item in coursesFiltered"
-					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+					class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-gray-900 dark:text-white"
 					@click="openCourse(item._id)"
 				>
 					<img
