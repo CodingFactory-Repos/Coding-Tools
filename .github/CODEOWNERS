@@ -215,18 +215,19 @@
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
 /front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK @Ptitbapt
 /front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
-/front-end/src/components/RessourcesComponents/OpenHouses.vue @Maghwyn @AyakorK @Loule95450
-/front-end/src/components/RessourcesComponents/Ressources.vue @Maghwyn @AyakorK @Loule95450
+/front-end/src/components/RessourcesComponents/OpenHouses.vue @Loule95450 @Maghwyn
+/front-end/src/components/RessourcesComponents/Ressources.vue @Loule95450 @Maghwyn
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/CreatePostit.vue @Kevw94 @Loule95450
 /front-end/src/components/retrospective/PrivateSection.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospective/Timer.vue @Maghwyn @Kevw94 @Loule95450
 /front-end/src/components/retrospective/UpdatePostit.vue @AyakorK @Loule95450
-/front-end/src/components/retrospective/utils/ @Maghwyn
+/front-end/src/components/retrospective/utils/ @AyakorK
+/front-end/src/components/retrospective/utils/FilterRetro.vue @Maghwyn
+/front-end/src/components/retrospective/utils/NavInfosRetro.vue @Maghwyn
 /front-end/src/components/retrospective/utils/Overlay.vue @Loule95450
 /front-end/src/components/retrospective/utils/RetroCard.vue @Maghwyn @Kevw94
-/front-end/src/components/retrospective/utils/ShareRetro.vue @AyakorK
-/front-end/src/components/retrospective/utils/ShareRetroToUser.vue @AyakorK
+/front-end/src/components/retrospective/utils/SideBarParticipants.vue @Maghwyn @Kevw94
 /front-end/src/components/retrospective/utils/UserCursors.vue @Maghwyn @Loule95450
 /front-end/src/components/retrospectiveComponents/CreateRetro.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/components/retrospectiveComponents/utils/Overlay.vue @AyakorK @Kevw94 @TheoLandemaine
@@ -330,6 +331,7 @@
 /front-end/src/utils/filterInvalidProperties.ts @Maghwyn
 /front-end/src/utils/mergeObjects.ts @Maghwyn
 /front-end/src/utils/object.helper.ts @Maghwyn @Loule95450
+/front-end/src/utils/pdfMake_vfs.ts @Loule95450
 /front-end/src/utils/string.helper.ts @Maghwyn @Loule95450
 /front-end/src/views/ @AyakorK @Maghwyn
 /front-end/src/views/404/ErrorNotFound.vue @Maghwyn @Loule95450
@@ -353,12 +355,12 @@
 /front-end/src/views/home/HeroView.vue @AyakorK @TheoLandemaine
 /front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
-/front-end/src/views/material-ideas/DraftPdf.vue @Loule95450 @TheoLandemaine
-/front-end/src/views/material-ideas/IdeasPdf.vue @RuKaSuu
+/front-end/src/views/material-ideas/DraftPdf.vue @Loule95450
+/front-end/src/views/material-ideas/IdeasPdf.vue @RuKaSuu @Maghwyn
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
-/front-end/src/views/OpenHousesDetails.vue @Maghwyn @AyakorK @Loule95450
+/front-end/src/views/OpenHousesDetails.vue @Loule95450 @Maghwyn
 /front-end/src/views/OrganisationView.vue @Maghwyn
 /front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/views/RetrospectiveInvitation.vue @AyakorK
