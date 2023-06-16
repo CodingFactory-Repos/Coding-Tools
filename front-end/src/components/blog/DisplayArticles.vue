@@ -205,8 +205,12 @@ const filteredItems = (tabId) => {
 };
 
 // Call the getArticles method when the component is created
-onMounted(async () => {
-	await articleStore.getArticle();
+onMounted(() => {
+	try {
+		articleStore.getArticle();
+	} catch (error) {
+		console.log(error);
+	}
 });
 </script>
 
