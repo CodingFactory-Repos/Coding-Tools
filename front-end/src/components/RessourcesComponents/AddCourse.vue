@@ -22,7 +22,7 @@
 					/>
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
 					<input type="text" name="language" v-model="language" placeholder="Language :" /><br />
-					<input type="file" v-model="selectedFile" @change="onFileSelected" />
+					<input type="file" id="file" ref="fileInput" @change="onFileSelected" />
 					<div class="flex justify-center mt-6">
 						<button
 							class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -101,6 +101,7 @@ export default {
 				project: [],
 				site: '',
 				teacherId: '',
+				files: this.base64String,
 			};
 			course.addCourse(this.newCourse);
 		},
