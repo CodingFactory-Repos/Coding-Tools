@@ -252,10 +252,6 @@
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools-v2/ @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/blueprint/personas.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/framedContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/genericContainer.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
@@ -283,7 +279,10 @@
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/unsupported/textarea_html.ts @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/utils/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/utils/base64codingFactoryLogo.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/utils/base64codingToolsLogo.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/colorsConvertor.ts @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/utils/generatePdf.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/modelBounds.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/modelSerializer.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
