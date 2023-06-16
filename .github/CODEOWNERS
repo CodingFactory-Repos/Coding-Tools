@@ -236,23 +236,20 @@
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools-v2/ @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/class/textContainer.ts @TheoLandemaine @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
-/front-end/src/lib/pixi-tools-v2/model/model-constructor/textArea.ts @TheoLandemaine @Loule95450
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/textArea.ts @Maghwyn @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/plugins/ @Loule95450 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @Kevw94
-/front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/plugins/bezierManipulationPlugin.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/plugins/containerBezierLinkPlugin.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/plugins/viewportSocketPlugin.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
