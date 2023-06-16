@@ -119,6 +119,7 @@
 /back-end/src/external-modules/database/mongo.service.ts @Maghwyn @Kevw94
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn @AyakorK
+/back-end/src/main.ts @Maghwyn @Loule95450
 /back-end/types/index.d.ts @Maghwyn
 /back-end/uploads/.gitkeep @Loule95450
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
@@ -188,6 +189,8 @@
 /front-end/src/components/common/svg/ @Loule95450 @Maghwyn
 /front-end/src/components/common/svg/Abstract.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Bell.vue @Maghwyn @AyakorK
+/front-end/src/components/common/svg/Board.vue @Ptitbapt
+/front-end/src/components/common/svg/Clipboard.vue @Ptitbapt
 /front-end/src/components/common/svg/Cloud.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Comment.vue @Maghwyn
 /front-end/src/components/common/svg/Cross.vue @Maghwyn @Kevw94
@@ -210,9 +213,10 @@
 /front-end/src/components/NewGroup.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @Kevw94
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
-/front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK
-/front-end/src/components/RessourcesComponents/Cours.vue @Maghwyn
+/front-end/src/components/RessourcesComponents/AddCourse.vue @AyakorK @Ptitbapt
 /front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
+/front-end/src/components/RessourcesComponents/OpenHouses.vue @Maghwyn @AyakorK @Loule95450
+/front-end/src/components/RessourcesComponents/Ressources.vue @Maghwyn @AyakorK @Loule95450
 /front-end/src/components/retrospective/ @Kevw94 @Maghwyn
 /front-end/src/components/retrospective/CreatePostit.vue @Kevw94 @Loule95450
 /front-end/src/components/retrospective/PassedRetrospectives.vue @Maghwyn
@@ -354,6 +358,7 @@
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
+/front-end/src/views/OpenHousesDetails.vue @Maghwyn @AyakorK @Loule95450
 /front-end/src/views/OrganisationView.vue @Maghwyn
 /front-end/src/views/Retrospective.vue @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/views/RetrospectiveInvitation.vue @AyakorK
