@@ -3,7 +3,6 @@ import { ManagerOptions } from 'socket.io-client';
 
 import { ViewportUI } from '../viewportUI';
 import { CanvasContainer } from '../types/pixi-aliases';
-import { ElementPosition } from '../types/pixi-container';
 import { SocketManager } from '../class/socketManager';
 import { ModelGraphics } from '../types/pixi-class';
 import { FramedContainer } from '../class/framedContainer';
