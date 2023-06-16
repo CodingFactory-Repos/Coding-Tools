@@ -1,5 +1,8 @@
 <template>
-	<div v-if="Object.keys(course.oneItems).length > 0">
+	<div
+		class="font-semibold text-gray-900 dark:text-white"
+		v-if="Object.keys(course.oneItems).length > 0"
+	>
 		<img
 			class="cover h-72 w-screen object-cover object-center"
 			:src="
@@ -12,81 +15,49 @@
 		<div class="text-center pt-4">
 			<h1 class="text-4xl font-bold">{{ courseById.tag }}</h1>
 		</div>
-		<div class="cours-detail bg-grey-800 mb-5">
-			<div class="corps-enseignant">
-				<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Corps enseignant du cours</h4>
-
-				<ul class="space-y-2">
-					<li v-for="teacher in courseById.teachers" :key="teacher.id">
-						<img
-							:src="teacher.profilePicture"
-							alt="Profile Picture"
-							class="w-8 h-8 rounded-full mr-2"
-						/>
-						<span class="text-white-800 text-lg mb-5">{{ teacher.name }}</span>
-					</li>
-				</ul>
-
-				<div class="detail-actions">
-					<div class="corps-ensaignant">
-						<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Détails et actions</h4>
+		<div class="text-center pt-4">
+			<h2 class="text-xl font-bold">
+				Disponible du
+				<span class="underline">{{ formatDate(courseById.periodStart) }}</span>
+				jusqu'au
+				<span class="underline">{{ formatDate(courseById.periodEnd) }}</span>
+			</h2>
+		</div>
+		<div class="contenu-cours">
+			<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
+			<ul class="space-y-4">
+				<li v-for="course in courses" :key="course.id">
+					<div class="course-item" :class="{ open: course.open }" @click="toggleCourse(course)">
+						<h5 class="text-xl font-semibold">{{ course.title }}</h5>
+						<p class="text-gray-600">{{ course.description }}</p>
+					</div>
+					<div v-if="course.open" class="course-files bg-gray-100 p-4">
 						<ul class="space-y-2">
-							<li>
-								<h4 class="text-2xl font-bold mb-2">Annuaire</h4>
-								<p class="text-blue-500 underline cursor-pointer">
-									Afficher tout les membres de votre cours
-								</p>
+							<li v-for="file in course.files" :key="file.id">
+								<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
 							</li>
 						</ul>
 					</div>
-				</div>
-			</div>
-			<div class="contenu-cours">
-				<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
-				<ul class="space-y-4">
-					<li v-for="course in courses" :key="course.id">
-						<div class="course-item" :class="{ open: course.open }" @click="toggleCourse(course)">
-							<h5 class="text-xl font-semibold">{{ course.title }}</h5>
-							<p class="text-gray-600">{{ course.description }}</p>
-						</div>
-						<div v-if="course.open" class="course-files">
-							<ul class="space-y-2">
-								<li v-for="file in course.files" :key="file.id">
-									<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
-								</li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-				<h4 class="text-2xl font-bold mb-2 mt-3 border-b border-gray-300">Groupes</h4>
-				<ul class="space-y-4">
-					<li v-for="groupe in groupes" :key="groupe.id">
-						<div class="course-item" :class="{ open: groupe.open }" @click="toggleGroupe(groupe)">
-							<h5 class="text-xl font-semibold">{{ groupe.title }}</h5>
-							<p class="text-gray-600">{{ groupe.description }}</p>
-						</div>
-						<div v-if="groupe.open" class="course-files">
-							<ul class="space-y-2">
-								<li v-for="file in groupe.files" :key="file.id">
-									<a :href="file.url" target="_blank" class="text-blue-500">{{ file.name }}</a>
-								</li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</div>
+				</li>
+			</ul>
+			<h4 class="text-2xl font-bold mb-2 mt-3 border-b border-gray-300">Groupes</h4>
+			<ul class="space-y-4">
+				<li v-if="canvas.length > 0">
+					<div v-for="canva in canvas" :key="canva.id">
+						<button
+							class="flex items-center bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded"
+						>
+							<Board class="mr-2" />
+							<span>{{ canva.meta.title }}</span>
+						</button>
+					</div>
+				</li>
+			</ul>
 		</div>
-		<div class="flex bg-slate-300 w-full gap-4 justify-center" v-if="canvas.length > 0">
-			<div v-for="canva in canvas">
-				<button
-					@click="goToProject(canva)"
-					class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
-				>
-					{{ canva.meta.title }}
-				</button>
-			</div>
-		</div>
-		<div class="flex bg-slate-400 w-full gap-4 justify-center mt-4" v-if="retro">
+	</div>
+	<div class="flex w-full gap-4 justify-center mt-4">
+		<div class="contenu-cours" v-if="retro">
+			<h4 class="text-2xl font-bold mb-2 border-b border-gray-300">Contenu du cours</h4>
 			<button
 				@click="goToRetro(retro)"
 				class="gradiant left-4 bottom-0 md:bottom-[unset] bg-[#24292E] hover:bg-[#24292E99] shadow rounded-lg p-4"
@@ -95,21 +66,12 @@
 			</button>
 		</div>
 	</div>
-	<button
-		type="button"
-		@click="
-			() => {
-				router.push('/app/ressource/cours');
-			}
-		"
-	>
-		Retour
-	</button>
 </template>
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue';
 import { useCoursStore } from '@/store/modules/course.store';
 import { useRouter } from 'vue-router';
+import Board from '@/components/common/svg/Board.vue';
 
 // get store
 const course = useCoursStore();
@@ -118,6 +80,42 @@ const retro = computed(() => course.oneItems.retro);
 const canvas = computed(() => course.oneItems.projects);
 
 const router = useRouter();
+
+const courses = [
+	{
+		id: 1,
+		title: 'Cours 1',
+		description: 'Description du cours 1',
+		open: false,
+		files: [
+			{ id: 1, name: 'Fichier 1', url: '#' },
+			{ id: 2, name: 'Fichier 2', url: '#' },
+			{ id: 3, name: 'Fichier 3', url: '#' },
+		],
+	},
+	{
+		id: 2,
+		title: 'Cours 2',
+		description: 'Description du cours 2',
+		open: false,
+		files: [
+			{ id: 4, name: 'Fichier 4', url: '#' },
+			{ id: 5, name: 'Fichier 5', url: '#' },
+			{ id: 6, name: 'Fichier 6', url: '#' },
+		],
+	},
+	{
+		id: 3,
+		title: 'Cours 3',
+		description: 'Description du cours 3',
+		open: false,
+		files: [
+			{ id: 7, name: 'Fichier 7', url: '#' },
+			{ id: 8, name: 'Fichier 8', url: '#' },
+			{ id: 9, name: 'Fichier 9', url: '#' },
+		],
+	},
+];
 
 // get id from url
 const _id = computed(() => {
@@ -129,6 +127,15 @@ const _id = computed(() => {
 // get openHouse by id
 const getCourseById = async (_id: string) => {
 	await course.getCourseById(_id);
+};
+
+const formatDate = (date) => {
+	const options = {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	} as Intl.DateTimeFormatOptions;
+	return new Date(date).toLocaleDateString('fr-FR', options);
 };
 
 // fetch openHouse data on mounted
