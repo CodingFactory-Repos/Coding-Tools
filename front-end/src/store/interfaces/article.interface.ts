@@ -58,4 +58,5 @@ export interface Documents {
 	_id: string;
 	name: string;
 	link: string;
+	//file: string;
 }
