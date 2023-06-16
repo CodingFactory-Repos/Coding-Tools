@@ -134,11 +134,6 @@ const redirectNewArticle = () => {
 	router.push('/app/blog/new');
 };
 
-// Fetch the articles
-const getArticles = async () => {
-	await articleStore.getArticle();
-};
-
 const tabs = ref([
 	{ id: 'all', label: 'Tous' },
 	{ id: 'infos', label: 'Infos' },
@@ -210,8 +205,8 @@ const filteredItems = (tabId) => {
 };
 
 // Call the getArticles method when the component is created
-onMounted(() => {
-	getArticles();
+onMounted(async () => {
+	await articleStore.getArticle();
 });
 </script>
 
