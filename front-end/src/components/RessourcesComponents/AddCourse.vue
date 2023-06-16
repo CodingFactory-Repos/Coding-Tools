@@ -77,6 +77,9 @@ export default {
 			project: [],
 			site: '',
 			teacherId: '',
+            languages: [],
+			languageSuggest: [],
+			showSuggest: false,
 			dateFormat: 'yyyy-MM-dd HH:mm',
 			datePickerLanguage: 'fr', // Langue du date picker
 			selectedFile: null,
