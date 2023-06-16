@@ -41,6 +41,7 @@ const project = computed(() => agilityStore.currentProject);
 
 const canvas = ref<HTMLCanvasElement>();
 const cursorCanvas = ref<HTMLCanvasElement>();
+
 const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 const loading = computed(() => projectLoading.value || projectStore.internalLoading);
 let timeout: NodeJS.Timeout = null;

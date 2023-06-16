@@ -243,8 +243,8 @@ export class CallsRepository {
 					students: {
 						student: userObjectId,
 						presence: presence,
-						late: this.isStudentLate(period[periodIndex], date),
-						leftEarly: this.didStudentLeftEarly(period[periodIndex], date),
+						late: this.isStudentLate(period[periodIndex], this.getHour(date)),
+						leftEarly: this.didStudentLeftEarly(period[periodIndex], this.getHour(date)),
 					},
 				},
 			},
@@ -258,12 +258,24 @@ export class CallsRepository {
 	getDate(date) {
 		return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 	}
+	getHour(date) {
+		return new Date(
+			Date.UTC(
+				date.getFullYear(),
+				date.getMonth(),
+				date.getDate(),
+				date.getHours(),
+				date.getMinutes(),
+				date.getSeconds(),
+			),
+		);
+	}
 	isStudentLate(period, timeOfScan) {
 		const fakeDate = new Date(
 			timeOfScan.getFullYear(),
 			timeOfScan.getMonth(),
 			timeOfScan.getDate(),
-			9,
+			11,
 			0,
 			0,
 			0,
@@ -271,9 +283,9 @@ export class CallsRepository {
 		if (period === 'arrival') {
 			if (timeOfScan >= 9 * 60 * 60 * 1000) {
 				const minutesOfLate = Math.floor(
-					Math.floor(timeOfScan.getTime() - fakeDate.getTime()) / 1000 / 60,
+					Math.floor(timeOfScan.getMinutes() - fakeDate.getMinutes()),
 				);
-				const hoursOfLate = Math.floor(minutesOfLate / 60);
+				const hoursOfLate = Math.floor(timeOfScan.getHours() - fakeDate.getHours());
 				const minutesOfLateConverted = minutesOfLate % 60;
 				return [true, `${hoursOfLate}h${minutesOfLateConverted}`];
 			}
@@ -287,18 +299,18 @@ export class CallsRepository {
 				timeOfScan.getFullYear(),
 				timeOfScan.getMonth(),
 				timeOfScan.getDate(),
-				17,
+				19,
 				0,
 				0,
 				0,
 			);
 			if (timeOfScan.getHours() == 14 && timeOfScan.getMinutes() < 50) {
 				const minutesOfLate = Math.floor(
-					Math.floor(fakeDate.getTime() - timeOfScan.getTime()) / 1000 / 60,
+					Math.floor(fakeDate.getMinutes() - timeOfScan.getMinutes()),
 				);
-				const hoursOfEarly = Math.floor(minutesOfLate / 60);
+				const hoursOfLate = Math.floor(fakeDate.getHours() - timeOfScan.getHours());
 				const minutesOfEarlyConverted = minutesOfLate % 60;
-				return [true, `${hoursOfEarly}h${minutesOfEarlyConverted}`];
+				return [true, `${hoursOfLate}h${minutesOfEarlyConverted}`];
 			}
 		}
 		return false;
