@@ -22,6 +22,7 @@ export const useCoursStore = defineStore('course', {
 					project: [],
 					site: '',
 					teacherId: '',
+					files: '',
 				},
 			],
 			oneItems: {
@@ -37,9 +38,10 @@ export const useCoursStore = defineStore('course', {
 				project: [],
 				site: '',
 				teacherId: '',
+				files: '',
 			},
 			idCourses: '',
-			uploadedFiles: [],
+			//uploadedFiles: [],
 		};
 	},
 	actions: {

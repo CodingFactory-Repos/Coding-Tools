@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<div v-if="userRole === Roles.USER">
-			<h1>ELEVE</h1>
-		</div>
 		<div class="flex items-center justify-center">
 			<button
 				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4"

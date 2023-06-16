@@ -125,16 +125,6 @@ export default {
 				return;
 			}
 
-			const formData = new FormData();
-			formData.append('tag', this.tag);
-			formData.append('periodStart', this.periodStart);
-			formData.append('periodEnd', this.periodEnd);
-			formData.append('picture', this.picture);
-			formData.append('language', this.language);
-			//this.uploadedFiles.forEach((file) => {
-			formData.append('files', this.selectedFile);
-			//	});
-
 			Swal.fire({
 				title: 'Votre cours a été ajouté',
 				icon: 'success',
@@ -145,10 +135,24 @@ export default {
 				if (result.isConfirmed) {
 					// Ajouter le cours
 					//	await useCoursStore.addCourse(formData);
-					http.post('/courses/create', formData).catch((error) => {
-						console.log(error);
-						this.$emit('addnew');
-					});
+					console.log(this.selectedFile);
+					http
+						.post('/courses/create', {
+							tag: this.tag,
+							periodStart: this.periodStart,
+							periodEnd: this.periodEnd,
+							picture: this.picture,
+							language: this.language,
+							files: this.base64String,
+							presence: this.presence,
+							createdAt: this.createdAt,
+							project: this.project,
+							site: this.site,
+						})
+						.catch((error) => {
+							console.log(error);
+							//this.$emit('addnew');
+						});
 					// Rediriger vers la page des cours
 					this.$emit('close');
 				}
@@ -160,7 +164,7 @@ export default {
 			this.periodEnd = null;
 			this.picture = '';
 			this.language = '';
-			this.uploadedFiles = [];
+			//this.uploadedFiles = [];
 		},
 
 		searchLanguage() {
