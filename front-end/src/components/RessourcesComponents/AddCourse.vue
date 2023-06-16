@@ -22,6 +22,7 @@
 					/>
 					<input type="url" placeholder="picture link" v-model="picture" /><br />
 					<input type="text" name="language" v-model="language" placeholder="Language :" /><br />
+					<input type="file" v-model="selectedFile" @change="onFileSelected" />
 					<div class="flex justify-center mt-6">
 						<button
 							class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -72,8 +73,21 @@ export default {
 	},
 	methods: {
 		AddCourses(event) {
-			const course = useCoursStore();
+			event.preventDefault();
 
+			// Vérifier si tous les champs sont remplis
+			if (!this.tag || !this.periodStart || !this.periodEnd || !this.picture || !this.language) {
+				Swal.fire({
+					title: 'Vous devez remplir tous les champs',
+					text: 'Veuillez remplir tous les champs pour ajouter un nouveau cours',
+					icon: 'error',
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'OK',
+				});
+				return;
+			}
+			const course = useCoursStore();
 
 			this.newCourse = {
 				tag: this.tag,
