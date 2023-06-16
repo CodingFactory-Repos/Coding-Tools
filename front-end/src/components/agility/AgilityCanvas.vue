@@ -2,6 +2,7 @@
 	<CanvasLoader :loading="loading">
 		<AgilityCanvasUI :room-id="roomId">
 			<canvas ref="canvas"></canvas>
+			<canvas ref="cursorCanvas" class="absolute pointer-events-none"></canvas>
 		</AgilityCanvasUI>
 	</CanvasLoader>
 </template>
@@ -20,10 +21,12 @@ import { useProjectStore } from '@/store/modules/project.store';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import AgilityCanvasUI from '@/components/agility/AgilityCanvasUI.vue';
 import CanvasLoader from '@/components/agility/UI/CanvasLoader.vue';
-import { LineContainer } from '../../lib/pixi-tools-v2/class/lineContainer';
+import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
 import { CanvasContainer } from '@/lib/pixi-tools-v2/types/pixi-aliases';
 import { useThemeStore } from '@/store/modules/theme.store';
 import { config } from '@/config/config';
+import { CursorScene } from '@/lib/pixi-tools-v2/cursorScene';
+import { useAuthStore } from '../../store/modules/auth.store';
 
 const route = useRoute();
 const projectStore = useProjectStore();
@@ -33,19 +36,35 @@ const themeStore = useThemeStore();
 const isDark = computed(() => themeStore.theme);
 const scene = computed(() => projectStore.scene);
 const projectLoading = computed(() => agilityStore.projectLoading);
+const viewportBounds = computed(() => projectStore.getViewportBounds);
 const project = computed(() => agilityStore.currentProject);
 
 const canvas = ref<HTMLCanvasElement>();
+const cursorCanvas = ref<HTMLCanvasElement>();
 const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 const loading = computed(() => projectLoading.value || projectStore.internalLoading);
 let timeout: NodeJS.Timeout = null;
 let rawScene: Scene = null;
+let rawCursorScene: CursorScene = null; 
 
 watch(isDark, val => {
 	if(scene.value) {
 		scene.value.changeTheme(val);
 	}
-})
+});
+
+watch(viewportBounds, val => {
+	rawCursorScene.viewport.x = val.x;
+	rawCursorScene.viewport.y = val.y;
+
+	if(val.scaleX !== undefined && val.scaleY !== undefined) {
+		rawCursorScene.viewport.scale.set(val.scaleX, val.scaleY);
+	}
+
+	if(val.mouseX !== undefined && val.mouseY !== undefined) {
+		rawCursorScene.viewport.updateMousePosition({ x: val.mouseX, y: val.mouseY });
+	}
+}, { deep: true });
 
 onMounted(() => {
 	document.addEventListener('fullscreenchange', onFullscreenChange);
@@ -60,12 +79,17 @@ onMounted(() => {
 		},
 	};
 
+	const authStore = useAuthStore();
+	const firstName = authStore.user?.profile?.firstName ?? 'unknown';
+
 	// 84 represent the offset height due to tabs
+	const cursorScene = new CursorScene(cursorCanvas.value as HTMLCanvasElement, 84, firstName, socketOptions);
 	const scene = new Scene(canvas.value as HTMLCanvasElement, 84, isDark.value, socketOptions);
 	projectStore.scene = scene;
 	projectStore.canvas = canvas.value;
 	projectStore.enableSelectionBox();
 	rawScene = scene;
+	rawCursorScene = cursorScene;
 })
 
 const autoFillProject = async () => {
@@ -144,6 +168,7 @@ const onFullscreenChange = () => {
 onBeforeRouteLeave(() => {
 	const vp = projectStore.scene.viewport;
 	vp.socketPlugin.disconnect();
+	rawCursorScene.viewport.socketCursorManager._close();
 
 	if (document.exitFullscreen && projectStore.onFullscreen) {
 		projectStore.onFullscreen = false;
