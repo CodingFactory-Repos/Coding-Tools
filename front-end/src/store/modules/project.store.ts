@@ -43,6 +43,9 @@ export const useProjectStore = defineStore('project', {
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
+		getViewportBounds(this: ProjectStore) {
+			return this.scene?.viewport.viewportBounds;
+		},
 		getImages(this: ProjectStore) {
 			if (!this.pdfViewerOpen) return [];
 			this.refreshPdfViewer;

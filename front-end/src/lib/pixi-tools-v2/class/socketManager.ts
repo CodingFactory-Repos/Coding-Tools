@@ -10,7 +10,6 @@ import {
 } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
-import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
@@ -130,10 +129,6 @@ export class SocketManager extends Manager {
 			}
 		});
 
-		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			console.info(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
-		});
-
 		this.canvasSocket.on(
 			'element-colorimetry-updated',
 			(uuid: string, serializedColorimetry: SerializedColorimetry) => {
@@ -152,6 +147,8 @@ export class SocketManager extends Manager {
 					this._updateTreeBounds(container.uuid, container as SerializedContainerBounds);
 				}
 			} else if (element instanceof GenericContainer) {
+				element.updateTreeBounds(serializedBounds);
+			} else if (element instanceof LineContainer) {
 				element.updateTreeBounds(serializedBounds);
 			} else if (element instanceof TextContainer) {
 				element.updateTreeBounds(serializedBounds);
@@ -191,6 +188,15 @@ export class SocketManager extends Manager {
 					//@ts-ignore
 					radius: child.radius,
 				});
+			} else if(element instanceof TextContainer) {
+				const childData = serializedColorimetry.childs[0] as SerializedGraphicColorimetry;
+				const child = element.getGraphicChildren()[0] as TextArea;
+				child.color = childData.properties.color;
+				child.alpha = childData.properties.alpha;
+				child.draw({
+					x: child.x,
+					y: child.y
+				})
 			}
 		} catch (err) {
 			if (err instanceof Error) {
@@ -259,10 +265,6 @@ export class SocketManager extends Manager {
 
 	public deleteElement(uuid: string, uuidFrame: string) {
 		this.canvasSocket.emit('delete-element', { uuid, uuidFrame });
-	}
-
-	public updateMouseMoved(position: ElementPosition) {
-		this.canvasSocket.emit('update-mouse-moved', position);
 	}
 
 	public updateFrameOnChildAdded(uuid: string, uuidChild: string, serialized: SerializedContainer) {
