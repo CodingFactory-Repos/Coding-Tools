@@ -6,7 +6,8 @@ import { ViewportUI } from '../viewportUI';
 import type { InitialGraphicLineState, InitialGraphicState } from '../types/pixi-container';
 import type { CanvasContainer, PluginContainer } from '../types/pixi-aliases';
 import { dragAttachedLines } from '../utils/dragAttachedLines';
-import { LineBezier } from '../model/template';
+import { LineBezier, TextArea } from '../model/template';
+import { TextContainer } from '../class/textContainer';
 
 type FrameIntersect = {
 	frame: FramedContainer;
@@ -101,6 +102,9 @@ export class DragPlugin {
 	private _updateDragging = (e: FederatedPointerEvent) => {
 		if (e) e.stopPropagation();
 		if (this.container === null) return;
+		if (this.container instanceof TextContainer && this.container.isEditing) {
+			return;
+		}
 
 		const frames = this.viewport.children.filter(
 			(ctn) => ctn.visible && ctn instanceof FramedContainer,
@@ -128,6 +132,16 @@ export class DragPlugin {
 						element.child.startControl.y = data.startControl.y + dy;
 						element.child.endControl.x = data.endControl.x + dx;
 						element.child.endControl.y = data.endControl.y + dy;
+						element.child.draw();
+						continue;
+					}
+				}
+
+				if (element.child instanceof TextArea) {
+					const frame = element.child.parent?.parent?.parent;
+					if (frame instanceof FramedContainer) {
+						element.child.x = element.child.x + dx;
+						element.child.y = element.child.y + dy;
 					}
 				}
 
@@ -143,10 +157,14 @@ export class DragPlugin {
 					}
 				}
 
-				if (element.child.typeId !== 'rectangle' && element.child.typeId !== 'circle') continue;
+				if (
+					element.child.typeId !== 'rectangle' &&
+					element.child.typeId !== 'circle' &&
+					element.child.typeId !== 'textarea'
+				)
+					continue;
 
 				const parent = element.child.parent as CanvasContainer;
-				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
 				if (parent.typeId === 'wrap') continue;
 
 				const childBounds = element.child.getBounds();

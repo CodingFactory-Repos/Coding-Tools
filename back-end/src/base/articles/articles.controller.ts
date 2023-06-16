@@ -30,7 +30,7 @@ export class ArticlesController {
 	@Post('/add')
 	async addArticle(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addArticle(req.body);
-		return res.status(201).json({ article, id: article.insertedId });
+		return res.status(201).json({ article });
 	}
 
 	@Get('/:id')
@@ -51,6 +51,24 @@ export class ArticlesController {
 	async addParticipant(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addParticipant(req.params.id, req.body);
 		return res.status(201).json(article);
+	}
+
+	@Get('/stats/participant')
+	async getArticleWithMostParticipants(@Req() req: Request, @Res() res: Response) {
+		const articleId = await this.articlesService.getArticleWithMostParticipants();
+		return res.status(201).json(articleId);
+	}
+
+	@Get('/stats/topcreateur')
+	async getTopCreateur(@Req() req: Request, @Res() res: Response) {
+		const articleId = await this.articlesService.getTopCreateur();
+		return res.status(201).json(articleId);
+	}
+
+	@Get('/stats/topparticipant')
+	async getTopParticipant(@Req() req: Request, @Res() res: Response) {
+		const articleId = await this.articlesService.getTopParticipant();
+		return res.status(201).json(articleId);
 	}
 
 	// remove participant from the array of participants in article in the database
@@ -92,6 +110,27 @@ export class ArticlesController {
 	@Put('/comment/:id')
 	async addComment(@Req() req: Request, @Res() res: Response) {
 		const article = await this.articlesService.addComment(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// remove comment
+	@Put('/removeComment/:id')
+	async removeComment(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.removeComment(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// add document
+	@Put('/document/:id')
+	async addDocument(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.addDocument(req.params.id, req.body);
+		return res.status(201).json(article);
+	}
+
+	// remove document
+	@Put('/removeDocument/:id')
+	async removeDocument(@Req() req: Request, @Res() res: Response) {
+		const article = await this.articlesService.removeDocument(req.params.id, req.body);
 		return res.status(201).json(article);
 	}
 

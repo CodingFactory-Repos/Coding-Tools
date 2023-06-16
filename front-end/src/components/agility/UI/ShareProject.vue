@@ -48,7 +48,7 @@ import ShareToUserCard from '@/components/agility/cards/ShareToUser.vue';
 const route = useRoute();
 const userInput = ref<string>("");
 const filteredUser = ref<Array<UserCanvasList>>([]);
-const roomId = ref(route.path.match(/[^/]+$/)[0]);
+const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 let timer: NodeJS.Timeout;
 
 const emit = defineEmits(['close']);
@@ -75,13 +75,13 @@ const onUserInput = () => {
 		userInput.value = userInput.value.substring(0,50);
 
 	clearTimeout(timer);
-	timer = setTimeout(() => {
+	timer = setTimeout(async () => {
 		clearTimeout(timer);
 		timer = undefined;
-		
+
 		const user = userInput.value.trim().toLowerCase().replace(/ /g, '');
-		if(user !== '') {
-			fetchQueryUser(user);
+		if (user !== '') {
+			await fetchQueryUser(user);
 		} else {
 			filteredUser.value = [];
 		}

@@ -69,7 +69,6 @@ export const useOpenHouseStore = defineStore('openhouse', {
 		//get openHouse in the database
 		getOpenHouse: withErrorHandler(async function () {
 			const response = await http.get('/openhouses');
-			console.log(response.data);
 			const items = response.data;
 			this.items = items;
 			return true;

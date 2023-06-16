@@ -1,5 +1,14 @@
 import { IViewportOptions, Viewport } from 'pixi-viewport';
-import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point } from 'pixi.js';
+import {
+	EventBoundary,
+	FederatedPointerEvent,
+	ICanvas,
+	IRenderer,
+	Point,
+	TextStyleAlign,
+	TextStyleFontStyle,
+	TextStyleFontWeight,
+} from 'pixi.js';
 import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
@@ -11,8 +20,41 @@ import type { HandleOptions, HitAreaOptions, GraphicUIProperties } from './types
 import { reactive, shallowReactive } from 'vue';
 import { FramedContainer } from './class/framedContainer';
 import { CanvasSocketOptions, ViewportSocketPlugin } from './plugins/viewportSocketPlugin';
-import { ElementPosition } from './types/pixi-container';
+import { ElementPosition, ElementSize } from './types/pixi-container';
 import { GenericContainer } from './class/genericContainer';
+import { decimToHex } from './utils/colorsConvertor';
+import { dragAttachedLines } from './utils/dragAttachedLines';
+import { TextContainer } from './class/textContainer';
+
+export interface TextEditorOptions {
+	text: string;
+	fontSize: number | string;
+	fontWeight?: TextStyleFontWeight;
+	fontStyle?: TextStyleFontStyle;
+	fontFamily?: string | string[];
+	fontPadding?: number;
+	fontAlign?: TextStyleAlign;
+	wordWrap?: boolean;
+	wordWrapWidth?: number;
+	breakWords?: boolean;
+	color: number;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	padding: number;
+	containerized: boolean;
+	lineHeight: number;
+}
+
+export interface ViewportBounds {
+	x: number;
+	y: number;
+	mouseX: number;
+	mouseY: number;
+	scaleX: number;
+	scaleY: number;
+}
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -34,9 +76,11 @@ export class ViewportUI extends Viewport {
 	public mouse: Point;
 	public selectionBoxActive = false;
 	public activeFrameNumber = null;
+	public textEditor: HTMLDivElement;
 
 	public readonly activeFrames: Array<number> = reactive([]);
 	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
+	public viewportBounds = reactive<Partial<ViewportBounds>>({});
 
 	constructor(
 		scene: Scene,
@@ -56,8 +100,18 @@ export class ViewportUI extends Viewport {
 			this.socketPlugin = new ViewportSocketPlugin(this, socketOptions);
 		}
 
+		const canvasWrapper = document.getElementById('viewport');
+		this.textEditor = document.createElement('div');
+		this.textEditor.contentEditable = 'true';
+		this.textEditor.setAttribute('data-placeholder', 'Type something if you want to add some text');
+		this.textEditor.classList.add('textEditor');
+		this.textEditor.addEventListener('input', this.updateTextAreaBounds.bind(this));
+		canvasWrapper.appendChild(this.textEditor);
+
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
@@ -66,10 +120,9 @@ export class ViewportUI extends Viewport {
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
-
-			if (this.socketPlugin) {
-				this.socketPlugin.emit('ws-mouse-moved', this.mouse);
-			}
+			const worldPos = this.toWorld(e.global);
+			this.viewportBounds.mouseX = worldPos.x;
+			this.viewportBounds.mouseY = worldPos.y;
 		});
 
 		this.on('childAdded', (child: CanvasContainer) => {
@@ -98,6 +151,85 @@ export class ViewportUI extends Viewport {
 		});
 	}
 
+	public updateTextAreaBounds(e: Event) {
+		const target = e.target as HTMLDivElement;
+		const text = target.innerText;
+		const unicode = text.charCodeAt(0);
+
+		if (text !== undefined && text !== '' && unicode !== 10) {
+			this.textEditor.classList.remove('blank');
+		} else if (text.trim().length === 0) {
+			this.textEditor.classList.add('blank');
+		}
+
+		const size = { width: this.textEditor.offsetWidth, height: this.textEditor.offsetHeight };
+		this.updateUI(size);
+		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size, true);
+	}
+
+	public startTextEditor(options: Partial<TextEditorOptions>) {
+		const points = this.toScreen(options.x, options.y);
+		this.textEditor.style.color = decimToHex(options.color);
+		this.textEditor.style.left = `${points.x}px`;
+		this.textEditor.style.top = `${points.y}px`;
+		this.textEditor.style.fontSize = `${options.fontSize}px`;
+		this.textEditor.style.display = 'block';
+		this.textEditor.style.padding = `${options.padding}px`;
+		this.textEditor.style.transform = `scale(${this.scaled})`;
+
+		//! This is the best solution i got since increasing the graphical size increase the lineHeight;
+		this.textEditor.style.lineHeight = `${Math.floor((options.fontSize as number) * 1.2)}px`;
+
+		//! This doesn't match exactly between graphic/css;
+		this.textEditor.style.fontWeight = options.fontWeight === '300' ? 'normal' : options.fontWeight;
+		this.textEditor.style.fontStyle = options.fontStyle;
+		this.textEditor.style.textAlign = options.fontAlign;
+
+		if (typeof options.fontFamily !== 'string') {
+			this.textEditor.style.fontFamily = options.fontFamily.join(', ');
+		} else {
+			this.textEditor.style.fontFamily = options.fontFamily;
+		}
+
+		if (options.text !== undefined && options.text !== '') {
+			const perLine = options.text
+				.split('\n')
+				.map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`)
+				.join('');
+			this.textEditor.innerHTML = perLine;
+			this.textEditor.classList.remove('blank');
+		} else {
+			this.textEditor.classList.add('blank');
+		}
+
+		if (options.containerized) {
+			this.textEditor.style.maxWidth = `${options.width}px`;
+			this.textEditor.style.maxHeight = `${options.height}px`;
+		} else {
+			this.textEditor.style.width = `fit-content`;
+			this.textEditor.style.height = `fit-content`;
+		}
+
+		if (options.wordWrap && options.breakWords) {
+			this.textEditor.style.wordBreak = 'break-word';
+			this.textEditor.style.maxWidth = `${options.wordWrapWidth}px`;
+			this.textEditor.style.width = '100%';
+		} else {
+			this.textEditor.style.maxWidth = 'unset';
+			this.textEditor.style.wordBreak = 'unset';
+		}
+
+		this.textEditor.focus();
+		this.textEditor.click();
+		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
+		this.updateUI(size);
+	}
+
+	public endTextEditor() {
+		this.textEditor.style.display = 'none';
+		this.textEditor.blur();
+	}
+
 	public changeGridTheme(isDark: boolean) {
 		this.grid.color = isDark ? 0x27282d : 0xd9d9d9;
 		this.drawGrid();
@@ -121,6 +253,8 @@ export class ViewportUI extends Viewport {
 	}
 
 	private _onViewportMoved() {
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 		this.drawGrid();
 	}
 
@@ -128,7 +262,7 @@ export class ViewportUI extends Viewport {
 		this.zoomPlugin.updateZoomScale();
 
 		if (this.manager.isActive) {
-			const size = this.manager.getSelectedSize();
+			let size = this.manager.getSelectedSize();
 			const viewportWidth = this.worldWidth;
 			const scaledWidth = size.width * this.scaled;
 
@@ -142,53 +276,70 @@ export class ViewportUI extends Viewport {
 				this.toggleUIVisibilty(true);
 			}
 
-			if (this.border) {
-				this.border.draw({
-					...size,
-					x: this.border.x,
-					y: this.border.y,
-					scale: this.scaled,
-				});
+			if (this.textEditor.style.display === 'block') {
+				const points = this.toScreen(size.x, size.y);
+				this.textEditor.style.transform = `scale(${this.scaled})`;
+				this.textEditor.style.left = `${points.x}px`;
+				this.textEditor.style.top = `${points.y}px`;
+				size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
 			}
 
-			if (!this._isHiddenUI) {
-				if (this.resizeHandles?.length > 0) {
-					this.updateResizeHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+			this.updateUI(size);
+		}
 
-				if (this.bezierHandles?.length > 0) {
-					this.updateBezierHandles(
-						{
-							...size,
-							x: this.border.x,
-							y: this.border.y,
-						},
-						true,
-					);
-				}
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
+		this.viewportBounds.scaleX = this.scale.x;
+		this.viewportBounds.scaleY = this.scale.y;
+	}
 
-				if (this.bezierCurveHandles?.length > 0) {
-					this.updateBezierCurveHandle(
-						{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
-						{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
-						true,
-					);
-				}
+	private updateUI(size: ElementSize) {
+		if (this.border) {
+			this.border.draw({
+				...size,
+				x: this.border.x,
+				y: this.border.y,
+				scale: this.scaled,
+			});
+		}
 
-				if (this.resizeHitAreas?.length > 0) {
-					this.updateResizeHitAreas({
+		if (!this._isHiddenUI) {
+			if (this.resizeHandles?.length > 0) {
+				this.updateResizeHandles(
+					{
 						...size,
 						x: this.border.x,
 						y: this.border.y,
-					});
-				}
+					},
+					true,
+				);
+			}
+
+			if (this.bezierHandles?.length > 0) {
+				this.updateBezierHandles(
+					{
+						...size,
+						x: this.border.x,
+						y: this.border.y,
+					},
+					true,
+				);
+			}
+
+			if (this.bezierCurveHandles?.length > 0) {
+				this.updateBezierCurveHandle(
+					{ x: this.bezierCurveHandles[0].x, y: this.bezierCurveHandles[0].y },
+					{ x: this.bezierCurveHandles[1].x, y: this.bezierCurveHandles[1].y },
+					true,
+				);
+			}
+
+			if (this.resizeHitAreas?.length > 0) {
+				this.updateResizeHitAreas({
+					...size,
+					x: this.border.x,
+					y: this.border.y,
+				});
 			}
 		}
 	}
@@ -199,7 +350,11 @@ export class ViewportUI extends Viewport {
 			const visibleBounds = this.getVisibleBounds();
 
 			for (const element of this.children) {
-				if (element instanceof GenericContainer || element instanceof FramedContainer) {
+				if (
+					element instanceof GenericContainer ||
+					element instanceof FramedContainer ||
+					element instanceof TextContainer
+				) {
 					if (element.getLocalBounds().intersects(visibleBounds)) {
 						this.onScreenChildren.push(element);
 					}

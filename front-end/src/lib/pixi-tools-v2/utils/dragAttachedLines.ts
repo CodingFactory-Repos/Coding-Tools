@@ -1,19 +1,24 @@
-import { FramedContainer } from '../class/framedContainer';
-import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
 import { ViewportSocketPlugin } from '../plugins/viewportSocketPlugin';
-import { ElementPosition } from '../types/pixi-container';
+import { CanvasContainer } from '../types/pixi-aliases';
+import { ElementBounds, ElementPosition } from '../types/pixi-container';
 import { BezierHandle } from '../types/pixi-enums';
 import { getLengthFromPoints } from './lengthFromPoints';
 
 export const dragAttachedLines = (
-	container: GenericContainer | FramedContainer,
+	container: CanvasContainer,
 	socketPlugin: ViewportSocketPlugin,
+	overideGeometry?: Partial<ElementBounds>,
+	preventEmit = false,
 ) => {
 	if (container?.linkedLinesUUID?.length > 0) {
 		const containerUUID = container.uuid;
 		const uuids = container.linkedLinesUUID;
 		const { x, y, width, height } = container.getGeometry();
+		const ox = overideGeometry?.x ?? x;
+		const oy = overideGeometry?.y ?? y;
+		const owidth = overideGeometry?.width ?? width;
+		const oheight = overideGeometry?.height ?? height;
 
 		for (let n = 0; n < uuids.length; n++) {
 			//! This break the whole purpose of the plugin, but fuck it.
@@ -28,10 +33,10 @@ export const dragAttachedLines = (
 				const handleId = lineContainer.startContainer.handleId;
 				let point: ElementPosition;
 
-				if (handleId === BezierHandle.T) point = { x: x + width / 2, y: y };
-				else if (handleId === BezierHandle.R) point = { x: x + width, y: y + height / 2 };
-				else if (handleId === BezierHandle.L) point = { x: x, y: y + height / 2 };
-				else if (handleId === BezierHandle.B) point = { x: x + width / 2, y: y + height };
+				if (handleId === BezierHandle.T) point = { x: ox + owidth / 2, y: oy };
+				else if (handleId === BezierHandle.R) point = { x: ox + owidth, y: oy + oheight / 2 };
+				else if (handleId === BezierHandle.L) point = { x: ox, y: oy + oheight / 2 };
+				else if (handleId === BezierHandle.B) point = { x: ox + owidth / 2, y: oy + oheight };
 
 				line.start = point;
 				const lineLength = getLengthFromPoints(line.start, line.end);
@@ -68,10 +73,10 @@ export const dragAttachedLines = (
 				const handleId = lineContainer.endContainer.handleId;
 				let point: ElementPosition;
 
-				if (handleId === BezierHandle.T) point = { x: x + width / 2, y: y };
-				else if (handleId === BezierHandle.R) point = { x: x + width, y: y + height / 2 };
-				else if (handleId === BezierHandle.L) point = { x: x, y: y + height / 2 };
-				else if (handleId === BezierHandle.B) point = { x: x + width / 2, y: y + height };
+				if (handleId === BezierHandle.T) point = { x: ox + owidth / 2, y: oy };
+				else if (handleId === BezierHandle.R) point = { x: ox + owidth, y: oy + oheight / 2 };
+				else if (handleId === BezierHandle.L) point = { x: ox, y: oy + oheight / 2 };
+				else if (handleId === BezierHandle.B) point = { x: ox + owidth / 2, y: oy + oheight };
 
 				line.end = point;
 				const lineLength = getLengthFromPoints(line.start, line.end);
@@ -104,7 +109,9 @@ export const dragAttachedLines = (
 				line.draw();
 			}
 
-			socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
+			if (!preventEmit) {
+				socketPlugin.emit('ws-line-updated', lineContainer.uuid, lineContainer.serializeControl());
+			}
 		}
 	}
 };

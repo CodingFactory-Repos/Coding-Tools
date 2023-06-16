@@ -22,6 +22,7 @@ import { GenericContainer } from './genericContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { PixiEventMode } from '../types/pixi-enums';
 import { LineContainer } from './lineContainer';
+import { TextContainer } from './textContainer';
 
 export class FramedContainer extends PluginContainer {
 	protected readonly manager: ContainerManager;
@@ -234,9 +235,7 @@ export class FramedContainer extends PluginContainer {
 		for (const element of this.mainContainer.children) {
 			if (element instanceof Rectangle) {
 				graphics.push(element);
-			} else if (element instanceof GenericContainer) {
-				graphics.push(element.getGraphicChildren());
-			} else if (element instanceof LineContainer) {
+			} else if (!(element instanceof FramedContainer)) {
 				graphics.push(element.getGraphicChildren());
 			}
 		}
@@ -251,12 +250,11 @@ export class FramedContainer extends PluginContainer {
 			if (element instanceof Rectangle) {
 				const clonedChild = element.clone();
 				clonedChild.alpha = element.alpha;
+				clonedChild.width = element.width;
+				clonedChild.height = element.height;
 				clonedChild.position.copyFrom(element.position);
 				cloned.addChild(clonedChild);
-			} else if (element instanceof GenericContainer) {
-				const clonedContainer = element.cloneToContainer();
-				cloned.addChild(clonedContainer);
-			} else if (element instanceof LineContainer) {
+			} else if (!(element instanceof FramedContainer)) {
 				const clonedContainer = element.cloneToContainer();
 				cloned.addChild(clonedContainer);
 			}
@@ -272,9 +270,7 @@ export class FramedContainer extends PluginContainer {
 		for (const element of this.mainContainer.children) {
 			if (element instanceof Rectangle) {
 				backgroundSerialized = element.serialized();
-			} else if (element instanceof GenericContainer) {
-				genericContainerSerialized.push(element.serializeData());
-			} else if (element instanceof LineContainer) {
+			} else if (!(element instanceof FramedContainer)) {
 				genericContainerSerialized.push(element.serializeData());
 			}
 		}
@@ -310,7 +306,7 @@ export class FramedContainer extends PluginContainer {
 		for (const element of this.mainContainer.children) {
 			if (element instanceof Rectangle) {
 				backgroundSerialized = element.serializedBounds();
-			} else if (element instanceof GenericContainer) {
+			} else if (element instanceof GenericContainer || element instanceof TextContainer) {
 				genericContainerSerializedBounds.push(element.serializeBounds());
 			} else if (element instanceof LineContainer) {
 				genericContainerSerializedBounds.push(element.serializeControl());
@@ -340,9 +336,7 @@ export class FramedContainer extends PluginContainer {
 		for (const element of this.mainContainer.children) {
 			if (element instanceof Rectangle) {
 				backgroundSerialized = element.serializedColorimetry();
-			} else if (element instanceof GenericContainer) {
-				genericContainerSerialized.push(element.serializedColorimetry());
-			} else if (element instanceof LineContainer) {
+			} else if (!(element instanceof FramedContainer)) {
 				genericContainerSerialized.push(element.serializedColorimetry());
 			}
 		}

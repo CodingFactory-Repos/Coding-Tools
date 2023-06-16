@@ -38,7 +38,15 @@ export class CallsController {
 	@UseGuards(JwtAuthGuard)
 	async actualCourse(@Jwt() userId: ObjectId, @Res() res: Response) {
 		const actualCourse = await this.callsService.getActualCourse(userId);
-		return res.status(201).json({ status: 'ok', actualCourse: actualCourse });
+		const message = await this.callsService.getMessage(actualCourse, userId);
+		return res.status(201).json({ status: 'ok', actualCourse: actualCourse, message: message });
+	}
+	@Get('/actual_course_group')
+	@UseGuards(JwtAuthGuard)
+	async actualCourseGroup(@Jwt() userId: ObjectId, @Res() res: Response) {
+		const actualCourse = await this.callsService.getActualCourseGroup(userId);
+		const message = await this.callsService.getMessage(actualCourse._id, userId);
+		return res.status(201).json({ status: 'ok', actualCourse: actualCourse, message: message });
 	}
 
 	@Get('/student_list/:courseId')
@@ -46,6 +54,13 @@ export class CallsController {
 	async studentList(@Param() courseId: CourseIdObject, @Res() res: Response) {
 		const studentList = await this.callsService.getStudentList(courseId);
 		return res.status(201).json({ status: 'ok', studentList: studentList });
+	}
+
+	@Get('/student_array')
+	@UseGuards(JwtAuthGuard)
+	async studentArray(@Jwt() @Res() res: Response) {
+		const studentArray = await this.callsService.getAllStudents();
+		return studentArray;
 	}
 
 	@Get('/get_groups/:courseId')
@@ -86,7 +101,6 @@ export class CallsController {
 		@Body()
 		newMessage: MessageObject,
 	) {
-		console.log('yo');
 		await this.callsService.saveMessage(userId, courseId, newMessage);
 	}
 
@@ -121,5 +135,12 @@ export class CallsController {
 	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PRODUCT_OWNER))
 	async isProductOwner(@Jwt() userId: ObjectId, @Res() res: Response) {
 		return res.status(201).json({ isProductOwner: true });
+	}
+
+	@Get('/is_pedagogue')
+	@UseGuards(JwtAuthGuard, new RoleValidator(Roles.PEDAGOGUE))
+	async IsPedagogue(@Jwt() userId: ObjectId, @Res() res: Response) {
+		console.log(Roles.PEDAGOGUE);
+		return res.status(201).json({ isPedagogue: true });
 	}
 }

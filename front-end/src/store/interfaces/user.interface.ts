@@ -1,5 +1,6 @@
 import { DeepPartial } from '@/interfaces/advanced-types.interface';
 import { User } from '@/store/interfaces/auth.interfaces';
+import { Article } from './article.interface';
 
 export interface UserStore {
 	temporaryProfileUser: DeepPartial<User>;
@@ -7,6 +8,7 @@ export interface UserStore {
 	uploadWaitingList: Array<boolean>;
 	relatedProfiles: Array<UserProfileList>;
 	relatedUserProfile: IRelatedUserProfile;
+	myArticles: Array<Article>;
 
 	saveProfile?: (this: UserStore) => Promise<boolean | undefined>;
 	uploadFinished?: (this: UserStore) => boolean;
@@ -26,7 +28,10 @@ export interface UserProfileList {
 	lastName: string;
 	id: string;
 }
-
 export interface UserCanvasList extends UserProfileList {
+	pending?: boolean;
+}
+
+export interface UserRetroList extends UserProfileList {
 	pending?: boolean;
 }

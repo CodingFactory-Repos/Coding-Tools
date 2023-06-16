@@ -1,7 +1,16 @@
 import { FramedContainer } from '../class/framedContainer';
 import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
-import { Circle, Rectangle, Triangle, LineBezier, Tree, Ellipse } from '../model/template';
+import { TextContainer } from '../class/textContainer';
+import {
+	Circle,
+	Rectangle,
+	Triangle,
+	LineBezier,
+	Tree,
+	Ellipse,
+	TextArea,
+} from '../model/template';
 
 export const GeometryTypes = {
 	//TODO Mettre les objet à la place via constructeur - Thomas
@@ -13,6 +22,7 @@ export const GeometryTypes = {
 	bezier: LineBezier,
 	tree: Tree,
 	ellipse: Ellipse,
+	textarea: TextArea,
 
 	//! BROKEN DON'T USE
 	//polygon: Polygon, // Bugged
@@ -26,6 +36,7 @@ export const ContainerType = {
 	generic: GenericContainer,
 	frame: FramedContainer,
 	line: LineContainer,
+	text: TextContainer,
 } as const;
 
 export enum ResizeHandle {
@@ -61,6 +72,9 @@ export const ResizeHandleOppositeOf = {
 	[ResizeHandle.R]: { x: ResizeHandle.L, y: null },
 	[ResizeHandle.L]: { x: ResizeHandle.R, y: null },
 };
+
+export const GenericResize = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.LB];
+export const OrthogonalResize = [ResizeHandle.T, ResizeHandle.B, ResizeHandle.R, ResizeHandle.L];
 
 export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
 export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];
@@ -103,3 +117,19 @@ export const TypeBlueprintText = {
 	"5": "Elevator pitch",
 } as const;
 
+export enum BlueprintKey {
+	DEFAULT = 0,
+	IMPACT_MAPPING = 1,
+	EMPATHY_MAP = 2,
+	PERSONA = 3,
+	PRUNE_THE_PROJECT_TREE = 4,
+	ELEVATOR_PITCH = 5,
+}
+
+export const BlueprintTypeName = {
+	'1': 'impactmapping',
+	'2': 'empathymap',
+	'3': 'personas',
+	'4': 'prunetheprojecttree',
+	'5': 'elevatorpitch',
+};

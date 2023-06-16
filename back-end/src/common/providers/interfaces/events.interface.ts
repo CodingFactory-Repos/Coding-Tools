@@ -5,6 +5,8 @@ export enum Events {
 	askActivationToken = 'mailjet.token.askActivation',
 	askResetToken = 'mailjet.token.askReset',
 	canvasInvitationRequest = 'mailjet.canvas.invitation',
+	newTutorial = 'mailjet.new.tutorial',
+	retroInvitationRequest = 'mailjet.retro.invitation',
 }
 
 export enum MailjetTemplate {
@@ -15,4 +17,6 @@ export enum MailjetTemplate {
 	resetToken = 4433132,
 	dailyAbsence = 4842752,
 	canvasInvitationRequest = 4841661,
+	newTutorial = 4861713,
+	retroInvitationRequest = 4861164,
 }

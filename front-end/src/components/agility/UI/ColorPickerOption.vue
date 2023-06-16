@@ -31,6 +31,8 @@ import { GenericContainer } from '@/lib/pixi-tools-v2/class/genericContainer';
 import { LineContainer } from '@/lib/pixi-tools-v2/class/lineContainer';
 import { FramedContainer } from '@/lib/pixi-tools-v2/class/framedContainer';
 import { useThemeStore } from '@/store/modules/theme.store';
+import { TextContainer } from '@/lib/pixi-tools-v2/class/textContainer';
+import { hexToDecim, addOpacityToHex, decimToHex } from '@/lib/pixi-tools-v2/utils/colorsConvertor';
 
 interface ColorPickerUpdate {
 	hex: string;
@@ -64,19 +66,6 @@ const selectedUUID = computed(() => selectedContainers.value.map((ctn) => ctn.uu
 const colorPickerOpen = ref(false);
 const color = ref();
 
-const decimToHex = (color: number) => {
-	return "#" + color.toString(16).padStart(6, '0');
-}
-
-const hexToDecim = (color: string) => {
-	return parseInt(color.replace("#", ""), 16);
-}
-
-const addOpacityToHex = (hex: string, opacity: number) => {
-	const alpha = Math.round(opacity * 255).toString(16);
-	return hex + alpha;
-}
-
 const changeColor = (col: ColorPickerUpdate) => {
 	if(col.hex === '' || col.hex === '#') return;
 	color.value = col.hex;
@@ -97,7 +86,7 @@ const changeColor = (col: ColorPickerUpdate) => {
 
 		if(projectStore.scene.viewport.socketPlugin) {
 			const parent = graphic.parent;
-			if(parent instanceof GenericContainer || parent instanceof LineContainer) {
+			if(parent instanceof GenericContainer || parent instanceof LineContainer || parent instanceof TextContainer) {
 				projectStore.scene.viewport.socketPlugin.emit(
 					'ws-element-colorized',
 					parent.uuid,

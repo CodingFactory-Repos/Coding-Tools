@@ -45,7 +45,8 @@ export class AppController {
 				],
 			}),
 		)
-		file: Express.Multer.File,
+		file: // @ts-ignore
+		any,
 		@Param('context') context: string,
 		@Res() res: Response,
 	) {

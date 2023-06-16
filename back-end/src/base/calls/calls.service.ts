@@ -44,12 +44,24 @@ export class CallsService {
 	}
 
 	async getActualCourse(userId: ObjectId) {
-		const actualCourse = await this.callsRepository.getActualCourse(userId);
+		return await this.callsRepository.getActualCourse(userId);
+	}
+
+	async getActualCourseGroup(userId: ObjectId) {
+		const actualCourse = await this.callsRepository.getActualCourseGroup(userId);
 		return actualCourse;
+	}
+
+	async getMessage(actualCourse, userId: ObjectId) {
+		return await this.callsRepository.getMessage(actualCourse, userId);
 	}
 	async getStudentList(courseId: CourseIdObject) {
 		const studentIdList = await this.callsRepository.getStudentIdList(courseId.courseId);
 		return this.callsRepository.getStudentList(courseId.courseId, studentIdList);
+	}
+
+	async getAllStudents() {
+		return await this.callsRepository.getAllStudents();
 	}
 
 	async getStudentIdentity(userId: ObjectId) {

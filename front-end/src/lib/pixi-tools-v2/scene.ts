@@ -12,7 +12,7 @@ export class Scene extends Application {
 		canvas: HTMLCanvasElement,
 		heightOffset: number,
 		isDark: boolean,
-		socketOptions?: CanvasSocketOptions,
+		socketOptions?: CanvasSocketOptions
 	) {
 		super({
 			view: canvas,

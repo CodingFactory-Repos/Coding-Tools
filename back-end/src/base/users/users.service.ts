@@ -248,4 +248,120 @@ export class UsersService {
 
 		return users ?? [];
 	}
+
+	//  RETRO SECTION SEARCH
+	async getUserListOnRoomRetro(roomId: string, user: string) {
+		if (
+			!roomId ||
+			roomId === '' ||
+			roomId === 'null' ||
+			roomId === 'undefined' ||
+			!user ||
+			user === '' ||
+			user === 'null' ||
+			user === 'undefined'
+		) {
+			throw new ServiceError('BAD_REQUEST', 'Invalid queries');
+		}
+
+		const users = await this.usersRepository.users
+			.aggregate([
+				{
+					$match: {
+						$or: [
+							{ 'profile.firstName': { $regex: user, $options: 'i' } },
+							{ 'profile.lastName': { $regex: user, $options: 'i' } },
+						],
+						role: { $in: [1, 2] },
+					},
+				},
+				{
+					$lookup: {
+						from: 'retrospectives',
+						pipeline: [
+							{
+								$match: {
+									slug: roomId,
+								},
+							},
+						],
+						as: 'matchedDocuments',
+					},
+				},
+				{
+					$lookup: {
+						from: 'retrospectives-room-invitation',
+						let: {
+							roomId: '$matchedDocuments._id',
+							userId: '$_id',
+						},
+						pipeline: [
+							{
+								$match: {
+									$expr: {
+										$and: [
+											{ $eq: ['$retroId', { $arrayElemAt: ['$$roomId', 0] }] },
+											{ $eq: ['$userId', '$$userId'] },
+										],
+									},
+								},
+							},
+							{
+								$project: {
+									_id: 1,
+								},
+							},
+						],
+						as: 'pendingInvitations',
+					},
+				},
+				{
+					$match: {
+						$and: [
+							{
+								$expr: {
+									$not: {
+										$in: ['$_id', { $arrayElemAt: ['$matchedDocuments.allowedPeers', 0] }],
+									},
+								},
+							},
+							{
+								$expr: {
+									$not: {
+										// We know matchedDocuments is single, but it's inside an array
+										$in: ['$_id', '$matchedDocuments.creator'],
+									},
+								},
+							},
+						],
+					},
+				},
+				{
+					$project: {
+						_id: 0,
+						id: '$_id',
+						picture: '$profile.picture',
+						firstName: '$profile.firstName',
+						lastName: '$profile.lastName',
+						groupName: '$schoolProfile.groupName',
+						pending: {
+							$cond: {
+								if: { $gt: [{ $size: '$pendingInvitations' }, 0] },
+								then: true,
+								else: false,
+							},
+						},
+					},
+				},
+				{
+					$sort: { firstName: 1 },
+				},
+				{
+					$limit: 10,
+				},
+			])
+			.toArray();
+
+		return users ?? [];
+	}
 }

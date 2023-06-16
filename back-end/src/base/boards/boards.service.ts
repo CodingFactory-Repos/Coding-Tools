@@ -12,6 +12,21 @@ export class BoardsService {
 		private boardsRepository: BoardsRepository,
 	) {}
 
-	// Business logic methods goes there...
-	// Define your own methods
+	async getBoards() {
+		return await this.boardsRepository.getBoards();
+	}
+
+	async getBoardByProjectId(id) {
+		return await this.boardsRepository.getBoardByProjectId(id);
+	}
+
+	// Function to add an article
+	async createBoard(query) {
+		return await this.boardsRepository.createBoard(query);
+	}
+
+	async deleteBoardById(id) {
+		return await this.boardsRepository.deleteOneBoard(id);
+	}
+
 }

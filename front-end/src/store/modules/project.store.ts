@@ -15,7 +15,9 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
 	canvas: null,
 	default: true,
+	internalLoading: true,
 	deferredGeometry: null,
+	deferredContainer: null,
 	deferredBlueprint: null,
 	selectionBox: null,
 	onFullscreen: false,
@@ -25,6 +27,8 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	pdfViewerOpen: false,
 	refreshPdfViewer: 0,
 	timerId: null,
+	personaBuilder: undefined,
+	baseTemplate: 0,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -39,15 +43,18 @@ export const useProjectStore = defineStore('project', {
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
 		},
+		getViewportBounds(this: ProjectStore) {
+			return this.scene?.viewport.viewportBounds;
+		},
 		getImages(this: ProjectStore) {
-			if(!this.pdfViewerOpen) return [];
+			if (!this.pdfViewerOpen) return [];
 			this.refreshPdfViewer;
 
 			const frames = this.scene?.viewport?.childFrames || [];
 			const len = frames.length;
 
 			const reactiveImages: Array<FramedPDF> = [];
-			for(let n = 0; n < len; n++) {
+			for (let n = 0; n < len; n++) {
 				const container = frames[n];
 				const { width, height, isBlueprint, typeBlueprint } = container;
 				const cloneContainer = container.cloneToContainer();
@@ -69,7 +76,7 @@ export const useProjectStore = defineStore('project', {
 					dimension: {
 						width: Math.floor(width),
 						height: Math.floor(height),
-					}
+					},
 				});
 
 				cloneContainer.destroy();
@@ -77,7 +84,7 @@ export const useProjectStore = defineStore('project', {
 			}
 
 			return reactiveImages;
-		}
+		},
 	},
 	actions: {
 		startRefreshing(this: ProjectStore) {
@@ -114,6 +121,14 @@ export const useProjectStore = defineStore('project', {
 
 			const scene = toRaw(this.scene);
 			scene.viewport.on('pointerup', this.createBlueprint);
+		},
+		setTextEvent(this: ProjectStore, cursor: CSSStyleProperty.Cursor) {
+			this.default = false;
+			this.canvas.classList.toggle(cursor);
+			this.removeGeometryEvent();
+
+			const scene = toRaw(this.scene);
+			scene.viewport.on('pointerup', this.createGeometry);
 		},
 		removeGeometryEvent(this: ProjectStore) {
 			// We remove all the event related to pointerup if they exist.
@@ -157,7 +172,7 @@ export const useProjectStore = defineStore('project', {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
 			const data: Partial<SerializedContainer> = {
-				typeId: 'generic',
+				typeId: this.deferredContainer,
 				childs: [
 					{
 						typeId: this.deferredGeometry,
@@ -176,20 +191,16 @@ export const useProjectStore = defineStore('project', {
 			scene.viewport.off('pointerup', this.createGeometry);
 			this.canvas.classList.toggle('default');
 			this.deferredGeometry = null;
+			this.deferredContainer = null;
 			this.default = true;
 		},
 		createBlueprint(this: ProjectStore, event: FederatedPointerEvent) {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
-			const generateBlueprint: Function | null = getAgileBlueprints[this.deferredBlueprint];
+			const generateBlueprint = getAgileBlueprints[this.deferredBlueprint];
 			if (generateBlueprint === null) return;
 
-			const data = generateBlueprint(
-				scene.viewport,
-				point,
-				1200,
-				900,
-			) as Partial<SerializedContainer>;
+			const data = generateBlueprint(scene.viewport, point, 1200, 900, this.personaBuilder);
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
@@ -199,6 +210,7 @@ export const useProjectStore = defineStore('project', {
 			this.canvas.classList.toggle('default');
 			this.deferredBlueprint = null;
 			this.default = true;
+			this.personaBuilder = undefined;
 		},
 		increaseZoom(this: ProjectStore) {
 			const scene = toRaw(this.scene);
