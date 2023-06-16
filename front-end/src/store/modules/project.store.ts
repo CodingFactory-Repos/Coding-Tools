@@ -56,17 +56,12 @@ export const useProjectStore = defineStore('project', {
 			const reactiveImages: Array<FramedPDF> = [];
 			for (let n = 0; n < len; n++) {
 				const container = frames[n];
-				const { width, height } = container;
+				const { width, height, isBlueprint, typeBlueprint } = container;
 				const cloneContainer = container.cloneToContainer();
 				const { x, y } = cloneContainer.getBounds();
 				cloneContainer.position.set(-x, -y);
 
-				const renderer = new Renderer({
-					resolution: devicePixelRatio + 1,
-					width: height,
-					height: width,
-					backgroundAlpha: 0,
-				});
+				const renderer = new Renderer({ resolution: devicePixelRatio + 1, width, height, backgroundAlpha: 0 });
 				renderer.render(cloneContainer);
 
 				const canvas = renderer.view;
@@ -75,6 +70,8 @@ export const useProjectStore = defineStore('project', {
 				reactiveImages.push({
 					id: container.uuid,
 					order: n + 1,
+					isBlueprint,
+					typeBlueprint,
 					base64: imageData,
 					dimension: {
 						width: Math.floor(width),

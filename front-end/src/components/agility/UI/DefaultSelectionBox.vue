@@ -34,7 +34,7 @@
 							<div class="list-group-item flex flex-col gap-2 relative p-3 pl-[2.75rem] hover:bg-dark-tertiary cursor-pointer">
 								<span class="absolute top-2 left-[1rem] text-white font-bold text-lg">{{ element.order }}</span>
 								<div class="border-2 border-dark-highlight rounded-lg overflow-hidden w-full h-36">
-									<img :src="element.base64" class="w-full h-full object-fit">
+									<img :src="element.base64" class="w-full h-full object-fit" :alt="`image_frame_${element.id}`">
 								</div>
 								<div class="flex items-center justify-center">
 									<span class="text-xs text-white font-bold bg-[#85397c] px-3 py-0.5 rounded-lg">
@@ -51,6 +51,7 @@
 						text-style="text-black dark:text-white font-bold text-sm"
 						background="bg-light-secondary hover:bg-light-tertiary dark:bg-dark-tertiary"
 						class="w-32 min-w-[8rem]"
+						@click="generatePdf()"
 					/>
 				</div>
 			</div>
@@ -60,7 +61,6 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-
 import SelectionBox from '@/components/common/uix/SelectionBox.vue';
 import IconButton from '@/components/common/buttons/Icon.vue';
 import Draggable from 'vuedraggable';
@@ -71,6 +71,10 @@ import SvgSideBar from '@/components/common/svg/SideBar.vue';
 import SvgShrink from '@/components/common/svg/Shrink.vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import DefaultButton from '@/components/common/buttons/Default.vue';
+import * as _ from 'pdfmake/build/vfs_fonts.js';
+import { exportToPdf} from '@/lib/pixi-tools-v2/utils/generatePdf';
+
+const fonts =  globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
 
 const projectStore = useProjectStore();
 
@@ -147,4 +151,8 @@ const decreaseZoom = () => {
 	projectStore.decreaseZoom();
 }
 
+
+const generatePdf = () => {
+    exportToPdf(childImages.value);
+  };
 </script>
