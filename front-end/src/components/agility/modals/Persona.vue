@@ -80,32 +80,16 @@ import PersonaBuilderGoalAndNeed from '@/components/agility/persona/BuilderGoalA
 import BuilderChallengesAndDifficulties from '@/components/agility/persona/BuilderChallengesAndDifficulties.vue';
 import BuilderSkillsAndCommentary from '@/components/agility/persona/BuilderSkillsAndCommentary.vue';
 import DefaultButton from '@/components/common/buttons/Default.vue';
+import { PersonaBuilder } from '@/lib/pixi-tools-v2/blueprint/personas';
+import { DeepPartial } from '@/interfaces/advanced-types.interface';
 
-export interface PersonaBuilder {
-	profile: {
-		name: string;
-		age: string;
-		professionalBackground: string;
-		personalSituation: string;
-		motivation: string;
-		bio: string;
-		verbatism: string;
-	}
-	goals: Array<string>;
-	needs: Array<string>;
-	skills: Array<string>;
-	challenges: Array<string>;
-	difficulties: Array<string>;
-	commentary: string;
-}
-
-const persona = reactive({
+const persona = reactive<DeepPartial<PersonaBuilder>>({
 	profile: {},
 	goals: [],
 	needs: [],
-	skills: [],
 	difficulties: [],
 	challenges: [],
+	skills: '',
 	commentary: '',
 })
 
@@ -125,6 +109,7 @@ const beforeModalClose = () => {
 }
 
 const finishPersona = (type: LitteralBlueprintTypes) => {
+	projectStore.personaBuilder = persona;
 	projectStore.deferredBlueprint = type;
 	projectStore.setBlueprintEvent('pointer');
 	closePersonaModal();

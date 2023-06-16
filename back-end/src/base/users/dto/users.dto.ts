@@ -57,13 +57,13 @@ class UserProfileDTO {
 
 	@IsOptional()
 	@IsString({ message: 'Invalid type format' })
-	@Length(0, 80, { message: 'Profile picture link must be between 0 and 80 characters' })
+	@Length(0, 120, { message: 'Profile picture link must be between 0 and 120 characters' })
 	@Matches(STRICT_API_URL, { message: 'Your profile picture must be a valid url' })
 	picture: string;
 
 	@IsOptional()
 	@IsString({ message: 'Invalid type format' })
-	@Length(0, 80, { message: 'Profile background link be between 0 and 80 characters' })
+	@Length(0, 120, { message: 'Profile background link be between 0 and 120 characters' })
 	@Matches(STRICT_API_URL, { message: 'Your profile background must be a valid url' })
 	background: string;
 
@@ -118,7 +118,7 @@ class UserBusinessProfileDTO {
 	@IsOptional()
 	@IsString({ message: 'Invalid type format' })
 	@Matches(STRICT_API_URL, { message: 'Your company logo must be a valid url' })
-	@Length(0, 80, { message: 'Company logo link be between 0 and 80 characters' })
+	@Length(0, 120, { message: 'Company logo link be between 0 and 120 characters' })
 	companyLogo: string;
 
 	@IsOptional()
