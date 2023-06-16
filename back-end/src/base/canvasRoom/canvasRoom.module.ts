@@ -12,6 +12,7 @@ import { CanvasGateway } from '@/common/gateways/canvas.global.gateway';
 import { JwtService } from '@nestjs/jwt';
 import { CanvasRoomInvitationRepository } from './canvasRoomInvitation.repository';
 import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
+import { CursorGateway } from '@/common/gateways/cursor.global.gateway';
 
 @Module({
 	imports: [DatabaseModule, MailjetModule, forwardRef(() => AuthModule)],
@@ -23,6 +24,7 @@ import { MailjetModule } from '@/external-modules/mailjet/mailjet.module';
 		CanvasRoomInvitationRepository,
 		UsersRepository,
 		CanvasGateway,
+		CursorGateway,
 	],
 	controllers: [CanvasRoomController],
 	exports: [CanvasRoomService, CanvasRoomRepository],

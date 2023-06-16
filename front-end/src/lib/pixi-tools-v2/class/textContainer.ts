@@ -292,7 +292,7 @@ export class TextContainer extends PluginContainer {
 	}
 
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
-		const graphic = this.getGraphicChildren()[0];
+		const graphic = this.getGraphicChildren()[0] as TextArea;
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = (serializedBounds.childs[0] as SerializedGraphic).bounds;
 
@@ -301,9 +301,20 @@ export class TextContainer extends PluginContainer {
 		this.absMaxX = absMaxX;
 		this.absMaxY = absMaxY;
 
-		graphic.position.set(bounds.x, bounds.y);
-		graphic.width = bounds.width;
-		graphic.height = bounds.height;
+		try {
+			//@ts-ignore
+			const { fontSize, fontPadding } = serializedBounds?.childs[0]?.properties;
+			graphic.textSprite.style.fontSize = fontSize;
+			graphic.textSprite.style.padding = fontPadding;
+			graphic.draw({
+				x: bounds.x,
+				y: bounds.y,
+				width: bounds.width,
+				height: bounds.height,
+			})
+		} catch(err) {
+			console.error("Could not update the tree bounds graphic properties")
+		}
 	}
 
 	public attachLine(lineUUID: string) {

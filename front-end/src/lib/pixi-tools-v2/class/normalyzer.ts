@@ -37,8 +37,6 @@ export class Normalizer {
 				attributes.bounds = {
 					x: position.x - width / 2,
 					y: position.y - height / 2,
-					width,
-					height,
 				};
 			} else {
 				const width = 200; // Need to find a solution rather than hardcoded
