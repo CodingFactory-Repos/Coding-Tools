@@ -89,7 +89,8 @@
 								class="mt-12 block max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
 							>
 								<h2>{{ description }}</h2>
-								<div>Publié le : {{ date }}</div>
+								<p>Publié le : {{ formatDate(date) }}</p>
+								<p>Par : {{ user }}</p>
 							</div>
 						</div>
 
@@ -277,6 +278,7 @@ import Add from '../common/svg/Add.vue';
 import AddComment from '@/components/blog/AddComment.vue';
 import ModalOverlay from '@/components/common/Modal.vue';
 import MarkdownItClass from '@toycode/markdown-it-class';
+import { useMaterialStore } from '@/store/modules/material.store';
 
 const props = defineProps({
 	markdown: {
@@ -292,6 +294,9 @@ const props = defineProps({
 // get store
 const articleStore = useArticleStore();
 const oneItems = computed(() => articleStore.oneItems);
+
+// get user by Id
+const materialStore = useMaterialStore();
 
 const showCommentModal = ref(false);
 const openCommentModal = () => (showCommentModal.value = true);
@@ -328,9 +333,18 @@ if (!props.markdown) {
 	onMounted(async () => {
 		await getArticleById(_id.value);
 		srcMarkdown.value = oneItems.value.content;
-		date.value = formatDateField(oneItems.value.date);
+		date.value = oneItems.value.date;
 		title.value = oneItems.value.title;
 		description.value = oneItems.value.descriptions;
+		let tempUser = await materialStore.getUserById(oneItems.value.owner._id);
+
+		// format for captital letters
+		user.value =
+			tempUser.profile.firstName.charAt(0).toUpperCase() +
+			tempUser.profile.firstName.slice(1) +
+			' ' +
+			tempUser.profile.lastName.charAt(0).toUpperCase() +
+			tempUser.profile.lastName.slice(1);
 
 		renderMarkdown();
 	});
@@ -351,6 +365,7 @@ const step = ref(0);
 const title = ref('Your title here');
 const date = ref('The date it was uploaded');
 const description = ref('Your description here');
+const user = ref('Vous');
 
 // visuals
 const open = ref(false);

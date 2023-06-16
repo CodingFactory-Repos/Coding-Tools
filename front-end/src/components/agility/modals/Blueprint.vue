@@ -71,4 +71,7 @@ onMounted(() => {
 })
 
 openBlueprintModal();
+defineExpose({
+	openPersonaModal
+})
 </script>
