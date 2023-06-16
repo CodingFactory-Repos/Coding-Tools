@@ -56,8 +56,9 @@ export interface ViewportDefaultPosition {
 export interface FramedPDF {
 	id: string;
 	order: number;
-	random?: number;
 	base64: string;
+	isBlueprint: boolean,
+	typeBlueprint: number,
 	dimension: {
 		width: number;
 		height: number;
