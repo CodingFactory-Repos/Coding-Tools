@@ -1,7 +1,7 @@
 <template>
 	<div
 		v-if="!updatePostit"
-		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible z-10"
+		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible z-10 shadow-lg dark:bg-gray-700"
 		:class="isOwner && !isLock ? 'cursor-grab' : ''"
 		:draggable="isOwner && !isLock"
 		@dragstart="dragStart"
@@ -28,7 +28,7 @@
 				</svg>
 			</button>
 		<div
-			class="text-black break-all"
+			class="text-black break-all dark:text-white"
 			:class="isPostitVisible || isOwner ? '' : 'wave-text'"
 		>
 			<span>
@@ -40,7 +40,7 @@
 	</div>
 	<div
 		v-else
-		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible cursor-grab"
+		class="h-48 w-48 flex justify-center items-center bg-gray-50 relative postit:buttons-visible cursor-grab shadow-lg"
 	>
 		<textarea
 			v-model="postit.value"
@@ -66,7 +66,7 @@
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 11 11"><path d="M2.2 1.19l3.3 3.3L8.8 1.2a.67.67 0 0 1 .5-.2a.75.75 0 0 1 .7.7a.66.66 0 0 1-.2.48L6.49 5.5L9.8 8.82c.13.126.202.3.2.48a.75.75 0 0 1-.7.7a.67.67 0 0 1-.5-.2L5.5 6.51L2.21 9.8a.67.67 0 0 1-.5.2a.75.75 0 0 1-.71-.71a.66.66 0 0 1 .2-.48L4.51 5.5L1.19 2.18A.66.66 0 0 1 1 1.7a.75.75 0 0 1 .7-.7a.67.67 0 0 1 .5.19z" fill="#f7f6f1"/></svg>
 		</button>
-		<div class="text-black text-black flex justify-center items-center absolute w-10 h-10 -bottom-5 -right-4 z-100 bg-[#92ccc9] rounded-full">{{ userPostit }}</div>
+		<div class="text-black uppercase text-black flex justify-center items-center absolute w-10 h-10 -bottom-5 -right-4 z-100 bg-[#92ccc9] rounded-full">{{ userPostit }}</div>
 	</div>
 </template>
 
@@ -86,7 +86,7 @@ const updatePostitArea = ref();
 
 const previousValue = ref("");
 const isPostitVisible = computed(() => props.postit.visible);
-const userPostit = computed(() => props.postit.sylable ? props.postit.sylable : "NC");
+const userPostit = computed(() => props.postit.sylable ? props.postit.sylable.toUpperCase() : "NC");
 
 const isLock = computed(() => {
 	const { isLocked, isRetroEnded } = retroStore.currentRetro;
@@ -141,7 +141,7 @@ const undoModification = () => {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Redacted+Script&display=swap');
 
 .postit\:buttons-visible:hover > .hidden {
 	display: flex;
@@ -150,8 +150,7 @@ const undoModification = () => {
 
 .wave-text > span {
 	font-size: 2rem;
-	font-family: 'Mrs Saint Delafield', cursive;
-	filter: blur(3px);
+	font-family: 'Redacted Script', cursive;
 }
 
 
