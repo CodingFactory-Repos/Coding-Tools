@@ -9,6 +9,7 @@
 /back-end/.gitignore @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
 /back-end/package-lock.json @Maghwyn @AyakorK
+/back-end/package.json @Maghwyn @AyakorK
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.service.ts @Maghwyn @Kevw94
 /back-end/src/auth/ @Kevw94 @Maghwyn
@@ -82,7 +83,7 @@
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/users/allowed.students.repository.ts @Maghwyn @Kevw94
-/back-end/src/base/users/dto/users.dto.ts @Maghwyn
+/back-end/src/base/users/dto/users.dto.ts @Maghwyn @Kevw94
 /back-end/src/base/users/events/users.events.ts @Maghwyn
 /back-end/src/base/users/interfaces/allowed.students.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/users/interfaces/users.interface.ts @Loule95450 @Maghwyn
@@ -127,8 +128,10 @@
 /front-end/package-lock.json @Loule95450 @Maghwyn
 /front-end/package.json @Loule95450 @Maghwyn
 /front-end/public/ @Loule95450 @Maghwyn
+/front-end/public/coding-theme.svg @Maghwyn @Loule95450
 /front-end/public/favicon.ico @Maghwyn
 /front-end/public/template-no-image.png @Maghwyn @Kevw94
+/front-end/public/temporary.jpg @Maghwyn @Loule95450
 /front-end/src/ @Loule95450 @Maghwyn
 /front-end/src/api/ @Maghwyn
 /front-end/src/api/agility-req.ts @Loule95450 @Maghwyn
@@ -152,19 +155,22 @@
 /front-end/src/components/account/AccountProfile.vue @Maghwyn
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
-/front-end/src/components/agility/ @Maghwyn
+/front-end/src/components/agility/ @AyakorK @Maghwyn
+/front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
 /front-end/src/components/agility/AgilityCanvasUI.vue @Maghwyn @Loule95450
-/front-end/src/components/agility/AgilityProjectDisplay.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
 /front-end/src/components/agility/cards/AgilityTemplateCard.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/modals/ @Maghwyn
+/front-end/src/components/agility/modals/Blueprint.vue @Maghwyn
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
+/front-end/src/components/agility/UI/ @Maghwyn
 /front-end/src/components/agility/UI/CanvasLoader.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
-/front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/UI/MiroSelectionBox.vue @Maghwyn
 /front-end/src/components/agility/UI/SceneUI.vue @Maghwyn @Kevw94
+/front-end/src/components/agility/UI/ShareProject.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/UI/TextAreaEditor.vue @TheoLandemaine
 /front-end/src/components/agility/UI/ToolsEditor.vue @Maghwyn
 /front-end/src/components/auth/ @Loule95450 @Maghwyn
@@ -173,7 +179,7 @@
 /front-end/src/components/auth/signin/AskCredentials.vue @Maghwyn @Loule95450
 /front-end/src/components/blog/ @Maghwyn @TheoLandemaine
 /front-end/src/components/blog/AddTutorial.vue @Maghwyn
-/front-end/src/components/blog/MarkdownViewer.vue @Maghwyn @Loule95450
+/front-end/src/components/blog/StatsArticles.vue @TheoLandemaine
 /front-end/src/components/common/ @Kevw94 @Maghwyn
 /front-end/src/components/common/buttons/Default.vue @Maghwyn @Loule95450
 /front-end/src/components/common/buttons/Icon.vue @Maghwyn @Kevw94
@@ -236,8 +242,15 @@
 /front-end/src/layout/home/ @Loule95450 @Maghwyn
 /front-end/src/lib/ @Loule95450
 /front-end/src/lib/pixi-tools-v2/ @Maghwyn
+/front-end/src/lib/pixi-tools-v2/blueprint/ @AyakorK @Maghwyn
+/front-end/src/lib/pixi-tools-v2/blueprint/empathyMap.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/blueprint/personas.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/class/framedContainer.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/class/genericContainer.ts @Maghwyn @AyakorK
+/front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/class/textContainer.ts @TheoLandemaine @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
@@ -247,13 +260,15 @@
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/plugins/bezierManipulationPlugin.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/plugins/containerBezierLinkPlugin.ts @Maghwyn @Loule95450
-/front-end/src/lib/pixi-tools-v2/plugins/viewportSocketPlugin.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/plugins/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/plugins/containerDragPlugin.ts @Maghwyn @AyakorK
+/front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @Kevw94
+/front-end/src/lib/pixi-tools-v2/plugins/managerDownloadPlugin.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/scene.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/types/pixi-enums.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/types/pixi-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
@@ -301,7 +316,7 @@
 /front-end/src/store/modules/project.store.ts @Maghwyn
 /front-end/src/store/modules/template.store.ts @Maghwyn
 /front-end/src/store/modules/theme.store.ts @Maghwyn @Loule95450
-/front-end/src/store/modules/user.store.ts @Maghwyn @Kevw94 @RuKaSuu
+/front-end/src/store/modules/user.store.ts @Maghwyn @TheoLandemaine @Kevw94
 /front-end/src/store/retrospective.store.ts @AyakorK @Kevw94 @TheoLandemaine
 /front-end/src/styles/ @Maghwyn @TheoLandemaine
 /front-end/src/styles/layout.css @Maghwyn @TheoLandemaine
@@ -324,8 +339,9 @@
 /front-end/src/views/app/ @Loule95450 @Maghwyn
 /front-end/src/views/app/AgilityDashboard.vue @Maghwyn @AyakorK
 /front-end/src/views/app/AgilityInvitation.vue @Maghwyn @Loule95450
-/front-end/src/views/app/AgilityProject.vue @Maghwyn
+/front-end/src/views/app/AgilityProject.vue @Maghwyn @AyakorK
 /front-end/src/views/app/RelatedProfileView.vue @Maghwyn
+/front-end/src/views/BlogStatsView.vue @TheoLandemaine
 /front-end/src/views/calls/GroupsView.vue @Maghwyn
 /front-end/src/views/calls/RollCallView.vue @Maghwyn @AyakorK
 /front-end/src/views/CardArticleView.vue @TheoLandemaine
@@ -334,6 +350,7 @@
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/ @Loule95450 @Maghwyn
+/front-end/src/views/home/HeroView.vue @AyakorK @TheoLandemaine
 /front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
 /front-end/src/views/material-ideas/DraftPdf.vue @Loule95450
