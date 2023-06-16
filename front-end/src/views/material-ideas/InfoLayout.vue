@@ -20,14 +20,22 @@
 		</button>
 		<span class="text-2xl text-dark-primary dark:text-dark-font">Détails</span>
 		<ul class="infoLayout">
-			<!-- <li class="text-l dark-primary dark:text-dark-font" v-for="data in selectedItem">{{ data }}</li> -->
-
 			<li class="mt-3">
 				<span class="text-xs !text-opacity-50 text-dark-primary dark-primary dark:text-dark-font"
 					>Suggestion : </span
 				><br />
 				<span class="text-l text-dark-primary dark:text-dark-font">
 					{{ selectedItem.title }}
+				</span>
+			</li>
+			<li class="mt-3">
+				<span class="text-xs !text-opacity-50 text-dark-primary dark-primary dark:text-dark-font"
+					>Proposé par : </span
+				><br />
+				<span class="text-l text-dark-primary dark:text-dark-font">
+					<!-- ICI -->
+					{{ this.selectedItem.user[0].profile.firstName }}
+					{{ this.selectedItem.user[0].profile.lastName }}
 				</span>
 			</li>
 			<li class="mt-3">
@@ -74,9 +82,9 @@
 <script>
 import Comments from './Comments.vue';
 import Pdf from './DraftPdf.vue';
-
 export default {
 	props: ['selectedItem'],
+
 	created() {
 		this.$emit('getId');
 	},

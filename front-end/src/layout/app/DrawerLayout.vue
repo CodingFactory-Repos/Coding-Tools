@@ -68,7 +68,15 @@
 									<SvgQrCode
 										:class="{
 											'fill-selected-icon dark:fill-selected-icon':
-												route.path.startsWith('/app/rollcall'),
+												route.path.endsWith('/app/rollcall'),
+										}"
+									/>
+								</DrawerRouterOption>
+								<DrawerRouterOption to="/app/rollcall/groups" name="Groups" :fold="!active">
+									<SvgGroup
+										:class="{
+											'fill-selected-icon dark:fill-selected-icon':
+												route.path.endsWith('/app/rollcall/groups'),
 										}"
 									/>
 								</DrawerRouterOption>
@@ -136,6 +144,7 @@ import SvgInventory from '@/components/common/svg/Inventory.vue';
 import SvgBlog from '@/components/common/svg/Blog.vue';
 import SvgResource from '@/components/common/svg/Resource.vue';
 import SvgQrCode from '@/components/common/svg/QrCode.vue';
+import SvgGroup from '@/components/common/svg/Group.vue';
 import SvgNote from '@/components/common/svg/Note.vue';
 import SvgDark from '@/components/common/svg/Dark.vue';
 import SvgLight from '@/components/common/svg/Light.vue';
