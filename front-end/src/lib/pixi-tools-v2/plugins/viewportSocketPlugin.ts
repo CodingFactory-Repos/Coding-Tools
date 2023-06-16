@@ -103,6 +103,10 @@ export class ViewportSocketPlugin extends utils.EventEmitter<CanvasSocketEvents>
 					this.elements[element.uuid] = element;
 					const genericChild = element.getGraphicChildren()[0];
 					this.elements[genericChild.uuid] = genericChild;
+				} else if (element instanceof TextContainer) {
+					this.elements[element.uuid] = element;
+					const genericChild = element.getGraphicChildren()[0];
+					this.elements[genericChild.uuid] = genericChild;
 				} else {
 					this.elements[element.uuid] = element;
 				}
