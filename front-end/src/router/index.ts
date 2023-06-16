@@ -108,10 +108,6 @@ const routes: Array<RouteRecordRaw> = [
 						path: '',
 						component: () => import('../views/OrganisationView.vue'),
 					},
-					{
-						path: 'sprint',
-						component: () => import('../views/SprintsView.vue'),
-					},
 				],
 			},
 			{
