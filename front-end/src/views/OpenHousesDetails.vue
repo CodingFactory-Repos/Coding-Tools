@@ -1,5 +1,5 @@
 <template>
-	<OpenHousesDetails></OpenHousesDetails>
+	<OpenHousesDetails />
 </template>
 
 <script lang="ts" setup>

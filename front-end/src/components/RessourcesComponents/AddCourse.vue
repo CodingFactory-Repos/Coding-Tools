@@ -7,16 +7,34 @@
 			</h3>
 			<div class="modal-body">
 				<form class="w-full max-w-sm">
-					<input type="text" name="title" v-model="this.tag" placeholder="Title :" /><br />
-					<input type="datetime-local" class="text-field" v-model="this.periodStart" /><br />
-					<input type="datetime-local" class="text-field" v-model="this.periodEnd" /><br />
-					<input type="url" placeholder="picture link" v-model="this.picture" /><br />
+					<input type="text" name="title" v-model="tag" placeholder="Title :" /><br />
+					<VueDatePicker
+						placeholder="debut"
+						v-model="periodStart"
+						:format="dateFormat"
+						:language="datePickerLanguage"
+					/>
+					<VueDatePicker
+						placeholder="fin"
+						v-model="periodEnd"
+						:format="dateFormat"
+						:language="datePickerLanguage"
+					/>
+					<input type="url" placeholder="picture link" v-model="picture" /><br />
 					<input
 						type="text"
 						name="language"
-						v-model="this.language"
+						v-model="language"
 						placeholder="Language :"
-					/><br />
+						@input="searchLanguage"
+						autocomplete="off"
+					/>
+					<ul v-if="showSuggest">
+						<li v-for="suggest in languageSuggest" :key="suggest" @click="selectSuggest(suggest)">
+							{{ suggest }}
+						</li>
+					</ul>
+					<input type="file" id="file" ref="fileInput" @change="onFileSelected" />
 					<div class="flex justify-center mt-6">
 						<button
 							class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -41,6 +59,8 @@
 
 <script lang="ts">
 import { useCoursStore } from '@/store/modules/course.store';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import Swal from 'sweetalert2';
 
 export default {
 	name: 'AddCourses',
@@ -57,11 +77,33 @@ export default {
 			project: [],
 			site: '',
 			teacherId: '',
+            languages: [],
+			languageSuggest: [],
+			showSuggest: false,
+			dateFormat: 'yyyy-MM-dd HH:mm',
+			datePickerLanguage: 'fr', // Langue du date picker
+			selectedFile: null,
+			base64String: '',
 		};
 	},
 	methods: {
-		AddCourses() {
+		AddCourses(event) {
+			event.preventDefault();
+
+			// Vérifier si tous les champs sont remplis
+			if (!this.tag || !this.periodStart || !this.periodEnd || !this.picture || !this.language) {
+				Swal.fire({
+					title: 'Vous devez remplir tous les champs',
+					text: 'Veuillez remplir tous les champs pour ajouter un nouveau cours',
+					icon: 'error',
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'OK',
+				});
+				return;
+			}
 			const course = useCoursStore();
+
 			this.newCourse = {
 				tag: this.tag,
 				classTag: '',
@@ -74,8 +116,73 @@ export default {
 				project: [],
 				site: '',
 				teacherId: '',
+				files: this.base64String,
 			};
-			course.addCourse(this.newCourse);
+
+			Swal.fire({
+				title: 'Votre cours a été ajouté',
+				icon: 'success',
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'OK',
+			}).then(async (result) => {
+				if (result.isConfirmed) {
+					// Ajouter le cours
+					course.addCourse(this.newCourse);
+				}
+			});
+			// Rediriger vers la page des cours
+			this.$emit('close');
+		},
+		onFileSelected(event) {
+			this.selectedFile = event.target.files[0];
+			this.convertToBase64();
+		},
+
+		convertToBase64() {
+			if (this.selectedFile) {
+				const reader = new FileReader();
+				reader.onload = (event) => {
+					let result = event.target.result;
+					this.base64String = result.toString();
+				};
+				reader.readAsDataURL(this.selectedFile);
+			}
+		},
+
+		searchLanguage() {
+			//recherche de toutes les matieres
+			this.showSuggest = true;
+			this.getAllTagCourse();
+			this.languageSuggest = [];
+			this.languages.forEach((element) => {
+				let alreadyInList = false;
+				if (element.toUpperCase().includes(this.language.toUpperCase()) && this.language != '') {
+					this.languageSuggest.forEach((languageInList) => {
+						if (languageInList == element.toUpperCase()) {
+							alreadyInList = true;
+						}
+					});
+					if (!alreadyInList) {
+						this.languageSuggest.push(element.toUpperCase());
+					}
+				}
+			});
+		},
+
+		getAllTagCourse() {
+			this.languages = []; //reset la list
+			const courseStore = useCoursStore();
+			const course = courseStore.items;
+			course.forEach((element) => {
+				if (!this.languages.includes(element.language)) {
+					this.languages.push(element.language);
+				}
+			});
+		},
+
+		selectSuggest(suggest) {
+			this.language = suggest;
 		},
 	},
 };
