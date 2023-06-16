@@ -16,16 +16,16 @@
                     <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 h-fit flex flex-col gap-3 rounded-lg bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start">
                         <h2 class="text-2xl font-bold dark:text-dark-font">Cours actuel</h2>
                         <div class="flex flex-row flex-wrap gap-3">
-                            <div class="bg-[#5C5F73] rounded-lg px-4 py-2">
-                                <p class="text-2xl text-white">{{ selectedCourse }}</p>
+                            <div class="bg-white dark:bg-[#5C5F73] text-dark dark:text-white rounded-lg px-4 py-2">
+                                <p class="text-2xl">{{ selectedCourse }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 h-fit flex flex-col gap-3 rounded-lg bg-light-secondary dark:bg-dark-tertiary py-2 px-4 justify-start items-start">
+                    <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 h-fit gap-3 rounded-lg bg-light-secondary dark:bg-dark-tertiary py-2 px-4">
                         <h2 class="text-2xl font-bold dark:text-dark-font">Votre équipe</h2>
-                        <div class="flex flex-row w-full flex-wrap gap-3">
-                            <div class="bg-[#5C5F73] rounded-lg px-4 py-2 flex flex-col" v-for="studentId in selectedGroup">
-                                <p class="text-2xl text-white">{{ studentId }}</p>
+                        <div class="flex flex-row w-full gap-3">
+                            <div class="bg-white dark:bg-[#5C5F73] text-dark dark:text-white rounded-lg px-4 py-2" v-for="studentId in selectedGroup">
+                                <p class="text-2xl">{{ studentId }}</p>
                             </div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                     </button>
                 </div>
                 <div class="groups">
-                    <div class="iconeGroupe !bg-white dark:!bg-dark-highlight" v-for="projet in projects">
-                        <div>{{ projet.title }}</div>
+                    <div class="iconeGroupe bg-light-tertiary dark:bg-[#5C5F73] rounded-lg px-4 py-2 flex flex-col overflow-y-auto text-dark dark:text-white mr-4 mb-2 overflow-y-auto shadow-lg" v-for="projet in projects">
+                        <div class="text-dark dark:text-white">{{ projet.title }}</div>
                         <button @click="openProject(projet)" class="text-white font-bold rounded-lg text-sm mx-4 my-2 px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir le planning du projet</button>
 
                     </div>
@@ -73,9 +73,9 @@
             <div class="flex">
             <div class="w-full h-fit justify-center rounded-lg bg-light-tertiary dark:bg-dark-tertiary py-4 px-4" v-if="courseId != ''">
                 <h1 class="dark:text-[#9ca3af] text-[#213547]">Membres</h1>
-            <div class="flex flex-row flex-wrap gap-3 mt-4">
-                <div class="bg-[#5C5F73] rounded-lg px-4 py-2" v-for="student in projectGroup" :key="student">
-                    <p class="text-2xl text-white">{{ student }}</p>
+            <div class="bg-white dark:bg-[#5C5F73] text-dark dark:text-white rounded-lg px-4 py-2">
+                <div class="dark:bg-[#5C5F73] bg-light-primary rounded-lg px-4 py-2" v-for="student in projectGroup" :key="student">
+                    <p class="text-2xl">{{ student }}</p>
                 </div>
             </div>
             </div>
@@ -84,7 +84,7 @@
             </button>
             </div>
             <div class="flex flex-column w-full my-4">
-                <div v-for="board in boards" class="iconeGroupe !bg-white dark:!bg-dark-highlight">
+                <div v-for="board in boards" class="iconeGroupe bg-light-tertiary  dark:bg-[#5C5F73] rounded-lg px-4 py-2 flex flex-col overflow-y-auto text-dark dark:text-white mr-4 mb-2 overflow-y-auto shadow-lg">
                     <span style="font-size:20px;" class="dark:text-white text-[#213547]">{{ board.title }}<br/></span>
                     <div style="position:absolute;left:10px;bottom:10px;">
                     <button @click="openBoard(board.title, board._id)" class="text-white font-bold rounded-lg text-sm px-4 py-2 focus:outline-none flex justify-center items-center gap-2 gradiant">Ouvrir la board</button>
@@ -393,9 +393,8 @@ export default {
 .iconeGroupe {
     min-width: 260px;
     width: 20%;
-    height: 200px;
+    height: 180px;
     position: relative;
-    background-color: #f0f0f0;
     border-radius: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -410,8 +409,8 @@ export default {
     margin: 10px;
 }
 .actualSprint {
-    width: fit-content;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     background-color: #f0f0f0;
     border-radius: 10px;
     font-size: 20px;
