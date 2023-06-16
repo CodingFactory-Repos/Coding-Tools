@@ -10,12 +10,11 @@ import {
 } from '../types/pixi-serialize';
 import { Normalizer } from './normalyzer';
 import { temporaryNotification } from '../utils/temporary.notification';
-import { ElementPosition } from '../types/pixi-container';
 import { GenericContainer } from './genericContainer';
 import { FramedContainer } from './framedContainer';
 import { CanvasContainer } from '../types/pixi-aliases';
 import { LineContainer } from './lineContainer';
-import { LineBezier, Rectangle, TextArea } from '../model/template';
+import { Rectangle, TextArea } from '../model/template';
 import { TextContainer } from './textContainer';
 
 export class SocketManager extends Manager {
@@ -128,10 +127,6 @@ export class SocketManager extends Manager {
 					console.error(err.message);
 				}
 			}
-		});
-
-		this.canvasSocket.on('peer-mouse-moved', (peerId: string, position: ElementPosition) => {
-			console.info(`Peer ${peerId} mouse mooved at position: ${position.x},${position.y}`);
 		});
 
 		this.canvasSocket.on(
@@ -270,10 +265,6 @@ export class SocketManager extends Manager {
 
 	public deleteElement(uuid: string, uuidFrame: string) {
 		this.canvasSocket.emit('delete-element', { uuid, uuidFrame });
-	}
-
-	public updateMouseMoved(position: ElementPosition) {
-		this.canvasSocket.emit('update-mouse-moved', position);
 	}
 
 	public updateFrameOnChildAdded(uuid: string, uuidChild: string, serialized: SerializedContainer) {
