@@ -48,7 +48,7 @@ import ShareToUserCard from '@/components/agility/cards/ShareToUser.vue';
 const route = useRoute();
 const userInput = ref<string>("");
 const filteredUser = ref<Array<UserCanvasList>>([]);
-const roomId = ref(route.path.match(/[^/]+$/)[0]);
+const roomId = ref(route.path.match(/[^/]+(?=\?)|[^/]+$/)[0]);
 let timer: NodeJS.Timeout;
 
 const emit = defineEmits(['close']);
