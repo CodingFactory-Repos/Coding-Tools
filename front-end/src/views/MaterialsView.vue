@@ -83,8 +83,8 @@ import { useRouter } from 'vue-router';
 // Unless you want to change the font, you don't need to assign pdfmake.vfs = globalThis.pdfMake.vfs.
 // It will work either way with the import below, enjoy.
 import { createPdf } from 'pdfmake/build/pdfmake';
-import * as _ from 'pdfmake/build/vfs_fonts.js';
-const fonts = globalThis.pdfMake.vfs ?? _.pdfMake.vfs;
+import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
+const fonts = globalThis.pdfMake.vfs ?? pdfFonts.pdfMake.vfs;
 
 const showModal = ref(false);
 const router = useRouter();
