@@ -1,5 +1,5 @@
 <template>
-	<ModalOverlay v-if="showBlueprintModal" @close="beforeModalClose" size="xl">
+	<ModalOverlay @close="modalClose" size="xl">
 		<template #header>
 			<span class="text-lg font-bold pb-2 text-black dark:text-white">Available blueprints</span>
 		</template>
@@ -34,21 +34,17 @@ const emit = defineEmits(['close']);
 const agilityStore = useAgilityStore();
 const projectStore = useProjectStore();
 const metaTemplates = computed(() => agilityStore.metaTemplates);
-const showBlueprintModal = ref(false);
 const isPersonaModalOpen = ref(false);
 
-const openBlueprintModal = () => showBlueprintModal.value = true;
-const closeBlueprintModal = () => showBlueprintModal.value = false;
 const openPersonaModal = () => isPersonaModalOpen.value = true;
 const closePersonaModal = () => isPersonaModalOpen.value = false;
 
 const finishPersonaBuilder = () => {
 	closePersonaModal();
-	beforeModalClose();
+	modalClose();
 }
 
-const beforeModalClose = () => {
-	closeBlueprintModal();
+const modalClose = () => {
 	emit("close");
 }
 
@@ -60,8 +56,7 @@ const setBlueprintType = (type: LitteralBlueprintTypes) => {
 
 	projectStore.deferredBlueprint = type;
 	projectStore.setBlueprintEvent('pointer');
-	closeBlueprintModal();
-	emit("close");
+	modalClose();
 }
 
 onMounted(() => {
@@ -70,5 +65,7 @@ onMounted(() => {
 	}
 })
 
-openBlueprintModal();
+defineExpose({
+	openPersonaModal
+})
 </script>

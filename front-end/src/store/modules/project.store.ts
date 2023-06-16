@@ -15,6 +15,7 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	scene: null,
 	canvas: null,
 	default: true,
+	internalLoading: true,
 	deferredGeometry: null,
 	deferredContainer: null,
 	deferredBlueprint: null,
@@ -26,6 +27,8 @@ const projectStoreDefaultState = (): ProjectStore => ({
 	pdfViewerOpen: false,
 	refreshPdfViewer: 0,
 	timerId: null,
+	personaBuilder: undefined,
+	baseTemplate: 0,
 });
 
 export const useProjectStore = defineStore('project', {
@@ -39,6 +42,9 @@ export const useProjectStore = defineStore('project', {
 		},
 		getSelected(this: ProjectStore) {
 			return this.scene?.viewport?.manager?.selectedContainers || [];
+		},
+		getViewportBounds(this: ProjectStore) {
+			return this.scene?.viewport.viewportBounds;
 		},
 		getImages(this: ProjectStore) {
 			if (!this.pdfViewerOpen) return [];
@@ -194,15 +200,10 @@ export const useProjectStore = defineStore('project', {
 		createBlueprint(this: ProjectStore, event: FederatedPointerEvent) {
 			const scene = toRaw(this.scene);
 			const point = scene.viewport.toWorld(event.global.clone());
-			const generateBlueprint: Function | null = getAgileBlueprints[this.deferredBlueprint];
+			const generateBlueprint = getAgileBlueprints[this.deferredBlueprint];
 			if (generateBlueprint === null) return;
 
-			const data = generateBlueprint(
-				scene.viewport,
-				point,
-				1200,
-				900,
-			) as Partial<SerializedContainer>;
+			const data = generateBlueprint(scene.viewport, point, 1200, 900, this.personaBuilder);
 
 			const framedContainer = Normalizer.container(scene.viewport, data, true, point);
 			this.scene.viewport.socketPlugin.emit('ws-element-added', framedContainer.serializeData());
@@ -212,6 +213,7 @@ export const useProjectStore = defineStore('project', {
 			this.canvas.classList.toggle('default');
 			this.deferredBlueprint = null;
 			this.default = true;
+			this.personaBuilder = undefined;
 		},
 		increaseZoom(this: ProjectStore) {
 			const scene = toRaw(this.scene);

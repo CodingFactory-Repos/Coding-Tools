@@ -1,4 +1,4 @@
-import { EventMode, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
+import { EventMode, TextStyleAlign, TextStyleFontStyle, TextStyleFontWeight } from 'pixi.js';
 import {
 	AttachedContainer,
 	ElementBounds,
@@ -7,7 +7,7 @@ import {
 	ElementPosition,
 } from './pixi-container';
 
-export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text';
+export type ContainerTypeId = 'generic' | 'frame' | 'line' | 'text' | 'wrap';
 export type GraphicTypeId =
 	| 'rectangle'
 	| 'circle'
@@ -92,18 +92,25 @@ export interface SerializedContainerProperties
 	disabled: boolean;
 }
 
-export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry {
+export interface SerializedGraphicProperties extends SerializedProperties, ElementColorimetry, SerializedTextGraphic {
 	rotation?: number;
 	borderWidth?: number;
 	borderColor?: number;
 	arrowHead?: boolean;
 	dashed?: boolean;
+}
+
+export interface SerializedTextGraphic {
 	text?: string;
 	fontSize?: string | number;
 	fontWeight?: TextStyleFontWeight;
 	fontStyle?: TextStyleFontStyle;
 	fontFamily?: string | string[];
 	fontPadding?: number;
+	fontAlign?: TextStyleAlign;
+	wordWrap?: boolean;
+	wordWrapWidth?: number;
+	breakWords?: boolean;
 }
 
 export interface SerializedLineGraphic {
@@ -112,4 +119,5 @@ export interface SerializedLineGraphic {
 	endControl: ElementPosition;
 	start: ElementPosition;
 	end: ElementPosition;
+	lineWidth?: number;
 }

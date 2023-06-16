@@ -144,6 +144,9 @@ export class LineContainer extends PluginContainer {
 
 		for (const element of this.children) {
 			const clonedChild = element.clone();
+			clonedChild.alpha = element.alpha;
+			clonedChild.width = element.width;
+			clonedChild.height = element.height;
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
 		}
@@ -209,7 +212,7 @@ export class LineContainer extends PluginContainer {
 	}
 
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
-		const graphic = this.getGraphicChildren()[0];
+		const graphic = this.getGraphicChildren()[0] as LineBezier;
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = (serializedBounds.childs[0] as SerializedGraphic).bounds;
 
@@ -218,9 +221,20 @@ export class LineContainer extends PluginContainer {
 		this.absMaxX = absMaxX;
 		this.absMaxY = absMaxY;
 
-		graphic.position.set(bounds.x, bounds.y);
-		graphic.width = bounds.width;
-		graphic.height = bounds.height;
+		try {
+			//@ts-ignore
+			const { start, end, startControl, endControl, lineWidth } = serializedBounds.childs[0].lineControl;
+			graphic.start = start;
+			graphic.end = end;
+			graphic.startControl = startControl;
+			graphic.endControl = endControl;
+			graphic.lineWidth = lineWidth;
+			graphic.draw();
+			graphic.width = bounds.width;
+			graphic.height = bounds.height;
+		} catch(err) {
+			console.error("Could not update the tree bounds of the graphic");
+		}
 	}
 
 	public updateLineTree(serializedControl: SerializedControl) {

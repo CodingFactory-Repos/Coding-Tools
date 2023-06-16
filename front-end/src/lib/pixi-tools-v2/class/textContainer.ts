@@ -1,4 +1,4 @@
-import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions } from 'pixi.js';
+import { Container, EventBoundary, FederatedPointerEvent, IDestroyOptions, Text } from 'pixi.js';
 import { ContainerManager } from './containerManager';
 
 import { ModelGraphics, PluginContainer } from '../types/pixi-class';
@@ -96,13 +96,32 @@ export class TextContainer extends PluginContainer {
 			this.isEditing = true;
 			this.textGraphic.textSprite.visible = false;
 			const { x, y, width, height, text, color } = this.textGraphic;
-			const fontSize = this.textGraphic.textStyle.fontSize;
-			const padding = this.textGraphic.textStyle.padding;
+			const {
+				fontSize,
+				padding,
+				fontWeight,
+				fontStyle,
+				fontFamily,
+				align,
+				wordWrap,
+				wordWrapWidth,
+				breakWords,
+				lineHeight,
+			} = this.textGraphic.textStyle;
+
 			//@ts-ignore
 			const containerized = this?.parent?.typeId === 'generic';
-			this._viewport.startTextEditor(
+			this._viewport.startTextEditor({
 				text,
 				fontSize,
+				fontWeight,
+				fontStyle,
+				fontFamily,
+				fontAlign: align,
+				wordWrap,
+				lineHeight,
+				wordWrapWidth,
+				breakWords,
 				color,
 				x,
 				y,
@@ -110,7 +129,7 @@ export class TextContainer extends PluginContainer {
 				height,
 				padding,
 				containerized,
-			);
+			});
 		}
 	}
 
@@ -129,31 +148,25 @@ export class TextContainer extends PluginContainer {
 			}
 
 			const data = this._viewport.textEditor.innerHTML
-				.replaceAll('</div>', '</div>,')
-				.split(',')
-				.map((txt) => {
-					if (txt === '<div><br></div>') {
-						return '\n';
-					} else {
-						return txt.replace('<div>', '').replace('</div>', '').replace('<br>', '') + '\n';
-					}
-				})
-				.join('');
+				.replaceAll('<br></div>', '\n')
+				.replaceAll('</div>', '\n')
+				.replaceAll('<br>', '\n')
+				.replaceAll('<div>', '');
 
 			this.textGraphic.text = data.trim();
 			this.textGraphic.updateText();
 			this._viewport.endTextEditor();
+			this._viewport.textEditor.innerHTML = '';
 
 			// This need to be canceled if the input text is empty, add a blocking condition.
-			if (this.isNew) {
+			if (!this.destroyed && this.isNew) {
 				this.isNew = false;
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-element-added', this.serializeData());
 				}
-			} else {
+			} else if (!this.destroyed) {
 				if (this._viewport.socketPlugin) {
 					this._viewport.socketPlugin.emit('ws-text-updated', this.uuid, this.serializeData());
-					//@ts-ignore
 					dragAttachedLines(this, this._viewport.socketPlugin, size);
 				}
 			}
@@ -211,8 +224,17 @@ export class TextContainer extends PluginContainer {
 
 		for (const element of this.children) {
 			const clonedChild = element.clone();
+			clonedChild.alpha = element.alpha;
+			clonedChild.width = element.width;
+			clonedChild.height = element.height;
 			clonedChild.position.copyFrom(element.position);
 			cloned.addChild(clonedChild);
+
+			for (let n = 0; n < this.children[0].children.length; n++) {
+				const clonedText = new Text(this.children[0].text, this.children[0].textSprite.style);
+				clonedText.position.copyFrom(this.children[0].textSprite.position);
+				clonedChild.addChild(clonedText);
+			}
 		}
 
 		return cloned;
@@ -270,7 +292,7 @@ export class TextContainer extends PluginContainer {
 	}
 
 	public updateTreeBounds(serializedBounds: SerializedContainerBounds) {
-		const graphic = this.getGraphicChildren()[0];
+		const graphic = this.getGraphicChildren()[0] as TextArea;
 		const { absMinX, absMinY, absMaxX, absMaxY } = serializedBounds.anchors;
 		const bounds = (serializedBounds.childs[0] as SerializedGraphic).bounds;
 
@@ -279,9 +301,20 @@ export class TextContainer extends PluginContainer {
 		this.absMaxX = absMaxX;
 		this.absMaxY = absMaxY;
 
-		graphic.position.set(bounds.x, bounds.y);
-		graphic.width = bounds.width;
-		graphic.height = bounds.height;
+		try {
+			//@ts-ignore
+			const { fontSize, fontPadding } = serializedBounds?.childs[0]?.properties;
+			graphic.textSprite.style.fontSize = fontSize;
+			graphic.textSprite.style.padding = fontPadding;
+			graphic.draw({
+				x: bounds.x,
+				y: bounds.y,
+				width: bounds.width,
+				height: bounds.height,
+			})
+		} catch(err) {
+			console.error("Could not update the tree bounds graphic properties")
+		}
 	}
 
 	public attachLine(lineUUID: string) {

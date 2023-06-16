@@ -132,6 +132,8 @@ export class DragPlugin {
 						element.child.startControl.y = data.startControl.y + dy;
 						element.child.endControl.x = data.endControl.x + dx;
 						element.child.endControl.y = data.endControl.y + dy;
+						element.child.draw();
+						continue;
 					}
 				}
 
@@ -163,7 +165,6 @@ export class DragPlugin {
 					continue;
 
 				const parent = element.child.parent as CanvasContainer;
-				//@ts-ignore //! WARNING : Might be a bug there, the parent could be a wrap and i'm not sure about the behavior since it's the rectangle of the wrap
 				if (parent.typeId === 'wrap') continue;
 
 				const childBounds = element.child.getBounds();

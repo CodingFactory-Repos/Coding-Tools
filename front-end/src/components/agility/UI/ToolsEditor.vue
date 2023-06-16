@@ -124,7 +124,7 @@
 				/>
 			</IconButton>
 			<ColorPickerOption position="bottom-[-330px] left-[30px]" />
-			<div v-if="isTextAreaEdited">
+			<!-- <div v-if="isTextAreaEdited">
 				<IconButton class="h-fit" type="button">
 					<SvgFrame
 						width="22"
@@ -165,12 +165,14 @@
 						}"
 					/>
 				</IconButton>
-			</div>
+			</div> -->
 		</div>
 
 		<ShareProject v-if="isShareModalOpen" @close="closeShareModal" />
 		<ManageUser v-if="isOwner && isManagerModalOpen" @close="closeManagerModal" />
-		<BlueprintModal v-if="isBlueprintModalOpen" @close="closeBlueprintModal" />
+		<div class="w-full h-full" v-show="isBlueprintModalOpen">
+			<BlueprintModal @close="closeBlueprintModal" ref="blueprintRef"/>
+		</div>
 		<div class="flex h-full gap-1 items-center">
 			<IconButton class="h-fit" type="button" @click="openManagerModal" v-if="isOwner">
 				<SvgGear width="22" height="22" class="!fill-gray-400" />
@@ -190,10 +192,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, toRaw } from 'vue';
 import { useProjectStore } from '@/store/modules/project.store';
 import { type MenuOptions, ContextMenu, ContextMenuItem } from '@imengyu/vue3-context-menu';
-import { DownloadType, LiteralGeometryTypes } from '@/lib/pixi-tools-v2/types/pixi-enums';
+import { BlueprintTypeName, DownloadType, LiteralGeometryTypes, BlueprintKey } from '@/lib/pixi-tools-v2/types/pixi-enums';
 
 import BlueprintModal from '@/components/agility/modals/Blueprint.vue';
 import ColorPickerOption from '@/components/agility/UI/ColorPickerOption.vue';
@@ -215,11 +217,15 @@ import SvgTriangle from '@/components/common/svg/Triangle.vue';
 import ManageUser from '@/components/agility/UI/ManageUser.vue';
 import { useAgilityStore } from '@/store/modules/agility.store';
 import { ContainerTypeId } from '@/lib/pixi-tools-v2/types/pixi-serialize';
+import { EventBoundary, FederatedPointerEvent, Point } from 'pixi.js';
 
 const projectStore = useProjectStore();
 const agilityStore = useAgilityStore();
 
+const blueprintRef = ref<typeof BlueprintModal>();
 const isOwner = computed(() => agilityStore.isOwner);
+const baseTemplate = computed(() => projectStore.baseTemplate);
+const internalLoading = computed(() => projectStore.internalLoading);
 const selectedGeometry = computed(() => projectStore.deferredGeometry);
 const isDefault = computed(() => projectStore.default);
 watch(isDefault, (val) => {
@@ -311,4 +317,27 @@ const closeGeometryPopUp = () => {
 		showGeometryPopUp.value = false;
 	}
 };
+
+watch(internalLoading, (val) => {
+	if(!val) {
+		if(baseTemplate.value !== BlueprintKey.DEFAULT) {
+			setTimeout(() => {
+				if(baseTemplate.value === BlueprintKey.PERSONA) {
+					openBlueprintModal();
+					blueprintRef.value.openPersonaModal();
+				} else {
+					projectStore.deferredBlueprint = BlueprintTypeName[baseTemplate.value.toString()];
+					projectStore.setBlueprintEvent('pointer');
+					const scene = toRaw(projectStore.scene);
+					//@ts-ignore
+					const eventBoundary = new EventBoundary(scene.viewport);
+					const fakeEvent = new FederatedPointerEvent(eventBoundary);
+					fakeEvent.global = new Point(scene.viewport.center.x,scene.viewport.center.y);
+					projectStore.createBlueprint(fakeEvent);
+					projectStore.baseTemplate = 0;
+				}
+			}, 1500);
+		}
+	}
+}, { immediate: true })
 </script>

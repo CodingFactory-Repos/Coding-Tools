@@ -73,6 +73,9 @@ export const ResizeHandleOppositeOf = {
 	[ResizeHandle.L]: { x: ResizeHandle.R, y: null },
 };
 
+export const GenericResize = [ResizeHandle.LT, ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.LB];
+export const OrthogonalResize = [ResizeHandle.T, ResizeHandle.B, ResizeHandle.R, ResizeHandle.L];
+
 export const LeftWall = [ResizeHandle.RT, ResizeHandle.RB, ResizeHandle.R];
 export const RightWall = [ResizeHandle.LT, ResizeHandle.LB, ResizeHandle.L];
 export const TopWall = [ResizeHandle.LB, ResizeHandle.RB, ResizeHandle.B];
@@ -96,3 +99,20 @@ export enum PixiEventMode {
 	STATIC = 'static',
 	DYNAMIC = 'dynamic',
 }
+
+export enum BlueprintKey {
+	DEFAULT = 0,
+	IMPACT_MAPPING = 1,
+	EMPATHY_MAP = 2,
+	PERSONA = 3,
+	PRUNE_THE_PROJECT_TREE = 4,
+	ELEVATOR_PITCH = 5,
+}
+
+export const BlueprintTypeName = {
+	'1': 'impactmapping',
+	'2': 'empathymap',
+	'3': 'personas',
+	'4': 'prunetheprojecttree',
+	'5': 'elevatorpitch',
+};

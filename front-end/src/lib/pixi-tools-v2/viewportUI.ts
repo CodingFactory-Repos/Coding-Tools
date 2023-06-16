@@ -1,5 +1,14 @@
 import { IViewportOptions, Viewport } from 'pixi-viewport';
-import { EventBoundary, FederatedPointerEvent, ICanvas, IRenderer, Point } from 'pixi.js';
+import {
+	EventBoundary,
+	FederatedPointerEvent,
+	ICanvas,
+	IRenderer,
+	Point,
+	TextStyleAlign,
+	TextStyleFontStyle,
+	TextStyleFontWeight,
+} from 'pixi.js';
 import { Scene } from './scene';
 import { ContainerManager } from './class/containerManager';
 import { ViewportZoomPlugin } from './plugins/viewportZoomPlugin';
@@ -16,6 +25,36 @@ import { GenericContainer } from './class/genericContainer';
 import { decimToHex } from './utils/colorsConvertor';
 import { dragAttachedLines } from './utils/dragAttachedLines';
 import { TextContainer } from './class/textContainer';
+
+export interface TextEditorOptions {
+	text: string;
+	fontSize: number | string;
+	fontWeight?: TextStyleFontWeight;
+	fontStyle?: TextStyleFontStyle;
+	fontFamily?: string | string[];
+	fontPadding?: number;
+	fontAlign?: TextStyleAlign;
+	wordWrap?: boolean;
+	wordWrapWidth?: number;
+	breakWords?: boolean;
+	color: number;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	padding: number;
+	containerized: boolean;
+	lineHeight: number;
+}
+
+export interface ViewportBounds {
+	x: number;
+	y: number;
+	mouseX: number;
+	mouseY: number;
+	scaleX: number;
+	scaleY: number;
+}
 
 export class ViewportUI extends Viewport {
 	public readonly scene: Scene;
@@ -41,6 +80,7 @@ export class ViewportUI extends Viewport {
 
 	public readonly activeFrames: Array<number> = reactive([]);
 	public readonly childFrames: Array<FramedContainer> = shallowReactive([]);
+	public viewportBounds = reactive<Partial<ViewportBounds>>({});
 
 	constructor(
 		scene: Scene,
@@ -70,6 +110,8 @@ export class ViewportUI extends Viewport {
 
 		this.grid = new Grid({ color: isDark ? 0x27282d : 0xd9d9d9 });
 		this.addChildAt(this.grid, 0);
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 
 		window.addEventListener('resize', this._onWindowResized.bind(this));
 		this.on('moved', this._onViewportMoved);
@@ -78,10 +120,9 @@ export class ViewportUI extends Viewport {
 		this.on('pointerdown', this._onViewportUnselect);
 		this.on('pointermove', (e: FederatedPointerEvent) => {
 			this.mouse = e.global;
-
-			if (this.socketPlugin) {
-				this.socketPlugin.emit('ws-mouse-moved', this.mouse);
-			}
+			const worldPos = this.toWorld(e.global);
+			this.viewportBounds.mouseX = worldPos.x;
+			this.viewportBounds.mouseY = worldPos.y;
 		});
 
 		this.on('childAdded', (child: CanvasContainer) => {
@@ -126,28 +167,32 @@ export class ViewportUI extends Viewport {
 		dragAttachedLines(this.manager._selectedContainers[0], this.socketPlugin, size, true);
 	}
 
-	public startTextEditor(
-		text: string,
-		fontSize: number | string,
-		color: number,
-		x: number,
-		y: number,
-		width: number,
-		height: number,
-		padding: number,
-		containerized: boolean,
-	) {
-		const points = this.toScreen(x, y);
-		this.textEditor.style.color = decimToHex(color);
+	public startTextEditor(options: Partial<TextEditorOptions>) {
+		const points = this.toScreen(options.x, options.y);
+		this.textEditor.style.color = decimToHex(options.color);
 		this.textEditor.style.left = `${points.x}px`;
 		this.textEditor.style.top = `${points.y}px`;
-		this.textEditor.style.fontSize = `${fontSize}px`;
+		this.textEditor.style.fontSize = `${options.fontSize}px`;
 		this.textEditor.style.display = 'block';
-		this.textEditor.style.padding = `${padding}px`;
+		this.textEditor.style.padding = `${options.padding}px`;
 		this.textEditor.style.transform = `scale(${this.scaled})`;
 
-		if (text !== undefined && text !== '') {
-			const perLine = text
+		//! This is the best solution i got since increasing the graphical size increase the lineHeight;
+		this.textEditor.style.lineHeight = `${Math.floor((options.fontSize as number) * 1.2)}px`;
+
+		//! This doesn't match exactly between graphic/css;
+		this.textEditor.style.fontWeight = options.fontWeight === '300' ? 'normal' : options.fontWeight;
+		this.textEditor.style.fontStyle = options.fontStyle;
+		this.textEditor.style.textAlign = options.fontAlign;
+
+		if (typeof options.fontFamily !== 'string') {
+			this.textEditor.style.fontFamily = options.fontFamily.join(', ');
+		} else {
+			this.textEditor.style.fontFamily = options.fontFamily;
+		}
+
+		if (options.text !== undefined && options.text !== '') {
+			const perLine = options.text
 				.split('\n')
 				.map((txt) => `<div>${txt.length > 0 ? txt : '<br>'}</div>`)
 				.join('');
@@ -157,13 +202,23 @@ export class ViewportUI extends Viewport {
 			this.textEditor.classList.add('blank');
 		}
 
-		if (containerized) {
-			this.textEditor.style.maxWidth = `${width}px`;
-			this.textEditor.style.maxHeight = `${height}px`;
+		if (options.containerized) {
+			this.textEditor.style.maxWidth = `${options.width}px`;
+			this.textEditor.style.maxHeight = `${options.height}px`;
 		} else {
 			this.textEditor.style.width = `fit-content`;
 			this.textEditor.style.height = `fit-content`;
 		}
+
+		if (options.wordWrap && options.breakWords) {
+			this.textEditor.style.wordBreak = 'break-word';
+			this.textEditor.style.maxWidth = `${options.wordWrapWidth}px`;
+			this.textEditor.style.width = '100%';
+		} else {
+			this.textEditor.style.maxWidth = 'unset';
+			this.textEditor.style.wordBreak = 'unset';
+		}
+
 		this.textEditor.focus();
 		this.textEditor.click();
 		const size = { width: this.textEditor.scrollWidth, height: this.textEditor.scrollHeight };
@@ -198,6 +253,8 @@ export class ViewportUI extends Viewport {
 	}
 
 	private _onViewportMoved() {
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
 		this.drawGrid();
 	}
 
@@ -229,6 +286,11 @@ export class ViewportUI extends Viewport {
 
 			this.updateUI(size);
 		}
+
+		this.viewportBounds.x = this.x;
+		this.viewportBounds.y = this.y;
+		this.viewportBounds.scaleX = this.scale.x;
+		this.viewportBounds.scaleY = this.scale.y;
 	}
 
 	private updateUI(size: ElementSize) {

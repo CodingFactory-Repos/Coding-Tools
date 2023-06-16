@@ -1,25 +1,25 @@
 import { IViewportOptions } from 'pixi-viewport';
 import { Application, EventSystem } from 'pixi.js';
 
-import { ViewportUI } from './viewportUI';
 import { CanvasSocketOptions } from './plugins/viewportSocketPlugin';
+import { ViewportCursor } from './viewportCursor';
 
-export class Scene extends Application {
-	public readonly viewport: ViewportUI;
+export class CursorScene extends Application {
+	public readonly viewport: ViewportCursor;
 	public heightOffset: number;
 
 	constructor(
 		canvas: HTMLCanvasElement,
 		heightOffset: number,
-		isDark: boolean,
-		socketOptions?: CanvasSocketOptions
+		firstName: string,
+		socketOptions?: CanvasSocketOptions,
 	) {
 		super({
 			view: canvas,
 			width: window.innerWidth,
 			height: window.innerHeight - heightOffset,
 			autoDensity: true,
-			backgroundColor: isDark ? 0x202126 : 0xe5e5e5,
+			backgroundAlpha: 0,
 			resolution: devicePixelRatio + 1,
 		});
 
@@ -36,14 +36,8 @@ export class Scene extends Application {
 		};
 
 		this.heightOffset = heightOffset;
-		this.viewport = new ViewportUI(this, viewportOptions, isDark, socketOptions);
+		this.viewport = new ViewportCursor(this, viewportOptions, firstName, socketOptions);
 		this.stage.addChild(this.viewport);
 		this.ticker.start();
-	}
-
-	public changeTheme(isDark: boolean) {
-		//@ts-ignore
-		this.renderer.background._backgroundColor = isDark ? 0x202126 : 0xe5e5e5;
-		this.viewport.changeGridTheme(isDark);
 	}
 }
