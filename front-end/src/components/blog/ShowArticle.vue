@@ -218,7 +218,7 @@
 				{{ comment.descriptions }}
 			</p>
 
-			<div v-if="oneItems.owner === user._id || user.role === 2" class="absolute top-2 right-2">
+			<div v-if="oneItems.owner._id === user._id || user.role === 2" class="absolute top-2 right-2">
 				<button
 					type="button"
 					@click="removeComment(oneItems._id, comment)"

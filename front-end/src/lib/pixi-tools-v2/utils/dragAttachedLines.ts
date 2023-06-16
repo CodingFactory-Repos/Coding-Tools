@@ -1,13 +1,12 @@
-import { FramedContainer } from '../class/framedContainer';
-import { GenericContainer } from '../class/genericContainer';
 import { LineContainer } from '../class/lineContainer';
 import { ViewportSocketPlugin } from '../plugins/viewportSocketPlugin';
+import { CanvasContainer } from '../types/pixi-aliases';
 import { ElementBounds, ElementPosition } from '../types/pixi-container';
 import { BezierHandle } from '../types/pixi-enums';
 import { getLengthFromPoints } from './lengthFromPoints';
 
 export const dragAttachedLines = (
-	container: GenericContainer | FramedContainer,
+	container: CanvasContainer,
 	socketPlugin: ViewportSocketPlugin,
 	overideGeometry?: Partial<ElementBounds>,
 	preventEmit = false,
