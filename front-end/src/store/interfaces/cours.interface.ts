@@ -25,6 +25,7 @@ export interface Course {
 	messages: Array<Message>;
 	projects: Array<string>;
 	retro: string;
+	files: string;
 }
 
 export interface Group {
