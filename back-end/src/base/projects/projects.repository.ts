@@ -39,7 +39,7 @@ export class ProjectsRepository {
 
 	//New method to query by user in group member array
 	async getProjectByGroupMember(id) {
-		let query = { group: { $elemMatch: { $eq: id } } };
+		const query = { group: { $elemMatch: { $eq: id } } };
 		return this.projects.find(query).toArray();
 	}
 
@@ -49,7 +49,7 @@ export class ProjectsRepository {
 	}
 
 	async updateOneProject(id, update: Partial<Project>) {
-		let query = { _id: new ObjectId(id) };
+		const query = { _id: new ObjectId(id) };
 		return this.projects.updateOne(query, update);
 	}
 
