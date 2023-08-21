@@ -17,7 +17,7 @@
 		"@pixi/graphics-smooth": "^1.1.0",
 		"@toycode/markdown-it-class": "^1.2.4",
 		"@vitejs/plugin-vue-jsx": "^3.0.1",
-		"@vuepic/vue-datepicker": "^5.1.2",
+		"@vuepic/vue-datepicker": "^6.0.1",
 		"@vueuse/core": "^10.1.2",
 		"axios": "^1.4.0",
 		"chart.js": "^4.3.0",
