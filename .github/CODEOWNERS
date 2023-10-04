@@ -81,10 +81,10 @@
 /back-end/src/base/projects/projects.repository.ts @LeoJeanjean @Maghwyn
 /back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn
 /back-end/src/base/retrospectives/events/retrospectives.events.req.ts @AyakorK
-/back-end/src/base/retrospectives/events/retrospectives.events.ts @TheoLandemaine @Loule95450
+/back-end/src/base/retrospectives/events/retrospectives.events.ts @Loule95450 @TheoLandemaine
 /back-end/src/base/retrospectives/interfaces/retrospectives.interface.ts @Maghwyn @Kevw94
-/back-end/src/base/retrospectives/interfaces/retrospectivesRoomInvitation.interface.ts @TheoLandemaine @Loule95450
-/back-end/src/base/retrospectives/retrospectivesRoomInvitation.repository.ts @TheoLandemaine @Loule95450
+/back-end/src/base/retrospectives/interfaces/retrospectivesRoomInvitation.interface.ts @Loule95450 @TheoLandemaine
+/back-end/src/base/retrospectives/retrospectivesRoomInvitation.repository.ts @Loule95450 @TheoLandemaine
 /back-end/src/base/sprints/ @Kevw94 @Maghwyn
 /back-end/src/base/sprints/interfaces/sprints.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/stories/ @LeoJeanjean
@@ -157,7 +157,7 @@
 /front-end/src/assets/images/CodingToolsLogo.png @Loule95450
 /front-end/src/assets/images/left.svg @Loule95450
 /front-end/src/assets/images/right.svg @Loule95450
-/front-end/src/assets/imgs/retrospectiveImgs/ @TheoLandemaine
+/front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
 /front-end/src/components/ @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
@@ -199,14 +199,15 @@
 /front-end/src/components/common/svg/Abstract.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/ArrowLeft.vue @Ptitbapt
 /front-end/src/components/common/svg/Bell.vue @Maghwyn @AyakorK
-/front-end/src/components/common/svg/Board.vue @Loule95450
+/front-end/src/components/common/svg/Board.vue @Ptitbapt
 /front-end/src/components/common/svg/Book.vue @Ptitbapt
-/front-end/src/components/common/svg/Clipboard.vue @Loule95450
+/front-end/src/components/common/svg/Clipboard.vue @Ptitbapt
 /front-end/src/components/common/svg/Cloud.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Comment.vue @Maghwyn
 /front-end/src/components/common/svg/Cross.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/DeleteLogo.vue @Maghwyn
 /front-end/src/components/common/svg/ExpandArrow.vue @Maghwyn @Kevw94
+/front-end/src/components/common/svg/Filter.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/Home.vue @Maghwyn @Kevw94
 /front-end/src/components/common/svg/LightBulb.vue @Loule95450
 /front-end/src/components/common/svg/Pause.vue @TheoLandemaine
@@ -268,7 +269,7 @@
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ellipse.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @AyakorK @Maghwyn
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @AyakorK @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/textArea.ts @Maghwyn @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/tree.ts @Maghwyn @AyakorK
