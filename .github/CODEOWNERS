@@ -268,7 +268,7 @@
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/circle.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ellipse.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/lineBezier.ts @Maghwyn
-/front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @AyakorK @Loule95450
+/front-end/src/lib/pixi-tools-v2/model/model-constructor/polygon.ts @AyakorK @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/rectangle.ts @Maghwyn @Kevw94
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/textArea.ts @Maghwyn @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/tree.ts @Maghwyn @AyakorK
