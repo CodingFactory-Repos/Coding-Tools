@@ -8,8 +8,10 @@
 /back-end/.eslintrc.js @AyakorK @Maghwyn @Loule95450
 /back-end/.gitignore @Maghwyn @Loule95450
 /back-end/docker-compose.prod.yml @Maghwyn @Kevw94
+/back-end/nest-cli.json @Maghwyn @Thomlam
 /back-end/package-lock.json @Maghwyn @AyakorK
 /back-end/package.json @Maghwyn @AyakorK
+/back-end/src/app.controller.spec.ts @Maghwyn @Thomlam
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
@@ -23,6 +25,7 @@
 /back-end/src/auth/utils/ @Loule95450 @Maghwyn
 /back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
 /back-end/src/auth/utils/auth.projection.ts @Maghwyn @Kevw94
+/back-end/src/base/academicYears/ @Maghwyn @Thomlam
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/articles/ @Maghwyn @TheoLandemaine
@@ -30,7 +33,7 @@
 /back-end/src/base/articles/events/ @Loule95450 @TheoLandemaine
 /back-end/src/base/articles/interfaces/articles.interface.ts @Maghwyn @Loule95450 @AyakorK
 /back-end/src/base/boards/ @LeoJeanjean
-/back-end/src/base/boards/boards.module.ts @Maghwyn
+/back-end/src/base/boards/boards.module.ts @Maghwyn @Thomlam
 /back-end/src/base/boards/boards.repository.ts @LeoJeanjean @Maghwyn
 /back-end/src/base/boards/interfaces/boards.interface.ts @LeoJeanjean @Maghwyn
 /back-end/src/base/calls/ @AyakorK @Maghwyn
@@ -54,7 +57,8 @@
 /back-end/src/base/courses/courses.service.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/dto/coures.dto.ts @AyakorK
 /back-end/src/base/courses/interfaces/courses.interface.ts @AyakorK @Maghwyn
-/back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn
+/back-end/src/base/equipmentsLoan/ @Maghwyn @Thomlam
+/back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn @Thomlam
 /back-end/src/base/groups/groups.controller.ts @Loule95450 @Kevw94 @TheoLandemaine
 /back-end/src/base/groups/groups.module.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
@@ -64,6 +68,7 @@
 /back-end/src/base/ideasComments/ideasComments.module.ts @RuKaSuu @Maghwyn
 /back-end/src/base/ideasComments/ideasComments.repository.ts @Maghwyn @AyakorK
 /back-end/src/base/ideasComments/interfaces/ideasComments.interface.ts @Maghwyn @AyakorK
+/back-end/src/base/ideasEquipments/ideasEquipments.module.ts @Maghwyn @Thomlam
 /back-end/src/base/ideasEquipments/ideasEquipments.repository.ts @Maghwyn @Heloise-lelez @RuKaSuu
 /back-end/src/base/ideasEquipments/interfaces/ideasEquipments.interface.ts @RuKaSuu @Heloise-lelez
 /back-end/src/base/materials/ @Maghwyn @RuKaSuu
@@ -74,10 +79,10 @@
 /back-end/src/base/materials/materials.repository.ts @Loule95450 @RuKaSuu
 /back-end/src/base/openHouses/ @Loule95450 @Maghwyn
 /back-end/src/base/openHouses/interfaces/openHouses.interface.ts @Maghwyn @Loule95450
-/back-end/src/base/openHouses/openHouses.module.ts @Maghwyn
+/back-end/src/base/openHouses/openHouses.module.ts @Maghwyn @Thomlam
 /back-end/src/base/projects/ @LeoJeanjean
 /back-end/src/base/projects/interfaces/projects.interface.ts @LeoJeanjean @Maghwyn
-/back-end/src/base/projects/projects.module.ts @Maghwyn
+/back-end/src/base/projects/projects.module.ts @Maghwyn @Thomlam
 /back-end/src/base/projects/projects.repository.ts @LeoJeanjean @Maghwyn
 /back-end/src/base/retrospectives/dto/retrospectives.dto.ts @Maghwyn
 /back-end/src/base/retrospectives/events/retrospectives.events.req.ts @AyakorK
@@ -106,7 +111,7 @@
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
 /back-end/src/common/gateways/chat.global.gateway.ts @Maghwyn @AyakorK
 /back-end/src/common/gateways/ideasComment.global.gateway.ts @RuKaSuu
-/back-end/src/common/guards/auth.guard.ts @Maghwyn
+/back-end/src/common/guards/auth.guard.ts @Maghwyn @Thomlam
 /back-end/src/common/guards/role.guard.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/object.helper.ts @Maghwyn @Kevw94
 /back-end/src/common/helpers/string.helper.ts @Loule95450 @Maghwyn
@@ -124,11 +129,13 @@
 /back-end/src/cron/cron.service.ts @Maghwyn
 /back-end/src/external-modules/chat/chat.module.ts @Maghwyn @AyakorK
 /back-end/src/external-modules/database/ @Maghwyn
-/back-end/src/external-modules/database/mongo.module.ts @Maghwyn
+/back-end/src/external-modules/database/mongo.module.ts @Maghwyn @Thomlam
 /back-end/src/external-modules/database/mongo.service.ts @Maghwyn @Kevw94
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn @AyakorK
 /back-end/src/main.ts @Maghwyn @Loule95450
+/back-end/src/MODULE.md @Maghwyn @Thomlam
+/back-end/tsconfig.build.json @Maghwyn @Thomlam
 /back-end/types/index.d.ts @Maghwyn
 /back-end/uploads/.gitkeep @Loule95450
 /front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
@@ -367,8 +374,8 @@
 /front-end/src/views/home/HeroView.vue @AyakorK @TheoLandemaine
 /front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
-/front-end/src/views/material-ideas/DraftPdf.vue @Loule95450 @Maghwyn
-/front-end/src/views/material-ideas/IdeasPdf.vue @Maghwyn @Loule95450
+/front-end/src/views/material-ideas/DraftPdf.vue @Loule95450 @RuKaSuu
+/front-end/src/views/material-ideas/IdeasPdf.vue @RuKaSuu @Maghwyn
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
