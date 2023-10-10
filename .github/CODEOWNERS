@@ -53,13 +53,13 @@
 /back-end/src/base/CanvasRoom/interfaces/CanvasRoom.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/canvasRoom/interfaces/ws.canvasRoom.interface.ts @Maghwyn @Kevw94
 /back-end/src/base/canvasRoom/utils/canvasRoom.projection.ts @Maghwyn
-/back-end/src/base/courses/courses.module.ts @Loule95450 @Kevw94 @TheoLandemaine
+/back-end/src/base/courses/courses.module.ts @Kevw94 @Loule95450 @TheoLandemaine
 /back-end/src/base/courses/courses.service.ts @Maghwyn @AyakorK
 /back-end/src/base/courses/dto/coures.dto.ts @AyakorK
 /back-end/src/base/courses/interfaces/courses.interface.ts @AyakorK @Maghwyn
 /back-end/src/base/equipmentsLoan/ @Maghwyn @Thomlam
 /back-end/src/base/equipmentsLoan/interfaces/equipmentsLoan.interface.ts @Maghwyn @Thomlam
-/back-end/src/base/groups/groups.controller.ts @Loule95450 @Kevw94 @TheoLandemaine
+/back-end/src/base/groups/groups.controller.ts @Kevw94 @Loule95450 @TheoLandemaine
 /back-end/src/base/groups/groups.module.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/groups.service.ts @AyakorK @Maghwyn @Loule95450
@@ -164,8 +164,9 @@
 /front-end/src/assets/images/CodingToolsLogo.png @Loule95450
 /front-end/src/assets/images/left.svg @Loule95450
 /front-end/src/assets/images/right.svg @Loule95450
-/front-end/src/assets/imgs/retrospectiveImgs/ @Kevw94
+/front-end/src/assets/imgs/retrospectiveImgs/ @TheoLandemaine
 /front-end/src/components/ @Kevw94 @Maghwyn
+/front-end/src/components/account/ 
 /front-end/src/components/account/AccountForm.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountHeader.vue @Kevw94 @Maghwyn
 /front-end/src/components/account/AccountProfile.vue @Maghwyn
@@ -291,12 +292,18 @@
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/unsupported/textarea_html.ts @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/utils/ 
+/front-end/src/lib/pixi-tools-v2/utils/base64codingFactoryLogo.ts 
+/front-end/src/lib/pixi-tools-v2/utils/base64codingToolsLogo.ts 
 /front-end/src/lib/pixi-tools-v2/utils/closestElementByPoints.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/closestPointByPoints.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/colorsConvertor.ts @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/utils/dragAttachedLines.ts @Maghwyn @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/utils/generatePdf.ts 
 /front-end/src/lib/pixi-tools-v2/utils/lengthFromPoints.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/utils/modelBounds.ts 
 /front-end/src/lib/pixi-tools-v2/utils/modelColorimetry.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/utils/modelSerializer.ts 
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/pointsOverlap.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
@@ -325,6 +332,7 @@
 /front-end/src/store/interfaces/material.interface.ts @Maghwyn
 /front-end/src/store/interfaces/openhouse.store.ts @Maghwyn @AyakorK
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
+/front-end/src/store/interfaces/retrospective.interface.ts 
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/timer.interface.ts @Maghwyn @AyakorK
