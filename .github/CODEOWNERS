@@ -57,7 +57,7 @@
 /back-end/src/base/groups/groups.controller.ts @Kevw94 @Loule95450 @TheoLandemaine
 /back-end/src/base/groups/groups.module.ts @Maghwyn
 /back-end/src/base/groups/groups.repository.ts @Maghwyn @Loule95450
-/back-end/src/base/groups/groups.service.ts @AyakorK @Maghwyn @Loule95450
+/back-end/src/base/groups/groups.service.ts @AyakorK @Loule95450
 /back-end/src/base/groups/interfaces/groups.interface.ts @Maghwyn @Loule95450
 /back-end/src/base/groups/utils/createProject.ts @AyakorK @Loule95450
 /back-end/src/base/ideasComments/ideasComments.module.ts @RuKaSuu @Maghwyn
@@ -98,7 +98,6 @@
 /back-end/src/common/constants/global.ts @Maghwyn @Kevw94
 /back-end/src/common/constants/README.md @Maghwyn
 /back-end/src/common/decorators/ @Kevw94 @Maghwyn
-/back-end/src/common/decorators/catch.decorator.ts @Maghwyn @AyakorK
 /back-end/src/common/decorators/jwt.decorator.ts @Maghwyn @Loule95450
 /back-end/src/common/decorators/README.md @Maghwyn
 /back-end/src/common/gateways/canvas.global.gateway.ts @Maghwyn
@@ -142,10 +141,11 @@
 /front-end/src/ @Loule95450 @Maghwyn
 /front-end/src/api/ @Maghwyn
 /front-end/src/api/agility-req.ts @Loule95450 @Maghwyn
+/front-end/src/api/auth-req.ts @Maghwyn @Loule95450
 /front-end/src/api/courses-req.ts @AyakorK
 /front-end/src/api/material-req.ts @Kevw94 @Maghwyn
-/front-end/src/api/network/ @Maghwyn
 /front-end/src/api/ressource-req.ts @AyakorK
+/front-end/src/api/retrospective-req.ts @Maghwyn @Loule95450
 /front-end/src/api/scrum-req.ts @Kevw94 @Maghwyn
 /front-end/src/api/user-req.ts @Maghwyn @AyakorK
 /front-end/src/App.vue @TheoLandemaine @Maghwyn
@@ -164,15 +164,15 @@
 /front-end/src/components/account/AccountRelatedProfile.vue @Maghwyn
 /front-end/src/components/Agility.vue @Loule95450 @Thomlam
 /front-end/src/components/agility/ @AyakorK @Maghwyn
-/front-end/src/components/agility/AgilityCanvas.vue @Maghwyn
 /front-end/src/components/agility/AgilityCanvasUI.vue @Maghwyn @Loule95450
+/front-end/src/components/agility/AgilityTemplateDisplay.vue @Maghwyn @AyakorK
 /front-end/src/components/agility/cards/ @Loule95450 @Maghwyn
 /front-end/src/components/agility/cards/AgilityProjectCard.vue @Maghwyn
 /front-end/src/components/agility/cards/AgilityTemplateCard.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/modals/ @Maghwyn
 /front-end/src/components/agility/modals/Blueprint.vue @Maghwyn
 /front-end/src/components/agility/modals/Project.vue @Loule95450 @Maghwyn
-/front-end/src/components/agility/UI/ @Maghwyn
+/front-end/src/components/agility/persona/ @AyakorK @Maghwyn
 /front-end/src/components/agility/UI/CanvasLoader.vue @Maghwyn @Kevw94
 /front-end/src/components/agility/UI/CanvasTabulation.vue @Maghwyn
 /front-end/src/components/agility/UI/ManageUser.vue @Maghwyn @AyakorK
@@ -262,7 +262,6 @@
 /front-end/src/lib/pixi-tools-v2/class/genericContainer.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/class/lineContainer.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/class/selectionBox.ts @Kevw94 @Maghwyn
-/front-end/src/lib/pixi-tools-v2/class/socketManager.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/class/textContainer.ts @TheoLandemaine @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/ @AyakorK @Maghwyn
@@ -277,7 +276,6 @@
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @AyakorK
-/front-end/src/lib/pixi-tools-v2/plugins/viewportSocketPlugin.ts @Maghwyn @TheoLandemaine
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
@@ -285,12 +283,18 @@
 /front-end/src/lib/pixi-tools-v2/unsupported/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/unsupported/lib_TextInput.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/unsupported/textarea_html.ts @Loule95450
+/front-end/src/lib/pixi-tools-v2/utils/ @Loule95450 @Maghwyn
+/front-end/src/lib/pixi-tools-v2/utils/base64codingFactoryLogo.ts @Maghwyn
+/front-end/src/lib/pixi-tools-v2/utils/base64codingToolsLogo.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/closestElementByPoints.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/closestPointByPoints.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/colorsConvertor.ts @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/dragAttachedLines.ts @Maghwyn @TheoLandemaine
+/front-end/src/lib/pixi-tools-v2/utils/generatePdf.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/lengthFromPoints.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/utils/modelBounds.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/modelColorimetry.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/utils/modelSerializer.ts @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/numberFinder.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/utils/pointsOverlap.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/utils/temporary.notification.ts @Maghwyn @Kevw94
@@ -319,6 +323,7 @@
 /front-end/src/store/interfaces/material.interface.ts @Maghwyn
 /front-end/src/store/interfaces/openhouse.store.ts @Loule95450 @Maghwyn
 /front-end/src/store/interfaces/project.interface.ts @Maghwyn
+/front-end/src/store/interfaces/retrospective.interface.ts @Maghwyn @Kevw94
 /front-end/src/store/interfaces/template.interfaces.ts @Maghwyn
 /front-end/src/store/interfaces/theme.interface.ts @Maghwyn @Loule95450
 /front-end/src/store/interfaces/timer.interface.ts @Loule95450 @Maghwyn
@@ -365,7 +370,7 @@
 /front-end/src/views/DisplayArticleView.vue @TheoLandemaine
 /front-end/src/views/EditArticleView.vue @Maghwyn
 /front-end/src/views/home/HeroView.vue @AyakorK @TheoLandemaine
-/front-end/src/views/material-ideas/ @Heloise-lelez @Loule95450 @Maghwyn
+/front-end/src/views/material-ideas/ @Heloise-lelez @Maghwyn @RuKaSuu
 /front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
 /front-end/src/views/material-ideas/DraftPdf.vue @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/IdeasPdf.vue @Loule95450 @Maghwyn
