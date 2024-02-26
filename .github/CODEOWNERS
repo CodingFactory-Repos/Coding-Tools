@@ -11,7 +11,7 @@
 /back-end/nest-cli.json @Maghwyn @Thomlam
 /back-end/package-lock.json @Maghwyn @AyakorK
 /back-end/package.json @Maghwyn @AyakorK
-/back-end/src/ @Maghwyn @Thomlam
+/back-end/src/app.controller.spec.ts 
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
@@ -25,7 +25,6 @@
 /back-end/src/auth/utils/ @Loule95450 @Maghwyn
 /back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
 /back-end/src/auth/utils/auth.projection.ts @Maghwyn @Kevw94
-/back-end/src/base/ @Maghwyn
 /back-end/src/base/academicYears/ @Maghwyn @Thomlam
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
@@ -101,7 +100,6 @@
 /back-end/src/base/users/users.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/users/utils/users.aggregation.ts @Loule95450
 /back-end/src/base/users/utils/users.projection.ts @Maghwyn
-/back-end/src/common/ @Maghwyn
 /back-end/src/common/constants/global.ts @Maghwyn @Kevw94
 /back-end/src/common/constants/README.md @Maghwyn
 /back-end/src/common/decorators/ @Kevw94 @Maghwyn
@@ -133,6 +131,7 @@
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
 /back-end/src/external-modules/mailjet/mailjet.service.ts @AyakorK @Maghwyn
 /back-end/src/main.ts @Maghwyn @Loule95450
+/back-end/src/MODULE.md 
 /back-end/tsconfig.build.json @Maghwyn @Thomlam
 /back-end/types/index.d.ts @Maghwyn
 /back-end/uploads/.gitkeep @Loule95450
