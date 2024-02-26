@@ -11,7 +11,7 @@
 /back-end/nest-cli.json @Maghwyn @Thomlam
 /back-end/package-lock.json @Maghwyn @AyakorK
 /back-end/package.json @Maghwyn @AyakorK
-/back-end/src/app.controller.spec.ts @Maghwyn @Thomlam
+/back-end/src/ @Maghwyn @Thomlam
 /back-end/src/app.controller.ts @Maghwyn @Loule95450
 /back-end/src/app.module.ts @Maghwyn @AyakorK
 /back-end/src/app.service.ts @Maghwyn @Kevw94
@@ -25,6 +25,7 @@
 /back-end/src/auth/utils/ @Loule95450 @Maghwyn
 /back-end/src/auth/utils/auth.cookie.ts @Maghwyn @Kevw94
 /back-end/src/auth/utils/auth.projection.ts @Maghwyn @Kevw94
+/back-end/src/base/ @Maghwyn
 /back-end/src/base/academicYears/ @Maghwyn @Thomlam
 /back-end/src/base/academicYears/academicYears.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/academicYears/interfaces/academicYears.interface.ts @Maghwyn @Loule95450
@@ -100,6 +101,7 @@
 /back-end/src/base/users/users.repository.ts @Maghwyn @Loule95450
 /back-end/src/base/users/utils/users.aggregation.ts @Loule95450
 /back-end/src/base/users/utils/users.projection.ts @Maghwyn
+/back-end/src/common/ @Maghwyn
 /back-end/src/common/constants/global.ts @Maghwyn @Kevw94
 /back-end/src/common/constants/README.md @Maghwyn
 /back-end/src/common/decorators/ @Kevw94 @Maghwyn
@@ -129,13 +131,12 @@
 /back-end/src/external-modules/database/mongo.module.ts @Maghwyn
 /back-end/src/external-modules/database/mongo.service.ts @Maghwyn @Kevw94
 /back-end/src/external-modules/mailjet/ @Loule95450 @Maghwyn
-/back-end/src/external-modules/mailjet/mailjet.service.ts @Maghwyn
+/back-end/src/external-modules/mailjet/mailjet.service.ts @AyakorK @Maghwyn
 /back-end/src/main.ts @Maghwyn @Loule95450
-/back-end/src/MODULE.md @Maghwyn @Thomlam
 /back-end/tsconfig.build.json @Maghwyn @Thomlam
 /back-end/types/index.d.ts @Maghwyn
 /back-end/uploads/.gitkeep @Loule95450
-/front-end/.eslintrc.cjs @Maghwyn @Loule95450
+/front-end/.eslintrc.cjs @Maghwyn @TheoLandemaine
 /front-end/.gitignore @Loule95450
 /front-end/index.html @TheoLandemaine
 /front-end/package-lock.json @Loule95450 @Maghwyn
@@ -222,6 +223,7 @@
 /front-end/src/components/common/svg/Validate.vue @Loule95450
 /front-end/src/components/common/uix/SelectionBox.vue @Loule95450 @Maghwyn
 /front-end/src/components/materials/ @AyakorK @Maghwyn
+/front-end/src/components/materials/ApprouvalCenter.vue @Maghwyn @Loule95450
 /front-end/src/components/materials/ButtonsMaterials.vue @Maghwyn @RuKaSuu
 /front-end/src/components/materials/ChartMaterials.vue @Maghwyn @Loule95450
 /front-end/src/components/materials/ImagePicker.vue @Maghwyn @Loule95450
@@ -230,7 +232,9 @@
 /front-end/src/components/NewSprint.vue @Maghwyn @Loule95450 @AyakorK
 /front-end/src/components/RessourcesComponents/ @AyakorK @Maghwyn
 /front-end/src/components/RessourcesComponents/AddCourse.vue @Ptitbapt
+/front-end/src/components/RessourcesComponents/Cours.vue @Maghwyn @AyakorK
 /front-end/src/components/RessourcesComponents/CoursDetails.vue @AyakorK @Kevw94
+/front-end/src/components/RessourcesComponents/NewParticipant.vue @AyakorK @Maghwyn
 /front-end/src/components/RessourcesComponents/OpenHouses.vue @Loule95450 @Maghwyn
 /front-end/src/components/RessourcesComponents/OpenHousesDetails.vue @Maghwyn @Ptitbapt
 /front-end/src/components/RessourcesComponents/Ressources.vue @Loule95450 @Maghwyn
@@ -281,6 +285,7 @@
 /front-end/src/lib/pixi-tools-v2/model/model-constructor/triangle.ts @Maghwyn @Loule95450
 /front-end/src/lib/pixi-tools-v2/model/template-ui.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/model/template.ts @Maghwyn @Loule95450
+/front-end/src/lib/pixi-tools-v2/plugins/containerResizePlugin.ts @Maghwyn @AyakorK
 /front-end/src/lib/pixi-tools-v2/plugins/viewportZoomPlugin.ts @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/augment/ @Kevw94 @Maghwyn
 /front-end/src/lib/pixi-tools-v2/types/pixi-aliases.ts @Kevw94 @Maghwyn
@@ -374,6 +379,9 @@
 /front-end/src/views/material-ideas/Comments.vue @RuKaSuu @Maghwyn
 /front-end/src/views/material-ideas/DraftPdf.vue @Loule95450 @Maghwyn
 /front-end/src/views/material-ideas/IdeasPdf.vue @Loule95450 @Maghwyn
+/front-end/src/views/materialDashboard/ @AyakorK @Maghwyn
+/front-end/src/views/materialDashboard/OlderMaterials.vue @Maghwyn @Loule95450
+/front-end/src/views/MaterialDashboardView.vue @AyakorK @Maghwyn
 /front-end/src/views/MaterialsApprouvalCenterView.vue @Loule95450 @Maghwyn
 /front-end/src/views/MaterialsView.vue @Maghwyn @RuKaSuu
 /front-end/src/views/NewRetrospective.vue @AyakorK @Kevw94 @TheoLandemaine
